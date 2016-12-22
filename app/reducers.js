@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import { reducer as api } from 'redux-json-api';
+import Auth from '@buzzn/module_auth';
 import config from './config';
 import { constants } from './actions';
 
@@ -20,5 +21,6 @@ export default combineReducers({
   config: configReducer,
   // all data received by redux-json-api will be located in 'api' propery
   api,
+  auth: Auth.reducers,
   app: appReducer,
 });

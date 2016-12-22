@@ -59,6 +59,7 @@
     "webpack-hot-middleware": "^2.13.2"
   },
   "dependencies": {
+    "@buzzn/module_auth": "git+https://github.com/buzzn/module-auth.git#v1.0.3",
     "babel-polyfill": "^6.20.0",
     "bootstrap": "4.0.0-alpha.5",
     "express": "^4.14.0",
