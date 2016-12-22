@@ -5,6 +5,9 @@ export const getConfig = state => state.config;
 
 export default function* appSaga() {
   const { apiUrl, apiPath } = yield select(getConfig);
+  // redux-json-api initial configuration
+  // to configure it we should dispatch specific redux-json-api actions with needed params
   yield put(setEndpointHost(apiUrl));
   yield put(setEndpointPath(apiPath));
+  // end of redux-json-api initial configuration
 }
