@@ -1,8 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const autoprefixer = require('autoprefixer');
-const flexbugsFixes = require('postcss-flexbugs-fixes');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const StatsPlugin = require('stats-webpack-plugin');
 
@@ -80,14 +78,6 @@ module.exports = {
         context: __dirname,
         output: {
           path: path.resolve(__dirname, 'build/public/assets'),
-        },
-        postcss: {
-          plugins() {
-            return [
-              autoprefixer({ browsers: ['last 3 versions'] }),
-              flexbugsFixes,
-            ];
-          },
         },
       },
     }),
