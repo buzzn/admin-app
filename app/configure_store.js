@@ -2,11 +2,12 @@ import createSagaMiddleware from 'redux-saga';
 import { call } from 'redux-saga/effects';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
+import Auth from '@buzzn/module_auth';
 import appSaga from './sagas';
 import RootReducer from './reducers';
 
 function* rootSaga() {
-  yield [call(appSaga)];
+  yield [call(appSaga), call(Auth.sagas)];
 }
 
 export default function configureStore(initialState) {
