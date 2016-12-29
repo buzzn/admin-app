@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
 import { reducer as api } from 'redux-json-api';
 import Auth from '@buzzn/module_auth';
-import config from './config';
-import { constants } from './actions';
+import config from '../config';
+import { constants } from '../actions';
+
+import groups from './groupsReducer'
 
 // in this case initialState includes apiUrl and apiPath, so it will just copy this params into app state.
 export function configReducer(state = config) {
@@ -21,6 +23,7 @@ export default combineReducers({
   config: configReducer,
   // all data received by redux-json-api will be located in 'api' propery
   api,
+  groups,
   auth: Auth.reducers,
   app: appReducer,
 });
