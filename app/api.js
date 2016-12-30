@@ -62,5 +62,12 @@ export default {
     .then(json => remainingPages({ apiUrl, apiPath, json, token, id: userId, model: 'users', endpoint: 'friends' }))
     .then(jsonArr => flatten(jsonArr.map(json => json.data)));
   },
-  getGroups({ token, apiUrl, apiPath, userId }) {},
+  getGroups({ token, apiUrl, apiPath, userId }) {
+    return fetch(`${apiUrl}${apiPath}/users/${userId}/groups`, {
+      headers: prepareHeaders(token),
+    })
+    .then(parseResponse)
+    .then(json => remainingPages({ apiUrl, apiPath, json, token, id: userId, model: 'users', endpoint: 'groups' }))
+    .then(jsonArr => flatten(jsonArr.map(json => json.data)));
+  },
 };

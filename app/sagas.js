@@ -31,6 +31,7 @@ export function* getFriends({ apiUrl, apiPath, token, userId }) {
   try {
     const friendIds = yield call(api.getFriends, { apiUrl, apiPath, token, userId });
     const friends = [];
+    // TODO: this can be moved to api
     for (let i = 0; i < friendIds.length; i += 1) {
       const id = friendIds[i].id;
       friends.push({ id, profile: yield call(api.getProfile, { apiUrl, apiPath, token, userId: id }) });
@@ -41,9 +42,19 @@ export function* getFriends({ apiUrl, apiPath, token, userId }) {
   }
 }
 
+export function* getGroups({ apiUrl, apiPath, token, userId }) {
+  try {
+    const groups = yield call(api.getGroups, { apiUrl, apiPath, token, userId });
+    yield put(actions.setGroups(groups));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export function* getUserInfo({ apiUrl, apiPath, token }, { userId }) {
   yield call(getProfile, { apiUrl, apiPath, token, userId });
   yield call(getFriends, { apiUrl, apiPath, token, userId });
+  yield call(getGroups, { apiUrl, apiPath, token, userId });
 }
 
 export default function* appSaga() {

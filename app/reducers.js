@@ -25,6 +25,8 @@ export function appReducer(state = initialState, action) {
       return { ...state, profile: action.profile };
     case constants.SET_FRIENDS:
       return { ...state, friends: action.friends };
+    case constants.SET_GROUPS:
+      return { ...state, groups: action.groups };
     default:
       return state;
   }
