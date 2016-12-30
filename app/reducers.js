@@ -9,7 +9,7 @@ export function configReducer(state = config) {
   return state;
 }
 
-export const initialState = { loading: false, myId: null };
+export const initialState = { loading: false, myId: null, profile: {}, friends: [], groups: [] };
 
 export function appReducer(state = initialState, action) {
   switch (action.type) {

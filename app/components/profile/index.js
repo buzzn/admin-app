@@ -25,10 +25,10 @@ class Profile extends Component {
         { !!profile &&
         <div>
           <h2>{ profile.firstName } { profile.lastName }</h2>
-          { !!friends &&
+          { friends.length > 0 &&
             <Friends friends={ friends }/>
           }
-          { !!groups && groups.length > 0 &&
+          { groups.length > 0 &&
             <Groups groups={ groups }/>
           }
         </div>

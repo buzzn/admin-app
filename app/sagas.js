@@ -28,6 +28,7 @@ export function* getProfile({ apiUrl, apiPath, token, userId }) {
 }
 
 export function* getFriends({ apiUrl, apiPath, token, userId }) {
+  yield put(actions.setFriends([]));
   try {
     const friendIds = yield call(api.getFriends, { apiUrl, apiPath, token, userId });
     const friends = [];
@@ -43,6 +44,7 @@ export function* getFriends({ apiUrl, apiPath, token, userId }) {
 }
 
 export function* getGroups({ apiUrl, apiPath, token, userId }) {
+  yield put(actions.setGroups([]));
   try {
     const groups = yield call(api.getGroups, { apiUrl, apiPath, token, userId });
     yield put(actions.setGroups(groups));
