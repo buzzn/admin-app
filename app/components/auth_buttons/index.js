@@ -5,12 +5,8 @@ import Auth from '@buzzn/module_auth';
 const AuthButtons = ({ token }) => (
   <div>
     { !token ?
-      <div>
-        <Auth.PasswordSignIn />
-      </div> :
-      <div>
-        <Auth.SignOutButton />
-      </div>
+      <div><Auth.PasswordSignIn /></div> :
+      <div><Auth.SignOutButton /></div>
     }
   </div>
 );
