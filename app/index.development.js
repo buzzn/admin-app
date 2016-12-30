@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from 'react-dom';
+import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 import Redbox from 'redbox-react';
@@ -8,25 +8,22 @@ import Root from './root';
 
 configureStore();
 
-render(
-  <AppContainer errorReporter={Redbox}>
-    <Provider store={configureStore()}>
-      <Root />
-    </Provider>
-  </AppContainer>,
-  document.querySelector('#root')
-);
+const render = (Component) => {
+  ReactDOM.render(
+    <AppContainer errorReporter={Redbox}>
+      <Provider store={configureStore()}>
+        <Component/>
+      </Provider>
+    </AppContainer>,
+    document.querySelector('#root'),
+  );
+};
+
+render(Root);
 
 if (module.hot) {
   module.hot.accept('./root', () => {
-    // workaround for HMR
-    require('./root').default;
-
-    render(
-      <AppContainer errorReporter={Redbox}>
-        <Root />
-      </AppContainer>,
-      document.querySelector('#root')
-    );
+    const NewRoot = require('./root').default;
+    render(NewRoot);
   });
 }
