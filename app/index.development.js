@@ -24,7 +24,9 @@ if (module.hot) {
 
     render(
       <AppContainer errorReporter={Redbox}>
-        <Root />
+        <Provider store={configureStore()}>
+          <Root />
+        </Provider>
       </AppContainer>,
       document.querySelector('#root')
     );
