@@ -38,17 +38,18 @@ export function* getProfile({ apiUrl, apiPath, token, userId }) {
   }
 }
 
-export function* getFriends({ apiUrl, apiPath, token, userId }) {
-  yield put(actions.setFriends([]));
+export function* getUserFriends({ apiUrl, apiPath, token, userId }) {
+  yield put(actions.setUserFriends([]));
   try {
-    const friendIds = yield call(api.getFriends, { apiUrl, apiPath, token, userId });
-    const friends = [];
+    const userFriendsIds = yield call(api.getUserFriends, { apiUrl, apiPath, token, userId });
+    const userFriends = [];
     // TODO: this can be moved to api
-    for (let i = 0; i < friendIds.length; i += 1) {
-      const id = friendIds[i].id;
-      friends.push({ id, profile: yield call(api.getProfile, { apiUrl, apiPath, token, userId: id }) });
+    for (let i = 0; i < userFriendsIds.length; i += 1) {
+      const id = userFriendsIds[i].id;
+      const profile = yield call(api.getProfile, { apiUrl, apiPath, token, userId: id })
+      userFriends.push({ id, profile: profile });
     }
-    yield put(actions.setFriends(friends));
+    yield put(actions.setUserFriends(userFriends));
   } catch (error) {
     console.log(error);
   }
@@ -69,7 +70,7 @@ export function* getUserGroups({ apiUrl, apiPath, token, userId }) {
 
 export function* getUserInfo({ apiUrl, apiPath, token }, { userId }) {
   yield call(getProfile, { apiUrl, apiPath, token, userId });
-  yield call(getFriends, { apiUrl, apiPath, token, userId });
+  yield call(getUserFriends, { apiUrl, apiPath, token, userId });
   yield call(getUserGroups, { apiUrl, apiPath, token, userId });
 }
 

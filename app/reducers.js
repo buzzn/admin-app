@@ -10,14 +10,14 @@ export function configReducer(state = config) {
 }
 
 export const initialState = {
-  loading:    false,
+  loading:     false,
 
-  groups:     [],
+  groups:      [],
 
-  myId:       null,
-  profile:    {},
-  friends:    [],
-  userGroups: []
+  myId:        null,
+  profile:     {},
+  userFriends: [],
+  userGroups:  []
 };
 
 export function appReducer(state = initialState, action) {
@@ -36,8 +36,8 @@ export function appReducer(state = initialState, action) {
       return { ...state, userId: action.userId };
     case constants.SET_PROFILE:
       return { ...state, profile: action.profile };
-    case constants.SET_FRIENDS:
-      return { ...state, friends: action.friends };
+    case constants.SET_USER_FRIENDS:
+      return { ...state, userFriends: action.userFriends };
     case constants.SET_USER_GROUPS:
       return { ...state, userGroups: action.userGroups };
     default:

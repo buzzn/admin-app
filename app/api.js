@@ -67,7 +67,7 @@ export default {
     .then(json => normalizeProfile(json));
   },
 
-  getFriends({ token, apiUrl, apiPath, userId }) {
+  getUserFriends({ token, apiUrl, apiPath, userId }) {
     return fetch(`${apiUrl}${apiPath}/users/${userId}/friends`, {
       headers: prepareHeaders(token),
     })
