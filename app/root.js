@@ -3,13 +3,9 @@ import { BrowserRouter, Match, Miss } from 'react-router';
 import { connect } from 'react-redux';
 
 import MainNavBar from './components/main_nav_bar';
-import Sidebar    from './components/Sidebar';
+import Sidebar from './components/Sidebar';
 
-import Home     from './pages/home';
-import Profiles from './pages/profiles';
-import Profile  from './pages/profile';
-import Groups   from './pages/groups';
-import Group    from './pages/group';
+import Profile from './pages/profile';
 
 import './root.scss';
 
@@ -22,11 +18,8 @@ const Root = ({ token }) => (
         <div className='col-sm-9 offset-sm-3 col-md-10 offset-md-2 main'>
           { token ?
             <div>
-              <Match exactly pattern="/"              component={ Home } />
-              <Match         pattern="/profiles"      component={ Profiles } />
-              <Match         pattern="/profile/:id"   component={ Profile } />
-              <Match         pattern="/groups"        component={ Groups } />
-              <Match         pattern="/group/:id"     component={ Group } />
+              <Match exactly pattern="/" component={ Profile } />
+              <Match pattern="/profile/:id" component={ Profile } />
             </div> :
             <Match exactly pattern="/" render={ () => (<div>Please, log in to use this app.</div>) } />
           }
