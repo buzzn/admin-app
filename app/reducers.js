@@ -28,7 +28,7 @@ export function appReducer(state = initialState, action) {
       return { ...state, loading: false };
 
     case constants.SET_GROUPS:
-      return { ...state, userId: action.groups };
+      return { ...state, groups: action.groups };
 
     case constants.SET_MY_ID:
       return { ...state, myId: action.myId };
