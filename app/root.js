@@ -3,8 +3,9 @@ import { BrowserRouter, Match, Miss } from 'react-router';
 import { connect } from 'react-redux';
 
 import MainNavBar from './components/main_nav_bar';
-import Profile from './components/profile';
 import Sidebar from './components/Sidebar';
+
+import Profile from './pages/profile';
 
 import './root.scss';
 

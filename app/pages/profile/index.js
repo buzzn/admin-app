@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { actions } from '../../actions';
-import Friends from '../friends';
-import Groups from '../groups';
+
+import Friends from '../../components/friends';
+import Groups from '../../components/groups';
 
 class Profile extends Component {
   componentWillReceiveProps(nextProps) {
@@ -18,19 +19,22 @@ class Profile extends Component {
   }
 
   render() {
-    const { profile, friends, groups } = this.props;
+    const { profile, friends, userGroups } = this.props;
 
     return (
       <div>
         { !!profile &&
         <div>
           <h2>{ profile.firstName } { profile.lastName }</h2>
+
           { friends.length > 0 &&
             <Friends friends={ friends }/>
           }
-          { groups.length > 0 &&
-            <Groups groups={ groups }/>
+
+          { userGroups.length > 0 &&
+            <Groups groups={ userGroups }/>
           }
+
         </div>
         }
       </div>
@@ -44,7 +48,7 @@ function mapStateToProps(state) {
     userId: state.app.userId,
     profile: state.app.profile,
     friends: state.app.friends,
-    groups: state.app.groups,
+    userGroups: state.app.userGroups,
   };
 }
 

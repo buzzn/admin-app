@@ -6,6 +6,17 @@ import api from './api';
 
 export const getConfig = state => state.config;
 
+export function* getGroups({ apiUrl, apiPath, token }) {
+  yield put(actions.setGroups([]));
+  try {
+    const groups = yield call(api.getGroups, { apiUrl, apiPath, token });
+    yield put(actions.setGroups(groups));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
 export function* getMyId({ apiUrl, apiPath, token }) {
   try {
     const { myId } = yield call(api.getMyId, { apiUrl, apiPath, token });
@@ -43,21 +54,27 @@ export function* getFriends({ apiUrl, apiPath, token, userId }) {
   }
 }
 
-export function* getGroups({ apiUrl, apiPath, token, userId }) {
-  yield put(actions.setGroups([]));
+export function* getUserGroups({ apiUrl, apiPath, token, userId }) {
+  yield put(actions.setUserGroups([]));
   try {
-    const groups = yield call(api.getGroups, { apiUrl, apiPath, token, userId });
-    yield put(actions.setGroups(groups));
+    const userGroups = yield call(api.getUserGroups, { apiUrl, apiPath, token, userId });
+    yield put(actions.setUserGroups(userGroups));
   } catch (error) {
     console.log(error);
   }
 }
 
+
+
+
 export function* getUserInfo({ apiUrl, apiPath, token }, { userId }) {
   yield call(getProfile, { apiUrl, apiPath, token, userId });
   yield call(getFriends, { apiUrl, apiPath, token, userId });
-  yield call(getGroups, { apiUrl, apiPath, token, userId });
+  yield call(getUserGroups, { apiUrl, apiPath, token, userId });
 }
+
+
+
 
 export default function* appSaga() {
   const { apiUrl, apiPath } = yield select(getConfig);
