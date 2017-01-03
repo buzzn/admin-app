@@ -1,20 +1,9 @@
 import { put, take, select, call, takeLatest, cancel } from 'redux-saga/effects';
 import Auth from '@buzzn/module_auth';
-import { constants, actions } from './actions';
-import api from './api';
+import { constants, actions } from '../actions';
+import api from '../api';
 
 export const getConfig = state => state.config;
-
-export function* getGroups({ apiUrl, apiPath, token }) {
-  yield put(actions.setGroups([]));
-  try {
-    const groups = yield call(api.getGroups, { apiUrl, apiPath, token });
-    yield put(actions.setGroups(groups));
-  } catch (error) {
-    console.log(error);
-  }
-}
-
 
 export function* getMyId({ apiUrl, apiPath, token }) {
   try {
@@ -28,10 +17,10 @@ export function* getMyId({ apiUrl, apiPath, token }) {
   }
 }
 
-export function* getProfile({ apiUrl, apiPath, token, userId }) {
+export function* getUserProfile({ apiUrl, apiPath, token, userId }) {
   try {
-    const profile = yield call(api.getProfile, { apiUrl, apiPath, token, userId });
-    yield put(actions.setProfile(profile));
+    const userProfile = yield call(api.getUserProfile, { apiUrl, apiPath, token, userId });
+    yield put(actions.setUserProfile(userProfile));
   } catch (error) {
     console.log(error);
   }
@@ -45,7 +34,7 @@ export function* getUserFriends({ apiUrl, apiPath, token, userId }) {
     // TODO: this can be moved to api
     for (let i = 0; i < userFriendsIds.length; i += 1) {
       const id = userFriendsIds[i].id;
-      const profile = yield call(api.getProfile, { apiUrl, apiPath, token, userId: id })
+      const profile = yield call(api.getUserProfile, { apiUrl, apiPath, token, userId: id })
       userFriends.push({ id, profile: profile });
     }
     yield put(actions.setUserFriends(userFriends));
@@ -66,17 +55,15 @@ export function* getUserGroups({ apiUrl, apiPath, token, userId }) {
 
 
 
-
 export function* getUserInfo({ apiUrl, apiPath, token }, { userId }) {
-  yield call(getProfile, { apiUrl, apiPath, token, userId });
+  yield call(getUserProfile, { apiUrl, apiPath, token, userId });
   yield call(getUserFriends, { apiUrl, apiPath, token, userId });
-  yield call(getUserGroups, { apiUrl, apiPath, token, userId });
+  yield call(getUserGroups,  { apiUrl, apiPath, token, userId });
 }
 
 
 
-
-export default function* appSaga() {
+export default function* profile() {
   const { apiUrl, apiPath } = yield select(getConfig);
 
   while (true) {

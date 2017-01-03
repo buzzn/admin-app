@@ -19,13 +19,13 @@ class Profile extends Component {
   }
 
   render() {
-    const { profile, userFriends, userGroups } = this.props;
+    const { userProfile, userFriends, userGroups } = this.props;
 
     return (
       <div>
-        { !!profile &&
+        { !!userProfile &&
         <div>
-          <h2>{ profile.firstName } { profile.lastName }</h2>
+          <h2>{ userProfile.firstName } { userProfile.lastName }</h2>
 
           { userFriends.length > 0 &&
             <Friends friends={ userFriends }/>
@@ -46,7 +46,7 @@ function mapStateToProps(state) {
   return {
     myId: state.app.myId,
     userId: state.app.userId,
-    profile: state.app.profile,
+    userProfile: state.app.userProfile,
     userFriends: state.app.userFriends,
     userGroups: state.app.userGroups,
   };

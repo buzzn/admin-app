@@ -59,7 +59,7 @@ export default {
     .then(json => ({ myId: json.data.id }));
   },
 
-  getProfile({ token, apiUrl, apiPath, userId }) {
+  getUserProfile({ token, apiUrl, apiPath, userId }) {
     return fetch(`${apiUrl}${apiPath}/users/${userId}/profile`, {
       headers: prepareHeaders(token),
     })

@@ -14,7 +14,7 @@ export const initialState = {
   groups:      [],
 
   myId:        null,
-  profile:     {},
+  userProfile: {},
   userFriends: [],
   userGroups:  []
 };
@@ -33,8 +33,8 @@ export function appReducer(state = initialState, action) {
       return { ...state, myId: action.myId };
     case constants.SET_USER_ID:
       return { ...state, userId: action.userId };
-    case constants.SET_PROFILE:
-      return { ...state, profile: action.profile };
+    case constants.SET_USER_PROFILE:
+      return { ...state, userProfile: action.userProfile };
     case constants.SET_USER_FRIENDS:
       return { ...state, userFriends: action.userFriends };
     case constants.SET_USER_GROUPS:
