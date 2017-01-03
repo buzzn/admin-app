@@ -40,21 +40,34 @@ function remainingPages({ apiUrl, apiPath, id, json, model, endpoint, token }) {
 }
 
 export default {
-  getMyId({ token, apiUrl, apiPath }) {
+
+  fetchGroups({ token, apiUrl, apiPath }) {
+    return fetch(`${apiUrl}${apiPath}/groups`, {
+      headers: prepareHeaders(token),
+    })
+    .then(parseResponse)
+    // .then(json => remainingPages({ apiUrl, apiPath, json, token, id: userId, model: 'users', endpoint: 'groups' }))
+    .then(jsonArr => flatten(jsonArr.map(json => json.data)));
+  },
+
+
+  fetchUserMe({ token, apiUrl, apiPath }) {
     return fetch(`${apiUrl}${apiPath}/users/me`, {
       headers: prepareHeaders(token),
     })
     .then(parseResponse)
-    .then(json => ({ myId: json.data.id }));
+    .then(json => ({ userMe: json.data.id }));
   },
-  getProfile({ token, apiUrl, apiPath, userId }) {
+
+  fetchUserProfile({ token, apiUrl, apiPath, userId }) {
     return fetch(`${apiUrl}${apiPath}/users/${userId}/profile`, {
       headers: prepareHeaders(token),
     })
     .then(parseResponse)
     .then(json => normalizeProfile(json));
   },
-  getFriends({ token, apiUrl, apiPath, userId }) {
+
+  fetchUserFriends({ token, apiUrl, apiPath, userId }) {
     return fetch(`${apiUrl}${apiPath}/users/${userId}/friends`, {
       headers: prepareHeaders(token),
     })
@@ -62,7 +75,8 @@ export default {
     .then(json => remainingPages({ apiUrl, apiPath, json, token, id: userId, model: 'users', endpoint: 'friends' }))
     .then(jsonArr => flatten(jsonArr.map(json => json.data)));
   },
-  getGroups({ token, apiUrl, apiPath, userId }) {
+
+  fetchUserGroups({ token, apiUrl, apiPath, userId }) {
     return fetch(`${apiUrl}${apiPath}/users/${userId}/groups`, {
       headers: prepareHeaders(token),
     })
@@ -70,4 +84,5 @@ export default {
     .then(json => remainingPages({ apiUrl, apiPath, json, token, id: userId, model: 'users', endpoint: 'groups' }))
     .then(jsonArr => flatten(jsonArr.map(json => json.data)));
   },
+
 };

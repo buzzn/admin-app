@@ -2,12 +2,14 @@ import React from 'react';
 import { Link } from 'react-router';
 
 export default ({ friends }) => (
-  <div>
-    <h4>Friends:</h4>
+
+  <div className="list-group">
+    <h4>friends</h4>
     { friends.map(friend => (
-      <div key={ friend.id }>
-        <Link to={ `/profile/${friend.id}` }>{ friend.profile.firstName } { friend.profile.lastName }</Link>
-      </div>
+        <Link key={ friend.id } className="list-group-item list-group-item-action" to={ `/profile/${friend.id}` }>
+          { friend.profile.firstName } { friend.profile.lastName }
+        </Link>
     )) }
   </div>
+
 );

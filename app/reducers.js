@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import { reducer as api } from 'redux-json-api';
 import Auth from '@buzzn/module_auth';
 import config from './config';
 import { constants } from './actions';
@@ -9,7 +8,16 @@ export function configReducer(state = config) {
   return state;
 }
 
-export const initialState = { loading: false, myId: null, profile: {}, friends: [], groups: [] };
+export const initialState = {
+  loading:     false,
+
+  groups:      [],
+
+  userMe:      null,
+  userProfile: {},
+  userFriends: [],
+  userGroups:  []
+};
 
 export function appReducer(state = initialState, action) {
   switch (action.type) {
@@ -17,16 +25,20 @@ export function appReducer(state = initialState, action) {
       return { ...state, loading: true };
     case constants.LOADED:
       return { ...state, loading: false };
-    case constants.SET_MY_ID:
-      return { ...state, myId: action.myId };
-    case constants.SET_USER_ID:
-      return { ...state, userId: action.userId };
-    case constants.SET_PROFILE:
-      return { ...state, profile: action.profile };
-    case constants.SET_FRIENDS:
-      return { ...state, friends: action.friends };
+
     case constants.SET_GROUPS:
       return { ...state, groups: action.groups };
+
+    case constants.SET_USER_ME:
+      return { ...state, userMe: action.userMe };
+    case constants.SET_USER_ID:
+      return { ...state, userId: action.userId };
+    case constants.SET_USER_PROFILE:
+      return { ...state, userProfile: action.userProfile };
+    case constants.SET_USER_FRIENDS:
+      return { ...state, userFriends: action.userFriends };
+    case constants.SET_USER_GROUPS:
+      return { ...state, userGroups: action.userGroups };
     default:
       return state;
   }
@@ -35,8 +47,6 @@ export function appReducer(state = initialState, action) {
 export default combineReducers({
   // apiUrl and apiPath will be located in 'config' property
   config: configReducer,
-  // all data received by redux-json-api will be located in 'api' propery
-  api,
   auth: Auth.reducers,
   app: appReducer,
 });
