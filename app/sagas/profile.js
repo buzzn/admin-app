@@ -7,7 +7,7 @@ export const getConfig = state => state.config;
 
 export function* getUserMe({ apiUrl, apiPath, token }) {
   try {
-    const { userMe } = yield call(api.getUserMe, { apiUrl, apiPath, token });
+    const { userMe } = yield call(api.fetchUserMe, { apiUrl, apiPath, token });
     yield put(actions.setUserMe(userMe));
     yield put(actions.setUserId(userMe));
     return true;
@@ -19,7 +19,7 @@ export function* getUserMe({ apiUrl, apiPath, token }) {
 
 export function* getUserProfile({ apiUrl, apiPath, token, userId }) {
   try {
-    const userProfile = yield call(api.getUserProfile, { apiUrl, apiPath, token, userId });
+    const userProfile = yield call(api.fetchUserProfile, { apiUrl, apiPath, token, userId });
     yield put(actions.setUserProfile(userProfile));
   } catch (error) {
     console.log(error);
@@ -29,12 +29,12 @@ export function* getUserProfile({ apiUrl, apiPath, token, userId }) {
 export function* getUserFriends({ apiUrl, apiPath, token, userId }) {
   yield put(actions.setUserFriends([]));
   try {
-    const userFriendsIds = yield call(api.getUserFriends, { apiUrl, apiPath, token, userId });
+    const userFriendsIds = yield call(api.fetchUserFriends, { apiUrl, apiPath, token, userId });
     const userFriends = [];
     // TODO: this can be moved to api
     for (let i = 0; i < userFriendsIds.length; i += 1) {
       const id = userFriendsIds[i].id;
-      const profile = yield call(api.getUserProfile, { apiUrl, apiPath, token, userId: id })
+      const profile = yield call(api.fetchUserProfile, { apiUrl, apiPath, token, userId: id })
       userFriends.push({ id, profile: profile });
     }
     yield put(actions.setUserFriends(userFriends));
@@ -46,7 +46,7 @@ export function* getUserFriends({ apiUrl, apiPath, token, userId }) {
 export function* getUserGroups({ apiUrl, apiPath, token, userId }) {
   yield put(actions.setUserGroups([]));
   try {
-    const userGroups = yield call(api.getUserGroups, { apiUrl, apiPath, token, userId });
+    const userGroups = yield call(api.fetchUserGroups, { apiUrl, apiPath, token, userId });
     yield put(actions.setUserGroups(userGroups));
   } catch (error) {
     console.log(error);
