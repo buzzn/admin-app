@@ -5,11 +5,11 @@ import api from '../api';
 
 export const getConfig = state => state.config;
 
-export function* getMyId({ apiUrl, apiPath, token }) {
+export function* getUserMe({ apiUrl, apiPath, token }) {
   try {
-    const { myId } = yield call(api.getMyId, { apiUrl, apiPath, token });
-    yield put(actions.setMyId(myId));
-    yield put(actions.setUserId(myId));
+    const { userMe } = yield call(api.getUserMe, { apiUrl, apiPath, token });
+    yield put(actions.setUserMe(userMe));
+    yield put(actions.setUserId(userMe));
     return true;
   } catch (error) {
     console.log(error);
@@ -70,7 +70,7 @@ export default function* profile() {
     const { token } = yield take(Auth.constants.SIGN_IN);
     if (token) {
       const userInfoSaga = yield takeLatest(constants.SET_USER_ID, getUserInfo, { apiUrl, apiPath, token });
-      if (yield call(getMyId, { apiUrl, apiPath, token })) {
+      if (yield call(getUserMe, { apiUrl, apiPath, token })) {
         yield take(Auth.constants.SIGN_OUT);
       } else {
         yield put(Auth.actions.signOut());

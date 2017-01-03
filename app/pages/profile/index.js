@@ -8,12 +8,12 @@ import Groups from '../../components/groups';
 class Profile extends Component {
   componentWillReceiveProps(nextProps) {
     const { params: { id: newUserId } } = nextProps;
-    const { userId, myId, setUserId } = this.props;
+    const { userId, userMe, setUserId } = this.props;
     if (userId !== newUserId) {
       if (newUserId) {
         setUserId(newUserId);
-      } else if (userId !== myId) {
-        setUserId(myId);
+      } else if (userId !== userMe) {
+        setUserId(userMe);
       }
     }
   }
@@ -44,7 +44,7 @@ class Profile extends Component {
 
 function mapStateToProps(state) {
   return {
-    myId: state.app.myId,
+    userMe: state.app.userMe,
     userId: state.app.userId,
     userProfile: state.app.userProfile,
     userFriends: state.app.userFriends,

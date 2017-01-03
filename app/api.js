@@ -51,12 +51,12 @@ export default {
   },
 
 
-  getMyId({ token, apiUrl, apiPath }) {
+  getUserMe({ token, apiUrl, apiPath }) {
     return fetch(`${apiUrl}${apiPath}/users/me`, {
       headers: prepareHeaders(token),
     })
     .then(parseResponse)
-    .then(json => ({ myId: json.data.id }));
+    .then(json => ({ userMe: json.data.id }));
   },
 
   getUserProfile({ token, apiUrl, apiPath, userId }) {

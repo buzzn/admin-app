@@ -4,7 +4,7 @@ export const constants = {
 
   SET_GROUPS:       'buzzn_profile/SET_GROUPS',
 
-  SET_MY_ID:        'buzzn_profile/SET_MY_ID',
+  SET_USER_ME:      'buzzn_profile/SET_USER_ME',
   SET_USER_ID:      'buzzn_profile/SET_USER_ID',
   SET_USER_PROFILE: 'buzzn_profile/SET_USER_PROFILE',
   SET_USER_FRIENDS: 'buzzn_profile/SET_USER_FRIENDS',
@@ -17,8 +17,8 @@ export const actions = {
 
   setGroups: groups => ({ type: constants.SET_GROUPS, groups }),
 
-  setMyId: myId => ({ type: constants.SET_MY_ID, myId }),
   setUserId: userId => ({ type: constants.SET_USER_ID, userId }),
+  setUserMe: userMe => ({ type: constants.SET_USER_ME, userMe }),
   setUserProfile: userProfile => ({ type: constants.SET_USER_PROFILE, userProfile }),
   setUserFriends: userFriends => ({ type: constants.SET_USER_FRIENDS, userFriends }),
   setUserGroups: userGroups => ({ type: constants.SET_USER_GROUPS, userGroups }),
