@@ -3,9 +3,10 @@ import { BrowserRouter, Match, Miss } from 'react-router';
 import { connect } from 'react-redux';
 
 import MainNavBar from './components/main_nav_bar';
-import Sidebar from './components/Sidebar';
+import Sidebar from './components/sidebar';
 
 import Profile from './pages/profile';
+import Groups from './groups';
 
 import './root.scss';
 
@@ -20,6 +21,7 @@ const Root = ({ token }) => (
             <div>
               <Match exactly pattern="/" component={ Profile } />
               <Match pattern="/profile/:id" component={ Profile } />
+              <Match pattern="/groups" component={ Groups.Container } />
             </div> :
             <Match exactly pattern="/" render={ () => (<div>Please, log in to use this app.</div>) } />
           }
