@@ -10,10 +10,10 @@ export class ListContainer extends Component {
   }
 
   render() {
-    const { groups, pathname } = this.props;
+    const { groups, pathname, loading } = this.props;
 
     return (
-      <List groups={ groups } pathPrefix={ pathname } />
+      <List groups={ groups } pathPrefix={ pathname } loading={ loading } />
     );
   }
 }
@@ -21,6 +21,7 @@ export class ListContainer extends Component {
 function mapStateToProps(state) {
   return {
     groups: state.groups.groups,
+    loading: state.groups.loadingGroups,
   };
 }
 

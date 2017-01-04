@@ -1,23 +1,35 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import find from 'lodash/find';
+import { actions } from '../actions';
 
-export const Group = ({ group }) => {
-  if (!group) return (<div>Group not found</div>);
+export class Group extends Component {
+  componentWillMount() {
+    const { loadGroup, params: { id } } = this.props;
+    loadGroup(id);
+  }
 
-  return (
-    <div className="group">
-      <h4>{ group.attributes.name }</h4>
-      <span>Readable: { group.attributes.readable }</span>
-      <p>{ group.attributes.description }</p>
-    </div>
-  );
-};
+  render() {
+    const { group, loading } = this.props;
 
-function mapStateToProps(state, props) {
+    if (loading) return (<div>Loading...</div>);
+
+    if (!group) return (<div>Group not found</div>);
+
+    return (
+      <div className="group">
+        <h4>{ group.attributes.name }</h4>
+        <span>Readable: { group.attributes.readable }</span>
+        <p>{ group.attributes.description }</p>
+      </div>
+    );
+  }
+}
+
+function mapStateToProps(state) {
   return {
-    group: find(state.groups.groups, group => group.id === props.params.id),
+    group: state.groups.group,
+    loading: state.groups.loadingGroup,
   };
 }
 
-export default connect(mapStateToProps)(Group);
+export default connect(mapStateToProps, { loadGroup: actions.loadGroup })(Group);

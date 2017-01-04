@@ -19,7 +19,7 @@ class Profile extends Component {
   }
 
   render() {
-    const { userProfile, userFriends, userGroups } = this.props;
+    const { userProfile, userFriends, userGroups, loadingUserGroups } = this.props;
 
     return (
       <div>
@@ -32,7 +32,7 @@ class Profile extends Component {
           }
 
           { userGroups.length > 0 &&
-            <Groups.List groups={ userGroups } pathPrefix="/groups"/>
+            <Groups.List groups={ userGroups } pathPrefix="/groups" loading={ loadingUserGroups } />
           }
 
         </div>
@@ -49,6 +49,7 @@ function mapStateToProps(state) {
     userProfile: state.app.userProfile,
     userFriends: state.app.userFriends,
     userGroups: state.groups.userGroups,
+    loadingUserGroups: state.groups.loadingUserGroups,
   };
 }
 

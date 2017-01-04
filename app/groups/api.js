@@ -3,6 +3,12 @@ import flatten from 'lodash/flatten';
 import { prepareHeaders, parseResponse, remainingPages } from '../_util';
 
 export default {
+  fetchGroup({ token, apiUrl, apiPath, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/groups/${groupId}`, {
+      headers: prepareHeaders(token),
+    })
+    .then(parseResponse);
+  },
   fetchGroups({ token, apiUrl, apiPath }) {
     return fetch(`${apiUrl}${apiPath}/groups`, {
       headers: prepareHeaders(token),
