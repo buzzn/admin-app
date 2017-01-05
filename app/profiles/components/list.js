@@ -10,9 +10,9 @@ export default ({ profiles, pathPrefix, loading }) => (
         { profiles.map(profile => (
           <Link
             key={ profile.id }
-            className="list-profile-item list-profile-item-action"
+            className="list-group-item list-group-item-action"
             to={ `${pathPrefix}/profile/${profile.id}` }>
-            { profile.attributes.name }
+            { profile.attributes['first-name'] }
           </Link>
           ))
         }

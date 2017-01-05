@@ -3,7 +3,6 @@ import { constants } from './actions';
 export const initialState = {
   configured: false,
   loadingProfiles: false,
-  loadingUserProfiles: false,
   loadingProfile: false,
   profiles: [],
   userProfiles: [],
@@ -27,13 +26,6 @@ export default function (state = initialState, action) {
       return { ...state, loadingProfiles: false };
     case constants.SET_PROFILES:
       return { ...state, profiles: action.profiles };
-
-    case constants.LOADING_PROFILE_PROFILES:
-      return { ...state, loadingUserProfiles: true };
-    case constants.LOADED_PROFILE_PROFILES:
-      return { ...state, loadingUserProfiles: false };
-    case constants.SET_PROFILE_PROFILES:
-      return { ...state, userProfiles: action.userProfiles };
 
     case constants.SET_TOKEN:
       return { ...state, configured: true };

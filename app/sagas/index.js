@@ -3,8 +3,6 @@ import Auth from '@buzzn/module_auth';
 import { constants, actions } from '../actions';
 import api from '../api';
 
-import getUserFriends from './friends';
-
 import Groups from '../groups';
 import Profiles from '../profiles';
 
@@ -23,7 +21,6 @@ export function* getUserMe({ apiUrl, apiPath, token }) {
 }
 
 export function* getUserInfo({ apiUrl, apiPath, token }, { userId }) {
-  yield call(getUserFriends, { apiUrl, apiPath, token, userId });
   yield put(Groups.actions.loadUserGroups({ userId }));
 }
 

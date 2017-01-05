@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import Auth from '@buzzn/module_auth';
 import config from './config';
 import { constants } from './actions';
+import Profiles from './profiles';
 import Groups from './groups';
 
 // in this case initialState includes apiUrl and apiPath, so it will just copy this params into app state.
@@ -38,5 +39,6 @@ export default combineReducers({
   config: configReducer,
   auth: Auth.reducers,
   app: appReducer,
+  profiles: Profiles.reducers,
   groups: Groups.reducers,
 });

@@ -17,9 +17,9 @@ export class Profile extends Component {
 
     return (
       <div className="profile">
-        <h4>{ profile.attributes.name }</h4>
-        <span>Readable: { profile.attributes.readable }</span>
-        <p>{ profile.attributes.description }</p>
+      { console.log(profile.attributes ) }
+        <h4>{ profile.attributes['first-name'] }</h4>
+        <p>{ profile.attributes['about-me'] }</p>
       </div>
     );
   }
