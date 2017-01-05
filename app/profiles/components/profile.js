@@ -17,7 +17,6 @@ export class Profile extends Component {
 
     return (
       <div className="profile">
-      { console.log(profile.attributes ) }
         <h4>{ profile.attributes['first-name'] }</h4>
         <p>{ profile.attributes['about-me'] }</p>
       </div>
