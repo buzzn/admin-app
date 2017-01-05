@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 import MainNavBar from './components/main_nav_bar';
 import Sidebar from './components/sidebar';
 
-import Profile from './pages/profile';
+import Home from './home';
+import Profiles from './profiles';
 import Groups from './groups';
 
 import './root.scss';
@@ -19,9 +20,9 @@ const Root = ({ token }) => (
         <div className='col-sm-9 offset-sm-3 col-md-10 offset-md-2 main'>
           { token ?
             <div>
-              <Match exactly pattern="/" component={ Profile } />
-              <Match pattern="/profile/:id" component={ Profile } />
-              <Match pattern="/groups" component={ Groups.Container } />
+              <Match exactly  pattern="/"          component={ Profiles.Container } />
+              <Match          pattern="/profiles"  component={ Profiles.Container } />
+              <Match          pattern="/groups"    component={ Groups.Container } />
             </div> :
             <Match exactly pattern="/" render={ () => (<div>Please, log in to use this app.</div>) } />
           }
