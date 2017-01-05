@@ -20,7 +20,7 @@ const Root = ({ token }) => (
         <div className='col-sm-9 offset-sm-3 col-md-10 offset-md-2 main'>
           { token ?
             <div>
-              <Match exactly  pattern="/"          component={ Profiles.Container } />
+              <Match exactly  pattern="/"          component={ Home } />
               <Match          pattern="/profiles"  component={ Profiles.Container } />
               <Match          pattern="/groups"    component={ Groups.Container } />
             </div> :
