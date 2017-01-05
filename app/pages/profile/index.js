@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { actions } from '../../actions';
 
 import Friends from '../../components/friends';
-import Groups from '../../components/groups';
+import Groups from '../../groups';
 
 class Profile extends Component {
   componentWillReceiveProps(nextProps) {
@@ -19,7 +19,7 @@ class Profile extends Component {
   }
 
   render() {
-    const { userProfile, userFriends, userGroups } = this.props;
+    const { userProfile, userFriends, userGroups, loadingUserGroups } = this.props;
 
     return (
       <div>
@@ -32,7 +32,7 @@ class Profile extends Component {
           }
 
           { userGroups.length > 0 &&
-            <Groups groups={ userGroups }/>
+            <Groups.List groups={ userGroups } pathPrefix="/groups" loading={ loadingUserGroups } />
           }
 
         </div>
@@ -48,7 +48,8 @@ function mapStateToProps(state) {
     userId: state.app.userId,
     userProfile: state.app.userProfile,
     userFriends: state.app.userFriends,
-    userGroups: state.app.userGroups,
+    userGroups: state.groups.userGroups,
+    loadingUserGroups: state.groups.loadingUserGroups,
   };
 }
 
