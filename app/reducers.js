@@ -4,7 +4,7 @@ import config from './config';
 import { constants } from './actions';
 import Profiles from './profiles';
 import Groups from './groups';
-import Friends from './friends';
+import Meters from './meters';
 
 // in this case initialState includes apiUrl and apiPath, so it will just copy this params into app state.
 export function configReducer(state = config) {
@@ -13,9 +13,9 @@ export function configReducer(state = config) {
 
 export const initialState = {
   loading:     false,
-
   userMe:      null,
   userFriends: [],
+  userMeters:  [],
 };
 
 export function appReducer(state = initialState, action) {
@@ -41,6 +41,7 @@ export default combineReducers({
   auth: Auth.reducers,
   app: appReducer,
   profiles: Profiles.reducers,
+  meters: Meters.reducers,
   groups: Groups.reducers,
   friends: Friends.reducers,
 });
