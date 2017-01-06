@@ -2,11 +2,12 @@ import React from 'react';
 import { BrowserRouter, Match, Miss, Redirect } from 'react-router';
 import { connect } from 'react-redux';
 
-import MainNavBar from './components/main_nav_bar';
+import MainNavBarConnected from './components/main_nav_bar';
 import Sidebar from './components/sidebar';
-import SignIn from './components/sign_in';
+import SignInConnected from './components/sign_in';
 
-import Profile from './pages/profile';
+import Home from './home';
+import Profiles from './profiles';
 import Groups from './groups';
 
 import './root.scss';
@@ -14,20 +15,20 @@ import './root.scss';
 const Root = ({ token }) => (
   <BrowserRouter>
     <div>
-      <MainNavBar signedIn={ !!token } />
+      <MainNavBarConnected signedIn={ !!token } />
       { token ?
         <div className="container-fluid">
           <Sidebar />
           <div className='col-sm-9 offset-sm-3 col-md-10 offset-md-2 main'>
             <div>
-              <Match exactly pattern="/" component={ Profile } />
-              <Match pattern="/profile/:id" component={ Profile } />
+              <Match exactly pattern="/" component={ Home } />
+              <Match pattern="/profiles" component={ Profiles.Container } />
               <Match pattern="/groups" component={ Groups.Container } />
             </div>
           </div>
         </div> :
         <div className="container-fluid">
-          <Match exactly pattern="/" component={ SignIn } />
+          <Match exactly pattern="/" component={ SignInConnected } />
           <Match pattern="*" render={ () => (<Redirect to="/" />) } />
         </div>
       }
