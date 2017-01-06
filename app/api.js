@@ -19,14 +19,6 @@ export default {
     .then(json => ({ userMe: json.data.id }));
   },
 
-  fetchUserProfile({ token, apiUrl, apiPath, userId }) {
-    return fetch(`${apiUrl}${apiPath}/users/${userId}/profile`, {
-      headers: prepareHeaders(token),
-    })
-    .then(parseResponse)
-    .then(json => normalizeProfile(json));
-  },
-
   fetchUserFriends({ token, apiUrl, apiPath, userId }) {
     return fetch(`${apiUrl}${apiPath}/users/${userId}/friends`, {
       headers: prepareHeaders(token),
