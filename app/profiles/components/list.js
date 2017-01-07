@@ -12,7 +12,7 @@ export default ({ profiles, pathPrefix, loading }) => (
             key={ profile.id }
             className="list-group-item list-group-item-action"
             to={ `${pathPrefix}/profile/${profile.id}` }>
-            { profile.attributes['first-name'] }
+            { profile.firstName } { profile.lastName }
           </Link>
           ))
         }

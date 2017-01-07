@@ -9,7 +9,7 @@ export function* getProfile({ apiUrl, apiPath, token }, { profileId }) {
   yield put(actions.setProfile(null));
   try {
     const profile = yield call(api.fetchProfile, { apiUrl, apiPath, token, profileId });
-    yield put(actions.setProfile(profile.data));
+    yield put(actions.setProfile(profile));
   } catch (error) {
     console.log(error);
   }

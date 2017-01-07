@@ -17,8 +17,8 @@ export class Profile extends Component {
 
     return (
       <div className="profile">
-        <h4>{ profile.attributes['first-name'] }</h4>
-        <p>{ profile.attributes['about-me'] }</p>
+        <h4>{ profile.firstName } { profile.lastName }</h4>
+        <p>{ profile.aboutMe }</p>
       </div>
     );
   }

@@ -4,11 +4,6 @@ import camelCase from 'lodash/camelCase';
 import flatten from 'lodash/flatten';
 import { prepareHeaders, parseResponse, remainingPages } from './_util';
 
-function normalizeProfile(json) {
-  const { firstName, lastName, phone, title, gender, slug } = mapKeys(json.data.attributes, (value, key) => camelCase(key));
-  return { firstName, lastName, phone, title, gender, slug };
-}
-
 export default {
 
   fetchUserMe({ token, apiUrl, apiPath }) {
