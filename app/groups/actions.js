@@ -32,7 +32,7 @@ export const actions = {
   loadedGroups: () => ({ type: constants.LOADED_GROUPS }),
   setGroups: groups => ({ type: constants.SET_GROUPS, groups }),
 
-  loadUserGroups: ({ userId }) => ({ type: constants.LOAD_USER_GROUPS, userId }),
+  loadUserGroups: userId => ({ type: constants.LOAD_USER_GROUPS, userId }),
   loadingUserGroups: () => ({ type: constants.LOADING_USER_GROUPS }),
   loadedUserGroups: () => ({ type: constants.LOADED_USER_GROUPS }),
   setUserGroups: userGroups => ({ type: constants.SET_USER_GROUPS, userGroups }),

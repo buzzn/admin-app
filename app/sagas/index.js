@@ -21,7 +21,8 @@ export function* getUserMe({ apiUrl, apiPath, token }) {
 }
 
 export function* getUserInfo({ apiUrl, apiPath, token }, { userId }) {
-  yield put(Groups.actions.loadUserGroups({ userId }));
+  yield put(Groups.actions.loadUserGroups(userId));
+  yield put(Profiles.actions.loadProfile(userId));
 }
 
 export default function* () {

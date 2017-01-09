@@ -4,8 +4,8 @@ import { actions } from '../actions';
 
 export class Profile extends Component {
   componentWillMount() {
-    const { loadProfile, params: { id } } = this.props;
-    loadProfile(id);
+    const { loadProfile, profile, userId } = this.props;
+    if (!profile) loadProfile(userId);
   }
 
   render() {
@@ -24,9 +24,10 @@ export class Profile extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
   return {
-    profile: state.profiles.profile,
+    userId: props.userId,
+    profile: state.profiles.profiles[props.userId],
     loading: state.profiles.loadingProfile,
   };
 }
