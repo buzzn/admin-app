@@ -4,11 +4,10 @@ import { connect } from 'react-redux';
 
 import MainNavBarConnected from './components/main_nav_bar';
 import Sidebar from './components/sidebar';
-import SignInConnected from './components/sign_in';
-
-import Home from './home';
-import Profiles from './profiles';
+import SignInContainer from './components/sign_in';
+import Home from './components/home';
 import Groups from './groups';
+import UserContainer from './components/user';
 
 import './root.scss';
 
@@ -22,13 +21,13 @@ const Root = ({ token }) => (
           <div className='col-sm-9 offset-sm-3 col-md-10 offset-md-2 main'>
             <div>
               <Match exactly pattern="/" component={ Home } />
-              <Match pattern="/profiles" component={ Profiles.Container } />
+              <Match pattern="/user/:id" component={ UserContainer } />
               <Match pattern="/groups" component={ Groups.Container } />
             </div>
           </div>
         </div> :
         <div className="container-fluid">
-          <Match exactly pattern="/" component={ SignInConnected } />
+          <Match exactly pattern="/" component={ SignInContainer } />
           <Match pattern="*" render={ () => (<Redirect to="/" />) } />
         </div>
       }

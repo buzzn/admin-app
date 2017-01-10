@@ -1,16 +1,16 @@
 import { constants, actions } from './actions';
 import reducers from './reducers';
 import sagas from './sagas';
-import Container from './components/container';
-import List from './components/list';
-import ListConnected from './components/list_container';
+import ProfileContainer, { Profile } from './components/profile';
+import ListContainer, { List } from './components/list';
 
 export default {
   constants,
   actions,
   reducers,
   sagas,
-  Container,
+  ProfileContainer,
+  Profile,
+  ListContainer,
   List,
-  ListConnected,
 };

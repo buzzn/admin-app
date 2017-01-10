@@ -6,6 +6,7 @@ import Auth from '@buzzn/module_auth';
 import appSaga from './sagas';
 import Profiles from './profiles';
 import Groups from './groups';
+import Friends from './friends';
 import RootReducer from './reducers';
 
 function* rootSaga() {
@@ -13,6 +14,7 @@ function* rootSaga() {
     call(Auth.sagas),
     call(Profiles.sagas),
     call(Groups.sagas),
+    call(Friends.sagas),
     call(appSaga),
   ];
 }
