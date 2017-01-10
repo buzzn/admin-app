@@ -4,7 +4,7 @@ export const constants = {
 
   LOAD_PROFILE: 'buzzn_profiles/LOAD_PROFILE',
   LOADING_PROFILE: 'buzzn_profiles/LOADING_PROFILE',
-  LOADED_PROFILE: 'buzzn_profiles/LOADED_PROFILE',
+  FAILED_PROFILE: 'buzzn_profiles/FAILED_PROFILE',
   SET_PROFILE: 'buzzn_profiles/SET_PROFILE',
 };
 
@@ -13,7 +13,7 @@ export const actions = {
   setToken: token => ({ type: constants.SET_TOKEN, token }),
 
   loadProfile: userId => ({ type: constants.LOAD_PROFILE, userId }),
-  loadingProfile: () => ({ type: constants.LOADING_PROFILE }),
-  loadedProfile: () => ({ type: constants.LOADED_PROFILE }),
+  loadingProfile: userId => ({ type: constants.LOADING_PROFILE, userId }),
   setProfile: ({ userId, profile }) => ({ type: constants.SET_PROFILE, userId, profile }),
+  failedProfile: userId => ({ type: constants.FAILED_PROFILE, userId }),
 };

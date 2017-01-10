@@ -1,35 +1,32 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import { actions } from '../actions';
 
-export class Profile extends Component {
-  componentWillMount() {
-    const { loadProfile, profile, userId } = this.props;
-    if (!profile) loadProfile(userId);
-  }
+export const Profile = ({ profile, pathPrefix, userId }) => {
+  if (!profile || profile.failed) return (<div>Profile not found</div>);
 
-  render() {
-    const { profile, loading } = this.props;
+  if (profile.loading) return (<div>Loading...</div>);
 
-    if (loading) return (<div>Loading...</div>);
-
-    if (!profile) return (<div>Profile not found</div>);
-
-    return (
-      <div className="profile">
-        <h4>{ profile.firstName } { profile.lastName }</h4>
-        <p>{ profile.aboutMe }</p>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="profile">
+      <h4>{ profile.firstName } { profile.lastName }</h4>
+      <p>{ profile.aboutMe }</p>
+      <Link
+        key={ profile.id }
+        className="list-profile-item list-profile-item-action"
+        to={ `${pathPrefix || ''}/profile/${userId}` }>
+        { profile.firstName }
+      </Link>
+    </div>
+  );
+};
 
 function mapStateToProps(state, props) {
   return {
     userId: props.userId,
+    pathPrefix: props.pathPrefix,
     profile: state.profiles.profiles[props.userId],
-    loading: state.profiles.loadingProfile,
   };
 }
 
-export default connect(mapStateToProps, { loadProfile: actions.loadProfile })(Profile);
+export default connect(mapStateToProps)(Profile);

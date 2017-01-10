@@ -5,6 +5,7 @@ import api from '../api';
 
 import Groups from '../groups';
 import Profiles from '../profiles';
+import Friends from '../friends';
 
 export const getConfig = state => state.config;
 
@@ -23,18 +24,21 @@ export function* getUserMe({ apiUrl, apiPath, token }) {
 export function* getUserInfo({ apiUrl, apiPath, token }, { userId }) {
   yield put(Groups.actions.loadUserGroups(userId));
   yield put(Profiles.actions.loadProfile(userId));
+  yield put(Friends.actions.loadFriends(userId));
 }
 
 export default function* () {
   const { apiUrl, apiPath } = yield select(getConfig);
   yield put(Groups.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Profiles.actions.setApiParams({ apiUrl, apiPath }));
+  yield put(Friends.actions.setApiParams({ apiUrl, apiPath }));
 
   while (true) {
     const { token } = yield take(Auth.constants.SIGN_IN);
     if (token) {
       yield put(Groups.actions.setToken(token));
       yield put(Profiles.actions.setToken(token));
+      yield put(Friends.actions.setToken(token));
 
       const userInfoSaga = yield takeLatest(constants.SET_USER_ID, getUserInfo, { apiUrl, apiPath, token });
       if (yield call(getUserMe, { apiUrl, apiPath, token })) {
