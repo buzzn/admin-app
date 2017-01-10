@@ -32,7 +32,7 @@ export class User extends Component {
         { friends.length > 0 &&
           <div>
             <h4>Friends:</h4>
-            <Profile.ListContainer userIds={ friends.map(f => f.id) } />
+            <Profile.ListContainer userIds={ friends.map(f => f.id) } pathPrefix="/user" />
           </div>
         }
       </div>

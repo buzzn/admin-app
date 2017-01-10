@@ -9,7 +9,7 @@ function normalizeProfile(json) {
 }
 
 export default {
-  fetchProfile({ token, apiUrl, apiPath, userId }) {
+  fetchUserProfile({ token, apiUrl, apiPath, userId }) {
     return fetch(`${apiUrl}${apiPath}/users/${userId}/profile`, {
       headers: prepareHeaders(token),
     })

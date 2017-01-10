@@ -14,7 +14,7 @@ export const List = ({ profiles, pathPrefix }) => (
       <div key={ profile.userId } className="profile">
         <Link
           className="list-profile-item list-profile-item-action"
-          to={ `${pathPrefix || ''}/profile/${profile.userId}` }>
+          to={ `${pathPrefix || ''}/${profile.userId}` }>
           { profile.profile.firstName } { profile.profile.lastName }
         </Link>
         <p>{ profile.profile.aboutMe }</p>

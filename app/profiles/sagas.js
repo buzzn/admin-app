@@ -5,7 +5,7 @@ import api from './api';
 export function* getProfile({ apiUrl, apiPath, token }, { userId }) {
   yield put(actions.loadingProfile(userId));
   try {
-    const profile = yield call(api.fetchProfile, { apiUrl, apiPath, token, userId });
+    const profile = yield call(api.fetchUserProfile, { apiUrl, apiPath, token, userId });
     yield put(actions.setProfile({ userId, profile }));
   } catch (error) {
     console.log(error);
