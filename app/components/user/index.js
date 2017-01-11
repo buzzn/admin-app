@@ -24,7 +24,7 @@ export class User extends Component {
       <div>
         <Profile.ProfileContainer userId={ userId } />
         <Groups.ListConnected userId={ userId } pathPrefix="/groups" />
-        <Meters.ListConnected userId={ userId } pathPrefix="/meter" />
+        <Meters.ListConnected userId={ userId } pathPrefix="/meters" />
 
         { friends.length > 0 &&
           <div>
