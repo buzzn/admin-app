@@ -11,14 +11,14 @@ export class Meter extends Component {
   render() {
     const { meter, loading } = this.props;
 
+    console.log(meter);
     if (loading) return (<div>Loading...</div>);
 
     if (!meter) return (<div>Meter not found</div>);
 
     return (
       <div className="meter">
-        <h4>{ meter.attributes['first-name'] }</h4>
-        <p>{ meter.attributes['about-me'] }</p>
+        <h4>{ meter.id }</h4>
       </div>
     );
   }

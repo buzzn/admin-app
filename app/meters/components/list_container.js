@@ -5,11 +5,11 @@ import List from './list';
 
 export class ListContainer extends Component {
   componentWillMount() {
-    const { loadMeters, loadUserMeters, userId } = this.props;
+    const { loadUserMeters, userId } = this.props;
     if (userId) {
       loadUserMeters(userId);
     } else {
-      loadMeters();
+
     }
   }
 
@@ -30,6 +30,5 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-  loadMeters: actions.loadMeters,
   loadUserMeters: actions.loadUserMeters,
 })(ListContainer);

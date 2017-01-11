@@ -13,7 +13,7 @@ export default ({ meters, pathPrefix, loading }) => (
               <Link
                 key={ meter.id }
                 className="list-group-item list-group-item-action"
-                to={ `${pathPrefix}/${meter.id}` }>
+                to={ `${pathPrefix}/meter/${meter.id}` }>
                 { meter.id }
               </Link>
               ))
