@@ -24,7 +24,7 @@ const Root = ({ token }) => (
               <Match exactly pattern="/" component={ Home } />
               <Match pattern="/user/:id" component={ UserContainer } />
               <Match pattern="/groups" component={ Groups.Container } />
-              <Match pattern="/meter" component={ Meters.Container } />
+              <Match pattern="/meters" component={ Meters.Container } />
               <Miss render={ () => (<div>404</div>) } />
             </div>
           </div>

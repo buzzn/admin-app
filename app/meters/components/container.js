@@ -5,7 +5,7 @@ import MeterConnected from './meter';
 
 export default ({ pathname }) => (
   <div>
-    <Match exactly  pattern={ pathname }                component={ ListConnected }/>
-    <Match          pattern={ `${pathname}/meter/:id` } component={ MeterConnected }/>
+    <Match exactly pattern={ pathname } component={ ListConnected }/>
+    <Match pattern={ `${pathname}/:id` } component={ MeterConnected }/>
   </div>
 );

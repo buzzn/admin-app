@@ -5,7 +5,7 @@ import GroupConnected from './group';
 
 export default ({ pathname }) => (
   <div>
-    <Match exactly  pattern={ pathname }                component={ ListConnected }/>
-    <Match          pattern={ `${pathname}/group/:id` } component={ GroupConnected }/>
+    <Match exactly pattern={ pathname } component={ ListConnected }/>
+    <Match pattern={ `${pathname}/:id` } component={ GroupConnected }/>
   </div>
 );

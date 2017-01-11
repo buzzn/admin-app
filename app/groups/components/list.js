@@ -13,7 +13,7 @@ export default ({ groups, pathPrefix, loading }) => (
               <Link
                 key={ group.id }
                 className="list-group-item list-group-item-action"
-                to={ `${pathPrefix}/group/${group.id}` }>
+                to={ `${pathPrefix}/${group.id}` }>
                 { group.attributes.name }
               </Link>
               ))
