@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { actions } from '../../actions';
 import Profile from '../../profiles';
 import Groups from '../../groups';
+import Meters from '../../meters';
 
 export class User extends Component {
   componentDidMount() {
@@ -29,6 +30,8 @@ export class User extends Component {
       <div>
         <Profile.ProfileContainer userId={ userId } />
         <Groups.ListConnected userId={ userId } pathPrefix="/groups" />
+        <Meters.ListConnected userId={ userId } pathPrefix="/meter" />
+
         { friends.length > 0 &&
           <div>
             <h4>Friends:</h4>
