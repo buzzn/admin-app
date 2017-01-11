@@ -15,7 +15,7 @@ export default {
       headers: prepareHeaders(token),
     })
     .then(parseResponse)
-    .then(json => remainingPages({ apiUrl, apiPath, json, token, id: userId, model: 'users', endpoint: 'meter' }))
+    .then(json => remainingPages({ apiUrl, apiPath, json, token, id: userId, model: 'users', endpoint: 'meters' }))
     .then(jsonArr => flatten(jsonArr.map(json => json.data)));
   },
 };

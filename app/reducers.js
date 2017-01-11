@@ -16,7 +16,6 @@ export const initialState = {
   loading:     false,
   userMe:      null,
   userFriends: [],
-  userMeters:  [],
 };
 
 export function appReducer(state = initialState, action) {
@@ -32,8 +31,6 @@ export function appReducer(state = initialState, action) {
 
     case constants.SET_USER_FRIENDS:
       return { ...state, userFriends: action.userFriends };
-    case constants.SET_USER_METERS:
-      return { ...state, userMeters: action.userMeters };
 
     default:
       return state;
