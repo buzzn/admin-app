@@ -17,12 +17,6 @@ export class User extends Component {
     if (userId !== newUserId) setUserId(newUserId);
   }
 
-  shouldComponentUpdate(nextProps) {
-    const { userId } = this.props;
-    const { userId: newUserId } = nextProps;
-    return userId !== newUserId;
-  }
-
   render() {
     const { userId, friends } = this.props;
 

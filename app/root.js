@@ -21,19 +21,18 @@ const Root = ({ token }) => (
           <Sidebar />
           <div className='col-sm-9 offset-sm-3 col-md-10 offset-md-2 main'>
             <div>
-              <Match exactly  pattern="/"           component={ Home } />
-              <Match          pattern="/user/:id"   component={ UserContainer } />
-              <Match          pattern="/groups"     component={ Groups.Container } />
-              <Match          pattern="/meter"     component={ Meters.Container } />
+              <Match exactly pattern="/" component={ Home } />
+              <Match pattern="/user/:id" component={ UserContainer } />
+              <Match pattern="/groups" component={ Groups.Container } />
+              <Match pattern="/meter" component={ Meters.Container } />
+              <Miss render={ () => (<div>404</div>) } />
             </div>
           </div>
         </div> :
         <div className="container-fluid">
-          <Match exactly pattern="/" component={ SignInContainer } />
-          <Match pattern="*" render={ () => (<Redirect to="/" />) } />
+          <Match pattern="*" component={ SignInContainer } />
         </div>
       }
-      <Miss render={ () => (<div>404</div>) } />
     </div>
   </BrowserRouter>
 );
