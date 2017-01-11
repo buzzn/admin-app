@@ -4,6 +4,7 @@ import { constants, actions } from '../actions';
 import api from '../api';
 
 import Groups from '../groups';
+import Meters from '../meters';
 import Profiles from '../profiles';
 import Friends from '../friends';
 
@@ -23,6 +24,7 @@ export function* getUserMe({ apiUrl, apiPath, token }) {
 
 export function* getUserInfo({ apiUrl, apiPath, token }, { userId }) {
   yield put(Groups.actions.loadUserGroups(userId));
+  yield put(Meters.actions.loadUserMeters(userId));
   yield put(Profiles.actions.loadProfile(userId));
   yield put(Friends.actions.loadFriends(userId));
 }
@@ -30,6 +32,7 @@ export function* getUserInfo({ apiUrl, apiPath, token }, { userId }) {
 export default function* () {
   const { apiUrl, apiPath } = yield select(getConfig);
   yield put(Groups.actions.setApiParams({ apiUrl, apiPath }));
+  yield put(Meters.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Profiles.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Friends.actions.setApiParams({ apiUrl, apiPath }));
 
@@ -37,6 +40,7 @@ export default function* () {
     const { token } = yield take(Auth.constants.SIGN_IN);
     if (token) {
       yield put(Groups.actions.setToken(token));
+      yield put(Meters.actions.setToken(token));
       yield put(Profiles.actions.setToken(token));
       yield put(Friends.actions.setToken(token));
 

@@ -7,6 +7,7 @@ import Sidebar from './components/sidebar';
 import SignInContainer from './components/sign_in';
 import Home from './components/home';
 import Groups from './groups';
+import Meters from './meters';
 import UserContainer from './components/user';
 
 import './root.scss';
@@ -23,6 +24,7 @@ const Root = ({ token }) => (
               <Match exactly pattern="/" component={ Home } />
               <Match pattern="/user/:id" component={ UserContainer } />
               <Match pattern="/groups" component={ Groups.Container } />
+              <Match pattern="/meter" component={ Meters.Container } />
               <Miss render={ () => (<div>404</div>) } />
             </div>
           </div>

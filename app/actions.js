@@ -5,10 +5,12 @@ export const constants = {
   SET_USER_ME:      'buzzn_profile/SET_USER_ME',
   SET_USER_ID:      'buzzn_profile/SET_USER_ID',
   SET_USER_FRIENDS: 'buzzn_profile/SET_USER_FRIENDS',
+  SET_USER_METERS:  'buzzn_profile/SET_USER_METERS',
 };
 
 export const actions = {
   setUserId: userId => ({ type: constants.SET_USER_ID, userId }),
   setUserMe: userMe => ({ type: constants.SET_USER_ME, userMe }),
   setUserFriends: userFriends => ({ type: constants.SET_USER_FRIENDS, userFriends }),
+  setUserMeters: userMeters => ({ type: constants.SET_USER_METERS, userMeters }),
 };
