@@ -11,7 +11,6 @@ export class Meter extends Component {
   render() {
     const { meter, loading } = this.props;
 
-    console.log(meter);
     if (loading) return (<div>Loading...</div>);
 
     if (!meter) return (<div>Meter not found</div>);
@@ -31,4 +30,6 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { loadMeter: actions.loadMeter })(Meter);
+export default connect(mapStateToProps, {
+  loadMeter: actions.loadMeter
+})(Meter);
