@@ -5,24 +5,31 @@ import List from './list';
 
 export class ListContainer extends Component {
   componentWillMount() {
-    const { loadMeters } = this.props;
-    loadMeters();
+    const { loadMeters, loadUserMeters, userId } = this.props;
+    if (userId) {
+      loadUserMeters(userId);
+    } else {
+      loadMeters();
+    }
   }
 
   render() {
-    const { meters, pathname, loading } = this.props;
+    const { meters, pathname, loading, pathPrefix } = this.props;
 
     return (
-      <List meters={ meters } pathPrefix={ pathname } loading={ loading } />
+      <List meters={ meters } pathPrefix={ pathPrefix || pathname } loading={ loading } />
     );
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
   return {
-    meters: state.meters.meters,
-    loading: state.meters.loadingMeters,
+    meters: props.userId ? state.meters.userMeters : state.meters.meters,
+    loading: props.userId ? state.meters.loadingUserMeters : state.meters.loadingMeters,
   };
 }
 
-export default connect(mapStateToProps, { loadMeters: actions.loadMeters })(ListContainer);
+export default connect(mapStateToProps, {
+  loadMeters: actions.loadMeters,
+  loadUserMeters: actions.loadUserMeters,
+})(ListContainer);

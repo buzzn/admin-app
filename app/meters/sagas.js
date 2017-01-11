@@ -29,7 +29,7 @@ export function* getUserMeters({ apiUrl, apiPath, token }, { userId }) {
 }
 
 export function* metersSagas({ apiUrl, apiPath, token }) {
-  yield takeLatest(constants.LOAD_METERS, getMeters, { apiUrl, apiPath, token });
+  yield takeLatest(constants.LOAD_USER_METERS, getUserMeters, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_METER, getMeter, { apiUrl, apiPath, token });
 }
 
@@ -37,7 +37,6 @@ export default function* () {
   const { apiUrl, apiPath } = yield take(constants.SET_API_PARAMS);
   let { token } = yield take(constants.SET_TOKEN);
   const meterId = yield select(selectMeterId);
-  yield call(getMeters, { apiUrl, apiPath, token });
   if (meterId) yield call(getMeter, { apiUrl, apiPath, token }, { meterId });
 
   while (true) {

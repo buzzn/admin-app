@@ -3,13 +3,16 @@ import flatten from 'lodash/flatten';
 import { prepareHeaders, parseResponse, remainingPages } from '../_util';
 
 export default {
-  fetchMeter({ token, apiUrl, apiPath, meterId }) {
-    return fetch(`${apiUrl}${apiPath}/meters/${meterId}`, {
+  fetchMeters({ token, apiUrl, apiPath }) {
+    console.log('fetchMeters');
+    return fetch(`${apiUrl}${apiPath}/meters`, {
       headers: prepareHeaders(token),
     })
     .then(parseResponse);
   },
+
   fetchUserMeters({ token, apiUrl, apiPath, userId }) {
+    console.log('fetchUserMeters');
     return fetch(`${apiUrl}${apiPath}/users/${userId}/meters`, {
       headers: prepareHeaders(token),
     })

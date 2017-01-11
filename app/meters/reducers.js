@@ -3,6 +3,7 @@ import { constants } from './actions';
 export const initialState = {
   configured: false,
   loadingMeters: false,
+  loadingUserMeters: false,
   loadingMeter: false,
   userMeters: [],
   meter: null,
@@ -19,12 +20,12 @@ export default function (state = initialState, action) {
     case constants.SET_METER:
       return { ...state, meter: action.meter };
 
-    case constants.LOADING_METERS:
-      return { ...state, loadingMeters: true };
-    case constants.LOADED_METERS:
-      return { ...state, loadingMeters: false };
-    case constants.SET_METERS:
-      return { ...state, meters: action.meters };
+    case constants.LOADING_USER_METERS:
+      return { ...state, loadingUserMeters: true };
+    case constants.LOADED_USER_METERS:
+      return { ...state, loadingUserMeters: false };
+    case constants.SET_USER_METERS:
+      return { ...state, userMeters: action.userMeters };
 
     case constants.SET_TOKEN:
       return { ...state, configured: true };
