@@ -23,15 +23,14 @@ const Root = ({ token }) => (
               <Match exactly pattern="/" component={ Home } />
               <Match pattern="/user/:id" component={ UserContainer } />
               <Match pattern="/groups" component={ Groups.Container } />
+              <Miss render={ () => (<div>404</div>) } />
             </div>
           </div>
         </div> :
         <div className="container-fluid">
-          <Match exactly pattern="/" component={ SignInContainer } />
-          <Match pattern="*" render={ () => (<Redirect to="/" />) } />
+          <Match pattern="*" component={ SignInContainer } />
         </div>
       }
-      <Miss render={ () => (<div>404</div>) } />
     </div>
   </BrowserRouter>
 );
