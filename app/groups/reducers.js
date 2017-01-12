@@ -28,6 +28,8 @@ export default function (state = initialState, action) {
     case constants.SET_GROUPS:
       return { ...state, groups: action.groups };
 
+    case constants.LOAD_USER_GROUPS:
+      return { ...state, userId: action.userId };
     case constants.LOADING_USER_GROUPS:
       return { ...state, loadingUserGroups: true };
     case constants.LOADED_USER_GROUPS:
