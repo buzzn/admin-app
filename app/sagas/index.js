@@ -7,6 +7,7 @@ import Groups from '../groups';
 import Meters from '../meters';
 import Profiles from '../profiles';
 import Friends from '../friends';
+import Registers from '../registers';
 
 export const getConfig = state => state.config;
 
@@ -35,6 +36,7 @@ export default function* () {
   yield put(Meters.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Profiles.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Friends.actions.setApiParams({ apiUrl, apiPath }));
+  yield put(Registers.actions.setApiParams({ apiUrl, apiPath }));
 
   while (true) {
     const { token } = yield take(Auth.constants.SIGN_IN);
@@ -43,6 +45,7 @@ export default function* () {
       yield put(Meters.actions.setToken(token));
       yield put(Profiles.actions.setToken(token));
       yield put(Friends.actions.setToken(token));
+      yield put(Registers.actions.setToken(token));
 
       const userInfoSaga = yield takeLatest(constants.SET_USER_ID, getUserInfo, { apiUrl, apiPath, token });
       if (yield call(getUserMe, { apiUrl, apiPath, token })) {

@@ -8,6 +8,7 @@ import Profiles from './profiles';
 import Groups from './groups';
 import Meters from './meters';
 import Friends from './friends';
+import Registers from './registers';
 import RootReducer from './reducers';
 
 function* rootSaga() {
@@ -17,6 +18,7 @@ function* rootSaga() {
     call(Groups.sagas),
     call(Meters.sagas),
     call(Friends.sagas),
+    call(Registers.sagas),
     call(appSaga),
   ];
 }

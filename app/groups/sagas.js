@@ -3,6 +3,7 @@ import { actions, constants } from './actions';
 import api from './api';
 
 export const selectGroupId = state => state.groups.groupId;
+export const selectUserId = state => state.groups.userId;
 
 export function* getGroup({ apiUrl, apiPath, token }, { groupId }) {
   yield put(actions.loadingGroup());
@@ -50,8 +51,10 @@ export default function* () {
   const { apiUrl, apiPath } = yield take(constants.SET_API_PARAMS);
   let { token } = yield take(constants.SET_TOKEN);
   const groupId = yield select(selectGroupId);
+  const userId = yield select(selectUserId);
   yield call(getGroups, { apiUrl, apiPath, token });
   if (groupId) yield call(getGroup, { apiUrl, apiPath, token }, { groupId });
+  if (userId) yield call(getUserGroups, { apiUrl, apiPath, token }, { userId });
 
   while (true) {
     const sagas = yield fork(groupsSagas, { apiUrl, apiPath, token });

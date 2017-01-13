@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { actions } from '../actions';
 
+import Registers from '../../registers';
+
 export class Meter extends Component {
   componentWillMount() {
     const { loadMeter, params: { id } } = this.props;
@@ -17,7 +19,8 @@ export class Meter extends Component {
 
     return (
       <div className="meter">
-        <h4>{ meter.id }</h4>
+        <h4>{ meter.attributes['manufacturer-name'] } { meter.attributes['manufacturer-product-name'] } { meter.attributes['manufacturer-product-serialnumber'] }</h4>
+        <Registers.ListContainer meterId={ meter.id } meterType={ meter.type } />
       </div>
     );
   }
@@ -31,5 +34,5 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  loadMeter: actions.loadMeter
+  loadMeter: actions.loadMeter,
 })(Meter);
