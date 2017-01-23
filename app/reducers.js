@@ -7,6 +7,7 @@ import Groups from './groups';
 import Meters from './meters';
 import Friends from './friends';
 import Registers from './registers';
+import Users from './users';
 
 // in this case initialState includes apiUrl and apiPath, so it will just copy this params into app state.
 export function configReducer(state = config) {
@@ -26,8 +27,6 @@ export function appReducer(state = initialState, action) {
       return { ...state, loading: false };
     case constants.SET_USER_ME:
       return { ...state, userMe: action.userMe };
-    case constants.SET_USER_ID:
-      return { ...state, userId: action.userId };
 
     default:
       return state;
@@ -44,4 +43,5 @@ export default combineReducers({
   groups: Groups.reducers,
   friends: Friends.reducers,
   registers: Registers.reducers,
+  users: Users.reducers,
 });
