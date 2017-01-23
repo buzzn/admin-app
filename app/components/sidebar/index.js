@@ -9,6 +9,7 @@ export default () => (
     <ul className="nav nav-sidebar">
       <li><Link to='/'>Home</Link></li>
       <li><Link to='/groups'>Groups</Link></li>
+      <li><Link to='/users'>Users</Link></li>
     </ul>
   </div>
 )

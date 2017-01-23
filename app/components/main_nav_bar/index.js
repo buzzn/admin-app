@@ -11,7 +11,7 @@ export const MainNavBar = ({ signedIn, dispatch, userMe }) => (
       <nav className="nav navbar-nav float-xs-right">
         { signedIn ?
           <div>
-            <Link to={ `/user/${userMe}` } className="nav-item nav-link" activeOnlyWhenExact>My profile</Link>
+            <Link to={ `/users/${userMe}` } className="nav-item nav-link" activeOnlyWhenExact>My profile</Link>
             &nbsp;
             <button className="btn btn-outline-warning" onClick={ () => dispatch(Auth.actions.signOut()) }>Sign Out</button>
           </div> :
