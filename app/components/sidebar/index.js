@@ -1,15 +1,15 @@
-import React, { Component } from 'react'
-
-import { Link } from 'react-router'
+import React from 'react';
+import { ListGroup, ListGroupItem } from 'reactstrap';
+import { Link } from 'react-router';
 
 import './style.scss';
 
 export default () => (
   <div className="col-sm-3 col-md-2 sidebar">
-    <ul className="nav nav-sidebar">
-      <li><Link to='/'>Home</Link></li>
-      <li><Link to='/groups'>Groups</Link></li>
-      <li><Link to='/users'>Users</Link></li>
-    </ul>
+    <ListGroup>
+      <ListGroupItem><Link to='/'>Home</Link></ListGroupItem>
+      <ListGroupItem><Link to='/groups'>Groups</Link></ListGroupItem>
+      <ListGroupItem><Link to='/users'>Users</Link></ListGroupItem>
+    </ListGroup>
   </div>
-)
+);
