@@ -1,6 +1,8 @@
 import { put, call, takeLatest, take, fork, cancel, select } from 'redux-saga/effects';
+import Bubbles from '@buzzn/module_bubbles';
 import { actions, constants } from './actions';
 import api from './api';
+import Registers from '../registers';
 
 export const selectGroupId = state => state.groups.groupId;
 export const selectUserId = state => state.groups.userId;
@@ -11,6 +13,8 @@ export function* getGroup({ apiUrl, apiPath, token }, { groupId }) {
   try {
     const group = yield call(api.fetchGroup, { apiUrl, apiPath, token, groupId });
     yield put(actions.setGroup(group.data));
+    yield put(Registers.actions.loadRegisters({ groupId }));
+    yield put(Bubbles.actions.setGroup(groupId));
   } catch (error) {
     console.log(error);
   }

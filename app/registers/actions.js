@@ -12,7 +12,7 @@ export const actions = {
   setApiParams: ({ apiPath, apiUrl }) => ({ type: constants.SET_API_PARAMS, apiPath, apiUrl }),
   setToken: token => ({ type: constants.SET_TOKEN, token }),
 
-  loadRegisters: ({ meterId, meterType }) => ({ type: constants.LOAD_REGISTERS, meterId, meterType }),
+  loadRegisters: ({ meterId, meterType, groupId }) => ({ type: constants.LOAD_REGISTERS, meterId, meterType, groupId }),
   loadingRegisters: () => ({ type: constants.LOADING_REGISTERS }),
   loadedRegisters: () => ({ type: constants.LOADED_REGISTERS }),
   setRegisters: registers => ({ type: constants.SET_REGISTERS, registers }),

@@ -8,7 +8,7 @@ export const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case constants.LOAD_REGISTERS:
-      return { ...state, meterId: action.meterId, meterType: action.meterType };
+      return { ...state, meterId: action.meterId, meterType: action.meterType, groupId: action.groupId };
     case constants.LOADING_REGISTERS:
       return { ...state, loading: true };
     case constants.LOADED_REGISTERS:

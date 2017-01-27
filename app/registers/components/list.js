@@ -4,9 +4,21 @@ import { actions } from '../actions';
 import Register from './register';
 
 export class List extends Component {
+  static propTypes = {
+    registers: React.PropTypes.array.isRequired,
+    loadRegisters: React.PropTypes.func.isRequired,
+    meterId: React.PropTypes.string,
+    meterType: React.PropTypes.string,
+    groupId: React.PropTypes.string,
+  };
+
+  static defaultProps = {
+    registers: [],
+  };
+
   componentWillMount() {
-    const { meterId, meterType, loadRegisters } = this.props;
-    loadRegisters({ meterId, meterType });
+    const { meterId, meterType, groupId, loadRegisters } = this.props;
+    loadRegisters({ meterId, meterType, groupId });
   }
 
   render() {
@@ -14,6 +26,7 @@ export class List extends Component {
 
     return (
       <div>
+        <h5>Registers:</h5>
         { registers.map(register => (
           <Register key={ register.id } register={ register } />
         ))
