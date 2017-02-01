@@ -6,7 +6,23 @@ import Friends from '../friends';
 import Meters from '../meters';
 import Groups from '../groups';
 
+export const getUsersFunctions = {
+  users: {
+    loading: actions.loadingUsers,
+    set: actions.setUsers,
+    fetch: api.fetchUsers,
+    loaded: actions.loadedUsers,
+  },
+  groupMembers: {
+    loading: actions.loadingGroupMembers,
+    set: actions.setGroupMembers,
+    fetch: api.fetchGroupMembers,
+    loaded: actions.loadedGroupMembers,
+  },
+};
+
 export const selectUserId = state => state.users.userId;
+export const selectGroupId = state => state.users.groupId;
 
 export function* getUser({ apiUrl, apiPath, token }, { userId }) {
   yield put(actions.loadingUser());
@@ -20,19 +36,20 @@ export function* getUser({ apiUrl, apiPath, token }, { userId }) {
   yield put(actions.loadedUser());
 }
 
-export function* getUsers({ apiUrl, apiPath, token }) {
-  yield put(actions.loadingUsers());
-  yield put(actions.setUsers([]));
+export function* getUsers({ apiUrl, apiPath, token, type }, params) {
+  yield put(getUsersFunctions[type].loading());
+  yield put(getUsersFunctions[type].set([]));
   try {
-    const users = yield call(api.fetchUsers, { apiUrl, apiPath, token });
+    console.log({ apiUrl, apiPath, token, ...params });
+    const users = yield call(getUsersFunctions[type].fetch, { apiUrl, apiPath, token, ...params });
     for (let i = 0; i < users.length; i += 1) {
       yield put(Profiles.actions.loadProfile(users[i].id));
     }
-    yield put(actions.setUsers(users));
+    yield put(getUsersFunctions[type].set(users));
   } catch (error) {
     console.log(error);
   }
-  yield put(actions.loadedUsers());
+  yield put(getUsersFunctions[type].loaded());
 }
 
 export function* getUserInfo({ apiUrl, apiPath, token }, { userId }) {
@@ -44,7 +61,8 @@ export function* getUserInfo({ apiUrl, apiPath, token }, { userId }) {
 }
 
 export function* usersSagas({ apiUrl, apiPath, token }) {
-  yield takeLatest(constants.LOAD_USERS, getUsers, { apiUrl, apiPath, token });
+  yield takeLatest(constants.LOAD_USERS, getUsers, { apiUrl, apiPath, token, type: 'users' });
+  yield takeLatest(constants.LOAD_GROUP_MEMBERS, getUsers, { apiUrl, apiPath, token, type: 'groupMembers' });
   yield takeLatest(constants.LOAD_USER, getUser, { apiUrl, apiPath, token });
   yield takeLatest(constants.SET_USER_ID, getUserInfo, { apiUrl, apiPath, token });
 }
@@ -53,7 +71,9 @@ export default function* () {
   const { apiUrl, apiPath } = yield take(constants.SET_API_PARAMS);
   let { token } = yield take(constants.SET_TOKEN);
   const userId = yield select(selectUserId);
-  yield call(getUsers, { apiUrl, apiPath, token });
+  const groupId = yield select(selectGroupId);
+  yield call(getUsers, { apiUrl, apiPath, token, type: 'users' });
+  if (groupId) yield call(getUsers, { apiUrl, apiPath, token, type: 'groupMembers' }, { groupId });
   if (userId) yield call(getUserInfo, { apiUrl, apiPath, token }, { userId });
 
   while (true) {

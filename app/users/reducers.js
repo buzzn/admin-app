@@ -3,8 +3,10 @@ import { constants } from './actions';
 export const initialState = {
   loadingUser: false,
   loadingUsers: false,
+  loadingGroupMembers: false,
   user: null,
   users: [],
+  groupMembers: [],
   userId: null,
 };
 
@@ -25,6 +27,15 @@ export default function (state = initialState, action) {
       return { ...state, loadingUsers: false };
     case constants.SET_USERS:
       return { ...state, users: action.users };
+
+    case constants.LOAD_GROUP_MEMBERS:
+      return { ...state, groupId: action.groupId };
+    case constants.LOADING_GROUP_MEMBERS:
+      return { ...state, loadingGroupMembers: true };
+    case constants.LOADED_GROUP_MEMBERS:
+      return { ...state, loadingGroupMembers: false };
+    case constants.SET_GROUP_MEMBERS:
+      return { ...state, groupMembers: action.members };
 
     case constants.SET_USER_ID:
       return { ...state, userId: action.userId };
