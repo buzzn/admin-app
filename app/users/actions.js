@@ -18,6 +18,11 @@ export const constants = {
   LOADING_GROUP_MEMBERS: 'buzzn_users/LOADING_GROUP_MEMBERS',
   LOADED_GROUP_MEMBERS: 'buzzn_users/LOADED_GROUP_MEMBERS',
   SET_GROUP_MEMBERS: 'buzzn_users/SET_GROUP_MEMBERS',
+
+  LOAD_GROUP_MANAGERS: 'buzzn_users/LOAD_GROUP_MANAGERS',
+  LOADING_GROUP_MANAGERS: 'buzzn_users/LOADING_GROUP_MANAGERS',
+  LOADED_GROUP_MANAGERS: 'buzzn_users/LOADED_GROUP_MANAGERS',
+  SET_GROUP_MANAGERS: 'buzzn_users/SET_GROUP_MANAGERS',
 };
 
 export const actions = {
@@ -40,4 +45,9 @@ export const actions = {
   loadingGroupMembers: () => ({ type: constants.LOADING_GROUP_MEMBERS }),
   loadedGroupMembers: () => ({ type: constants.LOADED_GROUP_MEMBERS }),
   setGroupMembers: members => ({ type: constants.SET_GROUP_MEMBERS, members }),
+
+  loadGroupManagers: groupId => ({ type: constants.LOAD_GROUP_MANAGERS, groupId }),
+  loadingGroupManagers: () => ({ type: constants.LOADING_GROUP_MANAGERS }),
+  loadedGroupManagers: () => ({ type: constants.LOADED_GROUP_MANAGERS }),
+  setGroupManagers: managers => ({ type: constants.SET_GROUP_MANAGERS, managers }),
 };

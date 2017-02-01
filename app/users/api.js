@@ -23,4 +23,10 @@ export default {
     .then(json => remainingPages({ apiUrl, apiPath, json, token, model: 'groups', id: groupId, endpoint: 'members' }))
     .then(jsonArr => flatten(jsonArr.map(json => json.data)));
   },
+  fetchGroupManagers({ token, apiUrl, apiPath, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/groups/${groupId}/managers`)
+    .then(parseResponse)
+    .then(json => remainingPages({ apiUrl, apiPath, json, token, model: 'groups', id: groupId, endpoint: 'managers' }))
+    .then(jsonArr => flatten(jsonArr.map(json => json.data)));
+  },
 };

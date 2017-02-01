@@ -30,6 +30,7 @@ export class Group extends Component {
         <span>Readable: { group.attributes.readable }</span>
         <Registers.ListContainer groupId={ group.id } />
         <Users.ListContainer type="groupMembers" groupId={ group.id } />
+        <Users.ListContainer type="groupManagers" groupId={ group.id } />
         <Bubbles.container />
       </div>
     );

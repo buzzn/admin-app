@@ -4,9 +4,11 @@ export const initialState = {
   loadingUser: false,
   loadingUsers: false,
   loadingGroupMembers: false,
+  loadingGroupManagers: false,
   user: null,
   users: [],
   groupMembers: [],
+  groupManagers: [],
   userId: null,
 };
 
@@ -36,6 +38,15 @@ export default function (state = initialState, action) {
       return { ...state, loadingGroupMembers: false };
     case constants.SET_GROUP_MEMBERS:
       return { ...state, groupMembers: action.members };
+
+    case constants.LOAD_GROUP_MANAGERS:
+      return { ...state, groupId: action.groupId };
+    case constants.LOADING_GROUP_MANAGERS:
+      return { ...state, loadingGroupManagers: true };
+    case constants.LOADED_GROUP_MANAGERS:
+      return { ...state, loadingGroupManagers: false };
+    case constants.SET_GROUP_MANAGERS:
+      return { ...state, groupManagers: action.managers };
 
     case constants.SET_USER_ID:
       return { ...state, userId: action.userId };

@@ -9,6 +9,7 @@ export class List extends Component {
     usersPathPrefix: React.PropTypes.string,
     loadUsers: React.PropTypes.func.isRequired,
     loadGroupMembers: React.PropTypes.func.isRequired,
+    loadGroupManagers: React.PropTypes.func.isRequired,
     groupId: React.PropTypes.string,
     type: React.PropTypes.string,
   };
@@ -20,17 +21,25 @@ export class List extends Component {
   };
 
   componentWillMount() {
-    const { loadUsers, loadGroupMembers, type, groupId } = this.props;
+    const { loadUsers, loadGroupMembers, loadGroupManagers, type, groupId } = this.props;
 
-    if (type === 'groupMembers') {
-      loadGroupMembers(groupId);
-    } else {
-      loadUsers();
+    switch (type) {
+      case 'groupMembers':
+        loadGroupMembers(groupId);
+        break;
+      case 'groupManagers':
+        loadGroupManagers(groupId);
+        break;
+      default:
+        loadUsers();
+        break;
     }
   }
 
   render() {
     const { users, usersPathPrefix } = this.props;
+
+    if (users.length === 0) return (<div></div>);
 
     return (
       <div>
@@ -42,12 +51,24 @@ export class List extends Component {
 }
 
 function mapStateToProps(state, props) {
+  function users({ usersState, type }) {
+    switch (type) {
+      case 'groupMembers':
+        return usersState.groupMembers;
+      case 'groupManagers':
+        return usersState.groupManagers;
+      default:
+        return usersState.users;
+    }
+  }
+
   return {
-    users: props.type === 'groupMembers' ? state.users.groupMembers : state.users.users,
+    users: users({ usersState: state.users, type: props.type }),
   };
 }
 
 export default connect(mapStateToProps, {
   loadUsers: actions.loadUsers,
   loadGroupMembers: actions.loadGroupMembers,
+  loadGroupManagers: actions.loadGroupManagers,
 })(List);
