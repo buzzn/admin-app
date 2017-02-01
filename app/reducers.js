@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 import Auth from '@buzzn/module_auth';
-import Bubbles from '@buzzn/module_bubbles';
 import config from './config';
 import { constants } from './actions';
 import Profiles from './profiles';
@@ -38,7 +37,6 @@ export default combineReducers({
   // apiUrl and apiPath will be located in 'config' property
   config: configReducer,
   auth: Auth.reducers,
-  bubbles: Bubbles.reducers,
   app: appReducer,
   profiles: Profiles.reducers,
   meters: Meters.reducers,

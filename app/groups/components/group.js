@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Bubbles from '@buzzn/module_bubbles';
 import { actions } from '../actions';
 import Registers from '../../registers';
 import Users from '../../users';
@@ -31,7 +30,6 @@ export class Group extends Component {
         <Registers.ListContainer groupId={ group.id } />
         <Users.ListContainer type="groupMembers" groupId={ group.id } header="Members:" />
         <Users.ListContainer type="groupManagers" groupId={ group.id } header="Managers:" />
-        <Bubbles.container />
       </div>
     );
   }
