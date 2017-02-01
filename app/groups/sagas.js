@@ -1,4 +1,5 @@
 import { put, call, takeLatest, take, fork, cancel, select } from 'redux-saga/effects';
+import Bubbles from '@buzzn/module_bubbles';
 import { actions, constants } from './actions';
 import api from './api';
 import Registers from '../registers';

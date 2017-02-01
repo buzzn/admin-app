@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Bubbles from '@buzzn/module_bubbles';
 import { actions } from '../actions';
 import Registers from '../../registers';
 import Users from '../../users';
