@@ -29,8 +29,8 @@ export class Group extends Component {
         <h4>{ group.attributes.name }</h4>
         <span>Readable: { group.attributes.readable }</span>
         <Registers.ListContainer groupId={ group.id } />
-        <Users.ListContainer type="groupMembers" groupId={ group.id } />
-        <Users.ListContainer type="groupManagers" groupId={ group.id } />
+        <Users.ListContainer type="groupMembers" groupId={ group.id } header="Members:" />
+        <Users.ListContainer type="groupManagers" groupId={ group.id } header="Managers:" />
         <Bubbles.container />
       </div>
     );

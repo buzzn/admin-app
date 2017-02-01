@@ -10,6 +10,7 @@ export class List extends Component {
     loadUsers: React.PropTypes.func.isRequired,
     loadGroupMembers: React.PropTypes.func.isRequired,
     loadGroupManagers: React.PropTypes.func.isRequired,
+    header: React.PropTypes.string.isRequired,
     groupId: React.PropTypes.string,
     type: React.PropTypes.string,
   };
@@ -18,6 +19,7 @@ export class List extends Component {
     users: [],
     usersPathPrefix: '/users',
     type: 'users',
+    header: 'Users:',
   };
 
   componentWillMount() {
@@ -37,13 +39,13 @@ export class List extends Component {
   }
 
   render() {
-    const { users, usersPathPrefix } = this.props;
+    const { users, usersPathPrefix, header } = this.props;
 
     if (users.length === 0) return (<div></div>);
 
     return (
       <div>
-        <h4>Users:</h4>
+        <h4>{ header }</h4>
         <Profile.ListContainer userIds={ users.map(u => u.id) } pathPrefix={ usersPathPrefix } />
       </div>
     );

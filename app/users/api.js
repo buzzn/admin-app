@@ -18,13 +18,17 @@ export default {
     .then(jsonArr => flatten(jsonArr.map(json => json.data)));
   },
   fetchGroupMembers({ token, apiUrl, apiPath, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/groups/${groupId}/members`)
+    return fetch(`${apiUrl}${apiPath}/groups/${groupId}/members`, {
+      headers: prepareHeaders(token),
+    })
     .then(parseResponse)
     .then(json => remainingPages({ apiUrl, apiPath, json, token, model: 'groups', id: groupId, endpoint: 'members' }))
     .then(jsonArr => flatten(jsonArr.map(json => json.data)));
   },
   fetchGroupManagers({ token, apiUrl, apiPath, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/groups/${groupId}/managers`)
+    return fetch(`${apiUrl}${apiPath}/groups/${groupId}/managers`, {
+      headers: prepareHeaders(token),
+    })
     .then(parseResponse)
     .then(json => remainingPages({ apiUrl, apiPath, json, token, model: 'groups', id: groupId, endpoint: 'managers' }))
     .then(jsonArr => flatten(jsonArr.map(json => json.data)));
