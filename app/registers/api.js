@@ -1,5 +1,6 @@
 import 'whatwg-fetch';
-import { prepareHeaders, parseResponse } from '../_util';
+import flatten from 'lodash/flatten';
+import { prepareHeaders, parseResponse, remainingPages } from '../_util';
 
 export default {
   fetchMeterRegisters({ token, apiUrl, apiPath, meterId, meterType }) {
@@ -9,5 +10,13 @@ export default {
     })
     .then(parseResponse)
     .then(json => Array.isArray(json.data) ? json.data : [json.data]);
+  },
+  fetchGroupRegisters({ token, apiUrl, apiPath, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/groups/${groupId}/registers`, {
+      headers: prepareHeaders(token),
+    })
+    .then(parseResponse)
+    .then(json => remainingPages({ apiUrl, apiPath, json, token, id: groupId, model: 'groups', endpoint: 'registers' }))
+    .then(jsonArr => flatten(jsonArr.map(json => json.data)));
   },
 };

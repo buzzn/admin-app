@@ -8,34 +8,69 @@ export class List extends Component {
     users: React.PropTypes.array.isRequired,
     usersPathPrefix: React.PropTypes.string,
     loadUsers: React.PropTypes.func.isRequired,
+    loadGroupMembers: React.PropTypes.func.isRequired,
+    loadGroupManagers: React.PropTypes.func.isRequired,
+    header: React.PropTypes.string.isRequired,
+    groupId: React.PropTypes.string,
+    type: React.PropTypes.string,
   };
 
   static defaultProps = {
     users: [],
     usersPathPrefix: '/users',
+    type: 'users',
+    header: 'Users:',
   };
 
   componentWillMount() {
-    const { loadUsers } = this.props;
-    loadUsers();
+    const { loadUsers, loadGroupMembers, loadGroupManagers, type, groupId } = this.props;
+
+    switch (type) {
+      case 'groupMembers':
+        loadGroupMembers(groupId);
+        break;
+      case 'groupManagers':
+        loadGroupManagers(groupId);
+        break;
+      default:
+        loadUsers();
+        break;
+    }
   }
 
   render() {
-    const { users, usersPathPrefix } = this.props;
+    const { users, usersPathPrefix, header } = this.props;
+
+    if (users.length === 0) return (<div></div>);
 
     return (
       <div>
-        <h4>Users:</h4>
+        <h4>{ header }</h4>
         <Profile.ListContainer userIds={ users.map(u => u.id) } pathPrefix={ usersPathPrefix } />
       </div>
     );
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
+  function users({ usersState, type }) {
+    switch (type) {
+      case 'groupMembers':
+        return usersState.groupMembers;
+      case 'groupManagers':
+        return usersState.groupManagers;
+      default:
+        return usersState.users;
+    }
+  }
+
   return {
-    users: state.users.users,
+    users: users({ usersState: state.users, type: props.type }),
   };
 }
 
-export default connect(mapStateToProps, { loadUsers: actions.loadUsers })(List);
+export default connect(mapStateToProps, {
+  loadUsers: actions.loadUsers,
+  loadGroupMembers: actions.loadGroupMembers,
+  loadGroupManagers: actions.loadGroupManagers,
+})(List);
