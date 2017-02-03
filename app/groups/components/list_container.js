@@ -1,9 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { actions } from '../actions';
-import List from './list';
+import GroupsList from './list';
 
 export class ListContainer extends Component {
+  static propTypes = {
+    loadGroups: React.PropTypes.func.isRequired,
+    loadUserGroups: React.PropTypes.func.isRequired,
+    userId: React.PropTypes.string,
+    groups: React.PropTypes.array.isRequired,
+    pathPrefix: React.PropTypes.string,
+    pathname: React.PropTypes.string,
+    loading: React.PropTypes.bool.isRequired,
+  };
+
+  static defaultProps = {
+    groups: [],
+  };
+
   componentWillMount() {
     const { loadGroups, loadUserGroups, userId } = this.props;
     if (userId) {
@@ -17,7 +31,7 @@ export class ListContainer extends Component {
     const { groups, pathname, loading, pathPrefix } = this.props;
 
     return (
-      <List groups={ groups } pathPrefix={ pathPrefix || pathname } loading={ loading } />
+      <GroupsList groups={ groups } pathPrefix={ pathPrefix || pathname } loading={ loading } />
     );
   }
 }

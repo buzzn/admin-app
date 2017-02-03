@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
-export default ({ groups, pathPrefix, loading }) => (
+export const List = ({ groups, pathPrefix, loading }) => (
   <div className="list-group">
     { loading ?
       <div>Loading...</div> :
@@ -24,3 +24,15 @@ export default ({ groups, pathPrefix, loading }) => (
     }
   </div>
 );
+
+List.propTypes = {
+  groups: React.PropTypes.array.isRequired,
+  pathPrefix: React.PropTypes.string.isRequired,
+  loading: React.PropTypes.bool.isRequired,
+};
+
+List.defaultProps = {
+  groups: [],
+};
+
+export default List;

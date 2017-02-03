@@ -1,11 +1,11 @@
 import React from 'react';
-import { Match } from 'react-router';
+import { Route } from 'react-router-dom';
 import ListConnected from './list';
 import UserConnected from './user';
 
 export default ({ pathname }) => (
   <div>
-    <Match exactly pattern={ pathname } component={ ListConnected }/>
-    <Match pattern={ `${pathname}/:id` } component={ UserConnected }/>
+    <Route exact path={ pathname } component={ ListConnected }/>
+    <Route path={ `${pathname}/:id` } component={ UserConnected }/>
   </div>
 );

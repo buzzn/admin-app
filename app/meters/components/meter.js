@@ -6,7 +6,7 @@ import Registers from '../../registers';
 
 export class Meter extends Component {
   componentWillMount() {
-    const { loadMeter, params: { id } } = this.props;
+    const { loadMeter, match: { params: { id } } } = this.props;
     loadMeter(id);
   }
 
