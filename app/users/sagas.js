@@ -25,6 +25,12 @@ export const getUsersFunctions = {
     fetch: api.fetchGroupManagers,
     loaded: actions.loadedGroupManagers,
   },
+  groupPowertakers: {
+    loading: actions.loadingGroupPowertakers,
+    set: actions.setGroupPowertakers,
+    fetch: api.fetchGroupPowertakers,
+    loaded: actions.loadedGroupPowertakers,
+  },
 };
 
 export const selectUserId = state => state.users.userId;
@@ -69,6 +75,7 @@ export function* usersSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_USERS, getUsers, { apiUrl, apiPath, token, type: 'users' });
   yield takeLatest(constants.LOAD_GROUP_MEMBERS, getUsers, { apiUrl, apiPath, token, type: 'groupMembers' });
   yield takeLatest(constants.LOAD_GROUP_MANAGERS, getUsers, { apiUrl, apiPath, token, type: 'groupManagers' });
+  yield takeLatest(constants.LOAD_GROUP_POWERTAKERS, getUsers, { apiUrl, apiPath, token, type: 'groupPowertakers' });
   yield takeLatest(constants.LOAD_USER, getUser, { apiUrl, apiPath, token });
   yield takeLatest(constants.SET_USER_ID, getUserInfo, { apiUrl, apiPath, token });
 
@@ -78,6 +85,7 @@ export function* usersSagas({ apiUrl, apiPath, token }) {
   if (groupId) {
     yield call(getUsers, { apiUrl, apiPath, token, type: 'groupMembers' }, { groupId });
     yield call(getUsers, { apiUrl, apiPath, token, type: 'groupManagers' }, { groupId });
+    yield call(getUsers, { apiUrl, apiPath, token, type: 'groupPowertakers' }, { groupId });
   }
   if (userId) yield call(getUserInfo, { apiUrl, apiPath, token }, { userId });
 }

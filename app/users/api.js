@@ -33,4 +33,11 @@ export default {
     .then(json => remainingPages({ apiUrl, apiPath, json, token, model: 'groups', id: groupId, endpoint: 'managers' }))
     .then(jsonArr => flatten(jsonArr.map(json => json.data)));
   },
+  fetchGroupPowertakers({ token, apiUrl, apiPath, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/groups/${groupId}/energy-consumers`, {
+      headers: prepareHeaders(token),
+    })
+    .then(parseResponse)
+    .then(json => json.data);
+  },
 };

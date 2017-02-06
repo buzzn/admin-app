@@ -23,6 +23,11 @@ export const constants = {
   LOADING_GROUP_MANAGERS: 'buzzn_users/LOADING_GROUP_MANAGERS',
   LOADED_GROUP_MANAGERS: 'buzzn_users/LOADED_GROUP_MANAGERS',
   SET_GROUP_MANAGERS: 'buzzn_users/SET_GROUP_MANAGERS',
+
+  LOAD_GROUP_POWERTAKERS: 'buzzn_users/LOAD_GROUP_POWERTAKERS',
+  LOADING_GROUP_POWERTAKERS: 'buzzn_users/LOADING_GROUP_POWERTAKERS',
+  LOADED_GROUP_POWERTAKERS: 'buzzn_users/LOADED_GROUP_POWERTAKERS',
+  SET_GROUP_POWERTAKERS: 'buzzn_users/SET_GROUP_POWERTAKERS',
 };
 
 export const actions = {
@@ -50,4 +55,9 @@ export const actions = {
   loadingGroupManagers: () => ({ type: constants.LOADING_GROUP_MANAGERS }),
   loadedGroupManagers: () => ({ type: constants.LOADED_GROUP_MANAGERS }),
   setGroupManagers: managers => ({ type: constants.SET_GROUP_MANAGERS, managers }),
+
+  loadGroupPowertakers: groupId => ({ type: constants.LOAD_GROUP_POWERTAKERS, groupId }),
+  loadingGroupPowertakers: () => ({ type: constants.LOADING_GROUP_POWERTAKERS }),
+  loadedGroupPowertakers: () => ({ type: constants.LOADED_GROUP_POWERTAKERS }),
+  setGroupPowertakers: powertakers => ({ type: constants.SET_GROUP_POWERTAKERS, powertakers }),
 };

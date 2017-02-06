@@ -13,7 +13,7 @@ export class Group extends Component {
   };
 
   componentWillMount() {
-    const { loadGroup, params: { id } } = this.props;
+    const { loadGroup, match: { params: { id } } } = this.props;
     loadGroup(id);
   }
 
