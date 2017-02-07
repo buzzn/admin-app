@@ -14,13 +14,6 @@ export const GroupNavBar = ({ dispatch, groupId }) => (
         <NavLink to={ `/groups/${groupId}/tax` }>Tax</NavLink>
         <NavLink to={ `/groups/${groupId}/system` }>System</NavLink>
         <NavLink to={ `/groups/${groupId}/charts` }>Charts</NavLink>
-        <li className="nav-item">
-          <Link
-            to=""
-            onClick={ () => dispatch(Auth.actions.signOut()) }
-            className="nav-link"
-            style={{ backgroundColor: '#f76c51' }}>Sign Out</Link>
-        </li>
       </ul>
     </div>
   </div>
