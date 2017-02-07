@@ -4,8 +4,17 @@ import camelCase from 'lodash/camelCase';
 import { prepareHeaders, parseResponse } from '../_util';
 
 function normalizeProfile(json) {
-  const { firstName, lastName, phone, title, gender, slug, aboutMe } = mapKeys(json.attributes, (value, key) => camelCase(key));
-  return { id: json.id, firstName, lastName, phone, title, gender, slug, aboutMe };
+  const {
+    firstName,
+    lastName,
+    phone,
+    title,
+    gender,
+    slug,
+    aboutMe,
+    mdImg,
+  } = mapKeys(json.attributes, (value, key) => camelCase(key));
+  return { id: json.id, firstName, lastName, phone, title, gender, slug, aboutMe, mdImg };
 }
 
 export default {

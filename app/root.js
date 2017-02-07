@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import TopNavBar from './components/top_nav_bar';
+
 import SignInContainer from './components/sign_in';
 import Groups from './groups';
 
@@ -14,6 +16,7 @@ import './root.scss';
 const Root = ({ token }) => (
   <BrowserRouter>
     <div>
+      <TopNavBar signedIn={ !!token } />
       { token ?
         <div className="container">
           <div className="top-part">
