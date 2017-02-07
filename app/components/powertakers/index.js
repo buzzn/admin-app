@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Users from '../../users';
 
+import './style.scss';
+
 export class Powertakers extends Component {
   static propTypes = {
     loadGroupPowertakers: React.PropTypes.func.isRequired,
@@ -40,7 +42,7 @@ export class Powertakers extends Component {
               </tr>
             </thead>
             <tbody>
-              { users.map(user => {
+              { users.map((user) => {
                 const profile = profiles[user.id];
 
                 if (!profile || profile.loading) {
@@ -51,7 +53,10 @@ export class Powertakers extends Component {
 
                 return (
                   <tr key={ user.id }>
-                    <td>{ `${profile.firstName} ${profile.lastName}` }</td>
+                    <td>
+                      <img src={ profile.mdImg } className="table-avatar"/>
+                      { `${profile.firstName} ${profile.lastName}` }
+                    </td>
                     <td>Location</td>
                     <td><button className="btn btn-secondary" disabled>View</button></td>
                   </tr>
