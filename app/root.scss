@@ -1,7 +1,39 @@
 body {
-  padding-top: 100px;
+  padding-top: 3.125em;
   background-color: #e7e6e6;
-  .top-part, .navigation, .bottom-part {
+  font-family: 'Open Sans', sans-serif;
+
+  .top-part,
+  .navigation,
+  .bottom-part {
     background-color: #ffffff;
+  }
+  .top-part .top-content,
+  .navigation,
+  .bottom-part {
+    border: solid lightgrey 1px;
+  }
+  .top-part {
+    .overview-header {
+      font-size: 1.5em;
+      background-color: #e7e6e6;
+      padding: 15px;
+      margin-left: -15px;
+      margin-right: -15px;
+    }
+    margin-bottom: 1.25em;
+    .title {
+      color: #ffffff;
+      font-weight: bold;
+      padding: 15px;
+      font-size: 1.125em;
+      margin-left: -15px;
+      margin-right: -15px;
+    }
+  }
+  .navigation {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    margin-bottom: 5px;
   }
 }

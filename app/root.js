@@ -19,25 +19,31 @@ const Root = ({ token }) => (
       <TopNavBarContainer signedIn={ !!token } />
       { token ?
         <div className="container">
-          <div className="top-part">
-            <Route exact path="/" component={ Groups.ListConnected } pathPrefix="groups" />
-            <Switch>
-              <Route path="/groups/:groupId/powertakers/:userId" component={ PowertakerOverview } />
-              <Route path="/groups/:groupId" component={ GroupOverview } />
-              <Route render={ () => (<div>404</div>) } />
-            </Switch>
+          <div className="top-part row">
+            <div className="col-12">
+              <Route exact path="/" component={ Groups.ListConnected } pathPrefix="groups" />
+              <Switch>
+                <Route path="/groups/:groupId/powertakers/:userId" component={ PowertakerOverview } />
+                <Route path="/groups/:groupId" component={ GroupOverview } />
+                <Route render={ () => (<div>404</div>) } />
+              </Switch>
+            </div>
           </div>
-          <div className="navigation">
-            <Switch>
-              <Route path="/groups/:groupId/powertakers/:userId" component={ PowertakerNavBarContainer } />
-              <Route path="/groups/:groupId" component={ GroupNavBarContainer } />
-            </Switch>
+          <div className="navigation row">
+            <div className="col-12">
+              <Switch>
+                <Route path="/groups/:groupId/powertakers/:userId" component={ PowertakerNavBarContainer } />
+                <Route path="/groups/:groupId" component={ GroupNavBarContainer } />
+              </Switch>
+            </div>
           </div>
-          <div className="bottom-part">
-            <Switch>
-              <Route path="/groups/:groupId/powertakers/:userId" component={ PowertakerResources } />
-              <Route path="/groups/:groupId" component={ GroupResources } />
-            </Switch>
+          <div className="bottom-part row">
+            <div className="col-12">
+              <Switch>
+                <Route path="/groups/:groupId/powertakers/:userId" component={ PowertakerResources } />
+                <Route path="/groups/:groupId" component={ GroupResources } />
+              </Switch>
+            </div>
           </div>
         </div> :
         <div className="container">

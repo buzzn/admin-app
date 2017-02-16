@@ -5,7 +5,7 @@ import NavLink from '../nav_link';
 export const GroupNavBar = ({ groupId }) => (
   <div className="row">
     <div className="col-12">
-      <ul className="nav nav-pills">
+      <ul className="nav nav-pills nav-justified">
         <NavLink to={ `/groups/${groupId}/powertakers` }>Powertakers</NavLink>
         <NavLink to={ `/groups/${groupId}/contracts` }>Contracts</NavLink>
         <NavLink to={ `/groups/${groupId}/bank` }>Bank</NavLink>
