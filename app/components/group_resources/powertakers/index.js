@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Users from '../../users';
+import { Link } from 'react-router-dom';
+import Users from '../../../users';
 
 import './style.scss';
 
@@ -24,7 +25,7 @@ export class Powertakers extends Component {
   }
 
   render() {
-    const { users, profiles, loading } = this.props;
+    const { users, profiles, groupId, loading } = this.props;
 
     if (loading) return (<div>Loading...</div>);
 
@@ -58,7 +59,7 @@ export class Powertakers extends Component {
                       { `${profile.firstName} ${profile.lastName}` }
                     </td>
                     <td>Location</td>
-                    <td><button className="btn btn-secondary" disabled>View</button></td>
+                    <td><Link to={ `/groups/${groupId}/powertakers/${user.id}` } className="btn btn-secondary">View</Link></td>
                   </tr>
                 );
               }) }

@@ -1,10 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import Auth from '@buzzn/module_auth';
 import NavLink from '../nav_link';
 
-export const GroupNavBar = ({ dispatch, groupId }) => (
+export const GroupNavBar = ({ groupId }) => (
   <div className="row">
     <div className="col-12">
       <ul className="nav nav-pills">
