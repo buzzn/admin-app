@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import Powertakers from '../powertakers';
+import Powertakers from './powertakers';
 
 export default ({ match: { url, params: { groupId } } }) => (
   <div>

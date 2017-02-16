@@ -29,7 +29,7 @@ export class GroupOverview extends Component {
       'Loading...'));
 
     return (
-      <div className="row">
+      <div className="row group-overview">
         <div className="col-12"><div className="title">{ group.attributes.name }</div></div>
         <div className="col-6">
           <div className="row">
