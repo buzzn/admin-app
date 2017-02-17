@@ -14,14 +14,16 @@ body {
     border: solid lightgrey 1px;
   }
   .top-part {
+    margin-bottom: 1.25em;
+    color: #a5a5a5;
     .overview-header {
       font-size: 1.5em;
       background-color: #e7e6e6;
       padding: 15px;
       margin-left: -15px;
       margin-right: -15px;
+      color: black;
     }
-    margin-bottom: 1.25em;
     .title {
       color: #ffffff;
       font-weight: bold;
@@ -30,10 +32,34 @@ body {
       margin-left: -15px;
       margin-right: -15px;
     }
+    .left-col,
+    .right-col {
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+    .left-col {
+      border-right: solid lightgrey 1px;
+    }
+    .label {
+      color: black;
+    }
   }
-  .navigation {
+  .navigation,
+  .bottom-part {
     padding-top: 15px;
     padding-bottom: 15px;
     margin-bottom: 5px;
+  }
+  .no-padding {
+    padding: 0;
+  }
+  .thead-default th {
+    background-color: darkgrey;
+  }
+  .table th, .table td {
+    border-top: 1px solid darkgrey;
+  }
+  .btn-beige {
+    background-color: #fff2cc;
   }
 }
