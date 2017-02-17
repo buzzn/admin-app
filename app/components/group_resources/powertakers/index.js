@@ -34,6 +34,8 @@ export class Powertakers extends Component {
         <div className="col-12">
           <h5>Powertakers</h5>
           <p>{ users.length } powertakers</p>
+        </div>
+        <div className="col-12 no-padding">
           <table className="table">
             <thead className="thead-default">
               <tr>
@@ -59,7 +61,14 @@ export class Powertakers extends Component {
                       { `${profile.firstName} ${profile.lastName}` }
                     </td>
                     <td>Location</td>
-                    <td><Link to={ `/groups/${groupId}/powertakers/${user.id}` } className="btn btn-secondary">View</Link></td>
+                    <td>
+                      <Link
+                        to={ `/groups/${groupId}/powertakers/${user.id}` }
+                        className="btn btn-secondary btn-beige"
+                        style={{ float: 'right', marginRight: '15px' }}>
+                        View
+                      </Link>
+                    </td>
                   </tr>
                 );
               }) }

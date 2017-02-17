@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Helmet from 'react-helmet';
 import Bubbles from '@buzzn/module_bubbles';
 import Groups from '../../groups';
 import Users from '../../users';
@@ -32,22 +33,26 @@ export class GroupOverview extends Component {
       'Loading...'));
 
     return (
-      <div className="row group-overview">
-        <div className="col-12"><div className="title">{ group.attributes.name }</div></div>
-        <div className="col-6">
-          <div className="row">
-            <div className="col-12">Address here</div>
+      <div>
+        <Helmet title="Local Group" />
+        <div className="overview-header">Local Group</div>
+        <div className="row group-overview top-content">
+          <div className="col-12"><div className="title">{ group.attributes.name }</div></div>
+          <div className="col-6 left-col">
+            <div className="row">
+              <div className="col-12">Address here</div>
+            </div>
+            <div className="row">
+              <div className="col-3"><span className="label">LSG:</span></div>
+              <div className="col-9"></div>
+            </div>
+            <div className="row">
+              <div className="col-3"><span className="label">Managers:</span></div>
+              <div className="col-9">{ managersProfiles.join(', ') }</div>
+            </div>
           </div>
-          <div className="row">
-            <div className="col-3"><b>LSG:</b></div>
-            <div className="col-9"></div>
-          </div>
-          <div className="row">
-            <div className="col-3"><b>Managers:</b></div>
-            <div className="col-9">{ managersProfiles.join(', ') }</div>
-          </div>
+          <div className="col-6 right-col"><Bubbles.container layout={ BubblesLayout } /></div>
         </div>
-        <div className="col-6"><Bubbles.container layout={ BubblesLayout } /></div>
       </div>
     );
   }
