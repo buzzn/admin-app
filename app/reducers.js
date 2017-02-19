@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import Auth from '@buzzn/module_auth';
 import Bubbles from '@buzzn/module_bubbles';
+import Charts from '@buzzn/module_charts';
 import config from './config';
 import { constants } from './actions';
 import Profiles from './profiles';
@@ -39,6 +40,7 @@ export default combineReducers({
   config: configReducer,
   auth: Auth.reducers,
   bubbles: Bubbles.reducers,
+  charts: Charts.reducers,
   app: appReducer,
   profiles: Profiles.reducers,
   meters: Meters.reducers,
