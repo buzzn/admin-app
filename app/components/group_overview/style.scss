@@ -28,6 +28,14 @@
     .icon-wrap {
       display: inline-block;
     }
+    .icon-wrap i {
+      display: block;
+      line-height: 1em;
+      text-align: center;
+      position: relative;
+      width: 1em;
+      vertical-align: middle;
+    }
     .text-2x {
       font-size: 1.2em;
       line-height: 1.1;

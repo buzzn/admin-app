@@ -4,6 +4,7 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import Auth from '@buzzn/module_auth';
 import Bubbles from '@buzzn/module_bubbles';
+import Charts from '@buzzn/module_charts';
 import appSaga from './sagas';
 import Profiles from './profiles';
 import Groups from './groups';
@@ -17,6 +18,7 @@ function* rootSaga() {
   yield [
     call(Auth.sagas),
     call(Bubbles.sagas),
+    call(Charts.sagas),
     call(Profiles.sagas),
     call(Groups.sagas),
     call(Meters.sagas),
