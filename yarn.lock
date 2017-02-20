@@ -6,9 +6,8 @@
   version "1.0.0"
   resolved "git+https://github.com/buzzn/module-auth.git#3189741a523893f87d3a4a9e1247b05c32fd769b"
 
-"@buzzn/module_bubbles@git+https://github.com/buzzn/module-bubbles.git#v1.0.2":
+"@buzzn/module_bubbles@file:../modules/bubbles":
   version "1.0.0"
-  resolved "git+https://github.com/buzzn/module-bubbles.git#68558cc3266d0753ef148e9c76ae97df92f828c3"
 
 abab@^1.0.0:
   version "1.0.3"

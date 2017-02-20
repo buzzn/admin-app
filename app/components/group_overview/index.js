@@ -51,7 +51,7 @@ export class GroupOverview extends Component {
               <div className="col-9">{ managersProfiles.join(', ') }</div>
             </div>
           </div>
-          <div className="col-6 right-col"><Bubbles.container layout={ BubblesLayout } /></div>
+          <div className="col-6 right-col"><Bubbles.container Layout={ BubblesLayout } /></div>
         </div>
       </div>
     );
