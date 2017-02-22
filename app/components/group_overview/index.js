@@ -21,6 +21,16 @@ export class GroupOverview extends Component {
     loadBubbles(groupId);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { loadGroup, loadGroupManagers, loadBubbles, match: { params: { groupId } } } = this.props;
+    const { match: { params: { groupId: newGroupId } } } = nextProps;
+    if (groupId !== newGroupId) {
+      loadGroup(newGroupId);
+      loadGroupManagers(newGroupId);
+      loadBubbles(newGroupId);
+    }
+  }
+
   render() {
     const { group, loading, managers, profiles } = this.props;
 
