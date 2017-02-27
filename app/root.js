@@ -21,7 +21,7 @@ const Root = ({ token }) => (
         <div className="container">
           <div className="top-part row">
             <div className="col-12">
-              <Route exact path="/" component={ Groups.ListConnected } pathPrefix="groups" />
+              <Route exact path="/" render={ () => <Groups.ListConnected pathPrefix="groups" /> } />
               <Switch>
                 <Route path="/groups/:groupId/powertakers/:userId" component={ PowertakerOverview } />
                 <Route path="/groups/:groupId" component={ GroupOverview } />
