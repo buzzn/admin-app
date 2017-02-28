@@ -3,6 +3,7 @@ npm-debug.log
 jsconfig.json
 typings.json
 typings/
+settings.json
 .DS_Store
 
 node_modules/*

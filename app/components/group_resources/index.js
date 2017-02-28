@@ -5,11 +5,11 @@ import ChartsContainer from './charts';
 
 export default ({ match: { url, params: { groupId } } }) => (
   <div>
-    <Route path={ `${url}/powertakers` } groupId={ groupId } component={ PowertakersContainer } />
-    <Route path={ `${url}/contracts` } groupId={ groupId } render={ () => (<div>Contracts</div>) } />
-    <Route path={ `${url}/bank` } groupId={ groupId } render={ () => (<div>Bank</div>) } />
-    <Route path={ `${url}/tax` } groupId={ groupId } render={ () => (<div>Tax</div>) } />
-    <Route path={ `${url}/system` } groupId={ groupId } render={ () => (<div>System</div>) } />
-    <Route path={ `${url}/charts` } groupId={ groupId } component={ ChartsContainer } />
+    <Route path={`${url}/powertakers`} render={ () => <PowertakersContainer groupId={groupId} /> } />
+    <Route path={ `${url}/contracts` } render={ () => (<div>Contracts</div>) } />
+    <Route path={ `${url}/bank` } render={ () => (<div>Bank</div>) } />
+    <Route path={ `${url}/tax` } render={ () => (<div>Tax</div>) } />
+    <Route path={ `${url}/system` } render={ () => (<div>System</div>) } />
+    <Route path={`${url}/charts`} render={ () => <ChartsContainer groupId={groupId} /> } />
   </div>
 );
