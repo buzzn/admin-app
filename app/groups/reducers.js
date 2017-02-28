@@ -37,9 +37,12 @@ export default function (state = initialState, action) {
     case constants.SET_USER_GROUPS:
       return { ...state, userGroups: action.userGroups };
 
-    case constants.SET_TOKEN:
+    case constants.START_CONFIG:
+      return { ...state, configured: false };
+    case constants.END_CONFIG:
       return { ...state, configured: true };
 
+    case constants.SET_TOKEN:
     default:
       return state;
   }

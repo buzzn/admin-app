@@ -1,6 +1,8 @@
 export const constants = {
   SET_API_PARAMS: 'buzzn_groups/SET_API_PARAMS',
   SET_TOKEN: 'buzzn_groups/SET_TOKEN',
+  START_CONFIG: 'buzzn_groups/START_CONFIG',
+  END_CONFIG: 'buzzn_groups/END_CONFIG',
 
   LOAD_GROUP: 'buzzn_groups/LOAD_GROUP',
   LOADING_GROUP: 'buzzn_groups/LOADING_GROUP',
@@ -21,6 +23,8 @@ export const constants = {
 export const actions = {
   setApiParams: ({ apiPath, apiUrl }) => ({ type: constants.SET_API_PARAMS, apiPath, apiUrl }),
   setToken: token => ({ type: constants.SET_TOKEN, token }),
+  startConfig: () => ({ type: constants.START_CONFIG }),
+  endConfig: () => ({ type: constants.END_CONFIG }),
 
   loadGroup: groupId => ({ type: constants.LOAD_GROUP, groupId }),
   loadingGroup: () => ({ type: constants.LOADING_GROUP }),

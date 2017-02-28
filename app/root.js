@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import TopNavBarContainer from './components/top_nav_bar';
 import SignInContainer from './components/sign_in';
-import Groups from './groups';
+import HomeContainer from './components/home';
 import GroupOverview from './components/group_overview';
 import PowertakerOverview from './components/powertaker_overview';
 import GroupNavBarContainer from './components/group_nav_bar';
@@ -21,8 +21,8 @@ const Root = ({ token }) => (
         <div className="container">
           <div className="top-part row">
             <div className="col-12">
-              <Route exact path="/" render={ () => <Groups.ListConnected pathPrefix="groups" /> } />
               <Switch>
+                <Route exact path="/" component={ HomeContainer } />
                 <Route path="/groups/:groupId/powertakers/:userId" component={ PowertakerOverview } />
                 <Route path="/groups/:groupId" component={ GroupOverview } />
                 <Route render={ () => (<div>404</div>) } />

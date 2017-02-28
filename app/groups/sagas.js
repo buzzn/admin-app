@@ -1,5 +1,4 @@
 import { put, call, takeLatest, take, fork, cancel, select } from 'redux-saga/effects';
-import Bubbles from '@buzzn/module_bubbles';
 import { actions, constants } from './actions';
 import api from './api';
 import Registers from '../registers';
@@ -53,16 +52,20 @@ export function* groupsSagas({ apiUrl, apiPath, token }) {
 export default function* () {
   const { apiUrl, apiPath } = yield take(constants.SET_API_PARAMS);
   let { token } = yield take(constants.SET_TOKEN);
-  const groupId = yield select(selectGroupId);
-  const userId = yield select(selectUserId);
-  yield call(getGroups, { apiUrl, apiPath, token });
-  if (groupId) yield call(getGroup, { apiUrl, apiPath, token }, { groupId });
-  if (userId) yield call(getUserGroups, { apiUrl, apiPath, token }, { userId });
 
   while (true) {
+    const groupId = yield select(selectGroupId);
+    const userId = yield select(selectUserId);
+    yield call(getGroups, { apiUrl, apiPath, token });
+    if (groupId) yield call(getGroup, { apiUrl, apiPath, token }, { groupId });
+    if (userId) yield call(getUserGroups, { apiUrl, apiPath, token }, { userId });
+
     const sagas = yield fork(groupsSagas, { apiUrl, apiPath, token });
+    yield put(actions.endConfig());
+
     const payload = yield take(constants.SET_TOKEN);
     token = payload.token;
+    yield put(actions.startConfig());
     yield cancel(sagas);
   }
 }
