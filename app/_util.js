@@ -19,7 +19,7 @@ export function parseResponse(response) {
 }
 
 export function remainingPages({ apiUrl, apiPath, id, json, model, endpoint, token }) {
-  const totalPages = json.meta.total_pages;
+  const totalPages = json.meta ? json.meta.total_pages : 1;
   if (totalPages === 1) {
     return [json];
   } else {
