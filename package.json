@@ -61,8 +61,8 @@
   },
   "dependencies": {
     "@buzzn/module_auth": "git+https://github.com/buzzn/module-auth.git#v1.0.4",
-    "@buzzn/module_bubbles": "git+https://github.com/buzzn/module-bubbles.git#v1.0.4",
-    "@buzzn/module_charts": "git+https://github.com/buzzn/module-charts.git#v1.0.3",
+    "@buzzn/module_bubbles": "git+https://github.com/buzzn/module-bubbles.git#v1.0.5",
+    "@buzzn/module_charts": "git+https://github.com/buzzn/module-charts.git#v1.0.4",
     "babel-polyfill": "^6.23.0",
     "bootstrap": "4.0.0-alpha.6",
     "express": "^4.14.0",
