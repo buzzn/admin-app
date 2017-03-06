@@ -32,7 +32,7 @@ export class GroupOverview extends Component {
   }
 
   render() {
-    const { group, loading, managers, profiles } = this.props;
+    const { group, loading, managers, profiles, token } = this.props;
 
     if (loading) return (<div>Loading...</div>);
 
@@ -61,7 +61,7 @@ export class GroupOverview extends Component {
               <div className="col-9">{ managersProfiles.join(', ') }</div>
             </div>
           </div>
-          <div className="col-6 right-col"><Bubbles.container Layout={ BubblesLayout } /></div>
+          <div className="col-6 right-col"><Bubbles.container Layout={ BubblesLayout } token={ token } /></div>
         </div>
       </div>
     );
@@ -74,6 +74,7 @@ function mapStateToProps(state) {
     loading: state.groups.loadingGroup,
     managers: state.users.groupManagers,
     profiles: state.profiles.profiles,
+    token: state.auth.token,
   };
 }
 

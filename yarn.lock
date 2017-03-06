@@ -6,13 +6,13 @@
   version "1.0.0"
   resolved "git+https://github.com/buzzn/module-auth.git#3189741a523893f87d3a4a9e1247b05c32fd769b"
 
-"@buzzn/module_bubbles@git+https://github.com/buzzn/module-bubbles.git#v1.0.5":
+"@buzzn/module_bubbles@git+https://github.com/buzzn/module-bubbles.git#v1.0.6":
   version "1.0.0"
-  resolved "git+https://github.com/buzzn/module-bubbles.git#0c5e7ecbaacf610a0c80fc1eead7d9b3468469d7"
+  resolved "git+https://github.com/buzzn/module-bubbles.git#1449673394a7e82f0da21d88543f829bd6ceea84"
 
-"@buzzn/module_charts@git+https://github.com/buzzn/module-charts.git#v1.0.4":
+"@buzzn/module_charts@git+https://github.com/buzzn/module-charts.git#v1.0.5":
   version "1.0.0"
-  resolved "git+https://github.com/buzzn/module-charts.git#c4ab4a4dc4bb0836bd50d24156176a4311f81fdd"
+  resolved "git+https://github.com/buzzn/module-charts.git#359eca8abf673d9edee5ea44d40516d8fde26c0b"
 
 abab@^1.0.3:
   version "1.0.3"
