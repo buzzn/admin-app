@@ -1,5 +1,7 @@
 import map from 'lodash/map';
 import range from 'lodash/range';
+import forEach from 'lodash/forEach';
+import camelCase from 'lodash/camelCase';
 
 export function prepareHeaders(token) {
   return {
@@ -29,4 +31,32 @@ export function remainingPages({ apiUrl, apiPath, id, json, model, endpoint, tok
       .then(parseResponse)
     )));
   }
+}
+
+export function camelizeResponseArray(data) {
+  const result = [];
+  forEach(data, (v) => {
+    if (Array.isArray(v)) {
+      result.push(camelizeResponseArray(v));
+    } else if (typeof v === 'object') {
+      result.push(camelizeResponseKeys(v));
+    } else {
+      result.push(v);
+    }
+  });
+  return result;
+}
+
+export function camelizeResponseKeys(data) {
+  const result = {};
+  forEach(data, (v, k) => {
+    if (Array.isArray(v)) {
+      result[camelCase(k)] = camelizeResponseArray(v);
+    } else if (typeof v === 'object') {
+      result[camelCase(k)] = camelizeResponseKeys(v);
+    } else {
+      result[camelCase(k)] = v;
+    }
+  });
+  return result;
 }
