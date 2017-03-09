@@ -6,11 +6,11 @@ export const PowertakerNavBar = ({ groupId, userId }) => (
   <div className="row">
     <div className="col-12">
       <ul className="nav nav-pills nav-justified">
-        <NavLink to={ `/groups/${groupId}/powertakers/${userId}/core-data` }>Core Data</NavLink>
-        <NavLink to={ `/groups/${groupId}/powertakers/${userId}/contracts` }>Contracts</NavLink>
-        <NavLink to={ `/groups/${groupId}/powertakers/${userId}/bank` }>Bank</NavLink>
-        <NavLink to={ `/groups/${groupId}/powertakers/${userId}/register` }>Register</NavLink>
-        <NavLink to={ `/groups/${groupId}/powertakers/${userId}/charts` }>Charts</NavLink>
+        <NavLink to={ `/localpools/${groupId}/powertakers/${userId}/core-data` }>Core Data</NavLink>
+        <NavLink to={ `/localpools/${groupId}/powertakers/${userId}/contracts` }>Contracts</NavLink>
+        <NavLink to={ `/localpools/${groupId}/powertakers/${userId}/bank` }>Bank</NavLink>
+        <NavLink to={ `/localpools/${groupId}/powertakers/${userId}/register` }>Register</NavLink>
+        <NavLink to={ `/localpools/${groupId}/powertakers/${userId}/charts` }>Charts</NavLink>
       </ul>
     </div>
   </div>

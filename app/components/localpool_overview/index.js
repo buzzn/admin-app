@@ -8,7 +8,7 @@ import BubblesLayout from './bubbles_layout';
 
 import './style.scss';
 
-export class GroupOverview extends Component {
+export class LocalpoolOverview extends Component {
   static propTypes = {
     group: React.PropTypes.object,
     loading: React.PropTypes.bool.isRequired,
@@ -44,8 +44,8 @@ export class GroupOverview extends Component {
 
     return (
       <div>
-        <Helmet title="Local Group" />
-        <div className="overview-header">Local Group</div>
+        <Helmet title="Localpool" />
+        <div className="overview-header">Localpool</div>
         <div className="row group-overview top-content">
           <div className="col-12"><div className="title">{ group.attributes.name }</div></div>
           <div className="col-6 left-col">
@@ -82,4 +82,4 @@ export default connect(mapStateToProps, {
   loadGroup: Groups.actions.loadGroup,
   loadGroupManagers: Users.actions.loadGroupManagers,
   loadBubbles: Bubbles.actions.setGroup,
-})(GroupOverview);
+})(LocalpoolOverview);
