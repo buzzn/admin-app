@@ -63,7 +63,7 @@ export class Powertakers extends Component {
                     <td>Location</td>
                     <td>
                       <Link
-                        to={ `/groups/${groupId}/powertakers/${user.id}` }
+                        to={ `/localpools/${groupId}/powertakers/${user.id}` }
                         className="btn btn-secondary btn-beige"
                         style={{ float: 'right', marginRight: '15px' }}>
                         View

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import filter from 'lodash/filter';
 import {
   Collapse,
   Navbar,
@@ -74,7 +75,7 @@ export class TopNavBar extends Component {
                     </DropdownToggle>
                     <DropdownMenu>
                       { groups.map(group => (
-                        <Link to={ `/groups/${group.id}` } style={{ color: 'black' }} key={ group.id }>
+                        <Link to={ `/localpools/${group.id}` } style={{ color: 'black' }} key={ group.id }>
                           <DropdownItem >
                             { group.attributes.name }
                           </DropdownItem>
@@ -97,7 +98,7 @@ function mapStateToProps(state) {
   const myId = state.app.userMe;
   return {
     myProfile: state.profiles.profiles[myId],
-    groups: state.groups.groups,
+    groups: filter(state.groups.groups, group => group.type === 'localpools'),
   };
 }
 
