@@ -4,12 +4,15 @@ import { connect } from 'react-redux';
 import TopNavBarContainer from './components/top_nav_bar';
 import SignInContainer from './components/sign_in';
 import HomeContainer from './components/home';
-import LocalpoolOverview from './components/localpool_overview';
-import PowertakerOverview from './components/powertaker_overview';
+import LocalpoolOverviewContainer from './components/localpool_overview';
+import PowertakerOverviewContainer from './components/powertaker_overview';
+import ContractOverviewContainer from './components/contract_overview';
 import LocalpoolNavBarContainer from './components/localpool_nav_bar';
 import PowertakerNavBarContainer from './components/powertaker_nav_bar';
+import ContractNavBarContainer from './components/contract_nav_bar';
 import LocalpoolResources from './components/localpool_resources';
 import PowertakerResources from './components/powertaker_resources';
+import ContractResources from './components/contract_resources';
 
 import './root.scss';
 
@@ -23,8 +26,9 @@ const Root = ({ token }) => (
             <div className="col-12">
               <Switch>
                 <Route exact path="/" component={ HomeContainer } />
-                <Route path="/localpools/:groupId/powertakers/:userId" component={ PowertakerOverview } />
-                <Route path="/localpools/:groupId" component={ LocalpoolOverview } />
+                <Route path="/localpools/:groupId/powertakers/:userId" component={ PowertakerOverviewContainer } />
+                <Route path="/localpools/:groupId/contracts/:contractId" component={ ContractOverviewContainer } />
+                <Route path="/localpools/:groupId" component={ LocalpoolOverviewContainer } />
                 <Route render={ () => (<div>404</div>) } />
               </Switch>
             </div>
@@ -33,6 +37,7 @@ const Root = ({ token }) => (
             <div className="col-12">
               <Switch>
                 <Route path="/localpools/:groupId/powertakers/:userId" component={ PowertakerNavBarContainer } />
+                <Route path="/localpools/:groupId/contracts/:contractId" component={ ContractNavBarContainer } />
                 <Route path="/localpools/:groupId" component={ LocalpoolNavBarContainer } />
               </Switch>
             </div>
@@ -41,6 +46,7 @@ const Root = ({ token }) => (
             <div className="col-12">
               <Switch>
                 <Route path="/localpools/:groupId/powertakers/:userId" component={ PowertakerResources } />
+                <Route path="/localpools/:groupId/contracts/:contractId" component={ ContractResources } />
                 <Route path="/localpools/:groupId" component={ LocalpoolResources } />
               </Switch>
             </div>

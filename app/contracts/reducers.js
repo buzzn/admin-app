@@ -1,30 +1,31 @@
 import { constants } from './actions';
 
 export const initialState = {
-  loadingOperatorContract: false,
-  loadingProcessingContract: false,
-  operatorContract: null,
-  processingContract: null,
+  loadingContract: false,
+  loadingGroupContracts: false,
+  contract: null,
+  groupContracts: [],
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
     case constants.LOAD_GROUP_CONTRACTS:
       return { ...state, groupId: action.groupId };
+    case constants.LOADING_GROUP_CONTRACTS:
+      return { ...state, loadingGroupContracts: true };
+    case constants.LOADED_GROUP_CONTRACTS:
+      return { ...state, loadingGroupContracts: false };
+    case constants.SET_GROUP_CONTRACTS:
+      return { ...state, groupContracts: action.contracts };
 
-    case constants.LOADING_OPERATOR_CONTRACT:
-      return { ...state, loadingOperatorContract: true };
-    case constants.LOADED_OPERATOR_CONTRACT:
-      return { ...state, loadingOperatorContract: false };
-    case constants.SET_OPERATOR_CONTRACT:
-      return { ...state, operatorContract: action.contract };
-
-    case constants.LOADING_PROCESSING_CONTRACT:
-      return { ...state, loadingProcessingContract: true };
-    case constants.LOADED_PROCESSING_CONTRACT:
-      return { ...state, loadingProcessingContract: false };
-    case constants.SET_PROCESSING_CONTRACT:
-      return { ...state, processingContract: action.contract };
+    case constants.LOAD_CONTRACT:
+      return { ...state, contractId: action.contractId };
+    case constants.LOADING_CONTRACT:
+      return { ...state, loadingContract: true };
+    case constants.LOADED_CONTRACT:
+      return { ...state, loadingContract: false };
+    case constants.SET_CONTRACT:
+      return { ...state, contract: action.contract };
 
     default:
       return state;
