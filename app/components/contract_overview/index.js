@@ -9,7 +9,7 @@ import './style.scss';
 
 export class ContractOverview extends Component {
   static propTypes = {
-    contract: React.PropTypes.object,
+    contract: React.PropTypes.object.isRequired,
     loading: React.PropTypes.bool.isRequired,
     loadContract: React.PropTypes.func.isRequired,
   };
@@ -23,7 +23,7 @@ export class ContractOverview extends Component {
   render() {
     const { contract, group, loading } = this.props;
 
-    if (loading || !contract || !group) return (<div>Loading...</div>);
+    if (loading || !contract.id || !group) return (<div>Loading...</div>);
 
     const contractType = (contract) => {
       switch (contract.type) {
@@ -44,24 +44,24 @@ export class ContractOverview extends Component {
               { contractType(contract) } - { contract.attributes.contractNumber }
             </div>
           </div>
-          <div className="col-6">
-            <h5>Contract Data</h5>
+          <div className="col-12 padding-top"><h5 className="label">Contract Data</h5></div>
+          <div className="col-6 padding-bottom">
             <div className="row">
-              <div className="col-3">Local pool:</div>
+              <div className="col-3"><span className="label">Local pool:</span></div>
               <div className="col-9"><Link to={ `/localpools/${group.id}` }>{ group.attributes.name }</Link></div>
             </div>
             <div className="row">
-              <div className="col-3">Contract #:</div>
+              <div className="col-3"><span className="label">Contract #:</span></div>
               <div className="col-9">{ contract.attributes.contractNumber }</div>
             </div>
           </div>
-          <div className="col-6">
+          <div className="col-6 padding-bottom">
             <div className="row">
-              <div className="col-3">Begin:</div>
+              <div className="col-3"><span className="label">Begin:</span></div>
               <div className="col-9">{ contract.attributes.beginDate }</div>
             </div>
             <div className="row">
-              <div className="col-3">Contact:</div>
+              <div className="col-3"><span className="label">Contact:</span></div>
               <div className="col-9"></div>
             </div>
           </div>

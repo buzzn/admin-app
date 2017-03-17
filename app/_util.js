@@ -15,6 +15,8 @@ export function parseResponse(response) {
   const json = response.json();
   if (response.status >= 200 && response.status < 300) {
     return json;
+  } else if (response.status === 404) {
+    return { status: 404 };
   } else {
     return json.then(error => Promise.reject(error));
   }

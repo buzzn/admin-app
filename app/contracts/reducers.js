@@ -3,7 +3,9 @@ import { constants } from './actions';
 export const initialState = {
   loadingContract: false,
   loadingGroupContracts: false,
-  contract: null,
+  contract: {},
+  contractor: {},
+  customer: {},
   groupContracts: [],
 };
 
@@ -25,7 +27,7 @@ export default function (state = initialState, action) {
     case constants.LOADED_CONTRACT:
       return { ...state, loadingContract: false };
     case constants.SET_CONTRACT:
-      return { ...state, contract: action.contract };
+      return { ...state, contract: action.contract, contractor: action.contractor, customer: action.customer };
 
     default:
       return state;

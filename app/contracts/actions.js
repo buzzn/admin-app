@@ -20,7 +20,7 @@ export const actions = {
   loadContract: contractId => ({ type: constants.LOAD_CONTRACT, contractId }),
   loadingContract: () => ({ type: constants.LOADING_CONTRACT }),
   loadedContract: () => ({ type: constants.LOADED_CONTRACT }),
-  setContract: contract => ({ type: constants.SET_CONTRACT, contract }),
+  setContract: ({ contract, contractor, customer }) => ({ type: constants.SET_CONTRACT, contract, contractor, customer }),
 
   loadGroupContracts: groupId => ({ type: constants.LOAD_GROUP_CONTRACTS, groupId }),
   loadingGroupContracts: () => ({ type: constants.LOADING_GROUP_CONTRACTS }),

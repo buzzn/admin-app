@@ -7,12 +7,15 @@ import HomeContainer from './components/home';
 import LocalpoolOverviewContainer from './components/localpool_overview';
 import PowertakerOverviewContainer from './components/powertaker_overview';
 import ContractOverviewContainer from './components/contract_overview';
+import ContractingPartyOverviewContainer from './components/contracting_party_overview';
 import LocalpoolNavBarContainer from './components/localpool_nav_bar';
 import PowertakerNavBarContainer from './components/powertaker_nav_bar';
 import ContractNavBarContainer from './components/contract_nav_bar';
+import ContractingPartyNavBarContainer from './components/contracting_party_nav_bar';
 import LocalpoolResources from './components/localpool_resources';
 import PowertakerResources from './components/powertaker_resources';
 import ContractResources from './components/contract_resources';
+import ContractingPartyResourcesContainer from './components/contracting_party_resources';
 
 import './root.scss';
 
@@ -27,6 +30,7 @@ const Root = ({ token }) => (
               <Switch>
                 <Route exact path="/" component={ HomeContainer } />
                 <Route path="/localpools/:groupId/powertakers/:userId" component={ PowertakerOverviewContainer } />
+                <Route path="/localpools/:groupId/contracts/:contractId/:partyType/show" component={ ContractingPartyOverviewContainer } />
                 <Route path="/localpools/:groupId/contracts/:contractId" component={ ContractOverviewContainer } />
                 <Route path="/localpools/:groupId" component={ LocalpoolOverviewContainer } />
                 <Route render={ () => (<div>404</div>) } />
@@ -37,6 +41,7 @@ const Root = ({ token }) => (
             <div className="col-12">
               <Switch>
                 <Route path="/localpools/:groupId/powertakers/:userId" component={ PowertakerNavBarContainer } />
+                <Route path="/localpools/:groupId/contracts/:contractId/:partyType/show" component={ ContractingPartyNavBarContainer } />
                 <Route path="/localpools/:groupId/contracts/:contractId" component={ ContractNavBarContainer } />
                 <Route path="/localpools/:groupId" component={ LocalpoolNavBarContainer } />
               </Switch>
@@ -46,6 +51,7 @@ const Root = ({ token }) => (
             <div className="col-12">
               <Switch>
                 <Route path="/localpools/:groupId/powertakers/:userId" component={ PowertakerResources } />
+                <Route path="/localpools/:groupId/contracts/:contractId/:partyType/show" component={ ContractingPartyResourcesContainer } />
                 <Route path="/localpools/:groupId/contracts/:contractId" component={ ContractResources } />
                 <Route path="/localpools/:groupId" component={ LocalpoolResources } />
               </Switch>
