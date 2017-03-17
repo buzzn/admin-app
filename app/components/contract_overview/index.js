@@ -29,6 +29,8 @@ export class ContractOverview extends Component {
       switch (contract.type) {
         case 'metering-point-operators':
           return 'Metering Point Operator';
+        case 'localpool-processings':
+          return 'LCP processing';
         default:
           return 'Unknown';
       }
