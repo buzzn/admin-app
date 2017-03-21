@@ -9,6 +9,7 @@ import Profiles from './profiles';
 import Friends from './friends';
 import Registers from './registers';
 import Users from './users';
+import Contracts from './contracts';
 
 export const getConfig = state => state.config;
 
@@ -32,6 +33,7 @@ export default function* () {
   yield put(Friends.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Registers.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Users.actions.setApiParams({ apiUrl, apiPath }));
+  yield put(Contracts.actions.setApiParams({ apiUrl, apiPath }));
 
   while (true) {
     const { token } = yield take(Auth.constants.SIGN_IN);
@@ -42,6 +44,7 @@ export default function* () {
       yield put(Friends.actions.setToken(token));
       yield put(Registers.actions.setToken(token));
       yield put(Users.actions.setToken(token));
+      yield put(Contracts.actions.setToken(token));
 
       if (yield call(getUserMe, { apiUrl, apiPath, token })) {
         yield take(Auth.constants.SIGN_OUT);
