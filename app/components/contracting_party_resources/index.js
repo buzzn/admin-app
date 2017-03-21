@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import Contracts from '../../contracts';
-import Bank from './bank';
+import Bank from '../bank';
 
 export class ContractingPartyResources extends Component {
   static propTypes = {
