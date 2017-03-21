@@ -10,6 +10,7 @@ import Meters from './meters';
 import Friends from './friends';
 import Registers from './registers';
 import Users from './users';
+import Contracts from './contracts';
 
 // in this case initialState includes apiUrl and apiPath, so it will just copy this params into app state.
 export function configReducer(state = config) {
@@ -48,4 +49,5 @@ export default combineReducers({
   friends: Friends.reducers,
   registers: Registers.reducers,
   users: Users.reducers,
+  contracts: Contracts.reducers,
 });
