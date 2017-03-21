@@ -4,14 +4,17 @@ import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import Contracts from '../../contracts';
 import Groups from '../../groups';
+import Breadcrumbs from '../breadcrumbs';
 
 import './style.scss';
 
 export class ContractOverview extends Component {
   static propTypes = {
     contract: React.PropTypes.object.isRequired,
+    group: React.PropTypes.object,
     loading: React.PropTypes.bool.isRequired,
     loadContract: React.PropTypes.func.isRequired,
+    loadGroup: React.PropTypes.func.isRequired,
   };
 
   componentWillMount() {
@@ -36,10 +39,26 @@ export class ContractOverview extends Component {
       }
     };
 
+    const contractShortName = (contract) => {
+      switch (contract.type) {
+        case 'metering-point-operators':
+          return `MPO ${contract.attributes.contractNumber}`;
+        case 'localpool-processings':
+          return `LCPP ${contract.attributes.contractNumber}`;
+        default:
+          return `${contract.attributes.contractNumber}`;
+      }
+    };
+
+    const breadcrumbs = [
+      { id: group.id, link: `/localpools/${group.id}/contracts`, title: group.attributes.name },
+      { id: contract.id, title: contractShortName(contract) },
+    ];
+
     return (
       <div>
         <Helmet title="Contract" />
-        <div className="overview-header">Contract</div>
+        <Breadcrumbs breadcrumbs={ breadcrumbs }/>
         <div className="row contract-overview top-content">
           <div className="col-12">
             <div className="title">
