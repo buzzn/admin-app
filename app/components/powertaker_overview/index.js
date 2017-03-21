@@ -10,6 +10,10 @@ import './style.scss';
 export class PowertakerOverview extends Component {
   static propTypes = {
     profile: React.PropTypes.object,
+    group: React.PropTypes.object,
+    loadingGroup: React.PropTypes.bool.isRequired,
+    loadGroup: React.PropTypes.func.isRequired,
+    loadUser: React.PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -40,7 +44,6 @@ export class PowertakerOverview extends Component {
     return (
       <div>
         <Helmet title="Powertaker" />
-        <div className="overview-header">Powertaker</div>
         <Breadcrumbs breadcrumbs={ breadcrumbs }/>
         <div className="row powertaker-overview top-content">
           <div className="col-12">
