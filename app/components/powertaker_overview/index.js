@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
+import Groups from '../../groups';
+import Users from '../../users';
+import Breadcrumbs from '../breadcrumbs';
 
 import './style.scss';
 
@@ -13,15 +16,32 @@ export class PowertakerOverview extends Component {
     profile: {},
   };
 
-  render() {
-    const { profile: { firstName, lastName, mdImg, loading } } = this.props;
+  componentWillMount() {
+    const { loadingGroup, group, loadGroup, profile, loadUser, match: { params: { groupId, userId } } } = this.props;
+    if (!loadingGroup && !group) loadGroup(groupId);
+    if (!profile.loading && !profile.firstName) loadUser(userId);
+  }
 
-    if (loading) return (<div>Loading...</div>);
+  render() {
+    const {
+      loadingGroup,
+      group,
+      profile: { firstName, lastName, mdImg, loading },
+      match: { params: { userId } },
+    } = this.props;
+
+    if (loading || loadingGroup || !group) return (<div>Loading...</div>);
+
+    const breadcrumbs = [
+      { id: group.id, link: `/localpools/${group.id}/powertakers`, title: group.attributes.name },
+      { id: userId, title: `${firstName} ${lastName}` },
+    ];
 
     return (
       <div>
         <Helmet title="Powertaker" />
         <div className="overview-header">Powertaker</div>
+        <Breadcrumbs breadcrumbs={ breadcrumbs }/>
         <div className="row powertaker-overview top-content">
           <div className="col-12">
             <div className="title">
@@ -49,8 +69,13 @@ function mapStateToProps(state, props) {
   const { match: { params: { userId } } } = props;
 
   return {
+    group: state.groups.group,
+    loadingGroup: state.groups.loadingGroup,
     profile: state.profiles.profiles[userId],
   };
 }
 
-export default connect(mapStateToProps)(PowertakerOverview);
+export default connect(mapStateToProps, {
+  loadGroup: Groups.actions.loadGroup,
+  loadUser: Users.actions.loadUser,
+})(PowertakerOverview);
