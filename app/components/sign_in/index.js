@@ -4,9 +4,14 @@ import Auth from '@buzzn/module_auth';
 
 import './style.scss';
 
-export const SignIn = ({ dispatch, username, password }) => (
+export const SignIn = ({ dispatch, username, password, error }) => (
   <form className="form-signin">
     <h2 className="form-signin-heading">Please sign in</h2>
+    { error && error !== 'Sign out' &&
+      <div className="alert alert-danger" role="alert">
+        <strong>Sign in failed!</strong> Email or password incorrect.
+      </div>
+    }
     <label htmlFor="inputEmail" className="sr-only">Email address</label>
     <input
       value={ username }
@@ -38,6 +43,7 @@ function mapStateToProps(state) {
   return {
     username: state.auth.username,
     password: state.auth.password,
+    error: state.auth.error,
   };
 }
 
