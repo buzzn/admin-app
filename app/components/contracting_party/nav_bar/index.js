@@ -1,5 +1,5 @@
 import React from 'react';
-import NavLink from '../nav_link';
+import NavLink from 'components/nav_link';
 
 export const ContractingPartyNavBar = ({ match: { params: { groupId, contractId, partyType } } }) => (
   <div className="row">

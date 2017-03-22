@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
-import Contracts from '../../contracts';
-import Groups from '../../groups';
-import Breadcrumbs from '../breadcrumbs';
+import Contracts from 'contracts';
+import Groups from 'groups';
+import Breadcrumbs from 'components/breadcrumbs';
 
 import './style.scss';
 

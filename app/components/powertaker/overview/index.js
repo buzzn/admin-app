@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
-import Groups from '../../groups';
-import Users from '../../users';
-import Breadcrumbs from '../breadcrumbs';
+import Groups from 'groups';
+import Users from 'users';
+import Breadcrumbs from 'components/breadcrumbs';
 
 import './style.scss';
 
