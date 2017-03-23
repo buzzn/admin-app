@@ -2,11 +2,12 @@ import { constants } from './actions';
 
 export const initialState = {
   configured: false,
-  loadingMeters: false,
+  loadingGroupMeters: false,
   loadingUserMeters: false,
   loadingMeter: false,
   userMeters: [],
-  meter: null,
+  groupMeters: [],
+  meter: {},
 };
 
 export default function (state = initialState, action) {
@@ -19,6 +20,15 @@ export default function (state = initialState, action) {
       return { ...state, loadingMeter: false };
     case constants.SET_METER:
       return { ...state, meter: action.meter };
+
+    case constants.LOAD_GROUP_METERS:
+      return { ...state, groupId: action.groupId };
+    case constants.LOADING_GROUP_METERS:
+      return { ...state, loadingUserMeters: true };
+    case constants.LOADED_GROUP_METERS:
+      return { ...state, loadingUserMeters: false };
+    case constants.SET_GROUP_METERS:
+      return { ...state, groupMeters: action.groupMeters };
 
     case constants.LOADING_USER_METERS:
       return { ...state, loadingUserMeters: true };

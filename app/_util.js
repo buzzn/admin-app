@@ -54,6 +54,8 @@ export function camelizeResponseKeys(data) {
   forEach(data, (v, k) => {
     if (Array.isArray(v)) {
       result[camelCase(k)] = camelizeResponseArray(v);
+    } else if (!v) {
+      result[camelCase(k)] = v;
     } else if (typeof v === 'object') {
       result[camelCase(k)] = camelizeResponseKeys(v);
     } else {
