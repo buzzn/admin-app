@@ -63,6 +63,9 @@ module.exports = {
       },
     ],
   },
+  resolve: {
+    modules: [path.resolve(__dirname, 'app'), 'node_modules'],
+  },
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),

@@ -1,21 +1,21 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import TopNavBarContainer from './components/top_nav_bar';
-import SignInContainer from './components/sign_in';
-import HomeContainer from './components/home';
-import LocalpoolOverviewContainer from './components/localpool_overview';
-import PowertakerOverviewContainer from './components/powertaker_overview';
-import ContractOverviewContainer from './components/contract_overview';
-import ContractingPartyOverviewContainer from './components/contracting_party_overview';
-import LocalpoolNavBarContainer from './components/localpool_nav_bar';
-import PowertakerNavBarContainer from './components/powertaker_nav_bar';
-import ContractNavBarContainer from './components/contract_nav_bar';
-import ContractingPartyNavBarContainer from './components/contracting_party_nav_bar';
-import LocalpoolResources from './components/localpool_resources';
-import PowertakerResources from './components/powertaker_resources';
-import ContractResources from './components/contract_resources';
-import ContractingPartyResourcesContainer from './components/contracting_party_resources';
+import TopNavBarContainer from 'components/top_nav_bar';
+import SignInContainer from 'components/sign_in';
+import HomeContainer from 'components/home';
+import LocalpoolOverviewContainer from 'components/localpool/overview';
+import PowertakerOverviewContainer from 'components/powertaker/overview';
+import ContractOverviewContainer from 'components/contract/overview';
+import ContractingPartyOverviewContainer from 'components/contracting_party/overview';
+import LocalpoolNavBarContainer from 'components/localpool/nav_bar';
+import PowertakerNavBarContainer from 'components/powertaker/nav_bar';
+import ContractNavBarContainer from 'components/contract/nav_bar';
+import ContractingPartyNavBarContainer from 'components/contracting_party/nav_bar';
+import LocalpoolResources from 'components/localpool/resources';
+import PowertakerResources from 'components/powertaker/resources';
+import ContractResources from 'components/contract/resources';
+import ContractingPartyResourcesContainer from 'components/contracting_party/resources';
 
 import './root.scss';
 

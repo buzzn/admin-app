@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Contracts from '../../../contracts';
+import Contracts from 'contracts';
 
 export class ContractsList extends Component {
   static propTypes = {

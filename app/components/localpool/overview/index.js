@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import Bubbles from '@buzzn/module_bubbles';
-import Groups from '../../groups';
-import Users from '../../users';
+import Groups from 'groups';
+import Users from 'users';
 import BubblesLayout from './bubbles_layout';
 
 import './style.scss';

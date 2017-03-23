@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import NavLink from '../nav_link';
+import NavLink from 'components/nav_link';
 
 export const LocalpoolNavBar = ({ groupId }) => (
   <div className="row">

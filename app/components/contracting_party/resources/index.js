@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
-import Contracts from '../../contracts';
-import Bank from '../bank';
+import Contracts from 'contracts';
+import Bank from 'components/bank';
 
 export class ContractingPartyResources extends Component {
   static propTypes = {

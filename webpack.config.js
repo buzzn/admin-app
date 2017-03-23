@@ -63,6 +63,9 @@ module.exports = {
       },
     ],
   },
+  resolve: {
+    modules: [path.resolve(__dirname, 'app'), 'node_modules'],
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: 'app/index.html',
