@@ -98,7 +98,7 @@ function mapStateToProps(state) {
   const myId = state.app.userMe;
   return {
     myProfile: state.profiles.profiles[myId],
-    groups: filter(state.groups.groups, group => group.type === 'localpools'),
+    groups: filter(state.groups.groups, group => group.attributes.type === 'group_localpool'),
   };
 }
 

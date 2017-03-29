@@ -9,6 +9,7 @@ import PowertakerOverviewContainer from 'components/powertaker/overview';
 import ContractOverviewContainer from 'components/contract/overview';
 import ContractingPartyOverviewContainer from 'components/contracting_party/overview';
 import MeterOverviewContainer from 'components/meter/overview';
+import RegisterOverviewContainer from 'components/register/overview';
 import LocalpoolNavBarContainer from 'components/localpool/nav_bar';
 import PowertakerNavBarContainer from 'components/powertaker/nav_bar';
 import ContractNavBarContainer from 'components/contract/nav_bar';
@@ -19,6 +20,7 @@ import PowertakerResources from 'components/powertaker/resources';
 import ContractResources from 'components/contract/resources';
 import ContractingPartyResourcesContainer from 'components/contracting_party/resources';
 import MeterResources from 'components/meter/resources';
+import RegisterResourcesContainer from 'components/register/resources';
 
 import './root.scss';
 
@@ -35,6 +37,7 @@ const Root = ({ token }) => (
                 <Route path="/localpools/:groupId/powertakers/:userId" component={ PowertakerOverviewContainer } />
                 <Route path="/localpools/:groupId/contracts/:contractId/:partyType/show" component={ ContractingPartyOverviewContainer } />
                 <Route path="/localpools/:groupId/contracts/:contractId" component={ ContractOverviewContainer } />
+                <Route path="/localpools/:groupId/system/:meterId/registers/:registerId" component={ RegisterOverviewContainer } />
                 <Route path="/localpools/:groupId/system/:meterId" component={ MeterOverviewContainer } />
                 <Route path="/localpools/:groupId" component={ LocalpoolOverviewContainer } />
                 <Route render={ () => (<div>404</div>) } />
@@ -58,6 +61,7 @@ const Root = ({ token }) => (
                 <Route path="/localpools/:groupId/powertakers/:userId" component={ PowertakerResources } />
                 <Route path="/localpools/:groupId/contracts/:contractId/:partyType/show" component={ ContractingPartyResourcesContainer } />
                 <Route path="/localpools/:groupId/contracts/:contractId" component={ ContractResources } />
+                <Route path="/localpools/:groupId/system/:meterId/registers/:registerId" component={ RegisterResourcesContainer } />
                 <Route path="/localpools/:groupId/system/:meterId" component={ MeterResources } />
                 <Route path="/localpools/:groupId" component={ LocalpoolResources } />
               </Switch>

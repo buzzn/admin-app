@@ -7,7 +7,7 @@ const ContractingParty = ({ loading, customer, partyType, groupId, contractId })
   }
 
   const { address } = customer;
-  const customerType = type => (type === 'organizations' ? 'Organization' : 'Person');
+  const customerType = type => (type === 'organization' ? 'Organization' : 'Person');
   const addressString = attributes => (`${attributes.zip} ${attributes.country} ${attributes.city} ${attributes.streetName} ${attributes.streetNumber}`);
 
   return (
@@ -17,7 +17,7 @@ const ContractingParty = ({ loading, customer, partyType, groupId, contractId })
           <div className="col-6"><span className="title">Name:</span></div>
           <div className="col-6">{ customer.attributes.name }</div>
           <div className="col-6"><span className="title">Type:</span></div>
-          <div className="col-6">{ customerType(customer.type) }</div>
+          <div className="col-6">{ customerType(customer.attributes.type) }</div>
           <div className="col-6"><span className="title">Address:</span></div>
           <div className="col-6">{ address.attributes && `${addressString(address.attributes)}` }</div>
           <div className="col-6"><span className="title">Email:</span></div>

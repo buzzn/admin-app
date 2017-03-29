@@ -29,10 +29,10 @@ export class ContractOverview extends Component {
     if (loading || !contract.id || !group) return (<div>Loading...</div>);
 
     const contractType = (contract) => {
-      switch (contract.type) {
-        case 'metering-point-operators':
+      switch (contract.attributes.type) {
+        case 'contract_metering_point_operator':
           return 'Metering Point Operator';
-        case 'localpool-processings':
+        case 'contract_localpool_processing':
           return 'LCP processing';
         default:
           return 'Unknown';
@@ -40,10 +40,10 @@ export class ContractOverview extends Component {
     };
 
     const contractShortName = (contract) => {
-      switch (contract.type) {
-        case 'metering-point-operators':
+      switch (contract.attributes.type) {
+        case 'contract_metering_point_operator':
           return `MPO ${contract.attributes.contractNumber}`;
-        case 'localpool-processings':
+        case 'contract_localpool_processing':
           return `LCPP ${contract.attributes.contractNumber}`;
         default:
           return `${contract.attributes.contractNumber}`;

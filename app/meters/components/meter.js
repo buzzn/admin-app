@@ -20,7 +20,7 @@ export class Meter extends Component {
     return (
       <div className="meter">
         <h4>{ meter.attributes.manufacturerName } { meter.attributes.manufacturerProductName } { meter.attributes.manufacturerProductSerialnumber }</h4>
-        <Registers.ListContainer meterId={ meter.id } meterType={ meter.type } />
+        <Registers.ListContainer meterId={ meter.id } meterType={ meter.attributes.type } />
       </div>
     );
   }

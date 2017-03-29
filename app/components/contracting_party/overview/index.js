@@ -28,14 +28,14 @@ export class ContractingPartyOverview extends Component {
 
     if (loading || !contractingParty.id || !group) return (<div>Loading...</div>);
 
-    const customerType = type => (type === 'organizations' ? 'Organization' : 'Person');
+    const customerType = type => (type === 'organization' ? 'Organization' : 'Person');
     const { address } = contractingParty;
 
     const contractShortName = (contract) => {
-      switch (contract.type) {
-        case 'metering-point-operators':
+      switch (contract.attributes.type) {
+        case 'contract_metering_point_operator':
           return `MPO ${contract.attributes.contractNumber}`;
-        case 'localpool-processings':
+        case 'contract_localpool_processing':
           return `LCPP ${contract.attributes.contractNumber}`;
         default:
           return `${contract.attributes.contractNumber}`;
@@ -66,7 +66,7 @@ export class ContractingPartyOverview extends Component {
             </div>
             <div className="row">
               <div className="col-3"><span className="label">Type:</span></div>
-              <div className="col-9">{ customerType(contractingParty.type) }</div>
+              <div className="col-9">{ customerType(contractingParty.attributes.type) }</div>
             </div>
             <div className="row">
               <div className="col-3"><span className="label">ID:</span></div>

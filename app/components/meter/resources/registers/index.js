@@ -16,12 +16,12 @@ export class RegistersList extends Component {
   componentWillMount() {
     const { meterId, loadRegisters, loadMeter, meter, loadingMeter } = this.props;
     if ((!meter.id && !loadingMeter) || meterId !== meter.id) loadMeter(meterId);
-    if (meter.id === meterId) loadRegisters({ meterId, meterType: meter.type });
+    if (meter.id === meterId) loadRegisters({ meterId, meterType: meter.attributes.type });
   }
 
   componentWillReceiveProps({ meter, loadRegisters }) {
     if (meter.id && this.props.meter.id !== meter.id) {
-      loadRegisters({ meterId: meter.id, meterType: meter.type });
+      loadRegisters({ meterId: meter.id, meterType: meter.attributes.type });
     }
   }
 
@@ -74,7 +74,7 @@ export class RegistersList extends Component {
 
 function mapStateToProps(state) {
   return {
-    loading: state.registers.loading,
+    loading: state.registers.loadingRegisters,
     registers: state.registers.registers,
     meter: state.meters.meter,
     loadingMeter: state.meters.loadingMeter,

@@ -26,10 +26,10 @@ export class ContractsList extends Component {
     if (loading) return (<div>Loading...</div>);
 
     const contractType = (contract) => {
-      switch (contract.type) {
-        case 'metering-point-operators':
+      switch (contract.attributes.type) {
+        case 'contract_metering_point_operator':
           return 'Metering Point Operator';
-        case 'localpool-processings':
+        case 'contract_localpool_processing':
           return 'LCP processing';
         default:
           return 'Unknown';
