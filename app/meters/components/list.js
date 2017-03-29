@@ -14,9 +14,9 @@ export default ({ meters, pathPrefix, loading }) => (
                 key={ meter.id }
                 className="list-group-item list-group-item-action"
                 to={ `${pathPrefix}/${meter.id}` }>
-                { meter.attributes['manufacturer-name'] } { meter.attributes['manufacturer-product-name'] }
+                { meter.attributes.manufacturerName } { meter.attributes.manufacturerProductName }
                 <br />
-                { meter.attributes['manufacturer-product-serialnumber'] }
+                { meter.attributes.manufacturerProductSerialnumber }
               </Link>
               ))
             }

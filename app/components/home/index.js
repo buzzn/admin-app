@@ -25,7 +25,7 @@ function mapStateToProps(state) {
   return {
     configured: state.groups.configured,
     loading: state.groups.loadingGroups,
-    groups: filter(state.groups.groups, group => group.type === 'localpools'),
+    groups: filter(state.groups.groups, group => group.attributes.type === 'group_localpool'),
   };
 }
 

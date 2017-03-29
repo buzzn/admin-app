@@ -30,4 +30,8 @@ Bank.propTypes = {
   loading: React.PropTypes.bool.isRequired,
 };
 
+Bank.defaultProps = {
+  bank: {},
+};
+
 export default Bank;

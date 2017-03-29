@@ -3,17 +3,30 @@ import { actions, constants } from './actions';
 import api from './api';
 
 export const selectMeterId = state => state.meters.meterId;
+export const selectGroupId = state => state.meters.groupId;
 
 export function* getMeter({ apiUrl, apiPath, token }, { meterId }) {
   yield put(actions.loadingMeter());
-  yield put(actions.setMeter(null));
+  yield put(actions.setMeter({}));
   try {
     const meter = yield call(api.fetchMeter, { apiUrl, apiPath, token, meterId });
-    yield put(actions.setMeter(meter.data));
+    yield put(actions.setMeter(meter));
   } catch (error) {
     console.log(error);
   }
   yield put(actions.loadedMeter());
+}
+
+export function* getGroupMeters({ apiUrl, apiPath, token }, { groupId }) {
+  yield put(actions.loadingGroupMeters());
+  yield put(actions.setGroupMeters([]));
+  try {
+    const groupMeters = yield call(api.fetchGroupMeters, { apiUrl, apiPath, token, groupId });
+    yield put(actions.setGroupMeters(groupMeters));
+  } catch (error) {
+    console.log(error);
+  }
+  yield put(actions.loadedGroupMeters());
 }
 
 export function* getUserMeters({ apiUrl, apiPath, token }, { userId }) {
@@ -29,6 +42,7 @@ export function* getUserMeters({ apiUrl, apiPath, token }, { userId }) {
 }
 
 export function* metersSagas({ apiUrl, apiPath, token }) {
+  yield takeLatest(constants.LOAD_GROUP_METERS, getGroupMeters, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_USER_METERS, getUserMeters, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_METER, getMeter, { apiUrl, apiPath, token });
 }
@@ -37,7 +51,9 @@ export default function* () {
   const { apiUrl, apiPath } = yield take(constants.SET_API_PARAMS);
   let { token } = yield take(constants.SET_TOKEN);
   const meterId = yield select(selectMeterId);
+  const groupId = yield select(selectGroupId);
   if (meterId) yield call(getMeter, { apiUrl, apiPath, token }, { meterId });
+  if (groupId) yield call(getGroupMeters, { apiUrl, apiPath, token }, { groupId });
 
   while (true) {
     const sagas = yield fork(metersSagas, { apiUrl, apiPath, token });

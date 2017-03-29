@@ -2,6 +2,11 @@ export const constants = {
   SET_API_PARAMS: 'buzzn_registers/SET_API_PARAMS',
   SET_TOKEN: 'buzzn_registers/SET_TOKEN',
 
+  LOAD_REGISTER: 'buzzn_registers/LOAD_REGISTER',
+  LOADING_REGISTER: 'buzzn_registers/LOADING_REGISTER',
+  LOADED_REGISTER: 'buzzn_registers/LOADED_REGISTER',
+  SET_REGISTER: 'buzzn_registers/SET_REGISTER',
+
   LOAD_REGISTERS: 'buzzn_registers/LOAD_REGISTERS',
   LOADING_REGISTERS: 'buzzn_registers/LOADING_REGISTERS',
   LOADED_REGISTERS: 'buzzn_registers/LOADED_REGISTERS',
@@ -11,6 +16,11 @@ export const constants = {
 export const actions = {
   setApiParams: ({ apiPath, apiUrl }) => ({ type: constants.SET_API_PARAMS, apiPath, apiUrl }),
   setToken: token => ({ type: constants.SET_TOKEN, token }),
+
+  loadRegister: registerId => ({ type: constants.LOAD_REGISTER, registerId }),
+  loadingRegister: () => ({ type: constants.LOADING_REGISTER }),
+  loadedRegister: () => ({ type: constants.LOADED_REGISTER }),
+  setRegister: register => ({ type: constants.SET_REGISTER, register }),
 
   loadRegisters: ({ meterId, meterType, groupId }) => ({ type: constants.LOAD_REGISTERS, meterId, meterType, groupId }),
   loadingRegisters: () => ({ type: constants.LOADING_REGISTERS }),

@@ -15,12 +15,12 @@ export class Meter extends Component {
 
     if (loading) return (<div>Loading...</div>);
 
-    if (!meter) return (<div>Meter not found</div>);
+    if (!meter.id) return (<div>Meter not found</div>);
 
     return (
       <div className="meter">
-        <h4>{ meter.attributes['manufacturer-name'] } { meter.attributes['manufacturer-product-name'] } { meter.attributes['manufacturer-product-serialnumber'] }</h4>
-        <Registers.ListContainer meterId={ meter.id } meterType={ meter.type } />
+        <h4>{ meter.attributes.manufacturerName } { meter.attributes.manufacturerProductName } { meter.attributes.manufacturerProductSerialnumber }</h4>
+        <Registers.ListContainer meterId={ meter.id } meterType={ meter.attributes.type } />
       </div>
     );
   }
