@@ -16,12 +16,17 @@ export class ContractingPartyResources extends Component {
   }
 
   render() {
-    const { loading, contractingParty, match: { url } } = this.props;
+    const { loading, contractingParty, updateBankAccount, match: { url } } = this.props;
 
     return (
       <div>
         <Route path={ `${url}/contact` } render={ () => <div>Contact</div> } />
-        <Route path={ `${url}/bank` } render={ () => <Bank {...{ loading, bank: contractingParty.bankAccount }} /> } />
+        <Route
+          path={ `${url}/bank` }
+          render={ () => <Bank loading={ loading }
+                               bank={ contractingParty.bankAccount }
+                               updateBankAccount={ updateBankAccount }
+                               initialValues={ contractingParty.bankAccount ? contractingParty.bankAccount.attributes : {} } /> } />
       </div>
     );
   }
@@ -35,4 +40,7 @@ function mapStateToProps(state, props) {
   };
 }
 
-export default connect(mapStateToProps, { loadContract: Contracts.actions.loadContract })(ContractingPartyResources);
+export default connect(mapStateToProps, {
+  loadContract: Contracts.actions.loadContract,
+  updateBankAccount: Contracts.actions.updateBankAccount,
+})(ContractingPartyResources);

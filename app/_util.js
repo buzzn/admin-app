@@ -11,12 +11,23 @@ export function prepareHeaders(token) {
   };
 }
 
+export function wrapErrors(errors) {
+  const formErrors = { status: 422, _error: 'Form save failed' };
+  forEach(errors, (error) => {
+    const fieldName = camelCase(error.source.pointer.split('/').pop());
+    formErrors[fieldName] = error.detail;
+  });
+  return formErrors;
+}
+
 export function parseResponse(response) {
   const json = response.json();
   if (response.status >= 200 && response.status < 300) {
     return json;
   } else if (response.status === 404) {
-    return { status: 404 };
+    return Promise.resolve({ status: 404 });
+  } else if (response.status === 422) {
+    return json.then(error => Promise.resolve(wrapErrors(error.errors)));
   } else {
     return json.then(error => Promise.reject(error));
   }

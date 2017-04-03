@@ -11,6 +11,8 @@ export const constants = {
   LOADING_GROUP_CONTRACTS: 'buzzn_contracts/LOADING_GROUP_CONTRACTS',
   LOADED_GROUP_CONTRACTS: 'buzzn_contracts/LOADED_GROUP_CONTRACTS',
   SET_GROUP_CONTRACTS: 'buzzn_contracts/SET_GROUP_CONTRACTS',
+
+  UPDATE_BANK_ACCOUNT: 'buzzn_contracts/UPDATE_BANK_ACCOUNT',
 };
 
 export const actions = {
@@ -26,4 +28,7 @@ export const actions = {
   loadingGroupContracts: () => ({ type: constants.LOADING_GROUP_CONTRACTS }),
   loadedGroupContracts: () => ({ type: constants.LOADED_GROUP_CONTRACTS }),
   setGroupContracts: contracts => ({ type: constants.SET_GROUP_CONTRACTS, contracts }),
+
+  updateBankAccount: ({ bankAccountId, params, resolve, reject }) => (
+    { type: constants.UPDATE_BANK_ACCOUNT, bankAccountId, params, resolve, reject }),
 };

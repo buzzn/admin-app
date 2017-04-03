@@ -1,37 +1,94 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { Field, reduxForm } from 'redux-form';
+import pick from 'lodash/pick';
+import EditableInput from 'components/editable_input';
 
-const Bank = ({ loading, bank }) => {
-  if (loading) return (<div>Loading...</div>);
+class Bank extends Component {
+  static propTypes = {
+    bank: React.PropTypes.object.isRequired,
+    loading: React.PropTypes.bool.isRequired,
+    updateBankAccount: React.PropTypes.func,
+  };
 
-  if (!bank.id) return (<div></div>);
+  static defaultProps = {
+    bank: {},
+  };
 
-  return (
-    <div className="row">
-      <div className="col-6">
+  state = {
+    editMode: false,
+  };
+
+  handleEditSwitch(event) {
+    event.preventDefault();
+
+    const { updateBankAccount, reset } = this.props;
+    if (!updateBankAccount) {
+      this.setState({ editMode: false });
+    }
+    this.setState({ editMode: !this.state.editMode });
+    reset();
+    return false;
+  }
+
+  render() {
+    const { loading, bank, updateBankAccount, handleSubmit, pristine, submitting } = this.props;
+
+    if (loading) return (<div>Loading...</div>);
+
+    if (!bank.id) return (<div></div>);
+
+    const submit = (values) => {
+      return new Promise((resolve, reject) => {
+        updateBankAccount({ bankAccountId: bank.id, params: pick(values, ['iban']), resolve, reject });
+      })
+      .then(() => this.setState({ editMode: false }));
+    };
+
+    return (
+      <form onSubmit={ handleSubmit(submit) }>
         <div className="row">
-          <div className="col-6">Name:</div>
-          <div className="col-6">{ bank.attributes.bankName }</div>
+          <div className="col-6">
+            <div className="row">
+              <div className="col-6">Name:</div>
+              <div className="col-6">
+                { bank.attributes.bankName }
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-6">BIC:</div>
+              <div className="col-6">
+                { bank.attributes.bic }
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-6">IBAN:</div>
+              <div className="col-6">
+                <Field name="iban" editMode={ this.state.editMode } component={ EditableInput }/>
+              </div>
+            </div>
+          </div>
+          <div className="col-6">
+            {
+              updateBankAccount &&
+              <div className="edit-buttons">
+                {
+                  this.state.editMode ?
+                    <span>
+                      <button type="submit" disabled={pristine || submitting}>Submit</button>
+                      <button type="button" disabled={submitting} onClick={::this.handleEditSwitch}>Cancel</button>
+                    </span> :
+                  <button onClick={::this.handleEditSwitch}>Edit</button>
+                }
+              </div>
+            }
+          </div>
         </div>
-        <div className="row">
-          <div className="col-6">BIC:</div>
-          <div className="col-6">{ bank.attributes.bic }</div>
-        </div>
-        <div className="row">
-          <div className="col-6">IBAN:</div>
-          <div className="col-6">{ bank.attributes.iban }</div>
-        </div>
-      </div>
-    </div>
-  );
-};
+      </form>
+    );
+  }
+}
 
-Bank.propTypes = {
-  bank: React.PropTypes.object.isRequired,
-  loading: React.PropTypes.bool.isRequired,
-};
-
-Bank.defaultProps = {
-  bank: {},
-};
-
-export default Bank;
+export default reduxForm({
+  form: 'bankAccountUpdateForm',
+  enableReinitialize: true,
+})(Bank);

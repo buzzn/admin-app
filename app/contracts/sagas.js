@@ -1,4 +1,5 @@
-import { put, call, takeLatest, take, cancel, select } from 'redux-saga/effects';
+import { put, call, takeLatest, take, cancel, select, fork } from 'redux-saga/effects';
+import { SubmissionError } from 'redux-form';
 import uniqBy from 'lodash/uniqBy';
 import upperFirst from 'lodash/upperFirst';
 import { constants, actions } from './actions';
@@ -30,6 +31,23 @@ export function* getContract({ apiUrl, apiPath, token }, { contractId }) {
   yield put(actions.loadedContract());
 }
 
+export function* updateBankAccount({ apiUrl, apiPath, token }, { bankAccountId, params, resolve, reject }) {
+  try {
+    const res = yield call(api.updateBankAccount, { apiUrl, apiPath, token, bankAccountId, params });
+    if (res._error) {
+      yield call(reject, new SubmissionError(res));
+    } else {
+      yield call(resolve, res.data);
+      // FIXME: Extract bank/address loading into separate actions and use them after there will be understanding
+      // of all use cases for them
+      const contractId = yield select(selectContract);
+      yield call(getContract, { apiUrl, apiPath, token }, { contractId });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export function* getGroupContracts({ apiUrl, apiPath, token }, { groupId }) {
   yield put(actions.loadingGroupContracts());
   yield put(actions.setGroupContracts([]));
@@ -41,6 +59,12 @@ export function* getGroupContracts({ apiUrl, apiPath, token }, { groupId }) {
     console.log(error);
   }
   yield put(actions.loadedGroupContracts());
+}
+
+export function* contractSagas({ apiUrl, apiPath, token }) {
+  yield takeLatest(constants.LOAD_GROUP_CONTRACTS, getGroupContracts, { apiUrl, apiPath, token });
+  yield takeLatest(constants.LOAD_CONTRACT, getContract, { apiUrl, apiPath, token });
+  yield takeLatest(constants.UPDATE_BANK_ACCOUNT, updateBankAccount, { apiUrl, apiPath, token });
 }
 
 export default function* () {
@@ -56,11 +80,9 @@ export default function* () {
   }
 
   while (true) {
-    const groupSagas = yield takeLatest(constants.LOAD_GROUP_CONTRACTS, getGroupContracts, { apiUrl, apiPath, token });
-    const contractSagas = yield takeLatest(constants.LOAD_CONTRACT, getContract, { apiUrl, apiPath, token });
+    const sagas = yield fork(contractSagas, { apiUrl, apiPath, token });
     const payload = yield take(constants.SET_TOKEN);
     token = payload.token;
-    yield cancel(groupSagas);
-    yield cancel(contractSagas);
+    yield cancel(sagas);
   }
 }
