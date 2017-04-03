@@ -45,6 +45,14 @@ export default {
     .then(parseResponse)
     .then(json => camelizeResponseKeys(json.data));
   },
+  updateBankAccount({ token, apiUrl, apiPath, bankAccountId, params }) {
+    return fetch(`${apiUrl}${apiPath}/bank-accounts/${bankAccountId}`, {
+      headers: prepareHeaders(token),
+      method: 'PATCH',
+      body: JSON.stringify(params),
+    })
+    .then(parseResponse);
+  },
   fetchOperatorContract({ token, apiUrl, apiPath, groupId }) {
     return fetch(`${apiUrl}${apiPath}/groups/localpools/${groupId}/metering-point-operator-contract`, {
       headers: prepareHeaders(token),

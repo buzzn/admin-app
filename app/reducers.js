@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { reducer as formReducer } from 'redux-form';
 import Auth from '@buzzn/module_auth';
 import Bubbles from '@buzzn/module_bubbles';
 import Charts from '@buzzn/module_charts';
@@ -39,6 +40,7 @@ export function appReducer(state = initialState, action) {
 export default combineReducers({
   // apiUrl and apiPath will be located in 'config' property
   config: configReducer,
+  form: formReducer,
   auth: Auth.reducers,
   bubbles: Bubbles.reducers,
   charts: Charts.reducers,
