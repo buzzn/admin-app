@@ -50,6 +50,7 @@ const Root = ({ token }) => (
                 <Route path="/localpools/:groupId/powertakers/:userId" component={ PowertakerNavBarContainer } />
                 <Route path="/localpools/:groupId/contracts/:contractId/:partyType/show" component={ ContractingPartyNavBarContainer } />
                 <Route path="/localpools/:groupId/contracts/:contractId" component={ ContractNavBarContainer } />
+                <Route path="/localpools/:groupId/system/:meterId/registers/:registerId" render={ () => false } />
                 <Route path="/localpools/:groupId/system/:meterId" component={ MeterNavBar } />
                 <Route path="/localpools/:groupId" component={ LocalpoolNavBarContainer } />
               </Switch>
