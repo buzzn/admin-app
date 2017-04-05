@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import ContractingParty from './contracting_party';
 import Contracts from 'contracts';
 
@@ -17,7 +17,9 @@ export class ContractResources extends Component {
   }
 
   render() {
-    const { loading, customer, contractor, match: { url, params: { groupId, contractId } } } = this.props;
+    const { loading, customer, contractor, match: { url, isExact, params: { groupId, contractId } } } = this.props;
+
+    if (isExact) return (<Redirect to={ `${url}/customer` }/>);
 
     return (
       <div>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import Contracts from 'contracts';
 import Bank from 'components/bank';
 
@@ -16,7 +16,9 @@ export class ContractingPartyResources extends Component {
   }
 
   render() {
-    const { loading, contractingParty, updateBankAccount, match: { url } } = this.props;
+    const { loading, contractingParty, updateBankAccount, match: { url, isExact } } = this.props;
+
+    if (isExact) return (<Redirect to={ `${url}/contact` }/>);
 
     return (
       <div>
