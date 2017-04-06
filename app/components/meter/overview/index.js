@@ -9,7 +9,7 @@ import './style.scss';
 
 export class MeterOverview extends Component {
   static propTypes = {
-    group: React.PropTypes.object,
+    group: React.PropTypes.object.isRequired,
     meter: React.PropTypes.object.isRequired,
     loading: React.PropTypes.bool.isRequired,
     loadGroup: React.PropTypes.func.isRequired,
@@ -19,13 +19,15 @@ export class MeterOverview extends Component {
   componentWillMount() {
     const { loadMeter, loadGroup, group, match: { params: { meterId, groupId } } } = this.props;
     loadMeter(meterId);
-    if (!group) loadGroup(groupId);
+    if (!group.id) loadGroup(groupId);
   }
 
   render() {
     const { loading, group, meter } = this.props;
 
-    if (loading || !group || !meter.id) return (<div>Loading...</div>);
+    if (meter.status === 404) return (<div>Meter not found</div>);
+
+    if (loading || !group.id || !meter.id) return (<div>Loading...</div>);
 
     const breadcrumbs = [
       { id: group.id, link: `/localpools/${group.id}/system`, title: group.attributes.name },

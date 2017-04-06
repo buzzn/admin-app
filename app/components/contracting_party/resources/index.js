@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 import Contracts from 'contracts';
-import Bank from 'components/bank';
+import BankAccount from './bank_account';
 
 export class ContractingPartyResources extends Component {
   static propTypes = {
@@ -25,10 +25,9 @@ export class ContractingPartyResources extends Component {
         <Route path={ `${url}/contact` } render={ () => <div>Contact</div> } />
         <Route
           path={ `${url}/bank` }
-          render={ () => <Bank loading={ loading }
-                               bank={ contractingParty.bankAccount }
-                               updateBankAccount={ updateBankAccount }
-                               initialValues={ contractingParty.bankAccount ? contractingParty.bankAccount.attributes : {} } /> } />
+          render={ () => <BankAccount loading={ loading }
+                               bankAccount={ contractingParty.bankAccount }
+                               updateBankAccount={ updateBankAccount } /> } />
       </div>
     );
   }

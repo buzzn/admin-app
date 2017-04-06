@@ -1,5 +1,5 @@
 import 'whatwg-fetch';
-import { prepareHeaders, parseResponse, camelizeResponseArray, camelizeResponseKeys } from '../_util';
+import { prepareHeaders, parseResponse, camelizeResponseArray, camelizeResponseKeys, mergeData } from '../_util';
 
 export default {
   fetchRegister({ token, apiUrl, apiPath, registerId }) {
@@ -7,7 +7,8 @@ export default {
       headers: prepareHeaders(token),
     })
     .then(parseResponse)
-    .then(json => camelizeResponseKeys(json.data));
+    .then(mergeData)
+    .then(json => camelizeResponseKeys(json));
   },
   fetchMeterRegisters({ token, apiUrl, apiPath, meterId, meterType }) {
     // FIXME: temp slice workaround, see https://github.com/buzzn/buzzn/issues/680

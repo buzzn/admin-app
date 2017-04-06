@@ -10,7 +10,7 @@ import './style.scss';
 
 export class RegisterOverview extends Component {
   static propTypes = {
-    group: React.PropTypes.object,
+    group: React.PropTypes.object.isRequired,
     meter: React.PropTypes.object.isRequired,
     register: React.PropTypes.object.isRequired,
     loading: React.PropTypes.bool.isRequired,
@@ -31,13 +31,15 @@ export class RegisterOverview extends Component {
 
     loadRegister(registerId);
     if (!meter.id) loadMeter(meterId);
-    if (!group) loadGroup(groupId);
+    if (!group.id) loadGroup(groupId);
   }
 
   render() {
     const { loading, group, meter, register } = this.props;
 
-    if (loading || !group || !meter.id || !register.id) return (<div>Loading...</div>);
+    if (register.status === 404) return (<div>Register not found</div>);
+
+    if (loading || !group.id || !meter.id || !register.id) return (<div>Loading...</div>);
 
     const breadcrumbs = [
       { id: group.id, link: `/localpools/${group.id}/system`, title: group.attributes.name },

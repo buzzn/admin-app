@@ -41,7 +41,7 @@ export function* getUser({ apiUrl, apiPath, token }, { userId }) {
   yield put(actions.setUser(null));
   try {
     const user = yield call(api.fetchUser, { apiUrl, apiPath, token, userId });
-    yield put(actions.setUser(user.data));
+    yield put(actions.setUser(user));
     yield put(Profiles.actions.loadProfile(userId));
   } catch (error) {
     console.log(error);

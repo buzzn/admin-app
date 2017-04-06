@@ -28,7 +28,9 @@ export class RegistersList extends Component {
   render() {
     const { registers, loading, groupId, meter } = this.props;
 
-    if (loading) return (<div>Loading...</div>);
+    if (meter.status === 404) return (<div>Meter not found</div>);
+
+    if (loading || !meter.id) return (<div>Loading...</div>);
 
     return (
       <div className="row">

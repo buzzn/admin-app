@@ -1,13 +1,14 @@
 import 'whatwg-fetch';
 import flatten from 'lodash/flatten';
-import { prepareHeaders, parseResponse, remainingPages } from '../_util';
+import { prepareHeaders, parseResponse, remainingPages, mergeData } from '../_util';
 
 export default {
   fetchUser({ token, apiUrl, apiPath, userId }) {
     return fetch(`${apiUrl}${apiPath}/users/${userId}`, {
       headers: prepareHeaders(token),
     })
-    .then(parseResponse);
+    .then(parseResponse)
+    .then(mergeData);
   },
   fetchUsers({ token, apiUrl, apiPath }) {
     return fetch(`${apiUrl}${apiPath}/users`, {

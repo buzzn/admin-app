@@ -2,6 +2,7 @@ import map from 'lodash/map';
 import range from 'lodash/range';
 import forEach from 'lodash/forEach';
 import camelCase from 'lodash/camelCase';
+import unset from 'lodash/unset';
 
 export function prepareHeaders(token) {
   return {
@@ -31,6 +32,13 @@ export function parseResponse(response) {
   } else {
     return json.then(error => Promise.reject(error));
   }
+}
+
+export function mergeData(json) {
+  if (!json.data || Array.isArray(json.data)) return json;
+  const merged = { ...json, ...json.data };
+  unset(merged, 'data');
+  return merged;
 }
 
 export function remainingPages({ apiUrl, apiPath, id, json, model, endpoint, token }) {
