@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import Contracts from 'contracts';
@@ -9,12 +10,12 @@ import './style.scss';
 
 export class ContractingPartyOverview extends Component {
   static propTypes = {
-    contractingParty: React.PropTypes.object.isRequired,
-    contract: React.PropTypes.object.isRequired,
-    group: React.PropTypes.object,
-    loading: React.PropTypes.bool.isRequired,
-    loadContract: React.PropTypes.func.isRequired,
-    loadGroup: React.PropTypes.func.isRequired,
+    contractingParty: PropTypes.object.isRequired,
+    contract: PropTypes.object.isRequired,
+    group: PropTypes.object,
+    loading: PropTypes.bool.isRequired,
+    loadContract: PropTypes.func.isRequired,
+    loadGroup: PropTypes.func.isRequired,
   };
 
   componentWillMount() {

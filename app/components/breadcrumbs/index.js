@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import './style.scss';
@@ -23,7 +24,7 @@ const Breadcrumbs = ({ breadcrumbs }) => (
 );
 
 Breadcrumbs.propTypes = {
-  breadcrumbs: React.PropTypes.array.isRequired,
+  breadcrumbs: PropTypes.array.isRequired,
 };
 
 Breadcrumbs.defaultProps = {

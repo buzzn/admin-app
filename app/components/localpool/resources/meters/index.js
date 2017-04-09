@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Meters from 'meters';
 
 export class MetersList extends Component {
   static propTypes = {
-    loading: React.PropTypes.bool.isRequired,
-    meters: React.PropTypes.array.isRequired,
-    loadGroupMeters: React.PropTypes.func.isRequired,
-    groupId: React.PropTypes.string.isRequired,
+    loading: PropTypes.bool.isRequired,
+    meters: PropTypes.array.isRequired,
+    loadGroupMeters: PropTypes.func.isRequired,
+    groupId: PropTypes.string.isRequired,
   };
 
   static defaultProps = {

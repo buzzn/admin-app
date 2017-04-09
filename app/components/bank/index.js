@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
 import pick from 'lodash/pick';
 import EditableInput from 'components/editable_input';
 
 class Bank extends Component {
   static propTypes = {
-    bank: React.PropTypes.object.isRequired,
-    loading: React.PropTypes.bool.isRequired,
-    updateBankAccount: React.PropTypes.func,
+    bank: PropTypes.object.isRequired,
+    loading: PropTypes.bool.isRequired,
+    updateBankAccount: PropTypes.func,
   };
 
   static defaultProps = {

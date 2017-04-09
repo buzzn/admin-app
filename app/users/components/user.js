@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { actions } from '../actions';
 import Profile from '../../profiles';
@@ -7,12 +8,12 @@ import Meters from '../../meters';
 
 export class User extends Component {
   static propTypes = {
-    usersPathPrefix: React.PropTypes.string,
-    metersPathPrefix: React.PropTypes.string,
-    groupsPathPrefix: React.PropTypes.string,
-    friends: React.PropTypes.array.isRequired,
-    userId: React.PropTypes.string.isRequired,
-    setUserId: React.PropTypes.func.isRequired,
+    usersPathPrefix: PropTypes.string,
+    metersPathPrefix: PropTypes.string,
+    groupsPathPrefix: PropTypes.string,
+    friends: PropTypes.array.isRequired,
+    userId: PropTypes.string.isRequired,
+    setUserId: PropTypes.func.isRequired,
   };
 
   static defaultProps = {

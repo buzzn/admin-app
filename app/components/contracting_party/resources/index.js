@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 import Contracts from 'contracts';
@@ -6,8 +7,8 @@ import Bank from 'components/bank';
 
 export class ContractingPartyResources extends Component {
   static propTypes = {
-    contractingParty: React.PropTypes.object.isRequired,
-    loading: React.PropTypes.bool.isRequired,
+    contractingParty: PropTypes.object.isRequired,
+    loading: PropTypes.bool.isRequired,
   };
 
   componentWillMount() {

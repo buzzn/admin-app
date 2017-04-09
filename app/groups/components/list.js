@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 export const List = ({ groups, pathPrefix, loading }) => (
@@ -26,9 +27,9 @@ export const List = ({ groups, pathPrefix, loading }) => (
 );
 
 List.propTypes = {
-  groups: React.PropTypes.array.isRequired,
-  pathPrefix: React.PropTypes.string.isRequired,
-  loading: React.PropTypes.bool.isRequired,
+  groups: PropTypes.array.isRequired,
+  pathPrefix: PropTypes.string.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 List.defaultProps = {

@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { actions } from '../actions';
 import Register from './register';
 
 export class List extends Component {
   static propTypes = {
-    registers: React.PropTypes.array.isRequired,
-    loadRegisters: React.PropTypes.func.isRequired,
-    meterId: React.PropTypes.string,
-    meterType: React.PropTypes.string,
-    groupId: React.PropTypes.string,
+    registers: PropTypes.array.isRequired,
+    loadRegisters: PropTypes.func.isRequired,
+    meterId: PropTypes.string,
+    meterType: PropTypes.string,
+    groupId: PropTypes.string,
   };
 
   static defaultProps = {

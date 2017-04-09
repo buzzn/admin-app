@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { actions } from '../actions';
 import GroupsList from './list';
 
 export class ListContainer extends Component {
   static propTypes = {
-    loadGroups: React.PropTypes.func.isRequired,
-    loadUserGroups: React.PropTypes.func.isRequired,
-    userId: React.PropTypes.string,
-    groups: React.PropTypes.array.isRequired,
-    pathPrefix: React.PropTypes.string,
-    pathname: React.PropTypes.string,
-    loading: React.PropTypes.bool.isRequired,
+    loadGroups: PropTypes.func.isRequired,
+    loadUserGroups: PropTypes.func.isRequired,
+    userId: PropTypes.string,
+    groups: PropTypes.array.isRequired,
+    pathPrefix: PropTypes.string,
+    pathname: PropTypes.string,
+    loading: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {

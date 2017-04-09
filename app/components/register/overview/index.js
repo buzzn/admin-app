@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import Groups from 'groups';
@@ -10,13 +11,13 @@ import './style.scss';
 
 export class RegisterOverview extends Component {
   static propTypes = {
-    group: React.PropTypes.object,
-    meter: React.PropTypes.object.isRequired,
-    register: React.PropTypes.object.isRequired,
-    loading: React.PropTypes.bool.isRequired,
-    loadGroup: React.PropTypes.func.isRequired,
-    loadMeter: React.PropTypes.func.isRequired,
-    loadRegister: React.PropTypes.func.isRequired,
+    group: PropTypes.object,
+    meter: PropTypes.object.isRequired,
+    register: PropTypes.object.isRequired,
+    loading: PropTypes.bool.isRequired,
+    loadGroup: PropTypes.func.isRequired,
+    loadMeter: PropTypes.func.isRequired,
+    loadRegister: PropTypes.func.isRequired,
   };
 
   componentWillMount() {

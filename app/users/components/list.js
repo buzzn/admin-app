@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { actions } from '../actions';
 import Profile from '../../profiles';
 
 export class List extends Component {
   static propTypes = {
-    users: React.PropTypes.array.isRequired,
-    usersPathPrefix: React.PropTypes.string,
-    loadUsers: React.PropTypes.func.isRequired,
-    loadGroupMembers: React.PropTypes.func.isRequired,
-    loadGroupManagers: React.PropTypes.func.isRequired,
-    header: React.PropTypes.string.isRequired,
-    groupId: React.PropTypes.string,
-    type: React.PropTypes.string,
+    users: PropTypes.array.isRequired,
+    usersPathPrefix: PropTypes.string,
+    loadUsers: PropTypes.func.isRequired,
+    loadGroupMembers: PropTypes.func.isRequired,
+    loadGroupManagers: PropTypes.func.isRequired,
+    header: PropTypes.string.isRequired,
+    groupId: PropTypes.string,
+    type: PropTypes.string,
   };
 
   static defaultProps = {

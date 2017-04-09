@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Registers from 'registers';
@@ -6,11 +7,11 @@ import Meters from 'meters';
 
 export class RegistersList extends Component {
   static propTypes = {
-    loading: React.PropTypes.bool.isRequired,
-    registers: React.PropTypes.array.isRequired,
-    meter: React.PropTypes.object.isRequired,
-    loadRegisters: React.PropTypes.func.isRequired,
-    loadMeter: React.PropTypes.func.isRequired,
+    loading: PropTypes.bool.isRequired,
+    registers: PropTypes.array.isRequired,
+    meter: PropTypes.object.isRequired,
+    loadRegisters: PropTypes.func.isRequired,
+    loadMeter: PropTypes.func.isRequired,
   };
 
   componentWillMount() {

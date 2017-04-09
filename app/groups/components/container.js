@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
 import ListConnected from './list_container';
 import GroupConnected from './group';
@@ -11,7 +12,7 @@ export const Container = ({ pathname }) => (
 );
 
 Container.propTypes = {
-  pathname: React.PropTypes.string.isRequired,
+  pathname: PropTypes.string.isRequired,
 };
 
 export default Container;

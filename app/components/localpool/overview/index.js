@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import Bubbles from '@buzzn/module_bubbles';
@@ -10,8 +11,8 @@ import './style.scss';
 
 export class LocalpoolOverview extends Component {
   static propTypes = {
-    group: React.PropTypes.object,
-    loading: React.PropTypes.bool.isRequired,
+    group: PropTypes.object,
+    loading: PropTypes.bool.isRequired,
   };
 
   componentWillMount() {

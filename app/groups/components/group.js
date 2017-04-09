@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Bubbles from '@buzzn/module_bubbles';
 import { actions } from '../actions';
@@ -7,9 +8,9 @@ import Users from '../../users';
 
 export class Group extends Component {
   static propTypes = {
-    group: React.PropTypes.object,
-    loading: React.PropTypes.bool,
-    loadGroup: React.PropTypes.func.isRequired,
+    group: PropTypes.object,
+    loading: PropTypes.bool,
+    loadGroup: PropTypes.func.isRequired,
   };
 
   componentWillMount() {

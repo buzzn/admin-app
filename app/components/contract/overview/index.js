@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
@@ -10,11 +11,11 @@ import './style.scss';
 
 export class ContractOverview extends Component {
   static propTypes = {
-    contract: React.PropTypes.object.isRequired,
-    group: React.PropTypes.object,
-    loading: React.PropTypes.bool.isRequired,
-    loadContract: React.PropTypes.func.isRequired,
-    loadGroup: React.PropTypes.func.isRequired,
+    contract: PropTypes.object.isRequired,
+    group: PropTypes.object,
+    loading: PropTypes.bool.isRequired,
+    loadContract: PropTypes.func.isRequired,
+    loadGroup: PropTypes.func.isRequired,
   };
 
   componentWillMount() {
