@@ -21,16 +21,18 @@ export class ContractOverview extends Component {
   componentWillMount() {
     const { loadContract, loadGroup, group, match: { params: { contractId, groupId } } } = this.props;
     loadContract(contractId);
-    if (!group) loadGroup(groupId);
+    if (!group.id) loadGroup(groupId);
   }
 
   render() {
     const { contract, group, loading } = this.props;
 
-    if (loading || !contract.id || !group) return (<div>Loading...</div>);
+    if (contract.status === 404) return (<div>Contract not found</div>);
 
-    const contractType = (contract) => {
-      switch (contract.attributes.type) {
+    if (loading || !contract.id || !group.id) return (<div>Loading...</div>);
+
+    const contractType = (cont) => {
+      switch (cont.attributes.type) {
         case 'contract_metering_point_operator':
           return 'Metering Point Operator';
         case 'contract_localpool_processing':
@@ -40,14 +42,14 @@ export class ContractOverview extends Component {
       }
     };
 
-    const contractShortName = (contract) => {
-      switch (contract.attributes.type) {
+    const contractShortName = (cont) => {
+      switch (cont.attributes.type) {
         case 'contract_metering_point_operator':
-          return `MPO ${contract.attributes.contractNumber}`;
+          return `MPO ${cont.attributes.contractNumber}`;
         case 'contract_localpool_processing':
-          return `LCPP ${contract.attributes.contractNumber}`;
+          return `LCPP ${cont.attributes.contractNumber}`;
         default:
-          return `${contract.attributes.contractNumber}`;
+          return `${cont.attributes.contractNumber}`;
       }
     };
 

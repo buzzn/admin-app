@@ -6,7 +6,7 @@ export const initialState = {
   loadingGroupMembers: false,
   loadingGroupManagers: false,
   loadingGroupPowertakers: false,
-  user: null,
+  user: {},
   users: [],
   groupMembers: [],
   groupManagers: [],

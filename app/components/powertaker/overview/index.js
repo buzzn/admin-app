@@ -23,7 +23,7 @@ export class PowertakerOverview extends Component {
 
   componentWillMount() {
     const { loadingGroup, group, loadGroup, profile, loadUser, match: { params: { groupId, userId } } } = this.props;
-    if (!loadingGroup && !group) loadGroup(groupId);
+    if (!loadingGroup && !group.id) loadGroup(groupId);
     if (!profile.loading && !profile.firstName) loadUser(userId);
   }
 
@@ -35,7 +35,7 @@ export class PowertakerOverview extends Component {
       match: { params: { userId } },
     } = this.props;
 
-    if (loading || loadingGroup || !group) return (<div>Loading...</div>);
+    if (loading || loadingGroup || !group.id) return (<div>Loading...</div>);
 
     const breadcrumbs = [
       { id: group.id, link: `/localpools/${group.id}/powertakers`, title: group.attributes.name },

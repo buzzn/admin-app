@@ -25,14 +25,14 @@ export class ContractResources extends Component {
     return (
       <div>
         <Route path={ `${url}/customer` } render={ () => <ContractingParty {...{
-          customer,
+          contractingParty: customer,
           loading,
           partyType: 'customer',
           groupId,
           contractId,
         }} /> } />
         <Route path={ `${url}/contractor` } render={ () => <ContractingParty {...{
-          customer: contractor,
+          contractingParty: contractor,
           loading,
           partyType: 'contractor',
           groupId,

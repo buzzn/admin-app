@@ -35,9 +35,9 @@ export class LocalpoolOverview extends Component {
   render() {
     const { group, loading, managers, profiles, token } = this.props;
 
-    if (loading) return (<div>Loading...</div>);
+    if (group.status === 404) return (<div>Group not found</div>);
 
-    if (!group) return (<div>404</div>);
+    if (loading || !group.id) return (<div>Loading...</div>);
 
     const managersProfiles = managers.map(manager => (profiles[manager.id] ?
       `${profiles[manager.id].firstName} ${profiles[manager.id].lastName}` :

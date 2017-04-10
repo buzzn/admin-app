@@ -21,25 +21,27 @@ export class ContractingPartyOverview extends Component {
   componentWillMount() {
     const { loadContract, loadGroup, group, contractingParty, match: { params: { contractId, groupId } } } = this.props;
     if (!contractingParty.id) loadContract(contractId);
-    if (!group) loadGroup(groupId);
+    if (!group.id) loadGroup(groupId);
   }
 
   render() {
     const { contractingParty, loading, group, contract } = this.props;
 
-    if (loading || !contractingParty.id || !group) return (<div>Loading...</div>);
+    if (contractingParty.status === 404) return (<div>Contracting party not found</div>);
 
-    const customerType = type => (type === 'organization' ? 'Organization' : 'Person');
+    if (loading || !contractingParty.id || !group.id) return (<div>Loading...</div>);
+
+    const cpType = type => (type === 'organization' ? 'Organization' : 'Person');
     const { address } = contractingParty;
 
-    const contractShortName = (contract) => {
-      switch (contract.attributes.type) {
+    const contractShortName = (cont) => {
+      switch (cont.attributes.type) {
         case 'contract_metering_point_operator':
-          return `MPO ${contract.attributes.contractNumber}`;
+          return `MPO ${cont.attributes.contractNumber}`;
         case 'contract_localpool_processing':
-          return `LCPP ${contract.attributes.contractNumber}`;
+          return `LCPP ${cont.attributes.contractNumber}`;
         default:
-          return `${contract.attributes.contractNumber}`;
+          return `${cont.attributes.contractNumber}`;
       }
     };
 
@@ -67,7 +69,7 @@ export class ContractingPartyOverview extends Component {
             </div>
             <div className="row">
               <div className="col-3"><span className="label">Type:</span></div>
-              <div className="col-9">{ customerType(contractingParty.attributes.type) }</div>
+              <div className="col-9">{ cpType(contractingParty.attributes.type) }</div>
             </div>
             <div className="row">
               <div className="col-3"><span className="label">ID:</span></div>

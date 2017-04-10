@@ -54,7 +54,7 @@ export class ContractsList extends Component {
               </tr>
             </thead>
             <tbody>
-              { contracts.map(contract =>
+              { contracts.filter(c => !!c.id).map(contract =>
                   <tr key={ contract.id }>
                     <td>{ contractType(contract) }</td>
                     <td>{ contract.attributes.signingDate }</td>

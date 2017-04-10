@@ -17,7 +17,7 @@ export function* getContract({ apiUrl, apiPath, token }, { contractId }) {
     const types = ['contractor', 'customer'];
     for (let i = 0; i < types.length; i += 1) {
       let p = yield call(api[`fetch${upperFirst(types[i])}`], { apiUrl, apiPath, token, contractId });
-      if (p.attributes.type === 'organization') {
+      if (p.attributes && p.attributes.type === 'organization') {
         p = yield call(api.fetchOrganization, { apiUrl, apiPath, token, organizationId: p.id });
         p.address = yield call(api.fetchOrganizationAddress, { apiUrl, apiPath, token, organizationId: p.id });
         p.bankAccount = yield call(api.fetchOrganizationBankAccount, { apiUrl, apiPath, token, organizationId: p.id });

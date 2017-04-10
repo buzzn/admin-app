@@ -1,6 +1,13 @@
 import 'whatwg-fetch';
 import flatten from 'lodash/flatten';
-import { prepareHeaders, parseResponse, remainingPages, camelizeResponseArray, camelizeResponseKeys } from '../_util';
+import {
+  prepareHeaders,
+  parseResponse,
+  remainingPages,
+  camelizeResponseArray,
+  camelizeResponseKeys,
+  mergeData,
+} from '../_util';
 
 export default {
   fetchMeter({ token, apiUrl, apiPath, meterId }) {
@@ -8,7 +15,8 @@ export default {
       headers: prepareHeaders(token),
     })
     .then(parseResponse)
-    .then(json => camelizeResponseKeys(json.data));
+    .then(mergeData)
+    .then(json => camelizeResponseKeys(json));
   },
   fetchGroupMeters({ token, apiUrl, apiPath, groupId }) {
     return fetch(`${apiUrl}${apiPath}/groups/${groupId}/meters`, {

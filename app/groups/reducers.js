@@ -7,7 +7,7 @@ export const initialState = {
   loadingGroup: false,
   groups: [],
   userGroups: [],
-  group: null,
+  group: {},
 };
 
 export default function (state = initialState, action) {

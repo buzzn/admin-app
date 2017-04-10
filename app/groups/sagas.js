@@ -8,10 +8,10 @@ export const selectUserId = state => state.groups.userId;
 
 export function* getGroup({ apiUrl, apiPath, token }, { groupId }) {
   yield put(actions.loadingGroup());
-  yield put(actions.setGroup(null));
+  yield put(actions.setGroup({}));
   try {
     const group = yield call(api.fetchGroup, { apiUrl, apiPath, token, groupId });
-    yield put(actions.setGroup(group.data));
+    yield put(actions.setGroup(group));
     yield put(Registers.actions.loadRegisters({ groupId }));
   } catch (error) {
     console.log(error);

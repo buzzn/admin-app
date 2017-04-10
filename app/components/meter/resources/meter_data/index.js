@@ -18,6 +18,8 @@ export class MeterData extends Component {
   render() {
     const { loading, meter } = this.props;
 
+    if (meter.status === 404) return (<div>Meter not found</div>);
+
     if (loading || !meter.id) return (<div>Loading...</div>);
 
     return (
