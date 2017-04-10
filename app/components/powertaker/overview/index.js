@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import Groups from 'groups';
@@ -9,11 +10,11 @@ import './style.scss';
 
 export class PowertakerOverview extends Component {
   static propTypes = {
-    profile: React.PropTypes.object,
-    group: React.PropTypes.object,
-    loadingGroup: React.PropTypes.bool.isRequired,
-    loadGroup: React.PropTypes.func.isRequired,
-    loadUser: React.PropTypes.func.isRequired,
+    profile: PropTypes.object,
+    group: PropTypes.object,
+    loadingGroup: PropTypes.bool.isRequired,
+    loadGroup: PropTypes.func.isRequired,
+    loadUser: PropTypes.func.isRequired,
   };
 
   static defaultProps = {

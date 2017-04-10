@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Users from 'users';
@@ -7,11 +8,11 @@ import './style.scss';
 
 export class Powertakers extends Component {
   static propTypes = {
-    loadGroupPowertakers: React.PropTypes.func.isRequired,
-    groupId: React.PropTypes.string.isRequired,
-    users: React.PropTypes.array.isRequired,
-    profiles: React.PropTypes.object.isRequired,
-    loading: React.PropTypes.bool.isRequired,
+    loadGroupPowertakers: PropTypes.func.isRequired,
+    groupId: PropTypes.string.isRequired,
+    users: PropTypes.array.isRequired,
+    profiles: PropTypes.object.isRequired,
+    loading: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {

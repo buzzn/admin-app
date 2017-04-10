@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 const ContractingParty = ({ loading, contractingParty, partyType, groupId, contractId }) => {
@@ -45,11 +46,11 @@ const ContractingParty = ({ loading, contractingParty, partyType, groupId, contr
 };
 
 ContractingParty.propTypes = {
-  loading: React.PropTypes.bool.isRequired,
-  contractingParty: React.PropTypes.object.isRequired,
-  partyType: React.PropTypes.string.isRequired,
-  groupId: React.PropTypes.string.isRequired,
-  contractId: React.PropTypes.string.isRequired,
+  loading: PropTypes.bool.isRequired,
+  customer: PropTypes.object.isRequired,
+  partyType: PropTypes.string.isRequired,
+  groupId: PropTypes.string.isRequired,
+  contractId: PropTypes.string.isRequired,
 };
 
 export default ContractingParty;

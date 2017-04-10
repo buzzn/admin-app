@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Meters from 'meters';
 
 export class MeterData extends Component {
   static propTypes = {
-    meter: React.PropTypes.object.isRequired,
-    loading: React.PropTypes.bool.isRequired,
-    loadMeter: React.PropTypes.func.isRequired,
+    meter: PropTypes.object.isRequired,
+    loading: PropTypes.bool.isRequired,
+    loadMeter: PropTypes.func.isRequired,
   };
 
   componentWillMount() {

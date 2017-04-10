@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Contracts from 'contracts';
 
 export class ContractsList extends Component {
   static propTypes = {
-    loadGroupContracts: React.PropTypes.func.isRequired,
-    groupId: React.PropTypes.string.isRequired,
-    contracts: React.PropTypes.array.isRequired,
-    loading: React.PropTypes.bool.isRequired,
+    loadGroupContracts: PropTypes.func.isRequired,
+    groupId: PropTypes.string.isRequired,
+    contracts: PropTypes.array.isRequired,
+    loading: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import PropTypes from 'prop-types';
+
 const EditableInput = ({ editMode, input, meta: { touched, error } }) => {
   if (editMode) {
     return (
@@ -13,9 +15,9 @@ const EditableInput = ({ editMode, input, meta: { touched, error } }) => {
 };
 
 EditableInput.propTypes = {
-  editMode: React.PropTypes.bool.isRequired,
-  input: React.PropTypes.object.isRequired,
-  meta: React.PropTypes.object.isRequired,
+  editMode: PropTypes.bool.isRequired,
+  input: PropTypes.object.isRequired,
+  meta: PropTypes.object.isRequired,
 };
 
 export default EditableInput;

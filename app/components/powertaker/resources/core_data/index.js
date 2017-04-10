@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 export const CoreData = ({ profile: { firstName, title, loading } }) => (
@@ -13,7 +14,7 @@ export const CoreData = ({ profile: { firstName, title, loading } }) => (
 );
 
 CoreData.propTypes = {
-  profile: React.PropTypes.object,
+  profile: PropTypes.object,
 };
 
 CoreData.defaultProps = {

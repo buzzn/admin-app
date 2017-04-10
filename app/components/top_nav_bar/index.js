@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import filter from 'lodash/filter';
@@ -20,12 +21,12 @@ import LogoImg from '../../images/bz_logo_115px_white.png';
 
 export class TopNavBar extends Component {
   static propTypes = {
-    signedIn: React.PropTypes.bool.isRequired,
-    dispatch: React.PropTypes.func.isRequired,
-    myProfile: React.PropTypes.shape({
-      firstName: React.PropTypes.string,
-      lastName: React.PropTypes.string,
-      mdImg: React.PropTypes.string,
+    signedIn: PropTypes.bool.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    myProfile: PropTypes.shape({
+      firstName: PropTypes.string,
+      lastName: PropTypes.string,
+      mdImg: PropTypes.string,
     }),
   };
 
