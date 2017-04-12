@@ -25,7 +25,7 @@ export class ContractingPartyOverview extends Component {
   }
 
   render() {
-    const { contractingParty, loading, group, contract } = this.props;
+    const { contractingParty, loading, group, contract, match: { params: { partyType } } } = this.props;
 
     if (contractingParty.status === 404) return (<div>Contracting party not found</div>);
 
@@ -47,7 +47,7 @@ export class ContractingPartyOverview extends Component {
 
     const breadcrumbs = [
       { id: group.id, link: `/localpools/${group.id}/contracts`, title: group.attributes.name },
-      { id: contract.id, link: `/localpools/${group.id}/contracts/${contract.id}`, title: contractShortName(contract) },
+      { id: contract.id, link: `/localpools/${group.id}/contracts/${contract.id}/${partyType}`, title: contractShortName(contract) },
       { id: contractingParty.id, title: contractingParty.attributes.name },
     ];
 

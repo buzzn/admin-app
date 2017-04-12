@@ -2,7 +2,6 @@ import { put, call, takeLatest, take, fork, cancel, select } from 'redux-saga/ef
 import { actions, constants } from './actions';
 import api from './api';
 import Profiles from '../profiles';
-import Friends from '../friends';
 import Meters from '../meters';
 import Groups from '../groups';
 
@@ -68,7 +67,6 @@ export function* getUserInfo({ apiUrl, apiPath, token }, { userId }) {
   yield put(Groups.actions.loadUserGroups(userId));
   yield put(Meters.actions.loadUserMeters(userId));
   yield put(Profiles.actions.loadProfile(userId));
-  yield put(Friends.actions.loadFriends(userId));
   yield put(actions.loadUser(userId));
 }
 

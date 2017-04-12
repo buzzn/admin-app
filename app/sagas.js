@@ -6,7 +6,6 @@ import api from './api';
 import Groups from './groups';
 import Meters from './meters';
 import Profiles from './profiles';
-import Friends from './friends';
 import Registers from './registers';
 import Users from './users';
 import Contracts from './contracts';
@@ -30,7 +29,6 @@ export default function* () {
   yield put(Groups.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Meters.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Profiles.actions.setApiParams({ apiUrl, apiPath }));
-  yield put(Friends.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Registers.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Users.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Contracts.actions.setApiParams({ apiUrl, apiPath }));
@@ -41,7 +39,6 @@ export default function* () {
       yield put(Groups.actions.setToken(token));
       yield put(Meters.actions.setToken(token));
       yield put(Profiles.actions.setToken(token));
-      yield put(Friends.actions.setToken(token));
       yield put(Registers.actions.setToken(token));
       yield put(Users.actions.setToken(token));
       yield put(Contracts.actions.setToken(token));

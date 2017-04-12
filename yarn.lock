@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@buzzn/module_auth@git+https://github.com/buzzn/module-auth.git#v1.0.5":
+"@buzzn/module_auth@git+https://github.com/buzzn/module-auth.git#v1.0.6":
   version "1.0.0"
-  resolved "git+https://github.com/buzzn/module-auth.git#a0257b89721aa7c194958ef03a16148307abb2ce"
+  resolved "git+https://github.com/buzzn/module-auth.git#739a8878c0f979ca8a633dfe666ff864e4588e16"
 
 "@buzzn/module_bubbles@git+https://github.com/buzzn/module-bubbles.git#v1.0.11":
   version "1.0.0"
