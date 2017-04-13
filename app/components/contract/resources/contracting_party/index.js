@@ -47,7 +47,7 @@ const ContractingParty = ({ loading, contractingParty, partyType, groupId, contr
 
 ContractingParty.propTypes = {
   loading: PropTypes.bool.isRequired,
-  customer: PropTypes.object.isRequired,
+  contractingParty: PropTypes.object.isRequired,
   partyType: PropTypes.string.isRequired,
   groupId: PropTypes.string.isRequired,
   contractId: PropTypes.string.isRequired,

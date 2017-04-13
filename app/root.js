@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
+import RowRoute from 'components/row_route';
 import TopNavBarContainer from 'components/top_nav_bar';
 import SignInContainer from 'components/sign_in';
 import HomeContainer from 'components/home';
@@ -8,6 +9,7 @@ import LocalpoolOverviewContainer from 'components/localpool/overview';
 import PowertakerOverviewContainer from 'components/powertaker/overview';
 import ContractOverviewContainer from 'components/contract/overview';
 import ContractingPartyOverviewContainer from 'components/contracting_party/overview';
+import TariffOverviewContainer from 'components/tariff/overview';
 import MeterOverviewContainer from 'components/meter/overview';
 import RegisterOverviewContainer from 'components/register/overview';
 import LocalpoolNavBarContainer from 'components/localpool/nav_bar';
@@ -35,6 +37,7 @@ const Root = ({ token }) => (
               <Switch>
                 <Route exact path="/" component={ HomeContainer } />
                 <Route path="/localpools/:groupId/powertakers/:userId" component={ PowertakerOverviewContainer } />
+                <Route path="/localpools/:groupId/contracts/:contractId/tariffs/:tariffId" component={ TariffOverviewContainer } />
                 <Route path="/localpools/:groupId/contracts/:contractId/:partyType/show" component={ ContractingPartyOverviewContainer } />
                 <Route path="/localpools/:groupId/contracts/:contractId" component={ ContractOverviewContainer } />
                 <Route path="/localpools/:groupId/system/:meterId/registers/:registerId" component={ RegisterOverviewContainer } />
@@ -44,30 +47,24 @@ const Root = ({ token }) => (
               </Switch>
             </div>
           </div>
-          <div className="navigation row">
-            <div className="col-12">
-              <Switch>
-                <Route path="/localpools/:groupId/powertakers/:userId" component={ PowertakerNavBarContainer } />
-                <Route path="/localpools/:groupId/contracts/:contractId/:partyType/show" component={ ContractingPartyNavBarContainer } />
-                <Route path="/localpools/:groupId/contracts/:contractId" component={ ContractNavBarContainer } />
-                <Route path="/localpools/:groupId/system/:meterId/registers/:registerId" render={ () => false } />
-                <Route path="/localpools/:groupId/system/:meterId" component={ MeterNavBar } />
-                <Route path="/localpools/:groupId" component={ LocalpoolNavBarContainer } />
-              </Switch>
-            </div>
-          </div>
-          <div className="bottom-part row">
-            <div className="col-12">
-              <Switch>
-                <Route path="/localpools/:groupId/powertakers/:userId" component={ PowertakerResources } />
-                <Route path="/localpools/:groupId/contracts/:contractId/:partyType/show" component={ ContractingPartyResourcesContainer } />
-                <Route path="/localpools/:groupId/contracts/:contractId" component={ ContractResources } />
-                <Route path="/localpools/:groupId/system/:meterId/registers/:registerId" component={ RegisterResourcesContainer } />
-                <Route path="/localpools/:groupId/system/:meterId" component={ MeterResources } />
-                <Route path="/localpools/:groupId" component={ LocalpoolResources } />
-              </Switch>
-            </div>
-          </div>
+          <Switch>
+            <RowRoute rowClass="navigation" path="/localpools/:groupId/powertakers/:userId" component={ PowertakerNavBarContainer } />
+            <RowRoute hide={ true } path="/localpools/:groupId/contracts/:contractId/tariffs/:tariffId" />
+            <RowRoute rowClass="navigation" path="/localpools/:groupId/contracts/:contractId/:partyType/show" component={ ContractingPartyNavBarContainer } />
+            <RowRoute rowClass="navigation" path="/localpools/:groupId/contracts/:contractId" component={ ContractNavBarContainer } />
+            <RowRoute hide={ true } path="/localpools/:groupId/system/:meterId/registers/:registerId" />
+            <RowRoute rowClass="navigation" path="/localpools/:groupId/system/:meterId" component={ MeterNavBar } />
+            <RowRoute rowClass="navigation" path="/localpools/:groupId" component={ LocalpoolNavBarContainer } />
+          </Switch>
+          <Switch>
+            <RowRoute rowClass="bottom-part" path="/localpools/:groupId/powertakers/:userId" component={ PowertakerResources } />
+            <RowRoute hide={ true } path="/localpools/:groupId/contracts/:contractId/tariffs/:tariffId" />
+            <RowRoute rowClass="bottom-part" path="/localpools/:groupId/contracts/:contractId/:partyType/show" component={ ContractingPartyResourcesContainer } />
+            <RowRoute rowClass="bottom-part" path="/localpools/:groupId/contracts/:contractId" component={ ContractResources } />
+            <RowRoute rowClass="bottom-part" path="/localpools/:groupId/system/:meterId/registers/:registerId" component={ RegisterResourcesContainer } />
+            <RowRoute rowClass="bottom-part" path="/localpools/:groupId/system/:meterId" component={ MeterResources } />
+            <RowRoute rowClass="bottom-part" path="/localpools/:groupId" component={ LocalpoolResources } />
+          </Switch>
         </div> :
         <div className="container">
           <Route component={ SignInContainer } />

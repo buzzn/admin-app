@@ -62,7 +62,7 @@
     "webpack-hot-middleware": "^2.18.0"
   },
   "dependencies": {
-    "@buzzn/module_auth": "git+https://github.com/buzzn/module-auth.git#v1.0.5",
+    "@buzzn/module_auth": "git+https://github.com/buzzn/module-auth.git#v1.0.6",
     "@buzzn/module_bubbles": "git+https://github.com/buzzn/module-bubbles.git#v1.0.11",
     "@buzzn/module_charts": "git+https://github.com/buzzn/module-charts.git#v1.0.7",
     "babel-polyfill": "^6.23.0",

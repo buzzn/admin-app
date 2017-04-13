@@ -7,6 +7,8 @@ export const ContractNavBar = ({ match: { params: { groupId, contractId } } }) =
       <ul className="nav nav-pills nav-justified">
         <NavLink to={ `/localpools/${groupId}/contracts/${contractId}/customer` }>Customer</NavLink>
         <NavLink to={ `/localpools/${groupId}/contracts/${contractId}/contractor` }>Contractor</NavLink>
+        <NavLink to={ `/localpools/${groupId}/contracts/${contractId}/tariffs` }>Tariffs</NavLink>
+        <NavLink to={ `/localpools/${groupId}/contracts/${contractId}/payments` }>Payments</NavLink>
       </ul>
     </div>
   </div>

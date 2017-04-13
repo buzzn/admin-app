@@ -8,7 +8,6 @@ import { constants } from './actions';
 import Profiles from './profiles';
 import Groups from './groups';
 import Meters from './meters';
-import Friends from './friends';
 import Registers from './registers';
 import Users from './users';
 import Contracts from './contracts';
@@ -48,7 +47,6 @@ export default combineReducers({
   profiles: Profiles.reducers,
   meters: Meters.reducers,
   groups: Groups.reducers,
-  friends: Friends.reducers,
   registers: Registers.reducers,
   users: Users.reducers,
   contracts: Contracts.reducers,

@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 import ContractingParty from './contracting_party';
 import Contracts from 'contracts';
+import Tariffs from './tariffs';
+import Payments from './payments';
 
 export class ContractResources extends Component {
   static propTypes = {
@@ -13,12 +15,20 @@ export class ContractResources extends Component {
   };
 
   componentWillMount() {
-    const { customer, contractor, loading, loadContract, match: { params: { contractId } } } = this.props;
-    if (!loading && (!customer.id || !contractor.id)) loadContract(contractId);
+    const { customer, contractor, contract, loading, loadContract, match: { params: { contractId } } } = this.props;
+    if (!loading && (!customer.id || !contractor.id || !contract.id)) loadContract(contractId);
   }
 
   render() {
-    const { loading, customer, contractor, match: { url, isExact, params: { groupId, contractId } } } = this.props;
+    const {
+      loading,
+      customer,
+      contract,
+      contractor,
+      match: { url, isExact, params: { groupId, contractId } },
+    } = this.props;
+    const tariffs = (contract.relationships || {}).tariffs ? contract.relationships.tariffs.data : [];
+    const payments = (contract.relationships || {}).payments ? contract.relationships.payments.data : [];
 
     if (isExact) return (<Redirect to={ `${url}/customer` }/>);
 
@@ -38,6 +48,11 @@ export class ContractResources extends Component {
           groupId,
           contractId,
         }} /> } />
+        <Route path={ `${url}/tariffs` } render={ ({ match: { url } }) => <Tariffs
+          url={ url }
+          loading={ loading }
+          tariffs={ tariffs } /> } />
+        <Route path={ `${url}/payments` } render={ () => <Payments loading={ loading } payments={ payments } /> } />
       </div>
     );
   }
@@ -45,6 +60,7 @@ export class ContractResources extends Component {
 
 function mapStateToProps(state) {
   return {
+    contract: state.contracts.contract,
     customer: state.contracts.customer,
     contractor: state.contracts.contractor,
     loading: state.contracts.loadingContract,
