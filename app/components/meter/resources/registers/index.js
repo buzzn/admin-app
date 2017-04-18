@@ -55,7 +55,7 @@ export class RegistersList extends Component {
                 <tr key={ register.id }>
                   <td></td>
                   <td>{ register.attributes.obis }</td>
-                  <td></td>
+                  <td>{ register.attributes.lastReading }</td>
                   <td>
                     <Link
                       to={ `/localpools/${groupId}/system/${meter.id}/registers/${register.id}` }

@@ -68,21 +68,21 @@ export class RegisterOverview extends Component {
             </div>
             <div className="row">
               <div className="col-6">Low power:</div>
-              <div className="col-6"></div>
+              <div className="col-6">{ register.attributes.lowPower }</div>
             </div>
           </div>
           <div className="col-6 right-col">
             <div className="row">
               <div className="col-6">Pre-Decimal:</div>
-              <div className="col-6"></div>
+              <div className="col-6">{ register.attributes.preDecimal }</div>
             </div>
             <div className="row">
               <div className="col-6">Decimal:</div>
-              <div className="col-6"></div>
+              <div className="col-6">{ register.attributes.decimal }</div>
             </div>
             <div className="row">
               <div className="col-6">Transformer ratio:</div>
-              <div className="col-6"></div>
+              <div className="col-6">{ register.attributes.converterConstant }</div>
             </div>
           </div>
         </div>

@@ -10,6 +10,13 @@ export default {
     .then(mergeData)
     .then(json => camelizeResponseKeys(json));
   },
+  fetchRegisterReadings({ token, apiUrl, apiPath, registerId }) {
+    return fetch(`${apiUrl}${apiPath}/registers/${registerId}/readings`, {
+      headers: prepareHeaders(token),
+    })
+    .then(parseResponse)
+    .then(json => camelizeResponseArray(json.data));
+  },
   fetchMeterRegisters({ token, apiUrl, apiPath, meterId, meterType }) {
     // FIXME: temp slice workaround, see https://github.com/buzzn/buzzn/issues/680
     return fetch(`${apiUrl}${apiPath}/meters/${meterType.split('_')[1]}/${meterId}/register${meterType.split('_')[1] === 'real' ? 's' : ''}`, {

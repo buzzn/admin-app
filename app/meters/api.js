@@ -23,7 +23,7 @@ export default {
       headers: prepareHeaders(token),
     })
     .then(parseResponse)
-    .then(json => camelizeResponseArray(json.data));
+    .then(json => camelizeResponseArray(json));
   },
   fetchUserMeters({ token, apiUrl, apiPath, userId }) {
     return fetch(`${apiUrl}${apiPath}/users/${userId}/meters`, {
