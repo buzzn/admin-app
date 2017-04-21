@@ -67,6 +67,7 @@
     "@buzzn/module_charts": "git+https://github.com/buzzn/module-charts.git#v1.0.7",
     "babel-polyfill": "^6.23.0",
     "bootstrap": "4.0.0-alpha.6",
+    "buzzn-style": "git://github.com/buzzn/buzzn-style.git",
     "font-awesome": "^4.7.0",
     "highcharts": "^5.0.10",
     "isomorphic-fetch": "^2.2.1",
