@@ -20,7 +20,7 @@ export const actions = {
   loadRegister: registerId => ({ type: constants.LOAD_REGISTER, registerId }),
   loadingRegister: () => ({ type: constants.LOADING_REGISTER }),
   loadedRegister: () => ({ type: constants.LOADED_REGISTER }),
-  setRegister: register => ({ type: constants.SET_REGISTER, register }),
+  setRegister: ({ register, readings }) => ({ type: constants.SET_REGISTER, register, readings }),
 
   loadRegisters: ({ meterId, meterType, groupId }) => ({ type: constants.LOAD_REGISTERS, meterId, meterType, groupId }),
   loadingRegisters: () => ({ type: constants.LOADING_REGISTERS }),
