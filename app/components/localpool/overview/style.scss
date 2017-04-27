@@ -1,7 +1,4 @@
 .group-overview {
-  .title {
-    background-color: #70ad47;
-  }
   .bubbles-wrapper {
     font-size: 0.8em;
     .pad-all {
@@ -35,6 +32,9 @@
       position: relative;
       width: 1em;
       vertical-align: middle;
+    }
+    .media-body {
+      color: black;
     }
     .text-2x {
       font-size: 1.2em;

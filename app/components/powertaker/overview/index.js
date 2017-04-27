@@ -48,7 +48,7 @@ export class PowertakerOverview extends Component {
         <Breadcrumbs breadcrumbs={ breadcrumbs }/>
         <div className="row powertaker-overview top-content">
           <div className="col-12">
-            <div className="title">
+            <div className="title bg-dodger-blue">
               { mdImg && <img className="top-avatar" src={ mdImg } /> }
               { `${firstName} ${lastName}` }
             </div>

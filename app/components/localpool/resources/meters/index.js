@@ -52,7 +52,7 @@ export class MetersList extends Component {
                     <td>
                       <Link
                         to={ `/localpools/${groupId}/system/${meter.id}` }
-                        className="btn btn-secondary btn-beige"
+                        className="btn btn-outline-secondary"
                         style={{ float: 'right', marginRight: '15px' }}>
                         View
                       </Link>

@@ -37,7 +37,7 @@ const Tariffs = ({ loading, tariffs, url }) => {
                   <td>
                     <Link
                       to={ `${url}/${tariff.id}` }
-                      className="btn btn-secondary btn-beige"
+                      className="btn btn-outline-secondary"
                       style={{ float: 'right', marginRight: '15px' }}>
                       View
                     </Link>

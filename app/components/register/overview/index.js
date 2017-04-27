@@ -7,8 +7,6 @@ import Meters from 'meters';
 import Registers from 'registers';
 import Breadcrumbs from 'components/breadcrumbs';
 
-import './style.scss';
-
 export class RegisterOverview extends Component {
   static propTypes = {
     group: PropTypes.object,
@@ -54,7 +52,7 @@ export class RegisterOverview extends Component {
         <Breadcrumbs breadcrumbs={ breadcrumbs }/>
         <div className="row register-overview top-content">
           <div className="col-12">
-            <div className="title">{ register.attributes.name }</div>
+            <div className="title bg-sun-yellow">{ register.attributes.name }</div>
           </div>
           <div className="col-6 left-col">
             Register data:
