@@ -6,7 +6,7 @@ import './style.scss';
 
 export const SignIn = ({ dispatch, username, password, error }) => (
   <form className="form-signin">
-    <h2 className="form-signin-heading">Please sign in</h2>
+    <h4 className="form-signin-heading">Please sign in</h4>
     { error && error !== 'Sign out' &&
       <div className="alert alert-danger" role="alert">
         <strong>Sign in failed!</strong> Email or password incorrect.

@@ -48,7 +48,7 @@ export class LocalpoolOverview extends Component {
         <Helmet title="Localpool" />
         <div className="overview-header">Localpool</div>
         <div className="row group-overview top-content">
-          <div className="col-12"><div className="title">{ group.attributes.name }</div></div>
+          <div className="col-12"><div className="title bg-sick-green-two">{ group.attributes.name }</div></div>
           <div className="col-6 left-col">
             <div className="row">
               <div className="col-12">Address here</div>

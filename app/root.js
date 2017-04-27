@@ -24,6 +24,7 @@ import ContractingPartyResourcesContainer from 'components/contracting_party/res
 import MeterResources from 'components/meter/resources';
 import RegisterResourcesContainer from 'components/register/resources';
 
+import 'buzzn-style';
 import './root.scss';
 
 const Root = ({ token }) => (
