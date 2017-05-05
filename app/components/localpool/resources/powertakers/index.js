@@ -65,7 +65,7 @@ export class Powertakers extends Component {
                     <td>
                       <Link
                         to={ `/localpools/${groupId}/powertakers/${user.id}` }
-                        className="btn btn-secondary btn-beige"
+                        className="btn btn-outline-secondary"
                         style={{ float: 'right', marginRight: '15px' }}>
                         View
                       </Link>
