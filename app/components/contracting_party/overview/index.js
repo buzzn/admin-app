@@ -35,20 +35,20 @@ export class ContractingPartyOverview extends Component {
     const { address } = contractingParty;
 
     const contractShortName = (cont) => {
-      switch (cont.attributes.type) {
+      switch (cont.type) {
         case 'contract_metering_point_operator':
-          return `MPO ${cont.attributes.contractNumber}`;
+          return `MPO ${cont.contractNumber}`;
         case 'contract_localpool_processing':
-          return `LCPP ${cont.attributes.contractNumber}`;
+          return `LCPP ${cont.contractNumber}`;
         default:
-          return `${cont.attributes.contractNumber}`;
+          return `${cont.contractNumber}`;
       }
     };
 
     const breadcrumbs = [
-      { id: group.id, link: `/localpools/${group.id}/contracts`, title: group.attributes.name },
+      { id: group.id, link: `/localpools/${group.id}/contracts`, title: group.name },
       { id: contract.id, link: `/localpools/${group.id}/contracts/${contract.id}/${partyType}`, title: contractShortName(contract) },
-      { id: contractingParty.id, title: contractingParty.attributes.name },
+      { id: contractingParty.id, title: contractingParty.name },
     ];
 
     return (
@@ -58,18 +58,18 @@ export class ContractingPartyOverview extends Component {
         <div className="row contracting-party-overview top-content">
           <div className="col-12">
             <div className="title">
-              { contractingParty.attributes.name }
+              { contractingParty.name }
             </div>
           </div>
           <div className="col-12 padding-top"><h5 className="label">Contracting Party Data</h5></div>
           <div className="col-6 padding-bottom">
             <div className="row">
               <div className="col-3"><span className="label">Name:</span></div>
-              <div className="col-9">{ contractingParty.attributes.name }</div>
+              <div className="col-9">{ contractingParty.name }</div>
             </div>
             <div className="row">
               <div className="col-3"><span className="label">Type:</span></div>
-              <div className="col-9">{ cpType(contractingParty.attributes.type) }</div>
+              <div className="col-9">{ cpType(contractingParty.type) }</div>
             </div>
             <div className="row">
               <div className="col-3"><span className="label">ID:</span></div>
@@ -79,19 +79,19 @@ export class ContractingPartyOverview extends Component {
           <div className="col-6 padding-bottom">
             <div className="row">
               <div className="col-3"><span className="label">Street:</span></div>
-              <div className="col-9">{ address.attributes && address.attributes.streetName }</div>
+              <div className="col-9">{ address.attributes && address.streetName }</div>
             </div>
             <div className="row">
               <div className="col-3"><span className="label">Postal Code:</span></div>
-              <div className="col-9">{ address.attributes && address.attributes.zip }</div>
+              <div className="col-9">{ address.attributes && address.zip }</div>
             </div>
             <div className="row">
               <div className="col-3"><span className="label">City:</span></div>
-              <div className="col-9">{ address.attributes && address.attributes.city }</div>
+              <div className="col-9">{ address.attributes && address.city }</div>
             </div>
             <div className="row">
               <div className="col-3"><span className="label">Email:</span></div>
-              <div className="col-9">{ contractingParty.attributes.email }</div>
+              <div className="col-9">{ contractingParty.email }</div>
             </div>
           </div>
         </div>

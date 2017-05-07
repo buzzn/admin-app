@@ -27,15 +27,15 @@ export class MeterData extends Component {
         <div className="col-6">
           <div className="row">
             <div className="col-6">Meter number:</div>
-            <div className="col-6">{ meter.attributes.manufacturerProductSerialnumber }</div>
+            <div className="col-6">{ meter.manufacturerProductSerialnumber }</div>
           </div>
           <div className="row">
             <div className="col-6">Manufacturer:</div>
-            <div className="col-6">{ meter.attributes.manufacturerName }</div>
+            <div className="col-6">{ meter.manufacturerName }</div>
           </div>
           <div className="row">
             <div className="col-6">Type:</div>
-            <div className="col-6">{ meter.attributes.manufacturerProductName }</div>
+            <div className="col-6">{ meter.manufacturerProductName }</div>
           </div>
           <div className="row">
             <div className="col-6">Owner:</div>

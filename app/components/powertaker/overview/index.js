@@ -38,7 +38,7 @@ export class PowertakerOverview extends Component {
     if (loading || loadingGroup || !group.id) return (<div>Loading...</div>);
 
     const breadcrumbs = [
-      { id: group.id, link: `/localpools/${group.id}/powertakers`, title: group.attributes.name },
+      { id: group.id, link: `/localpools/${group.id}/powertakers`, title: group.name },
       { id: userId, title: `${firstName} ${lastName}` },
     ];
 

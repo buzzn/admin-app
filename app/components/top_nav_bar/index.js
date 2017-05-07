@@ -78,7 +78,7 @@ export class TopNavBar extends Component {
                       { groups.map(group => (
                         <Link to={ `/localpools/${group.id}` } style={{ color: 'black' }} key={ group.id }>
                           <DropdownItem >
-                            { group.attributes.name }
+                            { group.name }
                           </DropdownItem>
                         </Link>
                       )) }
@@ -99,7 +99,7 @@ function mapStateToProps(state) {
   const myId = state.app.userMe;
   return {
     myProfile: state.profiles.profiles[myId],
-    groups: filter(state.groups.groups, group => group.attributes.type === 'group_localpool'),
+    groups: filter(state.groups.groups, group => group.type === 'group_localpool'),
   };
 }
 

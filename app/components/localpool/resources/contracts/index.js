@@ -27,7 +27,7 @@ export class ContractsList extends Component {
     if (loading) return (<div>Loading...</div>);
 
     const contractType = (contract) => {
-      switch (contract.attributes.type) {
+      switch (contract.type) {
         case 'contract_metering_point_operator':
           return 'Metering Point Operator';
         case 'contract_localpool_processing':
@@ -57,8 +57,8 @@ export class ContractsList extends Component {
               { contracts.filter(c => !!c.id).map(contract =>
                   <tr key={ contract.id }>
                     <td>{ contractType(contract) }</td>
-                    <td>{ contract.attributes.signingDate }</td>
-                    <td>{ contract.attributes.contractNumber }</td>
+                    <td>{ contract.signingDate }</td>
+                    <td>{ contract.contractNumber }</td>
                     <td>
                       <Link
                         to={ `/localpools/${groupId}/contracts/${contract.id}` }

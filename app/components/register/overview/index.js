@@ -43,9 +43,9 @@ export class RegisterOverview extends Component {
     if (loading || !group.id || !meter.id || !register.id) return (<div>Loading...</div>);
 
     const breadcrumbs = [
-      { id: group.id, link: `/localpools/${group.id}/system`, title: group.attributes.name },
-      { id: meter.id, link: `/localpools/${group.id}/system/${meter.id}/registers`, title: meter.attributes.manufacturerProductSerialnumber },
-      { id: register.id, title: register.attributes.name },
+      { id: group.id, link: `/localpools/${group.id}/system`, title: group.name },
+      { id: meter.id, link: `/localpools/${group.id}/system/${meter.id}/registers`, title: meter.manufacturerProductSerialnumber },
+      { id: register.id, title: register.name },
     ];
 
     return (
@@ -54,17 +54,17 @@ export class RegisterOverview extends Component {
         <Breadcrumbs breadcrumbs={ breadcrumbs }/>
         <div className="row register-overview top-content">
           <div className="col-12">
-            <div className="title">{ register.attributes.name }</div>
+            <div className="title">{ register.name }</div>
           </div>
           <div className="col-6 left-col">
             Register data:
             <div className="row">
               <div className="col-6">OBIS:</div>
-              <div className="col-6">{ register.attributes.obis }</div>
+              <div className="col-6">{ register.obis }</div>
             </div>
             <div className="row">
               <div className="col-6">Label:</div>
-              <div className="col-6">{ register.attributes.name }</div>
+              <div className="col-6">{ register.name }</div>
             </div>
             <div className="row">
               <div className="col-6">Low power:</div>

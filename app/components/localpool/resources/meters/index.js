@@ -46,7 +46,7 @@ export class MetersList extends Component {
                 meters.map(meter => (
                   <tr key={ meter.id }>
                     <td>
-                      { meter.attributes.manufacturerProductSerialnumber }
+                      { meter.manufacturerProductSerialnumber }
                     </td>
                     <td></td>
                     <td>

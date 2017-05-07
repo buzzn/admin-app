@@ -6,13 +6,13 @@
   version "1.0.0"
   resolved "git+https://github.com/buzzn/module-auth.git#739a8878c0f979ca8a633dfe666ff864e4588e16"
 
-"@buzzn/module_bubbles@git+https://github.com/buzzn/module-bubbles.git#v1.0.11":
+"@buzzn/module_bubbles@git+https://github.com/buzzn/module-bubbles.git#v1.0.12":
   version "1.0.0"
-  resolved "git+https://github.com/buzzn/module-bubbles.git#36efb4ea14b7d23a52cf8f6a78b304226f2d85eb"
+  resolved "git+https://github.com/buzzn/module-bubbles.git#e435d11d34379eb9e9f34979f8b0d5e4352fbad5"
 
-"@buzzn/module_charts@git+https://github.com/buzzn/module-charts.git#v1.0.7":
+"@buzzn/module_charts@git+https://github.com/buzzn/module-charts.git#v1.0.8":
   version "1.0.0"
-  resolved "git+https://github.com/buzzn/module-charts.git#c67868e5b89963a27f40c90c70039c3e9e41d52a"
+  resolved "git+https://github.com/buzzn/module-charts.git#fcb783f3dcd2f216f54631405d2c4323fda4fa3d"
 
 abab@^1.0.3:
   version "1.0.3"
@@ -5438,9 +5438,9 @@ react-helmet@^5.0.2:
     object-assign "^4.1.1"
     react-side-effect "^1.1.0"
 
-react-highcharts@^11.5.0:
-  version "11.5.0"
-  resolved "https://registry.yarnpkg.com/react-highcharts/-/react-highcharts-11.5.0.tgz#2812cdc56ef1057e59cbc9c4dbed79b72d8505ae"
+react-highcharts@^12.0.0:
+  version "12.0.0"
+  resolved "https://registry.yarnpkg.com/react-highcharts/-/react-highcharts-12.0.0.tgz#a7c8b5f5b56b37afe8e7fe02ec8bee72e376158a"
   dependencies:
     highcharts "^5.0.0"
 

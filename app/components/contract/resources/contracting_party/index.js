@@ -20,17 +20,17 @@ const ContractingParty = ({ loading, contractingParty, partyType, groupId, contr
       <div className="col-6">
         <div className="row">
           <div className="col-6"><span className="title">Name:</span></div>
-          <div className="col-6">{ contractingParty.attributes.name }</div>
+          <div className="col-6">{ contractingParty.name }</div>
           <div className="col-6"><span className="title">Type:</span></div>
-          <div className="col-6">{ cpType(contractingParty.attributes.type) }</div>
+          <div className="col-6">{ cpType(contractingParty.type) }</div>
           <div className="col-6"><span className="title">Address:</span></div>
           <div className="col-6">{ address && address.attributes && `${addressString(address.attributes)}` }</div>
           <div className="col-6"><span className="title">Email:</span></div>
-          <div className="col-6">{ contractingParty.attributes.email }</div>
+          <div className="col-6">{ contractingParty.email }</div>
           <div className="col-6"><span className="title">Phone:</span></div>
-          <div className="col-6">{ contractingParty.attributes.phone }</div>
+          <div className="col-6">{ contractingParty.phone }</div>
           <div className="col-6"><span className="title">Fax:</span></div>
-          <div className="col-6">{ contractingParty.attributes.fax }</div>
+          <div className="col-6">{ contractingParty.fax }</div>
         </div>
       </div>
       <div className="col-6">
