@@ -7,6 +7,6 @@ export default {
       headers: prepareHeaders(token),
     })
     .then(parseResponse)
-    .then(json => ({ userMe: json.data.id }));
+    .then(json => ({ userMe: json.id }));
   },
 };

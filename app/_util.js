@@ -15,8 +15,7 @@ export function prepareHeaders(token) {
 export function wrapErrors(errors) {
   const formErrors = { status: 422, _error: 'Form save failed' };
   forEach(errors, (error) => {
-    const fieldName = camelCase(error.source.pointer.split('/').pop());
-    formErrors[fieldName] = error.detail;
+    formErrors[camelCase(error.parameter)] = error.detail;
   });
   return formErrors;
 }

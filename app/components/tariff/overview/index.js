@@ -40,18 +40,18 @@ export class TariffOverview extends Component {
     };
 
     const contractShortName = (cont) => {
-      switch (cont.attributes.type) {
+      switch (cont.type) {
         case 'contract_metering_point_operator':
-          return `MPO ${cont.attributes.contractNumber}`;
+          return `MPO ${cont.contractNumber}`;
         case 'contract_localpool_processing':
-          return `LCPP ${cont.attributes.contractNumber}`;
+          return `LCPP ${cont.contractNumber}`;
         default:
-          return `${cont.attributes.contractNumber}`;
+          return `${cont.contractNumber}`;
       }
     };
 
     const breadcrumbs = [
-      { id: group.id, link: `/localpools/${group.id}/contracts`, title: group.attributes.name },
+      { id: group.id, link: `/localpools/${group.id}/contracts`, title: group.name },
       { id: contract.id, link: `/localpools/${group.id}/contracts/${contract.id}/tariffs`, title: contractShortName(contract) },
       { id: tariff.id, title: tariff.name },
     ];

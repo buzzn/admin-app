@@ -29,8 +29,8 @@ export class MeterOverview extends Component {
     if (loading || !group.id || !meter.id) return (<div>Loading...</div>);
 
     const breadcrumbs = [
-      { id: group.id, link: `/localpools/${group.id}/system`, title: group.attributes.name },
-      { id: meter.id, title: meter.attributes.manufacturerProductSerialnumber },
+      { id: group.id, link: `/localpools/${group.id}/system`, title: group.name },
+      { id: meter.id, title: meter.manufacturerProductSerialnumber },
     ];
 
     return (
@@ -39,7 +39,7 @@ export class MeterOverview extends Component {
         <Breadcrumbs breadcrumbs={ breadcrumbs }/>
         <div className="row meter-overview top-content">
           <div className="col-12">
-            <div className="title bg-mango">{ meter.attributes.manufacturerProductSerialnumber }</div>
+            <div className="title bg-mango">{ meter.manufacturerProductSerialnumber }</div>
           </div>
           <div className="col-6 left-col"></div>
           <div className="col-6 right-col"></div>
