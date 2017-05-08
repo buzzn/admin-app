@@ -7,8 +7,6 @@ import Meters from 'meters';
 import Registers from 'registers';
 import Breadcrumbs from 'components/breadcrumbs';
 
-import './style.scss';
-
 export class RegisterOverview extends Component {
   static propTypes = {
     group: PropTypes.object,
@@ -54,7 +52,7 @@ export class RegisterOverview extends Component {
         <Breadcrumbs breadcrumbs={ breadcrumbs }/>
         <div className="row register-overview top-content">
           <div className="col-12">
-            <div className="title">{ register.name }</div>
+            <div className="title bg-sun-yellow">{ register.name }</div>
           </div>
           <div className="col-6 left-col">
             Register data:
@@ -68,21 +66,21 @@ export class RegisterOverview extends Component {
             </div>
             <div className="row">
               <div className="col-6">Low power:</div>
-              <div className="col-6"></div>
+              <div className="col-6">{ register.attributes.lowPower }</div>
             </div>
           </div>
           <div className="col-6 right-col">
             <div className="row">
               <div className="col-6">Pre-Decimal:</div>
-              <div className="col-6"></div>
+              <div className="col-6">{ register.attributes.preDecimal }</div>
             </div>
             <div className="row">
               <div className="col-6">Decimal:</div>
-              <div className="col-6"></div>
+              <div className="col-6">{ register.attributes.decimal }</div>
             </div>
             <div className="row">
               <div className="col-6">Transformer ratio:</div>
-              <div className="col-6"></div>
+              <div className="col-6">{ register.attributes.converterConstant }</div>
             </div>
           </div>
         </div>

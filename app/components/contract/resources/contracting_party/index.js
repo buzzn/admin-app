@@ -36,7 +36,7 @@ const ContractingParty = ({ loading, contractingParty, partyType, groupId, contr
       <div className="col-6">
         <Link
           to={ `/localpools/${groupId}/contracts/${contractId}/${partyType}/show` }
-          className="btn btn-secondary btn-beige"
+          className="btn btn-outline-secondary"
           style={{ float: 'right', marginRight: '15px' }}>
           View
         </Link>

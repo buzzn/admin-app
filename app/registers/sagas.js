@@ -8,17 +8,18 @@ export const selectRegister = state => ({ registerId: state.registers.registerId
 
 export function* getRegister({ apiUrl, apiPath, token }, { registerId }) {
   yield put(actions.loadingRegister());
-  yield put(actions.setRegister({}));
+  yield put(actions.setRegister({ register: {}, readings: [] }));
   try {
     const register = yield call(api.fetchRegister, { apiUrl, apiPath, token, registerId });
-    yield put(actions.setRegister(register));
+    const readings = yield call(api.fetchRegisterReadings, { apiUrl, apiPath, token, registerId });
+    yield put(actions.setRegister({ register, readings }));
   } catch (error) {
     console.log(error);
   }
   yield put(actions.loadedRegister());
 }
 
-// TODO: if there will be another load case for registes, then it'll be better to separate actions/reducers
+// TODO: if there will be another load case for registers, then it'll be better to separate actions/reducers
 // current implementation is incompatible with cache
 export function* getRegisters({ apiUrl, apiPath, token }, { meterId, meterType, groupId }) {
   yield put(actions.loadingRegisters());

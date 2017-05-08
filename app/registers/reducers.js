@@ -5,6 +5,7 @@ export const initialState = {
   loadingRegister: false,
   registers: [],
   register: {},
+  readings: [],
 };
 
 export default function (state = initialState, action) {
@@ -16,7 +17,7 @@ export default function (state = initialState, action) {
     case constants.LOADED_REGISTER:
       return { ...state, loadingRegister: false };
     case constants.SET_REGISTER:
-      return { ...state, register: action.register };
+      return { ...state, register: action.register, readings: action.readings };
 
     case constants.LOAD_REGISTERS:
       return { ...state, meterId: action.meterId, meterType: action.meterType, groupId: action.groupId };

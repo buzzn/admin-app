@@ -64,7 +64,7 @@ export class ContractOverview extends Component {
         <Breadcrumbs breadcrumbs={ breadcrumbs }/>
         <div className="row contract-overview top-content">
           <div className="col-12">
-            <div className="title">
+            <div className="title bg-turquoise-blue">
               { contractType(contract) } - { contract.contractNumber }
             </div>
           </div>

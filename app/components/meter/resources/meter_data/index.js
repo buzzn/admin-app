@@ -39,15 +39,15 @@ export class MeterData extends Component {
           </div>
           <div className="row">
             <div className="col-6">Owner:</div>
-            <div className="col-6"></div>
+            <div className="col-6">{ meter.attributes.ownership }</div>
           </div>
           <div className="row">
             <div className="col-6">Type:</div>
-            <div className="col-6"></div>
+            <div className="col-6">{ meter.attributes.type }</div>
           </div>
           <div className="row">
             <div className="col-6">Size:</div>
-            <div className="col-6"></div>
+            <div className="col-6">{ meter.attributes.meterSize }</div>
           </div>
         </div>
         <div className="col-6">
@@ -57,7 +57,7 @@ export class MeterData extends Component {
           </div>
           <div className="row">
             <div className="col-6">Label:</div>
-            <div className="col-6"></div>
+            <div className="col-6">{ meter.attributes.directionLabel }</div>
           </div>
           <div className="row">
             <div className="col-6">Energy:</div>
@@ -65,7 +65,7 @@ export class MeterData extends Component {
           </div>
           <div className="row">
             <div className="col-6">Manufactured in:</div>
-            <div className="col-6"></div>
+            <div className="col-6">{ meter.attributes.buildYear }</div>
           </div>
         </div>
       </div>

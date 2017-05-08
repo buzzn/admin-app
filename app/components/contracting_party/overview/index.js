@@ -6,8 +6,6 @@ import Contracts from 'contracts';
 import Groups from 'groups';
 import Breadcrumbs from 'components/breadcrumbs';
 
-import './style.scss';
-
 export class ContractingPartyOverview extends Component {
   static propTypes = {
     contractingParty: PropTypes.object.isRequired,
@@ -57,7 +55,7 @@ export class ContractingPartyOverview extends Component {
         <Breadcrumbs breadcrumbs={ breadcrumbs }/>
         <div className="row contracting-party-overview top-content">
           <div className="col-12">
-            <div className="title">
+            <div className="title bg-aqua-marine">
               { contractingParty.name }
             </div>
           </div>

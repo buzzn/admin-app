@@ -55,11 +55,11 @@ export class RegistersList extends Component {
                 <tr key={ register.id }>
                   <td></td>
                   <td>{ register.obis }</td>
-                  <td></td>
+                  <td>{ register.lastReading }</td>
                   <td>
                     <Link
                       to={ `/localpools/${groupId}/system/${meter.id}/registers/${register.id}` }
-                      className="btn btn-secondary btn-beige"
+                      className="btn btn-outline-secondary"
                       style={{ float: 'right', marginRight: '15px' }}>
                       View
                     </Link>

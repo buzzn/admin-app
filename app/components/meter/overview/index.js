@@ -6,8 +6,6 @@ import Groups from 'groups';
 import Meters from 'meters';
 import Breadcrumbs from 'components/breadcrumbs';
 
-import './style.scss';
-
 export class MeterOverview extends Component {
   static propTypes = {
     group: PropTypes.object,
@@ -41,7 +39,7 @@ export class MeterOverview extends Component {
         <Breadcrumbs breadcrumbs={ breadcrumbs }/>
         <div className="row meter-overview top-content">
           <div className="col-12">
-            <div className="title">{ meter.manufacturerProductSerialnumber }</div>
+            <div className="title bg-mango">{ meter.manufacturerProductSerialnumber }</div>
           </div>
           <div className="col-6 left-col"></div>
           <div className="col-6 right-col"></div>

@@ -62,7 +62,7 @@ export class ContractsList extends Component {
                     <td>
                       <Link
                         to={ `/localpools/${groupId}/contracts/${contract.id}` }
-                        className="btn btn-secondary btn-beige"
+                        className="btn btn-outline-secondary"
                         style={{ float: 'right', marginRight: '15px' }}>
                         View
                       </Link>
