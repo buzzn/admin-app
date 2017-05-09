@@ -29,9 +29,11 @@ export default {
     .then(parseResponse);
   },
   fetchGroupPowertakers({ token, apiUrl, apiPath, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/groups/${groupId}/energy-consumers`, {
+    return fetch(`${apiUrl}${apiPath}/groups/localpools/${groupId}/power-taker-contracts`, {
       headers: prepareHeaders(token),
     })
-    .then(parseResponse);
+    .then(parseResponse)
+    // FIXME: this is a workaround. Should be fixed after buzzn/buzzn #999
+    .then(contracts => contracts.map(c => ({ id: c.customer.id })));
   },
 };
