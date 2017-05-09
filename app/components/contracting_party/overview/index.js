@@ -63,7 +63,7 @@ export class ContractingPartyOverview extends Component {
           <div className="col-6 padding-bottom">
             <div className="row">
               <div className="col-3"><span className="label">Name:</span></div>
-              <div className="col-9">{ contractingParty.name }</div>
+              <div className="col-9">{ contractingParty.name || `${contractingParty.firstName} ${contractingParty.lastName}` }</div>
             </div>
             <div className="row">
               <div className="col-3"><span className="label">Type:</span></div>

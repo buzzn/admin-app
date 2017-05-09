@@ -20,7 +20,7 @@ const ContractingParty = ({ loading, contractingParty, partyType, groupId, contr
       <div className="col-6">
         <div className="row">
           <div className="col-6"><span className="title">Name:</span></div>
-          <div className="col-6">{ contractingParty.name }</div>
+          <div className="col-6">{ contractingParty.name || `${contractingParty.firstName} ${contractingParty.lastName}` }</div>
           <div className="col-6"><span className="title">Type:</span></div>
           <div className="col-6">{ cpType(contractingParty.type) }</div>
           <div className="col-6"><span className="title">Address:</span></div>
