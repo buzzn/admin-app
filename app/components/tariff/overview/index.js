@@ -29,9 +29,9 @@ export class TariffOverview extends Component {
     const { loading, group, contract, match: { params: { tariffId } } } = this.props;
 
     if (loading || !contract.id || !group.id) return (<div>Loading...</div>);
-    if (!contract.relationships || !contract.relationships.tariffs) return (<div>Tariff not found</div>);
+    if (!contract.tariffs || contract.tariffs.length === 0) return (<div>Tariff not found</div>);
 
-    const tariff = find(contract.relationships.tariffs.data, t => t.id === tariffId);
+    const tariff = find(contract.tariffs, t => t.id === tariffId);
     if (!tariff) return (<div>Tariff not found</div>);
 
     const formatDate = (date) => {
@@ -40,18 +40,18 @@ export class TariffOverview extends Component {
     };
 
     const contractShortName = (cont) => {
-      switch (cont.attributes.type) {
+      switch (cont.type) {
         case 'contract_metering_point_operator':
-          return `MPO ${cont.attributes.contractNumber}`;
+          return `MPO ${cont.contractNumber}`;
         case 'contract_localpool_processing':
-          return `LCPP ${cont.attributes.contractNumber}`;
+          return `LCPP ${cont.contractNumber}`;
         default:
-          return `${cont.attributes.contractNumber}`;
+          return `${cont.contractNumber}`;
       }
     };
 
     const breadcrumbs = [
-      { id: group.id, link: `/localpools/${group.id}/contracts`, title: group.attributes.name },
+      { id: group.id, link: `/localpools/${group.id}/contracts`, title: group.name },
       { id: contract.id, link: `/localpools/${group.id}/contracts/${contract.id}/tariffs`, title: contractShortName(contract) },
       { id: tariff.id, title: tariff.name },
     ];

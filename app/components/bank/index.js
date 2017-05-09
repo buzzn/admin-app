@@ -52,13 +52,13 @@ class Bank extends Component {
             <div className="row">
               <div className="col-6">Name:</div>
               <div className="col-6">
-                { bank.attributes.bankName }
+                { bank.bankName }
               </div>
             </div>
             <div className="row">
               <div className="col-6">BIC:</div>
               <div className="col-6">
-                { bank.attributes.bic }
+                { bank.bic }
               </div>
             </div>
             <div className="row">

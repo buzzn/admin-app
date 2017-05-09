@@ -17,7 +17,7 @@ export class ContractingPartyResources extends Component {
   }
 
   render() {
-    const { loading, contractingParty, updateBankAccount, match: { url, isExact } } = this.props;
+    const { loading, updateBankAccount, bankAccount, match: { url, isExact } } = this.props;
 
     if (isExact) return (<Redirect to={ `${url}/contact` }/>);
 
@@ -27,7 +27,7 @@ export class ContractingPartyResources extends Component {
         <Route
           path={ `${url}/bank` }
           render={ () => <BankAccount loading={ loading }
-                               bankAccount={ contractingParty.bankAccount }
+                               bankAccount={ bankAccount }
                                updateBankAccount={ updateBankAccount } /> } />
       </div>
     );
@@ -39,6 +39,7 @@ function mapStateToProps(state, props) {
   return {
     contractingParty: state.contracts[partyType],
     loading: state.contracts.loadingContract,
+    bankAccount: state.contracts.contract[`${partyType}BankAccount`],
   };
 }
 

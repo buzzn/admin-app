@@ -13,16 +13,11 @@ export function* getContract({ apiUrl, apiPath, token }, { contractId }) {
   yield put(actions.setContract({ contract: {}, contractor: {}, customer: {} }));
   try {
     const contract = yield call(api.fetchContract, { apiUrl, apiPath, token, contractId });
+    // FIXME: change this after https://github.com/buzzn/buzzn/issues/974
     const parties = {};
     const types = ['contractor', 'customer'];
     for (let i = 0; i < types.length; i += 1) {
-      let p = yield call(api[`fetch${upperFirst(types[i])}`], { apiUrl, apiPath, token, contractId });
-      if (p.attributes && p.attributes.type === 'organization') {
-        p = yield call(api.fetchOrganization, { apiUrl, apiPath, token, organizationId: p.id });
-        p.address = yield call(api.fetchOrganizationAddress, { apiUrl, apiPath, token, organizationId: p.id });
-        p.bankAccount = yield call(api.fetchOrganizationBankAccount, { apiUrl, apiPath, token, organizationId: p.id });
-      }
-      parties[types[i]] = p;
+      parties[types[i]] = yield call(api[`fetch${upperFirst(types[i])}`], { apiUrl, apiPath, token, contractId });
     }
     yield put(actions.setContract({ contract, contractor: parties.contractor, customer: parties.customer }));
   } catch (error) {
@@ -37,7 +32,7 @@ export function* updateBankAccount({ apiUrl, apiPath, token }, { bankAccountId, 
     if (res._error) {
       yield call(reject, new SubmissionError(res));
     } else {
-      yield call(resolve, res.data);
+      yield call(resolve, res);
       // FIXME: Extract bank/address loading into separate actions and use them after there will be understanding
       // of all use cases for them
       const contractId = yield select(selectContract);

@@ -27,8 +27,6 @@ export class ContractResources extends Component {
       contractor,
       match: { url, isExact, params: { groupId, contractId } },
     } = this.props;
-    const tariffs = (contract.relationships || {}).tariffs ? contract.relationships.tariffs.data : [];
-    const payments = (contract.relationships || {}).payments ? contract.relationships.payments.data : [];
 
     if (isExact) return (<Redirect to={ `${url}/customer` }/>);
 
@@ -51,8 +49,9 @@ export class ContractResources extends Component {
         <Route path={ `${url}/tariffs` } render={ ({ match: { url } }) => <Tariffs
           url={ url }
           loading={ loading }
-          tariffs={ tariffs } /> } />
-        <Route path={ `${url}/payments` } render={ () => <Payments loading={ loading } payments={ payments } /> } />
+          tariffs={ contract.tariffs } /> } />
+        <Route path={ `${url}/payments` } render={ () => <Payments
+          loading={ loading } payments={ contract.payments } /> } />
       </div>
     );
   }

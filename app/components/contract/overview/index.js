@@ -32,7 +32,7 @@ export class ContractOverview extends Component {
     if (loading || !contract.id || !group.id) return (<div>Loading...</div>);
 
     const contractType = (cont) => {
-      switch (cont.attributes.type) {
+      switch (cont.type) {
         case 'contract_metering_point_operator':
           return 'Metering Point Operator';
         case 'contract_localpool_processing':
@@ -43,18 +43,18 @@ export class ContractOverview extends Component {
     };
 
     const contractShortName = (cont) => {
-      switch (cont.attributes.type) {
+      switch (cont.type) {
         case 'contract_metering_point_operator':
-          return `MPO ${cont.attributes.contractNumber}`;
+          return `MPO ${cont.contractNumber}`;
         case 'contract_localpool_processing':
-          return `LCPP ${cont.attributes.contractNumber}`;
+          return `LCPP ${cont.contractNumber}`;
         default:
-          return `${cont.attributes.contractNumber}`;
+          return `${cont.contractNumber}`;
       }
     };
 
     const breadcrumbs = [
-      { id: group.id, link: `/localpools/${group.id}/contracts`, title: group.attributes.name },
+      { id: group.id, link: `/localpools/${group.id}/contracts`, title: group.name },
       { id: contract.id, title: contractShortName(contract) },
     ];
 
@@ -65,24 +65,24 @@ export class ContractOverview extends Component {
         <div className="row contract-overview top-content">
           <div className="col-12">
             <div className="title bg-turquoise-blue">
-              { contractType(contract) } - { contract.attributes.contractNumber }
+              { contractType(contract) } - { contract.contractNumber }
             </div>
           </div>
           <div className="col-12 padding-top"><h5 className="label">Contract Data</h5></div>
           <div className="col-6 padding-bottom">
             <div className="row">
               <div className="col-3"><span className="label">Local pool:</span></div>
-              <div className="col-9"><Link to={ `/localpools/${group.id}` }>{ group.attributes.name }</Link></div>
+              <div className="col-9"><Link to={ `/localpools/${group.id}` }>{ group.name }</Link></div>
             </div>
             <div className="row">
               <div className="col-3"><span className="label">Contract #:</span></div>
-              <div className="col-9">{ contract.attributes.contractNumber }</div>
+              <div className="col-9">{ contract.contractNumber }</div>
             </div>
           </div>
           <div className="col-6 padding-bottom">
             <div className="row">
               <div className="col-3"><span className="label">Begin:</span></div>
-              <div className="col-9">{ contract.attributes.beginDate }</div>
+              <div className="col-9">{ contract.beginDate }</div>
             </div>
             <div className="row">
               <div className="col-3"><span className="label">Contact:</span></div>

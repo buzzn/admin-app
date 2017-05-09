@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Bank from 'components/bank';
 
 const BankAccount = ({ loading, bankAccount, updateBankAccount }) => {
@@ -10,14 +11,14 @@ const BankAccount = ({ loading, bankAccount, updateBankAccount }) => {
     <Bank loading={ loading }
           bank={ bankAccount }
           updateBankAccount={ updateBankAccount }
-          initialValues={ bankAccount ? bankAccount.attributes : {} } />
+          initialValues={ bankAccount || {} } />
   );
 };
 
 BankAccount.propTypes = {
-  loading: React.PropTypes.bool.isRequired,
-  bankAccount: React.PropTypes.object,
-  updateBankAccount: React.PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+  bankAccount: PropTypes.object,
+  updateBankAccount: PropTypes.func.isRequired,
 };
 
 export default BankAccount;

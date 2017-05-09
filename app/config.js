@@ -2,18 +2,16 @@ let config = {};
 
 if (process.env.NODE_ENV === 'production') {
   config = {
-    apiUrl: 'https://app.buzzn.net/',
+    apiUrl: 'https://core.buzzn.io/',
     apiPath: 'api/v1',
     clientId: '',
-    scope: 'full',
     callBackURL: '',
   };
 } else if (process.env.NODE_ENV === 'staging') {
   config = {
-    apiUrl: 'https://staging.buzzn.net/',
+    apiUrl: 'https://staging-core.buzzn.io/',
     apiPath: 'api/v1',
     clientId: '',
-    scope: 'full',
     callBackURL: '',
   };
 } else {
@@ -21,8 +19,7 @@ if (process.env.NODE_ENV === 'production') {
     apiUrl: 'http://localhost:3000/',
     apiPath: 'api/v1',
     clientId: '',
-    scope: 'full',
-    callBackURL: 'http://localhost:2999/',
+    callBackURL: '',
   };
 }
 
