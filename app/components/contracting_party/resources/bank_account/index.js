@@ -10,7 +10,7 @@ const BankAccount = ({ loading, bankAccount, updateBankAccount }) => {
     <Bank loading={ loading }
           bank={ bankAccount }
           updateBankAccount={ updateBankAccount }
-          initialValues={ bankAccount ? bankAccount.attributes : {} } />
+          initialValues={ bankAccount || {} } />
   );
 };
 

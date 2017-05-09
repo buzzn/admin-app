@@ -5,7 +5,6 @@ if (process.env.NODE_ENV === 'production') {
     apiUrl: 'https://app.buzzn.net/',
     apiPath: 'api/v1',
     clientId: '',
-    scope: 'full',
     callBackURL: '',
   };
 } else if (process.env.NODE_ENV === 'staging') {
@@ -13,7 +12,6 @@ if (process.env.NODE_ENV === 'production') {
     apiUrl: 'https://staging.buzzn.net/',
     apiPath: 'api/v1',
     clientId: '',
-    scope: 'full',
     callBackURL: '',
   };
 } else {
@@ -21,8 +19,7 @@ if (process.env.NODE_ENV === 'production') {
     apiUrl: 'http://localhost:3000/',
     apiPath: 'api/v1',
     clientId: '',
-    scope: 'full',
-    callBackURL: 'http://localhost:2999/',
+    callBackURL: '',
   };
 }
 
