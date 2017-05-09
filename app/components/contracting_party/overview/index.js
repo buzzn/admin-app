@@ -77,15 +77,15 @@ export class ContractingPartyOverview extends Component {
           <div className="col-6 padding-bottom">
             <div className="row">
               <div className="col-3"><span className="label">Street:</span></div>
-              <div className="col-9">{ address.attributes && address.streetName }</div>
+              <div className="col-9">{ address && address.streetName }</div>
             </div>
             <div className="row">
               <div className="col-3"><span className="label">Postal Code:</span></div>
-              <div className="col-9">{ address.attributes && address.zip }</div>
+              <div className="col-9">{ address && address.zip }</div>
             </div>
             <div className="row">
               <div className="col-3"><span className="label">City:</span></div>
-              <div className="col-9">{ address.attributes && address.city }</div>
+              <div className="col-9">{ address && address.city }</div>
             </div>
             <div className="row">
               <div className="col-3"><span className="label">Email:</span></div>

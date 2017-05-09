@@ -46,11 +46,11 @@ export class RegisterResources extends Component {
             {
               readings.map(reading => (
                 <tr key={ reading.id }>
-                  <td>{ moment(reading.attributes.timestamp).format('YYYY-MM-DD') }</td>
-                  <td>{ reading.attributes.powerMilliwatt }</td>
-                  <td>{ reading.attributes.reason }</td>
-                  <td>{ reading.attributes.quality }</td>
-                  <td>{ reading.attributes.source }</td>
+                  <td>{ moment(reading.timestamp).format('YYYY-MM-DD') }</td>
+                  <td>{ reading.powerMilliwatt }</td>
+                  <td>{ reading.reason }</td>
+                  <td>{ reading.quality }</td>
+                  <td>{ reading.source }</td>
                 </tr>
               ))
             }
