@@ -13,16 +13,11 @@ export function* getContract({ apiUrl, apiPath, token }, { contractId }) {
   yield put(actions.setContract({ contract: {}, contractor: {}, customer: {} }));
   try {
     const contract = yield call(api.fetchContract, { apiUrl, apiPath, token, contractId });
+    // FIXME: change this after https://github.com/buzzn/buzzn/issues/974
     const parties = {};
     const types = ['contractor', 'customer'];
     for (let i = 0; i < types.length; i += 1) {
-      let p = yield call(api[`fetch${upperFirst(types[i])}`], { apiUrl, apiPath, token, contractId });
-      if (p.type === 'organization') {
-        p = yield call(api.fetchOrganization, { apiUrl, apiPath, token, organizationId: p.id });
-        p.address = yield call(api.fetchOrganizationAddress, { apiUrl, apiPath, token, organizationId: p.id });
-        p.bankAccount = yield call(api.fetchOrganizationBankAccount, { apiUrl, apiPath, token, organizationId: p.id });
-      }
-      parties[types[i]] = p;
+      parties[types[i]] = yield call(api[`fetch${upperFirst(types[i])}`], { apiUrl, apiPath, token, contractId });
     }
     yield put(actions.setContract({ contract, contractor: parties.contractor, customer: parties.customer }));
   } catch (error) {

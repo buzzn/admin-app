@@ -23,28 +23,6 @@ export default {
     .then(parseResponse)
     .then(camelizeResponseKeys);
   },
-  // TODO: it can be replaced with organization module later if needed
-  fetchOrganization({ token, apiUrl, apiPath, organizationId }) {
-    return fetch(`${apiUrl}${apiPath}/organizations/${organizationId}`, {
-      headers: prepareHeaders(token),
-    })
-    .then(parseResponse)
-    .then(camelizeResponseKeys);
-  },
-  fetchOrganizationAddress({ token, apiUrl, apiPath, organizationId }) {
-    return fetch(`${apiUrl}${apiPath}/organizations/${organizationId}/address`, {
-      headers: prepareHeaders(token),
-    })
-    .then(parseResponse)
-    .then(camelizeResponseKeys);
-  },
-  fetchOrganizationBankAccount({ token, apiUrl, apiPath, organizationId }) {
-    return fetch(`${apiUrl}${apiPath}/organizations/${organizationId}/bank-account`, {
-      headers: prepareHeaders(token),
-    })
-    .then(parseResponse)
-    .then(camelizeResponseKeys);
-  },
   updateBankAccount({ token, apiUrl, apiPath, bankAccountId, params }) {
     return fetch(`${apiUrl}${apiPath}/bank-accounts/${bankAccountId}`, {
       headers: prepareHeaders(token),

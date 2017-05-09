@@ -29,9 +29,9 @@ export class TariffOverview extends Component {
     const { loading, group, contract, match: { params: { tariffId } } } = this.props;
 
     if (loading || !contract.id || !group.id) return (<div>Loading...</div>);
-    if (!contract.relationships || !contract.relationships.tariffs) return (<div>Tariff not found</div>);
+    if (!contract.tariffs || contract.tariffs.length === 0) return (<div>Tariff not found</div>);
 
-    const tariff = find(contract.relationships.tariffs.data, t => t.id === tariffId);
+    const tariff = find(contract.tariffs, t => t.id === tariffId);
     if (!tariff) return (<div>Tariff not found</div>);
 
     const formatDate = (date) => {
