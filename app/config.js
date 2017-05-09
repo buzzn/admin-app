@@ -2,14 +2,14 @@ let config = {};
 
 if (process.env.NODE_ENV === 'production') {
   config = {
-    apiUrl: 'https://app.buzzn.net/',
+    apiUrl: 'https://core.buzzn.io/',
     apiPath: 'api/v1',
     clientId: '',
     callBackURL: '',
   };
 } else if (process.env.NODE_ENV === 'staging') {
   config = {
-    apiUrl: 'https://staging.buzzn.net/',
+    apiUrl: 'https://staging-core.buzzn.io/',
     apiPath: 'api/v1',
     clientId: '',
     callBackURL: '',
