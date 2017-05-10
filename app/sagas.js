@@ -25,7 +25,12 @@ export function* getUserMe({ apiUrl, apiPath, token }) {
 }
 
 export default function* () {
-  const { apiUrl, apiPath } = yield select(getConfig);
+  const { apiUrl, apiPath, secure } = yield select(getConfig);
+
+  if (secure && window.location.protocol !== 'https:') {
+    window.location.href = `https:${window.location.href.substring(window.location.protocol.length)}`;
+  }
+
   yield put(Groups.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Meters.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Profiles.actions.setApiParams({ apiUrl, apiPath }));
