@@ -6,6 +6,7 @@ if (process.env.NODE_ENV === 'production') {
     apiPath: 'api/v1',
     clientId: '',
     callBackURL: '',
+    secure: true,
   };
 } else if (process.env.NODE_ENV === 'staging') {
   config = {
@@ -13,6 +14,7 @@ if (process.env.NODE_ENV === 'production') {
     apiPath: 'api/v1',
     clientId: '',
     callBackURL: '',
+    secure: true,
   };
 } else {
   config = {
@@ -20,6 +22,7 @@ if (process.env.NODE_ENV === 'production') {
     apiPath: 'api/v1',
     clientId: '',
     callBackURL: '',
+    secure: false,
   };
 }
 
