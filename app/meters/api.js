@@ -21,11 +21,4 @@ export default {
     .then(parseResponse)
     .then(camelizeResponseArray);
   },
-  fetchUserMeters({ token, apiUrl, apiPath, userId }) {
-    return fetch(`${apiUrl}${apiPath}/users/${userId}/meters`, {
-      headers: prepareHeaders(token),
-    })
-    .then(parseResponse)
-    .then(camelizeResponseArray);
-  },
 };
