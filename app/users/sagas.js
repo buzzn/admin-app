@@ -65,7 +65,6 @@ export function* getUsers({ apiUrl, apiPath, token, type }, params) {
 
 export function* getUserInfo({ apiUrl, apiPath, token }, { userId }) {
   yield put(Groups.actions.loadUserGroups(userId));
-  yield put(Meters.actions.loadUserMeters(userId));
   yield put(Profiles.actions.loadProfile(userId));
   yield put(actions.loadUser(userId));
 }

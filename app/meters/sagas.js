@@ -29,21 +29,8 @@ export function* getGroupMeters({ apiUrl, apiPath, token }, { groupId }) {
   yield put(actions.loadedGroupMeters());
 }
 
-export function* getUserMeters({ apiUrl, apiPath, token }, { userId }) {
-  yield put(actions.loadingUserMeters());
-  yield put(actions.setUserMeters([]));
-  try {
-    const userMeters = yield call(api.fetchUserMeters, { apiUrl, apiPath, token, userId });
-    yield put(actions.setUserMeters(userMeters));
-  } catch (error) {
-    console.log(error);
-  }
-  yield put(actions.loadedUserMeters());
-}
-
 export function* metersSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_GROUP_METERS, getGroupMeters, { apiUrl, apiPath, token });
-  yield takeLatest(constants.LOAD_USER_METERS, getUserMeters, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_METER, getMeter, { apiUrl, apiPath, token });
 }
 

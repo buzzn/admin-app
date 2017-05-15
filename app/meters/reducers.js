@@ -3,9 +3,7 @@ import { constants } from './actions';
 export const initialState = {
   configured: false,
   loadingGroupMeters: false,
-  loadingUserMeters: false,
   loadingMeter: false,
-  userMeters: [],
   groupMeters: [],
   meter: {},
 };
@@ -29,13 +27,6 @@ export default function (state = initialState, action) {
       return { ...state, loadingUserMeters: false };
     case constants.SET_GROUP_METERS:
       return { ...state, groupMeters: action.groupMeters };
-
-    case constants.LOADING_USER_METERS:
-      return { ...state, loadingUserMeters: true };
-    case constants.LOADED_USER_METERS:
-      return { ...state, loadingUserMeters: false };
-    case constants.SET_USER_METERS:
-      return { ...state, userMeters: action.userMeters };
 
     case constants.SET_TOKEN:
       return { ...state, configured: true };
