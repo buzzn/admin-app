@@ -4,7 +4,6 @@ import api from './api';
 import Registers from '../registers';
 
 export const selectGroupId = state => state.groups.groupId;
-export const selectUserId = state => state.groups.userId;
 
 export function* getGroup({ apiUrl, apiPath, token }, { groupId }) {
   yield put(actions.loadingGroup());
@@ -24,27 +23,14 @@ export function* getGroups({ apiUrl, apiPath, token }) {
   yield put(actions.setGroups([]));
   try {
     const groups = yield call(api.fetchGroups, { apiUrl, apiPath, token });
-    yield put(actions.setGroups(groups));
+    yield put(actions.setGroups(groups.array));
   } catch (error) {
     console.log(error);
   }
   yield put(actions.loadedGroups());
 }
 
-export function* getUserGroups({ apiUrl, apiPath, token }, { userId }) {
-  yield put(actions.loadingUserGroups());
-  yield put(actions.setUserGroups([]));
-  try {
-    const userGroups = yield call(api.fetchUserGroups, { apiUrl, apiPath, token, userId });
-    yield put(actions.setUserGroups(userGroups));
-  } catch (error) {
-    console.log(error);
-  }
-  yield put(actions.loadedUserGroups());
-}
-
 export function* groupsSagas({ apiUrl, apiPath, token }) {
-  yield takeLatest(constants.LOAD_USER_GROUPS, getUserGroups, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUPS, getGroups, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUP, getGroup, { apiUrl, apiPath, token });
 }
@@ -55,10 +41,8 @@ export default function* () {
 
   while (true) {
     const groupId = yield select(selectGroupId);
-    const userId = yield select(selectUserId);
     yield call(getGroups, { apiUrl, apiPath, token });
     if (groupId) yield call(getGroup, { apiUrl, apiPath, token }, { groupId });
-    if (userId) yield call(getUserGroups, { apiUrl, apiPath, token }, { userId });
 
     const sagas = yield fork(groupsSagas, { apiUrl, apiPath, token });
     yield put(actions.endConfig());

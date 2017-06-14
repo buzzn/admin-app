@@ -20,7 +20,7 @@ export class ContractOverview extends Component {
 
   componentWillMount() {
     const { loadContract, loadGroup, group, match: { params: { contractId, groupId } } } = this.props;
-    loadContract(contractId);
+    loadContract({ contractId, groupId });
     if (!group.id) loadGroup(groupId);
   }
 
@@ -45,11 +45,11 @@ export class ContractOverview extends Component {
     const contractShortName = (cont) => {
       switch (cont.type) {
         case 'contract_metering_point_operator':
-          return `MPO ${cont.contractNumber}`;
+          return `MPO ${cont.fullContractNumber}`;
         case 'contract_localpool_processing':
-          return `LCPP ${cont.contractNumber}`;
+          return `LCPP ${cont.fullContractNumber}`;
         default:
-          return `${cont.contractNumber}`;
+          return `${cont.fullContractNumber}`;
       }
     };
 
@@ -64,8 +64,8 @@ export class ContractOverview extends Component {
         <Breadcrumbs breadcrumbs={ breadcrumbs }/>
         <div className="row contract-overview top-content">
           <div className="col-12">
-            <div className="title bg-turquoise-blue">
-              { contractType(contract) } - { contract.contractNumber }
+            <div className="title bg-consumption-dark">
+              { contractType(contract) } - { contract.fullContractNumber }
             </div>
           </div>
           <div className="col-12 padding-top"><h5 className="label">Contract Data</h5></div>
@@ -76,7 +76,7 @@ export class ContractOverview extends Component {
             </div>
             <div className="row">
               <div className="col-3"><span className="label">Contract #:</span></div>
-              <div className="col-9">{ contract.contractNumber }</div>
+              <div className="col-9">{ contract.fullContractNumber }</div>
             </div>
           </div>
           <div className="col-6 padding-bottom">

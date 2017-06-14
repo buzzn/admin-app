@@ -58,4 +58,8 @@ Tariffs.propTypes = {
   url: PropTypes.string.isRequired,
 };
 
+Tariffs.defaultProps = {
+  tariffs: [],
+};
+
 export default Tariffs;

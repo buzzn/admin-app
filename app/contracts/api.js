@@ -1,27 +1,22 @@
 import 'whatwg-fetch';
-import { prepareHeaders, parseResponse, camelizeResponseKeys } from '../_util';
+import { prepareHeaders, parseResponse, camelizeResponseKeys, camelizeResponseArray } from '../_util';
 
 export default {
-  fetchContract({ token, apiUrl, apiPath, contractId }) {
-    return fetch(`${apiUrl}${apiPath}/contracts/${contractId}`, {
+  fetchContract({ token, apiUrl, apiPath, contractId, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}?include=contractor,customer,tariffs,payments`, {
       headers: prepareHeaders(token),
     })
     .then(parseResponse)
     .then(camelizeResponseKeys);
   },
-  fetchContractor({ token, apiUrl, apiPath, contractId }) {
-    return fetch(`${apiUrl}${apiPath}/contracts/${contractId}/contractor`, {
+  fetchGroupPowertakers({ token, apiUrl, apiPath, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/power-taker-contracts?include=customer`, {
       headers: prepareHeaders(token),
     })
     .then(parseResponse)
-    .then(camelizeResponseKeys);
-  },
-  fetchCustomer({ token, apiUrl, apiPath, contractId }) {
-    return fetch(`${apiUrl}${apiPath}/contracts/${contractId}/customer`, {
-      headers: prepareHeaders(token),
-    })
-    .then(parseResponse)
-    .then(camelizeResponseKeys);
+    // FIXME: this is a workaround. Should be fixed after buzzn/buzzn #999
+    .then(contracts => contracts.array.map(c => ({ ...c.customer })))
+    .then(camelizeResponseArray);
   },
   updateBankAccount({ token, apiUrl, apiPath, bankAccountId, params }) {
     return fetch(`${apiUrl}${apiPath}/bank-accounts/${bankAccountId}`, {
@@ -32,14 +27,14 @@ export default {
     .then(parseResponse);
   },
   fetchOperatorContract({ token, apiUrl, apiPath, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/groups/localpools/${groupId}/metering-point-operator-contract`, {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/metering-point-operator-contract`, {
       headers: prepareHeaders(token),
     })
     .then(parseResponse)
     .then(camelizeResponseKeys);
   },
   fetchProcessingContract({ token, apiUrl, apiPath, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/groups/localpools/${groupId}/localpool-processing-contract`, {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/localpool-processing-contract`, {
       headers: prepareHeaders(token),
     })
     .then(parseResponse)

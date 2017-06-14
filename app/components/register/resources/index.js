@@ -16,8 +16,8 @@ export class RegisterResources extends Component {
   };
 
   componentWillMount() {
-    const { loading, readings, loadRegister, match: { params: { registerId } } } = this.props;
-    if (!loading && readings.length === 0) loadRegister(registerId);
+    const { loading, readings, loadRegister, match: { params: { registerId, groupId } } } = this.props;
+    if (!loading && readings.length === 0) loadRegister({ registerId, groupId });
   }
 
   render() {

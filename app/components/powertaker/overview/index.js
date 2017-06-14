@@ -10,7 +10,7 @@ import './style.scss';
 
 export class PowertakerOverview extends Component {
   static propTypes = {
-    profile: PropTypes.object,
+    user: PropTypes.object,
     group: PropTypes.object,
     loadingGroup: PropTypes.bool.isRequired,
     loadGroup: PropTypes.func.isRequired,
@@ -18,24 +18,25 @@ export class PowertakerOverview extends Component {
   };
 
   static defaultProps = {
-    profile: {},
+    user: {},
   };
 
   componentWillMount() {
-    const { loadingGroup, group, loadGroup, profile, loadUser, match: { params: { groupId, userId } } } = this.props;
+    const { loadingGroup, group, loadGroup, user, loadUser, match: { params: { groupId, userId } } } = this.props;
     if (!loadingGroup && !group.id) loadGroup(groupId);
-    if (!profile.loading && !profile.firstName) loadUser(userId);
+    if (user.id !== userId) loadUser({ userId, groupId });
   }
 
   render() {
     const {
       loadingGroup,
+      loadingUser,
       group,
-      profile: { firstName, lastName, mdImg, loading },
+      user: { firstName, lastName, mdImg },
       match: { params: { userId } },
     } = this.props;
 
-    if (loading || loadingGroup || !group.id) return (<div>Loading...</div>);
+    if (loadingUser || loadingGroup || !group.id) return (<div>Loading...</div>);
 
     const breadcrumbs = [
       { id: group.id, link: `/localpools/${group.id}/powertakers`, title: group.name },
@@ -48,7 +49,7 @@ export class PowertakerOverview extends Component {
         <Breadcrumbs breadcrumbs={ breadcrumbs }/>
         <div className="row powertaker-overview top-content">
           <div className="col-12">
-            <div className="title bg-dodger-blue">
+            <div className="title bg-wind-dark">
               { mdImg && <img className="top-avatar" src={ mdImg } /> }
               { `${firstName} ${lastName}` }
             </div>
@@ -69,13 +70,12 @@ export class PowertakerOverview extends Component {
   }
 }
 
-function mapStateToProps(state, props) {
-  const { match: { params: { userId } } } = props;
-
+function mapStateToProps(state) {
   return {
     group: state.groups.group,
     loadingGroup: state.groups.loadingGroup,
-    profile: state.profiles.profiles[userId],
+    user: state.users.user,
+    loadingUser: state.users.loadingUser,
   };
 }
 

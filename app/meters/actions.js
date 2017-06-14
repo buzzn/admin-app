@@ -17,7 +17,7 @@ export const actions = {
   setApiParams: ({ apiPath, apiUrl }) => ({ type: constants.SET_API_PARAMS, apiPath, apiUrl }),
   setToken: token => ({ type: constants.SET_TOKEN, token }),
 
-  loadMeter: meterId => ({ type: constants.LOAD_METER, meterId }),
+  loadMeter: ({ meterId, groupId }) => ({ type: constants.LOAD_METER, meterId, groupId }),
   loadingMeter: () => ({ type: constants.LOADING_METER }),
   loadedMeter: () => ({ type: constants.LOADED_METER }),
   setMeter: meter => ({ type: constants.SET_METER, meter }),

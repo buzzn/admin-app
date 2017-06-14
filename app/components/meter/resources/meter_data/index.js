@@ -11,8 +11,8 @@ export class MeterData extends Component {
   };
 
   componentWillMount() {
-    const { meter, loadMeter, loading, meterId } = this.props;
-    if (!meter.id && !loading) loadMeter(meterId);
+    const { meter, loadMeter, loading, meterId, groupId } = this.props;
+    if (!meter.id && !loading) loadMeter({ meterId, groupId });
   }
 
   render() {

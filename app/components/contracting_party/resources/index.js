@@ -12,8 +12,8 @@ export class ContractingPartyResources extends Component {
   };
 
   componentWillMount() {
-    const { contractingParty, loading, loadContract, match: { params: { contractId } } } = this.props;
-    if (!loading && !contractingParty.id) loadContract(contractId);
+    const { contractingParty, loading, loadContract, match: { params: { contractId, groupId } } } = this.props;
+    if (!loading && !contractingParty.id) loadContract({ contractId, groupId });
   }
 
   render() {

@@ -6,13 +6,11 @@
   version "1.0.0"
   resolved "git+https://github.com/buzzn/module-auth.git#739a8878c0f979ca8a633dfe666ff864e4588e16"
 
-"@buzzn/module_bubbles@git+https://github.com/buzzn/module-bubbles.git#v1.0.12":
+"@buzzn/module_bubbles@file:../modules/bubbles":
   version "1.0.0"
-  resolved "git+https://github.com/buzzn/module-bubbles.git#e435d11d34379eb9e9f34979f8b0d5e4352fbad5"
 
-"@buzzn/module_charts@git+https://github.com/buzzn/module-charts.git#v1.0.8":
+"@buzzn/module_charts@file:../modules/charts":
   version "1.0.0"
-  resolved "git+https://github.com/buzzn/module-charts.git#fcb783f3dcd2f216f54631405d2c4323fda4fa3d"
 
 abab@^1.0.3:
   version "1.0.3"
@@ -1681,6 +1679,14 @@ create-hmac@^1.1.0, create-hmac@^1.1.2:
   dependencies:
     create-hash "^1.1.0"
     inherits "^2.0.1"
+
+create-react-class@^15.5.3:
+  version "15.5.3"
+  resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.5.3.tgz#fb0f7cae79339e9a179e194ef466efa3923820fe"
+  dependencies:
+    fbjs "^0.8.9"
+    loose-envify "^1.3.1"
+    object-assign "^4.1.1"
 
 cross-env@^4.0.0:
   version "4.0.0"
@@ -3918,13 +3924,9 @@ loader-utils@^1.0.0, loader-utils@^1.0.1, loader-utils@^1.0.2:
     emojis-list "^2.0.0"
     json5 "^0.5.0"
 
-lodash-es@^4.17.3:
+lodash-es@^4.17.3, lodash-es@^4.2.0, lodash-es@^4.2.1:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.4.tgz#dcc1d7552e150a0640073ba9cb31d70f032950e7"
-
-lodash-es@^4.2.0, lodash-es@^4.2.1:
-  version "4.17.2"
-  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.2.tgz#59011b585166e613eb9dd5fc256b2cd1a30f3712"
 
 lodash._baseassign@^3.0.0:
   version "3.2.0"
@@ -4125,17 +4127,17 @@ longest@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/longest/-/longest-1.0.1.tgz#30a0b2da38f73770e8294a0d22e6625ed77d0097"
 
-loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.2.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.3.0.tgz#6b26248c42f6d4fa4b0d8542f78edfcde35642a8"
-  dependencies:
-    js-tokens "^2.0.0"
-
-loose-envify@^1.3.1:
+loose-envify@^1.0.0, loose-envify@^1.2.0, loose-envify@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.3.1.tgz#d1a8ad33fa9ce0e713d65fdd0ac8b748d478c848"
   dependencies:
     js-tokens "^3.0.0"
+
+loose-envify@^1.1.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.3.0.tgz#6b26248c42f6d4fa4b0d8542f78edfcde35642a8"
+  dependencies:
+    js-tokens "^2.0.0"
 
 loud-rejection@^1.0.0:
   version "1.6.0"
@@ -4566,11 +4568,11 @@ oauth-sign@~0.8.1:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/oauth-sign/-/oauth-sign-0.8.2.tgz#46a6ab7f0aead8deae9ec0565780b7d4efeb9d43"
 
-object-assign@4.1.0, object-assign@^4.1.0:
+object-assign@4.1.0, object-assign@^4.0.1, object-assign@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.0.tgz#7a3b3d0e98063d43f4c03f2e8ae6cd51a86883a0"
 
-object-assign@^4.0.1, object-assign@^4.1.1:
+object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
 
@@ -5326,6 +5328,13 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
+prop-types@^15.5.10, prop-types@^15.5.6, prop-types@^15.5.8:
+  version "15.5.10"
+  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.10.tgz#2797dfc3126182e3a95e3dfbb2e893ddd7456154"
+  dependencies:
+    fbjs "^0.8.9"
+    loose-envify "^1.3.1"
+
 prop-types@^15.5.2, prop-types@^15.5.4, prop-types@~15.5.0:
   version "15.5.4"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.4.tgz#2ed3692716a5060f8cc020946d8238e7419d92c0"
@@ -5469,12 +5478,13 @@ react-element-to-jsx-string@^5.0.0:
     stringify-object "^2.4.0"
     traverse "^0.6.6"
 
-react-helmet@^5.0.2:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/react-helmet/-/react-helmet-5.0.2.tgz#2905f9e174650b74c26983d75dc45f3ebf561890"
+react-helmet@^5.1.3:
+  version "5.1.3"
+  resolved "https://registry.yarnpkg.com/react-helmet/-/react-helmet-5.1.3.tgz#cd40626593a29eecf684b6d38d711f44c48188af"
   dependencies:
     deep-equal "^1.0.1"
     object-assign "^4.1.1"
+    prop-types "^15.5.4"
     react-side-effect "^1.1.0"
 
 react-highcharts@^12.0.0:
@@ -5483,15 +5493,15 @@ react-highcharts@^12.0.0:
   dependencies:
     highcharts "^5.0.0"
 
-react-hot-loader@^3.0.0-beta.6:
-  version "3.0.0-beta.6"
-  resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-3.0.0-beta.6.tgz#463fac0bfc8b63a8385258af20c91636abce75f4"
+react-hot-loader@^3.0.0-beta.7:
+  version "3.0.0-beta.7"
+  resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-3.0.0-beta.7.tgz#d5847b8165d731c4d5b30d86d5d4716227a0fa83"
   dependencies:
     babel-template "^6.7.0"
     global "^4.3.0"
     react-deep-force-update "^2.0.1"
     react-proxy "^3.0.0-alpha.0"
-    redbox-react "^1.2.5"
+    redbox-react "^1.3.6"
     source-map "^0.4.4"
 
 react-proxy@^3.0.0-alpha.0:
@@ -5500,31 +5510,37 @@ react-proxy@^3.0.0-alpha.0:
   dependencies:
     lodash "^4.6.1"
 
-react-redux@^5.0.3:
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.0.3.tgz#86c3b68d56e74294a42e2a740ab66117ef6c019f"
+react-redux@^5.0.5:
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.0.5.tgz#f8e8c7b239422576e52d6b7db06439469be9846a"
   dependencies:
+    create-react-class "^15.5.3"
     hoist-non-react-statics "^1.0.3"
     invariant "^2.0.0"
     lodash "^4.2.0"
     lodash-es "^4.2.0"
     loose-envify "^1.1.0"
+    prop-types "^15.5.10"
 
-react-router-dom@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-4.0.0.tgz#4fa4418e14b8cfc5bcc0bdea0c4083fb8c2aef10"
+react-router-dom@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-4.1.1.tgz#3021ade1f2c160af97cf94e25594c5f294583025"
   dependencies:
     history "^4.5.1"
-    react-router "^4.0.0"
+    loose-envify "^1.3.1"
+    prop-types "^15.5.4"
+    react-router "^4.1.1"
 
-react-router@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/react-router/-/react-router-4.0.0.tgz#6532075231f0bb5077c2005c1d417ad6165b3997"
+react-router@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-4.1.1.tgz#d448f3b7c1b429a6fbb03395099949c606b1fe95"
   dependencies:
     history "^4.6.0"
+    hoist-non-react-statics "^1.2.0"
     invariant "^2.2.2"
     loose-envify "^1.3.1"
     path-to-regexp "^1.5.3"
+    prop-types "^15.5.4"
     warning "^3.0.0"
 
 react-side-effect@^1.1.0:
@@ -5555,15 +5571,16 @@ reactstrap-tether@1.3.4:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/reactstrap-tether/-/reactstrap-tether-1.3.4.tgz#86d94d30216ffa34ceb2c626f4b9912c0d193894"
 
-reactstrap@^4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/reactstrap/-/reactstrap-4.5.0.tgz#ce377eb46c2358d084d7d9bf881fb55f6fcf2a83"
+reactstrap@^4.6.2:
+  version "4.6.2"
+  resolved "https://registry.yarnpkg.com/reactstrap/-/reactstrap-4.6.2.tgz#96e4cddaf1c73923e701e216b33ce5b4740624c1"
   dependencies:
     classnames "^2.2.3"
     lodash.isfunction "^3.0.8"
     lodash.isobject "^3.0.2"
     lodash.omit "^4.4.1"
     lodash.tonumber "^4.0.3"
+    prop-types "^15.5.8"
     reactstrap-tether "1.3.4"
 
 read-pkg-up@^1.0.1:
@@ -5636,12 +5653,14 @@ rechoir@^0.6.2:
   dependencies:
     resolve "^1.1.6"
 
-redbox-react@^1.2.5:
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/redbox-react/-/redbox-react-1.3.3.tgz#63ec9c2cb9c620c46e2b9f8543b4898f1b787e41"
+redbox-react@^1.3.6:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/redbox-react/-/redbox-react-1.4.0.tgz#0b571dab6a7acbf3da0e0034825c44b5bd8dba34"
   dependencies:
     error-stack-parser "^1.3.6"
     object-assign "^4.0.1"
+    prop-types "^15.5.4"
+    sourcemapped-stacktrace "^1.1.6"
 
 redent@^1.0.0:
   version "1.0.0"
@@ -5664,9 +5683,9 @@ reduce-function-call@^1.0.1:
   dependencies:
     balanced-match "^0.4.2"
 
-redux-form@^6.6.2:
-  version "6.6.2"
-  resolved "https://registry.yarnpkg.com/redux-form/-/redux-form-6.6.2.tgz#51102430a38b4d85529290a881bc1efb54f580ae"
+redux-form@^6.7.0:
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/redux-form/-/redux-form-6.7.0.tgz#9fb0769e76f14febf1dd7686e02c4ab2d6f953aa"
   dependencies:
     deep-equal "^1.0.1"
     es6-error "^4.0.0"
@@ -5675,6 +5694,7 @@ redux-form@^6.6.2:
     is-promise "^2.1.0"
     lodash "^4.17.3"
     lodash-es "^4.17.3"
+    prop-types "^15.5.6"
 
 redux-mock-store@^1.2.2:
   version "1.2.2"
@@ -6171,7 +6191,7 @@ source-map@0.4.x, source-map@^0.4.4:
   dependencies:
     amdefine ">=0.0.4"
 
-source-map@^0.5.0, source-map@^0.5.3, source-map@^0.5.6, source-map@~0.5.1, source-map@~0.5.3:
+source-map@0.5.6, source-map@^0.5.0, source-map@^0.5.3, source-map@^0.5.6, source-map@~0.5.1, source-map@~0.5.3:
   version "0.5.6"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.6.tgz#75ce38f52bf0733c5a7f0c118d81334a2bb5f412"
 
@@ -6180,6 +6200,12 @@ source-map@~0.2.0:
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.2.0.tgz#dab73fbcfc2ba819b4de03bd6f6eaa48164b3f9d"
   dependencies:
     amdefine ">=0.0.4"
+
+sourcemapped-stacktrace@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/sourcemapped-stacktrace/-/sourcemapped-stacktrace-1.1.6.tgz#112d8749c942c3cd3b630dfac9514577b86a3a51"
+  dependencies:
+    source-map "0.5.6"
 
 spdx-correct@~1.0.0:
   version "1.0.2"

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Users from 'users';
+import Contracts from 'contracts';
 
 import './style.scss';
 
@@ -10,14 +10,12 @@ export class Powertakers extends Component {
   static propTypes = {
     loadGroupPowertakers: PropTypes.func.isRequired,
     groupId: PropTypes.string.isRequired,
-    users: PropTypes.array.isRequired,
-    profiles: PropTypes.object.isRequired,
+    powertakers: PropTypes.array.isRequired,
     loading: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {
-    users: [],
-    profiles: {},
+    powertakers: [],
   };
 
   componentWillMount() {
@@ -26,7 +24,7 @@ export class Powertakers extends Component {
   }
 
   render() {
-    const { users, profiles, groupId, loading } = this.props;
+    const { powertakers, groupId, loading } = this.props;
 
     if (loading) return (<div>Loading...</div>);
 
@@ -34,7 +32,7 @@ export class Powertakers extends Component {
       <div className="row">
         <div className="col-12">
           <h5>Powertakers</h5>
-          <p>{ users.length } powertakers</p>
+          <p>{ powertakers.length } powertakers</p>
         </div>
         <div className="col-12 no-padding">
           <table className="table">
@@ -46,33 +44,30 @@ export class Powertakers extends Component {
               </tr>
             </thead>
             <tbody>
-              { users.map((user) => {
-                const profile = profiles[user.id];
-
-                if (!profile || profile.loading) {
-                  return (
-                    <tr key={ user.id }><td colSpan="3">Loading...</td></tr>
-                  );
-                }
-
-                return (
-                  <tr key={ user.id }>
-                    <td>
-                      <img src={ profile.mdImg } className="table-avatar"/>
-                      { `${profile.firstName} ${profile.lastName}` }
-                    </td>
+              { powertakers.map(powertaker => (
+                  <tr key={ powertaker.id }>
+                    {
+                      powertaker.type === 'user' ?
+                        <td>
+                          <img src={ powertaker.image } className="table-avatar"/>
+                          { `${powertaker.firstName} ${powertaker.lastName}` }
+                        </td> :
+                        <td>
+                          { powertaker.name }
+                        </td>
+                    }
                     <td>Location</td>
                     <td>
                       <Link
-                        to={ `/localpools/${groupId}/powertakers/${user.id}` }
+                        to={ `/localpools/${groupId}/powertakers/${powertaker.id}` }
                         className="btn btn-outline-secondary"
                         style={{ float: 'right', marginRight: '15px' }}>
                         View
                       </Link>
                     </td>
                   </tr>
-                );
-              }) }
+                ),
+              ) }
             </tbody>
           </table>
         </div>
@@ -83,10 +78,9 @@ export class Powertakers extends Component {
 
 function mapStateToProps(state) {
   return {
-    users: state.users.groupPowertakers,
-    profiles: state.profiles.profiles,
-    loading: state.users.loadingGroupPowertakers,
+    powertakers: state.contracts.groupPowertakers,
+    loading: state.contracts.loadingGroupPowertakers,
   };
 }
 
-export default connect(mapStateToProps, { loadGroupPowertakers: Users.actions.loadGroupPowertakers })(Powertakers);
+export default connect(mapStateToProps, { loadGroupPowertakers: Contracts.actions.loadGroupPowertakers })(Powertakers);
