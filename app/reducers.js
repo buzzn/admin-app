@@ -5,7 +5,6 @@ import Bubbles from '@buzzn/module_bubbles';
 import Charts from '@buzzn/module_charts';
 import config from './config';
 import { constants } from './actions';
-import Profiles from './profiles';
 import Groups from './groups';
 import Meters from './meters';
 import Registers from './registers';
@@ -18,8 +17,8 @@ export function configReducer(state = config) {
 }
 
 export const initialState = {
-  loading:     false,
-  userMe:      null,
+  loading: false,
+  userMe: {},
 };
 
 export function appReducer(state = initialState, action) {
@@ -44,7 +43,6 @@ export default combineReducers({
   bubbles: Bubbles.reducers,
   charts: Charts.reducers,
   app: appReducer,
-  profiles: Profiles.reducers,
   meters: Meters.reducers,
   groups: Groups.reducers,
   registers: Registers.reducers,

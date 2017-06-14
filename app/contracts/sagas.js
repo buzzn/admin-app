@@ -8,18 +8,12 @@ import api from './api';
 export const selectGroup = state => state.contracts.groupId;
 export const selectContract = state => state.contracts.contractId;
 
-export function* getContract({ apiUrl, apiPath, token }, { contractId }) {
+export function* getContract({ apiUrl, apiPath, token }, { contractId, groupId }) {
   yield put(actions.loadingContract());
   yield put(actions.setContract({ contract: {}, contractor: {}, customer: {} }));
   try {
-    const contract = yield call(api.fetchContract, { apiUrl, apiPath, token, contractId });
-    // FIXME: change this after https://github.com/buzzn/buzzn/issues/974
-    const parties = {};
-    const types = ['contractor', 'customer'];
-    for (let i = 0; i < types.length; i += 1) {
-      parties[types[i]] = yield call(api[`fetch${upperFirst(types[i])}`], { apiUrl, apiPath, token, contractId });
-    }
-    yield put(actions.setContract({ contract, contractor: parties.contractor, customer: parties.customer }));
+    const contract = yield call(api.fetchContract, { apiUrl, apiPath, token, contractId, groupId });
+    yield put(actions.setContract({ contract, contractor: contract.contractor, customer: contract.customer }));
   } catch (error) {
     console.log(error);
   }
@@ -56,10 +50,23 @@ export function* getGroupContracts({ apiUrl, apiPath, token }, { groupId }) {
   yield put(actions.loadedGroupContracts());
 }
 
+export function* getPowertakers({ apiUrl, apiPath, token, type }, params) {
+  yield put(actions.loadingGroupPowertakers());
+  yield put(actions.setGroupPowertakers([]));
+  try {
+    const users = yield call(api.fetchGroupPowertakers, { apiUrl, apiPath, token, ...params });
+    yield put(actions.setGroupPowertakers(users));
+  } catch (error) {
+    console.log(error);
+  }
+  yield put(actions.loadedGroupPowertakers());
+}
+
 export function* contractSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_GROUP_CONTRACTS, getGroupContracts, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_CONTRACT, getContract, { apiUrl, apiPath, token });
   yield takeLatest(constants.UPDATE_BANK_ACCOUNT, updateBankAccount, { apiUrl, apiPath, token });
+  yield takeLatest(constants.LOAD_GROUP_POWERTAKERS, getPowertakers, { apiUrl, apiPath, token, type: 'groupPowertakers' });
 }
 
 export default function* () {
@@ -69,9 +76,10 @@ export default function* () {
   const contractId = yield select(selectContract);
   if (groupId) {
     yield call(getGroupContracts, { apiUrl, apiPath, token }, { groupId });
-  }
-  if (contractId) {
-    yield call(getContract, { apiUrl, apiPath, token }, { contractId });
+    yield call(getPowertakers, { apiUrl, apiPath, token, type: 'groupPowertakers' }, { groupId });
+    if (contractId) {
+      yield call(getContract, { apiUrl, apiPath, token }, { contractId, groupId });
+    }
   }
 
   while (true) {

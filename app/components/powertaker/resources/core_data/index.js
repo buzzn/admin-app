@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-export const CoreData = ({ profile: { firstName, title, loading } }) => (
+export const CoreData = ({ user: { firstName, title } }) => (
   <div className="row">
     <div className="col-12">
       <h5>Core Data:</h5>
@@ -14,18 +14,16 @@ export const CoreData = ({ profile: { firstName, title, loading } }) => (
 );
 
 CoreData.propTypes = {
-  profile: PropTypes.object,
+  user: PropTypes.object,
 };
 
 CoreData.defaultProps = {
-  profile: {},
+  user: {},
 };
 
-function mapStateToProps(state, props) {
-  const { userId } = props;
-
+function mapStateToProps(state) {
   return {
-    profile: state.profiles.profiles[userId],
+    user: state.users.user,
   };
 }
 

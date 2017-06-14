@@ -17,7 +17,7 @@ export class MeterOverview extends Component {
 
   componentWillMount() {
     const { loadMeter, loadGroup, group, match: { params: { meterId, groupId } } } = this.props;
-    loadMeter(meterId);
+    loadMeter({ meterId, groupId });
     if (!group.id) loadGroup(groupId);
   }
 
@@ -39,7 +39,7 @@ export class MeterOverview extends Component {
         <Breadcrumbs breadcrumbs={ breadcrumbs }/>
         <div className="row meter-overview top-content">
           <div className="col-12">
-            <div className="title bg-mango">{ meter.manufacturerProductSerialnumber }</div>
+            <div className="title bg-heat">{ meter.manufacturerProductSerialnumber }</div>
           </div>
           <div className="col-6 left-col"></div>
           <div className="col-6 right-col"></div>

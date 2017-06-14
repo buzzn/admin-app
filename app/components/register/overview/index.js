@@ -28,8 +28,8 @@ export class RegisterOverview extends Component {
       match: { params: { meterId, groupId, registerId } },
     } = this.props;
 
-    loadRegister(registerId);
-    if (!meter.id) loadMeter(meterId);
+    loadRegister({ registerId, groupId });
+    if (!meter.id) loadMeter({ meterId, groupId });
     if (!group.id) loadGroup(groupId);
   }
 
@@ -52,7 +52,7 @@ export class RegisterOverview extends Component {
         <Breadcrumbs breadcrumbs={ breadcrumbs }/>
         <div className="row register-overview top-content">
           <div className="col-12">
-            <div className="title bg-sun-yellow">{ register.name }</div>
+            <div className="title bg-solar-mid">{ register.name }</div>
           </div>
           <div className="col-6 left-col">
             Register data:

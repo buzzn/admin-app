@@ -5,11 +5,11 @@ import api from './api';
 export const selectMeterId = state => state.meters.meterId;
 export const selectGroupId = state => state.meters.groupId;
 
-export function* getMeter({ apiUrl, apiPath, token }, { meterId }) {
+export function* getMeter({ apiUrl, apiPath, token }, { meterId, groupId }) {
   yield put(actions.loadingMeter());
   yield put(actions.setMeter({}));
   try {
-    const meter = yield call(api.fetchMeter, { apiUrl, apiPath, token, meterId });
+    const meter = yield call(api.fetchMeter, { apiUrl, apiPath, token, meterId, groupId });
     yield put(actions.setMeter(meter));
   } catch (error) {
     console.log(error);
@@ -22,7 +22,7 @@ export function* getGroupMeters({ apiUrl, apiPath, token }, { groupId }) {
   yield put(actions.setGroupMeters([]));
   try {
     const groupMeters = yield call(api.fetchGroupMeters, { apiUrl, apiPath, token, groupId });
-    yield put(actions.setGroupMeters(groupMeters));
+    yield put(actions.setGroupMeters(groupMeters.array));
   } catch (error) {
     console.log(error);
   }
@@ -39,7 +39,7 @@ export default function* () {
   let { token } = yield take(constants.SET_TOKEN);
   const meterId = yield select(selectMeterId);
   const groupId = yield select(selectGroupId);
-  if (meterId) yield call(getMeter, { apiUrl, apiPath, token }, { meterId });
+  if (meterId) yield call(getMeter, { apiUrl, apiPath, token }, { meterId, groupId });
   if (groupId) yield call(getGroupMeters, { apiUrl, apiPath, token }, { groupId });
 
   while (true) {

@@ -1,22 +1,13 @@
 import { put, call, takeLatest, take, fork, cancel, select } from 'redux-saga/effects';
 import { actions, constants } from './actions';
 import api from './api';
-import Profiles from '../profiles';
-import Meters from '../meters';
-import Groups from '../groups';
 
 export const getUsersFunctions = {
-  users: {
-    loading: actions.loadingUsers,
-    set: actions.setUsers,
-    fetch: api.fetchUsers,
-    loaded: actions.loadedUsers,
-  },
-  groupMembers: {
-    loading: actions.loadingGroupMembers,
-    set: actions.setGroupMembers,
-    fetch: api.fetchGroupMembers,
-    loaded: actions.loadedGroupMembers,
+  groupUsers: {
+    loading: actions.loadingGroupUsers,
+    set: actions.setGroupUsers,
+    fetch: api.fetchGroupUsers,
+    loaded: actions.loadedGroupUsers,
   },
   groupManagers: {
     loading: actions.loadingGroupManagers,
@@ -24,24 +15,17 @@ export const getUsersFunctions = {
     fetch: api.fetchGroupManagers,
     loaded: actions.loadedGroupManagers,
   },
-  groupPowertakers: {
-    loading: actions.loadingGroupPowertakers,
-    set: actions.setGroupPowertakers,
-    fetch: api.fetchGroupPowertakers,
-    loaded: actions.loadedGroupPowertakers,
-  },
 };
 
 export const selectUserId = state => state.users.userId;
 export const selectGroupId = state => state.users.groupId;
 
-export function* getUser({ apiUrl, apiPath, token }, { userId }) {
+export function* getUser({ apiUrl, apiPath, token }, { userId, groupId }) {
   yield put(actions.loadingUser());
-  yield put(actions.setUser(null));
+  yield put(actions.setUser({}));
   try {
-    const user = yield call(api.fetchUser, { apiUrl, apiPath, token, userId });
+    const user = yield call(api.fetchUser, { apiUrl, apiPath, token, userId, groupId });
     yield put(actions.setUser(user));
-    yield put(Profiles.actions.loadProfile(userId));
   } catch (error) {
     console.log(error);
   }
@@ -53,39 +37,30 @@ export function* getUsers({ apiUrl, apiPath, token, type }, params) {
   yield put(getUsersFunctions[type].set([]));
   try {
     const users = yield call(getUsersFunctions[type].fetch, { apiUrl, apiPath, token, ...params });
-    for (let i = 0; i < users.length; i += 1) {
-      yield put(Profiles.actions.loadProfile(users[i].id));
-    }
-    yield put(getUsersFunctions[type].set(users));
+    yield put(getUsersFunctions[type].set(users.array));
   } catch (error) {
     console.log(error);
   }
   yield put(getUsersFunctions[type].loaded());
 }
 
-export function* getUserInfo({ apiUrl, apiPath, token }, { userId }) {
-  yield put(Groups.actions.loadUserGroups(userId));
-  yield put(Profiles.actions.loadProfile(userId));
-  yield put(actions.loadUser(userId));
+export function* getUserInfo({ apiUrl, apiPath, token }, { userId, groupId }) {
+  yield put(actions.loadUser({ userId, groupId }));
 }
 
 export function* usersSagas({ apiUrl, apiPath, token }) {
-  yield takeLatest(constants.LOAD_USERS, getUsers, { apiUrl, apiPath, token, type: 'users' });
-  yield takeLatest(constants.LOAD_GROUP_MEMBERS, getUsers, { apiUrl, apiPath, token, type: 'groupMembers' });
+  yield takeLatest(constants.LOAD_GROUP_USERS, getUsers, { apiUrl, apiPath, token, type: 'users' });
   yield takeLatest(constants.LOAD_GROUP_MANAGERS, getUsers, { apiUrl, apiPath, token, type: 'groupManagers' });
-  yield takeLatest(constants.LOAD_GROUP_POWERTAKERS, getUsers, { apiUrl, apiPath, token, type: 'groupPowertakers' });
   yield takeLatest(constants.LOAD_USER, getUser, { apiUrl, apiPath, token });
   yield takeLatest(constants.SET_USER_ID, getUserInfo, { apiUrl, apiPath, token });
 
   const userId = yield select(selectUserId);
   const groupId = yield select(selectGroupId);
-  yield call(getUsers, { apiUrl, apiPath, token, type: 'users' });
   if (groupId) {
-    yield call(getUsers, { apiUrl, apiPath, token, type: 'groupMembers' }, { groupId });
+    yield call(getUsers, { apiUrl, apiPath, token, type: 'groupUsers' }, { groupId });
     yield call(getUsers, { apiUrl, apiPath, token, type: 'groupManagers' }, { groupId });
-    yield call(getUsers, { apiUrl, apiPath, token, type: 'groupPowertakers' }, { groupId });
+    if (userId) yield call(getUserInfo, { apiUrl, apiPath, token }, { userId, groupId });
   }
-  if (userId) yield call(getUserInfo, { apiUrl, apiPath, token }, { userId });
 }
 
 export default function* () {

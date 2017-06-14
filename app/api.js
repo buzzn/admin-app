@@ -1,12 +1,12 @@
 import 'whatwg-fetch';
-import { prepareHeaders, parseResponse } from './_util';
+import { prepareHeaders, parseResponse, camelizeResponseKeys } from './_util';
 
 export default {
   fetchUserMe({ token, apiUrl, apiPath }) {
-    return fetch(`${apiUrl}${apiPath}/users/me`, {
+    return fetch(`${apiUrl}${apiPath}/me`, {
       headers: prepareHeaders(token),
     })
     .then(parseResponse)
-    .then(json => ({ userMe: json.id }));
+    .then(camelizeResponseKeys);
   },
 };

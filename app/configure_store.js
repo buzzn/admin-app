@@ -6,7 +6,6 @@ import Auth from '@buzzn/module_auth';
 import Bubbles from '@buzzn/module_bubbles';
 import Charts from '@buzzn/module_charts';
 import appSaga from './sagas';
-import Profiles from './profiles';
 import Groups from './groups';
 import Meters from './meters';
 import Registers from './registers';
@@ -19,7 +18,6 @@ function* rootSaga() {
     call(Auth.sagas),
     call(Bubbles.sagas),
     call(Charts.sagas),
-    call(Profiles.sagas),
     call(Groups.sagas),
     call(Meters.sagas),
     call(Registers.sagas),

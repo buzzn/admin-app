@@ -18,7 +18,7 @@ export class ContractingPartyOverview extends Component {
 
   componentWillMount() {
     const { loadContract, loadGroup, group, contractingParty, match: { params: { contractId, groupId } } } = this.props;
-    if (!contractingParty.id) loadContract(contractId);
+    if (!contractingParty.id) loadContract({ contractId, groupId });
     if (!group.id) loadGroup(groupId);
   }
 
@@ -35,11 +35,11 @@ export class ContractingPartyOverview extends Component {
     const contractShortName = (cont) => {
       switch (cont.type) {
         case 'contract_metering_point_operator':
-          return `MPO ${cont.contractNumber}`;
+          return `MPO ${cont.fullContractNumber}`;
         case 'contract_localpool_processing':
-          return `LCPP ${cont.contractNumber}`;
+          return `LCPP ${cont.fullContractNumber}`;
         default:
-          return `${cont.contractNumber}`;
+          return `${cont.fullContractNumber}`;
       }
     };
 
@@ -55,7 +55,7 @@ export class ContractingPartyOverview extends Component {
         <Breadcrumbs breadcrumbs={ breadcrumbs }/>
         <div className="row contracting-party-overview top-content">
           <div className="col-12">
-            <div className="title bg-aqua-marine">
+            <div className="title bg-consumption-mid">
               { contractingParty.name }
             </div>
           </div>

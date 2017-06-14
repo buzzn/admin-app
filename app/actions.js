@@ -1,8 +1,8 @@
 export const constants = {
-  LOADING:          'buzzn_profile/LOADING',
-  LOADED:           'buzzn_profile/LOADED',
+  LOADING: 'buzzn_admin/LOADING',
+  LOADED: 'buzzn_admin/LOADED',
 
-  SET_USER_ME:      'buzzn_profile/SET_USER_ME',
+  SET_USER_ME: 'buzzn_admin/SET_USER_ME',
 };
 
 export const actions = {

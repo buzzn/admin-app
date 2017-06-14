@@ -15,8 +15,8 @@ export class ContractResources extends Component {
   };
 
   componentWillMount() {
-    const { customer, contractor, contract, loading, loadContract, match: { params: { contractId } } } = this.props;
-    if (!loading && (!customer.id || !contractor.id || !contract.id)) loadContract(contractId);
+    const { customer, contractor, contract, loading, loadContract, match: { params: { contractId, groupId } } } = this.props;
+    if (!loading && (!customer.id || !contractor.id || !contract.id)) loadContract({ contractId, groupId });
   }
 
   render() {
@@ -49,9 +49,9 @@ export class ContractResources extends Component {
         <Route path={ `${url}/tariffs` } render={ ({ match: { url } }) => <Tariffs
           url={ url }
           loading={ loading }
-          tariffs={ contract.tariffs } /> } />
+          tariffs={ (contract.tariffs || {}).array || [] } /> } />
         <Route path={ `${url}/payments` } render={ () => <Payments
-          loading={ loading } payments={ contract.payments } /> } />
+          loading={ loading } payments={ (contract.payments || {}).array || [] } /> } />
       </div>
     );
   }

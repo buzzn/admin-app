@@ -11,7 +11,7 @@ export const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case constants.LOAD_REGISTER:
-      return { ...state, registerId: action.registerId };
+      return { ...state, registerId: action.registerId, groupId: action.groupId };
     case constants.LOADING_REGISTER:
       return { ...state, loadingRegister: true };
     case constants.LOADED_REGISTER:
@@ -20,7 +20,7 @@ export default function (state = initialState, action) {
       return { ...state, register: action.register, readings: action.readings };
 
     case constants.LOAD_REGISTERS:
-      return { ...state, meterId: action.meterId, meterType: action.meterType, groupId: action.groupId };
+      return { ...state, groupId: action.groupId };
     case constants.LOADING_REGISTERS:
       return { ...state, loadingRegisters: true };
     case constants.LOADED_REGISTERS:
