@@ -3,44 +3,48 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import Groups from 'groups';
-import Users from 'users';
+import Contracts from 'contracts';
 import Breadcrumbs from 'components/breadcrumbs';
 
 import './style.scss';
 
 export class PowertakerOverview extends Component {
   static propTypes = {
-    user: PropTypes.object,
+    groupPowertaker: PropTypes.object,
     group: PropTypes.object,
     loadingGroup: PropTypes.bool.isRequired,
+    loadingGroupPowertaker: PropTypes.bool.isRequired,
     loadGroup: PropTypes.func.isRequired,
-    loadUser: PropTypes.func.isRequired,
+    loadGroupPowertaker: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    user: {},
+    groupPowertaker: {},
+    group: {},
   };
 
   componentWillMount() {
-    const { loadingGroup, group, loadGroup, user, loadUser, match: { params: { groupId, userId } } } = this.props;
+    const { loadingGroup, group, loadGroup, groupPowertaker, loadGroupPowertaker, match: { params: { groupId, powertakerId, powertakerType } } } = this.props;
     if (!loadingGroup && !group.id) loadGroup(groupId);
-    if (user.id !== userId) loadUser({ userId, groupId });
+    if (groupPowertaker.id !== powertakerId) loadGroupPowertaker({ powertakerId, groupId, powertakerType });
   }
 
   render() {
     const {
       loadingGroup,
-      loadingUser,
+      loadingGroupPowertaker,
       group,
-      user: { firstName, lastName, mdImg },
-      match: { params: { userId } },
+      groupPowertaker,
+      match: { params: { powertakerId } },
     } = this.props;
 
-    if (loadingUser || loadingGroup || !group.id) return (<div>Loading...</div>);
+    if (loadingGroupPowertaker || loadingGroup || !group.id) return (<div>Loading...</div>);
+
+    const powertakerTitle = groupPowertaker.type === 'user' ? `${groupPowertaker.firstName} ${groupPowertaker.lastName}` : groupPowertaker.name;
 
     const breadcrumbs = [
       { id: group.id, link: `/localpools/${group.id}/powertakers`, title: group.name },
-      { id: userId, title: `${firstName} ${lastName}` },
+      { id: powertakerId, title: powertakerTitle },
     ];
 
     return (
@@ -50,8 +54,8 @@ export class PowertakerOverview extends Component {
         <div className="row powertaker-overview top-content">
           <div className="col-12">
             <div className="title bg-wind-dark">
-              { mdImg && <img className="top-avatar" src={ mdImg } /> }
-              { `${firstName} ${lastName}` }
+              { groupPowertaker.image && <img className="top-avatar" src={ groupPowertaker.image } /> }
+              { powertakerTitle }
             </div>
           </div>
           <div className="col-6">
@@ -74,12 +78,12 @@ function mapStateToProps(state) {
   return {
     group: state.groups.group,
     loadingGroup: state.groups.loadingGroup,
-    user: state.users.user,
-    loadingUser: state.users.loadingUser,
+    groupPowertaker: state.contracts.groupPowertaker,
+    loadingGroupPowertaker: state.contracts.loadingGroupPowertaker,
   };
 }
 
 export default connect(mapStateToProps, {
   loadGroup: Groups.actions.loadGroup,
-  loadUser: Users.actions.loadUser,
+  loadGroupPowertaker: Contracts.actions.loadGroupPowertaker,
 })(PowertakerOverview);

@@ -3,7 +3,7 @@ import { prepareHeaders, parseResponse, camelizeResponseKeys, camelizeResponseAr
 
 export default {
   fetchContract({ token, apiUrl, apiPath, contractId, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}?include=contractor,customer,tariffs,payments`, {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}?include=contractor,customer,tariffs,payments,contractor_bank_account,customer_bank_account`, {
       headers: prepareHeaders(token),
     })
     .then(parseResponse)
@@ -18,8 +18,15 @@ export default {
     .then(contracts => contracts.array.map(c => ({ ...c.customer })))
     .then(camelizeResponseArray);
   },
-  updateBankAccount({ token, apiUrl, apiPath, bankAccountId, params }) {
-    return fetch(`${apiUrl}${apiPath}/bank-accounts/${bankAccountId}`, {
+  fetchGroupPowertaker({ token, apiUrl, apiPath, groupId, powertakerId, powertakerType }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/${powertakerType}s/${powertakerId}`, {
+      headers: prepareHeaders(token),
+    })
+    .then(parseResponse)
+    .then(camelizeResponseKeys);
+  },
+  updateBankAccount({ token, apiUrl, apiPath, bankAccountId, params, groupId, partyId, partyType }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/${partyType}s/${partyId}/bank-accounts/${bankAccountId}`, {
       headers: prepareHeaders(token),
       method: 'PATCH',
       body: JSON.stringify(params),
