@@ -1,30 +1,32 @@
 import 'whatwg-fetch';
-import { prepareHeaders, parseResponse, camelizeResponseKeys } from '../_util';
+import { prepareHeaders, parseResponse, camelizeResponseKeys, camelizeResponseArray } from '../_util';
 
 export default {
-  fetchContract({ token, apiUrl, apiPath, contractId }) {
-    return fetch(`${apiUrl}${apiPath}/contracts/${contractId}`, {
+  fetchContract({ token, apiUrl, apiPath, contractId, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}?include=contractor,customer,tariffs,payments,contractor_bank_account,customer_bank_account`, {
       headers: prepareHeaders(token),
     })
     .then(parseResponse)
     .then(camelizeResponseKeys);
   },
-  fetchContractor({ token, apiUrl, apiPath, contractId }) {
-    return fetch(`${apiUrl}${apiPath}/contracts/${contractId}/contractor`, {
+  fetchGroupPowertakers({ token, apiUrl, apiPath, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/power-taker-contracts?include=customer`, {
+      headers: prepareHeaders(token),
+    })
+    .then(parseResponse)
+    // FIXME: this is a workaround. Should be fixed after buzzn/buzzn #999
+    .then(contracts => contracts.array.map(c => ({ ...c.customer })))
+    .then(camelizeResponseArray);
+  },
+  fetchGroupPowertaker({ token, apiUrl, apiPath, groupId, powertakerId, powertakerType }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/${powertakerType}s/${powertakerId}`, {
       headers: prepareHeaders(token),
     })
     .then(parseResponse)
     .then(camelizeResponseKeys);
   },
-  fetchCustomer({ token, apiUrl, apiPath, contractId }) {
-    return fetch(`${apiUrl}${apiPath}/contracts/${contractId}/customer`, {
-      headers: prepareHeaders(token),
-    })
-    .then(parseResponse)
-    .then(camelizeResponseKeys);
-  },
-  updateBankAccount({ token, apiUrl, apiPath, bankAccountId, params }) {
-    return fetch(`${apiUrl}${apiPath}/bank-accounts/${bankAccountId}`, {
+  updateBankAccount({ token, apiUrl, apiPath, bankAccountId, params, groupId, partyId, partyType }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/${partyType}s/${partyId}/bank-accounts/${bankAccountId}`, {
       headers: prepareHeaders(token),
       method: 'PATCH',
       body: JSON.stringify(params),
@@ -32,14 +34,14 @@ export default {
     .then(parseResponse);
   },
   fetchOperatorContract({ token, apiUrl, apiPath, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/groups/localpools/${groupId}/metering-point-operator-contract`, {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/metering-point-operator-contract`, {
       headers: prepareHeaders(token),
     })
     .then(parseResponse)
     .then(camelizeResponseKeys);
   },
   fetchProcessingContract({ token, apiUrl, apiPath, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/groups/localpools/${groupId}/localpool-processing-contract`, {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/localpool-processing-contract`, {
       headers: prepareHeaders(token),
     })
     .then(parseResponse)

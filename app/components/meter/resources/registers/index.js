@@ -2,36 +2,26 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Registers from 'registers';
 import Meters from 'meters';
 
 export class RegistersList extends Component {
   static propTypes = {
-    loading: PropTypes.bool.isRequired,
     registers: PropTypes.array.isRequired,
     meter: PropTypes.object.isRequired,
-    loadRegisters: PropTypes.func.isRequired,
     loadMeter: PropTypes.func.isRequired,
   };
 
   componentWillMount() {
-    const { meterId, loadRegisters, loadMeter, meter, loadingMeter } = this.props;
-    if ((!meter.id && !loadingMeter) || meterId !== meter.id) loadMeter(meterId);
-    if (meter.id === meterId) loadRegisters({ meterId, meterType: meter.type });
-  }
-
-  componentWillReceiveProps({ meter, loadRegisters }) {
-    if (meter.id && this.props.meter.id !== meter.id) {
-      loadRegisters({ meterId: meter.id, meterType: meter.type });
-    }
+    const { meterId, groupId, loadMeter, meter, loadingMeter } = this.props;
+    if ((!meter.id && !loadingMeter) || meterId !== meter.id) loadMeter({ meterId, groupId });
   }
 
   render() {
-    const { registers, loading, groupId, meter } = this.props;
+    const { registers, loadingMeter, groupId, meter } = this.props;
 
     if (meter.status === 404) return (<div>Meter not found</div>);
 
-    if (loading || !meter.id) return (<div>Loading...</div>);
+    if (loadingMeter || !meter.id) return (<div>Loading...</div>);
 
     return (
       <div className="row">
@@ -77,14 +67,12 @@ export class RegistersList extends Component {
 
 function mapStateToProps(state) {
   return {
-    loading: state.registers.loadingRegisters,
-    registers: state.registers.registers,
+    registers: state.meters.meterRegisters,
     meter: state.meters.meter,
     loadingMeter: state.meters.loadingMeter,
   };
 }
 
 export default connect(mapStateToProps, {
-  loadRegisters: Registers.actions.loadRegisters,
   loadMeter: Meters.actions.loadMeter,
 })(RegistersList);

@@ -26,7 +26,7 @@ export class TopNavBar extends Component {
     myProfile: PropTypes.shape({
       firstName: PropTypes.string,
       lastName: PropTypes.string,
-      mdImg: PropTypes.string,
+      image: PropTypes.string,
     }),
   };
 
@@ -52,7 +52,7 @@ export class TopNavBar extends Component {
   }
 
   render() {
-    const { signedIn, dispatch, myProfile: { firstName, lastName, mdImg }, groups } = this.props;
+    const { signedIn, dispatch, myProfile: { firstName, lastName, image }, groups } = this.props;
     const { isOpen, profileOpen } = this.state;
     const myName = firstName ? `${firstName} ${lastName}` : 'My profile';
 
@@ -69,8 +69,8 @@ export class TopNavBar extends Component {
                 { signedIn &&
                   <NavDropdown isOpen={ profileOpen } toggle={ ::this.toggleProfile }>
                     <DropdownToggle nav caret>
-                      { mdImg &&
-                        <img className="top-avatar" src={ mdImg } />
+                      { image &&
+                        <img className="top-avatar" src={ image } />
                       }
                       { myName }
                     </DropdownToggle>
@@ -96,9 +96,8 @@ export class TopNavBar extends Component {
 }
 
 function mapStateToProps(state) {
-  const myId = state.app.userMe;
   return {
-    myProfile: state.profiles.profiles[myId],
+    myProfile: state.app.userMe,
     groups: filter(state.groups.groups, group => group.type === 'group_localpool'),
   };
 }

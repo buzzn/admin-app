@@ -8,7 +8,7 @@ export default ({ match: { url, isExact, params: { groupId, meterId } } }) => {
 
   return (
     <div>
-      <Route path={ `${url}/meter-data` } render={ () => <MeterDataContainer meterId={ meterId } /> } />
+      <Route path={ `${url}/meter-data` } render={ () => <MeterDataContainer {...{ meterId, groupId }} /> } />
       <Route path={ `${url}/registers` } render={ () => <RegistersContainer {...{ meterId, groupId }} /> } />
       <Route path={ `${url}/formula` } render={ () => (<div>Formula</div>) } />
     </div>

@@ -33,22 +33,20 @@ export class LocalpoolOverview extends Component {
   }
 
   render() {
-    const { group, loading, managers, profiles, token } = this.props;
+    const { group, loading, managers } = this.props;
 
     if (group.status === 404) return (<div>Group not found</div>);
 
     if (loading || !group.id) return (<div>Loading...</div>);
 
-    const managersProfiles = managers.map(manager => (profiles[manager.id] ?
-      `${profiles[manager.id].firstName} ${profiles[manager.id].lastName}` :
-      'Loading...'));
+    const managersProfiles = managers.map(manager => (`${manager.firstName} ${manager.lastName}`));
 
     return (
       <div>
         <Helmet title="Localpool" />
         <div className="overview-header">Localpool</div>
         <div className="row group-overview top-content">
-          <div className="col-12"><div className="title bg-sick-green-two">{ group.name }</div></div>
+          <div className="col-12"><div className="title bg-production-dark">{ group.name }</div></div>
           <div className="col-6 left-col">
             <div className="row">
               <div className="col-12">Address here</div>
@@ -62,7 +60,7 @@ export class LocalpoolOverview extends Component {
               <div className="col-9">{ managersProfiles.join(', ') }</div>
             </div>
           </div>
-          <div className="col-6 right-col"><Bubbles.container Layout={ BubblesLayout } token={ token } /></div>
+          <div className="col-6 right-col"><Bubbles.container Layout={ BubblesLayout } /></div>
         </div>
       </div>
     );
@@ -74,13 +72,11 @@ function mapStateToProps(state) {
     group: state.groups.group,
     loading: state.groups.loadingGroup,
     managers: state.users.groupManagers,
-    profiles: state.profiles.profiles,
-    token: state.auth.token,
   };
 }
 
 export default connect(mapStateToProps, {
   loadGroup: Groups.actions.loadGroup,
   loadGroupManagers: Users.actions.loadGroupManagers,
-  loadBubbles: Bubbles.actions.setGroup,
+  loadBubbles: Bubbles.actions.setGroupId,
 })(LocalpoolOverview);

@@ -21,7 +21,7 @@ export class TariffOverview extends Component {
 
   componentWillMount() {
     const { loadContract, loadGroup, group, contract, match: { params: { contractId, groupId } } } = this.props;
-    if (!contract.id) loadContract(contractId);
+    if (!contract.id) loadContract({ contractId, groupId });
     if (!group.id) loadGroup(groupId);
   }
 
@@ -29,9 +29,9 @@ export class TariffOverview extends Component {
     const { loading, group, contract, match: { params: { tariffId } } } = this.props;
 
     if (loading || !contract.id || !group.id) return (<div>Loading...</div>);
-    if (!contract.tariffs || contract.tariffs.length === 0) return (<div>Tariff not found</div>);
+    if (!contract.tariffs || !contract.tariffs.array || contract.tariffs.array.length === 0) return (<div>Tariff not found</div>);
 
-    const tariff = find(contract.tariffs, t => t.id === tariffId);
+    const tariff = find(contract.tariffs.array, t => t.id === tariffId);
     if (!tariff) return (<div>Tariff not found</div>);
 
     const formatDate = (date) => {
@@ -42,11 +42,11 @@ export class TariffOverview extends Component {
     const contractShortName = (cont) => {
       switch (cont.type) {
         case 'contract_metering_point_operator':
-          return `MPO ${cont.contractNumber}`;
+          return `MPO ${cont.fullContractNumber}`;
         case 'contract_localpool_processing':
-          return `LCPP ${cont.contractNumber}`;
+          return `LCPP ${cont.fullContractNumber}`;
         default:
-          return `${cont.contractNumber}`;
+          return `${cont.fullContractNumber}`;
       }
     };
 

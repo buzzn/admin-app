@@ -2,30 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-export const CoreData = ({ profile: { firstName, title, loading } }) => (
+export const CoreData = ({ groupPowertaker }) => (
   <div className="row">
     <div className="col-12">
       <h5>Core Data:</h5>
-      <b>Title:</b> { title }
+      <b>Title:</b> { groupPowertaker.type === 'user' ? `${groupPowertaker.firstName} ${groupPowertaker.lastName}` : groupPowertaker.name }
       <br/>
-      <b>First Name:</b> { firstName }
     </div>
   </div>
 );
 
 CoreData.propTypes = {
-  profile: PropTypes.object,
+  groupPowertaker: PropTypes.object,
 };
 
 CoreData.defaultProps = {
-  profile: {},
+  groupPowertaker: {},
 };
 
-function mapStateToProps(state, props) {
-  const { userId } = props;
-
+function mapStateToProps(state) {
   return {
-    profile: state.profiles.profiles[userId],
+    groupPowertaker: state.contracts.groupPowertaker,
   };
 }
 
