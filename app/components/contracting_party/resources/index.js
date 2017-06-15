@@ -17,7 +17,7 @@ export class ContractingPartyResources extends Component {
   }
 
   render() {
-    const { loading, updateBankAccount, bankAccount, match: { url, isExact } } = this.props;
+    const { loading, contractingParty, updateBankAccount, bankAccount, match: { url, isExact, params: { groupId } } } = this.props;
 
     if (isExact) return (<Redirect to={ `${url}/contact` }/>);
 
@@ -28,7 +28,7 @@ export class ContractingPartyResources extends Component {
           path={ `${url}/bank` }
           render={ () => <BankAccount loading={ loading }
                                bankAccount={ bankAccount }
-                               updateBankAccount={ updateBankAccount } /> } />
+                               updateBankAccount={ (params) => { updateBankAccount({ ...params, groupId, partyId: contractingParty.id, partyType: contractingParty.type }); }} /> } />
       </div>
     );
   }

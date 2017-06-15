@@ -43,6 +43,7 @@ export default function* () {
     const { token } = yield take(Auth.constants.SIGN_IN);
     if (token) {
       yield put(Bubbles.actions.setToken(token));
+      yield put(Charts.actions.setToken(token));
       yield put(Groups.actions.setToken(token));
       yield put(Meters.actions.setToken(token));
       yield put(Registers.actions.setToken(token));

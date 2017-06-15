@@ -4,11 +4,13 @@ export const initialState = {
   loadingContract: false,
   loadingGroupContracts: false,
   loadingGroupPowertakers: false,
+  loadingGroupPowertaker: false,
   contract: {},
   contractor: {},
   customer: {},
   groupContracts: [],
   groupPowertakers: [],
+  groupPowertaker: {},
 };
 
 export default function (state = initialState, action) {
@@ -39,6 +41,15 @@ export default function (state = initialState, action) {
       return { ...state, loadingGroupPowertakers: false };
     case constants.SET_GROUP_POWERTAKERS:
       return { ...state, groupPowertakers: action.powertakers };
+
+    case constants.LOAD_GROUP_POWERTAKER:
+      return { ...state, groupId: action.groupId, powertakerId: action.powertakerId, powertakerType: action.powertakerType };
+    case constants.LOADING_GROUP_POWERTAKER:
+      return { ...state, loadingGroupPowertaker: true };
+    case constants.LOADED_GROUP_POWERTAKER:
+      return { ...state, loadingGroupPowertaker: false };
+    case constants.SET_GROUP_POWERTAKER:
+      return { ...state, groupPowertaker: action.powertaker };
 
     default:
       return state;

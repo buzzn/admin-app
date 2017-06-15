@@ -17,6 +17,11 @@ export const constants = {
   LOADED_GROUP_POWERTAKERS: 'buzzn_contracts/LOADED_GROUP_POWERTAKERS',
   SET_GROUP_POWERTAKERS: 'buzzn_contracts/SET_GROUP_POWERTAKERS',
 
+  LOAD_GROUP_POWERTAKER: 'buzzn_contracts/LOAD_GROUP_POWERTAKER',
+  LOADING_GROUP_POWERTAKER: 'buzzn_contracts/LOADING_GROUP_POWERTAKER',
+  LOADED_GROUP_POWERTAKER: 'buzzn_contracts/LOADED_GROUP_POWERTAKER',
+  SET_GROUP_POWERTAKER: 'buzzn_contracts/SET_GROUP_POWERTAKER',
+
   UPDATE_BANK_ACCOUNT: 'buzzn_contracts/UPDATE_BANK_ACCOUNT',
 };
 
@@ -39,6 +44,11 @@ export const actions = {
   loadedGroupPowertakers: () => ({ type: constants.LOADED_GROUP_POWERTAKERS }),
   setGroupPowertakers: powertakers => ({ type: constants.SET_GROUP_POWERTAKERS, powertakers }),
 
-  updateBankAccount: ({ bankAccountId, params, resolve, reject }) => (
-    { type: constants.UPDATE_BANK_ACCOUNT, bankAccountId, params, resolve, reject }),
+  loadGroupPowertaker: ({ groupId, powertakerId, powertakerType }) => ({ type: constants.LOAD_GROUP_POWERTAKER, groupId, powertakerId, powertakerType }),
+  loadingGroupPowertaker: () => ({ type: constants.LOADING_GROUP_POWERTAKER }),
+  loadedGroupPowertaker: () => ({ type: constants.LOADED_GROUP_POWERTAKER }),
+  setGroupPowertaker: powertaker => ({ type: constants.SET_GROUP_POWERTAKER, powertaker }),
+
+  updateBankAccount: ({ bankAccountId, params, resolve, reject, groupId, partyId, partyType }) => (
+    { type: constants.UPDATE_BANK_ACCOUNT, bankAccountId, params, resolve, reject, groupId, partyId, partyType }),
 };
