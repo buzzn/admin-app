@@ -25,6 +25,7 @@ import MeterResources from 'components/meter/resources';
 import RegisterResourcesContainer from 'components/register/resources';
 
 import 'buzzn-style';
+import 'react-table/react-table.css';
 import './root.scss';
 
 const Root = ({ token }) => (
