@@ -1,5 +1,5 @@
 import createSagaMiddleware from 'redux-saga';
-import { call } from 'redux-saga/effects';
+import { call, all } from 'redux-saga/effects';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import Auth from '@buzzn/module_auth';
@@ -14,7 +14,7 @@ import Contracts from './contracts';
 import RootReducer from './reducers';
 
 function* rootSaga() {
-  yield [
+  yield all([
     call(Auth.sagas),
     call(Bubbles.sagas),
     call(Charts.sagas),
@@ -24,7 +24,7 @@ function* rootSaga() {
     call(Users.sagas),
     call(Contracts.sagas),
     call(appSaga),
-  ];
+  ]);
 }
 
 export default function configureStore(initialState) {
