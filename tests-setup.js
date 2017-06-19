@@ -1,4 +1,4 @@
-const jsdom = require('jsdom').jsdom;
+const jsdom = require('jsdom/lib/old-api.js').jsdom;
 
 global.document = jsdom('');
 global.window = document.defaultView;
