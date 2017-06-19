@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'production') {
   };
 } else if (process.env.NODE_ENV === 'staging') {
   config = {
-    apiUrl: 'https://staging-core.buzzn.io/',
+    apiUrl: 'https://docker-staging-core.buzzn.io/',
     apiPath: 'api/admin',
     clientId: '',
     callBackURL: '',

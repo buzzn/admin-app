@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import ReactTable from 'react-table';
+import { tableParts } from 'react_table_config';
 import Meters from 'meters';
 
 export class MetersList extends Component {
@@ -26,6 +27,35 @@ export class MetersList extends Component {
 
     if (loading) return (<div>Loading...</div>);
 
+    const data = meters.map(m => ({
+      ...m,
+      meter: m.manufacturerProductSerialnumber,
+      description: '',
+      link: `/localpools/${groupId}/system/${m.id}`,
+    }));
+
+    const columns = [
+      {
+        Header: 'Meter',
+        accessor: 'meter',
+        minWidth: 200,
+      },
+      {
+        Header: 'Description',
+        accessor: 'description',
+        minWidth: 200,
+      },
+      {
+        Header: '',
+        accessor: 'link',
+        sortable: false,
+        filterable: false,
+        resizable: false,
+        width: 100,
+        Cell: tableParts.components.linkCell,
+      },
+    ];
+
     return (
       <div className="row">
         <div className="col-12">
@@ -33,35 +63,7 @@ export class MetersList extends Component {
           List of all <strong>meters</strong> in your local pool.
         </div>
         <div className="col-12 no-padding">
-          <table className="table">
-            <thead className="thead-default">
-              <tr>
-                <th>Meter</th>
-                <th>Description</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                meters.map(meter => (
-                  <tr key={ meter.id }>
-                    <td>
-                      { meter.manufacturerProductSerialnumber }
-                    </td>
-                    <td></td>
-                    <td>
-                      <Link
-                        to={ `/localpools/${groupId}/system/${meter.id}` }
-                        className="btn btn-outline-secondary"
-                        style={{ float: 'right', marginRight: '15px' }}>
-                        View
-                      </Link>
-                    </td>
-                  </tr>
-                ))
-              }
-            </tbody>
-          </table>
+          <ReactTable {...{ data, columns }} />
         </div>
       </div>
     );

@@ -71,4 +71,23 @@ body {
     padding: 0;
     border-radius: 0;
   }
+  .ReactTable {
+    .rt-table {
+      .rt-thead {
+        background: darkgrey;
+        font-weight: bold;
+        color: #464a4c;
+        .rt-tr {
+          .rt-th {
+            text-align: left;
+          }
+        }
+      }
+      .rt-tbody {
+        .rt-tr-group {
+          border-bottom: 1px solid darkgrey;
+        }
+      }
+    }
+  }
 }
