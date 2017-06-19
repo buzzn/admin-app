@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import moment from 'moment';
+import ReactTable from 'react-table';
+import { tableParts } from 'react_table_config';
 
 const Tariffs = ({ loading, tariffs, url }) => {
   if (loading) return (<div>Loading...</div>);
@@ -11,6 +12,40 @@ const Tariffs = ({ loading, tariffs, url }) => {
     return moment(date).format('DD.MM.YYYY');
   };
 
+  const data = tariffs.map(t => ({
+    ...t,
+    validFrom: formatDate(t.beginDate),
+    validUntil: formatDate(t.endDate),
+    link: `${url}/${t.id}`,
+  }));
+
+  const columns = [
+    {
+      Header: 'Name',
+      accessor: 'name',
+      minWidth: 200,
+    },
+    {
+      Header: 'Valid from',
+      accessor: 'validFrom',
+      minWidth: 100,
+    },
+    {
+      Header: 'Until',
+      accessor: 'validUntil',
+      minWidth: 100,
+    },
+    {
+      Header: '',
+      accessor: 'link',
+      sortable: false,
+      filterable: false,
+      resizable: false,
+      width: 100,
+      Cell: tableParts.components.linkCell,
+    },
+  ];
+
   return (
     <div className="row">
       <div className="col-12">
@@ -18,35 +53,7 @@ const Tariffs = ({ loading, tariffs, url }) => {
         <p>List of all tariffs for the contract</p>
       </div>
       <div className="col-12 no-padding">
-        <table className="table">
-          <thead className="thead-default">
-            <tr>
-              <th>Name</th>
-              <th>Valid from</th>
-              <th>Until</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              tariffs.map(tariff =>
-                <tr key={ tariff.id }>
-                  <td>{ tariff.name }</td>
-                  <td>{ formatDate(tariff.beginDate) }</td>
-                  <td>{ formatDate(tariff.endDate) }</td>
-                  <td>
-                    <Link
-                      to={ `${url}/${tariff.id}` }
-                      className="btn btn-outline-secondary"
-                      style={{ float: 'right', marginRight: '15px' }}>
-                      View
-                    </Link>
-                  </td>
-                </tr>
-              )
-            }
-          </tbody>
-        </table>
+        <ReactTable {...{ data, columns }} />
       </div>
     </div>
   );

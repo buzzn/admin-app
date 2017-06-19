@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import ReactTable from 'react-table';
+import { tableParts } from 'react_table_config';
 import Contracts from 'contracts';
 
 export class ContractsList extends Component {
@@ -37,6 +38,41 @@ export class ContractsList extends Component {
       }
     };
 
+    const data = contracts.filter(c => !!c.id).map(c => ({
+      ...c,
+      type: contractType(c),
+      since: c.signingDate,
+      number: c.contractNumber,
+      link: `/localpools/${groupId}/contracts/${c.id}`,
+    }));
+
+    const columns = [
+      {
+        Header: 'Type',
+        accessor: 'type',
+        minWidth: 200,
+      },
+      {
+        Header: 'Since',
+        accessor: 'since',
+        minWidth: 100,
+      },
+      {
+        Header: 'Contract #',
+        accessor: 'number',
+        minWidth: 200,
+      },
+      {
+        Header: '',
+        accessor: 'link',
+        sortable: false,
+        filterable: false,
+        resizable: false,
+        width: 100,
+        Cell: tableParts.components.linkCell,
+      },
+    ];
+
     return (
       <div className="row">
         <div className="col-12">
@@ -44,34 +80,7 @@ export class ContractsList extends Component {
           <p>List all contracts for the loacalpool</p>
         </div>
         <div className="col-12 no-padding">
-          <table className="table">
-            <thead className="thead-default">
-              <tr>
-                <th>Type</th>
-                <th>Since</th>
-                <th>Contract #</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              { contracts.filter(c => !!c.id).map(contract =>
-                  <tr key={ contract.id }>
-                    <td>{ contractType(contract) }</td>
-                    <td>{ contract.signingDate }</td>
-                    <td>{ contract.contractNumber }</td>
-                    <td>
-                      <Link
-                        to={ `/localpools/${groupId}/contracts/${contract.id}` }
-                        className="btn btn-outline-secondary"
-                        style={{ float: 'right', marginRight: '15px' }}>
-                        View
-                      </Link>
-                    </td>
-                  </tr>
-                )
-              }
-            </tbody>
-          </table>
+          <ReactTable {...{ data, columns }} />
         </div>
       </div>
     );

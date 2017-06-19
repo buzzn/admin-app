@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
+import './react_table_config';
 import RowRoute from 'components/row_route';
 import TopNavBarContainer from 'components/top_nav_bar';
 import SignInContainer from 'components/sign_in';
@@ -25,6 +26,7 @@ import MeterResources from 'components/meter/resources';
 import RegisterResourcesContainer from 'components/register/resources';
 
 import 'buzzn-style';
+import 'react-table/react-table.css';
 import './root.scss';
 
 const Root = ({ token }) => (

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import ReactTable from 'react-table';
 
 const Payments = ({ loading, payments }) => {
   if (loading) return (<div>Loading...</div>);
@@ -10,6 +11,36 @@ const Payments = ({ loading, payments }) => {
     return moment(date).format('DD.MM.YYYY');
   };
 
+  const data = payments.map(p => ({
+    ...p,
+    price: p.priceCents / 100,
+    from: formatDate(p.beginDate),
+    until: formatDate(p.endDate),
+  }));
+
+  const columns = [
+    {
+      Header: 'Price',
+      accessor: 'price',
+      minWidth: 100,
+    },
+    {
+      Header: 'From',
+      accessor: 'from',
+      minWidth: 100,
+    },
+    {
+      Header: 'Until',
+      accessor: 'until',
+      minWidth: 100,
+    },
+    {
+      Header: 'Cycle',
+      accessor: 'cycle',
+      minWidth: 100,
+    },
+  ];
+
   return (
     <div className="row">
       <div className="col-12">
@@ -17,28 +48,7 @@ const Payments = ({ loading, payments }) => {
         <p>List of all payments for the contract</p>
       </div>
       <div className="col-12 no-padding">
-        <table className="table">
-          <thead className="thead-default">
-          <tr>
-            <th>Price</th>
-            <th>From</th>
-            <th>Until</th>
-            <th>Cycle</th>
-          </tr>
-          </thead>
-          <tbody>
-          {
-            payments.map(payment =>
-              <tr key={ payment.id }>
-                <td>{ payment.priceCents / 100 }</td>
-                <td>{ formatDate(payment.beginDate) }</td>
-                <td>{ formatDate(payment.endDate) }</td>
-                <td>{ payment.cycle }</td>
-              </tr>
-            )
-          }
-          </tbody>
-        </table>
+        <ReactTable {...{ data, columns }} />
       </div>
     </div>
   );
