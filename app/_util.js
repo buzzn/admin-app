@@ -1,8 +1,7 @@
-import map from 'lodash/map';
-import range from 'lodash/range';
 import forEach from 'lodash/forEach';
 import camelCase from 'lodash/camelCase';
-import unset from 'lodash/unset';
+import snakeCase from 'lodash/snakeCase';
+import reduce from 'lodash/reduce';
 
 export function prepareHeaders(token) {
   return {
@@ -30,26 +29,6 @@ export function parseResponse(response) {
     return json.then(error => Promise.resolve(wrapErrors(error.errors)));
   } else {
     return json.then(error => Promise.reject(error));
-  }
-}
-
-export function mergeData(json) {
-  if (!json.data || Array.isArray(json.data)) return json;
-  const merged = { ...json, ...json.data };
-  unset(merged, 'data');
-  return merged;
-}
-
-export function remainingPages({ apiUrl, apiPath, id, json, model, endpoint, token }) {
-  const totalPages = json.meta ? json.meta.total_pages : 1;
-  if (totalPages === 1) {
-    return [json];
-  } else {
-    const idPart = id ? `/${id}/` : '/';
-    return Promise.all(map(range(totalPages), page => (
-      fetch(`${apiUrl}${apiPath}/${model}${idPart}${endpoint}?page=${page + 1}`, { headers: prepareHeaders(token) })
-      .then(parseResponse)
-    )));
   }
 }
 
@@ -81,4 +60,8 @@ export function camelizeResponseKeys(data) {
     }
   });
   return result;
+}
+
+export function snakeReq(data) {
+  return reduce(data, (res, v, k) => ({ ...res, [snakeCase(k)]: v }), {});
 }

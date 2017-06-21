@@ -29,7 +29,7 @@ export function* updateBankAccount({ apiUrl, apiPath, token }, { bankAccountId, 
       yield call(resolve, res);
       // FIXME: Extract bank/address loading into separate actions and use them after there will be understanding
       // of all use cases for them
-      const contractId = yield select(selectContract);
+      const contractId = yield select(selectContractId);
       yield call(getContract, { apiUrl, apiPath, token }, { contractId, groupId });
     }
   } catch (error) {

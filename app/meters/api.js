@@ -3,6 +3,7 @@ import {
   prepareHeaders,
   parseResponse,
   camelizeResponseKeys,
+  snakeReq,
 } from '../_util';
 
 export default {
@@ -12,6 +13,14 @@ export default {
     })
     .then(parseResponse)
     .then(camelizeResponseKeys);
+  },
+  updateMeter({ token, apiUrl, apiPath, meterId, params, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/meters/${meterId}`, {
+      headers: prepareHeaders(token),
+      method: 'PATCH',
+      body: JSON.stringify(snakeReq(params)),
+    })
+    .then(parseResponse);
   },
   fetchGroupMeters({ token, apiUrl, apiPath, groupId }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/meters`, {
