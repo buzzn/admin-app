@@ -65,7 +65,7 @@
     "@buzzn/module_auth": "git+https://github.com/buzzn/module-auth.git#v1.0.6",
     "@buzzn/module_bubbles": "git+https://github.com/buzzn/module-bubbles.git#v2.0.0",
     "@buzzn/module_charts": "git+https://github.com/buzzn/module-charts.git#v1.0.9",
-    "@buzzn/i18n": "file:../i18n",
+    "@buzzn/i18n": "git+https://github.com/buzzn/i18n.git#v1.0.1",
     "babel-polyfill": "^6.23.0",
     "bootstrap": "4.0.0-alpha.6",
     "buzzn-style": "git://github.com/buzzn/buzzn-style.git",
