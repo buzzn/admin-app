@@ -103,8 +103,6 @@ export class MeterData extends Component {
                 <Field name="meterSize" editMode={ this.state.editMode } component={ EditableInput }/>
               </div>
             </div>
-          </div>
-          <div className="col-6">
             <div className="row">
               <div className="col-6">Metering point id:</div>
               <div className="col-6"></div>
