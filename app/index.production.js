@@ -18,6 +18,7 @@ function language() {
     if (lang === 'en') lang = 'en-US';
     if (lang === 'de') lang = 'de-DE';
   }
+  if (!['en-US', 'de-DE'].includes(lang)) lang = 'de-DE';
   return lang;
 }
 

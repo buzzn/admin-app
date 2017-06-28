@@ -2,9 +2,8 @@
 # yarn lockfile v1
 
 
-"@buzzn/i18n@git+https://github.com/buzzn/i18n.git#v1.0.1":
+"@buzzn/i18n@file:../i18n":
   version "1.0.0"
-  resolved "git+https://github.com/buzzn/i18n.git#c25771c7296ada0d22d0c868c5c600c04451d5aa"
 
 "@buzzn/module_auth@git+https://github.com/buzzn/module-auth.git#v1.0.6":
   version "1.0.0"
@@ -1477,7 +1476,7 @@ clap@^1.0.9:
   dependencies:
     chalk "^1.1.3"
 
-classnames@^2.2.3, classnames@^2.2.5:
+classnames@^2.1.2, classnames@^2.2.3, classnames@^2.2.4, classnames@^2.2.5:
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
 
@@ -1762,7 +1761,7 @@ create-hmac@^1.1.0, create-hmac@^1.1.2:
     create-hash "^1.1.0"
     inherits "^2.0.1"
 
-create-react-class@^15.5.3, create-react-class@^15.6.0:
+create-react-class@^15.5.2, create-react-class@^15.5.3, create-react-class@^15.6.0:
   version "15.6.0"
   resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.6.0.tgz#ab448497c26566e1e29413e883207d57cfe7bed4"
   dependencies:
@@ -2180,6 +2179,10 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
+date-arithmetic@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/date-arithmetic/-/date-arithmetic-3.1.0.tgz#1fcd03dbd504b9dbee2b9078c85a5f1c7d3cc2d3"
+
 date-now@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
@@ -2324,7 +2327,7 @@ dom-converter@~0.1:
   dependencies:
     utila "~0.3"
 
-dom-helpers@^3.2.0:
+dom-helpers@^3.0.0, dom-helpers@^3.2.0:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/dom-helpers/-/dom-helpers-3.2.1.tgz#3203e07fed217bd1f424b019735582fc37b2825a"
 
@@ -3728,7 +3731,7 @@ intl-relativeformat@^1.3.0:
   dependencies:
     intl-messageformat "1.3.0"
 
-invariant@^2.0.0, invariant@^2.1.1, invariant@^2.2.0, invariant@^2.2.1, invariant@^2.2.2:
+invariant@^2.0.0, invariant@^2.1.0, invariant@^2.1.1, invariant@^2.2.0, invariant@^2.2.1, invariant@^2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.2.tgz#9e1f56ac0acdb6bf303306f338be3b204ae60360"
   dependencies:
@@ -5800,6 +5803,16 @@ react-base16-styling@^0.5.1:
     lodash.flow "^3.3.0"
     pure-color "^1.2.0"
 
+react-component-managers@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-component-managers/-/react-component-managers-2.0.0.tgz#7c8d81f5b755e0dae63d859672af0fe99d696195"
+
+react-component-managers@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/react-component-managers/-/react-component-managers-3.0.2.tgz#33fb1eb83e769455eaaafae1e5b6ed603ff9380f"
+  dependencies:
+    prop-types "^15.5.9"
+
 react-deep-force-update@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-2.0.1.tgz#4f7f6c12c3e7de42f345992a3c518236fa1ecad3"
@@ -5850,6 +5863,13 @@ react-hot-loader@^3.0.0-beta.7:
     redbox-react "^1.3.6"
     source-map "^0.4.4"
 
+react-input-autosize@^1.1.3:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/react-input-autosize/-/react-input-autosize-1.1.4.tgz#cbc45072d4084ddc57806db8e3b34e644b8366ac"
+  dependencies:
+    create-react-class "^15.5.2"
+    prop-types "^15.5.8"
+
 react-intl@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/react-intl/-/react-intl-2.3.0.tgz#e1df6af5667fdf01cbe4aab20e137251e2ae5142"
@@ -5866,6 +5886,31 @@ react-json-tree@^0.10.9:
     babel-runtime "^6.6.1"
     prop-types "^15.5.8"
     react-base16-styling "^0.5.1"
+
+react-overlays@^0.6.10:
+  version "0.6.12"
+  resolved "https://registry.yarnpkg.com/react-overlays/-/react-overlays-0.6.12.tgz#a079c750cc429d7db4c7474a95b4b54033e255c3"
+  dependencies:
+    classnames "^2.2.5"
+    dom-helpers "^3.2.0"
+    react-prop-types "^0.4.0"
+    warning "^3.0.0"
+
+react-overlays@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/react-overlays/-/react-overlays-0.7.0.tgz#531898ff566c7e5c7226ead2863b8cf9fbb5a981"
+  dependencies:
+    classnames "^2.2.5"
+    dom-helpers "^3.2.0"
+    prop-types "^15.5.8"
+    react-prop-types "^0.4.0"
+    warning "^3.0.0"
+
+react-prop-types@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/react-prop-types/-/react-prop-types-0.4.0.tgz#f99b0bfb4006929c9af2051e7c1414a5c75b93d0"
+  dependencies:
+    warning "^3.0.0"
 
 react-proxy@^3.0.0-alpha.0:
   version "3.0.0-alpha.1"
@@ -5906,6 +5951,15 @@ react-router@^4.1.1:
     prop-types "^15.5.4"
     warning "^3.0.0"
 
+react-select@^1.0.0-rc.5:
+  version "1.0.0-rc.5"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-1.0.0-rc.5.tgz#9d316f252b1adc372ddb5cdf1f119c6b7cfdb5d6"
+  dependencies:
+    classnames "^2.2.4"
+    create-react-class "^15.5.2"
+    prop-types "^15.5.8"
+    react-input-autosize "^1.1.3"
+
 react-side-effect@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-side-effect/-/react-side-effect-1.1.0.tgz#57209f7ebc940d55e0fda82fe51422654175d609"
@@ -5929,6 +5983,26 @@ react-transition-group@^1.2.0:
     loose-envify "^1.3.1"
     prop-types "^15.5.6"
     warning "^3.0.0"
+
+react-widgets-moment@^4.0.0-rc.10:
+  version "4.0.0-rc4"
+  resolved "https://registry.yarnpkg.com/react-widgets-moment/-/react-widgets-moment-4.0.0-rc4.tgz#1324224f5b3a3fabe0e5db2e42564b74df667b76"
+
+react-widgets@^4.0.0-rc.10:
+  version "4.0.0-rc4"
+  resolved "https://registry.yarnpkg.com/react-widgets/-/react-widgets-4.0.0-rc4.tgz#a576bd5376ae1ec370702d53afd9a067559954d0"
+  dependencies:
+    classnames "^2.1.2"
+    date-arithmetic "^3.1.0"
+    dom-helpers "^3.0.0"
+    invariant "^2.1.0"
+    loose-envify "^1.2.0"
+    react-component-managers "^2.0.0"
+    react-overlays "^0.6.10"
+    react-prop-types "^0.4.0"
+    spy-on-component "^1.0.2"
+    uncontrollable "^4.0.0"
+    warning "^2.0.0"
 
 react@^15.6.1:
   version "15.6.1"
@@ -6689,6 +6763,10 @@ sprintf-js@~1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
 
+spy-on-component@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/spy-on-component/-/spy-on-component-1.0.2.tgz#be02b9118f0d7d60d33a2de50fc9634cb057aa3f"
+
 sshpk@^1.7.0:
   version "1.10.1"
   resolved "https://registry.yarnpkg.com/sshpk/-/sshpk-1.10.1.tgz#30e1a5d329244974a1af61511339d595af6638b0"
@@ -7072,6 +7150,12 @@ unc-path-regex@^0.1.0:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/unc-path-regex/-/unc-path-regex-0.1.2.tgz#e73dd3d7b0d7c5ed86fbac6b0ae7d8c6a69d50fa"
 
+uncontrollable@^4.0.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/uncontrollable/-/uncontrollable-4.1.0.tgz#e0358291252e1865222d90939b19f2f49f81c1a9"
+  dependencies:
+    invariant "^2.1.0"
+
 uniq@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/uniq/-/uniq-1.0.1.tgz#b31c5ae8254844a3a8281541ce2b04b865a734ff"
@@ -7209,6 +7293,12 @@ vm-browserify@0.0.4:
   resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-0.0.4.tgz#5d7ea45bbef9e4a6ff65f95438e0a87c357d5a73"
   dependencies:
     indexof "0.0.1"
+
+warning@^2.0.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/warning/-/warning-2.1.0.tgz#21220d9c63afc77a8c92111e011af705ce0c6901"
+  dependencies:
+    loose-envify "^1.0.0"
 
 warning@^3.0.0:
   version "3.0.0"

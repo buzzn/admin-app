@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
 import { Field, reduxForm } from 'redux-form';
 import pick from 'lodash/pick';
+import range from 'lodash/range';
+import reduce from 'lodash/reduce';
 import Meters from 'meters';
 import EditableInput from 'components/editable_input';
+import EditableSelect from 'components/editable_select';
 
 export class MeterData extends Component {
   static propTypes = {
@@ -36,7 +40,7 @@ export class MeterData extends Component {
   }
 
   render() {
-    const { loading, meter, updateMeter, handleSubmit, pristine, submitting, groupId } = this.props;
+    const { loading, meter, updateMeter, handleSubmit, pristine, submitting, groupId, intl } = this.props;
 
     if (meter.status === 404) return (<div>Meter not found</div>);
 
@@ -51,9 +55,9 @@ export class MeterData extends Component {
             'manufacturerName',
             'manufacturerProductName',
             'ownership',
-            'type',
+            'meteringType',
             'meterSize',
-            'directionLabel',
+            // 'buildYear',
           ]),
           resolve,
           reject,
@@ -63,64 +67,124 @@ export class MeterData extends Component {
       .then(() => this.setState({ editMode: false }));
     };
 
+    const meteringTypeRawOptions = [
+      { value: 'analog_household_meter', label: 'Analog household meter' },
+      { value: 'digital_household_meter', label: 'Digital household meter' },
+      { value: 'smart_meter', label: 'Smart meter' },
+      { value: 'load_meter', label: 'Load meter' },
+      { value: 'analog_ac_meter', label: 'Analog AC meter' },
+      { value: 'maximum_meter', label: 'Maximum meter' },
+      { value: 'individual_adjustment', label: 'Individual adjustment' },
+    ];
+
+    const meteringTypeMessages = defineMessages(reduce(meteringTypeRawOptions, (s, v) => ({ ...s,
+      [v.value]: {
+        id: `admin.meters.${v.value}`,
+      } }), {}));
+
+    const meteringTypeOptions = meteringTypeRawOptions.map(m => ({ ...m, label: intl.formatMessage(meteringTypeMessages[m.value]) }));
+
     return (
       <form onSubmit={ handleSubmit(submit) }>
         <div className="row">
           <div className="col-6">
             <div className="row">
-              <div className="col-6">Meter number:</div>
+              <div className="col-6">
+                <FormattedMessage
+                  id="admin.meters.manufacturerProductSerialnumber"
+                  description="Meter serial number"
+                  defaultMessage="Serial number:" />
+              </div>
               <div className="col-6">
                 <Field name="manufacturerProductSerialnumber" editMode={ this.state.editMode } component={ EditableInput }/>
               </div>
             </div>
             <div className="row">
-              <div className="col-6">Manufacturer:</div>
               <div className="col-6">
-                <Field name="manufacturerName" editMode={ this.state.editMode } component={ EditableInput }/>
+                <FormattedMessage
+                  id="admin.meters.manufacturerName"
+                  description="Meter manufacturer"
+                  defaultMessage="Manufacturer name:" />
+              </div>
+              <div className="col-6">
+                <Field name="manufacturerName" editMode={ this.state.editMode } options={[
+                  { value: 'easy_meter', label: 'Easy meter' },
+                  { value: 'amperix', label: 'Amperix' },
+                  { value: 'ferraris', label: 'Ferraris' },
+                  { value: 'other', label: 'Other' },
+                ]} component={ EditableSelect }/>
               </div>
             </div>
             <div className="row">
-              <div className="col-6">Type:</div>
+              <div className="col-6">
+                <FormattedMessage
+                  id="admin.meters.manufacturerProductName"
+                  description="Meter product name"
+                  defaultMessage="Product name:" />
+              </div>
               <div className="col-6">
                 <Field name="manufacturerProductName" editMode={ this.state.editMode } component={ EditableInput }/>
               </div>
             </div>
             <div className="row">
-              <div className="col-6">Owner:</div>
               <div className="col-6">
-                <Field name="ownership" editMode={ this.state.editMode } component={ EditableInput }/>
+                <FormattedMessage
+                  id="admin.meters.ownership"
+                  description="Meter owner"
+                  defaultMessage="Ownership:" />
+              </div>
+              <div className="col-6">
+                <Field name="ownership" editMode={ this.state.editMode } options={[
+                  { value: 'buzzn_systems', label: 'BUZZN systems' },
+                  { value: 'foreign_ownership', label: 'Foreign' },
+                  { value: 'customer', label: 'Customer' },
+                  { value: 'leased', label: 'Leased' },
+                  { value: 'bought', label: 'Bought' },
+                ]} component={ EditableSelect }/>
               </div>
             </div>
             <div className="row">
-              <div className="col-6">Type:</div>
               <div className="col-6">
-                <Field name="type" editMode={ this.state.editMode } component={ EditableInput }/>
+                <FormattedMessage
+                  id="admin.meters.meteringType"
+                  description="Meter type"
+                  defaultMessage="Meter type:" />
+              </div>
+              <div className="col-6">
+                <Field name="meteringType" editMode={ this.state.editMode } options={ meteringTypeOptions } component={ EditableSelect }/>
               </div>
             </div>
             <div className="row">
-              <div className="col-6">Size:</div>
               <div className="col-6">
-                <Field name="meterSize" editMode={ this.state.editMode } component={ EditableInput }/>
+                <FormattedMessage
+                  id="admin.meters.meterSize"
+                  description="Meter size"
+                  defaultMessage="Meter size:" />
               </div>
-            </div>
-            <div className="row">
-              <div className="col-6">Metering point id:</div>
-              <div className="col-6"></div>
+              <div className="col-6">
+                <Field name="meterSize" editMode={ this.state.editMode } options={[
+                  { value: 'edl40', label: 'EDL 40' },
+                  { value: 'edl21', label: 'EDL 21' },
+                  { value: 'other_ehz', label: 'Other' },
+                ]} component={ EditableSelect }/>
+              </div>
             </div>
             <div className="row">
               <div className="col-6">Label:</div>
               <div className="col-6">
-                <Field name="directionLabel" editMode={ this.state.editMode } component={ EditableInput }/>
+                { meter.directionLabel }
               </div>
             </div>
-            <div className="row">
-              <div className="col-6">Energy:</div>
-              <div className="col-6"></div>
-            </div>
-            <div className="row">
-              <div className="col-6">Manufactured in:</div>
-              <div className="col-6">{ meter.buildYear }</div>
-            </div>
+            {/*<div className="row">*/}
+              {/*<div className="col-6">Manufactured in:</div>*/}
+              {/*<div className="col-6">*/}
+                {/*<Field*/}
+                  {/*name="buildYear"*/}
+                  {/*editMode={ this.state.editMode }*/}
+                  {/*options={ range(1990, (new Date()).getFullYear() + 1).map(y => ({ value: y, label: y })) }*/}
+                  {/*component={ EditableSelect }/>*/}
+              {/*</div>*/}
+            {/*</div>*/}
           </div>
         </div>
         <div className="row">
@@ -159,4 +223,4 @@ export default connect(mapStateToProps, {
 })(reduxForm({
   form: 'meterUpdateForm',
   enableReinitialize: true,
-})(MeterData));
+})(injectIntl(MeterData)));

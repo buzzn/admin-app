@@ -29,7 +29,7 @@ export class RegisterResources extends Component {
 
     return (
       <div>
-        <h4>Readings</h4>
+        <h5>Readings</h5>
         List of all readings for a register.
         <div className="col-12 no-padding">
           <table className="table">

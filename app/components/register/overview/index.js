@@ -55,21 +55,30 @@ export class RegisterOverview extends Component {
             <div className="title bg-solar-mid">{ register.name }</div>
           </div>
           <div className="col-6 left-col">
-            Register data:
+            <h5>Register data</h5>
+            <div className="row">
+              <div className="col-6">Name:</div>
+              <div className="col-6">{ register.name }</div>
+            </div>
             <div className="row">
               <div className="col-6">OBIS:</div>
               <div className="col-6">{ register.obis }</div>
             </div>
             <div className="row">
               <div className="col-6">Label:</div>
-              <div className="col-6">{ register.name }</div>
-            </div>
-            <div className="row">
-              <div className="col-6">Low power:</div>
-              <div className="col-6">{ register.lowPower }</div>
+              <div className="col-6">{ register.label }</div>
             </div>
           </div>
           <div className="col-6 right-col">
+            <h5>&nbsp;</h5>
+            <div className="row">
+              <div className="col-6">Direction:</div>
+              <div className="col-6">{ register.direction }</div>
+            </div>
+            <div className="row">
+              <div className="col-6">Low power:</div>
+              <div className="col-6">{ register.lowPower ? 'Yes' : 'No' }</div>
+            </div>
             <div className="row">
               <div className="col-6">Pre-Decimal:</div>
               <div className="col-6">{ register.preDecimal }</div>
@@ -77,10 +86,6 @@ export class RegisterOverview extends Component {
             <div className="row">
               <div className="col-6">Decimal:</div>
               <div className="col-6">{ register.decimal }</div>
-            </div>
-            <div className="row">
-              <div className="col-6">Transformer ratio:</div>
-              <div className="col-6">{ register.converterConstant }</div>
             </div>
           </div>
         </div>
