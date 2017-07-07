@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
-import { Field, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import pick from 'lodash/pick';
 import range from 'lodash/range';
-import reduce from 'lodash/reduce';
 import Meters from 'meters';
 import EditableInput from 'components/editable_input';
 import EditableSelect from 'components/editable_select';
+import TwoColField from 'components/two_col_field';
 
 export class MeterData extends Component {
   static propTypes = {
@@ -16,6 +15,7 @@ export class MeterData extends Component {
     loading: PropTypes.bool.isRequired,
     loadMeter: PropTypes.func.isRequired,
     updateMeter: PropTypes.func,
+    validationRules: PropTypes.object.isRequired,
   };
 
   state = {
@@ -25,8 +25,8 @@ export class MeterData extends Component {
   handleEditSwitch(event) {
     event.preventDefault();
 
-    const { updateMeter, reset } = this.props;
-    if (!updateMeter) {
+    const { updateMeter, reset, validationRules } = this.props;
+    if (!updateMeter || Object.keys(validationRules).length === 0) {
       this.setState({ editMode: false });
     }
     this.setState({ editMode: !this.state.editMode });
@@ -40,7 +40,16 @@ export class MeterData extends Component {
   }
 
   render() {
-    const { loading, meter, updateMeter, handleSubmit, pristine, submitting, groupId, intl } = this.props;
+    const {
+      loading,
+      meter,
+      updateMeter,
+      handleSubmit,
+      pristine,
+      submitting,
+      groupId,
+      validationRules,
+    } = this.props;
 
     if (meter.status === 404) return (<div>Meter not found</div>);
 
@@ -50,15 +59,16 @@ export class MeterData extends Component {
       return new Promise((resolve, reject) => {
         updateMeter({
           meterId: meter.id,
-          params: pick(values, [
-            'manufacturerProductSerialnumber',
-            'manufacturerName',
-            'manufacturerProductName',
-            'ownership',
-            'meteringType',
-            'meterSize',
-            // 'buildYear',
-          ]),
+          params: values,
+          // params: pick(values, [
+          //   'productSerialnumber',
+          //   'manufacturerName',
+          //   'productName',
+          //   'ownership',
+          //   'edifactMeteringType',
+          //   'edifactMeterSize',
+          //   // 'buildYear',
+          // ]),
           resolve,
           reject,
           groupId,
@@ -67,124 +77,132 @@ export class MeterData extends Component {
       .then(() => this.setState({ editMode: false }));
     };
 
-    const meteringTypeRawOptions = [
-      { value: 'analog_household_meter', label: 'Analog household meter' },
-      { value: 'digital_household_meter', label: 'Digital household meter' },
-      { value: 'smart_meter', label: 'Smart meter' },
-      { value: 'load_meter', label: 'Load meter' },
-      { value: 'analog_ac_meter', label: 'Analog AC meter' },
-      { value: 'maximum_meter', label: 'Maximum meter' },
-      { value: 'individual_adjustment', label: 'Individual adjustment' },
-    ];
-
-    const meteringTypeMessages = defineMessages(reduce(meteringTypeRawOptions, (s, v) => ({ ...s,
-      [v.value]: {
-        id: `admin.meters.${v.value}`,
-      } }), {}));
-
-    const meteringTypeOptions = meteringTypeRawOptions.map(m => ({ ...m, label: intl.formatMessage(meteringTypeMessages[m.value]) }));
+    const prefix = 'admin.meters';
 
     return (
       <form onSubmit={ handleSubmit(submit) }>
         <div className="row">
           <div className="col-6">
-            <div className="row">
-              <div className="col-6">
-                <FormattedMessage
-                  id="admin.meters.manufacturerProductSerialnumber"
-                  description="Meter serial number"
-                  defaultMessage="Serial number:" />
-              </div>
-              <div className="col-6">
-                <Field name="manufacturerProductSerialnumber" editMode={ this.state.editMode } component={ EditableInput }/>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-6">
-                <FormattedMessage
-                  id="admin.meters.manufacturerName"
-                  description="Meter manufacturer"
-                  defaultMessage="Manufacturer name:" />
-              </div>
-              <div className="col-6">
-                <Field name="manufacturerName" editMode={ this.state.editMode } options={[
-                  { value: 'easy_meter', label: 'Easy meter' },
-                  { value: 'amperix', label: 'Amperix' },
-                  { value: 'ferraris', label: 'Ferraris' },
-                  { value: 'other', label: 'Other' },
-                ]} component={ EditableSelect }/>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-6">
-                <FormattedMessage
-                  id="admin.meters.manufacturerProductName"
-                  description="Meter product name"
-                  defaultMessage="Product name:" />
-              </div>
-              <div className="col-6">
-                <Field name="manufacturerProductName" editMode={ this.state.editMode } component={ EditableInput }/>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-6">
-                <FormattedMessage
-                  id="admin.meters.ownership"
-                  description="Meter owner"
-                  defaultMessage="Ownership:" />
-              </div>
-              <div className="col-6">
-                <Field name="ownership" editMode={ this.state.editMode } options={[
-                  { value: 'buzzn_systems', label: 'BUZZN systems' },
-                  { value: 'foreign_ownership', label: 'Foreign' },
-                  { value: 'customer', label: 'Customer' },
-                  { value: 'leased', label: 'Leased' },
-                  { value: 'bought', label: 'Bought' },
-                ]} component={ EditableSelect }/>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-6">
-                <FormattedMessage
-                  id="admin.meters.meteringType"
-                  description="Meter type"
-                  defaultMessage="Meter type:" />
-              </div>
-              <div className="col-6">
-                <Field name="meteringType" editMode={ this.state.editMode } options={ meteringTypeOptions } component={ EditableSelect }/>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-6">
-                <FormattedMessage
-                  id="admin.meters.meterSize"
-                  description="Meter size"
-                  defaultMessage="Meter size:" />
-              </div>
-              <div className="col-6">
-                <Field name="meterSize" editMode={ this.state.editMode } options={[
-                  { value: 'edl40', label: 'EDL 40' },
-                  { value: 'edl21', label: 'EDL 21' },
-                  { value: 'other_ehz', label: 'Other' },
-                ]} component={ EditableSelect }/>
-              </div>
-            </div>
+            <TwoColField
+              prefix={ prefix }
+              name="section"
+              editMode={ this.state.editMode }
+              validationRules={ validationRules }
+              component={ EditableSelect }
+            />
+            <TwoColField
+              prefix={ prefix }
+              name="ownership"
+              editMode={ this.state.editMode }
+              validationRules={ validationRules }
+              component={ EditableSelect }
+            />
+            <TwoColField
+              prefix={ prefix }
+              name="manufacturerName"
+              editMode={ this.state.editMode }
+              validationRules={ validationRules }
+              component={ EditableSelect }
+            />
+            <TwoColField
+              prefix={ prefix }
+              name="productName"
+              editMode={ this.state.editMode }
+              validationRules={ validationRules }
+              component={ EditableInput }
+            />
+            <TwoColField
+              prefix={ prefix }
+              name="productSerialnumber"
+              editMode={ this.state.editMode }
+              validationRules={ validationRules }
+              component={ EditableInput }
+            />
+            <TwoColField
+              prefix={ prefix }
+              name="buildYear"
+              editMode={ this.state.editMode }
+              noValTranslations={ true }
+              field={ { enum: range(1990, (new Date()).getFullYear() + 1).map(y => y) } }
+              validationRules={ validationRules }
+              component={ EditableSelect }
+            />
+            <TwoColField
+              prefix={ prefix }
+              name="edifactMeteringType"
+              editMode={ this.state.editMode }
+              validationRules={ validationRules }
+              component={ EditableSelect }
+            />
+            <TwoColField
+              prefix={ prefix }
+              name="directionNumber"
+              editMode={ this.state.editMode }
+              validationRules={ validationRules }
+              component={ EditableSelect }
+            />
+            <TwoColField
+              prefix={ prefix }
+              name="edifactTariff"
+              editMode={ this.state.editMode }
+              validationRules={ validationRules }
+              component={ EditableSelect }
+            />
+            <TwoColField
+              prefix={ prefix }
+              name="edifactMeterSize"
+              editMode={ this.state.editMode }
+              validationRules={ validationRules }
+              component={ EditableSelect }
+            />
+            <TwoColField
+              prefix={ prefix }
+              name="edifactMountingMethod"
+              editMode={ this.state.editMode }
+              validationRules={ validationRules }
+              component={ EditableSelect }
+            />
+            <TwoColField
+              prefix={ prefix }
+              name="edifactMeasurementMethod"
+              editMode={ this.state.editMode }
+              validationRules={ validationRules }
+              component={ EditableSelect }
+            />
+            <TwoColField
+              prefix={ prefix }
+              name="edifactVoltageLevel"
+              editMode={ this.state.editMode }
+              validationRules={ validationRules }
+              component={ EditableSelect }
+            />
+            <TwoColField
+              prefix={ prefix }
+              name="edifactCycleInterval"
+              editMode={ this.state.editMode }
+              validationRules={ validationRules }
+              component={ EditableSelect }
+            />
+            <TwoColField
+              prefix={ prefix }
+              name="edifactDataLogging"
+              editMode={ this.state.editMode }
+              validationRules={ validationRules }
+              component={ EditableSelect }
+            />
+            <TwoColField
+              prefix={ prefix }
+              name="converterConstant"
+              editMode={ this.state.editMode }
+              validationRules={ validationRules }
+              component={ EditableInput }
+            />
             <div className="row">
               <div className="col-6">Label:</div>
               <div className="col-6">
-                { meter.directionLabel }
+                { meter.directionNumber }
               </div>
             </div>
-            {/*<div className="row">*/}
-              {/*<div className="col-6">Manufactured in:</div>*/}
-              {/*<div className="col-6">*/}
-                {/*<Field*/}
-                  {/*name="buildYear"*/}
-                  {/*editMode={ this.state.editMode }*/}
-                  {/*options={ range(1990, (new Date()).getFullYear() + 1).map(y => ({ value: y, label: y })) }*/}
-                  {/*component={ EditableSelect }/>*/}
-              {/*</div>*/}
-            {/*</div>*/}
           </div>
         </div>
         <div className="row">
@@ -214,6 +232,7 @@ function mapStateToProps(state) {
     meter: state.meters.meter,
     loading: state.meters.loadingMeter,
     initialValues: state.meters.meter || {},
+    validationRules: state.meters.validationRules,
   };
 }
 
@@ -223,4 +242,4 @@ export default connect(mapStateToProps, {
 })(reduxForm({
   form: 'meterUpdateForm',
   enableReinitialize: true,
-})(injectIntl(MeterData)));
+})(MeterData));

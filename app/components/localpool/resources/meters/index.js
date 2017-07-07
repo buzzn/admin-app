@@ -29,7 +29,7 @@ export class MetersList extends Component {
 
     const data = meters.map(m => ({
       ...m,
-      meter: m.manufacturerProductSerialnumber,
+      meter: m.productSerialnumber,
       description: '',
       link: `/localpools/${groupId}/system/${m.id}`,
     }));

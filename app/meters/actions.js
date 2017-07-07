@@ -2,6 +2,8 @@ export const constants = {
   SET_API_PARAMS: 'buzzn_meters/SET_API_PARAMS',
   SET_TOKEN: 'buzzn_meters/SET_TOKEN',
 
+  SET_VALIDATION_RULES: 'buzzn_meters/SET_VALIDATION_RULES',
+
   LOAD_METER: 'buzzn_meters/LOAD_METER',
   LOADING_METER: 'buzzn_meters/LOADING_METER',
   LOADED_METER: 'buzzn_meters/LOADED_METER',
@@ -18,6 +20,8 @@ export const constants = {
 export const actions = {
   setApiParams: ({ apiPath, apiUrl }) => ({ type: constants.SET_API_PARAMS, apiPath, apiUrl }),
   setToken: token => ({ type: constants.SET_TOKEN, token }),
+
+  setValidationRules: validationRules => ({ type: constants.SET_VALIDATION_RULES, validationRules }),
 
   loadMeter: ({ meterId, groupId }) => ({ type: constants.LOAD_METER, meterId, groupId }),
   loadingMeter: () => ({ type: constants.LOADING_METER }),

@@ -1,10 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import find from 'lodash/find';
+import { injectIntl } from 'react-intl';
 
 import './style.scss';
 
-const EditableSelect = ({ editMode, input, options, defaultValue, meta: { touched, error } }) => {
+const EditableSelect = ({ editMode, input, field, prefix, intl, defaultValue, noValTranslations, meta: { touched, error } }) => {
+  let list = [input.value];
+  if (field && field.enum) list = field.enum;
+  const options = list.map(value => ({ value, label: noValTranslations ? value : intl.formatMessage({ id: `${prefix}.${value}` }) }));
+
   if (editMode) {
     return (
       <div className={ `editable-select form-group ${(touched && error) && 'has-danger'}` }>
@@ -29,7 +34,7 @@ EditableSelect.propTypes = {
   editMode: PropTypes.bool.isRequired,
   input: PropTypes.object.isRequired,
   meta: PropTypes.object.isRequired,
-  options: PropTypes.array.isRequired,
+  field: PropTypes.object,
   defaultValue: PropTypes.object,
 };
 
@@ -37,4 +42,4 @@ EditableSelect.defaultProps = {
   defaultValue: { value: '', label: '-----' },
 };
 
-export default EditableSelect;
+export default injectIntl(EditableSelect);

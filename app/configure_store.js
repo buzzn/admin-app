@@ -11,6 +11,7 @@ import Meters from './meters';
 import Registers from './registers';
 import Users from './users';
 import Contracts from './contracts';
+import ValidationRules from './validation_rules';
 import RootReducer from './reducers';
 
 function* rootSaga() {
@@ -23,6 +24,7 @@ function* rootSaga() {
     call(Registers.sagas),
     call(Users.sagas),
     call(Contracts.sagas),
+    call(ValidationRules.sagas),
     call(appSaga),
   ]);
 }

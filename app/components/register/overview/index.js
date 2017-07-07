@@ -42,7 +42,7 @@ export class RegisterOverview extends Component {
 
     const breadcrumbs = [
       { id: group.id, link: `/localpools/${group.id}/system`, title: group.name },
-      { id: meter.id, link: `/localpools/${group.id}/system/${meter.id}/registers`, title: meter.manufacturerProductSerialnumber },
+      { id: meter.id, link: `/localpools/${group.id}/system/${meter.id}/registers`, title: meter.productSerialnumber },
       { id: register.id, title: register.name },
     ];
 
