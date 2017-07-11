@@ -1,4 +1,5 @@
 import { put, call, takeLatest, take, fork, cancel, select } from 'redux-saga/effects';
+import { SubmissionError } from 'redux-form';
 import { actions, constants } from './actions';
 import api from './api';
 
@@ -17,6 +18,20 @@ export function* getMeter({ apiUrl, apiPath, token }, { meterId, groupId }) {
   yield put(actions.loadedMeter());
 }
 
+export function* updateMeter({ apiUrl, apiPath, token }, { meterId, params, resolve, reject, groupId }) {
+  try {
+    const res = yield call(api.updateMeter, { apiUrl, apiPath, token, meterId, params, groupId });
+    if (res._error) {
+      yield call(reject, new SubmissionError(res));
+    } else {
+      yield call(resolve, res);
+      yield call(getMeter, { apiUrl, apiPath, token }, { meterId, groupId });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export function* getGroupMeters({ apiUrl, apiPath, token }, { groupId }) {
   yield put(actions.loadingGroupMeters());
   yield put(actions.setGroupMeters([]));
@@ -32,6 +47,7 @@ export function* getGroupMeters({ apiUrl, apiPath, token }, { groupId }) {
 export function* metersSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_GROUP_METERS, getGroupMeters, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_METER, getMeter, { apiUrl, apiPath, token });
+  yield takeLatest(constants.UPDATE_METER, updateMeter, { apiUrl, apiPath, token });
 }
 
 export default function* () {

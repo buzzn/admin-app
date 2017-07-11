@@ -27,6 +27,7 @@ import RegisterResourcesContainer from 'components/register/resources';
 
 import 'buzzn-style';
 import 'react-table/react-table.css';
+import 'react-widgets/dist/css/react-widgets.css';
 import './root.scss';
 
 const Root = ({ token }) => (

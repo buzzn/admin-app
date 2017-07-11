@@ -8,6 +8,7 @@ export const initialState = {
   groupMeters: [],
   meter: {},
   meterRegisters: [],
+  validationRules: {},
 };
 
 export default function (state = initialState, action) {
@@ -32,6 +33,9 @@ export default function (state = initialState, action) {
 
     case constants.SET_TOKEN:
       return { ...state, configured: true };
+
+    case constants.SET_VALIDATION_RULES:
+      return { ...state, validationRules: action.validationRules };
 
     default:
       return state;

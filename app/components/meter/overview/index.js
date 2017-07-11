@@ -30,7 +30,7 @@ export class MeterOverview extends Component {
 
     const breadcrumbs = [
       { id: group.id, link: `/localpools/${group.id}/system`, title: group.name },
-      { id: meter.id, title: meter.manufacturerProductSerialnumber },
+      { id: meter.id, title: meter.productSerialnumber },
     ];
 
     return (
@@ -39,7 +39,7 @@ export class MeterOverview extends Component {
         <Breadcrumbs breadcrumbs={ breadcrumbs }/>
         <div className="row meter-overview top-content">
           <div className="col-12">
-            <div className="title bg-heat">{ meter.manufacturerProductSerialnumber }</div>
+            <div className="title bg-heat">{ meter.productSerialnumber }</div>
           </div>
           <div className="col-6 left-col"></div>
           <div className="col-6 right-col"></div>

@@ -19,7 +19,7 @@ const FilterComponent = ({ filter, onChange }) => (
 
 Object.assign(ReactTableDefaults, {
   FilterComponent,
-  filterable: true,
+  filterable: false,
   showPagination: false,
   minRows: 0,
   defaultPageSize: 100000,
