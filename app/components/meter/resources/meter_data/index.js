@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import pick from 'lodash/pick';
@@ -8,6 +9,8 @@ import Meters from 'meters';
 import EditableInput from 'components/editable_input';
 import EditableSelect from 'components/editable_select';
 import TwoColField from 'components/two_col_field';
+import EditableDate from 'components/editable_date';
+import { dateNormalizer } from 'validation_normalizers';
 
 export class MeterData extends Component {
   static propTypes = {
@@ -83,6 +86,7 @@ export class MeterData extends Component {
       <form onSubmit={ handleSubmit(submit) }>
         <div className="row">
           <div className="col-6">
+            <h5><FormattedMessage id={ `${prefix}.headerMeterData` }/></h5>
             <TwoColField
               prefix={ prefix }
               name="section"
@@ -127,6 +131,23 @@ export class MeterData extends Component {
               validationRules={ validationRules }
               component={ EditableSelect }
             />
+            <TwoColField
+              prefix={ prefix }
+              name="calibratedUntil"
+              editMode={ this.state.editMode }
+              validationRules={ validationRules }
+              normalize={ dateNormalizer('DD-MM-YYYY') }
+              component={ EditableDate }
+            />
+            <TwoColField
+              prefix={ prefix }
+              name="sentDataDso"
+              editMode={ this.state.editMode }
+              validationRules={ validationRules }
+              normalize={ dateNormalizer('DD-MM-YYYY') }
+              component={ EditableDate }
+            />
+            <h5><FormattedMessage id={ `${prefix}.headerClassification` }/></h5>
             <TwoColField
               prefix={ prefix }
               name="edifactMeteringType"

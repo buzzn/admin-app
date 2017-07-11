@@ -10,11 +10,11 @@ const EditableDate = ({ editMode, input, dateFormat, meta: { touched, error } })
   if (editMode) {
     return (
       <div className={ `editable-input form-group ${(touched && error) && 'has-danger'}` }>
-        <DateTimePicker {...input}
-          time={false}
-          format={dateFormat}
-          value={moment(input.value).toDate()}
-          onBlur={() => input.onBlur(input.value)} />
+        <DateTimePicker { ...input }
+          time={ false }
+          format={ dateFormat }
+          value={ input.value ? moment(input.value, dateFormat).toDate() : null }
+          onBlur={ () => input.onBlur(moment(input.value).format(dateFormat)) } />
         { touched && error && <div className="form-control-feedback">{ error }</div> }
       </div>
     );
@@ -30,7 +30,7 @@ EditableDate.propTypes = {
 };
 
 EditableDate.defaultProps = {
-  dateFormat: 'YYYY-MM-DD',
+  dateFormat: 'DD-MM-YYYY',
 };
 
 export default EditableDate;
