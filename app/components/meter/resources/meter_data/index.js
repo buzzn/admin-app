@@ -85,7 +85,7 @@ export class MeterData extends Component {
     return (
       <form onSubmit={ handleSubmit(submit) }>
         <div className="row">
-          <div className="col-6">
+          <div className="col-12">
             <h5><FormattedMessage id={ `${prefix}.headerMeterData` }/></h5>
             <TwoColField
               prefix={ prefix }
@@ -136,7 +136,7 @@ export class MeterData extends Component {
               name="calibratedUntil"
               editMode={ this.state.editMode }
               validationRules={ validationRules }
-              normalize={ dateNormalizer('DD-MM-YYYY') }
+              normalize={ dateNormalizer('YYYY-MM-DD') }
               component={ EditableDate }
             />
             <TwoColField
@@ -144,10 +144,10 @@ export class MeterData extends Component {
               name="sentDataDso"
               editMode={ this.state.editMode }
               validationRules={ validationRules }
-              normalize={ dateNormalizer('DD-MM-YYYY') }
+              normalize={ dateNormalizer('YYYY-MM-DD') }
               component={ EditableDate }
             />
-            <h5><FormattedMessage id={ `${prefix}.headerClassification` }/></h5>
+            <h5 style={{ marginTop: '16px' }}><FormattedMessage id={ `${prefix}.headerClassification` }/></h5>
             <TwoColField
               prefix={ prefix }
               name="edifactMeteringType"
@@ -234,10 +234,10 @@ export class MeterData extends Component {
                 {
                   this.state.editMode ?
                     <span>
-                      <button type="submit" disabled={pristine || submitting}>Submit</button>
-                      <button type="button" disabled={submitting} onClick={::this.handleEditSwitch}>Cancel</button>
+                      <button type="submit" className="btn btn-primary" disabled={pristine || submitting}>Submit</button>
+                      <button type="button" className="btn btn-link" disabled={submitting} onClick={::this.handleEditSwitch}>Cancel</button>
                     </span> :
-                    <button onClick={::this.handleEditSwitch}>Edit</button>
+                    <button className="btn btn-primary" onClick={::this.handleEditSwitch}>Edit</button>
                 }
               </div>
             }

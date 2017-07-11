@@ -4,9 +4,9 @@ import { Field } from 'redux-form';
 import { fieldValidator } from 'validation_functions';
 
 const TwoColField = props => (
-  <div className="row">
+  <div className="row" style={{ height: '40px' }}>
     <div className="col-6">
-      <FormattedMessage id={ `${props.prefix}.${props.name}` } />
+      <FormattedMessage id={ `${props.prefix}.${props.name}` } />:
     </div>
     <div className="col-6">
       <Field

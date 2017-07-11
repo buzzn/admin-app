@@ -9,12 +9,13 @@ momentLocalizer(moment);
 const EditableDate = ({ editMode, input, dateFormat, meta: { touched, error } }) => {
   if (editMode) {
     return (
-      <div className={ `editable-input form-group ${(touched && error) && 'has-danger'}` }>
+      <div className={ `editable-date form-group ${(touched && error) && 'has-danger'}` }>
         <DateTimePicker { ...input }
           time={ false }
           format={ dateFormat }
-          value={ input.value ? moment(input.value, dateFormat).toDate() : null }
-          onBlur={ () => input.onBlur(moment(input.value).format(dateFormat)) } />
+          editFormat={ dateFormat }
+          value={ input.value ? moment(input.value).toDate() : null }
+          onBlur={ () => input.onBlur(moment(input.value).toDate()) } />
         { touched && error && <div className="form-control-feedback">{ error }</div> }
       </div>
     );
