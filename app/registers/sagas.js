@@ -1,4 +1,5 @@
 import { put, call, takeLatest, take, cancel, select, fork } from 'redux-saga/effects';
+import { SubmissionError } from 'redux-form';
 import { actions, constants } from './actions';
 import api from './api';
 
@@ -16,6 +17,20 @@ export function* getRegister({ apiUrl, apiPath, token }, { registerId, groupId }
     console.log(error);
   }
   yield put(actions.loadedRegister());
+}
+
+export function* updateRegister({ apiUrl, apiPath, token }, { registerId, params, resolve, reject, groupId }) {
+  try {
+    const res = yield call(api.updateRegister, { apiUrl, apiPath, token, registerId, params, groupId });
+    if (res._error) {
+      yield call(reject, new SubmissionError(res));
+    } else {
+      yield call(resolve, res);
+      yield call(getRegister, { apiUrl, apiPath, token }, { registerId, groupId });
+    }
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // TODO: if there will be another load case for registers, then it'll be better to separate actions/reducers
@@ -36,6 +51,7 @@ export function* getRegisters({ apiUrl, apiPath, token }, { groupId }) {
 export function* registersSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_REGISTERS, getRegisters, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_REGISTER, getRegister, { apiUrl, apiPath, token });
+  yield takeLatest(constants.UPDATE_REGISTER, updateRegister, { apiUrl, apiPath, token });
 }
 
 export default function* () {

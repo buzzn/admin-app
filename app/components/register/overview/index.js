@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import Groups from 'groups';
@@ -46,6 +47,8 @@ export class RegisterOverview extends Component {
       { id: register.id, title: register.name },
     ];
 
+    const prefix = 'admin.registers';
+
     return (
       <div>
         <Helmet title="Register" />
@@ -55,39 +58,24 @@ export class RegisterOverview extends Component {
             <div className="title bg-solar-mid">{ register.name }</div>
           </div>
           <div className="col-6 left-col">
-            <h5>Register data</h5>
             <div className="row">
-              <div className="col-6">Name:</div>
+              <div className="col-6"><FormattedMessage id={ `${prefix}.type` }/>:</div>
+              <div className="col-6"><FormattedMessage id={ `${prefix}.${register.type}` }/></div>
+            </div>
+            <div className="row">
+              <div className="col-6"><FormattedMessage id={ `${prefix}.name` }/>:</div>
               <div className="col-6">{ register.name }</div>
             </div>
             <div className="row">
-              <div className="col-6">OBIS:</div>
+              <div className="col-6"><FormattedMessage id={ `${prefix}.label` }/>:</div>
+              <div className="col-6"><FormattedMessage id={ `${prefix}.${register.label}` }/></div>
+            </div>
+            <div className="row">
+              <div className="col-6"><FormattedMessage id={ `${prefix}.obis` }/>:</div>
               <div className="col-6">{ register.obis }</div>
             </div>
-            <div className="row">
-              <div className="col-6">Label:</div>
-              <div className="col-6">{ register.label }</div>
-            </div>
           </div>
-          <div className="col-6 right-col">
-            <h5>&nbsp;</h5>
-            <div className="row">
-              <div className="col-6">Direction:</div>
-              <div className="col-6">{ register.direction }</div>
-            </div>
-            <div className="row">
-              <div className="col-6">Low power:</div>
-              <div className="col-6">{ register.lowPower ? 'Yes' : 'No' }</div>
-            </div>
-            <div className="row">
-              <div className="col-6">Pre-Decimal:</div>
-              <div className="col-6">{ register.preDecimal }</div>
-            </div>
-            <div className="row">
-              <div className="col-6">Decimal:</div>
-              <div className="col-6">{ register.decimal }</div>
-            </div>
-          </div>
+          <div className="col-6 right-col"></div>
         </div>
       </div>
     );

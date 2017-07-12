@@ -18,6 +18,7 @@ import PowertakerNavBarContainer from 'components/powertaker/nav_bar';
 import ContractNavBarContainer from 'components/contract/nav_bar';
 import ContractingPartyNavBarContainer from 'components/contracting_party/nav_bar';
 import MeterNavBar from 'components/meter/nav_bar';
+import RegisterNavBar from 'components/register/nav_bar';
 import LocalpoolResources from 'components/localpool/resources';
 import PowertakerResources from 'components/powertaker/resources';
 import ContractResources from 'components/contract/resources';
@@ -56,7 +57,7 @@ const Root = ({ token }) => (
             <RowRoute hide={ true } path="/localpools/:groupId/contracts/:contractId/tariffs/:tariffId" />
             <RowRoute rowClass="navigation" path="/localpools/:groupId/contracts/:contractId/:partyType/show" component={ ContractingPartyNavBarContainer } />
             <RowRoute rowClass="navigation" path="/localpools/:groupId/contracts/:contractId" component={ ContractNavBarContainer } />
-            <RowRoute hide={ true } path="/localpools/:groupId/system/:meterId/registers/:registerId" />
+            <RowRoute rowClass="navigation" path="/localpools/:groupId/system/:meterId/registers/:registerId" component={ RegisterNavBar } />
             <RowRoute rowClass="navigation" path="/localpools/:groupId/system/:meterId" component={ MeterNavBar } />
             <RowRoute rowClass="navigation" path="/localpools/:groupId" component={ LocalpoolNavBarContainer } />
           </Switch>

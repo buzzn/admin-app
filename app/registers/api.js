@@ -1,5 +1,5 @@
 import 'whatwg-fetch';
-import { prepareHeaders, parseResponse, camelizeResponseKeys } from '../_util';
+import { prepareHeaders, parseResponse, camelizeResponseKeys, snakeReq } from '../_util';
 
 export default {
   fetchRegister({ token, apiUrl, apiPath, registerId, groupId }) {
@@ -8,6 +8,14 @@ export default {
     })
     .then(parseResponse)
     .then(camelizeResponseKeys);
+  },
+  updateRegister({ token, apiUrl, apiPath, registerId, params, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/registers/${registerId}`, {
+      headers: prepareHeaders(token),
+      method: 'PATCH',
+      body: JSON.stringify(snakeReq(params)),
+    })
+    .then(parseResponse);
   },
   fetchRegisterReadings({ token, apiUrl, apiPath, registerId, groupId }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/registers/${registerId}/readings`, {
