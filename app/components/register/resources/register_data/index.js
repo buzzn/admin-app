@@ -157,7 +157,7 @@ export class RegisterData extends Component {
             />
             <TwoColField
               prefix={ prefix }
-              name="calibratedUntil"
+              name="lastObserved"
               editMode={ this.state.editMode }
               validationRules={ validationRules }
               component={ EditableDate }
