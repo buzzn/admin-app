@@ -155,13 +155,14 @@ export class RegisterData extends Component {
               validationRules={ validationRules }
               component={ EditableCheckbox }
             />
-            <TwoColField
-              prefix={ prefix }
-              name="lastObserved"
-              editMode={ this.state.editMode }
-              validationRules={ validationRules }
-              component={ EditableDate }
-            />
+            <div className="row" style={{ height: '40px' }}>
+              <div className="col-6">
+                <FormattedMessage id={ `${prefix}.lastObserved` } />:
+              </div>
+              <div className="col-6">
+                { register.lastObserved }
+              </div>
+            </div>
           </div>
         </div>
         <div className="row">
