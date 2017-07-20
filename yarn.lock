@@ -10,9 +10,9 @@
   version "1.0.0"
   resolved "git+https://github.com/buzzn/module-auth.git#739a8878c0f979ca8a633dfe666ff864e4588e16"
 
-"@buzzn/module_bubbles@git+https://github.com/buzzn/module-bubbles.git#v2.0.2":
+"@buzzn/module_bubbles@git+https://github.com/buzzn/module-bubbles.git#v2.0.3":
   version "1.0.0"
-  resolved "git+https://github.com/buzzn/module-bubbles.git#7304915204452970d11d8551ed156e0975cb8d6d"
+  resolved "git+https://github.com/buzzn/module-bubbles.git#cebfe7606fdfc85048849d82423e7f9a5f444ea4"
 
 "@buzzn/module_charts@file:../modules/charts":
   version "1.0.0"
