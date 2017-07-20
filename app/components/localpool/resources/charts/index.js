@@ -7,8 +7,8 @@ import './style.scss';
 
 export class Charts extends Component {
   componentWillMount() {
-    const { groupId, setGroup } = this.props;
-    setGroup(groupId);
+    const { groupId, setGroupId } = this.props;
+    setGroupId({ groupId });
   }
 
   render() {
@@ -21,4 +21,4 @@ export class Charts extends Component {
   }
 }
 
-export default connect(() => ({}), { setGroup: ChartsModule.actions.setGroup })(Charts);
+export default connect(() => ({}), { setGroupId: ChartsModule.actions.setGroupId })(Charts);
