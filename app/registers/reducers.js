@@ -6,6 +6,7 @@ export const initialState = {
   registers: [],
   register: {},
   readings: [],
+  validationRules: {},
 };
 
 export default function (state = initialState, action) {
@@ -27,6 +28,9 @@ export default function (state = initialState, action) {
       return { ...state, loadingRegisters: false };
     case constants.SET_REGISTERS:
       return { ...state, registers: action.registers };
+
+    case constants.SET_VALIDATION_RULES:
+      return { ...state, validationRules: action.validationRules };
 
     default:
       return state;

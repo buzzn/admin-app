@@ -17,6 +17,7 @@ function language() {
   let lang = navigator.language ||
     (navigator.userLanguage && navigator.userLanguage.replace(/-[a-z]{2}$/, String.prototype.toUpperCase)) ||
     'de-DE';
+  if (lang === 'en-GB') lang = 'en-US';
   if (lang.length === 2) {
     if (lang === 'en') lang = 'en-US';
     if (lang === 'de') lang = 'de-DE';

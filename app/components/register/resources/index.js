@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import moment from 'moment';
+import { Route, Redirect } from 'react-router-dom';
 import Registers from 'registers';
+import RegisterData from './register_data';
+import Readings from './readings';
 
 export class RegisterResources extends Component {
   static propTypes = {
     loading: PropTypes.bool.isRequired,
+    register: PropTypes.object.isRequired,
     readings: PropTypes.array.isRequired,
     loadRegister: PropTypes.func.isRequired,
   };
@@ -16,47 +19,35 @@ export class RegisterResources extends Component {
   };
 
   componentWillMount() {
-    const { loading, readings, loadRegister, match: { params: { registerId, groupId } } } = this.props;
-    if (!loading && readings.length === 0) loadRegister({ registerId, groupId });
+    const { loading, register, readings, loadRegister, match: { params: { registerId, groupId } } } = this.props;
+    if (!loading && (!register || readings.length === 0)) loadRegister({ registerId, groupId });
   }
 
   render() {
-    const { readings, loading } = this.props;
+    const {
+      register,
+      updateRegister,
+      readings,
+      validationRules,
+      loading,
+      match: {
+        url,
+        isExact,
+        params: {
+          groupId,
+        },
+      },
+    } = this.props;
+
+    if (isExact) return (<Redirect to={ `${url}/register-data` }/>);
 
     if (loading) return (<div>Loading...</div>);
 
-    if (readings.length === 0) return (<div><h4>No readings.</h4></div>);
-
     return (
       <div>
-        <h5>Readings</h5>
-        List of all readings for a register.
-        <div className="col-12 no-padding">
-          <table className="table">
-            <thead className="thead-default">
-            <tr>
-              <th>Date</th>
-              <th>Value</th>
-              <th>Reason</th>
-              <th>Quality</th>
-              <th>By</th>
-            </tr>
-            </thead>
-            <tbody>
-            {
-              readings.map(reading => (
-                <tr key={ reading.id }>
-                  <td>{ moment(reading.timestamp).format('YYYY-MM-DD') }</td>
-                  <td>{ reading.powerMilliwatt }</td>
-                  <td>{ reading.reason }</td>
-                  <td>{ reading.quality }</td>
-                  <td>{ reading.source }</td>
-                </tr>
-              ))
-            }
-            </tbody>
-          </table>
-        </div>
+        <Route path={ `${url}/register-data` } render={ () => <RegisterData {...{ register, initialValues: register, groupId, validationRules, updateRegister }} /> } />
+        <Route path={ `${url}/readings` } render={ () => <Readings {...{ readings }} /> } />
+        <Route path={ `${url}/formula` } render={ () => (<div>Formula</div>) } />
       </div>
     );
   }
@@ -65,8 +56,13 @@ export class RegisterResources extends Component {
 function mapStateToProps(state) {
   return {
     loading: state.registers.loadingRegister,
+    register: state.registers.register,
     readings: state.registers.readings,
+    validationRules: state.registers.validationRules,
   };
 }
 
-export default connect(mapStateToProps, { loadRegister: Registers.actions.loadRegister })(RegisterResources);
+export default connect(mapStateToProps, {
+  loadRegister: Registers.actions.loadRegister,
+  updateRegister: Registers.actions.updateRegister,
+})(RegisterResources);

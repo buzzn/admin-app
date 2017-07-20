@@ -229,7 +229,7 @@ export class MeterData extends Component {
         <div className="row">
           <div className="col-12">
             {
-              updateMeter &&
+              updateMeter && Object.keys(validationRules).length !== 0 &&
               <div className="edit-buttons" style={{ float: 'right' }}>
                 {
                   this.state.editMode ?
