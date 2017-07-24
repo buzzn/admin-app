@@ -35,6 +35,7 @@ export class RegisterResources extends Component {
         isExact,
         params: {
           groupId,
+          meterId,
         },
       },
     } = this.props;
@@ -45,7 +46,7 @@ export class RegisterResources extends Component {
 
     return (
       <div>
-        <Route path={ `${url}/register-data` } render={ () => <RegisterData {...{ register, initialValues: register, groupId, validationRules, updateRegister }} /> } />
+        <Route path={ `${url}/register-data` } render={ () => <RegisterData {...{ register, initialValues: register, groupId, meterId, validationRules, updateRegister }} /> } />
         <Route path={ `${url}/readings` } render={ () => <Readings {...{ readings }} /> } />
         <Route path={ `${url}/formula` } render={ () => (<div>Formula</div>) } />
       </div>

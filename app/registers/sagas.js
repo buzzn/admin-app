@@ -20,9 +20,9 @@ export function* getRegister({ apiUrl, apiPath, token }, { registerId, groupId }
   yield put(actions.loadedRegister());
 }
 
-export function* updateRegister({ apiUrl, apiPath, token }, { registerId, params, resolve, reject, groupId }) {
+export function* updateRegister({ apiUrl, apiPath, token }, { meterId, registerId, params, resolve, reject, groupId }) {
   try {
-    const res = yield call(api.updateRegister, { apiUrl, apiPath, token, registerId, params, groupId });
+    const res = yield call(api.updateRegister, { apiUrl, apiPath, token, meterId, registerId, params, groupId });
     if (res._error) {
       yield call(reject, new SubmissionError(res));
     } else {

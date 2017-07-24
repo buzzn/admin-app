@@ -1,8 +1,13 @@
 import Meters from './meters';
+import Registers from './registers';
 
 export default [
   {
     swaggerPath: '/localpools/{localpool_id}/meters/{real_meter_id}.patch.parameters',
     setAction: Meters.actions.setValidationRules,
+  },
+  {
+    swaggerPath: '/localpools/{localpool_id}/meters/{real_meter_id}/registers/{real_register_id}.patch.parameters',
+    setAction: Registers.actions.setValidationRules,
   },
 ];

@@ -28,8 +28,8 @@ export const actions = {
   loadedRegister: () => ({ type: constants.LOADED_REGISTER }),
   setRegister: ({ register, readings }) => ({ type: constants.SET_REGISTER, register, readings }),
 
-  updateMeter: ({ registerId, params, resolve, reject, groupId }) => (
-    { type: constants.UPDATE_REGISTER, registerId, params, resolve, reject, groupId }),
+  updateRegister: ({ meterId, registerId, params, resolve, reject, groupId }) => (
+    { type: constants.UPDATE_REGISTER, meterId, registerId, params, resolve, reject, groupId }),
 
   loadRegisters: ({ groupId }) => ({ type: constants.LOAD_REGISTERS, groupId }),
   loadingRegisters: () => ({ type: constants.LOADING_REGISTERS }),
