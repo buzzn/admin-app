@@ -1,4 +1,5 @@
 import { put, call, takeLatest, take, fork, cancel, select } from 'redux-saga/effects';
+import { logException } from '_util';
 import { actions, constants } from './actions';
 import api from './api';
 
@@ -27,7 +28,7 @@ export function* getUser({ apiUrl, apiPath, token }, { userId, groupId }) {
     const user = yield call(api.fetchUser, { apiUrl, apiPath, token, userId, groupId });
     yield put(actions.setUser(user));
   } catch (error) {
-    console.log(error);
+    logException(error);
   }
   yield put(actions.loadedUser());
 }
@@ -39,7 +40,7 @@ export function* getUsers({ apiUrl, apiPath, token, type }, params) {
     const users = yield call(getUsersFunctions[type].fetch, { apiUrl, apiPath, token, ...params });
     yield put(getUsersFunctions[type].set(users.array));
   } catch (error) {
-    console.log(error);
+    logException(error);
   }
   yield put(getUsersFunctions[type].loaded());
 }

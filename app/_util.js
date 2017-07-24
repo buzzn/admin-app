@@ -65,3 +65,12 @@ export function camelizeResponseKeys(data) {
 export function snakeReq(data) {
   return reduce(data, (res, v, k) => ({ ...res, [snakeCase(k)]: v }), {});
 }
+
+export function logException(ex, context) {
+  if (Raven.isSetup()) {
+    Raven.captureException(ex, {
+      extra: context,
+    });
+  }
+  console.error(ex);
+}
