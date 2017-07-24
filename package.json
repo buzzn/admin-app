@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --compilers js:babel-register --require babel-polyfill --require tests-setup.js --require ignore-styles $(find . -name '*.tests.js' ! -ipath '*node_modules*')",
+    "test": "jest",
     "dev-server": "webpack-dev-server --progress --inline --hot --port=2999",
     "build": "rimraf build && webpack --config ./webpack.production.config.js --progress --profile --colors",
     "start": "./node_modules/babel-cli/bin/babel-node.js server"
@@ -22,10 +22,6 @@
     "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.24.1",
     "bootstrap-loader": "2.1.0",
-    "chai": "^4.0.2",
-    "chai-as-promised": "^7.1.1",
-    "chai-enzyme": "^0.8.0",
-    "chai-spies": "^0.7.1",
     "cross-env": "^5.0.1",
     "css-loader": "^0.28.4",
     "d3": "^4.9.1",
@@ -39,9 +35,7 @@
     "extract-text-webpack-plugin": "^2.1.2",
     "file-loader": "^0.11.2",
     "html-webpack-plugin": "^2.29.0",
-    "ignore-styles": "^5.0.1",
-    "jsdom": "^11.1.0",
-    "mocha": "^3.4.2",
+    "jest": "^20.0.4",
     "nock": "^9.0.13",
     "node-sass": "^4.5.3",
     "postcss-flexbugs-fixes": "^3.0.0",
@@ -158,6 +152,14 @@
         "jsx": true,
         "prefer-const": true
       }
+    }
+  },
+  "jest": {
+    "moduleFileExtensions": ["js", "jsx", "json", "node"],
+    "moduleDirectories": ["node_modules", "app"],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
     }
   }
 }
