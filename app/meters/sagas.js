@@ -13,7 +13,7 @@ export function* getMeter({ apiUrl, apiPath, token }, { meterId, groupId }) {
     const meter = yield call(api.fetchMeter, { apiUrl, apiPath, token, meterId, groupId });
     yield put(actions.setMeter(meter));
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
   yield put(actions.loadedMeter());
 }
@@ -28,7 +28,7 @@ export function* updateMeter({ apiUrl, apiPath, token }, { meterId, params, reso
       yield call(getMeter, { apiUrl, apiPath, token }, { meterId, groupId });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
 
@@ -39,7 +39,7 @@ export function* getGroupMeters({ apiUrl, apiPath, token }, { groupId }) {
     const groupMeters = yield call(api.fetchGroupMeters, { apiUrl, apiPath, token, groupId });
     yield put(actions.setGroupMeters(groupMeters.array));
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
   yield put(actions.loadedGroupMeters());
 }

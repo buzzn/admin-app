@@ -22,7 +22,7 @@ export function* getUserMe({ apiUrl, apiPath, token }) {
     yield put(actions.setUserMe(userMe));
     return true;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return false;
   }
 }

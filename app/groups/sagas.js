@@ -13,7 +13,7 @@ export function* getGroup({ apiUrl, apiPath, token }, { groupId }) {
     yield put(actions.setGroup(group));
     yield put(Registers.actions.loadRegisters({ groupId }));
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
   yield put(actions.loadedGroup());
 }
@@ -25,7 +25,7 @@ export function* getGroups({ apiUrl, apiPath, token }) {
     const groups = yield call(api.fetchGroups, { apiUrl, apiPath, token });
     yield put(actions.setGroups(groups.array));
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
   yield put(actions.loadedGroups());
 }

@@ -17,7 +17,7 @@ export function* validationRulesSagas({ apiUrl, apiPath, token }) {
       }
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
 

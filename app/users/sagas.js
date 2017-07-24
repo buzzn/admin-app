@@ -27,7 +27,7 @@ export function* getUser({ apiUrl, apiPath, token }, { userId, groupId }) {
     const user = yield call(api.fetchUser, { apiUrl, apiPath, token, userId, groupId });
     yield put(actions.setUser(user));
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
   yield put(actions.loadedUser());
 }
@@ -39,7 +39,7 @@ export function* getUsers({ apiUrl, apiPath, token, type }, params) {
     const users = yield call(getUsersFunctions[type].fetch, { apiUrl, apiPath, token, ...params });
     yield put(getUsersFunctions[type].set(users.array));
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
   yield put(getUsersFunctions[type].loaded());
 }
