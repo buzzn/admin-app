@@ -40,7 +40,7 @@ export class PowertakerOverview extends Component {
 
     if (loadingGroupPowertaker || loadingGroup || !group.id) return (<div>Loading...</div>);
 
-    const powertakerTitle = groupPowertaker.type === 'user' ? `${groupPowertaker.firstName} ${groupPowertaker.lastName}` : groupPowertaker.name;
+    const powertakerTitle = groupPowertaker.type === 'person' ? `${groupPowertaker.firstName} ${groupPowertaker.lastName}` : groupPowertaker.name;
 
     const breadcrumbs = [
       { id: group.id, link: `/localpools/${group.id}/powertakers`, title: group.name },
