@@ -2,6 +2,7 @@ import { put, take, select, call } from 'redux-saga/effects';
 import Auth from '@buzzn/module_auth';
 import Bubbles from '@buzzn/module_bubbles';
 import Charts from '@buzzn/module_charts';
+import { logException } from '_util';
 import { actions } from './actions';
 import api from './api';
 
@@ -22,7 +23,7 @@ export function* getUserMe({ apiUrl, apiPath, token }) {
     yield put(actions.setUserMe(userMe));
     return true;
   } catch (error) {
-    console.error(error);
+    logException(error);
     return false;
   }
 }

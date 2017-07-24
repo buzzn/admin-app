@@ -1,5 +1,6 @@
 import { put, call, takeLatest, take, fork, cancel, select } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
+import { logException } from '_util';
 import { actions, constants } from './actions';
 import api from './api';
 
@@ -13,7 +14,7 @@ export function* getMeter({ apiUrl, apiPath, token }, { meterId, groupId }) {
     const meter = yield call(api.fetchMeter, { apiUrl, apiPath, token, meterId, groupId });
     yield put(actions.setMeter(meter));
   } catch (error) {
-    console.error(error);
+    logException(error);
   }
   yield put(actions.loadedMeter());
 }
@@ -28,7 +29,7 @@ export function* updateMeter({ apiUrl, apiPath, token }, { meterId, params, reso
       yield call(getMeter, { apiUrl, apiPath, token }, { meterId, groupId });
     }
   } catch (error) {
-    console.error(error);
+    logException(error);
   }
 }
 
@@ -39,7 +40,7 @@ export function* getGroupMeters({ apiUrl, apiPath, token }, { groupId }) {
     const groupMeters = yield call(api.fetchGroupMeters, { apiUrl, apiPath, token, groupId });
     yield put(actions.setGroupMeters(groupMeters.array));
   } catch (error) {
-    console.error(error);
+    logException(error);
   }
   yield put(actions.loadedGroupMeters());
 }

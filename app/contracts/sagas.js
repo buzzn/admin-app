@@ -1,6 +1,7 @@
 import { put, call, takeLatest, take, cancel, select, fork } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import uniqBy from 'lodash/uniqBy';
+import { logException } from '_util';
 import { constants, actions } from './actions';
 import api from './api';
 
@@ -15,7 +16,7 @@ export function* getContract({ apiUrl, apiPath, token }, { contractId, groupId }
     const contract = yield call(api.fetchContract, { apiUrl, apiPath, token, contractId, groupId });
     yield put(actions.setContract({ contract, contractor: contract.contractor, customer: contract.customer }));
   } catch (error) {
-    console.error(error);
+    logException(error);
   }
   yield put(actions.loadedContract());
 }
@@ -33,7 +34,7 @@ export function* updateBankAccount({ apiUrl, apiPath, token }, { bankAccountId, 
       yield call(getContract, { apiUrl, apiPath, token }, { contractId, groupId });
     }
   } catch (error) {
-    console.error(error);
+    logException(error);
   }
 }
 
@@ -45,7 +46,7 @@ export function* getGroupContracts({ apiUrl, apiPath, token }, { groupId }) {
     const processingContract = yield call(api.fetchProcessingContract, { apiUrl, apiPath, token, groupId });
     yield put(actions.setGroupContracts(uniqBy([operatorContract, processingContract], 'id')));
   } catch (error) {
-    console.error(error);
+    logException(error);
   }
   yield put(actions.loadedGroupContracts());
 }
@@ -57,7 +58,7 @@ export function* getPowertakers({ apiUrl, apiPath, token }, { groupId }) {
     const users = yield call(api.fetchGroupPowertakers, { apiUrl, apiPath, token, groupId });
     yield put(actions.setGroupPowertakers(users));
   } catch (error) {
-    console.error(error);
+    logException(error);
   }
   yield put(actions.loadedGroupPowertakers());
 }
@@ -69,7 +70,7 @@ export function* getPowertaker({ apiUrl, apiPath, token }, { groupId, powertaker
     const powertaker = yield call(api.fetchGroupPowertaker, { apiUrl, apiPath, token, groupId, powertakerId, powertakerType });
     yield put(actions.setGroupPowertaker(powertaker));
   } catch (error) {
-    console.error(error);
+    logException(error);
   }
   yield put(actions.loadedGroupPowertaker());
 }

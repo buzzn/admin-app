@@ -1,6 +1,7 @@
 import { put, call, take, fork, cancel } from 'redux-saga/effects';
 import get from 'lodash/get';
 import camelCase from 'lodash/camelCase';
+import { logException } from '_util';
 import { constants } from './actions';
 import api from './api';
 
@@ -17,7 +18,7 @@ export function* validationRulesSagas({ apiUrl, apiPath, token }) {
       }
     }
   } catch (error) {
-    console.error(error);
+    logException(error);
   }
 }
 

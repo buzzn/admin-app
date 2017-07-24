@@ -4,16 +4,7 @@
   <meta charset="UTF-8">
   <title>Document</title>
   <script src="https://cdn.ravenjs.com/3.17.0/raven.min.js" crossorigin="anonymous"></script>
-  <script>
-    Raven.config('https://2ebfe56b13714bd7b614df15f9d3a3fd@sentry.io/195034').install();
-    if (Raven.isSetup()) {
-      var oldErr = console.error;
-      console.error = function (error) {
-        Raven.captureException(error);
-        oldErr(error);
-      }
-    }
-  </script>
+  <script>Raven.config('https://2ebfe56b13714bd7b614df15f9d3a3fd@sentry.io/195034').install();</script>
 </head>
 <body>
   <div id="root"></div>

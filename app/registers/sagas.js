@@ -1,5 +1,6 @@
 import { put, call, takeLatest, take, cancel, select, fork } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
+import { logException } from '_util';
 import { actions, constants } from './actions';
 import api from './api';
 
@@ -14,7 +15,7 @@ export function* getRegister({ apiUrl, apiPath, token }, { registerId, groupId }
     const readings = yield call(api.fetchRegisterReadings, { apiUrl, apiPath, token, registerId, groupId });
     yield put(actions.setRegister({ register, readings: readings.array }));
   } catch (error) {
-    console.error(error);
+    logException(error);
   }
   yield put(actions.loadedRegister());
 }
@@ -29,7 +30,7 @@ export function* updateRegister({ apiUrl, apiPath, token }, { registerId, params
       yield call(getRegister, { apiUrl, apiPath, token }, { registerId, groupId });
     }
   } catch (error) {
-    console.error(error);
+    logException(error);
   }
 }
 
@@ -43,7 +44,7 @@ export function* getRegisters({ apiUrl, apiPath, token }, { groupId }) {
     registers = yield call(api.fetchGroupRegisters, { apiUrl, apiPath, token, groupId });
     yield put(actions.setRegisters(registers.array));
   } catch (error) {
-    console.error(error);
+    logException(error);
   }
   yield put(actions.loadedRegisters());
 }
