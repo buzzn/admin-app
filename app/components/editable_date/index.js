@@ -4,6 +4,8 @@ import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 import moment from 'moment';
 import momentLocalizer from 'react-widgets-moment';
 
+import './style.scss';
+
 momentLocalizer(moment);
 
 const EditableDate = ({ editMode, input, dateFormat, meta: { touched, error } }) => {

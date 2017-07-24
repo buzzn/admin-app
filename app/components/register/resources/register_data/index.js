@@ -40,6 +40,7 @@ export class RegisterData extends Component {
       pristine,
       submitting,
       groupId,
+      meterId,
       validationRules,
     } = this.props;
 
@@ -52,6 +53,7 @@ export class RegisterData extends Component {
         resolve,
         reject,
         groupId,
+        meterId,
       });
     })
     .then(() => this.setState({ editMode: false }));
@@ -107,14 +109,14 @@ export class RegisterData extends Component {
             />
             <TwoColField
               prefix={ prefix }
-              name="preDecimalPositions"
+              name="preDecimalPosition"
               editMode={ this.state.editMode }
               validationRules={ validationRules }
               component={ EditableInput }
             />
             <TwoColField
               prefix={ prefix }
-              name="postDecimalPositions"
+              name="postDecimalPosition"
               editMode={ this.state.editMode }
               validationRules={ validationRules }
               component={ EditableInput }
