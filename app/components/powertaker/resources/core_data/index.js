@@ -6,7 +6,7 @@ export const CoreData = ({ groupPowertaker }) => (
   <div className="row">
     <div className="col-12">
       <h5>Core Data:</h5>
-      <b>Title:</b> { groupPowertaker.type === 'user' ? `${groupPowertaker.firstName} ${groupPowertaker.lastName}` : groupPowertaker.name }
+      <b>Title:</b> { groupPowertaker.type === 'person' ? `${groupPowertaker.firstName} ${groupPowertaker.lastName}` : groupPowertaker.name }
       <br/>
     </div>
   </div>
