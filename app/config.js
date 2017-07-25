@@ -2,7 +2,7 @@ let config = {};
 
 if (process.env.NODE_ENV === 'production') {
   config = {
-    apiUrl: 'https://core.buzzn.io/',
+    apiUrl: 'https://aws-core.buzzn.io/',
     apiPath: 'api/admin',
     clientId: '',
     callBackURL: '',
