@@ -7,7 +7,6 @@ import api from './api';
 
 export const selectGroup = state => state.contracts.groupId;
 export const selectContractId = state => state.contracts.contractId;
-export const selectContract = state => state.contracts.contract;
 
 export function* getContract({ apiUrl, apiPath, token }, { contractId, groupId }) {
   yield put(actions.loadingContract());
@@ -63,24 +62,11 @@ export function* getPowertakers({ apiUrl, apiPath, token }, { groupId }) {
   yield put(actions.loadedGroupPowertakers());
 }
 
-export function* getPowertaker({ apiUrl, apiPath, token }, { groupId, powertakerId, powertakerType }) {
-  yield put(actions.loadingGroupPowertaker());
-  yield put(actions.setGroupPowertaker({}));
-  try {
-    const powertaker = yield call(api.fetchGroupPowertaker, { apiUrl, apiPath, token, groupId, powertakerId, powertakerType });
-    yield put(actions.setGroupPowertaker(powertaker));
-  } catch (error) {
-    logException(error);
-  }
-  yield put(actions.loadedGroupPowertaker());
-}
-
 export function* contractSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_GROUP_CONTRACTS, getGroupContracts, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_CONTRACT, getContract, { apiUrl, apiPath, token });
   yield takeLatest(constants.UPDATE_BANK_ACCOUNT, updateBankAccount, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUP_POWERTAKERS, getPowertakers, { apiUrl, apiPath, token });
-  yield takeLatest(constants.LOAD_GROUP_POWERTAKER, getPowertaker, { apiUrl, apiPath, token });
 }
 
 export default function* () {
@@ -88,15 +74,11 @@ export default function* () {
   let { token } = yield take(constants.SET_TOKEN);
   const groupId = yield select(selectGroup);
   const contractId = yield select(selectContractId);
-  const { powertakerId, powertakerType } = yield select(selectContract);
   if (groupId) {
     yield call(getGroupContracts, { apiUrl, apiPath, token }, { groupId });
     yield call(getPowertakers, { apiUrl, apiPath, token }, { groupId });
     if (contractId) {
       yield call(getContract, { apiUrl, apiPath, token }, { contractId, groupId });
-    }
-    if (powertakerId && powertakerType) {
-      yield call(getPowertaker, { apiUrl, apiPath, token }, { groupId, powertakerType, powertakerId });
     }
   }
 

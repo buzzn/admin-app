@@ -3,7 +3,7 @@ import { prepareHeaders, parseResponse, camelizeResponseKeys, camelizeResponseAr
 
 export default {
   fetchContract({ token, apiUrl, apiPath, contractId, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}?include=contractor,customer,tariffs,payments,contractor_bank_account,customer_bank_account`, {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}?include=contrator_bank_account,contractor:[address],customer_bank_account, customer:[address,contact:address],tariffs,payments`, {
       headers: prepareHeaders(token),
     })
     .then(parseResponse)
@@ -15,15 +15,8 @@ export default {
     })
     .then(parseResponse)
     // FIXME: this is a workaround. Should be fixed after buzzn/buzzn #999
-    .then(contracts => contracts.array.map(c => ({ ...c.customer })))
+    .then(contracts => contracts.array.map(c => ({ ...c.customer, contractId: c.id })))
     .then(camelizeResponseArray);
-  },
-  fetchGroupPowertaker({ token, apiUrl, apiPath, groupId, powertakerId, powertakerType }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/${powertakerType}s/${powertakerId}`, {
-      headers: prepareHeaders(token),
-    })
-    .then(parseResponse)
-    .then(camelizeResponseKeys);
   },
   updateBankAccount({ token, apiUrl, apiPath, bankAccountId, params, groupId, partyId, partyType }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/${partyType}s/${partyId}/bank-accounts/${bankAccountId}`, {

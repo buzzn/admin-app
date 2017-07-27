@@ -41,7 +41,8 @@ const Root = ({ token }) => (
             <div className="col-12">
               <Switch>
                 <Route exact path="/" component={ HomeContainer } />
-                <Route path="/localpools/:groupId/powertakers/:powertakerType/:powertakerId" component={ PowertakerOverviewContainer } />
+                <Route path="/localpools/:groupId/powertakers/:contractId/tariffs/:tariffId" render={ props => <TariffOverviewContainer { ...props } view="powertaker" /> } />
+                <Route path="/localpools/:groupId/powertakers/:contractId" component={ PowertakerOverviewContainer } />
                 <Route path="/localpools/:groupId/contracts/:contractId/tariffs/:tariffId" component={ TariffOverviewContainer } />
                 <Route path="/localpools/:groupId/contracts/:contractId/:partyType/show" component={ ContractingPartyOverviewContainer } />
                 <Route path="/localpools/:groupId/contracts/:contractId" component={ ContractOverviewContainer } />
@@ -53,7 +54,8 @@ const Root = ({ token }) => (
             </div>
           </div>
           <Switch>
-            <RowRoute rowClass="navigation" path="/localpools/:groupId/powertakers/:powertakerType/:powertakerId" component={ PowertakerNavBarContainer } />
+            <RowRoute hide={ true } path="/localpools/:groupId/powertakers/:contractId/tariffs/:tariffId" />
+            <RowRoute rowClass="navigation" path="/localpools/:groupId/powertakers/:contractId" component={ PowertakerNavBarContainer } />
             <RowRoute hide={ true } path="/localpools/:groupId/contracts/:contractId/tariffs/:tariffId" />
             <RowRoute rowClass="navigation" path="/localpools/:groupId/contracts/:contractId/:partyType/show" component={ ContractingPartyNavBarContainer } />
             <RowRoute rowClass="navigation" path="/localpools/:groupId/contracts/:contractId" component={ ContractNavBarContainer } />
@@ -62,7 +64,8 @@ const Root = ({ token }) => (
             <RowRoute rowClass="navigation" path="/localpools/:groupId" component={ LocalpoolNavBarContainer } />
           </Switch>
           <Switch>
-            <RowRoute rowClass="bottom-part" path="/localpools/:groupId/powertakers/:powertakerType/:powertakerId" component={ PowertakerResources } />
+            <RowRoute hide={ true } path="/localpools/:groupId/powertakers/:contractId/tariffs/:tariffId" />
+            <RowRoute rowClass="bottom-part" path="/localpools/:groupId/powertakers/:contractId" component={ PowertakerResources } />
             <RowRoute hide={ true } path="/localpools/:groupId/contracts/:contractId/tariffs/:tariffId" />
             <RowRoute rowClass="bottom-part" path="/localpools/:groupId/contracts/:contractId/:partyType/show" component={ ContractingPartyResourcesContainer } />
             <RowRoute rowClass="bottom-part" path="/localpools/:groupId/contracts/:contractId" component={ ContractResources } />

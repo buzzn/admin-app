@@ -33,7 +33,7 @@ export class Powertakers extends Component {
       ...p,
       name: p.type === 'person' ? { value: `${p.firstName} ${p.lastName}`, image: p.image } : { value: p.name },
       location: 'Location',
-      link: `/localpools/${groupId}/powertakers/${p.type}/${p.id}`,
+      link: `/localpools/${groupId}/powertakers/${p.contractId}`,
     }));
 
     const columns = [

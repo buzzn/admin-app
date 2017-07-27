@@ -26,7 +26,7 @@ export class TariffOverview extends Component {
   }
 
   render() {
-    const { loading, group, contract, match: { params: { tariffId } } } = this.props;
+    const { loading, group, contract, view, match: { params: { tariffId } } } = this.props;
 
     if (loading || !contract.id || !group.id) return (<div>Loading...</div>);
     if (!contract.tariffs || !contract.tariffs.array || contract.tariffs.array.length === 0) return (<div>Tariff not found</div>);
@@ -50,9 +50,19 @@ export class TariffOverview extends Component {
       }
     };
 
+    const contractCrumb = { id: contract.id };
+    if (view === 'powertaker') {
+      contractCrumb.link = `/localpools/${group.id}/powertakers/${contract.id}`;
+      const { customer } = contract;
+      contractCrumb.title = customer.type === 'person' ? `${customer.firstName} ${customer.lastName}` : customer.name;
+    } else {
+      contractCrumb.link = `/localpools/${group.id}/contracts/${contract.id}/tariffs`;
+      contractCrumb.title = contractShortName(contract);
+    }
+
     const breadcrumbs = [
       { id: group.id, link: `/localpools/${group.id}/contracts`, title: group.name },
-      { id: contract.id, link: `/localpools/${group.id}/contracts/${contract.id}/tariffs`, title: contractShortName(contract) },
+      contractCrumb,
       { id: tariff.id, title: tariff.name },
     ];
 
