@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
+import { FormattedMessage } from 'react-intl';
 import Groups from 'groups';
 import Contracts from 'contracts';
 import Breadcrumbs from 'components/breadcrumbs';
@@ -67,41 +68,41 @@ export class PowertakerOverview extends Component {
           </div>
           <div className="col-6">
             <div className="row">
-              <div className="col-3">Register:</div>
+              <div className="col-3"><FormattedMessage id="admin.contracts.register"/>:</div>
               <div className="col-9"></div>
             </div>
             <div className="row">
-              <div className="col-3">Phone:</div>
+              <div className="col-3"><FormattedMessage id="admin.persons.phone"/>:</div>
               <div className="col-9">{ customer.phone }</div>
             </div>
             <div className="row">
-              <div className="col-3">Email:</div>
+              <div className="col-3"><FormattedMessage id="admin.persons.email"/>:</div>
               <div className="col-9">{ customer.email }</div>
             </div>
             <div className="row">
-              <div className="col-3"><b>Status:</b></div>
+              <div className="col-3"><FormattedMessage id="admin.contracts.status"/>:</div>
               <div className="col-9">{ contract.status }</div>
             </div>
           </div>
           <div className="col-6">
             <div className="row">
-              <div className="col-3">Pricing:</div>
+              <div className="col-3"><FormattedMessage id="admin.tariffs.pricing"/>:</div>
               <div className="col-6"><Link to={ `${url}/tariffs/${tariff.id}` }>{ tariff.name }</Link></div>
             </div>
             <div className="row">
-              <div className="col-3">Estimate:</div>
+              <div className="col-3"><FormattedMessage id="admin.contracts.forecastWattHour"/>:</div>
               <div className="col-6"></div>
             </div>
             <div className="row">
-              <div className="col-3">Payment:</div>
+              <div className="col-3"><FormattedMessage id="admin.payments.payment"/>:</div>
               <div className="col-6">{ `${payment.priceCents / 100}€ / ${payment.cycle}` }</div>
             </div>
             <div className="row">
-              <div className="col-3">Customer since:</div>
-              <div className="col-6">{ contract.signingDate }</div>
+              <div className="col-3"><FormattedMessage id="admin.contracts.beginDate"/>:</div>
+              <div className="col-6">{ contract.beginDate }</div>
             </div>
             <div className="row">
-              <div className="col-3">Last login:</div>
+              <div className="col-3"><FormattedMessage id="admin.persons.lastLogin"/>:</div>
               <div className="col-6">{ customer.lastLogin || 'Invite button here' }</div>
             </div>
           </div>

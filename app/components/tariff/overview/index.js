@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import find from 'lodash/find';
 import Helmet from 'react-helmet';
+import { FormattedMessage } from 'react-intl';
 import Contracts from 'contracts';
 import Groups from 'groups';
 import Breadcrumbs from 'components/breadcrumbs';
@@ -66,6 +67,8 @@ export class TariffOverview extends Component {
       { id: tariff.id, title: tariff.name },
     ];
 
+    const prefix = 'admin.tariffs';
+
     return (
       <div>
         <Helmet title="Tariff" />
@@ -76,28 +79,28 @@ export class TariffOverview extends Component {
               { tariff.name }
             </div>
           </div>
-          <div className="col-12 padding-top"><h5 className="label">Tariff Data</h5></div>
+          <div className="col-12 padding-top"><h5 className="label"><FormattedMessage id={ `${prefix}.headerTariffData` }/></h5></div>
           <div className="col-6 padding-bottom">
             <div className="row">
-              <div className="col-3"><span className="label">Name:</span></div>
+              <div className="col-3"><span className="label"><FormattedMessage id={ `${prefix}.name` }/>:</span></div>
               <div className="col-9">{ tariff.name }</div>
             </div>
             <div className="row">
-              <div className="col-3"><span className="label">Begin:</span></div>
+              <div className="col-3"><span className="label"><FormattedMessage id={ `${prefix}.beginDate` }/>:</span></div>
               <div className="col-9">{ formatDate(tariff.beginDate) }</div>
             </div>
             <div className="row">
-              <div className="col-3"><span className="label">End:</span></div>
+              <div className="col-3"><span className="label"><FormattedMessage id={ `${prefix}.endDate` }/>:</span></div>
               <div className="col-9">{ formatDate(tariff.endDate) }</div>
             </div>
           </div>
           <div className="col-6 padding-bottom">
             <div className="row">
-              <div className="col-5"><span className="label">Energy price (per kWh):</span></div>
+              <div className="col-5"><span className="label"><FormattedMessage id={ `${prefix}.energyPricePerKw` }/>:</span></div>
               <div className="col-7">{ `${tariff.energypriceCentsPerKwh} cts` }</div>
             </div>
             <div className="row">
-              <div className="col-5"><span className="label">Base price (per month)</span></div>
+              <div className="col-5"><span className="label"><FormattedMessage id={ `${prefix}.basePricePerMonth` }/></span></div>
               <div className="col-7">{ `${tariff.basepriceCentsPerMonth / 100} €` }</div>
             </div>
           </div>
