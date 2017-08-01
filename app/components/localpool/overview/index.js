@@ -32,6 +32,10 @@ export class LocalpoolOverview extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.stopBubbles();
+  }
+
   render() {
     const { group, loading, managers } = this.props;
 
@@ -79,4 +83,5 @@ export default connect(mapStateToProps, {
   loadGroup: Groups.actions.loadGroup,
   loadGroupManagers: Users.actions.loadGroupManagers,
   loadBubbles: Bubbles.actions.setGroupId,
+  stopBubbles: Bubbles.actions.stopRequests,
 })(LocalpoolOverview);
