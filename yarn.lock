@@ -2,16 +2,17 @@
 # yarn lockfile v1
 
 
-"@buzzn/i18n@file:../i18n":
+"@buzzn/i18n@git+https://github.com/buzzn/i18n.git":
   version "1.0.0"
+  resolved "git+https://github.com/buzzn/i18n.git#02353480feececbf01270ecf7e5d3f31f58a8092"
 
 "@buzzn/module_auth@git+https://github.com/buzzn/module-auth.git#v1.0.6":
   version "1.0.0"
   resolved "git+https://github.com/buzzn/module-auth.git#739a8878c0f979ca8a633dfe666ff864e4588e16"
 
-"@buzzn/module_bubbles@git+https://github.com/buzzn/module-bubbles.git#652206ad21463cbe76ba68b34c6518335b43b22a":
+"@buzzn/module_bubbles@git+https://github.com/buzzn/module-bubbles.git#v2.0.4":
   version "1.0.0"
-  resolved "git+https://github.com/buzzn/module-bubbles.git#652206ad21463cbe76ba68b34c6518335b43b22a"
+  resolved "git+https://github.com/buzzn/module-bubbles.git#9119b2b24ab7e9181f0103114c90ce71e4591026"
 
 "@buzzn/module_charts@git+https://github.com/buzzn/module-charts.git#master":
   version "1.0.0"
