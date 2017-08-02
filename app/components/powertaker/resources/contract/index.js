@@ -49,7 +49,7 @@ const Contract = ({ contract }) => {
         <h5><FormattedMessage id={ `${prefix}.headerBillingBasis` }/></h5>
         <div className="row">
           <div className="col-6"><FormattedMessage id={ `${prefix}.forecastWattHourPa` }/>:</div>
-          <div className="col-6">{contract.forecastWattHourPa}</div>
+          <div className="col-6">{contract.forecastKwhPa}</div>
         </div>
         <div className="row">
           <div className="col-6"><FormattedMessage id={ `${prefix}.renewableEnergyLawTaxation` }/>:</div>
