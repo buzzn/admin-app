@@ -1,17 +1,17 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import CoreDataContainer from './core_data';
+import ContractContainer from './contract';
+import BankContainer from './bank';
 
-export default ({ match: { url, isExact, params: { groupId, powertakerId } } }) => {
-  if (isExact) return (<Redirect to={ `${url}/core-data` }/>);
+export default ({ match: { url, isExact } }) => {
+  if (isExact) return (<Redirect to={ `${url}/powertaker` }/>);
 
   return (
     <div>
-      <Route path={ `${url}/core-data` } render={ () => <CoreDataContainer groupId={ groupId } powertakerId={ powertakerId }/> }/>
-      <Route path={ `${url}/contracts` } render={ () => (<div>Contracts</div>) }/>
-      <Route path={ `${url}/bank` } render={ () => (<div>Bank</div>) }/>
-      <Route path={ `${url}/register` } render={ () => (<div>Register</div>) }/>
-      <Route path={ `${url}/charts` } render={ () => (<div>Charts</div>) }/>
+      <Route path={ `${url}/powertaker` } component={ CoreDataContainer }/>
+      <Route path={ `${url}/contract` } component={ ContractContainer }/>
+      <Route path={ `${url}/bank` } component={ BankContainer }/>
     </div>
   );
 };

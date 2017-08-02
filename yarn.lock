@@ -2,9 +2,8 @@
 # yarn lockfile v1
 
 
-"@buzzn/i18n@git+https://github.com/buzzn/i18n.git":
+"@buzzn/i18n@file:../i18n":
   version "1.0.0"
-  resolved "git+https://github.com/buzzn/i18n.git#2e038ea2e0ebee18208fee21c834d5acb3ee15f8"
 
 "@buzzn/module_auth@git+https://github.com/buzzn/module-auth.git#v1.0.6":
   version "1.0.0"
@@ -1362,7 +1361,7 @@ builtin-status-codes@^2.0.0:
 
 "buzzn-style@git://github.com/buzzn/buzzn-style.git":
   version "1.0.0"
-  resolved "git://github.com/buzzn/buzzn-style.git#0cd37c650b89530ef2f8d11084ffb0cac8cdda04"
+  resolved "git://github.com/buzzn/buzzn-style.git#7aa69d947d0c1c4dfb0287683f473b7dc7bac5d3"
   dependencies:
     bootstrap "4.0.0-alpha.6"
     file-loader "0.10.1"
