@@ -17,7 +17,7 @@ import LocalpoolNavBarContainer from 'components/localpool/nav_bar';
 import PowertakerNavBarContainer from 'components/powertaker/nav_bar';
 import ContractNavBarContainer from 'components/contract/nav_bar';
 import ContractingPartyNavBarContainer from 'components/contracting_party/nav_bar';
-import MeterNavBar from 'components/meter/nav_bar';
+import MeterNavBarContainer from 'components/meter/nav_bar';
 import RegisterNavBar from 'components/register/nav_bar';
 import LocalpoolResources from 'components/localpool/resources';
 import PowertakerResources from 'components/powertaker/resources';
@@ -25,6 +25,7 @@ import ContractResources from 'components/contract/resources';
 import ContractingPartyResourcesContainer from 'components/contracting_party/resources';
 import MeterResources from 'components/meter/resources';
 import RegisterResourcesContainer from 'components/register/resources';
+import FormulaOverviewContainer from 'components/formula/overview';
 
 import 'buzzn-style';
 import 'react-table/react-table.css';
@@ -46,6 +47,7 @@ const Root = ({ token }) => (
                 <Route path="/localpools/:groupId/contracts/:contractId/tariffs/:tariffId" component={ TariffOverviewContainer } />
                 <Route path="/localpools/:groupId/contracts/:contractId/:partyType/show" component={ ContractingPartyOverviewContainer } />
                 <Route path="/localpools/:groupId/contracts/:contractId" component={ ContractOverviewContainer } />
+                <Route path="/localpools/:groupId/system/:meterId/formulas/:formulaId" component={ FormulaOverviewContainer } />
                 <Route path="/localpools/:groupId/system/:meterId/registers/:registerId" component={ RegisterOverviewContainer } />
                 <Route path="/localpools/:groupId/system/:meterId" component={ MeterOverviewContainer } />
                 <Route path="/localpools/:groupId" component={ LocalpoolOverviewContainer } />
@@ -59,8 +61,9 @@ const Root = ({ token }) => (
             <RowRoute hide={ true } path="/localpools/:groupId/contracts/:contractId/tariffs/:tariffId" />
             <RowRoute rowClass="navigation" path="/localpools/:groupId/contracts/:contractId/:partyType/show" component={ ContractingPartyNavBarContainer } />
             <RowRoute rowClass="navigation" path="/localpools/:groupId/contracts/:contractId" component={ ContractNavBarContainer } />
+            <RowRoute hide={ true } path="/localpools/:groupId/system/:meterId/formulas/:formulaId" />
             <RowRoute rowClass="navigation" path="/localpools/:groupId/system/:meterId/registers/:registerId" component={ RegisterNavBar } />
-            <RowRoute rowClass="navigation" path="/localpools/:groupId/system/:meterId" component={ MeterNavBar } />
+            <RowRoute rowClass="navigation" path="/localpools/:groupId/system/:meterId" component={ MeterNavBarContainer } />
             <RowRoute rowClass="navigation" path="/localpools/:groupId" component={ LocalpoolNavBarContainer } />
           </Switch>
           <Switch>
@@ -69,6 +72,7 @@ const Root = ({ token }) => (
             <RowRoute hide={ true } path="/localpools/:groupId/contracts/:contractId/tariffs/:tariffId" />
             <RowRoute rowClass="bottom-part" path="/localpools/:groupId/contracts/:contractId/:partyType/show" component={ ContractingPartyResourcesContainer } />
             <RowRoute rowClass="bottom-part" path="/localpools/:groupId/contracts/:contractId" component={ ContractResources } />
+            <RowRoute hide={ true } path="/localpools/:groupId/system/:meterId/formulas/:formulaId" />
             <RowRoute rowClass="bottom-part" path="/localpools/:groupId/system/:meterId/registers/:registerId" component={ RegisterResourcesContainer } />
             <RowRoute rowClass="bottom-part" path="/localpools/:groupId/system/:meterId" component={ MeterResources } />
             <RowRoute rowClass="bottom-part" path="/localpools/:groupId" component={ LocalpoolResources } />

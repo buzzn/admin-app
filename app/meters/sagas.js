@@ -33,6 +33,20 @@ export function* updateMeter({ apiUrl, apiPath, token }, { meterId, params, reso
   }
 }
 
+export function* updateFormulaPart({ apiUrl, apiPath, token }, { meterId, params, resolve, reject, groupId, formulaPartId }) {
+  try {
+    const res = yield call(api.updateFormulaPart, { apiUrl, apiPath, token, meterId, params, groupId, formulaPartId });
+    if (res._error) {
+      yield call(reject, new SubmissionError(res));
+    } else {
+      yield call(resolve, res);
+      yield call(getMeter, { apiUrl, apiPath, token }, { meterId, groupId });
+    }
+  } catch (error) {
+    logException(error);
+  }
+}
+
 export function* getGroupMeters({ apiUrl, apiPath, token }, { groupId }) {
   yield put(actions.loadingGroupMeters());
   yield put(actions.setGroupMeters([]));
@@ -49,6 +63,7 @@ export function* metersSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_GROUP_METERS, getGroupMeters, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_METER, getMeter, { apiUrl, apiPath, token });
   yield takeLatest(constants.UPDATE_METER, updateMeter, { apiUrl, apiPath, token });
+  yield takeLatest(constants.UPDATE_FORMULA_PART, updateFormulaPart, { apiUrl, apiPath, token });
 }
 
 export default function* () {

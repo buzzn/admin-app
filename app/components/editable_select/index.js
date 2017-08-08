@@ -5,16 +5,27 @@ import { injectIntl } from 'react-intl';
 
 import './style.scss';
 
-const EditableSelect = ({ editMode, input, field, prefix, intl, defaultValue, noValTranslations, meta: { touched, error } }) => {
+const EditableSelect = ({ editMode, input, field, prefix, intl, defaultValue, listOverride, noValTranslations, noDefault, meta: { touched, error } }) => {
   let list = [input.value];
-  if (field && field.enum) list = field.enum;
-  const options = list.map(value => ({ value, label: noValTranslations ? value : intl.formatMessage({ id: `${prefix}.${value}` }) }));
+  let options = [];
+  if (listOverride) {
+    options = listOverride.map(valueObj => ({
+      value: valueObj.value,
+      label: noValTranslations ? valueObj.label : intl.formatMessage({ id: `${prefix}.${valueObj.value}` }),
+    }));
+  } else {
+    if (field && field.enum) list = field.enum;
+    options = list.map(value => ({
+      value,
+      label: noValTranslations ? value : intl.formatMessage({ id: `${prefix}.${value}` }),
+    }));
+  }
 
   if (editMode) {
     return (
       <div className={ `editable-select form-group ${(touched && error) && 'has-danger'}` }>
         <select className={ `custom-select form-control ${(touched && error) && 'form-control-danger'}` } { ...input }>
-          <option value={ defaultValue.value }>{ defaultValue.label }</option>
+          { !noDefault && <option value={ defaultValue.value }>{ defaultValue.label }</option> }
           {
             options.map(o => (
               <option key={ o.value } value={ o.value }>{ o.label }</option>
