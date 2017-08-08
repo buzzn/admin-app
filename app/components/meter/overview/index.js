@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
+import { FormattedMessage } from 'react-intl';
 import Groups from 'groups';
 import Meters from 'meters';
 import Breadcrumbs from 'components/breadcrumbs';
@@ -33,6 +34,8 @@ export class MeterOverview extends Component {
       { id: meter.id, title: meter.productSerialnumber },
     ];
 
+    const prefix = 'admin.meters';
+
     return (
       <div>
         <Helmet title="Meter" />
@@ -41,7 +44,67 @@ export class MeterOverview extends Component {
           <div className="col-12">
             <div className="title bg-heat">{ meter.productSerialnumber }</div>
           </div>
-          <div className="col-6 left-col"></div>
+          {
+            meter.type === 'meter_real' ?
+              <div className="col-6 left-col">
+                <div className="row">
+                  <div className="col-3">
+                    <FormattedMessage id={ `${prefix}.reference` }/>
+                  </div>
+                  <div className="col-9"></div>
+                </div>
+                <div className="row">
+                  <div className="col-3">
+                    <FormattedMessage id={ `${prefix}.productSerialnumber` }/>
+                  </div>
+                  <div className="col-9">
+                    { meter.productSerialnumber }
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-3">
+                    <FormattedMessage id={ `${prefix}.type` }/>
+                  </div>
+                  <div className="col-9">
+                    { meter.type }
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-3">
+                    <FormattedMessage id={ `${prefix}.directionNumber` }/>
+                  </div>
+                  <div className="col-9">
+                    { meter.directionNumber }
+                  </div>
+                </div>
+              </div> :
+              <div className="col-6 left-col">
+                <div className="row">
+                  <div className="col-3">
+                    <FormattedMessage id={ `${prefix}.type` }/>
+                  </div>
+                  <div className="col-9">
+                    { meter.type }
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-3">
+                    <FormattedMessage id={ `${prefix}.productSerialnumber` }/>
+                  </div>
+                  <div className="col-9">
+                    { meter.productSerialnumber }
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-3">
+                    <FormattedMessage id={ `${prefix}.productName` }/>
+                  </div>
+                  <div className="col-9">
+                    { meter.productName }
+                  </div>
+                </div>
+              </div>
+          }
           <div className="col-6 right-col"></div>
         </div>
       </div>
