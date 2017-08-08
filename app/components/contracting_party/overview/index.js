@@ -45,8 +45,8 @@ export class ContractingPartyOverview extends Component {
 
     const breadcrumbs = [
       { id: group.id, link: `/localpools/${group.id}/contracts`, title: group.name },
-      { id: contract.id, link: `/localpools/${group.id}/contracts/${contract.id}/${partyType}`, title: contractShortName(contract) },
-      { id: contractingParty.id, title: contractingParty.name },
+      { id: contract.id, link: `/localpools/${group.id}/contracts/${contract.id}/${partyType}`, title: contractShortName(contract), type: 'contract' },
+      { id: contractingParty.id, title: contractingParty.name, type: 'contractring party' },
     ];
 
     return (

@@ -55,7 +55,7 @@ export class ContractOverview extends Component {
 
     const breadcrumbs = [
       { id: group.id, link: `/localpools/${group.id}/contracts`, title: group.name },
-      { id: contract.id, title: contractShortName(contract) },
+      { id: contract.id, title: contractShortName(contract), type: 'contract' },
     ];
 
     return (

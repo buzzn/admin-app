@@ -224,18 +224,12 @@ export class MeterData extends Component {
                   validationRules={realValidationRules}
                   component={EditableInput}
                 />
-                <div className="row">
-                  <div className="col-6"><FormattedMessage id={ `${prefix}.label` }/>:</div>
-                  <div className="col-6">
-                    {meter.directionNumber}
-                  </div>
-                </div>
               </div> :
               <div className="col-12">
                 <div className="row">
                   <div className="col-6"><FormattedMessage id={ `${prefix}.type` }/>:</div>
                   <div className="col-6">
-                    {meter.type}
+                    <FormattedMessage id={ `${prefix}.${meter.type}` }/>
                   </div>
                 </div>
                 <TwoColField

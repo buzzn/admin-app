@@ -57,8 +57,8 @@ export class FormulaOverview extends Component {
 
     const breadcrumbs = [
       { id: group.id, link: `/localpools/${group.id}/system`, title: group.name },
-      { id: meter.id, link: `/localpools/${group.id}/system/${meter.id}/formula`, title: meter.productSerialnumber },
-      { id: formula.id, title: formula.register.name },
+      { id: meter.id, link: `/localpools/${group.id}/system/${meter.id}/formula`, title: meter.productSerialnumber, type: 'meter' },
+      { id: formula.id, title: formula.register.name, type: 'formula' },
     ];
 
     const submit = values => new Promise((resolve, reject) => {
@@ -84,9 +84,9 @@ export class FormulaOverview extends Component {
             <div className="title bg-heat-dark">{ formula.register.name }</div>
           </div>
           <div className="col-6">
-            <div className="row">
-              <div className="col-3"><FormattedMessage id={ `${prefix}.operator` }/></div>
-              <div className="col-9">
+            <div className="row" style={{ minHeight: '40px' }}>
+              <div className="col-6"><FormattedMessage id={ `${prefix}.operator` }/></div>
+              <div className="col-6">
                 <Field name="operator"
                   editMode={ this.state.editMode }
                   noValTranslations
@@ -95,9 +95,9 @@ export class FormulaOverview extends Component {
                   component={ EditableSelect }/>
               </div>
             </div>
-            <div className="row">
-              <div className="col-3"><FormattedMessage id={ `${prefix}.registerName` }/></div>
-              <div className="col-9">
+            <div className="row" style={{ minHeight: '40px' }}>
+              <div className="col-6"><FormattedMessage id={ `${prefix}.registerName` }/></div>
+              <div className="col-6">
                 <Field name="registerId"
                   editMode={ this.state.editMode }
                   noValTranslations
@@ -111,7 +111,7 @@ export class FormulaOverview extends Component {
           <div className="col-12">
             {
               updateFormula &&
-              <div className="edit-buttons" style={{ float: 'right' }}>
+              <div className="edit-buttons" style={{ float: 'right', marginBottom: '10px' }}>
                 {
                   this.state.editMode ?
                     <span>

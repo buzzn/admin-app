@@ -31,7 +31,7 @@ export class MeterOverview extends Component {
 
     const breadcrumbs = [
       { id: group.id, link: `/localpools/${group.id}/system`, title: group.name },
-      { id: meter.id, title: meter.productSerialnumber },
+      { id: meter.id, title: meter.productSerialnumber, type: 'meter' },
     ];
 
     const prefix = 'admin.meters';
@@ -48,58 +48,58 @@ export class MeterOverview extends Component {
             meter.type === 'meter_real' ?
               <div className="col-6 left-col">
                 <div className="row">
-                  <div className="col-3">
-                    <FormattedMessage id={ `${prefix}.reference` }/>
+                  <div className="col-6">
+                    <FormattedMessage id={ `${prefix}.reference` }/>:
                   </div>
-                  <div className="col-9"></div>
+                  <div className="col-6"></div>
                 </div>
                 <div className="row">
-                  <div className="col-3">
-                    <FormattedMessage id={ `${prefix}.productSerialnumber` }/>
+                  <div className="col-6">
+                    <FormattedMessage id={ `${prefix}.productSerialnumber` }/>:
                   </div>
-                  <div className="col-9">
+                  <div className="col-6">
                     { meter.productSerialnumber }
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-3">
-                    <FormattedMessage id={ `${prefix}.type` }/>
+                  <div className="col-6">
+                    <FormattedMessage id={ `${prefix}.type` }/>:
                   </div>
-                  <div className="col-9">
-                    { meter.type }
+                  <div className="col-6">
+                    <FormattedMessage id={ `${prefix}.${meter.type}` }/>
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-3">
-                    <FormattedMessage id={ `${prefix}.directionNumber` }/>
+                  <div className="col-6">
+                    <FormattedMessage id={ `${prefix}.directionNumber` }/>:
                   </div>
-                  <div className="col-9">
+                  <div className="col-6">
                     { meter.directionNumber }
                   </div>
                 </div>
               </div> :
               <div className="col-6 left-col">
                 <div className="row">
-                  <div className="col-3">
-                    <FormattedMessage id={ `${prefix}.type` }/>
+                  <div className="col-6">
+                    <FormattedMessage id={ `${prefix}.type` }/>:
                   </div>
-                  <div className="col-9">
-                    { meter.type }
+                  <div className="col-6">
+                    <FormattedMessage id={ `${prefix}.${meter.type}` }/>
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-3">
-                    <FormattedMessage id={ `${prefix}.productSerialnumber` }/>
+                  <div className="col-6">
+                    <FormattedMessage id={ `${prefix}.productSerialnumber` }/>:
                   </div>
-                  <div className="col-9">
+                  <div className="col-6">
                     { meter.productSerialnumber }
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-3">
-                    <FormattedMessage id={ `${prefix}.productName` }/>
+                  <div className="col-6">
+                    <FormattedMessage id={ `${prefix}.productName` }/>:
                   </div>
-                  <div className="col-9">
+                  <div className="col-6">
                     { meter.productName }
                   </div>
                 </div>

@@ -12,8 +12,26 @@ const Breadcrumbs = ({ breadcrumbs }) => (
         { breadcrumbs.map(crumb => (
           <li key={ crumb.id }>
             { crumb.link ?
-              <span><Link to={ crumb.link }>{ crumb.title }</Link>&nbsp;/&nbsp;</span> :
-              <span>{ crumb.title }</span>
+              <span>
+                <Link to={ crumb.link }>
+                  {
+                    crumb.type ?
+                      <span>
+                        <span className="breadcrumb-type">{ crumb.type }:</span> { crumb.title }
+                      </span> :
+                      crumb.title
+                  }
+                </Link>&nbsp;/&nbsp;
+              </span> :
+              <span>
+                {
+                  crumb.type ?
+                    <span>
+                      <span className="breadcrumb-type">{ crumb.type }:</span> { crumb.title }
+                    </span> :
+                    crumb.title
+                }
+              </span>
             }
           </li>
         ))

@@ -43,8 +43,8 @@ export class RegisterOverview extends Component {
 
     const breadcrumbs = [
       { id: group.id, link: `/localpools/${group.id}/system`, title: group.name },
-      { id: meter.id, link: `/localpools/${group.id}/system/${meter.id}/registers`, title: meter.productSerialnumber },
-      { id: register.id, title: register.name },
+      { id: meter.id, link: `/localpools/${group.id}/system/${meter.id}/registers`, title: meter.productSerialnumber, type: 'meter' },
+      { id: register.id, title: register.name, type: 'register' },
     ];
 
     const prefix = 'admin.registers';

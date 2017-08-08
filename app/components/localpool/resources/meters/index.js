@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
+import { injectIntl } from 'react-intl';
 import { tableParts } from 'react_table_config';
 import Meters from 'meters';
 
@@ -23,26 +24,26 @@ export class MetersList extends Component {
   }
 
   render() {
-    const { loading, meters, groupId } = this.props;
+    const { loading, meters, groupId, intl } = this.props;
 
     if (loading) return (<div>Loading...</div>);
 
     const data = meters.map(m => ({
       ...m,
+      type: intl.formatMessage({ id: `admin.meters.${m.type}` }),
       meter: m.productSerialnumber,
-      description: '',
       link: `/localpools/${groupId}/system/${m.id}`,
     }));
 
     const columns = [
       {
-        Header: 'Meter',
-        accessor: 'meter',
+        Header: 'Type',
+        accessor: 'type',
         minWidth: 200,
       },
       {
-        Header: 'Description',
-        accessor: 'description',
+        Header: 'Meter',
+        accessor: 'meter',
         minWidth: 200,
       },
       {
@@ -77,4 +78,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { loadGroupMeters: Meters.actions.loadGroupMeters })(MetersList);
+export default connect(mapStateToProps, { loadGroupMeters: Meters.actions.loadGroupMeters })(injectIntl(MetersList));

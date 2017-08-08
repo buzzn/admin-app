@@ -52,7 +52,7 @@ export class PowertakerOverview extends Component {
 
     const breadcrumbs = [
       { id: group.id, link: `/localpools/${group.id}/powertakers`, title: group.name },
-      { id: contractId, title: customerTitle },
+      { id: contractId, title: customerTitle, type: 'powertaker' },
     ];
 
     return (

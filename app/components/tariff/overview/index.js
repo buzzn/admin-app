@@ -56,15 +56,17 @@ export class TariffOverview extends Component {
       contractCrumb.link = `/localpools/${group.id}/powertakers/${contract.id}`;
       const { customer } = contract;
       contractCrumb.title = customer.type === 'person' ? `${customer.firstName} ${customer.lastName}` : customer.name;
+      contractCrumb.type = 'powertaker';
     } else {
       contractCrumb.link = `/localpools/${group.id}/contracts/${contract.id}/tariffs`;
       contractCrumb.title = contractShortName(contract);
+      contractCrumb.type = 'contract';
     }
 
     const breadcrumbs = [
       { id: group.id, link: `/localpools/${group.id}/contracts`, title: group.name },
       contractCrumb,
-      { id: tariff.id, title: tariff.name },
+      { id: tariff.id, title: tariff.name, type: 'tariff' },
     ];
 
     const prefix = 'admin.tariffs';
