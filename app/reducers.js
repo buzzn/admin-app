@@ -19,6 +19,7 @@ export function configReducer(state = config) {
 export const initialState = {
   loading: false,
   userMe: {},
+  userMeValidationRules: {},
 };
 
 export function appReducer(state = initialState, action) {
@@ -29,6 +30,8 @@ export function appReducer(state = initialState, action) {
       return { ...state, loading: false };
     case constants.SET_USER_ME:
       return { ...state, userMe: action.userMe };
+    case constants.SET_USER_ME_VALIDATION_RULES:
+      return { ...state, userMeValidationRules: action.userMeValidationRules };
 
     default:
       return state;

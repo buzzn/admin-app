@@ -14,9 +14,9 @@
   version "1.0.0"
   resolved "git+https://github.com/buzzn/module-bubbles.git#9119b2b24ab7e9181f0103114c90ce71e4591026"
 
-"@buzzn/module_charts@git+https://github.com/buzzn/module-charts.git#master":
+"@buzzn/module_charts@git+https://github.com/buzzn/module-charts.git#v2.0.0":
   version "1.0.0"
-  resolved "git+https://github.com/buzzn/module-charts.git#3d1b1c0262b7bcd62eca9f216694dd27fb2ef177"
+  resolved "git+https://github.com/buzzn/module-charts.git#5cd3222a480e93b1defe202894094394c62083cf"
 
 abab@^1.0.3:
   version "1.0.3"
@@ -6277,11 +6277,11 @@ react-transition-group@^1.2.0:
     prop-types "^15.5.6"
     warning "^3.0.0"
 
-react-widgets-moment@^4.0.0-rc.15:
+react-widgets-moment@^4.0.0-rc.16:
   version "4.0.0-rc4"
   resolved "https://registry.yarnpkg.com/react-widgets-moment/-/react-widgets-moment-4.0.0-rc4.tgz#1324224f5b3a3fabe0e5db2e42564b74df667b76"
 
-react-widgets@^4.0.0-rc.15:
+react-widgets@^4.0.0-rc.16:
   version "4.0.0-rc4"
   resolved "https://registry.yarnpkg.com/react-widgets/-/react-widgets-4.0.0-rc4.tgz#a576bd5376ae1ec370702d53afd9a067559954d0"
   dependencies:

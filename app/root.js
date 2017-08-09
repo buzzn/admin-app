@@ -13,19 +13,22 @@ import ContractingPartyOverviewContainer from 'components/contracting_party/over
 import TariffOverviewContainer from 'components/tariff/overview';
 import MeterOverviewContainer from 'components/meter/overview';
 import RegisterOverviewContainer from 'components/register/overview';
+import FormulaOverviewContainer from 'components/formula/overview';
+import MyProfileOverviewContainer from 'components/my_profile/overview';
 import LocalpoolNavBarContainer from 'components/localpool/nav_bar';
 import PowertakerNavBarContainer from 'components/powertaker/nav_bar';
 import ContractNavBarContainer from 'components/contract/nav_bar';
 import ContractingPartyNavBarContainer from 'components/contracting_party/nav_bar';
 import MeterNavBarContainer from 'components/meter/nav_bar';
 import RegisterNavBar from 'components/register/nav_bar';
+import MyProfileNavBar from 'components/my_profile/nav_bar';
 import LocalpoolResources from 'components/localpool/resources';
 import PowertakerResources from 'components/powertaker/resources';
 import ContractResources from 'components/contract/resources';
 import ContractingPartyResourcesContainer from 'components/contracting_party/resources';
 import MeterResources from 'components/meter/resources';
 import RegisterResourcesContainer from 'components/register/resources';
-import FormulaOverviewContainer from 'components/formula/overview';
+import MyProfileResourcesContainer from 'components/my_profile/resources';
 
 import 'buzzn-style';
 import 'react-table/react-table.css';
@@ -42,6 +45,7 @@ const Root = ({ token }) => (
             <div className="col-12">
               <Switch>
                 <Route exact path="/" component={ HomeContainer } />
+                <Route path="/my-profile" component={ MyProfileOverviewContainer } />
                 <Route path="/localpools/:groupId/powertakers/:contractId/tariffs/:tariffId" render={ props => <TariffOverviewContainer { ...props } view="powertaker" /> } />
                 <Route path="/localpools/:groupId/powertakers/:contractId" component={ PowertakerOverviewContainer } />
                 <Route path="/localpools/:groupId/contracts/:contractId/tariffs/:tariffId" component={ TariffOverviewContainer } />
@@ -56,6 +60,7 @@ const Root = ({ token }) => (
             </div>
           </div>
           <Switch>
+            <RowRoute rowClass="navigation" path="/my-profile" component={ MyProfileNavBar } />
             <RowRoute hide={ true } path="/localpools/:groupId/powertakers/:contractId/tariffs/:tariffId" />
             <RowRoute rowClass="navigation" path="/localpools/:groupId/powertakers/:contractId" component={ PowertakerNavBarContainer } />
             <RowRoute hide={ true } path="/localpools/:groupId/contracts/:contractId/tariffs/:tariffId" />
@@ -67,6 +72,7 @@ const Root = ({ token }) => (
             <RowRoute rowClass="navigation" path="/localpools/:groupId" component={ LocalpoolNavBarContainer } />
           </Switch>
           <Switch>
+            <RowRoute rowClass="bottom-part" path="/my-profile" component={ MyProfileResourcesContainer } />
             <RowRoute hide={ true } path="/localpools/:groupId/powertakers/:contractId/tariffs/:tariffId" />
             <RowRoute rowClass="bottom-part" path="/localpools/:groupId/powertakers/:contractId" component={ PowertakerResources } />
             <RowRoute hide={ true } path="/localpools/:groupId/contracts/:contractId/tariffs/:tariffId" />
