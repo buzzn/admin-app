@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import { tableParts } from 'react_table_config';
 import Contracts from 'contracts';
 
@@ -23,42 +24,37 @@ export class ContractsList extends Component {
   }
 
   render() {
-    const { contracts, loading, groupId } = this.props;
+    const { contracts, loading, groupId, intl } = this.props;
 
     if (loading) return (<div>Loading...</div>);
 
-    const contractType = (contract) => {
-      switch (contract.type) {
-        case 'contract_metering_point_operator':
-          return 'Metering Point Operator';
-        case 'contract_localpool_processing':
-          return 'LCP processing';
-        default:
-          return 'Unknown';
-      }
-    };
-
     const data = contracts.filter(c => !!c.id).map(c => ({
       ...c,
-      type: contractType(c),
+      type: intl.formatMessage({ id: `admin.contracts.${c.type}` }),
+      status: c.status,
       since: c.signingDate,
-      number: c.contractNumber,
+      number: c.fullContractNumber,
       link: `/localpools/${groupId}/contracts/${c.id}`,
     }));
 
     const columns = [
       {
-        Header: 'Type',
+        Header: intl.formatMessage({ id: 'admin.contracts.tableType' }),
         accessor: 'type',
         minWidth: 200,
       },
       {
-        Header: 'Since',
+        Header: intl.formatMessage({ id: 'admin.contracts.tableStatus' }),
+        accessor: 'status',
+        minWidth: 200,
+      },
+      {
+        Header: intl.formatMessage({ id: 'admin.contracts.tableSince' }),
         accessor: 'since',
         minWidth: 100,
       },
       {
-        Header: 'Contract #',
+        Header: intl.formatMessage({ id: 'admin.contracts.tableNumber' }),
         accessor: 'number',
         minWidth: 200,
       },
@@ -76,8 +72,8 @@ export class ContractsList extends Component {
     return (
       <div className="row">
         <div className="col-12">
-          <h5>Contracts</h5>
-          <p>List all contracts for the loacalpool</p>
+          <h5><FormattedMessage id="admin.contracts.headerGroupContracts"/></h5>
+          <FormattedMessage id="admin.contracts.descriptionGroupContracts"/>
         </div>
         <div className="col-12 no-padding">
           <ReactTable {...{ data, columns }} />
@@ -94,4 +90,6 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { loadGroupContracts: Contracts.actions.loadGroupContracts })(ContractsList);
+export default connect(mapStateToProps, {
+  loadGroupContracts: Contracts.actions.loadGroupContracts,
+})(injectIntl(ContractsList));
