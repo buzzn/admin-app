@@ -13,11 +13,12 @@ import Users from './users';
 import Contracts from './contracts';
 import ValidationRules from './validation_rules';
 import RootReducer from './reducers';
+import { logException } from './_util';
 
 function* rootSaga() {
   yield all([
     call(Auth.sagas),
-    call(Bubbles.sagas),
+    call(Bubbles.sagas, logException),
     call(Charts.sagas),
     call(Groups.sagas),
     call(Meters.sagas),
