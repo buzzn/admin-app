@@ -47,6 +47,7 @@ const Root = ({ token }) => (
               <div className="col-12">
                 <Switch>
                   <Route exact path="/" component={ HomeContainer } />
+                  <Route path="/my-profile" component={ MyProfileOverviewContainer } />
                   <Route path="/localpools/:groupId/powertakers/:contractId/tariffs/:tariffId" render={ props => <TariffOverviewContainer { ...props } view="powertaker" /> } />
                   <Route path="/localpools/:groupId/powertakers/:contractId" component={ PowertakerOverviewContainer } />
                   <Route path="/localpools/:groupId/contracts/:contractId/tariffs/:tariffId" component={ TariffOverviewContainer } />
@@ -63,6 +64,7 @@ const Root = ({ token }) => (
           </PartErrorBoundary>
           <PartErrorBoundary part="navigation">
             <Switch>
+              <RowRoute rowClass="navigation" path="/my-profile" component={ MyProfileNavBar } />
               <RowRoute hide={ true } path="/localpools/:groupId/powertakers/:contractId/tariffs/:tariffId" />
               <RowRoute rowClass="navigation" path="/localpools/:groupId/powertakers/:contractId" component={ PowertakerNavBarContainer } />
               <RowRoute hide={ true } path="/localpools/:groupId/contracts/:contractId/tariffs/:tariffId" />
@@ -76,6 +78,7 @@ const Root = ({ token }) => (
           </PartErrorBoundary>
           <PartErrorBoundary part="bottom-part">
             <Switch>
+              <RowRoute rowClass="bottom-part" path="/my-profile" component={ MyProfileResourcesContainer } />
               <RowRoute hide={ true } path="/localpools/:groupId/powertakers/:contractId/tariffs/:tariffId" />
               <RowRoute rowClass="bottom-part" path="/localpools/:groupId/powertakers/:contractId" component={ PowertakerResources } />
               <RowRoute hide={ true } path="/localpools/:groupId/contracts/:contractId/tariffs/:tariffId" />
