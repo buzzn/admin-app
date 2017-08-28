@@ -7,10 +7,10 @@ bootstrapVersion: 4
 
 # Webpack loaders, order matters
 styleLoaders:
-  - style-loader
-  - css-loader
-  - postcss-loader
-  - sass-loader
+  - style-loader?sourceMap
+  - css-loader?sourcemap
+  - postcss-loader?sourceMap
+  - sass-loader?sourceMap
 
 # Extract styles to stand-alone css file
 # Different settings for different environments can be used,
@@ -52,7 +52,7 @@ styles:
   mixins: true
 
   # Reset and dependencies
-  normalize: true
+  normalize: false
   print: true
 
   # Core CSS
@@ -81,7 +81,7 @@ styles:
   progress: true
   media: true
   list-group: true
-  responsive-embed: true
+  responsive-embed: false
   close: true
   badge: true
 
