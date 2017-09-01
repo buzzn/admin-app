@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app/registers/actions.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">app/registers</a> actions.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">14.29% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>2/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/12</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">14.29% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>2/14</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export const constants = {
+  SET_API_PARAMS: 'buzzn_registers/SET_API_PARAMS',
+  SET_TOKEN: 'buzzn_registers/SET_TOKEN',
+&nbsp;
+  SET_VALIDATION_RULES: 'buzzn_registers/SET_VALIDATION_RULES',
+&nbsp;
+  LOAD_REGISTER: 'buzzn_registers/LOAD_REGISTER',
+  LOADING_REGISTER: 'buzzn_registers/LOADING_REGISTER',
+  LOADED_REGISTER: 'buzzn_registers/LOADED_REGISTER',
+  SET_REGISTER: 'buzzn_registers/SET_REGISTER',
+&nbsp;
+  UPDATE_REGISTER: 'buzzn_registers/UPDATE_REGISTER',
+&nbsp;
+  LOAD_REGISTERS: 'buzzn_registers/LOAD_REGISTERS',
+  LOADING_REGISTERS: 'buzzn_registers/LOADING_REGISTERS',
+  LOADED_REGISTERS: 'buzzn_registers/LOADED_REGISTERS',
+  SET_REGISTERS: 'buzzn_registers/SET_REGISTERS',
+};
+&nbsp;
+export const actions = {
+  setApiParams: <span class="fstat-no" title="function not covered" >({</span> apiPath, apiUrl }) =&gt; (<span class="cstat-no" title="statement not covered" >{ type: constants.SET_API_PARAMS, apiPath, apiUrl })</span>,
+  setToken: <span class="fstat-no" title="function not covered" >to</span>ken =&gt; (<span class="cstat-no" title="statement not covered" >{ type: constants.SET_TOKEN, token })</span>,
+&nbsp;
+  setValidationRules: <span class="fstat-no" title="function not covered" >va</span>lidationRules =&gt; (<span class="cstat-no" title="statement not covered" >{ type: constants.SET_VALIDATION_RULES, validationRules })</span>,
+&nbsp;
+  loadRegister: <span class="fstat-no" title="function not covered" >({</span> registerId, groupId }) =&gt; (<span class="cstat-no" title="statement not covered" >{ type: constants.LOAD_REGISTER, registerId, groupId })</span>,
+  loadingRegister: <span class="fstat-no" title="function not covered" >()</span> =&gt; (<span class="cstat-no" title="statement not covered" >{ type: constants.LOADING_REGISTER })</span>,
+  loadedRegister: <span class="fstat-no" title="function not covered" >()</span> =&gt; (<span class="cstat-no" title="statement not covered" >{ type: constants.LOADED_REGISTER })</span>,
+  setRegister: <span class="fstat-no" title="function not covered" >({</span> register, readings }) =&gt; (<span class="cstat-no" title="statement not covered" >{ type: constants.SET_REGISTER, register, readings })</span>,
+&nbsp;
+  updateRegister: <span class="fstat-no" title="function not covered" >({</span> meterId, registerId, params, resolve, reject, groupId }) =&gt; (
+<span class="cstat-no" title="statement not covered" >    { type: constants.UPDATE_REGISTER, meterId, registerId, params, resolve, reject, groupId })</span>,
+&nbsp;
+  loadRegisters: <span class="fstat-no" title="function not covered" >({</span> groupId }) =&gt; (<span class="cstat-no" title="statement not covered" >{ type: constants.LOAD_REGISTERS, groupId })</span>,
+  loadingRegisters: <span class="fstat-no" title="function not covered" >()</span> =&gt; (<span class="cstat-no" title="statement not covered" >{ type: constants.LOADING_REGISTERS })</span>,
+  loadedRegisters: <span class="fstat-no" title="function not covered" >()</span> =&gt; (<span class="cstat-no" title="statement not covered" >{ type: constants.LOADED_REGISTERS })</span>,
+  setRegisters: <span class="fstat-no" title="function not covered" >re</span>gisters =&gt; (<span class="cstat-no" title="statement not covered" >{ type: constants.SET_REGISTERS, registers })</span>,
+};
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon Aug 28 2017 16:31:27 GMT+0300 (MSK)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

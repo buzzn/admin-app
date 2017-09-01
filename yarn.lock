@@ -14,9 +14,9 @@
   version "1.0.0"
   resolved "git+https://github.com/buzzn/module-bubbles.git#9119b2b24ab7e9181f0103114c90ce71e4591026"
 
-"@buzzn/module_charts@git+https://github.com/buzzn/module-charts.git#master":
+"@buzzn/module_charts@git+https://github.com/buzzn/module-charts.git#v2.0.0":
   version "1.0.0"
-  resolved "git+https://github.com/buzzn/module-charts.git#3d1b1c0262b7bcd62eca9f216694dd27fb2ef177"
+  resolved "git+https://github.com/buzzn/module-charts.git#5cd3222a480e93b1defe202894094394c62083cf"
 
 abab@^1.0.3:
   version "1.0.3"
@@ -3451,7 +3451,7 @@ he@1.1.x:
   resolved "https://registry.yarnpkg.com/he/-/he-1.1.0.tgz#29319d49beec13a9b1f3c4f9b2a6dde4859bb2a7"
 
 highcharts@^5.0.0, highcharts@^5.0.12:
-  version v5.0.12
+  version "5.0.12"
   resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-5.0.12.tgz#f73b970fe5c7f04100220b64aa7bd7fb019d11e2"
 
 history@^4.5.1:
