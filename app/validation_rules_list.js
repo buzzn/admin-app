@@ -1,6 +1,7 @@
-import { actions } from './actions';
-import Meters from './meters';
-import Registers from './registers';
+import { actions } from 'actions';
+import Meters from 'meters';
+import Registers from 'registers';
+import Readings from 'readings';
 
 export default [
   {
@@ -18,5 +19,9 @@ export default [
   {
     swaggerPath: '/localpools/{localpool_id}/meters/{real_meter_id}/registers/{real_register_id}.patch.parameters',
     setAction: Registers.actions.setValidationRules,
+  },
+  {
+    swaggerPath: '/localpools/{localpool_id}/meters/{meter_id}/registers/{register_id}/readings.post.parameters',
+    setAction: Readings.actions.setValidationRules,
   },
 ];

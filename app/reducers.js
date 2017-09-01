@@ -3,13 +3,14 @@ import { reducer as formReducer } from 'redux-form';
 import Auth from '@buzzn/module_auth';
 import Bubbles from '@buzzn/module_bubbles';
 import Charts from '@buzzn/module_charts';
-import config from './config';
-import { constants } from './actions';
-import Groups from './groups';
-import Meters from './meters';
-import Registers from './registers';
-import Users from './users';
-import Contracts from './contracts';
+import config from 'config';
+import { constants } from 'actions';
+import Groups from 'groups';
+import Meters from 'meters';
+import Registers from 'registers';
+import Users from 'users';
+import Contracts from 'contracts';
+import Readings from 'readings';
 
 // in this case initialState includes apiUrl and apiPath, so it will just copy this params into app state.
 export function configReducer(state = config) {
@@ -51,4 +52,5 @@ export default combineReducers({
   registers: Registers.reducers,
   users: Users.reducers,
   contracts: Contracts.reducers,
+  readings: Readings.reducers,
 });

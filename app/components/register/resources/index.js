@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 import Registers from 'registers';
+import Readings from 'readings';
 import RegisterData from './register_data';
-import Readings from './readings';
+import ReadingsComponent from './readings';
 
 export class RegisterResources extends Component {
   static propTypes = {
@@ -27,8 +28,11 @@ export class RegisterResources extends Component {
     const {
       register,
       updateRegister,
+      addReading,
+      deleteReading,
       readings,
-      validationRules,
+      registersValidationRules,
+      readingsValidationRules,
       loading,
       match: {
         url,
@@ -46,8 +50,22 @@ export class RegisterResources extends Component {
 
     return (
       <div>
-        <Route path={ `${url}/register-data` } render={ () => <RegisterData {...{ register, initialValues: register, groupId, meterId, validationRules, updateRegister }} /> } />
-        <Route path={ `${url}/readings` } render={ () => <Readings {...{ readings }} /> } />
+        <Route path={ `${url}/register-data` } render={ () => <RegisterData {...{
+          register,
+          initialValues: register,
+          groupId,
+          meterId,
+          validationRules: registersValidationRules,
+          updateRegister }} /> } />
+        <Route path={ `${url}/readings` } render={ () => <ReadingsComponent {...{
+          readings,
+          url,
+          groupId,
+          meterId,
+          registerId: register.id || '',
+          addReading,
+          deleteReading,
+          validationRules: readingsValidationRules }} /> } />
         <Route path={ `${url}/formula` } render={ () => (<div>Formula</div>) } />
       </div>
     );
@@ -59,11 +77,14 @@ function mapStateToProps(state) {
     loading: state.registers.loadingRegister,
     register: state.registers.register,
     readings: state.registers.readings,
-    validationRules: state.registers.validationRules,
+    registersValidationRules: state.registers.validationRules,
+    readingsValidationRules: state.readings.validationRules,
   };
 }
 
 export default connect(mapStateToProps, {
   loadRegister: Registers.actions.loadRegister,
   updateRegister: Registers.actions.updateRegister,
+  addReading: Readings.actions.addReading,
+  deleteReading: Readings.actions.deleteReading,
 })(RegisterResources);

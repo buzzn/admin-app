@@ -5,15 +5,16 @@ import thunk from 'redux-thunk';
 import Auth from '@buzzn/module_auth';
 import Bubbles from '@buzzn/module_bubbles';
 import Charts from '@buzzn/module_charts';
-import appSaga from './sagas';
-import Groups from './groups';
-import Meters from './meters';
-import Registers from './registers';
-import Users from './users';
-import Contracts from './contracts';
-import ValidationRules from './validation_rules';
-import RootReducer from './reducers';
-import { logException } from './_util';
+import appSaga from 'sagas';
+import Groups from 'groups';
+import Meters from 'meters';
+import Registers from 'registers';
+import Users from 'users';
+import Contracts from 'contracts';
+import Readings from 'readings';
+import ValidationRules from 'validation_rules';
+import RootReducer from 'reducers';
+import { logException } from '_util';
 
 function* rootSaga() {
   yield all([
@@ -25,6 +26,7 @@ function* rootSaga() {
     call(Registers.sagas),
     call(Users.sagas),
     call(Contracts.sagas),
+    call(Readings.sagas),
     call(ValidationRules.sagas),
     call(appSaga),
   ]);
