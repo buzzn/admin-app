@@ -60,19 +60,35 @@ export class LocalpoolOverview extends Component {
             mpoContract ?
               <div className="col-6 left-col">
                 <div className="row">
-                  <div className="col-12">{ !!mpoContract.customer.address && mpoContract.customer.address.street }</div>
+                  <div className="col-12">Contract address</div>
                 </div>
                 <div className="row">
-                  <div className="col-12">{ !!mpoContract.customer.address && `${mpoContract.customer.address.zip} ${mpoContract.customer.address.city}` }</div>
+                  <div className="col-12">will be here.</div>
                 </div>
-                <div className="row">
-                  <div className="col-3"><span className="label">Customer:</span></div>
-                  <div className="col-9">{ mpoContract.customer.name }</div>
-                </div>
-                <div className="row">
-                  <div className="col-3"><span className="label">Contact:</span></div>
-                  <div className="col-9">{ `${mpoContract.customer.contact.firstName} ${mpoContract.customer.contact.lastName}` }</div>
-                </div>
+                {
+                  mpoContract.customer.type === 'person' ?
+                    [
+                      <div key="1" className="row">
+                        <div className="col-3"><span className="label">Customer:</span></div>
+                        <div className="col-9">{ `${mpoContract.customer.firstName} ${mpoContract.customer.lastName}` }</div>
+                      </div>,
+                    ] :
+                    [
+                      <div key="1" className="row">
+                        <div className="col-3"><span className="label">Customer:</span></div>
+                        <div className="col-9">{ mpoContract.customer.name }</div>
+                      </div>,
+                      <div key="2" className="row">
+                        {
+                          mpoContract.customer.contact &&
+                            [
+                              <div key="1" className="col-3"><span className="label">Contact:</span></div>,
+                              <div key="2" className="col-9">{ `${mpoContract.customer.contact.firstName} ${mpoContract.customer.contact.lastName}` }</div>,
+                            ]
+                        }
+                      </div>,
+                  ]
+                }
               </div> :
               <div className="col-6 left-col"></div>
           }
