@@ -3,7 +3,7 @@ import { prepareHeaders, parseResponse, camelizeResponseKeys, camelizeResponseAr
 
 export default {
   fetchContract({ token, apiUrl, apiPath, contractId, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}?include=contrator_bank_account,contractor:[address],customer_bank_account, customer:[address,contact:address],tariffs,payments`, {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}?include=contrator_bank_account,contractor:[address],customer_bank_account,customer:[address,contact:address],tariffs,payments`, {
       headers: prepareHeaders(token),
     })
     .then(parseResponse)
@@ -27,7 +27,7 @@ export default {
     .then(parseResponse);
   },
   fetchOperatorContract({ token, apiUrl, apiPath, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/metering-point-operator-contract`, {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/metering-point-operator-contract?include=customer:[address,contact:address]`, {
       headers: prepareHeaders(token),
     })
     .then(parseResponse)
