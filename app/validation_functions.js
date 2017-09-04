@@ -15,6 +15,15 @@ export const isNumber = value =>
 export const minValue = min => value =>
   value && value < min ? `Must be at least ${min}` : undefined;
 
+export const maxValue = max => value =>
+  value && value > max ? `Must be at least ${max}` : undefined;
+
+export const minValueInc = min => value =>
+  value && value <= min ? `Must be at least ${min}` : undefined;
+
+export const maxValueInc = max => value =>
+  value && value >= max ? `Must be at least ${max}` : undefined;
+
 export const isEmail = value =>
   value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
     ? 'Invalid email address'
@@ -38,9 +47,28 @@ export const fieldValidator = (field) => {
   if (!field) return validators;
 
   if (field.required) validators.push(required);
-  if (field.type === 'string') validators.push(isString);
+  if (field.type === 'string') {
+    validators.push(isString);
+    if (field.maxLength) validators.push(maxLength(field.maxLength));
+  }
   if (field.enum) validators.push(isIncluded(field.enum));
-  if (field.type === 'integer') validators.push(isNumber);
+  if (field.type === 'integer') {
+    validators.push(isNumber);
+    if (field.minimum) {
+      if (field.exclusiveMinimum) {
+        validators.push(minValue(field.minimum));
+      } else {
+        validators.push(minValueInc(field.minimum));
+      }
+    }
+    if (field.maximum) {
+      if (field.exclusiveMaximum) {
+        validators.push(maxValue(field.maximum));
+      } else {
+        validators.push(maxValueInc(field.maximum));
+      }
+    }
+  }
 
   return validators;
 };

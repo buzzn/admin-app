@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { injectIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import './style.scss';
 
 // TODO: this can be replaced with fully connected standalone component after preloader will be implemented. #91
-const Breadcrumbs = ({ breadcrumbs }) => (
+const Breadcrumbs = ({ breadcrumbs, intl }) => (
   <div className="row">
     <div className="col-12 breadcrumbs">
       <ul>
@@ -17,7 +18,7 @@ const Breadcrumbs = ({ breadcrumbs }) => (
                   {
                     crumb.type ?
                       <span>
-                        <span className="breadcrumb-type">{ crumb.type }:</span> { crumb.title }
+                        <span className="breadcrumb-type">{ intl.formatMessage({ id: `admin.types.${crumb.type}` }) }:</span> { crumb.title }
                       </span> :
                       crumb.title
                   }
@@ -27,7 +28,7 @@ const Breadcrumbs = ({ breadcrumbs }) => (
                 {
                   crumb.type ?
                     <span>
-                      <span className="breadcrumb-type">{ crumb.type }:</span> { crumb.title }
+                      <span className="breadcrumb-type">{ intl.formatMessage({ id: `admin.types.${crumb.type}` }) }:</span> { crumb.title }
                     </span> :
                     crumb.title
                 }
@@ -48,4 +49,4 @@ Breadcrumbs.propTypes = {
 Breadcrumbs.defaultProps = {
   breadcrumbs: [],
 };
-export default Breadcrumbs;
+export default injectIntl(Breadcrumbs);

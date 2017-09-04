@@ -75,6 +75,11 @@ export class TopNavBar extends Component {
                       { myName }
                     </DropdownToggle>
                     <DropdownMenu>
+                      <Link to="/my-profile" style={{ color: 'black' }}>
+                        <DropdownItem>My profile</DropdownItem>
+                      </Link>
+                      <DropdownItem divider />
+                      <DropdownItem header>Switch to:</DropdownItem>
                       { groups.map(group => (
                         <Link to={ `/localpools/${group.id}` } style={{ color: 'black' }} key={ group.id }>
                           <DropdownItem >
@@ -82,6 +87,7 @@ export class TopNavBar extends Component {
                           </DropdownItem>
                         </Link>
                       )) }
+                      <DropdownItem divider />
                       <DropdownItem onClick={ () => dispatch(Auth.actions.signOut()) }>Sign Out</DropdownItem>
                     </DropdownMenu>
                   </NavDropdown>
