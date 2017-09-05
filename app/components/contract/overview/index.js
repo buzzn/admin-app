@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import Helmet from 'react-helmet';
 import Contracts from 'contracts';
 import Groups from 'groups';
@@ -25,22 +26,11 @@ export class ContractOverview extends Component {
   }
 
   render() {
-    const { contract, group, loading } = this.props;
+    const { contract, group, loading, intl } = this.props;
 
     if (contract.status === 404) return (<div>Contract not found</div>);
 
     if (loading || !contract.id || !group.id) return (<div>Loading...</div>);
-
-    const contractType = (cont) => {
-      switch (cont.type) {
-        case 'contract_metering_point_operator':
-          return 'Metering Point Operator';
-        case 'contract_localpool_processing':
-          return 'LCP processing';
-        default:
-          return 'Unknown';
-      }
-    };
 
     const contractShortName = (cont) => {
       switch (cont.type) {
@@ -65,29 +55,24 @@ export class ContractOverview extends Component {
         <div className="row contract-overview top-content">
           <div className="col-12">
             <div className="title bg-consumption-dark">
-              { contractType(contract) } - { contract.fullContractNumber }
-            </div>
-          </div>
-          <div className="col-12 padding-top"><h5 className="label">Contract Data</h5></div>
-          <div className="col-6 padding-bottom">
-            <div className="row">
-              <div className="col-3"><span className="label">Local pool:</span></div>
-              <div className="col-9"><Link to={ `/localpools/${group.id}` }>{ group.name }</Link></div>
-            </div>
-            <div className="row">
-              <div className="col-3"><span className="label">Contract #:</span></div>
-              <div className="col-9">{ contract.fullContractNumber }</div>
+              { intl.formatMessage({ id: `admin.contracts.${contract.type}` }) } - { contract.fullContractNumber }
             </div>
           </div>
           <div className="col-6 padding-bottom">
             <div className="row">
-              <div className="col-3"><span className="label">Begin:</span></div>
-              <div className="col-9">{ contract.beginDate }</div>
+              <div className="col-6"><span className="label"><FormattedMessage id="admin.contracts.fullContractNumber"/>:</span></div>
+              <div className="col-6">{ contract.fullContractNumber }</div>
             </div>
             <div className="row">
-              <div className="col-3"><span className="label">Contact:</span></div>
-              <div className="col-9"></div>
+              <div className="col-6"><span className="label"><FormattedMessage id="admin.contracts.status"/>:</span></div>
+              <div className="col-6">{ contract.status }</div>
             </div>
+            <div className="row">
+              <div className="col-6"><span className="label"><FormattedMessage id="admin.contracts.beginDate"/>:</span></div>
+              <div className="col-6">{ contract.beginDate }</div>
+            </div>
+          </div>
+          <div className="col-6 padding-bottom">
           </div>
         </div>
       </div>
@@ -106,4 +91,4 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
   loadContract: Contracts.actions.loadContract,
   loadGroup: Groups.actions.loadGroup,
-})(ContractOverview);
+})(injectIntl(ContractOverview));

@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
-import ContractingParty from './contracting_party';
 import Contracts from 'contracts';
+import ContractingParty from './contracting_party';
 import Tariffs from './tariffs';
 import Payments from './payments';
+import ContractData from './contract_data';
 
 export class ContractResources extends Component {
   static propTypes = {
@@ -28,10 +29,15 @@ export class ContractResources extends Component {
       match: { url, isExact, params: { groupId, contractId } },
     } = this.props;
 
-    if (isExact) return (<Redirect to={ `${url}/customer` }/>);
+    if (isExact) return (<Redirect to={ `${url}/contract` }/>);
 
     return (
       <div>
+        <Route path={ `${url}/contract` } render={ () => <ContractData {...{
+          contract,
+          initialValues: contract,
+          validationRules: {},
+        }}/> }/>
         <Route path={ `${url}/customer` } render={ () => <ContractingParty {...{
           contractingParty: customer,
           loading,
