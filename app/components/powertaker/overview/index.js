@@ -8,8 +8,6 @@ import Groups from 'groups';
 import Contracts from 'contracts';
 import Breadcrumbs from 'components/breadcrumbs';
 
-import './style.scss';
-
 export class PowertakerOverview extends Component {
   static propTypes = {
     contract: PropTypes.object,
