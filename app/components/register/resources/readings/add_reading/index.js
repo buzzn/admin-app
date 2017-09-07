@@ -18,8 +18,7 @@ const AddReading = ({ isOpen, toggle, addReading, handleSubmit, pristine, submit
       resolve,
       reject,
     });
-  })
-  .then(toggle);
+  });
 
   const prefix = 'admin.readings';
 
