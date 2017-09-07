@@ -125,7 +125,7 @@ export class ReadingOverview extends Component {
             </div>
             <div className="row">
               <div className="col-3"><FormattedMessage id={ `${prefix}.comment` }/>:</div>
-              <div className="col-9"><FormattedMessage id={ reading.comment }/></div>
+              <div className="col-9">{ reading.comment }</div>
             </div>
             <div className="row">
               <div className="col-12">

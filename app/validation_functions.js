@@ -1,28 +1,28 @@
 export const required = value => (value ? undefined : 'Required');
 
 export const isString = value =>
-  value && typeof value === 'string' ?  undefined : 'Must be a string';
+  value === undefined || typeof value === 'string' ?  undefined : 'Must be a string';
 
 export const maxLength = max => value =>
-  value && value.length > max ? `Must be ${max} characters or less` : undefined;
+  value === undefined || value.length < max ? undefined : `Must be ${max} characters or less`;
 
 export const minLength = min => value =>
-  value && value.length < min ? `Must be ${min} characters or more` : undefined;
+  value === undefined || value.length > min ? undefined : `Must be ${min} characters or more`;
 
 export const isNumber = value =>
-  value && isNaN(Number(value)) ? 'Must be a number' : undefined;
+  value === undefined || !isNaN(Number(value)) ? undefined : 'Must be a number';
 
 export const minValue = min => value =>
-  value && value < min ? `Must be at least ${min}` : undefined;
+  value === undefined || value > min ? undefined : `Must be at least ${min}`;
 
 export const maxValue = max => value =>
-  value && value > max ? `Must be at least ${max}` : undefined;
+  value === undefined || value < max ? undefined : `Must be at least ${max}`;
 
 export const minValueInc = min => value =>
-  value && value <= min ? `Must be at least ${min}` : undefined;
+  value === undefined || value >= min ? undefined : `Must be at least ${min}`;
 
 export const maxValueInc = max => value =>
-  value && value >= max ? `Must be at least ${max}` : undefined;
+  value === undefined || value <= max ? undefined : `Must be at least ${max}`;
 
 export const isEmail = value =>
   value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
