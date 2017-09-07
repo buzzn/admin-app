@@ -31,7 +31,7 @@ class Readings extends Component {
 
     const data = readings.map(r => ({
       ...r,
-      date: moment(r.timestamp).format('DD.MM.YYYY'),
+      date: moment(r.date).format('DD.MM.YYYY'),
       link: `${url}/readings/${r.id}`,
     }));
 
