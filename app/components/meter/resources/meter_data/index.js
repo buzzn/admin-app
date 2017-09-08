@@ -30,7 +30,7 @@ export class MeterData extends Component {
     event.preventDefault();
 
     const { updateMeter, reset, realValidationRules, virtualValidationRules, meter } = this.props;
-    if (!updateMeter ||
+    if (!updateMeter || !meter.updatable ||
       (meter.type === 'meter_real' && Object.keys(realValidationRules).length === 0) ||
       (meter.type === 'meter_virtual' && Object.keys(virtualValidationRules).length === 0)) {
       this.setState({ editMode: false });
@@ -252,7 +252,7 @@ export class MeterData extends Component {
         <div className="row">
           <div className="col-12">
             {
-              updateMeter &&
+              updateMeter && meter.updatable &&
               ((Object.keys(realValidationRules).length !== 0 && meter.type === 'meter_real') ||
                 (Object.keys(virtualValidationRules).length !== 0 && meter.type === 'meter_virtual')) &&
               <div className="edit-buttons" style={{ float: 'right' }}>

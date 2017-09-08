@@ -27,7 +27,7 @@ class Readings extends Component {
   }
 
   render() {
-    const { readings, url, validationRules, groupId, meterId, registerId, addReading, deleteReading } = this.props;
+    const { readings, url, validationRules, groupId, meterId, registerId, canAddReading, addReading } = this.props;
 
     const data = readings.map(r => ({
       ...r,
@@ -79,10 +79,13 @@ class Readings extends Component {
       <div className="row">
         <div className="col-12">
           <h5>Readings</h5>
-          <div
-            onClick={ ::this.toggle }
-            style={{ position: 'absolute', right: '15px', top: 0, cursor: 'pointer' }}
-            className="btn btn-info">Add</div>
+          {
+            !!canAddReading &&
+            <div
+              onClick={ ::this.toggle }
+              style={{ position: 'absolute', right: '15px', top: 0, cursor: 'pointer' }}
+              className="btn btn-info">Add</div>
+          }
           List of all readings for a register.
         </div>
         <div className="col-12 no-padding">

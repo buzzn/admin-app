@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
+import find from 'lodash/find';
 import Registers from 'registers';
 import Readings from 'readings';
 import RegisterData from './register_data';
@@ -48,6 +49,8 @@ export class RegisterResources extends Component {
 
     if (loading) return (<div>Loading...</div>);
 
+    const canAddReading = find(register.createables, v => v === 'readings');
+
     return (
       <div>
         <Route path={ `${url}/register-data` } render={ () => <RegisterData {...{
@@ -63,8 +66,8 @@ export class RegisterResources extends Component {
           groupId,
           meterId,
           registerId: register.id || '',
+          canAddReading,
           addReading,
-          deleteReading,
           validationRules: readingsValidationRules }} /> } />
         <Route path={ `${url}/formula` } render={ () => (<div>Formula</div>) } />
       </div>
