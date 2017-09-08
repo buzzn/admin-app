@@ -127,13 +127,16 @@ export class ReadingOverview extends Component {
               <div className="col-3"><FormattedMessage id={ `${prefix}.comment` }/>:</div>
               <div className="col-9">{ reading.comment }</div>
             </div>
-            <div className="row">
-              <div className="col-12">
-                <div className="delete-button" style={{ float: 'right', marginBottom: '10px' }}>
-                  <button onClick={ ::this.toggle } className="btn btn-danger">Delete</button>
+            {
+              reading.deletable &&
+              <div className="row">
+                <div className="col-12">
+                  <div className="delete-button" style={{ float: 'right', marginBottom: '10px' }}>
+                    <button onClick={ ::this.toggle } className="btn btn-danger">Delete</button>
+                  </div>
                 </div>
               </div>
-            </div>
+            }
             <ModalWrapper
               modalTitle="Delete reading"
               buttons={[
