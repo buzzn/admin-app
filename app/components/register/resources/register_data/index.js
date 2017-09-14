@@ -170,7 +170,7 @@ export class RegisterData extends Component {
         <div className="row">
           <div className="col-12">
             {
-              updateRegister && Object.keys(validationRules).length !== 0 &&
+              updateRegister && Object.keys(validationRules).length !== 0 && register.updatable &&
               <div className="edit-buttons" style={{ float: 'right' }}>
                 {
                   this.state.editMode ?
