@@ -59,7 +59,7 @@
   "dependencies": {
     "@buzzn/i18n": "git+https://github.com/buzzn/i18n.git",
     "@buzzn/module_auth": "git+https://github.com/buzzn/module-auth.git#v1.0.6",
-    "@buzzn/module_bubbles": "git+https://github.com/buzzn/module-bubbles.git#v2.0.5",
+    "@buzzn/module_bubbles": "git+https://github.com/buzzn/module-bubbles.git#27_visibility",
     "@buzzn/module_charts": "git+https://github.com/buzzn/module-charts.git#v2.0.0",
     "babel-polyfill": "^6.26.0",
     "bootstrap": "4.0.0-beta",
