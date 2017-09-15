@@ -57,46 +57,42 @@ export class TopNavBar extends Component {
     const myName = firstName ? `${firstName} ${lastName}` : 'My profile';
 
     return (
-      <div>
-        <Navbar fixed="top" toggleable light className="top-nav-bar">
-          <NavbarToggler right onClick={ ::this.toggle } />
-          <NavbarBrand href="#">
-            <img src={ LogoImg } />
-          </NavbarBrand>
-          <Collapse isOpen={ isOpen } navbar>
-            <Nav className="ml-auto" navbar>
-              <div className="float-right">
-                { signedIn &&
-                  <NavDropdown isOpen={ profileOpen } toggle={ ::this.toggleProfile }>
-                    <DropdownToggle nav caret>
-                      { image &&
-                        <img className="top-avatar" src={ image } />
-                      }
-                      { myName }
-                    </DropdownToggle>
-                    <DropdownMenu>
-                      <Link to="/my-profile" style={{ color: 'black' }}>
-                        <DropdownItem>My profile</DropdownItem>
-                      </Link>
-                      <DropdownItem divider />
-                      <DropdownItem header>Switch to:</DropdownItem>
-                      { groups.map(group => (
-                        <Link to={ `/localpools/${group.id}` } style={{ color: 'black' }} key={ group.id }>
-                          <DropdownItem >
-                            { group.name }
-                          </DropdownItem>
-                        </Link>
-                      )) }
-                      <DropdownItem divider />
-                      <DropdownItem onClick={ () => dispatch(Auth.actions.signOut()) }>Sign Out</DropdownItem>
-                    </DropdownMenu>
-                  </NavDropdown>
-                }
-              </div>
-            </Nav>
-          </Collapse>
-        </Navbar>
-      </div>
+      <Navbar fixed="top" toggleable light className="top-nav-bar">
+        <NavbarBrand href="#">
+          <img src={ LogoImg } />
+        </NavbarBrand>
+        <NavbarToggler onClick={ ::this.toggle } />
+        <Collapse isOpen={ isOpen } navbar>
+          <Nav className="ml-auto" navbar>
+            { signedIn &&
+              <NavDropdown isOpen={ profileOpen } toggle={ ::this.toggleProfile }>
+                <DropdownToggle nav caret>
+                  { image &&
+                    <img className="top-avatar" src={ image } />
+                  }
+                  { myName }
+                </DropdownToggle>
+                <DropdownMenu>
+                  <Link to="/my-profile" style={{ color: 'black' }}>
+                    <DropdownItem>My profile</DropdownItem>
+                  </Link>
+                  <DropdownItem divider />
+                  <DropdownItem header>Switch to:</DropdownItem>
+                  { groups.map(group => (
+                    <Link to={ `/localpools/${group.id}` } style={{ color: 'black' }} key={ group.id }>
+                      <DropdownItem >
+                        { group.name }
+                      </DropdownItem>
+                    </Link>
+                  )) }
+                  <DropdownItem divider />
+                  <DropdownItem onClick={ () => dispatch(Auth.actions.signOut()) }>Sign Out</DropdownItem>
+                </DropdownMenu>
+              </NavDropdown>
+            }
+          </Nav>
+        </Collapse>
+      </Navbar>
     );
   }
 }
