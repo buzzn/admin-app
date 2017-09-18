@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
+import get from 'lodash/get';
 import Contracts from 'contracts';
 import BankAccount from './bank_account';
+import Contact from './contact';
 
 export class ContractingPartyResources extends Component {
   static propTypes = {
@@ -17,13 +19,21 @@ export class ContractingPartyResources extends Component {
   }
 
   render() {
-    const { loading, contractingParty, updateBankAccount, bankAccount, match: { url, isExact, params: { groupId } } } = this.props;
+    const {
+      loading,
+      contractingParty,
+      contact,
+      contactAddress,
+      updateBankAccount,
+      bankAccount,
+      match: { url, isExact, params: { groupId } }
+    } = this.props;
 
     if (isExact) return (<Redirect to={ `${url}/contact` }/>);
 
     return (
       <div>
-        <Route path={ `${url}/contact` } render={ () => <div>Contact</div> } />
+        <Route path={ `${url}/contact` } render={ () => <Contact {...{ contact, contactAddress }} /> } />
         <Route
           path={ `${url}/bank` }
           render={ () => <BankAccount loading={ loading }
@@ -38,6 +48,8 @@ function mapStateToProps(state, props) {
   const { match: { params: { partyType } } } = props;
   return {
     contractingParty: state.contracts[partyType],
+    contact: get(state.contracts[partyType], 'contact') || {},
+    contactAddress: get(state.contracts[partyType], 'contact.address') || {},
     loading: state.contracts.loadingContract,
     bankAccount: state.contracts.contract[`${partyType}BankAccount`],
   };
