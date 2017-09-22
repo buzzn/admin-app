@@ -8,7 +8,7 @@ import './style.scss';
 
 momentLocalizer(moment);
 
-const EditableDate = ({ editMode, input, dateFormat, meta: { touched, error } }) => {
+const EditableDate = ({ editMode, input, dateFormat, defaultDate, meta: { touched, error } }) => {
   if (editMode) {
     return (
       <div className={ `editable-date form-group ${(touched && error) && 'has-danger'}` }>
@@ -17,7 +17,7 @@ const EditableDate = ({ editMode, input, dateFormat, meta: { touched, error } })
           format={ dateFormat }
           editFormat={ dateFormat }
           value={ input.value ? moment(input.value).toDate() : null }
-          onBlur={ () => input.onBlur(moment(input.value).toDate()) } />
+          onBlur={ () => input.onBlur(moment(input.value || defaultDate).toDate()) } />
         { touched && error && <div className="form-control-feedback">{ error }</div> }
       </div>
     );
@@ -30,6 +30,7 @@ EditableDate.propTypes = {
   input: PropTypes.object.isRequired,
   meta: PropTypes.object.isRequired,
   dateFormat: PropTypes.string,
+  defaultDate: PropTypes.instanceOf(Date),
 };
 
 EditableDate.defaultProps = {

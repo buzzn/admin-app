@@ -42,6 +42,7 @@ const AddReading = ({ isOpen, toggle, addReading, handleSubmit, pristine, submit
                 validationRules={ validationRules }
                 normalize={ dateNormalizer('YYYY-MM-DD') }
                 component={ EditableDate }
+                defaultDate={ new Date() }
               />
               <TwoColField
                 prefix={ prefix }
