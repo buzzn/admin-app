@@ -4,8 +4,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 const ModalWrapper = ({ modalTitle, children, isOpen, toggle, buttons }) => (
   <div>
-    {/* autoFocus=false is a temporary workaround, see #532 in reactstrap */}
-    <Modal size="lg" isOpen={ isOpen } toggle={ toggle } autoFocus={ false }>
+    <Modal size="lg" isOpen={ isOpen } toggle={ toggle }>
       <ModalHeader toggle={ toggle }>{ modalTitle }</ModalHeader>
       <ModalBody>
         { children }
