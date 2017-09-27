@@ -40,9 +40,9 @@ class Bank extends Component {
 
     const submit = (values) => {
       return new Promise((resolve, reject) => {
-        updateBankAccount({ bankAccountId: bank.id, params: pick(values, ['iban']), resolve, reject });
+        updateBankAccount({ bankAccountId: bank.id, params: { ...pick(values, ['iban']), updatedAt: bank.updatedAt }, resolve, reject });
       })
-      .then(() => this.setState({ editMode: false }));
+        .then(() => this.setState({ editMode: false }));
     };
 
     return (
