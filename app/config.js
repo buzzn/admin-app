@@ -4,6 +4,7 @@ if (process.env.NODE_ENV === 'production') {
   config = {
     apiUrl: 'https://aws-core.buzzn.io/',
     apiPath: 'api/admin',
+    authPath: 'api/me',
     clientId: '',
     callBackURL: '',
     secure: true,
@@ -12,6 +13,7 @@ if (process.env.NODE_ENV === 'production') {
   config = {
     apiUrl: 'https://staging-core.buzzn.io/',
     apiPath: 'api/admin',
+    authPath: 'api/me',
     clientId: '',
     callBackURL: '',
     secure: true,
@@ -20,6 +22,7 @@ if (process.env.NODE_ENV === 'production') {
   config = {
     apiUrl: 'http://localhost:3000/',
     apiPath: 'api/admin',
+    authPath: 'api/me',
     clientId: '',
     callBackURL: '',
     secure: false,

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
 import { FormattedMessage } from 'react-intl';
+import pick from 'lodash/pick';
 import EditableInput from 'components/editable_input';
 import EditableSelect from 'components/editable_select';
 import TwoColField from 'components/two_col_field';
@@ -33,9 +34,16 @@ export class ContactInfo extends Component {
     const { userMe, updateUserMe, handleSubmit, pristine, submitting, userMeValidationRules } = this.props;
 
     const submit = values => new Promise((resolve, reject) => {
-      updateUserMe({ params: values, resolve, reject });
+      updateUserMe({
+        params: {
+          ...pick(values, ['prefix', 'title', 'firstName', 'lastName', 'phone']),
+          updatedAt: userMe.updatedAt,
+        },
+        resolve,
+        reject,
+      });
     })
-    .then(() => this.setState({ editMode: false }));
+      .then(() => this.setState({ editMode: false }));
 
     const personPrefix = 'admin.persons';
     const addressPrefix = 'admin.addresses';
@@ -116,7 +124,7 @@ export class ContactInfo extends Component {
         <div className="row">
           <div className="col-12">
             {
-              updateUserMe && Object.keys(userMeValidationRules).length !== 0 &&
+              updateUserMe && userMe.updatable && Object.keys(userMeValidationRules).length !== 0 &&
               <div className="edit-buttons" style={{ float: 'right' }}>
                 {
                   this.state.editMode ?

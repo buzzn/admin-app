@@ -15,7 +15,7 @@ import Contracts from 'contracts';
 import Readings from 'readings';
 import ValidationRules from 'validation_rules';
 
-import loadingList from 'validation_rules_list';
+import loadingList, { authList } from 'validation_rules_list';
 
 export const getConfig = state => state.config;
 
@@ -45,7 +45,7 @@ export function* updateUserMe({ apiUrl, apiPath, token }, { params, resolve, rej
 }
 
 export default function* () {
-  const { apiUrl, apiPath, secure } = yield select(getConfig);
+  const { apiUrl, apiPath, authPath, secure } = yield select(getConfig);
 
   if (secure && window.location.protocol !== 'https:') {
     window.location.href = `https:${window.location.href.substring(window.location.protocol.length)}`;
@@ -74,7 +74,8 @@ export default function* () {
       yield put(Readings.actions.setToken(token));
       yield put(ValidationRules.actions.setToken(token));
 
-      yield put(ValidationRules.actions.setLoadingList(loadingList));
+      yield put(ValidationRules.actions.setLoadingList({ loadingList }));
+      yield put(ValidationRules.actions.setLoadingList({ loadingList: authList, pathOverride: authPath }));
 
       if (yield call(getUserMe, { apiUrl, apiPath, token })) {
         yield takeLatest(constants.LOAD_USER_ME, getUserMe, { apiUrl, apiPath, token });
