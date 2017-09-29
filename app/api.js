@@ -6,8 +6,8 @@ export default {
     return fetch(`${apiUrl}api/me?include=address,bank_accounts`, {
       headers: prepareHeaders(token),
     })
-    .then(parseResponse)
-    .then(camelizeResponseKeys);
+      .then(parseResponse)
+      .then(camelizeResponseKeys);
   },
   updateUserMe({ token, apiUrl, params }) {
     return fetch(`${apiUrl}api/me`, {
@@ -15,6 +15,6 @@ export default {
       method: 'PATCH',
       body: JSON.stringify(snakeReq(params)),
     })
-    .then(parseResponse);
+      .then(parseResponse);
   },
 };

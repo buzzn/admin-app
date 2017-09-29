@@ -3,11 +3,14 @@ import Meters from 'meters';
 import Registers from 'registers';
 import Readings from 'readings';
 
-export default [
+export const authList = [
   {
-    swaggerPath: '/me.patch.parameters',
+    swaggerPath: '/.patch.parameters',
     setAction: actions.setUserMeValidationRules,
   },
+];
+
+export default [
   {
     swaggerPath: '/localpools/{localpool_id}/meters/{real_meter_id}.patch.parameters',
     setAction: Meters.actions.setRealValidationRules,
