@@ -24,7 +24,6 @@ import LogoImg from '../../images/bz_logo_115px_white.png';
 export class TopNavBar extends Component {
   static propTypes = {
     signedIn: PropTypes.bool.isRequired,
-    dispatch: PropTypes.func.isRequired,
     myProfile: PropTypes.shape({
       firstName: PropTypes.string,
       lastName: PropTypes.string,
