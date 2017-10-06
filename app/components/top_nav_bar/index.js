@@ -54,14 +54,14 @@ export class TopNavBar extends Component {
   }
 
   render() {
-    const { signedIn, dispatch, myProfile: { firstName, lastName, image }, groups } = this.props;
+    const { signedIn, myProfile: { firstName, lastName, image }, groups, signOut, switchUI } = this.props;
     const { isOpen, profileOpen } = this.state;
     const myName = firstName ? `${firstName} ${lastName}` : 'My profile';
 
     return (
       <Navbar fixed="top" expand light className="top-nav-bar">
         <Container>
-          <NavbarBrand href="" onClick={ () => dispatch(actions.switchUI('new')) }>
+          <NavbarBrand href="" onClick={ () => switchUI('new') }>
             <img src={ LogoImg } />
           </NavbarBrand>
           <NavbarToggler onClick={ ::this.toggle } />
@@ -91,7 +91,7 @@ export class TopNavBar extends Component {
                     <DropdownItem divider />
                     <DropdownItem>Create new group</DropdownItem>
                     <DropdownItem divider />
-                    <DropdownItem onClick={ () => dispatch(Auth.actions.signOut()) }>Sign Out</DropdownItem>
+                    <DropdownItem onClick={ () => signOut() }>Sign Out</DropdownItem>
                   </DropdownMenu>
                 </NavDropdown>
               }
@@ -110,4 +110,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(TopNavBar);
+export default connect(mapStateToProps, {
+  signOut: Auth.actions.signOut,
+  switchUI: actions.switchUI,
+})(TopNavBar);
