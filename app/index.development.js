@@ -7,7 +7,7 @@ import { IntlProvider, addLocaleData } from 'react-intl';
 import en from 'react-intl/locale-data/en';
 import de from 'react-intl/locale-data/de';
 import allMessages from '@buzzn/i18n';
-import configureStore from './configure_store';
+import store from './configure_store';
 import Root from './root';
 
 
@@ -30,7 +30,7 @@ const render = (Component) => {
   ReactDOM.render(
     <AppContainer errorReporter={Redbox}>
       <IntlProvider locale={language()} messages={allMessages[language()]}>
-        <Provider store={configureStore()}>
+        <Provider store={store}>
           <Component/>
         </Provider>
       </IntlProvider>

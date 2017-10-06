@@ -32,7 +32,7 @@ function* rootSaga() {
   ]);
 }
 
-export default function configureStore(initialState) {
+function configureStore() {
   const sagaMiddleware = createSagaMiddleware();
   const store = createStore(RootReducer,
     {},
@@ -50,3 +50,7 @@ export default function configureStore(initialState) {
 
   return store;
 }
+
+const store = configureStore();
+
+export default store;

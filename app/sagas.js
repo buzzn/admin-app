@@ -18,6 +18,7 @@ import ValidationRules from 'validation_rules';
 import loadingList, { authList } from 'validation_rules_list';
 
 export const getConfig = state => state.config;
+export const getAuth = state => state.auth;
 
 export function* getUserMe({ apiUrl, apiPath, token }) {
   try {
@@ -51,6 +52,7 @@ export default function* () {
     window.location.href = `https:${window.location.href.substring(window.location.protocol.length)}`;
   }
 
+  yield put(Auth.actions.setApiParams({ apiUrl, apiPath: authPath }));
   yield put(Bubbles.actions.setApiParams({ apiUrl, apiPath: `${apiPath}/localpools` }));
   yield put(Charts.actions.setApiParams({ apiUrl, apiPath: `${apiPath}/localpools` }));
   yield put(Groups.actions.setApiParams({ apiUrl, apiPath }));
@@ -61,30 +63,34 @@ export default function* () {
   yield put(Readings.actions.setApiParams({ apiUrl, apiPath }));
   yield put(ValidationRules.actions.setApiParams({ apiUrl, apiPath }));
 
+  let { token } = yield select(getAuth);
+
   while (true) {
-    const { token } = yield take(Auth.constants.SIGN_IN);
-    if (token) {
-      yield put(Bubbles.actions.setToken(token));
-      yield put(Charts.actions.setToken(token));
-      yield put(Groups.actions.setToken(token));
-      yield put(Meters.actions.setToken(token));
-      yield put(Registers.actions.setToken(token));
-      yield put(Users.actions.setToken(token));
-      yield put(Contracts.actions.setToken(token));
-      yield put(Readings.actions.setToken(token));
-      yield put(ValidationRules.actions.setToken(token));
-
-      yield put(ValidationRules.actions.setLoadingList({ loadingList }));
-      yield put(ValidationRules.actions.setLoadingList({ loadingList: authList, pathOverride: authPath }));
-
-      if (yield call(getUserMe, { apiUrl, apiPath, token })) {
-        yield takeLatest(constants.LOAD_USER_ME, getUserMe, { apiUrl, apiPath, token });
-        yield takeLatest(constants.UPDATE_USER_ME, updateUserMe, { apiUrl, apiPath, token });
-        yield take(Auth.constants.SIGN_OUT);
-      } else {
-        yield put(Auth.actions.signOut());
-      }
-      // TODO: clean up state
+    if (!token) {
+      const newToken = yield take(Auth.constants.SIGN_IN);
+      token = newToken.token;
     }
+
+    yield put(Bubbles.actions.setToken(token));
+    yield put(Charts.actions.setToken(token));
+    yield put(Groups.actions.setToken(token));
+    yield put(Meters.actions.setToken(token));
+    yield put(Registers.actions.setToken(token));
+    yield put(Users.actions.setToken(token));
+    yield put(Contracts.actions.setToken(token));
+    yield put(Readings.actions.setToken(token));
+    yield put(ValidationRules.actions.setToken(token));
+
+    yield put(ValidationRules.actions.setLoadingList({ loadingList }));
+    yield put(ValidationRules.actions.setLoadingList({ loadingList: authList, pathOverride: authPath }));
+
+    if (yield call(getUserMe, { apiUrl, apiPath, token })) {
+      yield takeLatest(constants.LOAD_USER_ME, getUserMe, { apiUrl, apiPath, token });
+      yield takeLatest(constants.UPDATE_USER_ME, updateUserMe, { apiUrl, apiPath, token });
+      yield take(Auth.constants.SIGN_OUT);
+    } else {
+      yield put(Auth.actions.signOut());
+    }
+    // TODO: clean up state
   }
 }
