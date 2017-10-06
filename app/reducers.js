@@ -21,6 +21,7 @@ export const initialState = {
   loading: false,
   userMe: {},
   userMeValidationRules: {},
+  uiVer: '',
 };
 
 export function appReducer(state = initialState, action) {
@@ -33,6 +34,9 @@ export function appReducer(state = initialState, action) {
       return { ...state, userMe: action.userMe };
     case constants.SET_USER_ME_VALIDATION_RULES:
       return { ...state, userMeValidationRules: action.userMeValidationRules };
+
+    case constants.SWITCH_UI:
+      return { ...state, uiVer: action.uiVer };
 
     default:
       return state;
