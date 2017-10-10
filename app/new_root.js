@@ -8,6 +8,10 @@ import SignInContainer from 'new_components/sign_in';
 import Sidebar from 'new_components/sidebar';
 import LocalpoolsListContainer from 'new_components/localpools_list';
 import TodoList from 'new_components/todo_list';
+import Analytics from 'new_components/analytics';
+import PowertakersContainer from 'new_components/powertakers';
+import ContractsContainer from 'new_components/contracts';
+import SystemContainer from 'new_components/system';
 import './react_table_config';
 
 import 'buzzn-style';
@@ -23,18 +27,20 @@ const NewRoot = ({ token }) => (
           <Route exact path="/" render={ () => <Redirect to="/localpools"/> } />
           <Row>
 
-            { /* FIXME: change to Switch? */ }
-            <Route path="/*" render={ ({ match: { url } }) => {
-              if (url === '/' || url === '/localpools') return null;
-              return <Col xs="2">
-                <Sidebar/>
-              </Col>;
-            } }/>
+            <Route path="/localpools/:groupId" render={ ({ match: { params: { groupId } } }) => (
+              <Col xs="1" className="pl-0 pr-0">
+                <Sidebar groupId={ groupId }/>
+              </Col>
+            ) }/>
 
             <Route path="/*" render={ ({ match: { url } }) =>
-              <Col xs={ (url === '/' || url === '/localpools') ? '8' : '7' }>
+              <Col xs={ (url === '/' || url === '/localpools') ? '9' : '8' } className="pl-0 pr-0">
                 <PartErrorBoundary part="main-part">
                   <Switch>
+                    <Route path="/localpools/:groupId/analytics" component={ Analytics }/>
+                    <Route path="/localpools/:groupId/powertakers" component={ PowertakersContainer }/>
+                    <Route path="/localpools/:groupId/contracts" component={ ContractsContainer }/>
+                    <Route path="/localpools/:groupId/system" component={ SystemContainer }/>
                     <Route path="/localpools/*" render={ () => <div>Content</div> }/>
                     <Route path="/localpools" component={ LocalpoolsListContainer }/>
                     <Route render={ () => (<div>404</div>) } />
@@ -43,7 +49,7 @@ const NewRoot = ({ token }) => (
               </Col>
             }/>
 
-            <Col xs="3">
+            <Col xs="3" className="pl-0 pr-0">
               <TodoList/>
             </Col>
 

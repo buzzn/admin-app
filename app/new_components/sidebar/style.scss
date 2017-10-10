@@ -2,12 +2,22 @@
   .sidebar-item {
     display: block;
     background-color: #292929;
-    height: 160px;
+    height: 80px;
+    color: white;
+    text-align: center;
+    text-transform: uppercase;
     &:hover {
       background-color: black;
     }
     &.active {
       background-color: white;
+      color: black;
+    }
+    .sidebar-icon {
+      margin: 17px auto;
+    }
+    .sidebar-text {
+      font-size: 12px;
     }
   }
 }

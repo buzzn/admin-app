@@ -1,19 +1,18 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
 import SidebarItem from './sidebar_item';
 
 import './style.scss';
 
-const Sidebar = () => (
+const Sidebar = ({ groupId }) => (
   <div className="sidebar">
-    <SidebarItem to="/localpools" exact={ true }><FormattedMessage id="admin.ui.sidebarMyGroups"/></SidebarItem>
-    <SidebarItem to="/localpools/:groupId/analytics"><FormattedMessage id="admin.ui.sidebarAnalytics"/></SidebarItem>
-    <SidebarItem to="/localpools/:groupId/powertakers"><FormattedMessage id="admin.ui.sidebarPowertakers"/></SidebarItem>
-    <SidebarItem to="/localpools/:groupId/prices"><FormattedMessage id="admin.ui.sidebarPrices"/></SidebarItem>
-    <SidebarItem to="/localpools/:groupId/invoices"><FormattedMessage id="admin.ui.sidebarInvoices"/></SidebarItem>
-    <SidebarItem to="/localpools/:groupId/contracts"><FormattedMessage id="admin.ui.sidebarContracts"/></SidebarItem>
-    <SidebarItem to="/localpools/:groupId/system"><FormattedMessage id="admin.ui.sidebarSystem"/></SidebarItem>
-    <SidebarItem to="/localpools/:groupId/documents"><FormattedMessage id="admin.ui.sidebarDocuments"/></SidebarItem>
+    <SidebarItem to="/localpools" exact={ true } icon="th-large">My Groups</SidebarItem>
+    <SidebarItem to={ `/localpools/${groupId}/analytics` } icon="bolt">Analytics</SidebarItem>
+    <SidebarItem to={ `/localpools/${groupId}/powertakers` } icon="users">Powertakers</SidebarItem>
+    <SidebarItem to={ `/localpools/${groupId}/prices` } icon="eur">Prices</SidebarItem>
+    <SidebarItem to={ `/localpools/${groupId}/invoices` } icon="money">Invoices</SidebarItem>
+    <SidebarItem to={ `/localpools/${groupId}/contracts` } icon="file-text-o">Contracts</SidebarItem>
+    <SidebarItem to={ `/localpools/${groupId}/system` } icon="cogs">System</SidebarItem>
+    <SidebarItem to={ `/localpools/${groupId}/documents` } icon="folder-open-o">Documents</SidebarItem>
   </div>
 );
 
