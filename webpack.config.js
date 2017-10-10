@@ -64,6 +64,9 @@ module.exports = {
   },
   resolve: {
     modules: [path.resolve(__dirname, 'app'), 'node_modules'],
+    alias: {
+      moment$: 'moment/moment.js',
+    },
   },
   plugins: [
     new HtmlWebpackPlugin({

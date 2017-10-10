@@ -34,22 +34,20 @@ export function* getGroups({ apiUrl, apiPath, token }) {
 export function* groupsSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_GROUPS, getGroups, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUP, getGroup, { apiUrl, apiPath, token });
+  const groupId = yield select(selectGroupId);
+  if (groupId) yield call(getGroup, { apiUrl, apiPath, token }, { groupId });
 }
 
 export default function* () {
   const { apiUrl, apiPath } = yield take(constants.SET_API_PARAMS);
   let { token } = yield take(constants.SET_TOKEN);
+  yield call(getGroups, { apiUrl, apiPath, token });
 
   while (true) {
-    const groupId = yield select(selectGroupId);
-    yield call(getGroups, { apiUrl, apiPath, token });
-    if (groupId) yield call(getGroup, { apiUrl, apiPath, token }, { groupId });
-
     const sagas = yield fork(groupsSagas, { apiUrl, apiPath, token });
     yield put(actions.endConfig());
 
-    const payload = yield take(constants.SET_TOKEN);
-    token = payload.token;
+    ({ token } = yield take(constants.SET_TOKEN));
     yield put(actions.startConfig());
     yield cancel(sagas);
   }

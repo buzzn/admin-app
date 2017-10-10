@@ -27,8 +27,7 @@ export default function* () {
 
   while (true) {
     const sagas = yield takeEvery(constants.SET_LOADING_LIST, validationRulesSagas, { apiUrl, apiPath, token });
-    const payload = yield take(constants.SET_TOKEN);
-    token = payload.token;
+    ({ token } = yield take(constants.SET_TOKEN));
     yield cancel(sagas);
   }
 }

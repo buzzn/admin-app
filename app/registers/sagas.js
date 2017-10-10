@@ -53,22 +53,21 @@ export function* registersSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_REGISTERS, getRegisters, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_REGISTER, getRegister, { apiUrl, apiPath, token });
   yield takeLatest(constants.UPDATE_REGISTER, updateRegister, { apiUrl, apiPath, token });
-}
-
-export default function* () {
-  const { apiUrl, apiPath } = yield take(constants.SET_API_PARAMS);
-  let { token } = yield take(constants.SET_TOKEN);
   const { groupId } = yield select(selectGroup);
   const { registerId } = yield select(selectRegister);
   if (groupId) {
     yield call(getRegisters, { apiUrl, apiPath, token }, { groupId });
     if (registerId) yield call(getRegister, { apiUrl, apiPath, token }, { registerId, groupId });
   }
+}
+
+export default function* () {
+  const { apiUrl, apiPath } = yield take(constants.SET_API_PARAMS);
+  let { token } = yield take(constants.SET_TOKEN);
 
   while (true) {
     const sagas = yield fork(registersSagas, { apiUrl, apiPath, token });
-    const payload = yield take(constants.SET_TOKEN);
-    token = payload.token;
+    ({ token } = yield take(constants.SET_TOKEN));
     yield cancel(sagas);
   }
 }

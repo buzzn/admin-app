@@ -64,20 +64,19 @@ export function* metersSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_METER, getMeter, { apiUrl, apiPath, token });
   yield takeLatest(constants.UPDATE_METER, updateMeter, { apiUrl, apiPath, token });
   yield takeLatest(constants.UPDATE_FORMULA_PART, updateFormulaPart, { apiUrl, apiPath, token });
+  const meterId = yield select(selectMeterId);
+  const groupId = yield select(selectGroupId);
+  if (meterId) yield call(getMeter, { apiUrl, apiPath, token }, { meterId, groupId });
+  if (groupId) yield call(getGroupMeters, { apiUrl, apiPath, token }, { groupId });
 }
 
 export default function* () {
   const { apiUrl, apiPath } = yield take(constants.SET_API_PARAMS);
   let { token } = yield take(constants.SET_TOKEN);
-  const meterId = yield select(selectMeterId);
-  const groupId = yield select(selectGroupId);
-  if (meterId) yield call(getMeter, { apiUrl, apiPath, token }, { meterId, groupId });
-  if (groupId) yield call(getGroupMeters, { apiUrl, apiPath, token }, { groupId });
 
   while (true) {
     const sagas = yield fork(metersSagas, { apiUrl, apiPath, token });
-    const payload = yield take(constants.SET_TOKEN);
-    token = payload.token;
+    ({ token } = yield take(constants.SET_TOKEN));
     yield cancel(sagas);
   }
 }

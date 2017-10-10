@@ -29,10 +29,15 @@ export function parseResponse(response) {
     return Promise.resolve({ status: 404 });
   } else if (response.status === 422) {
     return json.then(error => Promise.resolve(wrapErrors(error.errors)));
-  } else if (response.status === 403) {
-    // HACK: dirty hack and anti-pattern. But it will allow us to keep modules clean.
-    store.dispatch(Auth.actions.signOut());
-    return json.then(error => Promise.reject(error));
+  } else if (response.status === 401) {
+    return json.then((error) => {
+      if (error.error === 'This session has expired, please login again.') {
+        // HACK: dirty hack and anti-pattern. But it will allow us to keep modules clean.
+        store.dispatch(Auth.actions.signOut());
+        return Promise.reject(error);
+      }
+      return Promise.reject(error);
+    });
   } else {
     return json.then(error => Promise.reject(error));
   }
