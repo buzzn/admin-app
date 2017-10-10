@@ -1,0 +1,13 @@
+.sidebar {
+  .sidebar-item {
+    display: block;
+    background-color: #292929;
+    height: 160px;
+    &:hover {
+      background-color: black;
+    }
+    &.active {
+      background-color: white;
+    }
+  }
+}

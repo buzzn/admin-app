@@ -26,13 +26,13 @@ const NewRoot = ({ token }) => (
             { /* FIXME: change to Switch? */ }
             <Route path="/*" render={ ({ match: { url } }) => {
               if (url === '/' || url === '/localpools') return null;
-              return <Col xs="1">
+              return <Col xs="2">
                 <Sidebar/>
               </Col>;
             } }/>
 
             <Route path="/*" render={ ({ match: { url } }) =>
-              <Col xs={ (url === '/' || url === '/localpools') ? '9' : '8' }>
+              <Col xs={ (url === '/' || url === '/localpools') ? '8' : '7' }>
                 <PartErrorBoundary part="main-part">
                   <Switch>
                     <Route path="/localpools/*" render={ () => <div>Content</div> }/>
