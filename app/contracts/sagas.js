@@ -67,11 +67,6 @@ export function* contractSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_CONTRACT, getContract, { apiUrl, apiPath, token });
   yield takeLatest(constants.UPDATE_BANK_ACCOUNT, updateBankAccount, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUP_POWERTAKERS, getPowertakers, { apiUrl, apiPath, token });
-}
-
-export default function* () {
-  const { apiUrl, apiPath } = yield take(constants.SET_API_PARAMS);
-  let { token } = yield take(constants.SET_TOKEN);
   const groupId = yield select(selectGroup);
   const contractId = yield select(selectContractId);
   if (groupId) {
@@ -81,11 +76,15 @@ export default function* () {
       yield call(getContract, { apiUrl, apiPath, token }, { contractId, groupId });
     }
   }
+}
+
+export default function* () {
+  const { apiUrl, apiPath } = yield take(constants.SET_API_PARAMS);
+  let { token } = yield take(constants.SET_TOKEN);
 
   while (true) {
     const sagas = yield fork(contractSagas, { apiUrl, apiPath, token });
-    const payload = yield take(constants.SET_TOKEN);
-    token = payload.token;
+    ({ token } = yield take(constants.SET_TOKEN));
     yield cancel(sagas);
   }
 }

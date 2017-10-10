@@ -67,8 +67,7 @@ export default function* () {
 
   while (true) {
     if (!token) {
-      const newToken = yield take(Auth.constants.SIGN_IN);
-      token = newToken.token;
+      ({ token } = yield take(Auth.constants.SIGN_IN));
     }
 
     yield put(Bubbles.actions.setToken(token));
@@ -91,6 +90,7 @@ export default function* () {
     } else {
       yield put(Auth.actions.signOut());
     }
+    token = null;
     // TODO: clean up state
   }
 }
