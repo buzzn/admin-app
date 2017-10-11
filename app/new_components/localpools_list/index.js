@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+// @flow
+import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { CardDeck, Card, CardText, CardBody, CardTitle } from 'reactstrap';
@@ -6,7 +7,20 @@ import filter from 'lodash/filter';
 import chunk from 'lodash/chunk';
 import Groups from 'groups';
 
-export class LocalpoolsList extends Component {
+type Props = {
+  // TODO: replace with action
+  loadGroups: Function,
+  myProfile: { firstName: string, lastName: string },
+  groups: Array<Object>,
+  match: { url: string },
+};
+
+export class LocalpoolsList extends React.Component<Props> {
+  static defaultProps = {
+    groups: [],
+    myProfile: { firstName: '', lastName: '' },
+  };
+
   componentWillMount() {
     this.props.loadGroups();
   }

@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// @flow
+import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import type { Dispatch } from 'redux';
 import filter from 'lodash/filter';
 import {
   Container,
@@ -20,19 +21,29 @@ import { actions } from 'actions';
 
 import LogoImg from '../../images/bz_logo_115px_white.png';
 
-export class TopNavBar extends Component {
-  static propTypes = {
-    signedIn: PropTypes.bool.isRequired,
-    dispatch: PropTypes.func.isRequired,
-    myProfile: PropTypes.shape({
-      firstName: PropTypes.string,
-      lastName: PropTypes.string,
-      image: PropTypes.string,
-    }),
-  };
+type Props = {
+  signedIn: boolean,
+  dispatch: Function,
+  myProfile: {
+    firstName: string,
+    lastName: string,
+    image?: string,
+  },
+  groups: Array<Object>,
+};
 
+type State = {
+  isOpen: boolean,
+  profileOpen: boolean,
+};
+
+export class TopNavBar extends React.Component<Props, State> {
   static defaultProps = {
-    myProfile: {},
+    myProfile: {
+      fistName: '',
+      lastName: '',
+    },
+    groups: [],
   };
 
   state = {
@@ -63,11 +74,11 @@ export class TopNavBar extends Component {
           <NavbarBrand href="" onClick={ () => dispatch(actions.switchUI('old')) }>
             <img src={ LogoImg } />
           </NavbarBrand>
-          <NavbarToggler onClick={ ::this.toggle } />
+          <NavbarToggler onClick={ this.toggle.bind(this) } />
           <Collapse isOpen={ isOpen } navbar>
             <Nav className="ml-auto" navbar>
               { signedIn &&
-              <NavDropdown isOpen={ profileOpen } toggle={ ::this.toggleProfile }>
+              <NavDropdown isOpen={ profileOpen } toggle={ this.toggleProfile.bind(this) }>
                 <DropdownToggle nav caret>
                   { image &&
                   <img className="top-avatar" src={ image } />
@@ -109,4 +120,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(TopNavBar);
+export default connect(
+  mapStateToProps,
+  (dispatch: Dispatch<*>) => ({ dispatch }),
+)(TopNavBar);

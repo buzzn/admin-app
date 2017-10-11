@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// @flow
+import * as React from 'react';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
 import Contracts from 'contracts';
@@ -7,13 +7,15 @@ import { tableParts } from 'react_table_config';
 
 import './style.scss';
 
-export class Powertakers extends Component {
-  static propTypes = {
-    loadGroupPowertakers: PropTypes.func.isRequired,
-    powertakers: PropTypes.array.isRequired,
-    loading: PropTypes.bool.isRequired,
-  };
+type Props = {
+  // TODO: replace with action
+  loadGroupPowertakers: Function,
+  powertakers: Array<Object>,
+  loading: boolean,
+  match: { params: { groupId: string } },
+};
 
+export class Powertakers extends React.Component<Props> {
   static defaultProps = {
     powertakers: [],
   };

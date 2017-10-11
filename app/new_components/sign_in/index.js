@@ -1,10 +1,19 @@
-import React from 'react';
+// @flow
+import * as React from 'react';
 import { connect } from 'react-redux';
+import type { Dispatch } from 'redux';
 import Auth from '@buzzn/module_auth';
 
 import './style.scss';
 
-export const SignIn = ({ dispatch, username, password, error }) => (
+type Props = {
+  dispatch: Function,
+  username: string,
+  password: string,
+  error?: string,
+};
+
+export const SignIn = ({ dispatch, username, password, error }: Props) => (
   <form className="form-signin">
     <h4 className="form-signin-heading">Please sign in</h4>
     { error && error !== 'Sign out' &&
@@ -47,4 +56,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(SignIn);
+export default connect(
+  mapStateToProps,
+  (dispatch: Dispatch<*>) => ({ dispatch }),
+)(SignIn);

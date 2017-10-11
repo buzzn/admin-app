@@ -1,9 +1,14 @@
+// @flow
 import React from 'react';
 import SidebarItem from './sidebar_item';
 
 import './style.scss';
 
-const Sidebar = ({ groupId }) => (
+type Props = {
+  groupId: string,
+};
+
+const Sidebar = ({ groupId }: Props) => (
   <div className="sidebar">
     <SidebarItem to="/localpools" exact={ true } icon="th-large">My Groups</SidebarItem>
     <SidebarItem to={ `/localpools/${groupId}/analytics` } icon="bolt">Analytics</SidebarItem>

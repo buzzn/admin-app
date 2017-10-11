@@ -1,18 +1,22 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// @flow
+import * as React from 'react';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
 import { injectIntl, FormattedMessage } from 'react-intl';
+import type { intlShape } from 'react-intl';
 import { tableParts } from 'react_table_config';
 import Contracts from 'contracts';
 
-export class ContractsList extends Component {
-  static propTypes = {
-    loadGroupContracts: PropTypes.func.isRequired,
-    contracts: PropTypes.array.isRequired,
-    loading: PropTypes.bool.isRequired,
-  };
+type Props = {
+  // TODO: replace with action
+  loadGroupContracts: Function,
+  contracts: Array<Object>,
+  loading: boolean,
+  match: { params: { groupId: string } },
+  intl: intlShape,
+};
 
+export class ContractsList extends React.Component<Props> {
   static defaultProps = {
     contracts: [],
   };

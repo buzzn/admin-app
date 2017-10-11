@@ -1,18 +1,24 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// @flow
+import * as React from 'react';
 import { logException } from '_util';
 
-export default class PartErrorBoundary extends Component {
-  static propTypes = {
-    part: PropTypes.string.isRequired,
-  };
+type Props = {
+  part: string,
+  children: React.Node,
+};
 
+type State = {
+  error: null | string,
+  errorInfo: null | Object,
+};
+
+export default class PartErrorBoundary extends React.Component<Props, State> {
   state = {
     error: null,
     errorInfo: null,
   };
 
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error: string, errorInfo: Object) {
     this.setState({ error, errorInfo });
     // logException(error);
   }

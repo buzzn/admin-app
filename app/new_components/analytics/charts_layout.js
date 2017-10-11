@@ -1,7 +1,20 @@
-import React from 'react';
+// @flow
+import * as React from 'react';
 import { DateTimePicker, DropdownList } from 'react-widgets';
 
-export default ({ Chart, constants, loading, limit, changeDate, timestamp, resolution, changeResolution, changePage }) => {
+type Props = {
+  Chart: React.ElementType,
+  constants: Object,
+  loading: boolean,
+  limit: boolean,
+  changeDate: Function,
+  timestamp: number,
+  resolution: string,
+  changeResolution: Function,
+  changePage: Function,
+};
+
+export default ({ Chart, constants, loading, limit, changeDate, timestamp, resolution, changeResolution, changePage }: Props) => {
   let dateFormat = 'DD MMM YYYY';
   let views = ['month', 'year', 'decade', 'century'];
 
@@ -81,4 +94,4 @@ export default ({ Chart, constants, loading, limit, changeDate, timestamp, resol
       </div>
     </div>
   );
-}
+};

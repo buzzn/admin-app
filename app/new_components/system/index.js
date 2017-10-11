@@ -1,18 +1,22 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// @flow
+import * as React from 'react';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
 import { injectIntl } from 'react-intl';
+import type { intlShape } from 'react-intl';
 import { tableParts } from 'react_table_config';
 import Meters from 'meters';
 
-export class MetersList extends Component {
-  static propTypes = {
-    loading: PropTypes.bool.isRequired,
-    meters: PropTypes.array.isRequired,
-    loadGroupMeters: PropTypes.func.isRequired,
-  };
+type Props = {
+  loading: boolean,
+  meters: Array<Object>,
+  // TODO: replace with action
+  loadGroupMeters: Function,
+  intl: intlShape,
+  match: { params: { groupId: string } },
+};
 
+export class System extends React.Component<Props> {
   static defaultProps = {
     meters: [],
   };
@@ -75,4 +79,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { loadGroupMeters: Meters.actions.loadGroupMeters })(injectIntl(MetersList));
+export default connect(mapStateToProps, { loadGroupMeters: Meters.actions.loadGroupMeters })(injectIntl(System));

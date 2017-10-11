@@ -7,7 +7,7 @@
     "test-watch": "jest --coverage --watch",
     "dev-server": "webpack-dev-server --progress --inline --hot --port=2999",
     "build": "rimraf build && webpack --config ./webpack.production.config.js --progress --profile --colors",
-    "start": "./node_modules/babel-cli/bin/babel-node.js server"
+    "flow": "flow"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +19,7 @@
     "babel-eslint": "^8.0.1",
     "babel-loader": "^7.1.2",
     "babel-preset-es2015": "^7.0.0-beta.2",
+    "babel-preset-flow": "^7.0.0-beta.2",
     "babel-preset-react": "^7.0.0-beta.2",
     "babel-preset-stage-0": "^7.0.0-beta.2",
     "babel-register": "^7.0.0-beta.2",
@@ -26,6 +27,7 @@
     "cross-env": "^5.0.5",
     "css-loader": "^0.28.5",
     "d3": "^4.11.0",
+    "empty": "^0.10.1",
     "enzyme": "^3.1.0",
     "eslint": "^4.8.0",
     "eslint-config-airbnb": "^16.0.0",
@@ -35,6 +37,7 @@
     "eslint-plugin-react": "^7.4.0",
     "extract-text-webpack-plugin": "^3.0.1",
     "file-loader": "^0.11.2",
+    "flow-bin": "^0.56.0",
     "html-webpack-plugin": "^2.30.1",
     "jest": "^21.2.1",
     "jest-cli": "^21.2.1",
