@@ -26,7 +26,7 @@ const NewRoot = ({ token }: { token?: string }) => (
     <div>
       { token && <TopNavBarContainer/> }
       { token ?
-        <Container>
+        <Container style={{ maxWidth: '1440px' }}>
           <Route exact path="/" render={ () => <Redirect to="/localpools"/> } />
           <Row>
 
