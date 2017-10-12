@@ -74,7 +74,7 @@ export class TopNavBar extends React.Component<Props, State> {
 
     return (
       <Navbar fixed="top" expand light className="new-top-nav-bar">
-        <Container>
+        <Container style={{ maxWidth: '1440px' }}>
           <NavbarBrand href="" onClick={ () => dispatch(actions.switchUI('old')) }>
             <img src={ LogoImg } />
           </NavbarBrand>
