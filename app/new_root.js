@@ -19,11 +19,12 @@ import './react_table_config';
 import 'buzzn-style';
 import 'react-table/react-table.css';
 import 'react-widgets/dist/css/react-widgets.css';
+import './new_root.scss';
 
 const NewRoot = ({ token }: { token?: string }) => (
   <BrowserRouter>
     <div>
-      <TopNavBarContainer signedIn={ !!token } />
+      { token && <TopNavBarContainer/> }
       { token ?
         <Container>
           <Route exact path="/" render={ () => <Redirect to="/localpools"/> } />
