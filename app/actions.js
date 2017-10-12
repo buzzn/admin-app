@@ -6,6 +6,8 @@ export const constants = {
   SET_USER_ME: 'buzzn_admin/SET_USER_ME',
   SET_USER_ME_VALIDATION_RULES: 'buzzn_admin/SET_USER_ME_VALIDATION_RULES',
   UPDATE_USER_ME: 'buzzn_admin/UPDATE_USER_ME',
+
+  SWITCH_UI: 'buzzn_admin/SWITCH_UI',
 };
 
 export const actions = {
@@ -15,4 +17,6 @@ export const actions = {
     { type: constants.SET_USER_ME_VALIDATION_RULES, userMeValidationRules }),
   updateUserMe: ({ params, resolve, reject }) => (
     { type: constants.UPDATE_USER_ME, params, resolve, reject }),
+
+  switchUI: uiVer => ({ type: constants.SWITCH_UI, uiVer }),
 };

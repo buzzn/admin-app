@@ -45,7 +45,15 @@ export function* updateUserMe({ apiUrl, apiPath, token }, { params, resolve, rej
   }
 }
 
+export function* switchUI(payload) {
+  yield call(api.setUIVer, payload.uiVer);
+}
+
 export default function* () {
+  const uiVer = yield call(api.getUIVer);
+  yield put(actions.switchUI(uiVer));
+  yield takeLatest(constants.SWITCH_UI, switchUI);
+
   const { apiUrl, apiPath, authPath, secure } = yield select(getConfig);
 
   if (secure && window.location.protocol !== 'https:') {
