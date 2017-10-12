@@ -6,6 +6,7 @@ import Contracts from 'contracts';
 import { tableParts } from 'react_table_config';
 
 import './style.scss';
+import DefaultPerson from '../../images/default_person.jpg';
 
 type Props = {
   // TODO: replace with action
@@ -32,7 +33,7 @@ export class Powertakers extends React.Component<Props> {
 
     const data = powertakers.map(p => ({
       ...p,
-      name: p.type === 'person' ? { value: `${p.firstName} ${p.lastName}`, image: p.image } : { value: p.name },
+      name: p.type === 'person' ? { value: `${p.firstName} ${p.lastName}`, image: p.image || DefaultPerson } : { value: p.name },
       location: 'Location',
       link: `/localpools/${groupId}/powertakers/${p.contractId}`,
     }));
