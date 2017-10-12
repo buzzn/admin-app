@@ -11,18 +11,22 @@ import {
   NavbarToggler,
   NavbarBrand,
   Nav,
+  NavItem,
   NavDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
+  InputGroup,
+  InputGroupAddon,
+  Input,
 } from 'reactstrap';
 import Auth from '@buzzn/module_auth';
 import { actions } from 'actions';
 
-import LogoImg from '../../images/bz_logo_115px_white.png';
+import './style.scss';
+import LogoImg from '../../images/logo_black.png';
 
 type Props = {
-  signedIn: boolean,
   dispatch: Function,
   myProfile: {
     firstName: string,
@@ -64,20 +68,31 @@ export class TopNavBar extends React.Component<Props, State> {
   }
 
   render() {
-    const { signedIn, dispatch, myProfile: { firstName, lastName, image }, groups } = this.props;
+    const { dispatch, myProfile: { firstName, lastName, image }, groups } = this.props;
     const { isOpen, profileOpen } = this.state;
     const myName = firstName ? `${firstName} ${lastName}` : 'My profile';
 
     return (
-      <Navbar fixed="top" expand light className="top-nav-bar">
+      <Navbar fixed="top" expand light className="new-top-nav-bar">
         <Container>
           <NavbarBrand href="" onClick={ () => dispatch(actions.switchUI('old')) }>
             <img src={ LogoImg } />
           </NavbarBrand>
           <NavbarToggler onClick={ this.toggle.bind(this) } />
           <Collapse isOpen={ isOpen } navbar>
+            <InputGroup className="nav-search">
+              <Input placeholder="Search"/>
+              <InputGroupAddon>
+                <i className="fa fa-search"/>
+              </InputGroupAddon>
+            </InputGroup>
             <Nav className="ml-auto" navbar>
-              { signedIn &&
+              <NavItem className="icon-nav-item">
+                <i className="fa fa-bell"/>
+              </NavItem>
+              <NavItem className="icon-nav-item">
+                <i className="fa fa-cog"/>
+              </NavItem>
               <NavDropdown isOpen={ profileOpen } toggle={ this.toggleProfile.bind(this) }>
                 <DropdownToggle nav caret>
                   { image &&
@@ -104,7 +119,6 @@ export class TopNavBar extends React.Component<Props, State> {
                   <DropdownItem onClick={ () => dispatch(Auth.actions.signOut()) }>Sign Out</DropdownItem>
                 </DropdownMenu>
               </NavDropdown>
-              }
             </Nav>
           </Collapse>
         </Container>
