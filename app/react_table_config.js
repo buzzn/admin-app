@@ -1,4 +1,5 @@
-import React from 'react';
+// @flow
+import * as React from 'react';
 import { ReactTableDefaults } from 'react-table';
 import { Link } from 'react-router-dom';
 
@@ -31,25 +32,43 @@ Object.assign(ReactTableDefaults, {
 
 export const tableParts = {
   components: {
-    partyNameCell: ({ value }) => <span>
-                                  { value.image && <img src={ value.image } className="table-avatar" /> }{ value.value }
-                                  </span>,
-    linkCell: ({ value }) => <Link to={ value }
-                                   className="btn btn-outline-secondary"
-                                   style={{ float: 'right', marginRight: '15px' }}>
-                              View
-                            </Link>,
+    partyNameCell: ({ value }: { value: { image?: string, value: string } }): React.Node => (
+      <span>
+        { value.image && <img src={ value.image } className="table-avatar" /> }{ value.value }
+      </span>
+    ),
+    linkCell: ({ value }: { value: string }): React.Node => (
+      <Link to={ value }
+            className="btn btn-outline-secondary"
+            style={{ float: 'right', marginRight: '15px' }}>
+        View
+      </Link>
+    ),
+    iconCell: ({ icon }: { icon: string }): React.Node => (
+      <span style={{ float: 'right', marginRight: '15px' }}>
+        <i className={ `fa fa-${icon}` }/>
+      </span>
+    ),
+    headerCell: ({ title }: { title: string }): React.Node => (
+      <span>
+        { title }{ ' ' }
+        <span className="sort-icon-group">
+          <i className="fa fa-sort-asc"/>
+          <i className="fa fa-sort-desc"/>
+        </span>
+      </span>
+    ),
   },
   filters: {
-    filterByValue: (filter, row, column) => {
+    filterByValue: (filter: Object, row: Object, column: Object): string | boolean => {
       const id = filter.pivotId || filter.id;
       return row[id] !== undefined ? String(row[id].value).toLowerCase().includes(filter.value) : true;
     },
   },
   sort: {
-    sortByValue: (a, b) => {
-      a = a.value;
-      b = b.value;
+    sortByValue: (x: { value: any }, y: { value: any }): number => {
+      let a = x.value;
+      let b = y.value;
       // force null and undefined to the bottom
       a = (a === null || a === undefined) ? -Infinity : a;
       b = (b === null || b === undefined) ? -Infinity : b;

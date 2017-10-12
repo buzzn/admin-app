@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import ReactTable from 'react-table';
 import { injectIntl } from 'react-intl';
 import type { intlShape } from 'react-intl';
-import { tableParts } from 'react_table_config';
+import { tableParts as TableParts } from 'react_table_config';
 import Meters from 'meters';
 
 type Props = {
@@ -40,12 +40,12 @@ export class System extends React.Component<Props> {
 
     const columns = [
       {
-        Header: 'Type',
+        Header: () => <TableParts.components.headerCell title="Type"/>,
         accessor: 'type',
         minWidth: 200,
       },
       {
-        Header: 'Meter',
+        Header: () => <TableParts.components.headerCell title="Meter"/>,
         accessor: 'meter',
         minWidth: 200,
       },
@@ -56,7 +56,7 @@ export class System extends React.Component<Props> {
         filterable: false,
         resizable: false,
         width: 100,
-        Cell: tableParts.components.linkCell,
+        Cell: () => <TableParts.components.iconCell icon="cog"/>,
       },
     ];
 

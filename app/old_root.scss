@@ -4,93 +4,93 @@
 }
 
 body {
-  background-color: #e7e6e6;
-
-  .top-part,
-  .navigation,
-  .bottom-part {
-    background-color: #ffffff;
-  }
-  .top-part .top-content,
-  .navigation,
-  .bottom-part {
-    border: solid lightgrey 1px;
-  }
-  .top-part {
-    margin-bottom: 1.25em;
-    color: #a5a5a5;
-    .overview-header {
-      font-size: 1.5em;
-      background-color: #e7e6e6;
-      padding: 15px;
-      margin-left: -15px;
-      margin-right: -15px;
-      color: black;
+  .old-ui {
+    .top-part,
+    .navigation,
+    .bottom-part {
+      background-color: #ffffff;
     }
-    .title {
-      color: #ffffff;
-      font-weight: bold;
-      padding: 15px;
-      font-size: 1.125em;
-      margin-left: -15px;
-      margin-right: -15px;
+    .top-part .top-content,
+    .navigation,
+    .bottom-part {
+      border: solid lightgrey 1px;
     }
-    .left-col,
-    .right-col {
+    .top-part {
+      margin-bottom: 1.25em;
+      color: #a5a5a5;
+      .overview-header {
+        font-size: 1.5em;
+        background-color: #e7e6e6;
+        padding: 15px;
+        margin-left: -15px;
+        margin-right: -15px;
+        color: black;
+      }
+      .title {
+        color: #ffffff;
+        font-weight: bold;
+        padding: 15px;
+        font-size: 1.125em;
+        margin-left: -15px;
+        margin-right: -15px;
+      }
+      .left-col,
+      .right-col {
+        padding-top: 15px;
+        padding-bottom: 15px;
+      }
+      .left-col {
+        border-right: solid lightgrey 1px;
+      }
+      .label {
+        color: black;
+      }
+      .top-avatar {
+        width: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+    }
+    .navigation,
+    .bottom-part {
       padding-top: 15px;
       padding-bottom: 15px;
+      margin-bottom: 5px;
     }
-    .left-col {
-      border-right: solid lightgrey 1px;
+    .no-padding {
+      padding: 0;
     }
-    .label {
-      color: black;
+    .padding-top {
+      padding-top: 15px;
     }
-    .top-avatar {
-      width: 40px;
-      border-radius: 50%;
-      margin-right: 10px;
+    .padding-bottom {
+      padding-bottom: 15px;
     }
-  }
-  .navigation,
-  .bottom-part {
-    padding-top: 15px;
-    padding-bottom: 15px;
-    margin-bottom: 5px;
-  }
-  .no-padding {
-    padding: 0;
-  }
-  .padding-top {
-    padding-top: 15px;
-  }
-  .padding-bottom {
-    padding-bottom: 15px;
-  }
-  .thead-default th {
-    background-color: darkgrey;
-  }
-  .table th, .table td {
-    border-top: 1px solid darkgrey;
-  }
-  .btn-beige {
-    background-color: #fff2cc;
-  }
-  .ReactTable {
-    .rt-table {
-      .rt-thead {
-        background: darkgrey;
-        font-weight: bold;
-        color: #464a4c;
-        .rt-tr {
-          .rt-th {
-            text-align: left;
+    .thead-default th {
+      background-color: darkgrey;
+    }
+    .table th, .table td {
+      border-top: 1px solid darkgrey;
+    }
+    .btn-beige {
+      background-color: #fff2cc;
+    }
+    .ReactTable {
+      .rt-table {
+        .rt-thead {
+          background: darkgrey;
+          font-weight: bold;
+          color: #464a4c;
+          .rt-tr {
+            .rt-th {
+              text-align: left;
+            }
           }
         }
-      }
-      .rt-tbody {
-        .rt-tr-group {
-          border-bottom: 1px solid darkgrey;
+        .rt-tbody {
+          .rt-tr-group {
+            border-bottom: 1px solid darkgrey;
+          }
         }
       }
     }

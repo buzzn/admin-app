@@ -3,7 +3,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
 import Contracts from 'contracts';
-import { tableParts } from 'react_table_config';
+import { tableParts as TableParts } from 'react_table_config';
 
 import './style.scss';
 
@@ -39,15 +39,15 @@ export class Powertakers extends React.Component<Props> {
 
     const columns = [
       {
-        Header: 'Name',
+        Header: () => <TableParts.components.headerCell title="Name"/>,
         accessor: 'name',
         minWidth: 200,
-        filterMethod: tableParts.filters.filterByValue,
-        sortMethod: tableParts.sort.sortByValue,
-        Cell: tableParts.components.partyNameCell,
+        filterMethod: TableParts.filters.filterByValue,
+        sortMethod: TableParts.sort.sortByValue,
+        Cell: TableParts.components.partyNameCell,
       },
       {
-        Header: 'Location',
+        Header: () => <TableParts.components.headerCell title="Location"/>,
         accessor: 'location',
         minWidth: 200,
       },
@@ -58,7 +58,7 @@ export class Powertakers extends React.Component<Props> {
         filterable: false,
         resizable: false,
         width: 100,
-        Cell: tableParts.components.linkCell,
+        Cell: () => <TableParts.components.iconCell icon="cog"/>,
       },
     ];
 
