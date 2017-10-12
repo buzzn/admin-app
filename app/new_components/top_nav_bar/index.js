@@ -25,6 +25,7 @@ import { actions } from 'actions';
 
 import './style.scss';
 import LogoImg from '../../images/logo_black.png';
+import DefaultPerson from '../../images/default_person.jpg';
 
 type Props = {
   dispatch: Function,
@@ -95,9 +96,7 @@ export class TopNavBar extends React.Component<Props, State> {
               </NavItem>
               <NavDropdown isOpen={ profileOpen } toggle={ this.toggleProfile.bind(this) }>
                 <DropdownToggle nav caret>
-                  { image &&
-                  <img className="top-avatar" src={ image } />
-                  }
+                  <img className="top-avatar" src={ image || DefaultPerson } />
                   { myName }
                 </DropdownToggle>
                 <DropdownMenu>
