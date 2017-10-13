@@ -6,12 +6,16 @@ import { injectIntl } from 'react-intl';
 import type { intlShape } from 'react-intl';
 import { tableParts as TableParts } from 'react_table_config';
 import Meters from 'meters';
+import Groups from 'groups';
+import Breadcrumbs from 'new_components/breadcrumbs';
 
 type Props = {
   loading: boolean,
   meters: Array<Object>,
+  group: Object,
   // TODO: replace with action
   loadGroupMeters: Function,
+  loadGroup: Function,
   intl: intlShape,
   match: { params: { groupId: string } },
 };
@@ -22,14 +26,20 @@ export class System extends React.Component<Props> {
   };
 
   componentWillMount() {
-    const { loadGroupMeters, match: { params: { groupId } } } = this.props;
+    const { loadGroupMeters, loadGroup, group, match: { params: { groupId } } } = this.props;
+    if (group.id !== groupId) loadGroup(groupId);
     loadGroupMeters(groupId);
   }
 
   render() {
-    const { loading, meters, match: { params: { groupId } }, intl } = this.props;
+    const { loading, meters, group, match: { params: { groupId } }, intl } = this.props;
 
-    if (loading) return (<div>Loading...</div>);
+    if (loading || !group.id) return (<div>Loading...</div>);
+
+    const breadcrumbs = [
+      { id: group.id, link: `/localpools/${group.id}/system`, title: group.name },
+      { id: '-----', title: 'Meters' },
+    ];
 
     const data = meters.map(m => ({
       ...m,
@@ -61,9 +71,9 @@ export class System extends React.Component<Props> {
     ];
 
     return [
-      <div key={ 1 }>
-        <h5>System setup</h5>
-        List of all <strong>meters</strong> in your local pool.
+      <div className="center-content-header" key={ 1 }>
+        <Breadcrumbs breadcrumbs={ breadcrumbs }/>
+        <p className="h4">System setup</p>
       </div>,
       <div className="p-0" key={ 2 }>
         <ReactTable {...{ data, columns }} />
@@ -74,9 +84,13 @@ export class System extends React.Component<Props> {
 
 function mapStateToProps(state) {
   return {
+    group: state.groups.group,
     loading: state.meters.loadingGroupMeters,
     meters: state.meters.groupMeters,
   };
 }
 
-export default connect(mapStateToProps, { loadGroupMeters: Meters.actions.loadGroupMeters })(injectIntl(System));
+export default connect(mapStateToProps, {
+  loadGroupMeters: Meters.actions.loadGroupMeters,
+  loadGroup: Groups.actions.loadGroup,
+})(injectIntl(System));

@@ -7,7 +7,16 @@ body {
   padding-top: 96px;
   background-color: white;
   .new-ui {
+    .center-content-wrapper {
+      padding: 0 32px;
+    }
+    .center-content-header {
+      box-shadow: 0 0 8px 0 rgba(0,0,0,0.13);
+      margin: 0 -32px 20px -32px;
+      padding: 20px 32px;
+    }
     .ReactTable {
+      border: none;
       .rt-table {
         .rt-thead {
           font-weight: bold;
