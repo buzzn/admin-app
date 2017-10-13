@@ -5,8 +5,52 @@
 
 body {
   padding-top: 96px;
-  .container-wrapper {
-    width: 1440px;
-    margin: 0 auto;
+  background-color: white;
+  .new-ui {
+    .ReactTable {
+      .rt-table {
+        .rt-thead {
+          font-weight: bold;
+          box-shadow: none;
+          border-bottom: 1px solid #e0e0e0;
+          height: 50px;
+          .rt-tr {
+            .rt-th {
+              line-height: 38px;
+              text-align: left;
+              border-right: none;
+              .sort-icon-group {
+                position: relative;
+                .fa {
+                  position: absolute;
+                  top: 2px;
+                  left: 6px;
+                }
+              }
+              &.-sort-desc {
+                box-shadow: none;
+                .sort-icon-group .fa-sort-asc {
+                  display: none;
+                }
+              }
+              &.-sort-asc {
+                box-shadow: none;
+                .sort-icon-group .fa-sort-desc {
+                  display: none;
+                }
+              }
+            }
+          }
+        }
+        .rt-tbody {
+          .rt-tr-group {
+            border-bottom: 1px solid #e0e0e0;
+          }
+          .rt-td {
+            border-right: none;
+          }
+        }
+      }
+    }
   }
 }

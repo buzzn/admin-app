@@ -23,7 +23,7 @@ import './new_root.scss';
 
 const NewRoot = ({ token }: { token?: string }) => (
   <BrowserRouter>
-    <div>
+    <div className="new-ui">
       { token && <TopNavBarContainer/> }
       { token ?
         <Container style={{ maxWidth: '1440px' }}>

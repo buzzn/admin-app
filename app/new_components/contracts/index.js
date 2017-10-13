@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import ReactTable from 'react-table';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import type { intlShape } from 'react-intl';
-import { tableParts } from 'react_table_config';
+import { tableParts as TableParts } from 'react_table_config';
 import Contracts from 'contracts';
 
 type Props = {
@@ -42,22 +42,22 @@ export class ContractsList extends React.Component<Props> {
 
     const columns = [
       {
-        Header: intl.formatMessage({ id: 'admin.contracts.tableType' }),
+        Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.contracts.tableType' }) }/>,
         accessor: 'type',
         minWidth: 200,
       },
       {
-        Header: intl.formatMessage({ id: 'admin.contracts.tableStatus' }),
+        Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.contracts.tableStatus' }) }/>,
         accessor: 'status',
         minWidth: 200,
       },
       {
-        Header: intl.formatMessage({ id: 'admin.contracts.tableSince' }),
+        Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.contracts.tableSince' }) }/>,
         accessor: 'since',
         minWidth: 100,
       },
       {
-        Header: intl.formatMessage({ id: 'admin.contracts.tableNumber' }),
+        Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.contracts.tableNumber' }) }/>,
         accessor: 'number',
         minWidth: 200,
       },
@@ -68,7 +68,7 @@ export class ContractsList extends React.Component<Props> {
         filterable: false,
         resizable: false,
         width: 100,
-        Cell: tableParts.components.linkCell,
+        Cell: () => <TableParts.components.iconCell icon="cog"/>,
       },
     ];
 

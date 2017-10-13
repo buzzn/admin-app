@@ -39,7 +39,7 @@ import './old_root.scss';
 
 const OldRoot = ({ token }) => (
   <BrowserRouter>
-    <div>
+    <div className="old-ui">
       <TopNavBarContainer signedIn={ !!token } />
       { token ?
         <div className="container">
