@@ -1,0 +1,21 @@
+.breadcrumbs {
+  height: 16px;
+  color: #9E9E9E;
+  font-size: 13px;
+  line-height: 16px;
+  background-color: white;
+  ul {
+    list-style: none;
+    padding: 0;
+    li {
+      display: inline-block;
+      a {
+        color: #9E9E9E;
+      }
+    }
+  }
+  .breadcrumb-type {
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+}

@@ -6,11 +6,15 @@ import { injectIntl, FormattedMessage } from 'react-intl';
 import type { intlShape } from 'react-intl';
 import { tableParts as TableParts } from 'react_table_config';
 import Contracts from 'contracts';
+import Groups from 'groups';
+import Breadcrumbs from 'new_components/breadcrumbs';
 
 type Props = {
   // TODO: replace with action
+  loadGroup: Function,
   loadGroupContracts: Function,
   contracts: Array<Object>,
+  group: Object,
   loading: boolean,
   match: { params: { groupId: string } },
   intl: intlShape,
@@ -22,14 +26,20 @@ export class ContractsList extends React.Component<Props> {
   };
 
   componentWillMount() {
-    const { loadGroupContracts, match: { params: { groupId } } } = this.props;
+    const { loadGroupContracts, loadGroup, group, match: { params: { groupId } } } = this.props;
+    if (group.id !== groupId) loadGroup(groupId);
     loadGroupContracts(groupId);
   }
 
   render() {
-    const { contracts, loading, match: { params: { groupId } }, intl } = this.props;
+    const { contracts, group, loading, match: { params: { groupId } }, intl } = this.props;
 
-    if (loading) return (<div>Loading...</div>);
+    if (loading || !group.id) return (<div>Loading...</div>);
+
+    const breadcrumbs = [
+      { id: group.id, link: `/localpools/${group.id}/contracts`, title: group.name },
+      { id: '-----', title: 'Contracts' },
+    ];
 
     const data = contracts.filter(c => !!c.id).map(c => ({
       ...c,
@@ -73,9 +83,9 @@ export class ContractsList extends React.Component<Props> {
     ];
 
     return [
-      <div key={ 1 }>
-        <h5><FormattedMessage id="admin.contracts.headerGroupContracts"/></h5>
-        <FormattedMessage id="admin.contracts.descriptionGroupContracts"/>
+      <div className="center-content-header" key={ 1 }>
+        <Breadcrumbs breadcrumbs={ breadcrumbs }/>
+        <p className="h4"><FormattedMessage id="admin.contracts.headerGroupContracts"/></p>
       </div>,
       <div className="p-0" key={ 2 }>
         <ReactTable {...{ data, columns }} />
@@ -86,6 +96,7 @@ export class ContractsList extends React.Component<Props> {
 
 function mapStateToProps(state) {
   return {
+    group: state.groups.group,
     contracts: state.contracts.groupContracts,
     loading: state.contracts.loadingGroupContracts,
   };
@@ -93,4 +104,5 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   loadGroupContracts: Contracts.actions.loadGroupContracts,
+  loadGroup: Groups.actions.loadGroup,
 })(injectIntl(ContractsList));

@@ -38,17 +38,19 @@ const NewRoot = ({ token }: { token?: string }) => (
 
             <Route path="/*" render={ ({ match: { url } }) =>
               <Col xs={ (url === '/' || url === '/localpools') ? '9' : '8' } className="pl-0 pr-0">
-                <PartErrorBoundary part="main-part">
-                  <Switch>
-                    <Route path="/localpools/:groupId/analytics" component={ AnalyticsContainer }/>
-                    <Route path="/localpools/:groupId/powertakers" component={ PowertakersContainer }/>
-                    <Route path="/localpools/:groupId/contracts" component={ ContractsContainer }/>
-                    <Route path="/localpools/:groupId/system" component={ SystemContainer }/>
-                    <Route path="/localpools/*" render={ () => <div>Content</div> }/>
-                    <Route path="/localpools" component={ LocalpoolsListContainer }/>
-                    <Route render={ () => (<div>404</div>) } />
-                  </Switch>
-                </PartErrorBoundary>
+                <div className="center-content-wrapper">
+                  <PartErrorBoundary part="main-part">
+                    <Switch>
+                      <Route path="/localpools/:groupId/analytics" component={ AnalyticsContainer }/>
+                      <Route path="/localpools/:groupId/powertakers" component={ PowertakersContainer }/>
+                      <Route path="/localpools/:groupId/contracts" component={ ContractsContainer }/>
+                      <Route path="/localpools/:groupId/system" component={ SystemContainer }/>
+                      <Route path="/localpools/*" render={ () => <div>Content</div> }/>
+                      <Route path="/localpools" component={ LocalpoolsListContainer }/>
+                      <Route render={ () => (<div>404</div>) } />
+                    </Switch>
+                  </PartErrorBoundary>
+                </div>
               </Col>
             }/>
 
