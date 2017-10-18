@@ -7,7 +7,7 @@
     "test-watch": "jest --coverage --watch",
     "dev-server": "webpack-dev-server --progress --inline --hot --port=2999",
     "build": "rimraf build && webpack --config ./webpack.production.config.js --progress --profile --colors",
-    "flow": "flow"
+    "flow": "flow check"
   },
   "keywords": [],
   "author": "",
@@ -32,12 +32,13 @@
     "eslint": "^4.8.0",
     "eslint-config-airbnb": "^16.0.0",
     "eslint-import-resolver-webpack": "^0.8.3",
+    "eslint-plugin-flowtype": "^2.39.1",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.4.0",
     "extract-text-webpack-plugin": "^3.0.1",
     "file-loader": "^0.11.2",
-    "flow-bin": "^0.56.0",
+    "flow-bin": "^0.57.3",
     "html-webpack-plugin": "^2.30.1",
     "jest": "^21.2.1",
     "jest-cli": "^21.2.1",
@@ -86,7 +87,7 @@
     "react-router-dom": "^4.2.2",
     "react-select": "^1.0.0-rc.10",
     "react-table": "^6.6.0",
-    "react-transition-group": "^1.2.0",
+    "react-transition-group": "^2.2.1",
     "react-widgets": "4.0.2",
     "react-widgets-moment": "4.0.2",
     "reactstrap": "^5.0.0-alpha.3",
@@ -111,7 +112,8 @@
       "import/resolver": "webpack"
     },
     "plugins": [
-      "react"
+      "react",
+      "flowtype"
     ],
     "rules": {
       "max-len": [

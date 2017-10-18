@@ -1,8 +1,9 @@
+// @flow
+import { GroupsStats } from './reducers';
+
 export const constants = {
   SET_API_PARAMS: 'buzzn_groups/SET_API_PARAMS',
   SET_TOKEN: 'buzzn_groups/SET_TOKEN',
-  START_CONFIG: 'buzzn_groups/START_CONFIG',
-  END_CONFIG: 'buzzn_groups/END_CONFIG',
 
   LOAD_GROUP: 'buzzn_groups/LOAD_GROUP',
   LOADING_GROUP: 'buzzn_groups/LOADING_GROUP',
@@ -13,21 +14,63 @@ export const constants = {
   LOADING_GROUPS: 'buzzn_groups/LOADING_GROUPS',
   LOADED_GROUPS: 'buzzn_groups/LOADED_GROUPS',
   SET_GROUPS: 'buzzn_groups/SET_GROUPS',
+
+  LOAD_GROUPS_STATS: 'buzzn_groups/LOAD_GROUPS_STATS',
+  LOADING_GROUPS_STATS: 'buzzn_groups/LOADING_GROUPS_STATS',
+  LOADED_GROUPS_STATS: 'buzzn_groups/LOADED_GROUPS_STATS',
+  SET_GROUPS_STATS: 'buzzn_groups/SET_GROUPS_STATS',
 };
 
+export type SetApiParams = {| type: 'buzzn_groups/SET_API_PARAMS', apiPath: string, apiUrl: string |};
+export type SetToken = {| type: 'buzzn_groups/SET_TOKEN', token: string |};
+
+export type LoadGroup = {| type: 'buzzn_groups/LOAD_GROUP', groupId: string |};
+export type LoadingGroup = { type: 'buzzn_groups/LOADING_GROUP' };
+export type LoadedGroup = {| type: 'buzzn_groups/LOADED_GROUP' |};
+export type SetGroup = {| type: 'buzzn_groups/SET_GROUP', group: Object |};
+
+export type LoadGroups = {| type: 'buzzn_groups/LOAD_GROUPS' |};
+export type LoadingGroups = {| type: 'buzzn_groups/LOADING_GROUPS' |};
+export type LoadedGroups = {| type: 'buzzn_groups/LOADED_GROUPS' |};
+export type SetGroups = {| type: 'buzzn_groups/SET_GROUPS', groups: Array<Object> |};
+
+export type LoadGroupsStats = {| type: 'buzzn_groups/LOAD_GROUPS_STATS' |};
+export type LoadingGroupsStats = {| type: 'buzzn_groups/LOADING_GROUPS_STATS' |};
+export type LoadedGroupsStats = {| type: 'buzzn_groups/LOADED_GROUPS_STATS' |};
+export type SetGroupsStats = {| type: 'buzzn_groups/SET_GROUPS_STATS', groupsStats: GroupsStats |};
+
+export type GroupsAction =
+  SetApiParams |
+  SetToken |
+  LoadGroup |
+  LoadingGroup |
+  LoadedGroup |
+  SetGroup |
+  LoadGroups |
+  LoadingGroups |
+  LoadedGroups |
+  SetGroups |
+  LoadGroupsStats |
+  LoadingGroupsStats |
+  LoadedGroupsStats |
+  SetGroupsStats;
+
 export const actions = {
-  setApiParams: ({ apiPath, apiUrl }) => ({ type: constants.SET_API_PARAMS, apiPath, apiUrl }),
-  setToken: token => ({ type: constants.SET_TOKEN, token }),
-  startConfig: () => ({ type: constants.START_CONFIG }),
-  endConfig: () => ({ type: constants.END_CONFIG }),
+  setApiParams: ({ apiPath, apiUrl }: { apiPath: string, apiUrl: string }): SetApiParams => ({ type: constants.SET_API_PARAMS, apiPath, apiUrl }),
+  setToken: (token: string): SetToken => ({ type: constants.SET_TOKEN, token }),
 
-  loadGroup: groupId => ({ type: constants.LOAD_GROUP, groupId }),
-  loadingGroup: () => ({ type: constants.LOADING_GROUP }),
-  loadedGroup: () => ({ type: constants.LOADED_GROUP }),
-  setGroup: group => ({ type: constants.SET_GROUP, group }),
+  loadGroup: (groupId: string): LoadGroup => ({ type: constants.LOAD_GROUP, groupId }),
+  loadingGroup: (): LoadingGroup => ({ type: constants.LOADING_GROUP }),
+  loadedGroup: (): LoadedGroup => ({ type: constants.LOADED_GROUP }),
+  setGroup: (group: Object): SetGroup => ({ type: constants.SET_GROUP, group }),
 
-  loadGroups: () => ({ type: constants.LOAD_GROUPS }),
-  loadingGroups: () => ({ type: constants.LOADING_GROUPS }),
-  loadedGroups: () => ({ type: constants.LOADED_GROUPS }),
-  setGroups: groups => ({ type: constants.SET_GROUPS, groups }),
+  loadGroups: (): LoadGroups => ({ type: constants.LOAD_GROUPS }),
+  loadingGroups: (): LoadingGroups => ({ type: constants.LOADING_GROUPS }),
+  loadedGroups: (): LoadedGroups => ({ type: constants.LOADED_GROUPS }),
+  setGroups: (groups: Array<Object>): SetGroups => ({ type: constants.SET_GROUPS, groups }),
+
+  loadGroupsStats: (): LoadGroupsStats => ({ type: constants.LOAD_GROUPS_STATS }),
+  loadingGroupsStats: (): LoadingGroupsStats => ({ type: constants.LOADING_GROUPS_STATS }),
+  loadedGroupsStats: (): LoadedGroupsStats => ({ type: constants.LOADED_GROUPS_STATS }),
+  setGroupsStats: (groupsStats: GroupsStats): SetGroupsStats => ({ type: constants.SET_GROUPS_STATS, groupsStats }),
 };

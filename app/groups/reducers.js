@@ -1,15 +1,42 @@
+// @flow
 import { constants } from './actions';
+import type { GroupsAction } from './actions';
 
 export const initialState = {
-  configured: false,
   loadingGroups: false,
+  loadingGroupsStats: false,
   loadingUserGroups: false,
   loadingGroup: false,
   groups: [],
   group: {},
+  lastGroupsStatsReceived: null,
+  groupsStats: {},
 };
 
-export default function (state = initialState, action) {
+export type GroupStats = {
+  consumption: string,
+  production: string,
+  autarchy: null | string,
+  solar: boolean,
+  fire: boolean,
+};
+
+export type GroupsStats = {
+  [id: string]: GroupStats,
+};
+
+export type GroupsState = {
+  +loadingGroups: boolean,
+  +loadingGroupsStats: boolean,
+  +loadingUserGroups: boolean,
+  +loadingGroup: boolean,
+  +groups: Array<Object>,
+  +group: Object,
+  +lastGroupsStatsReceived: null | Date,
+  +groupsStats: GroupsStats,
+};
+
+export default function (state: GroupsState = initialState, action: GroupsAction): GroupsState {
   switch (action.type) {
     case constants.LOAD_GROUP:
       return { ...state, groupId: action.groupId };
@@ -27,10 +54,12 @@ export default function (state = initialState, action) {
     case constants.SET_GROUPS:
       return { ...state, groups: action.groups };
 
-    case constants.START_CONFIG:
-      return { ...state, configured: false };
-    case constants.END_CONFIG:
-      return { ...state, configured: true };
+    case constants.LOADING_GROUPS_STATS:
+      return { ...state, loadingGroupsStats: true };
+    case constants.LOADED_GROUPS_STATS:
+      return { ...state, loadingGroupsStats: false };
+    case constants.SET_GROUPS_STATS:
+      return { ...state, groupsStats: action.groupsStats, lastGroupsStatsReceived: new Date() };
 
     case constants.SET_TOKEN:
     default:
