@@ -1,17 +1,22 @@
 // @flow
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { CardDeck, Card, CardText, CardBody, CardTitle } from 'reactstrap';
+import { CardDeck } from 'reactstrap';
 import filter from 'lodash/filter';
 import chunk from 'lodash/chunk';
 import Groups from 'groups';
+import withHover from 'new_components/with_hover';
+import type { GroupsStats } from '../../groups/reducers';
+import LocalpoolCard from './localpool_card';
+
+const HoverCard = withHover(LocalpoolCard);
 
 type Props = {
-  // TODO: replace with action
+  // TODO: proper action type
   loadGroups: Function,
   myProfile: { firstName: string, lastName: string },
   groups: Array<Object>,
+  groupsStats: GroupsStats,
   match: { url: string },
 };
 
@@ -26,7 +31,7 @@ export class LocalpoolsList extends React.Component<Props> {
   }
 
   render() {
-    const { myProfile: { firstName, lastName }, groups, match: { url } } = this.props;
+    const { myProfile: { firstName, lastName }, groups, groupsStats, match: { url } } = this.props;
 
     return (
       <div>
@@ -35,14 +40,11 @@ export class LocalpoolsList extends React.Component<Props> {
           chunk(groups, 2).map(groupPair => (
             <CardDeck key={ groupPair[0].id }>
               {
-                groupPair.map(group => (
-                  <Card key={ group.id }>
-                    <CardBody>
-                      <CardTitle><Link to={ `${url}/${group.id}` }>{ group.name }</Link></CardTitle>
-                      <CardText>{ group.description }</CardText>
-                    </CardBody>
-                  </Card>
-                ))
+                groupPair.map(group => <HoverCard
+                  key={ group.id }
+                  group={ group }
+                  groupStats={ groupsStats[group.id] }
+                  url={ url }/>)
               }
             </CardDeck>
           ))
@@ -56,6 +58,7 @@ function mapStateToProps(state) {
   return {
     myProfile: state.app.userMe,
     groups: filter(state.groups.groups, group => group.type === 'group_localpool'),
+    groupsStats: state.groups.groupsStats,
   };
 }
 
