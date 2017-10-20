@@ -8,6 +8,7 @@ import { tableParts as TableParts } from 'react_table_config';
 import Meters from 'meters';
 import Groups from 'groups';
 import Breadcrumbs from 'new_components/breadcrumbs';
+import RegistersList from './registers_list';
 
 type Props = {
   loading: boolean,
@@ -66,7 +67,7 @@ export class System extends React.Component<Props> {
         filterable: false,
         resizable: false,
         width: 100,
-        Cell: () => <TableParts.components.iconCell icon="cog"/>,
+        Cell: () => <TableParts.components.iconCell icon="ellipsis-v"/>,
       },
     ];
 
@@ -76,7 +77,15 @@ export class System extends React.Component<Props> {
         <p className="h4">System setup</p>
       </div>,
       <div className="p-0" key={ 2 }>
-        <ReactTable {...{ data, columns }} />
+        <ReactTable {...{
+          data,
+          columns,
+          SubComponent: (row) => {
+            const { original: { registers: { array: registers } } } = row;
+            if (registers.length === 0) return false;
+            return <RegistersList subComponent registers={ registers }/>;
+          },
+        }} />
       </div>,
     ];
   }
