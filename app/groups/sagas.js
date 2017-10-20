@@ -45,6 +45,7 @@ export function* getGroups({ apiUrl, apiPath, token }: { token: string, apiUrl: 
 export function* groupsSagas({ apiUrl, apiPath, token }: { token: string, apiUrl: string, apiPath: string }): Generator<*, *, *> {
   yield takeLatest(constants.LOAD_GROUPS, getGroups, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUP, getGroup, { apiUrl, apiPath, token });
+  yield call(getGroups, { apiUrl, apiPath, token });
   const groupId = yield select(selectGroupId);
   if (groupId) yield call(getGroup, { apiUrl, apiPath, token }, { groupId });
 }
@@ -52,12 +53,11 @@ export function* groupsSagas({ apiUrl, apiPath, token }: { token: string, apiUrl
 export default function* (): Generator<*, *, *> {
   const { apiUrl, apiPath } = yield take(constants.SET_API_PARAMS);
   let { token } = yield take(constants.SET_TOKEN);
-  yield call(getGroups, { apiUrl, apiPath, token });
+  let sagas;
 
   while (true) {
-    const sagas = yield fork(groupsSagas, { apiUrl, apiPath, token });
-
+    if (token) sagas = yield fork(groupsSagas, { apiUrl, apiPath, token });
     ({ token } = yield take(constants.SET_TOKEN));
-    yield cancel(sagas);
+    if (sagas) yield cancel(sagas);
   }
 }
