@@ -24,10 +24,11 @@ export function* validationRulesSagas({ apiUrl, apiPath, token }, { loadingList,
 export default function* () {
   const { apiUrl, apiPath } = yield take(constants.SET_API_PARAMS);
   let { token } = yield take(constants.SET_TOKEN);
+  let sagas;
 
   while (true) {
-    const sagas = yield takeEvery(constants.SET_LOADING_LIST, validationRulesSagas, { apiUrl, apiPath, token });
+    if (token) sagas = yield takeEvery(constants.SET_LOADING_LIST, validationRulesSagas, { apiUrl, apiPath, token });
     ({ token } = yield take(constants.SET_TOKEN));
-    yield cancel(sagas);
+    if (sagas) yield cancel(sagas);
   }
 }

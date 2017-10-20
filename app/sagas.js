@@ -49,6 +49,18 @@ export function* switchUI(payload) {
   yield call(api.setUIVer, payload.uiVer);
 }
 
+export function* setToken(token) {
+  yield put(Bubbles.actions.setToken(token));
+  yield put(Charts.actions.setToken(token));
+  yield put(Groups.actions.setToken(token));
+  yield put(Meters.actions.setToken(token));
+  yield put(Registers.actions.setToken(token));
+  yield put(Users.actions.setToken(token));
+  yield put(Contracts.actions.setToken(token));
+  yield put(Readings.actions.setToken(token));
+  yield put(ValidationRules.actions.setToken(token));
+}
+
 export default function* () {
   const uiVer = yield call(api.getUIVer);
   yield put(actions.switchUI(uiVer));
@@ -78,15 +90,7 @@ export default function* () {
       ({ token } = yield take(Auth.constants.SIGN_IN));
     }
 
-    yield put(Bubbles.actions.setToken(token));
-    yield put(Charts.actions.setToken(token));
-    yield put(Groups.actions.setToken(token));
-    yield put(Meters.actions.setToken(token));
-    yield put(Registers.actions.setToken(token));
-    yield put(Users.actions.setToken(token));
-    yield put(Contracts.actions.setToken(token));
-    yield put(Readings.actions.setToken(token));
-    yield put(ValidationRules.actions.setToken(token));
+    yield call(setToken, token);
 
     yield put(ValidationRules.actions.setLoadingList({ loadingList }));
     yield put(ValidationRules.actions.setLoadingList({ loadingList: authList, pathOverride: authPath }));
@@ -99,6 +103,7 @@ export default function* () {
       yield put(Auth.actions.signOut());
     }
     token = null;
+    yield call(setToken, token);
     // TODO: clean up state
   }
 }

@@ -36,10 +36,11 @@ export function* readingsSagas({ apiUrl, apiPath, token }) {
 export default function* () {
   const { apiUrl, apiPath } = yield take(constants.SET_API_PARAMS);
   let { token } = yield take(constants.SET_TOKEN);
+  let sagas;
 
   while (true) {
-    const sagas = yield fork(readingsSagas, { apiUrl, apiPath, token });
+    if (token) sagas = yield fork(readingsSagas, { apiUrl, apiPath, token });
     ({ token } = yield take(constants.SET_TOKEN));
-    yield cancel(sagas);
+    if (sagas) yield cancel(sagas);
   }
 }
