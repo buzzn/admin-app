@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { ReactTableDefaults } from 'react-table';
 import { Link } from 'react-router-dom';
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 const FilterComponent = ({ filter, onChange }) => (
   <div className="input-group" style={{ height: '20px' }}>
@@ -48,6 +49,22 @@ export const tableParts = {
       <span style={{ float: 'right', marginRight: '15px' }}>
         <i className={ `fa fa-${icon}` }/>
       </span>
+    ),
+    dropDownCell: ({ row, menuItems }:
+                     { row: Object, menuItems: Array<({ divider: true } | { title: string, action: string | Function })>}): React.Node => (
+      <UncontrolledDropdown>
+        <DropdownToggle tag="i" className="fa fa-ellipsis-v"/>
+        <DropdownMenu>
+          {
+            // Warning, to make this menu dynamic, you'll need to change key to something different.
+            menuItems.map((m, i) => {
+              if (m.divider) return <DropdownItem key={ i } divider />;
+              if (typeof m.action === 'string') return <DropdownItem key={ i }><Link to={ row.original[m.action] }>{ m.title }</Link></DropdownItem>;
+              return <DropdownItem key={ i } onClick={ m.action }>{ m.title }</DropdownItem>;
+            })
+          }
+        </DropdownMenu>
+      </UncontrolledDropdown>
     ),
     headerCell: ({ title }: { title: string }): React.Node => (
       <span>

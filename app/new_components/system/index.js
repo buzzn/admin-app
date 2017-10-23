@@ -1,13 +1,14 @@
 // @flow
 import * as React from 'react';
 import { connect } from 'react-redux';
-import ReactTable from 'react-table';
-import { injectIntl } from 'react-intl';
-import type { intlShape } from 'react-intl';
-import { tableParts as TableParts } from 'react_table_config';
+import { Switch, Route, Redirect, Link, NavLink } from 'react-router-dom';
+import { Nav } from 'reactstrap';
+import find from 'lodash/find';
 import Meters from 'meters';
 import Groups from 'groups';
 import Breadcrumbs from 'new_components/breadcrumbs';
+import MetersList from './meters_list';
+import MeterDataForm from './meter_data';
 import RegistersList from './registers_list';
 
 type Props = {
@@ -17,8 +18,10 @@ type Props = {
   // TODO: replace with action
   loadGroupMeters: Function,
   loadGroup: Function,
-  intl: intlShape,
-  match: { params: { groupId: string } },
+  updateMeter: Function,
+  realValidationRules: Object,
+  virtualValidationRules: Object,
+  match: { url: string, params: { groupId: string } },
 };
 
 export class System extends React.Component<Props> {
@@ -33,59 +36,66 @@ export class System extends React.Component<Props> {
   }
 
   render() {
-    const { loading, meters, group, match: { params: { groupId } }, intl } = this.props;
+    const {
+      loading,
+      meters,
+      group,
+      updateMeter,
+      realValidationRules,
+      virtualValidationRules,
+      loadGroupMeters,
+      match: { url, params: { groupId } },
+    } = this.props;
 
-    if (loading || !group.id) return (<div>Loading...</div>);
+    if (loading) return (<div>Loading...</div>);
 
     const breadcrumbs = [
       { id: group.id, link: `/localpools/${group.id}/system`, title: group.name },
-      { id: '-----', title: 'Meters' },
-    ];
-
-    const data = meters.map(m => ({
-      ...m,
-      type: intl.formatMessage({ id: `admin.meters.${m.type}` }),
-      meter: m.productSerialnumber,
-      link: `/localpools/${groupId}/system/${m.id}`,
-    }));
-
-    const columns = [
-      {
-        Header: () => <TableParts.components.headerCell title="Type"/>,
-        accessor: 'type',
-        minWidth: 200,
-      },
-      {
-        Header: () => <TableParts.components.headerCell title="Meter"/>,
-        accessor: 'meter',
-        minWidth: 200,
-      },
-      {
-        Header: '',
-        accessor: 'link',
-        sortable: false,
-        filterable: false,
-        resizable: false,
-        width: 100,
-        Cell: () => <TableParts.components.iconCell icon="ellipsis-v"/>,
-      },
     ];
 
     return [
       <div className="center-content-header" key={ 1 }>
-        <Breadcrumbs breadcrumbs={ breadcrumbs }/>
-        <p className="h4">System setup</p>
+        <Switch>
+          <Route path={ `${url}/:meterId` } render={ ({ match: { params: { meterId } } }) => {
+            const meter = find(meters, m => m.id === meterId);
+            if (!meter) return <Redirect to={ url }/>;
+            return [
+              <Breadcrumbs key={ 1 } breadcrumbs={ breadcrumbs.concat([{ id: meter.id, type: 'meter', title: meter.productSerialnumber }]) }/>,
+              <p key={ 2 } className="h4"><Link to={ url }><i className="fa fa-chevron-left"/> { meter.productSerialnumber }</Link></p>,
+            ];
+          }}/>
+          <Route path={ url } render={ () => [
+            <Breadcrumbs key={ 1 } breadcrumbs={ breadcrumbs.concat([{ id: '-----', title: 'System setup' }]) }/>,
+            <p key={ 2 } className="h4">System setup</p>,
+          ] }/>
+        </Switch>
       </div>,
-      <div className="p-0" key={ 2 }>
-        <ReactTable {...{
-          data,
-          columns,
-          SubComponent: (row) => {
-            const { original: { registers: { array: registers } } } = row;
-            if (registers.length === 0) return false;
-            return <RegistersList subComponent registers={ registers }/>;
-          },
-        }} />
+      <div className="center-content" key={ 2 }>
+        <Switch>
+          <Route path={ `${url}/:meterId` } render={ ({ match: { url: meterUrl, params: { meterId } } }) => {
+            const meter = find(meters, m => m.id === meterId);
+            if (!meter) return <Redirect to={ url }/>;
+            return [
+              <Nav key={ 1 } className="sub-nav">
+                <NavLink to={ meterUrl } exact className="nav-link">Meter data</NavLink>
+                <NavLink to={ `${meterUrl}/registers` } className="nav-link">Registers</NavLink>
+              </Nav>,
+              <Switch key={ 2 }>
+                <Route path={ `${meterUrl}/registers` } render={ () => <RegistersList registers={ meter.registers.array } /> }/>
+                <Route path={ meterUrl } render={ () => <MeterDataForm {...{
+                  updateMeter,
+                  realValidationRules,
+                  virtualValidationRules,
+                  meter,
+                  groupId,
+                  loadGroupMeters,
+                  initialValues: meter,
+                }}/> }/>
+              </Switch>,
+            ];
+          } }/>
+          <Route path={ url } render={ () => <MetersList {...{ groupId, loading, meters }}/> }/>
+        </Switch>
       </div>,
     ];
   }
@@ -94,12 +104,15 @@ export class System extends React.Component<Props> {
 function mapStateToProps(state) {
   return {
     group: state.groups.group,
-    loading: state.meters.loadingGroupMeters,
+    loading: state.meters.loadingGroupMeters || !state.groups.group.id,
     meters: state.meters.groupMeters,
+    realValidationRules: state.meters.realValidationRules,
+    virtualValidationRules: state.meters.virtualValidationRules,
   };
 }
 
 export default connect(mapStateToProps, {
   loadGroupMeters: Meters.actions.loadGroupMeters,
   loadGroup: Groups.actions.loadGroup,
-})(injectIntl(System));
+  updateMeter: Meters.actions.updateMeter,
+})(System);

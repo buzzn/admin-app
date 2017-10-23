@@ -1,17 +1,6 @@
 .todo-list-block {
   background-color: #F5F5F5;
   padding: 24px;
-  .todo-nav {
-    border-bottom: #e0e0e0 solid 1px;
-    .nav-link {
-      text-transform: uppercase;
-      color: #9E9E9E;
-      &.active {
-        color: black;
-        border-bottom: black solid 1px;
-      }
-    }
-  }
   .todo-list-block {
     .todo-header {}
     .todo-list {

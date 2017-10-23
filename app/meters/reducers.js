@@ -26,9 +26,9 @@ export default function (state = initialState, action) {
     case constants.LOAD_GROUP_METERS:
       return { ...state, groupId: action.groupId };
     case constants.LOADING_GROUP_METERS:
-      return { ...state, loadingUserMeters: true };
+      return { ...state, loadingGroupMeters: true };
     case constants.LOADED_GROUP_METERS:
-      return { ...state, loadingUserMeters: false };
+      return { ...state, loadingGroupMeters: false };
     case constants.SET_GROUP_METERS:
       return { ...state, groupMeters: action.groupMeters };
 

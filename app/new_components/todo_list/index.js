@@ -9,7 +9,7 @@ import './style.scss';
 
 const TodoList = () => (
   <div className="todo-list-block">
-    <Nav className="todo-nav">
+    <Nav className="sub-nav">
       <NavLink className="active">TODOS</NavLink>
       <NavLink>Finished</NavLink>
     </Nav>

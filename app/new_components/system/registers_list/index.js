@@ -7,7 +7,7 @@ import './style.scss';
 
 type Props = {
   registers: Array<Object>,
-  subComponent: boolean,
+  subComponent?: boolean,
 };
 
 const RegistersList = ({ registers, subComponent }: Props) => {
@@ -22,6 +22,11 @@ const RegistersList = ({ registers, subComponent }: Props) => {
     {
       Header: () => <TableParts.components.headerCell title="Obis"/>,
       accessor: 'obis',
+      minWidth: 200,
+    },
+    {
+      Header: () => <TableParts.components.headerCell title="Name"/>,
+      accessor: 'name',
       minWidth: 200,
     },
     {

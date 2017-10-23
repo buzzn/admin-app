@@ -15,6 +15,17 @@ body {
       margin: 0 -32px 20px -32px;
       padding: 20px 32px;
     }
+    .sub-nav {
+      border-bottom: #e0e0e0 solid 1px;
+      .nav-link {
+        text-transform: uppercase;
+        color: #9E9E9E;
+        &.active {
+          color: black;
+          border-bottom: black solid 1px;
+        }
+      }
+    }
     .ReactTable {
       border: none;
       .rt-table {
@@ -57,6 +68,9 @@ body {
           }
           .rt-td {
             border-right: none;
+            &.dropdown-fix {
+              overflow: inherit !important;
+            }
           }
         }
       }
