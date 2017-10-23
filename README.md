@@ -1,5 +1,9 @@
 # powergiver app
 
+Staging | Develop
+--- | ---
+https://staging-admin.buzzn.io | https://develop-admin.buzzn.io
+[ ![Codeship Status for buzzn/admin-app](https://app.codeship.com/projects/8496d700-bdef-0134-4fd0-0e29162056f7/status?branch=master)](https://app.codeship.com/projects/196093) | [ ![Codeship Status for buzzn/admin-app](https://app.codeship.com/projects/8496d700-bdef-0134-4fd0-0e29162056f7/status?branch=develop)](https://app.codeship.com/projects/196093)
 
 To run local dev server:
 - clone this repository
