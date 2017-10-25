@@ -19,20 +19,6 @@ export function* getMeter({ apiUrl, apiPath, token }, { meterId, groupId }) {
   yield put(actions.loadedMeter());
 }
 
-export function* updateMeter({ apiUrl, apiPath, token }, { meterId, params, resolve, reject, groupId }) {
-  try {
-    const res = yield call(api.updateMeter, { apiUrl, apiPath, token, meterId, params, groupId });
-    if (res._error) {
-      yield call(reject, new SubmissionError(res));
-    } else {
-      yield call(resolve, res);
-      yield call(getMeter, { apiUrl, apiPath, token }, { meterId, groupId });
-    }
-  } catch (error) {
-    logException(error);
-  }
-}
-
 export function* updateFormulaPart({ apiUrl, apiPath, token }, { meterId, params, resolve, reject, groupId, formulaPartId }) {
   try {
     const res = yield call(api.updateFormulaPart, { apiUrl, apiPath, token, meterId, params, groupId, formulaPartId });
@@ -57,6 +43,22 @@ export function* getGroupMeters({ apiUrl, apiPath, token }, { groupId }) {
     logException(error);
   }
   yield put(actions.loadedGroupMeters());
+}
+
+export function* updateMeter({ apiUrl, apiPath, token }, { meterId, params, resolve, reject, groupId }) {
+  try {
+    const res = yield call(api.updateMeter, { apiUrl, apiPath, token, meterId, params, groupId });
+    if (res._error) {
+      yield call(reject, new SubmissionError(res));
+    } else {
+      yield call(resolve, res);
+      yield call(getGroupMeters, { apiUrl, apiPath, token }, { groupId });
+      // FIXME: used for the old UI, remove after UI cleanup.
+      yield call(getMeter, { apiUrl, apiPath, token }, { meterId, groupId });
+    }
+  } catch (error) {
+    logException(error);
+  }
 }
 
 export function* metersSagas({ apiUrl, apiPath, token }) {

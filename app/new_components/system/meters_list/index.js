@@ -18,6 +18,7 @@ const MetersList = ({ loading, meters, groupId, intl }: Props) => {
 
   const data = meters.map(m => ({
     ...m,
+    rawType: m.type,
     type: intl.formatMessage({ id: `admin.meters.${m.type}` }),
     meter: m.productSerialnumber,
     linkMeter: `/localpools/${groupId}/system/${m.id}`,
@@ -56,8 +57,9 @@ const MetersList = ({ loading, meters, groupId, intl }: Props) => {
         data,
         columns,
         SubComponent: (row) => {
-          const { original: { registers: { array: registers } } } = row;
-          if (registers.length === 0) return false;
+          const { original: { rawType, registers: { array: registers } } } = row;
+          console.log(rawType)
+          if (registers.length === 0 || rawType !== 'meter_real') return false;
           return <RegistersList subComponent registers={ registers }/>;
         },
       }} />

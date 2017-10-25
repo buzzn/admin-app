@@ -4,10 +4,10 @@ import { FormattedMessage } from 'react-intl';
 import { reduxForm } from 'redux-form';
 import type { FormProps } from 'redux-form';
 import range from 'lodash/range';
-import EditableInput from 'components/editable_input';
-import EditableSelect from 'components/editable_select';
-import TwoColField from 'components/two_col_field';
-import EditableDate from 'components/editable_date';
+import EditableInput from 'new_components/editable_input';
+import EditableSelect from 'new_components/editable_select';
+import TwoColField from 'new_components/two_col_field';
+import EditableDate from 'new_components/editable_date';
 import { dateNormalizer } from 'validation_normalizers';
 
 type Props = {
@@ -66,8 +66,7 @@ class MeterData extends React.Component<Props, State> {
           groupId,
         });
       })
-        .then(() => this.setState({ editMode: false }))
-        .then(loadGroupMeters(groupId));
+        .then(() => this.setState({ editMode: false }));
     };
 
     const prefix = 'admin.meters';
