@@ -2,6 +2,7 @@ import { put, call, takeLatest, take, cancel, fork } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import { logException } from '_util';
 import Registers from 'registers';
+import Meters from 'meters';
 import { constants } from './actions';
 import api from './api';
 
@@ -12,6 +13,7 @@ export function* addReading({ apiUrl, apiPath, token }, { meterId, registerId, p
       yield call(reject, new SubmissionError(res));
     } else {
       yield call(resolve, res);
+      yield put(Meters.actions.loadGroupMeters(groupId));
       yield put(Registers.actions.loadRegister({ registerId, groupId }));
     }
   } catch (error) {
@@ -22,6 +24,7 @@ export function* addReading({ apiUrl, apiPath, token }, { meterId, registerId, p
 export function* deleteReading({ apiUrl, apiPath, token }, { meterId, registerId, groupId, readingId }) {
   try {
     yield call(api.deleteReading, { apiUrl, apiPath, token, meterId, registerId, groupId, readingId });
+    yield put(Meters.actions.loadGroupMeters(groupId));
     yield put(Registers.actions.loadRegister({ registerId, groupId }));
   } catch (error) {
     logException(error);

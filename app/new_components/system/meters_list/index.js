@@ -11,9 +11,10 @@ type Props = {
   meters: Array<Object>,
   intl: intlShape,
   url: string,
+  setAddReading: Function,
 };
 
-const MetersList = ({ loading, meters, intl, url }: Props) => {
+const MetersList = ({ loading, meters, intl, url, setAddReading }: Props) => {
   if (loading) return (<div>Loading...</div>);
 
   const data = meters.map(m => ({
@@ -70,11 +71,17 @@ const MetersList = ({ loading, meters, intl, url }: Props) => {
         data,
         columns,
         SubComponent: (row) => {
-          const { original: { rawType } } = row;
+          const { original: { id: meterId, rawType } } = row;
           if (rawType !== 'meter_real') return false;
           const { original: { linkRegisters, registers: { array: registers } } } = row;
           if (registers.length === 0) return false;
-          return <RegistersList subComponent registers={ registers } url={ linkRegisters }/>;
+          return <RegistersList {...{
+            subComponent: true,
+            meterId,
+            registers,
+            url: linkRegisters,
+            setAddReading,
+          }}/>;
         },
       }} />
     </div>

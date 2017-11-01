@@ -7,26 +7,13 @@ import api from './api';
 export const selectGroup = state => ({ groupId: state.registers.groupId });
 export const selectRegister = state => ({ registerId: state.registers.registerId });
 
-export function* getRegisterReadings({ apiUrl, apiPath, token }, { registerId, groupId }) {
-  yield put(actions.loadingRegisterReadings());
-  yield put(actions.setRegisterReadings({ readings: [] }));
-  try {
-    const readings = yield call(api.fetchRegisterReadings, { apiUrl, apiPath, token, registerId, groupId });
-    yield put(actions.setRegisterReadings({ readings: readings.array }));
-  } catch (error) {
-    logException(error);
-  }
-  yield put(actions.loadedRegisterReadings());
-}
-
 export function* getRegister({ apiUrl, apiPath, token }, { registerId, groupId }) {
   yield put(actions.loadingRegister());
-  yield put(actions.setRegister({ register: {} }));
+  yield put(actions.setRegister({ register: {}, readings: [] }));
   try {
     const register = yield call(api.fetchRegister, { apiUrl, apiPath, token, registerId, groupId });
-    yield put(actions.setRegister({ register }));
-    // FIXME: compatibility with old UI, please remove
-    yield call(getRegisterReadings, { apiUrl, apiPath, token }, { registerId, groupId });
+    const readings = yield call(api.fetchRegisterReadings, { apiUrl, apiPath, token, registerId, groupId });
+    yield put(actions.setRegister({ register, readings: readings.array }));
   } catch (error) {
     logException(error);
   }
@@ -65,7 +52,6 @@ export function* getRegisters({ apiUrl, apiPath, token }, { groupId }) {
 export function* registersSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_REGISTERS, getRegisters, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_REGISTER, getRegister, { apiUrl, apiPath, token });
-  yield takeLatest(constants.LOAD_REGISTER_READINGS, getRegisterReadings, { apiUrl, apiPath, token });
   yield takeLatest(constants.UPDATE_REGISTER, updateRegister, { apiUrl, apiPath, token });
   const { groupId } = yield select(selectGroup);
   const { registerId } = yield select(selectRegister);
@@ -73,7 +59,6 @@ export function* registersSagas({ apiUrl, apiPath, token }) {
     yield call(getRegisters, { apiUrl, apiPath, token }, { groupId });
     if (registerId) {
       yield call(getRegister, { apiUrl, apiPath, token }, { registerId, groupId });
-      yield call(getRegisterReadings, { apiUrl, apiPath, token }, { registerId, groupId });
     }
   }
 }

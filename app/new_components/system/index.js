@@ -7,6 +7,7 @@ import find from 'lodash/find';
 import Meters from 'meters';
 import Registers from 'registers';
 import Groups from 'groups';
+import Readings from 'readings';
 import Breadcrumbs from 'new_components/breadcrumbs';
 import MetersList from './meters_list';
 import MeterDataForm from './meter_data';
@@ -14,31 +15,61 @@ import RegistersList from './registers_list';
 import RegisterDataForm from './register_data';
 import ReadingsList from './readings_list/index';
 import Formulas from './formulas';
+import AddReading from './add_reading';
 
 type Props = {
   loading: boolean,
   meters: Array<Object>,
   registers: Array<Object>,
-  readings: Array<Object>,
   group: Object,
   // TODO: replace with action
   loadGroupMeters: Function,
   loadGroup: Function,
   loadRegisters: Function,
-  loadRegisterReadings: Function,
   updateMeter: Function,
   updateRegister: Function,
   updateFormula: Function,
+  addReading: Function,
+  deleteReading: Function,
   realValidationRules: Object,
   virtualValidationRules: Object,
   registerValidationRules: Object,
+  readingsValidationRules: Object,
   match: { url: string, params: { groupId: string, meterId: string, registerId: string } },
 };
 
-export class System extends React.Component<Props> {
-  static defaultProps = {
-    meters: [],
+type State = {
+  addReadingModal: boolean,
+  readingMeterId: string,
+  readingRegisterId: string,
+};
+
+export class System extends React.Component<Props, State> {
+  state = {
+    addReadingModal: false,
+    readingMeterId: '',
+    readingRegisterId: '',
   };
+
+  toggleAddReading() {
+    this.setState({
+      addReadingModal: !this.state.addReadingModal,
+    });
+  }
+
+  setAddReading({ meterId, registerId }: { meterId: string, registerId: string }) {
+    this.setState({
+      addReadingModal: true,
+      readingMeterId: meterId,
+      readingRegisterId: registerId,
+    });
+  }
+
+  deleteReading({ groupId, meterId, registerId, readingId }: { groupId: string, meterId: string, registerId: string, readingId: string }) {
+    if (confirm('Are you sure?')) {
+      this.props.deleteReading({ groupId, meterId, registerId, readingId });
+    }
+  }
 
   componentWillMount() {
     const { loadGroupMeters, loadGroup, loadRegisters, group, match: { params: { groupId } } } = this.props;
@@ -53,15 +84,15 @@ export class System extends React.Component<Props> {
       loading,
       meters,
       registers,
-      readings,
       group,
       updateMeter,
       updateRegister,
       updateFormula,
-      loadRegisterReadings,
+      addReading,
       realValidationRules,
       virtualValidationRules,
       registerValidationRules,
+      readingsValidationRules,
       match: { url, params: { groupId } },
     } = this.props;
 
@@ -89,7 +120,7 @@ export class System extends React.Component<Props> {
                   breadcrumbs.push({ id: register.id, type: 'register', title: register.name, link: undefined });
                   return [
                     <Breadcrumbs key={ 1 } breadcrumbs={ breadcrumbs }/>,
-                    <p key={ 2 } className="h4"><Link to={ url }><i className="fa fa-chevron-left"/> { register.name }</Link></p>,
+                    <p key={ 2 } className="h4"><Link to={ meterUrl }><i className="fa fa-chevron-left"/> { register.name }</Link></p>,
                   ];
                 } }/>
                 <Route path={ `${url}/:meterId` } render={ () => ([
@@ -150,7 +181,9 @@ export class System extends React.Component<Props> {
                   return (
                     <Switch>
                       <Route path={ `${registerUrl}/readings` }>
-                        <ReadingsList readings={ readings } loadRegisterReadings={ () => loadRegisterReadings({ registerId, groupId }) }/>
+                        <ReadingsList
+                          readings={ register.readings.array }
+                          deleteReading={ (readingId) => this.deleteReading({ groupId, meterId: meter.id, registerId: register.id, readingId }) }/>
                       </Route>
                       <Route path={ registerUrl }>
                         <RegisterDataForm {...{
@@ -166,8 +199,9 @@ export class System extends React.Component<Props> {
                 <Route path={ `${meterUrl}/registers` } render={ () => (
                   <RegistersList
                     registers={ meter.registers.array }
-                    readings={ readings }
-                    loadRegisterReadings={ registerId => loadRegisterReadings({ registerId, groupId }) }
+                    meterId={ meter.id }
+                    setAddReading={ this.setAddReading.bind(this) }
+                    deleteReading={ ({ readingId, registerId }) => this.deleteReading({ groupId, meterId: meter.id, registerId, readingId }) }
                     url={ `${meterUrl}/registers` } />
                 ) }/>
                 <Route path={ `${meterUrl}/formulas` } render={ () => (
@@ -190,11 +224,33 @@ export class System extends React.Component<Props> {
           /* End of Detailed UI */
 
           /* Meters list */
-          <Route path={ url } render={ () => <MetersList {...{ groupId, loading, meters, url }}/> }/>
+          <Route path={ url } render={ () => (
+            <MetersList {...{
+              groupId,
+              loading,
+              meters,
+              url,
+              setAddReading: this.setAddReading.bind(this),
+            }}/>
+          ) }/>
           /* End of Meters list */
 
         </Switch>
       </div>,
+
+      /* Modals */
+      <AddReading
+        key={ 3 }
+        isOpen={ this.state.addReadingModal }
+        toggle={ this.toggleAddReading.bind(this) }
+        addReading={ params => addReading({
+          groupId,
+          meterId: this.state.readingMeterId,
+          registerId: this.state.readingRegisterId,
+          ...params,
+        }) }
+        validationRules={ readingsValidationRules }
+      />
     ];
   }
 }
@@ -205,10 +261,10 @@ function mapStateToProps(state) {
     loading: state.meters.loadingGroupMeters || !state.groups.group.id,
     meters: state.meters.groupMeters,
     registers: state.registers.registers,
-    readings: state.registers.readings,
     realValidationRules: state.meters.realValidationRules,
     virtualValidationRules: state.meters.virtualValidationRules,
     registerValidationRules: state.registers.validationRules,
+    readingsValidationRules: state.readings.validationRules,
   };
 }
 
@@ -216,8 +272,9 @@ export default connect(mapStateToProps, {
   loadGroupMeters: Meters.actions.loadGroupMeters,
   loadGroup: Groups.actions.loadGroup,
   loadRegisters: Registers.actions.loadRegisters,
-  loadRegisterReadings: Registers.actions.loadRegisterReadings,
   updateRegister: Registers.actions.updateRegister,
   updateMeter: Meters.actions.updateMeter,
   updateFormula: Meters.actions.updateFormulaPart,
+  addReading: Readings.actions.addReading,
+  deleteReading: Readings.actions.deleteReading,
 })(System);

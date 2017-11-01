@@ -42,7 +42,7 @@ export default {
       .then(parseResponse);
   },
   fetchGroupMeters({ token, apiUrl, apiPath, groupId }: Api & { groupId: string }): Promise<Array<Object>> {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/meters?include=registers,formula_parts:register`, {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/meters?include=registers:[readings],formula_parts:register`, {
       headers: prepareHeaders(token),
     })
       .then(parseResponse)
