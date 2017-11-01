@@ -10,10 +10,10 @@ type Props = {
   loading: boolean,
   meters: Array<Object>,
   intl: intlShape,
-  groupId: string,
+  url: string,
 };
 
-const MetersList = ({ loading, meters, groupId, intl }: Props) => {
+const MetersList = ({ loading, meters, intl, url }: Props) => {
   if (loading) return (<div>Loading...</div>);
 
   const data = meters.map(m => ({
@@ -21,11 +21,21 @@ const MetersList = ({ loading, meters, groupId, intl }: Props) => {
     rawType: m.type,
     type: intl.formatMessage({ id: `admin.meters.${m.type}` }),
     meter: m.productSerialnumber,
-    linkMeter: `/localpools/${groupId}/system/${m.id}`,
-    linkRegisters: `/localpools/${groupId}/system/${m.id}/registers`,
+    linkMeter: `${url}/${m.id}`,
+    linkRegisters: `${url}/${m.id}/registers`,
+    linkFormula: `${url}/${m.id}/formulas`,
   }));
 
   const columns = [
+    {
+      expander: true,
+      width: 35,
+      Expander: ({ isExpanded, row }) => {
+        const { _original } = row;
+        const hide = _original.rawType !== 'meter_real' || _original.registers.array.length === 0;
+        return <TableParts.components.expander isExpanded={ isExpanded } hide={ hide } />;
+      },
+    },
     {
       Header: () => <TableParts.components.headerCell title="Type"/>,
       accessor: 'type',
@@ -46,7 +56,10 @@ const MetersList = ({ loading, meters, groupId, intl }: Props) => {
       className: 'dropdown-fix',
       Cell: row => <TableParts.components.dropDownCell row={ row } menuItems={ [
         { action: 'linkMeter', title: 'View meter' },
-        { action: 'linkRegisters', title: 'Meter registers list' },
+        {
+          action: row.original.rawType === 'meter_real' ? 'linkRegisters' : 'linkFormula',
+          title: row.original.rawType === 'meter_real' ? 'Meter registers list' : 'Formula',
+        },
       ] }/>,
     },
   ];
@@ -57,10 +70,11 @@ const MetersList = ({ loading, meters, groupId, intl }: Props) => {
         data,
         columns,
         SubComponent: (row) => {
-          const { original: { rawType, registers: { array: registers } } } = row;
-          console.log(rawType)
-          if (registers.length === 0 || rawType !== 'meter_real') return false;
-          return <RegistersList subComponent registers={ registers }/>;
+          const { original: { rawType } } = row;
+          if (rawType !== 'meter_real') return false;
+          const { original: { linkRegisters, registers: { array: registers } } } = row;
+          if (registers.length === 0) return false;
+          return <RegistersList subComponent registers={ registers } url={ linkRegisters }/>;
         },
       }} />
     </div>

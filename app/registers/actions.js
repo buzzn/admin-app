@@ -9,6 +9,11 @@ export const constants = {
   LOADED_REGISTER: 'buzzn_registers/LOADED_REGISTER',
   SET_REGISTER: 'buzzn_registers/SET_REGISTER',
 
+  LOAD_REGISTER_READINGS: 'buzzn_registers/LOAD_REGISTER_READINGS',
+  LOADING_REGISTER_READINGS: 'buzzn_registers/LOADING_REGISTER_READINGS',
+  LOADED_REGISTER_READINGS: 'buzzn_registers/LOADED_REGISTER_READINGS',
+  SET_REGISTER_READINGS: 'buzzn_registers/SET_REGISTER_READINGS',
+
   UPDATE_REGISTER: 'buzzn_registers/UPDATE_REGISTER',
 
   LOAD_REGISTERS: 'buzzn_registers/LOAD_REGISTERS',
@@ -26,7 +31,12 @@ export const actions = {
   loadRegister: ({ registerId, groupId }) => ({ type: constants.LOAD_REGISTER, registerId, groupId }),
   loadingRegister: () => ({ type: constants.LOADING_REGISTER }),
   loadedRegister: () => ({ type: constants.LOADED_REGISTER }),
-  setRegister: ({ register, readings }) => ({ type: constants.SET_REGISTER, register, readings }),
+  setRegister: ({ register }) => ({ type: constants.SET_REGISTER, register }),
+
+  loadRegisterReadings: ({ registerId, groupId }) => ({ type: constants.LOAD_REGISTER_READINGS, registerId, groupId }),
+  loadingRegisterReadings: () => ({ type: constants.LOADING_REGISTER_READINGS }),
+  loadedRegisterReadings: () => ({ type: constants.LOADED_REGISTER_READINGS }),
+  setRegisterReadings: ({ readings }) => ({ type: constants.SET_REGISTER_READINGS, readings }),
 
   updateRegister: ({ meterId, registerId, params, resolve, reject, groupId }) => (
     { type: constants.UPDATE_REGISTER, meterId, registerId, params, resolve, reject, groupId }),

@@ -15,8 +15,6 @@ type Props = {
   realValidationRules: Object,
   virtualValidationRules: Object,
   meter: Object,
-  groupId: string,
-  loadGroupMeters?: Function,
 } & FormProps;
 
 type State = {
@@ -44,8 +42,6 @@ class MeterData extends React.Component<Props, State> {
 
   render() {
     const {
-      groupId,
-      loadGroupMeters,
       meter,
       updateMeter,
       handleSubmit,
@@ -56,14 +52,13 @@ class MeterData extends React.Component<Props, State> {
     } = this.props;
 
     const submit = (values) => {
-      if (!updateMeter || !loadGroupMeters) return false;
+      if (!updateMeter) return false;
       return new Promise((resolve, reject) => {
         updateMeter({
           meterId: meter.id,
           params: values,
           resolve,
           reject,
-          groupId,
         });
       })
         .then(() => this.setState({ editMode: false }));

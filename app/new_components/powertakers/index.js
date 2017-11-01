@@ -69,7 +69,7 @@ export class Powertakers extends React.Component<Props> {
         filterable: false,
         resizable: false,
         width: 100,
-        Cell: () => <TableParts.components.iconCell icon="cog"/>,
+        Cell: () => <TableParts.components.iconCell icon="cog" action={ () => {} }/>,
       },
     ];
 
