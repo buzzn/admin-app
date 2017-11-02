@@ -8,6 +8,8 @@ export const constants = {
   UPDATE_USER_ME: 'buzzn_admin/UPDATE_USER_ME',
 
   SWITCH_UI: 'buzzn_admin/SWITCH_UI',
+
+  SET_HEALTH: 'buzzn_admin/SET_HEALTH',
 };
 
 export const actions = {
@@ -19,4 +21,6 @@ export const actions = {
     { type: constants.UPDATE_USER_ME, params, resolve, reject }),
 
   switchUI: uiVer => ({ type: constants.SWITCH_UI, uiVer }),
+
+  setHealth: health => ({ type: constants.SET_HEALTH, health }),
 };
