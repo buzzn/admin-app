@@ -5,6 +5,12 @@ import some from 'lodash/some';
 import chunk from 'lodash/chunk';
 import { prepareHeaders, parseResponse, camelizeResponseKeys } from '../_util';
 
+type Api = {
+  token: string,
+  apiUrl: string,
+  apiPath: string,
+};
+
 export function calculateAutarchy({ in: inData, out: outData }:
                                     { in: Array<{ value: number, timestamp: number }>,
                                       out: Array<{ value: number, timestamp: number }>
@@ -120,21 +126,21 @@ export function prepareTypes(groupReg: Array<Object>, groupId: string): { id: st
 }
 
 export default {
-  fetchGroup({ token, apiUrl, apiPath, groupId }: { token: string, apiUrl: string, apiPath: string, groupId: string }): Promise<Object> {
+  fetchGroup({ token, apiUrl, apiPath, groupId }: Api & { groupId: string }): Promise<Object> {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}`, {
       headers: prepareHeaders(token),
     })
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
-  fetchGroups({ token, apiUrl, apiPath }: { token: string, apiUrl: string, apiPath: string }): Promise<Array<Object>> {
+  fetchGroups({ token, apiUrl, apiPath }: Api): Promise<Array<Object>> {
     return fetch(`${apiUrl}${apiPath}/localpools`, {
       headers: prepareHeaders(token),
     })
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
-  fetchGroupsStats({ token, apiUrl, apiPath, groupIds }: { token: string, apiUrl: string, apiPath: string, groupIds: Array<string> }): Promise<Object> {
+  fetchGroupsStats({ token, apiUrl, apiPath, groupIds }: Api & { groupIds: Array<string> }): Promise<Object> {
     return Promise.all(groupIds.map(groupId =>
       fetch(`${apiUrl}${apiPath}/localpools/${groupId}/charts?duration=day`, {
         headers: prepareHeaders(token),
@@ -144,7 +150,7 @@ export default {
         .then(prepareStats)))
       .then(chartsArr => chartsArr.reduce((sum, groupChart) => ({ ...sum, [groupChart.id]: { ...groupChart } }), {}));
   },
-  fetchGroupsTypes({ token, apiUrl, apiPath, groupIds }: { token: string, apiUrl: string, apiPath: string, groupIds: Array<string> }): Promise<Object> {
+  fetchGroupsTypes({ token, apiUrl, apiPath, groupIds }: Api & { groupIds: Array<string> }): Promise<Object> {
     return Promise.all(groupIds.map(groupId =>
       fetch(`${apiUrl}${apiPath}/localpools/${groupId}/registers`, {
         headers: prepareHeaders(token),
