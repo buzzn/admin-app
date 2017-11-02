@@ -14,6 +14,7 @@ import AnalyticsContainer from 'new_components/analytics';
 import PowertakersContainer from 'new_components/powertakers';
 import ContractsContainer from 'new_components/contracts';
 import SystemContainer from 'new_components/system';
+import HealthContainer from './new_components/health';
 import './react_table_config';
 
 import 'buzzn-style';
@@ -21,9 +22,14 @@ import 'react-table/react-table.css';
 import 'react-widgets/dist/css/react-widgets.css';
 import './new_root.scss';
 
-const NewRoot = ({ token }: { token?: string }) => (
+type Props = {
+  token?: string,
+};
+
+const NewRoot = ({ token }: Props) => (
   <BrowserRouter>
     <div className="new-ui">
+      <HealthContainer/>
       { token && <TopNavBarContainer/> }
       { token ?
         <Container style={{ maxWidth: '1440px' }}>

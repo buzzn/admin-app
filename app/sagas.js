@@ -1,4 +1,4 @@
-import { put, take, select, call, takeLatest } from 'redux-saga/effects';
+import { put, take, select, call, takeLatest, fork } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import Auth from '@buzzn/module_auth';
 import Bubbles from '@buzzn/module_bubbles';
@@ -61,6 +61,15 @@ export function* setToken(token) {
   yield put(ValidationRules.actions.setToken(token));
 }
 
+export function* setHealth({ apiUrl }) {
+  try {
+    const health = yield call(api.fetchHealth, { apiUrl });
+    yield put(actions.setHealth(health));
+  } catch (error) {
+    logException(error);
+  }
+}
+
 export default function* () {
   const uiVer = yield call(api.getUIVer);
   yield put(actions.switchUI(uiVer));
@@ -86,6 +95,8 @@ export default function* () {
   let { token } = yield select(getAuth);
 
   while (true) {
+    yield fork(setHealth, { apiUrl });
+
     if (!token) {
       ({ token } = yield take(Auth.constants.SIGN_IN));
     }
