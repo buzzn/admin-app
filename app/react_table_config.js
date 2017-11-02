@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { ReactTableDefaults } from 'react-table';
 import { Link } from 'react-router-dom';
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 const FilterComponent = ({ filter, onChange }) => (
   <div className="input-group" style={{ height: '20px' }}>
@@ -44,10 +45,30 @@ export const tableParts = {
         View
       </Link>
     ),
-    iconCell: ({ icon }: { icon: string }): React.Node => (
+    iconCell: ({ icon, action }: { icon: string, action: string | Function }): React.Node => (
       <span style={{ float: 'right', marginRight: '15px' }}>
-        <i className={ `fa fa-${icon}` }/>
+        {
+          typeof action === 'string' ?
+            <Link to={ action }><i className={ `fa fa-${icon}` }/></Link> :
+            <i onClick={ action } className={ `fa fa-${icon}` }/>
+        }
       </span>
+    ),
+    dropDownCell: ({ row, menuItems }:
+                     { row: Object, menuItems: Array<({ divider: true } | { title: string, action: string | Function })>}): React.Node => (
+      <UncontrolledDropdown>
+        <DropdownToggle tag="i" className="fa fa-ellipsis-v"/>
+        <DropdownMenu>
+          {
+            // Warning, to make this menu dynamic, you'll need to change key to something different.
+            menuItems.map((m, i) => {
+              if (m.divider) return <DropdownItem key={ i } divider />;
+              if (typeof m.action === 'string') return <Link key={ i } to={ row.original[m.action] }><DropdownItem>{ m.title }</DropdownItem></Link>;
+              return <DropdownItem key={ i } onClick={ m.action }>{ m.title }</DropdownItem>;
+            })
+          }
+        </DropdownMenu>
+      </UncontrolledDropdown>
     ),
     headerCell: ({ title }: { title: string }): React.Node => (
       <span>
@@ -58,6 +79,14 @@ export const tableParts = {
         </span>
       </span>
     ),
+    expander: ({ isExpanded, hide }: { isExpanded: boolean, hide?: boolean }): React.Node => {
+      if (hide) return false;
+      return (
+        <div className={`rt-expander ${isExpanded ? '-open' : ''}`}>
+          &bull;
+        </div>
+      );
+    },
   },
   filters: {
     filterByValue: (filter: Object, row: Object, column: Object): string | boolean => {

@@ -15,9 +15,21 @@ body {
       margin: 0 -32px 20px -32px;
       padding: 20px 32px;
     }
+    .sub-nav {
+      border-bottom: #e0e0e0 solid 1px;
+      .nav-link {
+        text-transform: uppercase;
+        color: #9E9E9E;
+        &.active {
+          color: black;
+          border-bottom: black solid 1px;
+        }
+      }
+    }
     .ReactTable {
       border: none;
       .rt-table {
+        overflow: visible;
         .rt-thead {
           font-weight: bold;
           box-shadow: none;
@@ -52,11 +64,18 @@ body {
           }
         }
         .rt-tbody {
+          overflow: inherit;
           .rt-tr-group {
             border-bottom: 1px solid #e0e0e0;
           }
           .rt-td {
             border-right: none;
+            &.dropdown-fix {
+              overflow: inherit !important;
+            }
+          }
+          .sub-component {
+            background-color: #F5F5F5;
           }
         }
       }

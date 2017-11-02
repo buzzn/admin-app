@@ -7,10 +7,16 @@ import api from './api';
 import Registers from '../registers';
 import type { GroupsState } from './reducers';
 
+type Api = {
+  token: string,
+  apiUrl: string,
+  apiPath: string,
+};
+
 export const selectGroupId = (state: { groups: GroupsState }): string => state.groups.groupId;
 export const selectStatsTime = (state: { groups: GroupsState }): null | Date => state.groups.lastGroupsStatsReceived;
 
-export function* getGroup({ apiUrl, apiPath, token }: { token: string, apiUrl: string, apiPath: string }, { groupId }: { groupId: string }): Generator<*, *, *> {
+export function* getGroup({ apiUrl, apiPath, token }: Api, { groupId }: { groupId: string }): Generator<*, *, *> {
   yield put(actions.loadingGroup());
   yield put(actions.setGroup({}));
   try {
@@ -23,7 +29,7 @@ export function* getGroup({ apiUrl, apiPath, token }: { token: string, apiUrl: s
   yield put(actions.loadedGroup());
 }
 
-export function* getGroups({ apiUrl, apiPath, token }: { token: string, apiUrl: string, apiPath: string }): Generator<*, *, *> {
+export function* getGroups({ apiUrl, apiPath, token }: Api): Generator<*, *, *> {
   yield put(actions.loadingGroups());
   yield put(actions.setGroups([]));
   try {
@@ -42,7 +48,7 @@ export function* getGroups({ apiUrl, apiPath, token }: { token: string, apiUrl: 
   yield put(actions.loadedGroups());
 }
 
-export function* groupsSagas({ apiUrl, apiPath, token }: { token: string, apiUrl: string, apiPath: string }): Generator<*, *, *> {
+export function* groupsSagas({ apiUrl, apiPath, token }: Api): Generator<*, *, *> {
   yield takeLatest(constants.LOAD_GROUPS, getGroups, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUP, getGroup, { apiUrl, apiPath, token });
   yield call(getGroups, { apiUrl, apiPath, token });

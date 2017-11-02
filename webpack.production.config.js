@@ -72,6 +72,7 @@ module.exports = {
     new webpack.ProvidePlugin({
       'window.Tether': 'tether',
     }),
+    new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.LoaderOptionsPlugin({
       minimize: true,

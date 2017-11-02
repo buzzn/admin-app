@@ -57,7 +57,9 @@ export function* registersSagas({ apiUrl, apiPath, token }) {
   const { registerId } = yield select(selectRegister);
   if (groupId) {
     yield call(getRegisters, { apiUrl, apiPath, token }, { groupId });
-    if (registerId) yield call(getRegister, { apiUrl, apiPath, token }, { registerId, groupId });
+    if (registerId) {
+      yield call(getRegister, { apiUrl, apiPath, token }, { registerId, groupId });
+    }
   }
 }
 

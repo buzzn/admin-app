@@ -1,8 +1,9 @@
+// @flow
 import get from 'lodash/get';
 import { constants } from './actions';
+import type { MetersAction } from './actions';
 
 export const initialState = {
-  configured: false,
   loadingGroupMeters: false,
   loadingMeter: false,
   groupMeters: [],
@@ -12,7 +13,17 @@ export const initialState = {
   virtualValidationRules: {},
 };
 
-export default function (state = initialState, action) {
+export type MetersState = {
+  loadingGroupMeters: boolean,
+  loadingMeter: boolean,
+  groupMeters: Array<Object>,
+  meter: Object,
+  meterRegisters: Array<Object>,
+  realValidationRules: Object,
+  virtualValidationRules: Object,
+};
+
+export default function (state: MetersState = initialState, action: MetersAction): MetersState {
   switch (action.type) {
     case constants.LOAD_METER:
       return { ...state, meterId: action.meterId, groupId: action.groupId };
@@ -26,14 +37,14 @@ export default function (state = initialState, action) {
     case constants.LOAD_GROUP_METERS:
       return { ...state, groupId: action.groupId };
     case constants.LOADING_GROUP_METERS:
-      return { ...state, loadingUserMeters: true };
+      return { ...state, loadingGroupMeters: true };
     case constants.LOADED_GROUP_METERS:
-      return { ...state, loadingUserMeters: false };
+      return { ...state, loadingGroupMeters: false };
     case constants.SET_GROUP_METERS:
       return { ...state, groupMeters: action.groupMeters };
 
     case constants.SET_TOKEN:
-      return { ...state, configured: true };
+      return { ...state };
 
     case constants.SET_REAL_VALIDATION_RULES:
       return { ...state, realValidationRules: action.realValidationRules };
