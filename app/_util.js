@@ -2,6 +2,7 @@ import forEach from 'lodash/forEach';
 import camelCase from 'lodash/camelCase';
 import snakeCase from 'lodash/snakeCase';
 import reduce from 'lodash/reduce';
+import last from 'lodash/last';
 import Auth from '@buzzn/module_auth';
 import store from './configure_store';
 
@@ -24,6 +25,8 @@ export function wrapErrors(errors) {
 export function parseResponse(response) {
   const json = response.json();
   if (response.status >= 200 && response.status < 300) {
+    return json;
+  } else if (response.status === 503 && last(response.url.split('/')) === 'health') {
     return json;
   } else if (response.status === 404) {
     return Promise.resolve({ status: 404 });

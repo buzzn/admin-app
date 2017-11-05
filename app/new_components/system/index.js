@@ -96,10 +96,8 @@ export class System extends React.Component<Props, State> {
       match: { url, params: { groupId } },
     } = this.props;
 
-    if (loading) return (<div>Loading...</div>);
-
     const breadcrumbs = [
-      { id: group.id, link: url, title: group.name },
+      { id: group.id || 1, link: url, title: group.name },
     ];
 
     return [

@@ -15,8 +15,6 @@ type Props = {
 };
 
 const MetersList = ({ loading, meters, intl, url, setAddReading }: Props) => {
-  if (loading) return (<div>Loading...</div>);
-
   const data = meters.map(m => ({
     ...m,
     rawType: m.type,

@@ -9,7 +9,6 @@ export const selectRegister = state => ({ registerId: state.registers.registerId
 
 export function* getRegister({ apiUrl, apiPath, token }, { registerId, groupId }) {
   yield put(actions.loadingRegister());
-  yield put(actions.setRegister({ register: {}, readings: [] }));
   try {
     const register = yield call(api.fetchRegister, { apiUrl, apiPath, token, registerId, groupId });
     const readings = yield call(api.fetchRegisterReadings, { apiUrl, apiPath, token, registerId, groupId });
@@ -38,7 +37,6 @@ export function* updateRegister({ apiUrl, apiPath, token }, { meterId, registerI
 // current implementation is incompatible with cache
 export function* getRegisters({ apiUrl, apiPath, token }, { groupId }) {
   yield put(actions.loadingRegisters());
-  yield put(actions.setRegisters([]));
   try {
     let registers = [];
     registers = yield call(api.fetchGroupRegisters, { apiUrl, apiPath, token, groupId });

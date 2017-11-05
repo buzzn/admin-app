@@ -10,13 +10,11 @@ export default {
       .then(camelizeResponseKeys);
   },
   fetchGroupPowertakers({ token, apiUrl, apiPath, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/power-taker-contracts?include=customer`, {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/power-taker-contracts?include=customer:[address,contact:address]`, {
       headers: prepareHeaders(token),
     })
       .then(parseResponse)
-      // FIXME: this is a workaround. Should be fixed after buzzn/buzzn #999
-      .then(contracts => contracts.array.map(c => ({ ...c.customer, contractId: c.id })))
-      .then(camelizeResponseArray);
+      .then(camelizeResponseKeys);
   },
   updateBankAccount({ token, apiUrl, apiPath, bankAccountId, params, groupId, partyId, partyType }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/${partyType}s/${partyId}/bank-accounts/${bankAccountId}`, {

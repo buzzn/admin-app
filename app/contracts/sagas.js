@@ -10,7 +10,6 @@ export const selectContractId = state => state.contracts.contractId;
 
 export function* getContract({ apiUrl, apiPath, token }, { contractId, groupId }) {
   yield put(actions.loadingContract());
-  yield put(actions.setContract({ contract: {}, contractor: {}, customer: {} }));
   try {
     const contract = yield call(api.fetchContract, { apiUrl, apiPath, token, contractId, groupId });
     yield put(actions.setContract({ contract, contractor: contract.contractor, customer: contract.customer }));
@@ -39,7 +38,6 @@ export function* updateBankAccount({ apiUrl, apiPath, token }, { bankAccountId, 
 
 export function* getGroupContracts({ apiUrl, apiPath, token }, { groupId }) {
   yield put(actions.loadingGroupContracts());
-  yield put(actions.setGroupContracts([]));
   try {
     const operatorContract = yield call(api.fetchOperatorContract, { apiUrl, apiPath, token, groupId });
     const processingContract = yield call(api.fetchProcessingContract, { apiUrl, apiPath, token, groupId });
@@ -52,10 +50,9 @@ export function* getGroupContracts({ apiUrl, apiPath, token }, { groupId }) {
 
 export function* getPowertakers({ apiUrl, apiPath, token }, { groupId }) {
   yield put(actions.loadingGroupPowertakers());
-  yield put(actions.setGroupPowertakers([]));
   try {
-    const users = yield call(api.fetchGroupPowertakers, { apiUrl, apiPath, token, groupId });
-    yield put(actions.setGroupPowertakers(users));
+    const powertakers = yield call(api.fetchGroupPowertakers, { apiUrl, apiPath, token, groupId });
+    yield put(actions.setGroupPowertakers(powertakers.array));
   } catch (error) {
     logException(error);
   }

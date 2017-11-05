@@ -9,7 +9,7 @@ type Props = {
     database: string,
     redis: string,
     mongo: string,
-    healthy: string,
+    healthy: boolean,
   }
 };
 
@@ -19,7 +19,7 @@ const Health = ({ health }: Props) => (
     top: '20px',
     left: '20px',
     zIndex: '9999',
-    background: '#e5e5e5',
+    background: health.healthy ? '#e5e5e5' : 'red',
     padding: '10px' }}>
     <details style={{ whiteSpace: 'pre-wrap' }}>
       <pre>{ JSON.stringify(health, null, 2) }</pre>

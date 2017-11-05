@@ -18,7 +18,6 @@ export const selectStatsTime = (state: { groups: GroupsState }): null | Date => 
 
 export function* getGroup({ apiUrl, apiPath, token }: Api, { groupId }: { groupId: string }): Generator<*, *, *> {
   yield put(actions.loadingGroup());
-  yield put(actions.setGroup({}));
   try {
     const group = yield call(api.fetchGroup, { apiUrl, apiPath, token, groupId });
     yield put(actions.setGroup(group));
@@ -31,7 +30,6 @@ export function* getGroup({ apiUrl, apiPath, token }: Api, { groupId }: { groupI
 
 export function* getGroups({ apiUrl, apiPath, token }: Api): Generator<*, *, *> {
   yield put(actions.loadingGroups());
-  yield put(actions.setGroups([]));
   try {
     const groups = yield call(api.fetchGroups, { apiUrl, apiPath, token });
     yield put(actions.setGroups(groups.array));
