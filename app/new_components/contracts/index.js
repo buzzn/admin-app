@@ -1,13 +1,13 @@
 // @flow
 import * as React from 'react';
 import { connect } from 'react-redux';
-import ReactTable from 'react-table';
-import { injectIntl, FormattedMessage } from 'react-intl';
-import type { intlShape } from 'react-intl';
-import { tableParts as TableParts } from 'react_table_config';
-import Contracts from 'contracts';
+import { Switch, Route, Redirect, Link, NavLink } from 'react-router-dom';
+import find from 'lodash/find';
+import ContractsModule from 'contracts';
 import Groups from 'groups';
 import Breadcrumbs from 'new_components/breadcrumbs';
+import ContractsList from './contracts_list';
+import ContractDataForm from './contract_data';
 
 type Props = {
   // TODO: replace with action
@@ -16,15 +16,10 @@ type Props = {
   contracts: Array<Object>,
   group: Object,
   loading: boolean,
-  match: { params: { groupId: string } },
-  intl: intlShape,
+  match: { url: string, params: { groupId: string } },
 };
 
-export class ContractsList extends React.Component<Props> {
-  static defaultProps = {
-    contracts: [],
-  };
-
+export class Contracts extends React.Component<Props> {
   componentWillMount() {
     const { loadGroupContracts, loadGroup, group, match: { params: { groupId } } } = this.props;
     if (group.id !== groupId) loadGroup(groupId);
@@ -32,63 +27,78 @@ export class ContractsList extends React.Component<Props> {
   }
 
   render() {
-    const { contracts, group, loading, match: { params: { groupId } }, intl } = this.props;
-
-    if (loading || !group.id) return (<div>Loading...</div>);
+    const { contracts, group, loading, match: { url, params: { groupId } } } = this.props;
 
     const breadcrumbs = [
-      { id: group.id, link: `/localpools/${group.id}/contracts`, title: group.name },
-      { id: '-----', title: 'Contracts' },
-    ];
-
-    const data = contracts.filter(c => !!c.id).map(c => ({
-      ...c,
-      type: intl.formatMessage({ id: `admin.contracts.${c.type}` }),
-      status: c.status,
-      since: c.signingDate,
-      number: c.fullContractNumber,
-      link: `/localpools/${groupId}/contracts/${c.id}`,
-    }));
-
-    const columns = [
-      {
-        Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.contracts.tableType' }) }/>,
-        accessor: 'type',
-        minWidth: 200,
-      },
-      {
-        Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.contracts.tableStatus' }) }/>,
-        accessor: 'status',
-        minWidth: 200,
-      },
-      {
-        Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.contracts.tableSince' }) }/>,
-        accessor: 'since',
-        minWidth: 100,
-      },
-      {
-        Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.contracts.tableNumber' }) }/>,
-        accessor: 'number',
-        minWidth: 200,
-      },
-      {
-        Header: '',
-        accessor: 'link',
-        sortable: false,
-        filterable: false,
-        resizable: false,
-        width: 100,
-        Cell: () => <TableParts.components.iconCell icon="cog" action={ () => {} }/>,
-      },
+      { id: group.id | 1, link: url, title: group.name },
     ];
 
     return [
+
+      /* Breadcrumbs */
       <div className="center-content-header" key={ 1 }>
-        <Breadcrumbs breadcrumbs={ breadcrumbs }/>
-        <p className="h4"><FormattedMessage id="admin.contracts.headerGroupContracts"/></p>
+        <Switch>
+          <Route path={ `${url}/:contractId` } render={ ({ match: { url: contractUrl, params: { contractId } } }) => {
+            const contract = find(contracts, c => c.id === contractId);
+            if (!contract) return <Redirect to={ url }/>;
+            breadcrumbs.push({ id: contract.id, type: 'contract', title: contract.fullContractNumber });
+            return (
+              <Switch>
+                <Route path={ contractUrl } render={ () => [
+                  <Breadcrumbs key={ 1 } breadcrumbs={ breadcrumbs }/>,
+                  <p key={ 2 } className="h4"><Link to={ contractUrl }><i className="fa fa-chevron-left"/> { contract.fullContractNumber }</Link></p>,
+                ] }/>
+              </Switch>
+            );
+          } }/>
+          <Route path={ url } render={ () => [
+            <Breadcrumbs key={ 1 } breadcrumbs={ breadcrumbs.concat([{ id: '-----', title: 'Localpool contracts' }]) }/>,
+            <p key={ 2 } className="h4">Localpool contracts</p>,
+          ] }/>
+        </Switch>
       </div>,
-      <div className="p-0" key={ 2 }>
-        <ReactTable {...{ data, columns }} />
+      /* End of Breadcrumbs */
+
+      <div className="center-content" key={ 2 }>
+        <Switch>
+
+          /* Detailed UI */
+          <Route path={ `${url}/:contractId` } render={ ({ match: { url: contractUrl, params: { contractId } } }) => {
+            const contract = find(contracts, c => c.id === contractId);
+            if (!contract) return <Redirect to={ url }/>;
+            return [
+
+              /* Sub nav */
+              /* End of sub nav */
+
+              /* Main UI */
+              <Switch key={ 2 }>
+                <Route path={ contractUrl }>
+                  <ContractDataForm {...{
+                    // TODO: real validation rules and updateContract action
+                    validationRules: {},
+                    contract,
+                    initialValues: contract,
+                  }}/>
+                </Route>
+              </Switch>
+              /* End of main UI */
+
+            ];
+          } }/>
+          /* End of detailed UI */
+
+          /* Contracts list */
+          <Route path={ url }>
+            <ContractsList {...{
+              contracts,
+              url,
+              loading,
+            }}/>
+          </Route>
+          /* End of contracts list */
+
+        </Switch>
       </div>,
     ];
   }
@@ -103,6 +113,6 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  loadGroupContracts: Contracts.actions.loadGroupContracts,
+  loadGroupContracts: ContractsModule.actions.loadGroupContracts,
   loadGroup: Groups.actions.loadGroup,
-})(injectIntl(ContractsList));
+})(Contracts);
