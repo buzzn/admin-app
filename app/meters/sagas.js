@@ -17,7 +17,6 @@ export const selectGroupId = (state: { meters: MetersState }): string => state.m
 
 export function* getMeter({ apiUrl, apiPath, token }: Api, { meterId, groupId }: { meterId: string, groupId: string }): Generator<*, *, *> {
   yield put(actions.loadingMeter());
-  yield put(actions.setMeter({}));
   try {
     const meter = yield call(api.fetchMeter, { apiUrl, apiPath, token, meterId, groupId });
     yield put(actions.setMeter(meter));
@@ -29,7 +28,6 @@ export function* getMeter({ apiUrl, apiPath, token }: Api, { meterId, groupId }:
 
 export function* getGroupMeters({ apiUrl, apiPath, token }: Api, { groupId }: { groupId: string }): Generator<*, *, *> {
   yield put(actions.loadingGroupMeters());
-  yield put(actions.setGroupMeters([]));
   try {
     const groupMeters = yield call(api.fetchGroupMeters, { apiUrl, apiPath, token, groupId });
     yield put(actions.setGroupMeters(groupMeters.array));
