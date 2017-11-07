@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import StoryRouter from 'storybook-router';
-import Breadcrumbs from '../../breadcrumbs';
+import Breadcrumbs from 'new_components/breadcrumbs';
 
 storiesOf('Atoms/Breadcrumbs')
   .addDecorator(StoryRouter())

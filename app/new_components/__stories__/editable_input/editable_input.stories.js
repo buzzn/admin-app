@@ -1,12 +1,13 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, text, boolean } from '@storybook/addon-knobs';
-import EditableInput from '../../editable_input';
+import EditableInput from 'new_components/editable_input';
 
 const props = {
   editMode: false,
   input: { value: 'test data' },
-  meta: { touched: false, error: null } };
+  meta: { touched: false, error: null },
+};
 
 storiesOf('Atoms/EditableInput')
   .addDecorator(withKnobs)

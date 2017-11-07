@@ -10,7 +10,7 @@ module.exports = (baseConfig, env) => {
     include: path.resolve(__dirname, '../')
   });
 
-  config.resolve.modules.push(path.resolve(__dirname, 'app'));
+  config.resolve.modules.push(path.resolve(__dirname, '../app'));
   config.resolve.alias.moment$ = 'moment/moment.js';
 
   return config;
