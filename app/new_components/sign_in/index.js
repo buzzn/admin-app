@@ -7,13 +7,15 @@ import Auth from '@buzzn/module_auth';
 import './style.scss';
 
 type Props = {
-  dispatch: Function,
+  setLogin: Function,
+  setPassword: Function,
+  startAuth: Function,
   username: string,
   password: string,
   error?: string,
 };
 
-export const SignIn = ({ dispatch, username, password, error }: Props) => (
+export const SignIn = ({ setLogin, setPassword, startAuth, username, password, error }: Props) => (
   <form className="form-signin">
     <h4 className="form-signin-heading">Please sign in</h4>
     { error && error !== 'Sign out' &&
@@ -24,7 +26,7 @@ export const SignIn = ({ dispatch, username, password, error }: Props) => (
     <label htmlFor="inputEmail" className="sr-only">Email address</label>
     <input
       value={ username }
-      onChange={ event => dispatch(Auth.actions.setLogin(event.target.value)) }
+      onChange={ event => setLogin(event.target.value) }
       type="email"
       id="inputEmail"
       className="form-control"
@@ -34,14 +36,14 @@ export const SignIn = ({ dispatch, username, password, error }: Props) => (
     <label htmlFor="inputPassword" className="sr-only">Password</label>
     <input
       value={ password }
-      onChange={ event => dispatch(Auth.actions.setPassword(event.target.value)) }
+      onChange={ event => setPassword(event.target.value) }
       type="password"
       id="inputPassword"
       className="form-control"
       placeholder="Password"
       required/>
     <div
-      onClick={ () => dispatch(Auth.actions.startAuth()) }
+      onClick={ () => startAuth() }
       className="btn btn-lg btn-primary btn-block">
       Sign in
     </div>
@@ -56,7 +58,8 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  (dispatch: Dispatch<*>) => ({ dispatch }),
-)(SignIn);
+export default connect(mapStateToProps, {
+  setLogin: Auth.actions.setLogin,
+  setPassword: Auth.actions.setPassword,
+  startAuth: Auth.actions.startAuth,
+})(SignIn);

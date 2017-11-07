@@ -13,5 +13,8 @@ module.exports = (baseConfig, env) => {
   config.resolve.modules.push(path.resolve(__dirname, '../app'));
   config.resolve.alias.moment$ = 'moment/moment.js';
 
+  config.entry.manager = ['babel-polyfill', 'bootstrap-loader'].concat(config.entry.manager);
+  config.entry.preview = ['babel-polyfill', 'bootstrap-loader'].concat(config.entry.preview);
+
   return config;
 };
