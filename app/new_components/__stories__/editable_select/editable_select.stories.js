@@ -1,8 +1,10 @@
+// @flow
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import EditableSelect from 'new_components/editable_select';
 
 const props = {
+  prefix: '',
   editMode: false,
   noValTranslations: true,
   input: { value: 'test data' },

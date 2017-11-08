@@ -1,8 +1,9 @@
+// @flow
 import React from 'react';
 import { reduxForm } from 'redux-form';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { withKnobs, text, boolean } from '@storybook/addon-knobs';
+import { withKnobs, boolean } from '@storybook/addon-knobs';
 import Provider from '../__util__/provider';
 import AddReading from 'new_components/system/add_reading';
 

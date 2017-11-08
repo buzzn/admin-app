@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import StoryRouter from 'storybook-router';
@@ -6,6 +7,7 @@ import { persons, organizations } from '../__util__/generators';
 
 const props = {
   url: '#',
+  loading: false,
   powertakers: (persons(10)).concat(organizations(10)).map(p => ({ ...p, contractId: '' })),
 };
 

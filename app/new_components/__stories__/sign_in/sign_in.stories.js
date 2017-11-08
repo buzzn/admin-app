@@ -1,7 +1,7 @@
+// @flow
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { withKnobs, text, boolean } from '@storybook/addon-knobs';
 import { SignIn } from 'new_components/sign_in';
 
 const props = {
@@ -10,11 +10,10 @@ const props = {
   startAuth: action('Start auth'),
   username: 'example@example.com',
   password: 'Example123',
-  error: null,
+  error: '',
 };
 
 storiesOf('Molecules/SignIn')
-  .addDecorator(withKnobs)
   .add('No error', () => {
     return <SignIn {...props}/>;
   })
