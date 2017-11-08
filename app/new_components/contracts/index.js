@@ -6,6 +6,7 @@ import find from 'lodash/find';
 import ContractsModule from 'contracts';
 import Groups from 'groups';
 import Breadcrumbs from 'new_components/breadcrumbs';
+import LinkBack from 'new_components/link_back';
 import ContractsList from './contracts_list';
 import ContractDataForm from './contract_data';
 
@@ -46,14 +47,14 @@ export class Contracts extends React.Component<Props> {
               <Switch>
                 <Route path={ contractUrl } render={ () => [
                   <Breadcrumbs key={ 1 } breadcrumbs={ breadcrumbs }/>,
-                  <p key={ 2 } className="h4"><Link to={ contractUrl }><i className="fa fa-chevron-left"/> { contract.fullContractNumber }</Link></p>,
+                  <LinkBack key={ 2 } url={ contractUrl } title={ contract.fullContractNumber }/>,
                 ] }/>
               </Switch>
             );
           } }/>
           <Route path={ url } render={ () => [
             <Breadcrumbs key={ 1 } breadcrumbs={ breadcrumbs.concat([{ id: '-----', title: 'Localpool contracts' }]) }/>,
-            <p key={ 2 } className="h4">Localpool contracts</p>,
+            <LinkBack key={ 2 } title="Localpool contracts"/>,
           ] }/>
         </Switch>
       </div>,

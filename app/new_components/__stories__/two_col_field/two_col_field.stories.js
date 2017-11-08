@@ -19,7 +19,7 @@ const props = {
   meta: { touched: false, error: null },
 };
 
-storiesOf('Molecules/TwoColField')
+storiesOf('Molecules/TwoColField/single')
   .addDecorator(withKnobs)
   .addDecorator(backgrounds([
     { name: 'twitter', value: '#00aced' },
