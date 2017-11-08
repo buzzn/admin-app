@@ -3,9 +3,11 @@ import { storiesOf } from '@storybook/react';
 import { withKnobs, text, boolean } from '@storybook/addon-knobs';
 import EditableInput from 'new_components/editable_input';
 
+const chance = require('chance').Chance();
+
 const props = {
   editMode: false,
-  input: { value: 'test data' },
+  input: { value: chance.sentence() },
   meta: { touched: false, error: null },
 };
 

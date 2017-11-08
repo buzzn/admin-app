@@ -8,6 +8,8 @@ import Provider from '../__util__/provider';
 import EditableInput from 'new_components/editable_input';
 import TwoColField from 'new_components/two_col_field';
 
+const chance = require('chance').Chance();
+
 const DecoratedTwoColField = reduxForm({ form: 'testForm' })(TwoColField)
 
 const props = {
@@ -15,7 +17,7 @@ const props = {
   name: 'firstName',
   validationRules: {},
   editMode: false,
-  input: { value: 'test data', onChange: action('change') },
+  input: { value: chance.first(), onChange: action('change') },
   meta: { touched: false, error: null },
 };
 
@@ -26,12 +28,12 @@ storiesOf('Molecules/TwoColField/single')
     { name: 'facebook', value: '#3b5998' },
   ]))
   .addDecorator(story => <Provider story={ story() } />)
-  .add('input view', () => {
+  .add('view', () => {
     return <DecoratedTwoColField {...props} component={ EditableInput }/>;
   })
-  .add('input edit', () => {
+  .add('edit', () => {
     return <DecoratedTwoColField {...{ ...props, editMode: true }} component={ EditableInput }/>;
   })
-  .add('input error', () => {
+  .add('error', () => {
     return <DecoratedTwoColField {...{ ...props, editMode: true, meta: { touched: true, error: 'some error' } }} component={ EditableInput }/>;
   });
