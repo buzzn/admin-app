@@ -9,6 +9,7 @@ import Registers from 'registers';
 import Groups from 'groups';
 import Readings from 'readings';
 import Breadcrumbs from 'new_components/breadcrumbs';
+import LinkBack from 'new_components/link_back';
 import MetersList from './meters_list';
 import MeterDataForm from './meter_data';
 import RegistersList from './registers_list';
@@ -118,19 +119,19 @@ export class System extends React.Component<Props, State> {
                   breadcrumbs.push({ id: register.id, type: 'register', title: register.name, link: undefined });
                   return [
                     <Breadcrumbs key={ 1 } breadcrumbs={ breadcrumbs }/>,
-                    <p key={ 2 } className="h4"><Link to={ meterUrl }><i className="fa fa-chevron-left"/> { register.name }</Link></p>,
+                    <LinkBack key={ 2 } url={ meterUrl } title={ register.name }/>,
                   ];
                 } }/>
                 <Route path={ `${url}/:meterId` } render={ () => ([
                   <Breadcrumbs key={ 1 } breadcrumbs={ breadcrumbs }/>,
-                  <p key={ 2 } className="h4"><Link to={ url }><i className="fa fa-chevron-left"/> { meter.productSerialnumber }</Link></p>,
+                  <LinkBack key={ 2 } url={ url } title={ meter.productSerialnumber }/>,
                 ])}/>
               </Switch>
             );
           }}/>
           <Route path={ url } render={ () => [
             <Breadcrumbs key={ 1 } breadcrumbs={ breadcrumbs.concat([{ id: '-----', title: 'System setup' }]) }/>,
-            <p key={ 2 } className="h4">System setup</p>,
+            <LinkBack key={ 2 } title="System setup"/>,
           ] }/>
         </Switch>
       </div>,

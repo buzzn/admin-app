@@ -6,6 +6,7 @@ import find from 'lodash/find';
 import Contracts from 'contracts';
 import Groups from 'groups';
 import Breadcrumbs from 'new_components/breadcrumbs';
+import LinkBack from 'new_components/link_back';
 import PowertakersList from './powertakers_list';
 import PowertakerData from './powertaker_data';
 
@@ -44,12 +45,12 @@ export class Powertakers extends React.Component<Props> {
             breadcrumbs.push({ id: contract.id, type: 'contract', title: contract.customerNumber, link: undefined });
             return [
               <Breadcrumbs key={ 1 } breadcrumbs={ breadcrumbs }/>,
-              <p key={ 2 } className="h4"><Link to={ url }><i className="fa fa-chevron-left"/> { contract.customerNumber }</Link></p>
+              <LinkBack key={ 2 } url={ url } title={ contract.customerNumber }/>,
             ];
           } }/>
           <Route path={ url } render={ () => ([
             <Breadcrumbs key={ 1 } breadcrumbs={ breadcrumbs.concat([{ id: '-----', title: 'Powertakers' }]) }/>,
-            <p key={ 2 } className="h4">Localpool powertakers</p>,
+            <LinkBack key={ 2 } title="Localpool powertakers"/>,
           ]) }/>
         </Switch>
       </div>,
