@@ -1,0 +1,22 @@
+// @flow
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
+import { SignIn } from 'components/sign_in';
+
+const props = {
+  setLogin: action('Set login'),
+  setPassword: action('Set password'),
+  startAuth: action('Start auth'),
+  username: 'example@example.com',
+  password: 'Example123',
+  error: '',
+};
+
+storiesOf('Molecules/SignIn')
+  .add('No error', () => {
+    return <SignIn {...props}/>;
+  })
+  .add('Error', () => {
+    return <SignIn {...{ ...props, error: 'Wrong credentials' }}/>;
+  });

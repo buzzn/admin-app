@@ -1,9 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+// @flow
+import * as React from 'react';
+import type { FormProps } from 'redux-form';
 
 import './style.scss';
 
-const EditableInput = ({ editMode, input, meta: { touched, error } }) => {
+type Props = {
+  editMode: boolean,
+} & FormProps;
+
+const EditableInput = ({ editMode, input, meta: { touched, error } }: Props) => {
   if (editMode) {
     return (
       <div className={ `editable-input form-group ${(touched && error) && 'has-danger'}` }>
@@ -13,12 +18,6 @@ const EditableInput = ({ editMode, input, meta: { touched, error } }) => {
     );
   }
   return <span>{ input.value }</span>;
-};
-
-EditableInput.propTypes = {
-  editMode: PropTypes.bool.isRequired,
-  input: PropTypes.object.isRequired,
-  meta: PropTypes.object.isRequired,
 };
 
 export default EditableInput;

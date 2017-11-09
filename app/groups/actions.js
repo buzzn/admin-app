@@ -32,7 +32,7 @@ export type SetGroup = {| type: 'buzzn_groups/SET_GROUP', group: Object |};
 export type LoadGroups = {| type: 'buzzn_groups/LOAD_GROUPS' |};
 export type LoadingGroups = {| type: 'buzzn_groups/LOADING_GROUPS' |};
 export type LoadedGroups = {| type: 'buzzn_groups/LOADED_GROUPS' |};
-export type SetGroups = {| type: 'buzzn_groups/SET_GROUPS', groups: Array<Object> |};
+export type SetGroups = {| type: 'buzzn_groups/SET_GROUPS', groups: { status?: number, array?: Array<Object> } |};
 
 export type LoadGroupsStats = {| type: 'buzzn_groups/LOAD_GROUPS_STATS' |};
 export type LoadingGroupsStats = {| type: 'buzzn_groups/LOADING_GROUPS_STATS' |};
@@ -67,7 +67,7 @@ export const actions = {
   loadGroups: (): LoadGroups => ({ type: constants.LOAD_GROUPS }),
   loadingGroups: (): LoadingGroups => ({ type: constants.LOADING_GROUPS }),
   loadedGroups: (): LoadedGroups => ({ type: constants.LOADED_GROUPS }),
-  setGroups: (groups: Array<Object>): SetGroups => ({ type: constants.SET_GROUPS, groups }),
+  setGroups: (groups: { status?: number, array?: Array<Object> }): SetGroups => ({ type: constants.SET_GROUPS, groups }),
 
   loadGroupsStats: (): LoadGroupsStats => ({ type: constants.LOAD_GROUPS_STATS }),
   loadingGroupsStats: (): LoadingGroupsStats => ({ type: constants.LOADING_GROUPS_STATS }),

@@ -32,7 +32,7 @@ export function* getGroups({ apiUrl, apiPath, token }: Api): Generator<*, *, *> 
   yield put(actions.loadingGroups());
   try {
     const groups = yield call(api.fetchGroups, { apiUrl, apiPath, token });
-    yield put(actions.setGroups(groups.array));
+    yield put(actions.setGroups(groups));
     const statsTime = yield select(selectStatsTime);
     if (!statsTime || ((new Date()).getTime() - statsTime.getTime()) > 15 * 60 * 1000) {
       const groupIds = groups.array.map(group => group.id);

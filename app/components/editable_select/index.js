@@ -1,11 +1,23 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+// @flow
+import * as React from 'react';
+import type { FormProps } from 'redux-form';
 import find from 'lodash/find';
 import { injectIntl } from 'react-intl';
+import type { intlShape } from 'react-intl';
 
 import './style.scss';
 
-const EditableSelect = ({ editMode, input, field, prefix, intl, defaultValue, listOverride, noValTranslations, noDefault, meta: { touched, error } }) => {
+type Props = {
+  editMode: boolean,
+  prefix: string,
+  intl: intlShape,
+  defaultValue?: { value: string | number, label: string },
+  listOverride?: Array<{ value: string | number, label: string }>,
+  noValTranslations?: boolean,
+  noDefault?: boolean,
+} & FormProps;
+
+const EditableSelect = ({ editMode, input, field, prefix, intl, defaultValue, listOverride, noValTranslations, noDefault, meta: { touched, error } }: Props) => {
   let list = [input.value];
   let options = [];
   if (listOverride) {
@@ -39,14 +51,6 @@ const EditableSelect = ({ editMode, input, field, prefix, intl, defaultValue, li
 
   const label = find(options, o => o.value === input.value);
   return <span>{ (label || {}).label }</span>;
-};
-
-EditableSelect.propTypes = {
-  editMode: PropTypes.bool.isRequired,
-  input: PropTypes.object.isRequired,
-  meta: PropTypes.object.isRequired,
-  field: PropTypes.object,
-  defaultValue: PropTypes.object,
 };
 
 EditableSelect.defaultProps = {

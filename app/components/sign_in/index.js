@@ -1,21 +1,32 @@
-import React from 'react';
+// @flow
+import * as React from 'react';
 import { connect } from 'react-redux';
+import type { Dispatch } from 'redux';
 import Auth from '@buzzn/module_auth';
 
 import './style.scss';
 
-export const SignIn = ({ dispatch, login, password, error }) => (
+type Props = {
+  setLogin: Function,
+  setPassword: Function,
+  startAuth: Function,
+  username: string,
+  password: string,
+  error?: string,
+};
+
+export const SignIn = ({ setLogin, setPassword, startAuth, username, password, error }: Props) => (
   <form className="form-signin">
     <h4 className="form-signin-heading">Please sign in</h4>
     { error && error !== 'Sign out' &&
-      <div className="alert alert-danger" role="alert">
-        <strong>Sign in failed!</strong> Email or password incorrect.
-      </div>
+    <div className="alert alert-danger" role="alert">
+      <strong>Sign in failed!</strong> Email or password incorrect.
+    </div>
     }
     <label htmlFor="inputEmail" className="sr-only">Email address</label>
     <input
-      value={ login }
-      onChange={ event => dispatch(Auth.actions.setLogin(event.target.value)) }
+      value={ username }
+      onChange={ event => setLogin(event.target.value) }
       type="email"
       id="inputEmail"
       className="form-control"
@@ -25,14 +36,14 @@ export const SignIn = ({ dispatch, login, password, error }) => (
     <label htmlFor="inputPassword" className="sr-only">Password</label>
     <input
       value={ password }
-      onChange={ event => dispatch(Auth.actions.setPassword(event.target.value)) }
+      onChange={ event => setPassword(event.target.value) }
       type="password"
       id="inputPassword"
       className="form-control"
       placeholder="Password"
       required/>
     <div
-      onClick={ () => dispatch(Auth.actions.startAuth()) }
+      onClick={ () => startAuth() }
       className="btn btn-lg btn-primary btn-block">
       Sign in
     </div>
@@ -47,4 +58,8 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(SignIn);
+export default connect(mapStateToProps, {
+  setLogin: Auth.actions.setLogin,
+  setPassword: Auth.actions.setPassword,
+  startAuth: Auth.actions.startAuth,
+})(SignIn);

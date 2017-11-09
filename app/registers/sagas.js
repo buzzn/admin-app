@@ -12,7 +12,7 @@ export function* getRegister({ apiUrl, apiPath, token }, { registerId, groupId }
   try {
     const register = yield call(api.fetchRegister, { apiUrl, apiPath, token, registerId, groupId });
     const readings = yield call(api.fetchRegisterReadings, { apiUrl, apiPath, token, registerId, groupId });
-    yield put(actions.setRegister({ register, readings: readings.array }));
+    yield put(actions.setRegister({ register, readings }));
   } catch (error) {
     logException(error);
   }
@@ -40,7 +40,7 @@ export function* getRegisters({ apiUrl, apiPath, token }, { groupId }) {
   try {
     let registers = [];
     registers = yield call(api.fetchGroupRegisters, { apiUrl, apiPath, token, groupId });
-    yield put(actions.setRegisters(registers.array));
+    yield put(actions.setRegisters(registers));
   } catch (error) {
     logException(error);
   }

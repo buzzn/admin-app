@@ -1,5 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+// @flow
+import * as React from 'react';
+import type { FormProps } from 'redux-form';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 import moment from 'moment';
 import momentLocalizer from 'react-widgets-moment';
@@ -8,29 +9,27 @@ import './style.scss';
 
 momentLocalizer(moment);
 
-const EditableDate = ({ editMode, input, dateFormat, defaultDate, meta: { touched, error } }) => {
+type Props = {
+  editMode: boolean,
+  dateFormat?: string,
+  defaultDate: Date,
+} & FormProps;
+
+const EditableDate = ({ editMode, input, dateFormat, defaultDate, meta: { touched, error } }: Props) => {
   if (editMode) {
     return (
       <div className={ `editable-date form-group ${(touched && error) && 'has-danger'}` }>
         <DateTimePicker { ...input }
-          time={ false }
-          format={ dateFormat }
-          editFormat={ dateFormat }
-          value={ input.value ? moment(input.value).toDate() : null }
-          onBlur={ () => input.onBlur(moment(input.value || defaultDate).toDate()) } />
+                        time={ false }
+                        format={ dateFormat }
+                        editFormat={ dateFormat }
+                        value={ input.value ? moment(input.value).toDate() : null }
+                        onBlur={ () => input.onBlur(moment(input.value || defaultDate).toDate()) } />
         { touched && error && <div className="form-control-feedback">{ error }</div> }
       </div>
     );
   }
   return <span>{ moment(input.value).format(dateFormat) }</span>;
-};
-
-EditableDate.propTypes = {
-  editMode: PropTypes.bool.isRequired,
-  input: PropTypes.object.isRequired,
-  meta: PropTypes.object.isRequired,
-  dateFormat: PropTypes.string,
-  defaultDate: PropTypes.instanceOf(Date),
 };
 
 EditableDate.defaultProps = {

@@ -36,9 +36,6 @@ export function appReducer(state = initialState, action) {
     case constants.SET_USER_ME_VALIDATION_RULES:
       return { ...state, userMeValidationRules: action.userMeValidationRules };
 
-    case constants.SWITCH_UI:
-      return { ...state, uiVer: action.uiVer };
-
     case constants.SET_HEALTH:
       return { ...state, health: action.health };
 

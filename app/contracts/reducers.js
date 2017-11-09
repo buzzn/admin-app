@@ -4,11 +4,11 @@ export const initialState = {
   loadingContract: false,
   loadingGroupContracts: false,
   loadingGroupPowertakers: false,
-  contract: {},
-  contractor: {},
-  customer: {},
+  contract: { _status: null },
+  contractor: { _status: null },
+  customer: { _status: null },
   groupContracts: [],
-  groupPowertakers: [],
+  groupPowertakers: { _status: null, array: [] },
 };
 
 export default function (state = initialState, action) {

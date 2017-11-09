@@ -1,7 +1,12 @@
+// @flow
 import React from 'react';
-import PropTypes from 'prop-types';
+import type { FormProps } from 'redux-form';
 
-const EditableCheckbox = ({ editMode, input, meta: { touched, error } }) => {
+type Props = {
+  editMode: boolean,
+} & FormProps;
+
+const EditableCheckbox = ({ editMode, input, meta: { touched, error } }: Props) => {
   return (
     <div className={ `editable-checkbox form-check ${(touched && error) && 'has-danger'}` }>
       <label className="custom-control custom-checkbox">
@@ -19,12 +24,6 @@ const EditableCheckbox = ({ editMode, input, meta: { touched, error } }) => {
       </label>
     </div>
   );
-};
-
-EditableCheckbox.propTypes = {
-  editMode: PropTypes.bool.isRequired,
-  input: PropTypes.object.isRequired,
-  meta: PropTypes.object.isRequired,
 };
 
 export default EditableCheckbox;
