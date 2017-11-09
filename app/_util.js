@@ -3,6 +3,7 @@ import camelCase from 'lodash/camelCase';
 import snakeCase from 'lodash/snakeCase';
 import reduce from 'lodash/reduce';
 import last from 'lodash/last';
+import Alert from 'react-s-alert';
 import Auth from '@buzzn/module_auth';
 import store from './configure_store';
 
@@ -29,7 +30,11 @@ export function parseResponse(response) {
   } else if (response.status === 503 && last(response.url.split('/')) === 'health') {
     return json;
   } else if (response.status === 404) {
+    Alert.error("<h4>404</h4>I can't remember what you requested.");
     return Promise.resolve({ _status: 404 });
+  } else if (response.status === 403) {
+    Alert.error('<h4>403</h4>All your base are belong to us.');
+    return Promise.resolve({ _status: 403 });
   } else if (response.status === 422) {
     return json.then(error => Promise.resolve(wrapErrors(error.errors)));
   } else if (response.status === 401) {

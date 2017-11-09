@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import type { MapStateToProps } from 'react-redux';
 import { Container, Row, Col } from 'reactstrap';
+import Alert from 'react-s-alert';
 import PartErrorBoundary from 'components/part_error_boundary';
 import TopNavBarContainer from 'components/top_nav_bar';
 import SignInContainer from 'components/sign_in';
@@ -21,6 +22,8 @@ import './react_table_config';
 import 'buzzn-style';
 import 'react-table/react-table.css';
 import 'react-widgets/dist/css/react-widgets.css';
+import 'react-s-alert/dist/s-alert-default.css';
+import 'react-s-alert/dist/s-alert-css-effects/genie.css';
 import './root.scss';
 
 type Props = {
@@ -72,6 +75,7 @@ const NewRoot = ({ token }: Props) => (
           <Route component={ SignInContainer } />
         </Container>
       }
+      <Alert stack={{ limit: 3 }} effect="genie" html={ true } />
     </div>
   </BrowserRouter>
 );
