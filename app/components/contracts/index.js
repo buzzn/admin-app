@@ -6,6 +6,7 @@ import find from 'lodash/find';
 import ContractsModule from 'contracts';
 import Groups from 'groups';
 import Breadcrumbs from 'components/breadcrumbs';
+import GroupStatsContainer from 'components/group_stats';
 import LinkBack from 'components/link_back';
 import ContractsList from './contracts_list';
 import ContractDataForm from './contract_data';
@@ -43,26 +44,31 @@ export class Contracts extends React.Component<Props> {
     return [
 
       /* Breadcrumbs */
-      <div className="center-content-header" key={ 1 }>
-        <Switch>
-          <Route path={ `${url}/:contractId` } render={ ({ match: { url: contractUrl, params: { contractId } } }) => {
-            const contract = find(contracts, c => c.id === contractId);
-            if (!contract) return <Redirect to={ url }/>;
-            breadcrumbs.push({ id: contract.id, type: 'contract', title: contract.fullContractNumber });
-            return (
-              <Switch>
-                <Route path={ contractUrl } render={ () => [
-                  <Breadcrumbs key={ 1 } breadcrumbs={ breadcrumbs }/>,
-                  <LinkBack key={ 2 } url={ contractUrl } title={ contract.fullContractNumber }/>,
-                ] }/>
-              </Switch>
-            );
-          } }/>
-          <Route path={ url } render={ () => [
-            <Breadcrumbs key={ 1 } breadcrumbs={ breadcrumbs.concat([{ id: '-----', title: 'Localpool contracts' }]) }/>,
-            <LinkBack key={ 2 } title="Localpool contracts"/>,
-          ] }/>
-        </Switch>
+      <div className="row center-content-header" key={ 1 }>
+        <div className="col-7">
+          <Switch>
+            <Route path={ `${url}/:contractId` } render={ ({ match: { url: contractUrl, params: { contractId } } }) => {
+              const contract = find(contracts, c => c.id === contractId);
+              if (!contract) return <Redirect to={ url }/>;
+              breadcrumbs.push({ id: contract.id, type: 'contract', title: contract.fullContractNumber });
+              return (
+                <Switch>
+                  <Route path={ contractUrl } render={ () => [
+                    <Breadcrumbs key={ 1 } breadcrumbs={ breadcrumbs }/>,
+                    <LinkBack key={ 2 } url={ contractUrl } title={ contract.fullContractNumber }/>,
+                  ] }/>
+                </Switch>
+              );
+            } }/>
+            <Route path={ url } render={ () => [
+              <Breadcrumbs key={ 1 } breadcrumbs={ breadcrumbs.concat([{ id: '-----', title: 'Localpool contracts' }]) }/>,
+              <LinkBack key={ 2 } title="Localpool contracts"/>,
+            ] }/>
+          </Switch>
+        </div>
+        <div className="col-5">
+          <GroupStatsContainer groupId={ groupId }/>
+        </div>
       </div>,
       /* End of Breadcrumbs */
 

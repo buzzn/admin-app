@@ -10,6 +10,7 @@ import Registers from 'registers';
 import Groups from 'groups';
 import Readings from 'readings';
 import Breadcrumbs from 'components/breadcrumbs';
+import GroupStatsContainer from 'components/group_stats';
 import LinkBack from 'components/link_back';
 import MetersList from './meters_list';
 import MeterDataForm from './meter_data';
@@ -112,36 +113,41 @@ export class System extends React.Component<Props, State> {
     return [
 
       /* Breadcrumbs */
-      <div className="center-content-header" key={ 1 }>
-        <Switch>
-          <Route path={ `${url}/:meterId` } render={ ({ match: { url: meterUrl, params: { meterId } } }) => {
-            const meter = find(meters.array, m => m.id === meterId);
-            if (!meter) return <Redirect to={ url }/>;
-            breadcrumbs.push({ id: meter.id, type: 'meter', title: meter.productSerialnumber, link: undefined });
-            return (
-              <Switch>
-                <Route path={ `${meterUrl}/registers/:registerId` } render={ ({ match: { params: { registerId } } }) => {
-                  const register = find(meter.registers.array, r => r.id === registerId);
-                  if (!register) return <Redirect to={ meterUrl }/>;
-                  breadcrumbs[1].link = meterUrl;
-                  breadcrumbs.push({ id: register.id, type: 'register', title: register.name, link: undefined });
-                  return [
+      <div className="row center-content-header" key={ 1 }>
+        <div className="col-7">
+          <Switch>
+            <Route path={ `${url}/:meterId` } render={ ({ match: { url: meterUrl, params: { meterId } } }) => {
+              const meter = find(meters.array, m => m.id === meterId);
+              if (!meter) return <Redirect to={ url }/>;
+              breadcrumbs.push({ id: meter.id, type: 'meter', title: meter.productSerialnumber, link: undefined });
+              return (
+                <Switch>
+                  <Route path={ `${meterUrl}/registers/:registerId` } render={ ({ match: { params: { registerId } } }) => {
+                    const register = find(meter.registers.array, r => r.id === registerId);
+                    if (!register) return <Redirect to={ meterUrl }/>;
+                    breadcrumbs[1].link = meterUrl;
+                    breadcrumbs.push({ id: register.id, type: 'register', title: register.name, link: undefined });
+                    return [
+                      <Breadcrumbs key={ 1 } breadcrumbs={ breadcrumbs }/>,
+                      <LinkBack key={ 2 } url={ meterUrl } title={ register.name }/>,
+                    ];
+                  } }/>
+                  <Route path={ `${url}/:meterId` } render={ () => ([
                     <Breadcrumbs key={ 1 } breadcrumbs={ breadcrumbs }/>,
-                    <LinkBack key={ 2 } url={ meterUrl } title={ register.name }/>,
-                  ];
-                } }/>
-                <Route path={ `${url}/:meterId` } render={ () => ([
-                  <Breadcrumbs key={ 1 } breadcrumbs={ breadcrumbs }/>,
-                  <LinkBack key={ 2 } url={ url } title={ meter.productSerialnumber }/>,
-                ])}/>
-              </Switch>
-            );
-          }}/>
-          <Route path={ url } render={ () => [
-            <Breadcrumbs key={ 1 } breadcrumbs={ breadcrumbs.concat([{ id: '-----', title: 'System setup' }]) }/>,
-            <LinkBack key={ 2 } title="System setup"/>,
-          ] }/>
-        </Switch>
+                    <LinkBack key={ 2 } url={ url } title={ meter.productSerialnumber }/>,
+                  ])}/>
+                </Switch>
+              );
+            }}/>
+            <Route path={ url } render={ () => [
+              <Breadcrumbs key={ 1 } breadcrumbs={ breadcrumbs.concat([{ id: '-----', title: 'System setup' }]) }/>,
+              <LinkBack key={ 2 } title="System setup"/>,
+            ] }/>
+          </Switch>
+        </div>
+        <div className="col-5">
+          <GroupStatsContainer groupId={ groupId }/>
+        </div>
       </div>,
       /* End of Breadcrumbs */
 
