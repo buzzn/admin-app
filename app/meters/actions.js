@@ -52,7 +52,7 @@ export type UpdateFormulaPart = {|
 export type LoadGroupMeters = {| type: 'buzzn_meters/LOAD_GROUP_METERS', groupId: string |};
 export type LoadingGroupMeters = {| type: 'buzzn_meters/LOADING_GROUP_METERS' |};
 export type LoadedGroupMeters = {| type: 'buzzn_meters/LOADED_GROUP_METERS' |};
-export type SetGroupMeters = {| type: 'buzzn_meters/SET_GROUP_METERS', groupMeters: Array<Object> |};
+export type SetGroupMeters = {| type: 'buzzn_meters/SET_GROUP_METERS', groupMeters: { _status: null | number, array?: Array<Object> } |};
 
 export type MetersAction =
   SetApiParams |
@@ -92,5 +92,5 @@ export const actions = {
   loadGroupMeters: (groupId: string): LoadGroupMeters => ({ type: constants.LOAD_GROUP_METERS, groupId }),
   loadingGroupMeters: (): LoadingGroupMeters => ({ type: constants.LOADING_GROUP_METERS }),
   loadedGroupMeters: (): LoadedGroupMeters => ({ type: constants.LOADED_GROUP_METERS }),
-  setGroupMeters: (groupMeters: Array<Object>): SetGroupMeters => ({ type: constants.SET_GROUP_METERS, groupMeters }),
+  setGroupMeters: (groupMeters: { _status: null | number, array?: Array<Object> }): SetGroupMeters => ({ type: constants.SET_GROUP_METERS, groupMeters }),
 };

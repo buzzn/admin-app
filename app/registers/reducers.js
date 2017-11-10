@@ -3,9 +3,9 @@ import { constants } from './actions';
 export const initialState = {
   loadingRegisters: false,
   loadingRegister: false,
-  registers: [],
-  register: {},
-  readings: [],
+  registers: { _status: null, array: [] },
+  register: { _status: null },
+  readings: { _status: null, array: [] },
   validationRules: {},
 };
 

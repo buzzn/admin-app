@@ -52,7 +52,7 @@ export function* getPowertakers({ apiUrl, apiPath, token }, { groupId }) {
   yield put(actions.loadingGroupPowertakers());
   try {
     const powertakers = yield call(api.fetchGroupPowertakers, { apiUrl, apiPath, token, groupId });
-    yield put(actions.setGroupPowertakers(powertakers.array));
+    yield put(actions.setGroupPowertakers(powertakers));
   } catch (error) {
     logException(error);
   }

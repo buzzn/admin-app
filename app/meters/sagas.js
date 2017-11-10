@@ -30,7 +30,7 @@ export function* getGroupMeters({ apiUrl, apiPath, token }: Api, { groupId }: { 
   yield put(actions.loadingGroupMeters());
   try {
     const groupMeters = yield call(api.fetchGroupMeters, { apiUrl, apiPath, token, groupId });
-    yield put(actions.setGroupMeters(groupMeters.array));
+    yield put(actions.setGroupMeters(groupMeters));
   } catch (error) {
     logException(error);
   }

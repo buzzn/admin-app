@@ -1,0 +1,45 @@
+.bubbles-wrapper {
+  font-size: 0.8em;
+  .pad-all {
+    padding: 15px;
+  }
+  .panel-primary.panel-colorful, .panel-primary .panel-footer, .panel-primary .panel-heading {
+    background-color: #5fa2dd;
+    border-color: #5fa2dd;
+    color: #fff;
+  }
+  .panel-danger.panel-colorful, .panel-danger .panel-footer, .panel-danger .panel-heading {
+    background-color: #f76c51;
+    border-color: #f76c51;
+    color: #fff;
+  }
+  .icon-circle {
+    border-radius: 50%;
+  }
+  .icon-wrap-sm {
+    padding: 6px;
+    height: 2.8em;
+    margin-right: 0.4em;
+  }
+  .icon-wrap {
+    display: inline-block;
+  }
+  .icon-wrap i {
+    display: block;
+    line-height: 1em;
+    text-align: center;
+    position: relative;
+    width: 1em;
+    vertical-align: middle;
+  }
+  .media-body {
+    color: black;
+  }
+  .text-2x {
+    font-size: 1.2em;
+    line-height: 1.1;
+  }
+  .text-thin {
+    font-weight: 300;
+  }
+}

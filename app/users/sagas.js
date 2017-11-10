@@ -23,7 +23,6 @@ export const selectGroupId = state => state.users.groupId;
 
 export function* getUser({ apiUrl, apiPath, token }, { userId, groupId }) {
   yield put(actions.loadingUser());
-  yield put(actions.setUser({}));
   try {
     const user = yield call(api.fetchUser, { apiUrl, apiPath, token, userId, groupId });
     yield put(actions.setUser(user));
@@ -35,10 +34,9 @@ export function* getUser({ apiUrl, apiPath, token }, { userId, groupId }) {
 
 export function* getUsers({ apiUrl, apiPath, token, type }, params) {
   yield put(getUsersFunctions[type].loading());
-  yield put(getUsersFunctions[type].set([]));
   try {
     const users = yield call(getUsersFunctions[type].fetch, { apiUrl, apiPath, token, ...params });
-    yield put(getUsersFunctions[type].set(users.array));
+    yield put(getUsersFunctions[type].set(users));
   } catch (error) {
     logException(error);
   }

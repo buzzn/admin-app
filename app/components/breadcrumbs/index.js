@@ -1,30 +1,30 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+// @flow
+import * as React from 'react';
 import { injectIntl } from 'react-intl';
+import type { intlShape } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import './style.scss';
 
+type Props = {
+  breadcrumbs: Array<{
+    id: number | string,
+    link?: string,
+    type?: string,
+    title: string,
+  }>,
+  intl: intlShape,
+};
+
 // TODO: this can be replaced with fully connected standalone component after preloader will be implemented. #91
-const Breadcrumbs = ({ breadcrumbs, intl }) => (
-  <div className="row">
-    <div className="col-12 breadcrumbs">
-      <ul>
-        { breadcrumbs.map(crumb => (
-          <li key={ crumb.id }>
-            { crumb.link ?
-              <span>
-                <Link to={ crumb.link }>
-                  {
-                    crumb.type ?
-                      <span>
-                        <span className="breadcrumb-type">{ intl.formatMessage({ id: `admin.types.${crumb.type}` }) }:</span> { crumb.title }
-                      </span> :
-                      crumb.title
-                  }
-                </Link>&nbsp;/&nbsp;
-              </span> :
-              <span>
+const Breadcrumbs = ({ breadcrumbs, intl }: Props) => (
+  <div className="breadcrumbs">
+    <ul>
+      { breadcrumbs.map(crumb => (
+        <li key={ crumb.id }>
+          { crumb.link ?
+            <span>
+              <Link to={ crumb.link }>
                 {
                   crumb.type ?
                     <span>
@@ -32,21 +32,23 @@ const Breadcrumbs = ({ breadcrumbs, intl }) => (
                     </span> :
                     crumb.title
                 }
-              </span>
-            }
-          </li>
-        ))
-        }
-      </ul>
-    </div>
+              </Link>&nbsp;/&nbsp;
+            </span> :
+            <span>
+              {
+                crumb.type ?
+                  <span>
+                    <span className="breadcrumb-type">{ intl.formatMessage({ id: `admin.types.${crumb.type}` }) }:</span> { crumb.title }
+                  </span> :
+                  crumb.title
+              }
+            </span>
+          }
+        </li>
+      ))
+      }
+    </ul>
   </div>
 );
 
-Breadcrumbs.propTypes = {
-  breadcrumbs: PropTypes.array.isRequired,
-};
-
-Breadcrumbs.defaultProps = {
-  breadcrumbs: [],
-};
 export default injectIntl(Breadcrumbs);

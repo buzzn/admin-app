@@ -17,8 +17,6 @@ export default {
     })
       .then(parseResponse);
   },
-  setUIVer(uiVer) { localStorage.setItem('buzznAdminUIVer', JSON.stringify(uiVer || '')); },
-  getUIVer() { return JSON.parse(localStorage.getItem('buzznAdminUIVer')) || ''; },
   fetchHealth({ apiUrl }) {
     return fetch(`${apiUrl}health`, {
       headers: prepareHeaders(),

@@ -4,10 +4,10 @@ export const initialState = {
   loadingUser: false,
   loadingGroupUsers: false,
   loadingGroupManagers: false,
-  me: {},
-  user: {},
-  groupUsers: [],
-  groupManagers: [],
+  me: { _status: null },
+  user: { _status: null },
+  groupUsers: { _status: null, array: [] },
+  groupManagers: { _status: null, array: [] },
   userId: null,
 };
 

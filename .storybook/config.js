@@ -11,7 +11,7 @@ import '../app/react_table_config';
 import 'buzzn-style';
 import 'react-table/react-table.css';
 import 'react-widgets/dist/css/react-widgets.css';
-import '../app/new_root.scss';
+import '../app/root.scss';
 
 addLocaleData([...en, ...de]);
 
@@ -31,7 +31,7 @@ addDecorator(story => (
   </div>
 ));
 
-const req = require.context('../app/new_components/__stories__', true, /\.stories\.js$/)
+const req = require.context('../app/components/__stories__', true, /\.stories\.js$/);
 
 function loadStories() {
   req.keys().forEach((filename) => req(filename));
