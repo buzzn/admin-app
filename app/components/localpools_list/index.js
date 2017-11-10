@@ -6,7 +6,7 @@ import filter from 'lodash/filter';
 import chunk from 'lodash/chunk';
 import Groups from 'groups';
 import withHover from 'components/with_hover';
-import type { GroupsStats } from '../../groups/reducers';
+import type { GroupsStats } from 'groups/reducers';
 import LocalpoolCard from './localpool_card';
 
 const HoverCard = withHover(LocalpoolCard);
