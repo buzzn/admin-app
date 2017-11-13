@@ -14,6 +14,9 @@ const props = {
 };
 
 storiesOf('Molecules/SignIn')
+  .add('Empty', () => {
+    return <SignInIntl {...{ ...props, username: '', password: '' }}/>;
+  })
   .add('No error', () => {
     return <SignInIntl {...props}/>;
   })
