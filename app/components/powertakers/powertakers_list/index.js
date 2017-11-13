@@ -14,7 +14,9 @@ type Props = {
 const PowertakersList = ({ powertakers, loading, url }: Props) => {
   const data = powertakers.map(p => ({
     ...p,
-    name: p.type === 'person' ? { value: `${p.firstName} ${p.lastName}`, image: p.image || DefaultPerson } : { value: p.name },
+    name: p.type === 'person' ?
+      { value: `${p.firstName} ${p.lastName}`, image: p.image || DefaultPerson, type: 'avatar' } :
+      { value: p.name, type: 'avatar' },
     location: 'Location',
     link: `${url}/${p.contractId}`,
   }));
@@ -26,7 +28,7 @@ const PowertakersList = ({ powertakers, loading, url }: Props) => {
       minWidth: 200,
       filterMethod: TableParts.filters.filterByValue,
       sortMethod: TableParts.sort.sortByValue,
-      Cell: TableParts.components.partyNameCell,
+      Cell: TableParts.components.iconNameCell,
     },
     {
       Header: () => <TableParts.components.headerCell title="Location"/>,

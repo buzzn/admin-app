@@ -17,11 +17,11 @@ type Props = {
   myProfile: { firstName: string, lastName: string },
   groups: Array<Object>,
   groupsStats: GroupsStats,
-  match: { url: string },
   intl: intlShape,
+  history: Object,
 };
 
-export class LocalpoolsList extends React.Component<Props> {
+class LocalpoolsList extends React.Component<Props> {
   static defaultProps = {
     groups: [],
     myProfile: { firstName: '', lastName: '' },
@@ -32,11 +32,11 @@ export class LocalpoolsList extends React.Component<Props> {
   }
 
   render() {
-    const { myProfile: { firstName, lastName }, groups, groupsStats, match: { url }, intl } = this.props;
+    const { myProfile: { firstName, lastName }, groups, groupsStats, intl, history } = this.props;
 
     const data = groups.map(g => ({
       ...g,
-      nameWithImage: { value: g.name, image: g.image || DefaultImage },
+      nameWithImage: { value: g.name, image: g.image || DefaultImage, type: 'group' },
       energyTypes: groupsStats[g.id] || {},
     }));
 
@@ -44,10 +44,10 @@ export class LocalpoolsList extends React.Component<Props> {
       {
         Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.groups.name' }) }/>,
         accessor: 'nameWithImage',
-        minWidth: 200,
+        width: 500,
         filterMethod: TableParts.filters.filterByValue,
         sortMethod: TableParts.sort.sortByValue,
-        Cell: TableParts.components.partyNameCell,
+        Cell: TableParts.components.iconNameCell,
       },
       {
         Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.groups.energyType' }) }/>,
@@ -63,11 +63,24 @@ export class LocalpoolsList extends React.Component<Props> {
     return (
       <div>
         <p className="h4">{ `${firstName} ${lastName}` }</p>
-        <ReactTable {...{ data, columns }} />
+        <ReactTable {...{
+          data,
+          columns,
+          getTrProps: (state, rowinfo) => ({
+            onClick: () => {
+              history.push(`/localpools/${rowinfo.original.id}`);
+            },
+            style: {
+              cursor: 'pointer',
+            },
+          }),
+        }} />
       </div>
     );
   }
 }
+
+export const LocalpoolsListIntl = injectIntl(LocalpoolsList);
 
 function mapStateToProps(state) {
   return {
@@ -79,4 +92,4 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   loadGroups: Groups.actions.loadGroups,
-})(injectIntl(LocalpoolsList));
+})(LocalpoolsListIntl);
