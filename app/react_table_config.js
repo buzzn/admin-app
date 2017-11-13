@@ -70,6 +70,12 @@ export const tableParts = {
         </DropdownMenu>
       </UncontrolledDropdown>
     ),
+    energyTypesCell: ({ value }: { value: { fire: void | boolean, solar: void | boolean }}): React.Node => (
+      <span>
+        { value.fire && <i className="fa fa-2x fa-fire" style={{ marginRight: '10px' }} /> }
+        { value.solar && <i className="fa fa-2x fa-sun-o" /> }
+      </span>
+    ),
     headerCell: ({ title }: { title: string }): React.Node => (
       <span>
         { title }{ ' ' }
