@@ -2,7 +2,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { SignIn } from 'components/sign_in';
+import { SignInIntl } from 'components/sign_in';
 
 const props = {
   setLogin: action('Set login'),
@@ -14,9 +14,12 @@ const props = {
 };
 
 storiesOf('Molecules/SignIn')
+  .add('Empty', () => {
+    return <SignInIntl {...{ ...props, username: '', password: '' }}/>;
+  })
   .add('No error', () => {
-    return <SignIn {...props}/>;
+    return <SignInIntl {...props}/>;
   })
   .add('Error', () => {
-    return <SignIn {...{ ...props, error: 'Wrong credentials' }}/>;
+    return <SignInIntl {...{ ...props, error: 'Wrong credentials' }}/>;
   });
