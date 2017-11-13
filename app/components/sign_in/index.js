@@ -19,44 +19,55 @@ type Props = {
   intl: intlShape,
 };
 
-const SignIn = ({ setLogin, setPassword, startAuth, username, password, error, intl }: Props) => (
-  <div className="signin-background">
-    <div className="form-signin-wrapper">
-      <form className="form-signin" onSubmit={ () => startAuth() }>
-        <img className="signin-logo" src={ BuzznLogo }/>
-        { error && error !== 'Sign out' &&
-        <div className="alert alert-danger" role="alert">
-          <FormattedMessage id="admin.auth.signinFailed"/>
+class SignIn extends React.Component<Props> {
+  signIn(event) {
+    event.preventDefault();
+    this.props.startAuth();
+  }
+
+  render() {
+    const { setLogin, setPassword, username, password, error, intl } = this.props;
+
+    return (
+      <div className="signin-background">
+        <div className="form-signin-wrapper">
+          <form className="form-signin" onSubmit={ this.signIn.bind(this) }>
+            <img className="signin-logo" src={ BuzznLogo }/>
+            { error && error !== 'Sign out' &&
+            <div className="alert alert-danger" role="alert">
+              <FormattedMessage id="admin.auth.signinFailed"/>
+            </div>
+            }
+            <label htmlFor="inputEmail"><FormattedMessage id="admin.auth.username"/></label>
+            <input
+              value={ username }
+              onChange={ event => setLogin(event.target.value) }
+              type="email"
+              id="inputEmail"
+              className="form-control"
+              placeholder={ intl.formatMessage({ id: 'admin.auth.enterUsername' }) }
+              required
+              autoFocus/>
+            <label htmlFor="inputPassword"><FormattedMessage id="admin.auth.password"/></label>
+            <input
+              value={ password }
+              onChange={ event => setPassword(event.target.value) }
+              type="password"
+              id="inputPassword"
+              className="form-control"
+              placeholder={ intl.formatMessage({ id: 'admin.auth.enterPassword' }) }
+              required/>
+            <button type="submit"
+              onClick={ this.signIn.bind(this) }
+              className="btn btn-primary">
+              <FormattedMessage id="admin.auth.signinButton"/> <i className="fa fa-check"/>
+            </button>
+          </form>
         </div>
-        }
-        <label htmlFor="inputEmail"><FormattedMessage id="admin.auth.username"/></label>
-        <input
-          value={ username }
-          onChange={ event => setLogin(event.target.value) }
-          type="email"
-          id="inputEmail"
-          className="form-control"
-          placeholder={ intl.formatMessage({ id: 'admin.auth.enterUsername' }) }
-          required
-          autoFocus/>
-        <label htmlFor="inputPassword"><FormattedMessage id="admin.auth.password"/></label>
-        <input
-          value={ password }
-          onChange={ event => setPassword(event.target.value) }
-          type="password"
-          id="inputPassword"
-          className="form-control"
-          placeholder={ intl.formatMessage({ id: 'admin.auth.enterPassword' }) }
-          required/>
-        <button type="submit"
-          onClick={ () => startAuth() }
-          className="btn btn-primary">
-          <FormattedMessage id="admin.auth.signinButton"/> <i className="fa fa-check"/>
-        </button>
-      </form>
-    </div>
-  </div>
-);
+      </div>
+    );
+  }
+}
 
 export const SignInIntl = injectIntl(SignIn);
 
