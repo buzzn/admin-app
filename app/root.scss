@@ -4,9 +4,12 @@
 }
 
 body {
-  padding-top: 96px;
   background-color: white;
   .new-ui {
+    padding-top: 96px;
+    &.no-token {
+      padding-top: 0;
+    }
     .center-content-wrapper {
       padding: 0 32px;
     }

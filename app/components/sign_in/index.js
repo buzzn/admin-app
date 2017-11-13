@@ -1,10 +1,13 @@
 // @flow
 import * as React from 'react';
 import { connect } from 'react-redux';
-import type { Dispatch } from 'redux';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import type { intlShape } from 'react-intl';
 import Auth from '@buzzn/module_auth';
 
 import './style.scss';
+
+import BuzznLogo from 'images/logo_black.png';
 
 type Props = {
   setLogin: Function,
@@ -13,42 +16,49 @@ type Props = {
   username: string,
   password: string,
   error?: string,
+  intl: intlShape,
 };
 
-export const SignIn = ({ setLogin, setPassword, startAuth, username, password, error }: Props) => (
-  <form className="form-signin">
-    <h4 className="form-signin-heading">Please sign in</h4>
-    { error && error !== 'Sign out' &&
-    <div className="alert alert-danger" role="alert">
-      <strong>Sign in failed!</strong> Email or password incorrect.
+const SignIn = ({ setLogin, setPassword, startAuth, username, password, error, intl }: Props) => (
+  <div className="signin-background">
+    <div className="form-signin-wrapper">
+      <form className="form-signin" onSubmit={ () => startAuth() }>
+        <img className="signin-logo" src={ BuzznLogo }/>
+        { error && error !== 'Sign out' &&
+        <div className="alert alert-danger" role="alert">
+          <FormattedMessage id="admin.auth.signinFailed"/>
+        </div>
+        }
+        <label htmlFor="inputEmail"><FormattedMessage id="admin.auth.username"/></label>
+        <input
+          value={ username }
+          onChange={ event => setLogin(event.target.value) }
+          type="email"
+          id="inputEmail"
+          className="form-control"
+          placeholder={ intl.formatMessage({ id: 'admin.auth.enterUsername' }) }
+          required
+          autoFocus/>
+        <label htmlFor="inputPassword"><FormattedMessage id="admin.auth.password"/></label>
+        <input
+          value={ password }
+          onChange={ event => setPassword(event.target.value) }
+          type="password"
+          id="inputPassword"
+          className="form-control"
+          placeholder={ intl.formatMessage({ id: 'admin.auth.enterPassword' }) }
+          required/>
+        <button type="submit"
+          onClick={ () => startAuth() }
+          className="btn btn-lg btn-primary btn-block">
+          <FormattedMessage id="admin.auth.signinButton"/> <i className="fa fa-check"/>
+        </button>
+      </form>
     </div>
-    }
-    <label htmlFor="inputEmail" className="sr-only">Email address</label>
-    <input
-      value={ username }
-      onChange={ event => setLogin(event.target.value) }
-      type="email"
-      id="inputEmail"
-      className="form-control"
-      placeholder="Email address"
-      required
-      autoFocus/>
-    <label htmlFor="inputPassword" className="sr-only">Password</label>
-    <input
-      value={ password }
-      onChange={ event => setPassword(event.target.value) }
-      type="password"
-      id="inputPassword"
-      className="form-control"
-      placeholder="Password"
-      required/>
-    <div
-      onClick={ () => startAuth() }
-      className="btn btn-lg btn-primary btn-block">
-      Sign in
-    </div>
-  </form>
+  </div>
 );
+
+export const SignInIntl = injectIntl(SignIn);
 
 function mapStateToProps(state) {
   return {
@@ -62,4 +72,4 @@ export default connect(mapStateToProps, {
   setLogin: Auth.actions.setLogin,
   setPassword: Auth.actions.setPassword,
   startAuth: Auth.actions.startAuth,
-})(SignIn);
+})(SignInIntl);

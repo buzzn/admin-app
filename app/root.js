@@ -32,7 +32,7 @@ type Props = {
 
 const NewRoot = ({ token }: Props) => (
   <BrowserRouter>
-    <div className="new-ui">
+    <div className={ `new-ui ${!token ? 'no-token' : ''}` }>
       <HealthContainer/>
       { token && <TopNavBarContainer/> }
       { token ?
@@ -71,9 +71,7 @@ const NewRoot = ({ token }: Props) => (
 
           </Row>
         </Container> :
-        <Container>
-          <Route component={ SignInContainer } />
-        </Container>
+        <Route component={ SignInContainer } />
       }
       <Alert stack={{ limit: 3 }} effect="genie" html={ true } />
     </div>
