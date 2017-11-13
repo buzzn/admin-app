@@ -50,7 +50,7 @@ const SignIn = ({ setLogin, setPassword, startAuth, username, password, error, i
           required/>
         <button type="submit"
           onClick={ () => startAuth() }
-          className="btn btn-lg btn-primary btn-block">
+          className="btn btn-primary">
           <FormattedMessage id="admin.auth.signinButton"/> <i className="fa fa-check"/>
         </button>
       </form>
