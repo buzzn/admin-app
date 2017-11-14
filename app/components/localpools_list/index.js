@@ -43,7 +43,7 @@ class LocalpoolsList extends React.Component<Props> {
 
     const columns = [
       {
-        Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.groups.name' }) }/>,
+        Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.groups.tableName' }) }/>,
         accessor: 'nameWithImage',
         width: 500,
         filterMethod: TableParts.filters.filterByValue,
@@ -51,7 +51,7 @@ class LocalpoolsList extends React.Component<Props> {
         Cell: TableParts.components.iconNameCell,
       },
       {
-        Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.groups.energyType' }) }/>,
+        Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.groups.tableEnergyType' }) }/>,
         accessor: 'energyTypes',
         Cell: TableParts.components.energyTypesCell,
         sortable: false,
