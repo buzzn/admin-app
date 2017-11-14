@@ -10,7 +10,6 @@ import Registers from 'registers';
 import Groups from 'groups';
 import Readings from 'readings';
 import Breadcrumbs from 'components/breadcrumbs';
-import GroupStatsContainer from 'components/group_stats';
 import LinkBack from 'components/link_back';
 import MetersList from './meters_list';
 import MeterDataForm from './meter_data';
@@ -146,7 +145,6 @@ export class System extends React.Component<Props, State> {
           </Switch>
         </div>
         <div className="col-5">
-          <GroupStatsContainer groupId={ groupId }/>
         </div>
       </div>,
       /* End of Breadcrumbs */

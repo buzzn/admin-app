@@ -9,14 +9,10 @@ export const initialState = {
   loadingGroup: false,
   groups: { _status: null, array: [] },
   group: { _status: null },
-  lastGroupsStatsReceived: null,
   groupsStats: {},
 };
 
 export type GroupStats = {
-  consumption: string,
-  production: string,
-  autarchy: null | string,
   solar: boolean,
   fire: boolean,
 };
@@ -32,7 +28,6 @@ export type GroupsState = {
   +loadingGroup: boolean,
   +groups: { _status: null | number, array?: Array<Object> },
   +group: Object,
-  +lastGroupsStatsReceived: null | Date,
   +groupsStats: GroupsStats,
 };
 
@@ -59,7 +54,7 @@ export default function (state: GroupsState = initialState, action: GroupsAction
     case constants.LOADED_GROUPS_STATS:
       return { ...state, loadingGroupsStats: false };
     case constants.SET_GROUPS_STATS:
-      return { ...state, groupsStats: action.groupsStats, lastGroupsStatsReceived: new Date() };
+      return { ...state, groupsStats: action.groupsStats };
 
     case constants.SET_TOKEN:
     default:

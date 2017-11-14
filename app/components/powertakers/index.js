@@ -7,7 +7,6 @@ import map from 'lodash/map';
 import Contracts from 'contracts';
 import Groups from 'groups';
 import Breadcrumbs from 'components/breadcrumbs';
-import GroupStatsContainer from 'components/group_stats';
 import LinkBack from 'components/link_back';
 import PowertakersList from './powertakers_list';
 import PowertakerData from './powertaker_data';
@@ -64,7 +63,6 @@ export class Powertakers extends React.Component<Props> {
           </Switch>
         </div>
         <div className="col-5">
-          <GroupStatsContainer groupId={ groupId }/>
         </div>
       </div>,
       /* End of Breadcrumbs */

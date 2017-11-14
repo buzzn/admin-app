@@ -5,6 +5,7 @@ import ReactTable from 'react-table';
 import { injectIntl } from 'react-intl';
 import type { intlShape } from 'react-intl';
 import filter from 'lodash/filter';
+import sortBy from 'lodash/sortBy';
 import Groups from 'groups';
 import type { GroupsStats } from 'groups/reducers';
 import { tableParts as TableParts } from 'react_table_config';
@@ -34,7 +35,7 @@ class LocalpoolsList extends React.Component<Props> {
   render() {
     const { myProfile: { firstName, lastName }, groups, groupsStats, intl, history } = this.props;
 
-    const data = groups.map(g => ({
+    const data = sortBy(groups, 'name').map(g => ({
       ...g,
       nameWithImage: { value: g.name, image: g.image || DefaultImage, type: 'group' },
       energyTypes: groupsStats[g.id] || {},
