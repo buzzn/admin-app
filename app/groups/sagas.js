@@ -4,6 +4,7 @@ import { logException } from '_util';
 import { actions, constants } from './actions';
 import api from './api';
 import Registers from '../registers';
+import type GroupsState from './reducers';
 
 type Api = {
   token: string,
