@@ -45,7 +45,7 @@ class LocalpoolsList extends React.Component<Props> {
       {
         Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.groups.tableName' }) }/>,
         accessor: 'nameWithImage',
-        width: 500,
+        resizable: true,
         filterMethod: TableParts.filters.filterByValue,
         sortMethod: TableParts.sort.sortByValue,
         Cell: TableParts.components.iconNameCell,
@@ -56,8 +56,7 @@ class LocalpoolsList extends React.Component<Props> {
         Cell: TableParts.components.energyTypesCell,
         sortable: false,
         filterable: false,
-        resizable: false,
-        width: 100,
+        resizable: true,
       },
     ];
 

@@ -67,16 +67,20 @@ body {
           overflow: inherit;
           .rt-tr-group {
             border-bottom: 1px solid #e0e0e0;
+            &:hover, &:focus {
+              border-bottom: 1px solid #000;
+            }
           }
           .rt-td {
             border-right: none;
-            height: 3.5rem;
             padding: .5rem 0 !important;
+            line-height: 2.5rem;
             &.dropdown-fix {
               overflow: inherit !important;
             }
             i.fa {
-              line-height: 2.5rem;
+              line-height: calc(2.5rem + 2px);
+              vertical-align: middle;
             }
           }
           .sub-component {
