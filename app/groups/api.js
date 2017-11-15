@@ -127,7 +127,7 @@ export function prepareTypes(groupReg: Array<Object>, groupId: string): { id: st
 
 export default {
   fetchGroup({ token, apiUrl, apiPath, groupId }: Api & { groupId: string }): Promise<Object> {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}`, {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}?include=address`, {
       headers: prepareHeaders(token),
     })
       .then(parseResponse)

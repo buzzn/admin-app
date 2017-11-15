@@ -19,6 +19,7 @@ const Sidebar = ({ groupId }: Props) => (
     <SidebarItem to={ `/localpools/${groupId}/system` } icon="cogs">System</SidebarItem>
     <SidebarItem to={ `/localpools/${groupId}/documents` } icon="folder-open-o">Documents</SidebarItem>
     <SidebarItem to={ `/localpools/${groupId}/bubbles` } icon="pie-chart">Bubbles</SidebarItem>
+    <SidebarItem to={ `/localpools/${groupId}/settings` } icon="tachometer">Settings</SidebarItem>
   </div>
 );
 

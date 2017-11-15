@@ -15,6 +15,7 @@ import AnalyticsContainer from 'components/analytics';
 import PowertakersContainer from 'components/powertakers';
 import ContractsContainer from 'components/contracts';
 import SystemContainer from 'components/system';
+import GroupSettingsContainer from 'components/group_settings';
 import BubblesContainer from 'components/bubbles';
 import HealthContainer from 'components/health';
 import './react_table_config';
@@ -56,7 +57,10 @@ const NewRoot = ({ token }: Props) => (
                       <Route path="/localpools/:groupId/contracts" component={ ContractsContainer }/>
                       <Route path="/localpools/:groupId/system" component={ SystemContainer }/>
                       <Route path="/localpools/:groupId/bubbles" component={ BubblesContainer }/>
-                      <Route path="/localpools/*" render={ () => <div>Content</div> }/>
+                      <Route path="/localpools/:groupId/settings" component={ GroupSettingsContainer }/>
+                      <Route
+                        path="/localpools/:groupId"
+                        render={ ({ match: { params: { groupId } } }) => <Redirect to={ `/localpools/${groupId || ''}/settings` }/> }/>
                       <Route path="/localpools" component={ LocalpoolsListContainer }/>
                       <Route render={ () => (<div>404</div>) } />
                     </Switch>
