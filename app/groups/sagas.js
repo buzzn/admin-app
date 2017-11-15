@@ -1,11 +1,10 @@
 // @flow
 import { put, call, takeLatest, take, fork, cancel, select } from 'redux-saga/effects';
-import defaultsDeep from 'lodash/defaultsDeep';
 import { logException } from '_util';
 import { actions, constants } from './actions';
 import api from './api';
 import Registers from '../registers';
-import type { GroupsState } from './reducers';
+import type GroupsState from './reducers';
 
 type Api = {
   token: string,
@@ -14,7 +13,6 @@ type Api = {
 };
 
 export const selectGroupId = (state: { groups: GroupsState }): string => state.groups.groupId;
-export const selectStatsTime = (state: { groups: GroupsState }): null | Date => state.groups.lastGroupsStatsReceived;
 
 export function* getGroup({ apiUrl, apiPath, token }: Api, { groupId }: { groupId: string }): Generator<*, *, *> {
   yield put(actions.loadingGroup());
@@ -31,15 +29,9 @@ export function* getGroup({ apiUrl, apiPath, token }: Api, { groupId }: { groupI
 export function* getGroups({ apiUrl, apiPath, token }: Api): Generator<*, *, *> {
   yield put(actions.loadingGroups());
   try {
-    const groups = yield call(api.fetchGroups, { apiUrl, apiPath, token });
+    const { groups, groupsStats } = yield call(api.fetchGroups, { apiUrl, apiPath, token });
     yield put(actions.setGroups(groups));
-    const statsTime = yield select(selectStatsTime);
-    if (!statsTime || ((new Date()).getTime() - statsTime.getTime()) > 15 * 60 * 1000) {
-      const groupIds = groups.array.map(group => group.id);
-      const groupsStats = yield call(api.fetchGroupsStats, { apiUrl, apiPath, token, groupIds });
-      const groupsTypes = yield call(api.fetchGroupsTypes, { apiUrl, apiPath, token, groupIds });
-      yield put(actions.setGroupsStats(defaultsDeep(groupsStats, groupsTypes)));
-    }
+    yield put(actions.setGroupsStats(groupsStats));
   } catch (error) {
     logException(error);
   }

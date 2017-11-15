@@ -33,9 +33,9 @@ Object.assign(ReactTableDefaults, {
 
 export const tableParts = {
   components: {
-    partyNameCell: ({ value }: { value: { image?: string, value: string } }): React.Node => (
+    iconNameCell: ({ value }: { value: { image?: string, value: string, type: 'avatar' | 'group' } }): React.Node => (
       <span>
-        { value.image && <img src={ value.image } className="table-avatar" /> }{ value.value }
+        { value.image && <img src={ value.image } className={ `table-icon-${value.type}` } /> }{ value.value }
       </span>
     ),
     linkCell: ({ value }: { value: string }): React.Node => (
@@ -69,6 +69,12 @@ export const tableParts = {
           }
         </DropdownMenu>
       </UncontrolledDropdown>
+    ),
+    energyTypesCell: ({ value }: { value: { fire: void | boolean, solar: void | boolean }}): React.Node => (
+      <span>
+        { value.fire && <i className="fa fa-2x fa-fire" style={{ marginRight: '10px' }} /> }
+        { value.solar && <i className="fa fa-2x fa-sun-o" /> }
+      </span>
     ),
     headerCell: ({ title }: { title: string }): React.Node => (
       <span>

@@ -70,21 +70,38 @@ body {
           overflow: inherit;
           .rt-tr-group {
             border-bottom: 1px solid #e0e0e0;
+            &:hover, &:focus {
+              border-bottom: 1px solid #000;
+            }
           }
           .rt-td {
             border-right: none;
+            padding: .5rem 0 !important;
+            line-height: 2.5rem;
             &.dropdown-fix {
               overflow: inherit !important;
+            }
+            i.fa {
+              line-height: calc(2.5rem + 2px);
+              vertical-align: middle;
             }
           }
           .sub-component {
             background-color: #F5F5F5;
           }
-          .table-avatar {
-            width: 40px;
-            border-radius: 50%;
-            margin-right: 10px;
-            border: solid lightgrey 1px;
+          .table-icon-avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 2.5rem;
+            margin-right: 1rem;
+            border: none;
+          }
+          .table-icon-group {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: .125rem;
+            margin-right: 1rem;
+            border: none;
           }
         }
       }
