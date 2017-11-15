@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
-import { injectIntl } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import type { intlShape } from 'react-intl';
 import filter from 'lodash/filter';
 import sortBy from 'lodash/sortBy';
@@ -15,7 +15,6 @@ import DefaultImage from 'images/energygroup_noimage_01.jpg';
 type Props = {
   // TODO: proper action type
   loadGroups: Function,
-  myProfile: { firstName: string, lastName: string },
   groups: Array<Object>,
   groupsStats: GroupsStats,
   intl: intlShape,
@@ -25,7 +24,6 @@ type Props = {
 class LocalpoolsList extends React.Component<Props> {
   static defaultProps = {
     groups: [],
-    myProfile: { firstName: '', lastName: '' },
   };
 
   componentWillMount() {
@@ -33,7 +31,7 @@ class LocalpoolsList extends React.Component<Props> {
   }
 
   render() {
-    const { myProfile: { firstName, lastName }, groups, groupsStats, intl, history } = this.props;
+    const { groups, groupsStats, intl, history } = this.props;
 
     const data = sortBy(groups, 'name').map(g => ({
       ...g,
@@ -51,7 +49,7 @@ class LocalpoolsList extends React.Component<Props> {
         Cell: TableParts.components.iconNameCell,
       },
       {
-        Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.groups.tableEnergyType' }) }/>,
+        Header: () => <FormattedMessage id="admin.groups.tableEnergyType"/>,
         accessor: 'energyTypes',
         Cell: TableParts.components.energyTypesCell,
         sortable: false,
@@ -62,7 +60,9 @@ class LocalpoolsList extends React.Component<Props> {
 
     return (
       <div>
-        <p className="h4">{ `${firstName} ${lastName}` }</p>
+        <div className="center-content-header">
+          <p className="h3" style={{ lineHeight: '68px', margin: 0 }}><FormattedMessage id="admin.groups.headerGroupsList"/></p>
+        </div>
         <ReactTable {...{
           data,
           columns,
@@ -84,7 +84,6 @@ export const LocalpoolsListIntl = injectIntl(LocalpoolsList);
 
 function mapStateToProps(state) {
   return {
-    myProfile: state.app.userMe,
     groups: filter(state.groups.groups.array, group => group.type === 'group_localpool'),
     groupsStats: state.groups.groupsStats,
   };
