@@ -9,6 +9,7 @@ import { Col, Row } from 'reactstrap';
 import Groups from 'groups';
 import type { GroupsState, GroupStats } from 'groups/reducers';
 import LinkBack from 'components/link_back';
+import Breadcrumbs from 'components/breadcrumbs';
 
 import './style.scss';
 
@@ -45,9 +46,15 @@ class GroupSettings extends React.Component<Props> {
     const prefix = 'admin.groups';
     const addressPrefix = 'admin.addresses';
 
+    const breadcrumbs = [
+      { id: 0, link: '/localpools', title: intl.formatMessage({ id: `${prefix}.breadcrumbsMyLocalpools` }) },
+      { id: group.id || 1, title: group.name },
+    ];
+
     return [
-      <div key={ 1 } className="row center-content-header center-content-header-nomargin-bottom center-content-no-breadcrumbs">
+      <div key={ 1 } className="row center-content-header center-content-header-nomargin-bottom">
         <Col xs="7">
+          <Breadcrumbs breadcrumbs={ breadcrumbs }/>
           <LinkBack title={ intl.formatMessage({ id: `${prefix}.headerSettings` }) }/>
         </Col>
       </div>,

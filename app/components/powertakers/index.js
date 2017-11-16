@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Switch, Route, Redirect, Link, NavLink } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import find from 'lodash/find';
 import map from 'lodash/map';
 import Contracts from 'contracts';
@@ -39,6 +39,7 @@ export class Powertakers extends React.Component<Props> {
     }
 
     const breadcrumbs = [
+      { id: 0, link: '/localpools', title: 'My localpools' },
       { id: group.id || 1, link: url, title: group.name },
     ];
 
