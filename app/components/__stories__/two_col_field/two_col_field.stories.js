@@ -4,7 +4,6 @@ import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { withKnobs, text, boolean } from '@storybook/addon-knobs';
 import backgrounds from '@storybook/addon-backgrounds';
-import Provider from '../__util__/provider';
 import EditableInput from 'components/editable_input';
 import TwoColField from 'components/two_col_field';
 
@@ -27,7 +26,6 @@ storiesOf('Molecules/TwoColField/single')
     { name: 'twitter', value: '#00aced' },
     { name: 'facebook', value: '#3b5998' },
   ]))
-  .addDecorator(story => <Provider story={ story() } />)
   .add('view', () => {
     return <DecoratedTwoColField {...props} component={ EditableInput }/>;
   })

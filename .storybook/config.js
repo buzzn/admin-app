@@ -5,6 +5,7 @@ import { addLocaleData } from 'react-intl';
 import en from 'react-intl/locale-data/en';
 import de from 'react-intl/locale-data/de';
 import allMessages from '@buzzn/i18n';
+import Provider from './provider';
 
 import '../app/react_table_config';
 
@@ -30,6 +31,10 @@ addDecorator(story => (
     { story() }
   </div>
 ));
+
+addDecorator((story) => {
+  return <Provider story={ story() } />;
+});
 
 const req = require.context('../app/components/__stories__', true, /\.stories\.js$/);
 
