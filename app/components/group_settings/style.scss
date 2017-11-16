@@ -1,7 +1,7 @@
 .group-settings {
   .group-image {
     height: 280px;
-    margin: 0 -32px;
+    margin: 0 -32px 32px;
     img {
       width: 100%;
       height: 280px;
@@ -9,16 +9,26 @@
     }
   }
   .header {
-    padding-bottom: 6px;
-    margin-top: 10px;
+    padding-bottom: 16px;
+    margin-bottom: 0;
+    margin-right: -16px;
   }
   .fieldgroup {
     font-size: 13px;
-    padding-top: 20px;
-    height: 57px;
+    height: 56px;
+    align-items: center;
     .fieldname {
       font-weight: bold;
       text-transform: uppercase;
+    }
+    .grey-underline {
+      border-bottom: 1px solid #e0e0e0;
+      padding: 18px 0;
+      min-height: 56px;
+    }
+    i.fa {
+      font-size: 18px;
+      vertical-align: middle;
     }
   }
 }

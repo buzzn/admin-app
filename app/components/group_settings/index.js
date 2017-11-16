@@ -46,7 +46,7 @@ class GroupSettings extends React.Component<Props> {
     const addressPrefix = 'admin.addresses';
 
     return [
-      <div key={ 1 } className="row-center-content-header">
+      <div key={ 1 } className="row center-content-header center-content-header-nomargin-bottom center-content-no-breadcrumbs">
         <Col xs="7">
           <LinkBack title={ intl.formatMessage({ id: `${prefix}.headerSettings` }) }/>
         </Col>

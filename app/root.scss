@@ -19,7 +19,13 @@ body {
     .center-content-header {
       box-shadow: 0 0 8px 0 rgba(0,0,0,0.13);
       margin: 0 -32px 20px -32px;
-      padding: 20px 32px;
+      padding: 20px 32px 0;
+    }
+    .center-content-no-breadcrumbs {
+      padding: 28px 32px 8px;
+    }
+    .center-content-header-nomargin-bottom {
+      margin-bottom: 0 !important;
     }
     .sub-nav {
       border-bottom: #e0e0e0 solid 1px;
