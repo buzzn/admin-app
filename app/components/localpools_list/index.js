@@ -1,29 +1,29 @@
 // @flow
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { CardDeck } from 'reactstrap';
+import ReactTable from 'react-table';
+import { injectIntl, FormattedMessage } from 'react-intl';
+import type { intlShape } from 'react-intl';
 import filter from 'lodash/filter';
-import chunk from 'lodash/chunk';
+import sortBy from 'lodash/sortBy';
 import Groups from 'groups';
-import withHover from 'components/with_hover';
 import type { GroupsStats } from 'groups/reducers';
-import LocalpoolCard from './localpool_card';
+import { tableParts as TableParts } from 'react_table_config';
 
-const HoverCard = withHover(LocalpoolCard);
+import DefaultImage from 'images/energygroup_noimage_01.jpg';
 
 type Props = {
   // TODO: proper action type
   loadGroups: Function,
-  myProfile: { firstName: string, lastName: string },
   groups: Array<Object>,
   groupsStats: GroupsStats,
-  match: { url: string },
+  intl: intlShape,
+  history: Object,
 };
 
-export class LocalpoolsList extends React.Component<Props> {
+class LocalpoolsList extends React.Component<Props> {
   static defaultProps = {
     groups: [],
-    myProfile: { firstName: '', lastName: '' },
   };
 
   componentWillMount() {
@@ -31,32 +31,59 @@ export class LocalpoolsList extends React.Component<Props> {
   }
 
   render() {
-    const { myProfile: { firstName, lastName }, groups, groupsStats, match: { url } } = this.props;
+    const { groups, groupsStats, intl, history } = this.props;
+
+    const data = sortBy(groups, 'name').map(g => ({
+      ...g,
+      nameWithImage: { value: g.name, image: g.image || DefaultImage, type: 'group' },
+      energyTypes: groupsStats[g.id] || {},
+    }));
+
+    const columns = [
+      {
+        Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.groups.tableName' }) }/>,
+        accessor: 'nameWithImage',
+        resizable: true,
+        filterMethod: TableParts.filters.filterByValue,
+        sortMethod: TableParts.sort.sortByValue,
+        Cell: TableParts.components.iconNameCell,
+      },
+      {
+        Header: () => <FormattedMessage id="admin.groups.tableEnergyType"/>,
+        accessor: 'energyTypes',
+        Cell: TableParts.components.energyTypesCell,
+        sortable: false,
+        filterable: false,
+        resizable: true,
+      },
+    ];
 
     return (
       <div>
-        <p className="h4">{ `${firstName} ${lastName}` }</p>
-        {
-          chunk(groups, 2).map(groupPair => (
-            <CardDeck key={ groupPair[0].id }>
-              {
-                groupPair.map(group => <HoverCard
-                  key={ group.id }
-                  group={ group }
-                  groupStats={ groupsStats[group.id] }
-                  url={ url }/>)
-              }
-            </CardDeck>
-          ))
-        }
+        <div className="center-content-header">
+          <p className="h3" style={{ lineHeight: '68px', margin: 0 }}><FormattedMessage id="admin.groups.headerGroupsList"/></p>
+        </div>
+        <ReactTable {...{
+          data,
+          columns,
+          getTrProps: (state, rowinfo) => ({
+            onClick: () => {
+              history.push(`/localpools/${rowinfo.original.id}`);
+            },
+            style: {
+              cursor: 'pointer',
+            },
+          }),
+        }} />
       </div>
     );
   }
 }
 
+export const LocalpoolsListIntl = injectIntl(LocalpoolsList);
+
 function mapStateToProps(state) {
   return {
-    myProfile: state.app.userMe,
     groups: filter(state.groups.groups.array, group => group.type === 'group_localpool'),
     groupsStats: state.groups.groupsStats,
   };
@@ -64,4 +91,4 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   loadGroups: Groups.actions.loadGroups,
-})(LocalpoolsList);
+})(LocalpoolsListIntl);

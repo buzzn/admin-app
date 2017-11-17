@@ -1,10 +1,6 @@
 import React from 'react';
-import { createStore } from 'redux';
 import { Provider as ReduxProvider } from 'react-redux';
-import { browserHistory } from 'react-router';
-
-const configureStore = () => createStore(state => state);
-const store = configureStore(browserHistory, {});
+import store from 'configure_store';
 
 export default function Provider({ story }) {
   return (
@@ -12,4 +8,4 @@ export default function Provider({ story }) {
       { story }
     </ReduxProvider>
   );
-}
+};

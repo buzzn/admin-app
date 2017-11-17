@@ -6,7 +6,6 @@ import find from 'lodash/find';
 import ContractsModule from 'contracts';
 import Groups from 'groups';
 import Breadcrumbs from 'components/breadcrumbs';
-import GroupStatsContainer from 'components/group_stats';
 import LinkBack from 'components/link_back';
 import ContractsList from './contracts_list';
 import ContractDataForm from './contract_data';
@@ -68,7 +67,6 @@ export class Contracts extends React.Component<Props> {
           </Switch>
         </div>
         <div className="col-5">
-          <GroupStatsContainer groupId={ groupId }/>
         </div>
       </div>,
       /* End of Breadcrumbs */

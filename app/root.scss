@@ -17,9 +17,9 @@ body {
       padding: 0 32px;
     }
     .center-content-header {
-      box-shadow: 0 0 8px 0 rgba(0,0,0,0.13);
-      margin: 0 -32px 20px -32px;
-      padding: 20px 32px 0;
+      box-shadow: 0 12px 8px -8px rgba(0, 0, 0, 0.10);
+      margin: 0 -3rem 20px -3rem;
+      padding: 20px 32px;
     }
     .center-content-no-breadcrumbs {
       padding: 28px 32px 8px;
@@ -52,6 +52,8 @@ body {
               line-height: 38px;
               text-align: left;
               border-right: none;
+              text-transform: uppercase;
+              font-size: 10px;
               .sort-icon-group {
                 position: relative;
                 .fa {
@@ -79,21 +81,40 @@ body {
           overflow: inherit;
           .rt-tr-group {
             border-bottom: 1px solid #e0e0e0;
+            &:hover, &:focus {
+              border-bottom: 1px solid #000;
+            }
           }
           .rt-td {
             border-right: none;
+            padding: .5rem 0 !important;
+            line-height: 2.5rem;
             &.dropdown-fix {
               overflow: inherit !important;
+            }
+            i.fa {
+              line-height: calc(2.5rem + 2px);
+              vertical-align: middle;
             }
           }
           .sub-component {
             background-color: #F5F5F5;
           }
-          .table-avatar {
-            width: 40px;
-            border-radius: 50%;
-            margin-right: 10px;
-            border: solid lightgrey 1px;
+          .table-icon-avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 2.5rem;
+            margin-right: 1rem;
+            border: none;
+            object-fit: cover;
+          }
+          .table-icon-group {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: .5rem;
+            margin-right: 1rem;
+            border: none;
+            object-fit: cover;
           }
         }
       }

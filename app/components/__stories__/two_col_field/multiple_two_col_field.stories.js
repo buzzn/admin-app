@@ -3,7 +3,6 @@ import { reduxForm } from 'redux-form';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { withKnobs, text, boolean } from '@storybook/addon-knobs';
-import Provider from '../__util__/provider';
 import EditableInput from 'components/editable_input';
 import EditableSelect from 'components/editable_select';
 import TwoColField from 'components/two_col_field';
@@ -43,7 +42,6 @@ const propsPrefix = {
 
 storiesOf('Molecules/TwoColField/multiple')
   .addDecorator(withKnobs)
-  .addDecorator(story => <Provider story={ story() } />)
   .add('view', () => {
     return [
       <DecoratedTwoColField key={ 1 } {...propsFName} component={ EditableInput }/>,
