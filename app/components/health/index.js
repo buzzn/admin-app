@@ -33,15 +33,18 @@ class Health extends React.Component<Props, State> {
     const { isOpen } = this.state;
 
     return (
-      <div style={{
-        position: 'absolute',
-        top: '20px',
-        left: '20px',
-        zIndex: '9999',
-        background: health.healthy ? '#e5e5e5' : 'red',
-        padding: '10px',
-      }}>
-        <span onClick={ this.switchWidget.bind(this) } style={{ cursor: 'pointer', fontWeight: 'bold' }}>
+      <div
+        onClick={ this.switchWidget.bind(this) }
+        style={{
+          position: 'absolute',
+          bottom: '20px',
+          right: '20px',
+          zIndex: '9999',
+          background: health.healthy ? '#D4E157' : '#D84315',
+          cursor: 'pointer',
+          padding: '10px',
+        }}>
+        <span style={{ fontWeight: 'bold' }}>
           Server health:
         </span>
         { isOpen && <pre>{ JSON.stringify(health, null, 2) }</pre> }

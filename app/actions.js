@@ -8,6 +8,8 @@ export const constants = {
   UPDATE_USER_ME: 'buzzn_admin/UPDATE_USER_ME',
 
   SET_HEALTH: 'buzzn_admin/SET_HEALTH',
+
+  SET_DEV_MODE: 'buzzn_admin/SET_DEV_MODE',
 };
 
 export const actions = {
@@ -19,4 +21,6 @@ export const actions = {
     { type: constants.UPDATE_USER_ME, params, resolve, reject }),
 
   setHealth: health => ({ type: constants.SET_HEALTH, health }),
+
+  setDevMode: mode => ({ type: constants.SET_DEV_MODE, mode }),
 };
