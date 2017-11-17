@@ -36,7 +36,18 @@ class GroupSettings extends React.Component<Props> {
   }
 
   render() {
-    const { group, group: { address = {} }, groupStats, setGroup, intl } = this.props;
+    const {
+      group,
+      group: {
+        address = {},
+        distributionSystemOperator = {},
+        transmissionSystemOperator = {},
+        electricitySupplier = {},
+      },
+      groupStats,
+      setGroup,
+      intl,
+    } = this.props;
 
     if (group.status === 404 || group.status === 403) {
       setGroup({ _status: null });
@@ -83,6 +94,18 @@ class GroupSettings extends React.Component<Props> {
               <Col xs="8" className="grey-underline">{ group.startDate }</Col>
             </Row>
             <Row className="fieldgroup">
+              <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.distributionSystemOperator` }/></Col>
+              <Col xs="8" className="grey-underline">{ distributionSystemOperator.name }</Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.transmissionSystemOperator` }/></Col>
+              <Col xs="8" className="grey-underline">{ transmissionSystemOperator.name }</Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.electricitySupplier` }/></Col>
+              <Col xs="8" className="grey-underline">{ electricitySupplier.name }</Col>
+            </Row>
+            <Row className="fieldgroup">
               <Col xs="4" className="fieldname"><FormattedMessage id={ `${addressPrefix}.address` }/></Col>
               <Col xs="8" className="grey-underline">{ address.street }</Col>
             </Row>
@@ -90,10 +113,6 @@ class GroupSettings extends React.Component<Props> {
               <Col xs="4" className="fieldname"></Col>
               <Col xs="2" className="grey-underline">{ address.zip }</Col>
               <Col xs="6" className="grey-underline">{ address.city }</Col>
-            </Row>
-            <Row className="fieldgroup">
-              <Col xs="4" className="fieldname"></Col>
-              <Col xs="8" className="grey-underline"></Col>
             </Row>
           </Col>
           <Col xs="6"></Col>
