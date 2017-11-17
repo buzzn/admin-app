@@ -18,7 +18,7 @@ export function prepareTypes(groupReg: Array<Object>): { solar: boolean, fire: b
 
 export default {
   fetchGroup({ token, apiUrl, apiPath, groupId }: Api & { groupId: string }): Promise<Object> {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}`, {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}?include=address,distribution_system_operator,transmission_system_operator,electricity_supplier`, {
       headers: prepareHeaders(token),
     })
       .then(parseResponse)

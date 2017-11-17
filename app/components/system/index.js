@@ -1,10 +1,9 @@
 // @flow
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Switch, Route, Redirect, Link, NavLink } from 'react-router-dom';
+import { Switch, Route, Redirect, NavLink } from 'react-router-dom';
 import { Nav } from 'reactstrap';
 import find from 'lodash/find';
-import map from 'lodash/map';
 import Meters from 'meters';
 import Registers from 'registers';
 import Groups from 'groups';
@@ -106,6 +105,7 @@ export class System extends React.Component<Props, State> {
     }
 
     const breadcrumbs = [
+      { id: 0, link: '/localpools', title: 'My localpools' },
       { id: group.id || 1, link: url, title: group.name },
     ];
 
