@@ -17,6 +17,10 @@ import DefaultImage from 'images/energygroup_noimage_01.jpg';
 
 type Props = {
   group: Object,
+  address: Object,
+  distributionSystemOperator: Object,
+  transmissionSystemOperator: Object,
+  electricitySupplier: Object,
   groupStats: Object | GroupStats,
   loading: boolean,
   loadGroup: Function,
@@ -38,12 +42,10 @@ class GroupSettings extends React.Component<Props> {
   render() {
     const {
       group,
-      group: {
-        address = {},
-        distributionSystemOperator = {},
-        transmissionSystemOperator = {},
-        electricitySupplier = {},
-      },
+      address,
+      distributionSystemOperator,
+      transmissionSystemOperator,
+      electricitySupplier,
       groupStats,
       setGroup,
       intl,
@@ -127,6 +129,10 @@ export const GroupSettingsIntl = injectIntl(GroupSettings);
 const mapStateToProps: MapStateToProps<{ groups: GroupsState }, *, *> = (state, props) => ({
   groupStats: state.groups.groupsStats[props.match.params.groupId] || {},
   group: state.groups.group,
+  address: state.groups.group.address || {},
+  distributionSystemOperator: state.groups.group.distributionSystemOperator || {},
+  transmissionSystemOperator: state.groups.group.transmissionSystemOperator || {},
+  electricitySupplier: state.groups.group.electricitySupplier || {},
   loading: state.groups.loadingGroup,
 });
 
