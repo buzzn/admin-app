@@ -12,6 +12,8 @@ body {
     }
     .under-construction {
         position: relative;
+        opacity: 0.6;
+        cursor: not-allowed;
     }
     .under-construction::before {
         position: absolute;
@@ -28,20 +30,6 @@ body {
           rgba(0,0,0,.7) 20px
         );
 
-        content: '';
-    }
-
-    .under-construction::after {
-        position: absolute;
-        top: calc(50% - 30px);
-        left: 0;
-        right: 0;
-
-        text-align: center;
-        padding-top: 1.5rem;
-
-        color: white;
-        font-weight: bold;
         content: '';
     }
     .grey-underline {
