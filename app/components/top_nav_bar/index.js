@@ -3,7 +3,6 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import type { Dispatch } from 'redux';
-import filter from 'lodash/filter';
 import {
   Container,
   Collapse,
@@ -33,7 +32,7 @@ type Props = {
     lastName: string,
     image?: string,
   },
-  groups: Array<Object>,
+  devMode: boolean,
 };
 
 type State = {
@@ -47,7 +46,6 @@ export class TopNavBar extends React.Component<Props, State> {
       fistName: '',
       lastName: '',
     },
-    groups: [],
   };
 
   state = {
@@ -68,7 +66,7 @@ export class TopNavBar extends React.Component<Props, State> {
   }
 
   render() {
-    const { signOut, myProfile: { firstName, lastName, image }, groups } = this.props;
+    const { signOut, devMode, myProfile: { firstName, lastName, image } } = this.props;
     const { isOpen, profileOpen } = this.state;
     const myName = firstName ? `${firstName} ${lastName}` : 'My profile';
 
@@ -80,17 +78,17 @@ export class TopNavBar extends React.Component<Props, State> {
           </NavbarBrand>
           <NavbarToggler onClick={ this.toggle.bind(this) } />
           <Collapse isOpen={ isOpen } navbar>
-            <InputGroup className="nav-search">
-              <Input placeholder="Search"/>
+            <InputGroup className={ `nav-search ${devMode ? '' : 'under-construction'}` }>
+              { devMode && <Input placeholder="Search"/> }
               <InputGroupAddon>
                 <i className="fa fa-search"/>
               </InputGroupAddon>
             </InputGroup>
             <Nav className="ml-auto" navbar>
-              <NavItem className="icon-nav-item">
+              <NavItem className={ `icon-nav-item ${devMode ? '' : 'under-construction'}` }>
                 <i className="fa fa-bell"/>
               </NavItem>
-              <NavItem className="icon-nav-item">
+              <NavItem className={ `icon-nav-item ${devMode ? '' : 'under-construction'}` }>
                 <i className="fa fa-cog"/>
               </NavItem>
               <NavDropdown isOpen={ profileOpen } toggle={ this.toggleProfile.bind(this) }>
@@ -102,17 +100,6 @@ export class TopNavBar extends React.Component<Props, State> {
                   <Link to="/my-profile" style={{ color: 'black' }}>
                     <DropdownItem>My profile</DropdownItem>
                   </Link>
-                  <DropdownItem divider />
-                  <DropdownItem header>Switch to:</DropdownItem>
-                  { groups.map(group => (
-                    <Link to={ `/localpools/${group.id}` } style={{ color: 'black' }} key={ group.id }>
-                      <DropdownItem >
-                        { group.name }
-                      </DropdownItem>
-                    </Link>
-                  )) }
-                  <DropdownItem divider />
-                  <DropdownItem>Create new group</DropdownItem>
                   <DropdownItem divider />
                   <DropdownItem onClick={ () => signOut() }>Sign Out</DropdownItem>
                 </DropdownMenu>
@@ -128,7 +115,6 @@ export class TopNavBar extends React.Component<Props, State> {
 function mapStateToProps(state) {
   return {
     myProfile: state.app.userMe,
-    groups: filter(state.groups.groups.array, group => group.type === 'group_localpool'),
   };
 }
 

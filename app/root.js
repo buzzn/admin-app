@@ -29,21 +29,22 @@ import './root.scss';
 
 type Props = {
   token?: string,
+  devMode: boolean,
 };
 
-const NewRoot = ({ token }: Props) => (
+const NewRoot = ({ token, devMode }: Props) => (
   <BrowserRouter>
     <div className={ `new-ui ${!token ? 'no-token' : ''}` }>
       <HealthContainer/>
-      { token && <TopNavBarContainer/> }
+      { token && <TopNavBarContainer devMode={ devMode }/> }
       { token ?
         <Container style={{ maxWidth: '1440px' }}>
           <Route exact path="/" render={ () => <Redirect to="/localpools"/> } />
           <Row>
 
-            <Route path="/localpools/:groupId" render={ ({ match: { params: { groupId } } }) => (
+            <Route path="/localpools/:groupId" render={ ({ match: { url } }) => (
               <Col xs="1" className="pl-0 pr-0">
-                <Sidebar groupId={ groupId || '' }/>
+                <Sidebar url={ url || '' } devMode={ devMode }/>
               </Col>
             ) }/>
 
@@ -70,7 +71,7 @@ const NewRoot = ({ token }: Props) => (
             }/>
 
             <Col xs="3" className="pl-0 pr-0">
-              <TodoList/>
+              <TodoList devMode={ devMode }/>
             </Col>
 
           </Row>
@@ -82,6 +83,6 @@ const NewRoot = ({ token }: Props) => (
   </BrowserRouter>
 );
 
-const mapStateToProps: MapStateToProps<*, *, *> = state => ({ token: state.auth.token });
+const mapStateToProps: MapStateToProps<*, *, *> = state => ({ token: state.auth.token, devMode: state.app.devMode });
 
 export default connect(mapStateToProps)(NewRoot);

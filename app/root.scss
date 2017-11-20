@@ -10,6 +10,28 @@ body {
     &.no-token {
       padding-top: 0;
     }
+    .under-construction {
+        position: relative;
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+    .under-construction::before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+
+        background: repeating-linear-gradient(
+          -55deg,
+          rgba(0,0,0,.8),
+          rgba(0,0,0,.8) 10px,
+          rgba(0,0,0,.7) 10px,
+          rgba(0,0,0,.7) 20px
+        );
+
+        content: '';
+    }
     .grey-underline {
       border-bottom: 1px solid #e0e0e0;
     }

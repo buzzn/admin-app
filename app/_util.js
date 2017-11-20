@@ -56,7 +56,7 @@ export function camelizeResponseArray(data) {
   forEach(data, (v) => {
     if (Array.isArray(v)) {
       result.push(camelizeResponseArray(v));
-    } else if (typeof v === 'object') {
+    } else if (typeof v === 'paramsect') {
       result.push(camelizeResponseKeys(v));
     } else {
       result.push(v);
@@ -73,7 +73,7 @@ export function camelizeResponseKeys(data) {
       result[k] = camelizeResponseArray(v);
     } else if (!v) {
       result[k] = v;
-    } else if (typeof v === 'object') {
+    } else if (typeof v === 'paramsect') {
       result[k] = camelizeResponseKeys(v);
     } else {
       result[k] = v;
@@ -93,4 +93,39 @@ export function logException(ex, context) {
     });
   }
   console.error(ex);
+}
+
+export function getAllUrlParams() {
+  const queryString = window.location.search.slice(1).split('#')[0];
+
+  if (queryString) {
+    return queryString.split('&').reduce((sum, part) => {
+      const partSplit = part.split('=');
+      let paramNum = undefined;
+      let paramName = partSplit[0].replace(/\[\d*\]/, (v) => {
+        paramNum = v.slice(1, -1);
+        return '';
+      });
+      let paramValue = typeof(partSplit[1]) === 'undefined' ? true : partSplit[1];
+
+      paramName = paramName.toLowerCase();
+      paramValue = paramValue.toLowerCase();
+
+      if (sum[paramName]) {
+        if (typeof sum[paramName] === 'string') {
+          sum[paramName] = [sum[paramName]];
+        }
+        if (typeof paramNum === 'undefined') {
+          sum[paramName].push(paramValue);
+        } else {
+          sum[paramName][paramNum] = paramValue;
+        }
+        return sum;
+      } else {
+        return { ...sum, [paramName]: paramValue };
+      }
+    }, {});
+  } else {
+    return {};
+  }
 }

@@ -22,4 +22,6 @@ export default {
       headers: prepareHeaders(),
     }).then(parseResponse);
   },
+  setDevMode(devMode) { localStorage.setItem('buzznDevMode', JSON.stringify(devMode || false)); },
+  getDevMode() { return JSON.parse(localStorage.getItem('buzznDevMode')) || false; },
 };

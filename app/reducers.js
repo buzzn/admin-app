@@ -23,6 +23,7 @@ export const initialState = {
   userMeValidationRules: {},
   uiVer: '',
   health: {},
+  devMode: false,
 };
 
 export function appReducer(state = initialState, action) {
@@ -38,6 +39,9 @@ export function appReducer(state = initialState, action) {
 
     case constants.SET_HEALTH:
       return { ...state, health: action.health };
+
+    case constants.SET_DEV_MODE:
+      return { ...state, devMode: action.mode };
 
     default:
       return state;

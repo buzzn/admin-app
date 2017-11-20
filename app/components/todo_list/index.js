@@ -7,8 +7,12 @@ import {
 
 import './style.scss';
 
-const TodoList = () => (
-  <div className="todo-list-block">
+type Props = {
+  devMode: boolean,
+};
+
+const TodoList = ({ devMode }: Props) => (
+  <div className={ `todo-list-block ${devMode ? '' : 'under-construction'}` }>
     <Nav className="sub-nav">
       <NavLink className="active">TODOS</NavLink>
       <NavLink>Finished</NavLink>
