@@ -4,7 +4,7 @@ import { SubmissionError } from 'redux-form';
 import Auth from '@buzzn/module_auth';
 import Bubbles from '@buzzn/module_bubbles';
 import Charts from '@buzzn/module_charts';
-import { logException } from '_util';
+import { logException, getAllUrlParams } from '_util';
 import { actions, constants } from 'actions';
 import api from 'api';
 
@@ -70,6 +70,18 @@ export function* setHealth({ apiUrl }) {
   }
 }
 
+export function* setDevMode() {
+  const devModeUrl = getAllUrlParams().devmode;
+  let devMode = false;
+  if (devModeUrl) {
+    devMode = devModeUrl === 'true';
+    yield call(api.setDevMode, devMode);
+  } else {
+    devMode = yield call(api.getDevMode);
+  }
+  yield put(actions.setDevMode(devMode));
+}
+
 export default function* () {
   const { apiUrl, apiPath, authPath, secure } = yield select(getConfig);
 
@@ -89,6 +101,7 @@ export default function* () {
   yield put(ValidationRules.actions.setApiParams({ apiUrl, apiPath }));
 
   yield fork(setHealth, { apiUrl });
+  yield fork(setDevMode);
 
   let { token } = yield select(getAuth);
 

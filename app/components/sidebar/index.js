@@ -5,21 +5,22 @@ import SidebarItem from './sidebar_item';
 import './style.scss';
 
 type Props = {
-  groupId: string,
+  url: string,
+  devMode: boolean,
 };
 
-const Sidebar = ({ groupId }: Props) => (
+const Sidebar = ({ url, devMode }: Props) => (
   <div className="sidebar">
     <SidebarItem to="/localpools" exact={ true } icon="th-large">My Groups</SidebarItem>
-    <SidebarItem to={ `/localpools/${groupId}/analytics` } icon="bolt">Analytics</SidebarItem>
-    <SidebarItem to={ `/localpools/${groupId}/powertakers` } icon="users">Powertakers</SidebarItem>
-    <SidebarItem to={ `/localpools/${groupId}/prices` } icon="eur">Prices</SidebarItem>
-    <SidebarItem to={ `/localpools/${groupId}/invoices` } icon="money">Invoices</SidebarItem>
-    <SidebarItem to={ `/localpools/${groupId}/contracts` } icon="file-text-o">Contracts</SidebarItem>
-    <SidebarItem to={ `/localpools/${groupId}/system` } icon="cogs">System</SidebarItem>
-    <SidebarItem to={ `/localpools/${groupId}/documents` } icon="folder-open-o">Documents</SidebarItem>
-    <SidebarItem to={ `/localpools/${groupId}/bubbles` } icon="pie-chart">Bubbles</SidebarItem>
-    <SidebarItem to={ `/localpools/${groupId}/settings` } icon="tachometer">Settings</SidebarItem>
+    <SidebarItem to={ `${url}/analytics` } icon="bolt" devMode={ devMode }>Analytics</SidebarItem>
+    <SidebarItem to={ `${url}/powertakers` } icon="users" devMode={ devMode }>Powertakers</SidebarItem>
+    <SidebarItem to={ `${url}/prices` } icon="eur" devMode={ devMode }>Prices</SidebarItem>
+    <SidebarItem to={ `${url}/invoices` } icon="money" devMode={ devMode }>Invoices</SidebarItem>
+    <SidebarItem to={ `${url}/contracts` } icon="file-text-o" devMode={ devMode }>Contracts</SidebarItem>
+    <SidebarItem to={ `${url}/system` } icon="cogs">System</SidebarItem>
+    <SidebarItem to={ `${url}/documents` } icon="folder-open-o" devMode={ devMode }>Documents</SidebarItem>
+    <SidebarItem to={ `${url}/bubbles` } icon="pie-chart" devMode={ devMode }>Bubbles</SidebarItem>
+    <SidebarItem to={ `${url}/settings` } icon="tachometer">Settings</SidebarItem>
   </div>
 );
 

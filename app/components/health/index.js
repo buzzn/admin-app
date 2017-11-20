@@ -36,7 +36,7 @@ class Health extends React.Component<Props, State> {
       <div
         onClick={ this.switchWidget.bind(this) }
         style={{
-          position: 'absolute',
+          position: 'fixed',
           bottom: '20px',
           right: '20px',
           zIndex: '9999',
