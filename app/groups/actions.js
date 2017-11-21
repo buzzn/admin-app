@@ -5,10 +5,14 @@ export const constants = {
   SET_API_PARAMS: 'buzzn_groups/SET_API_PARAMS',
   SET_TOKEN: 'buzzn_groups/SET_TOKEN',
 
+  SET_VALIDATION_RULES: 'buzzn_groups/SET_VALIDATION_RULES',
+
   LOAD_GROUP: 'buzzn_groups/LOAD_GROUP',
   LOADING_GROUP: 'buzzn_groups/LOADING_GROUP',
   LOADED_GROUP: 'buzzn_groups/LOADED_GROUP',
   SET_GROUP: 'buzzn_groups/SET_GROUP',
+
+  UPDATE_GROUP: 'buzzn_groups/UPDATE_GROUP',
 
   LOAD_GROUPS: 'buzzn_groups/LOAD_GROUPS',
   LOADING_GROUPS: 'buzzn_groups/LOADING_GROUPS',
@@ -24,10 +28,20 @@ export const constants = {
 export type SetApiParams = {| type: 'buzzn_groups/SET_API_PARAMS', apiPath: string, apiUrl: string |};
 export type SetToken = {| type: 'buzzn_groups/SET_TOKEN', token: string |};
 
+export type SetValidationRules = {| type: 'buzzn_groups/SET_VALIDATION_RULES', validationRules: Object |};
+
 export type LoadGroup = {| type: 'buzzn_groups/LOAD_GROUP', groupId: string |};
 export type LoadingGroup = { type: 'buzzn_groups/LOADING_GROUP' };
 export type LoadedGroup = {| type: 'buzzn_groups/LOADED_GROUP' |};
 export type SetGroup = {| type: 'buzzn_groups/SET_GROUP', group: Object |};
+
+export type UpdateGroup = {|
+  type: 'buzzn_groups/UPDATE_GROUP',
+  params: Object,
+  resolve: Promise.resolve<*>,
+  reject: Promise.reject<*>,
+  groupId: string,
+|};
 
 export type LoadGroups = {| type: 'buzzn_groups/LOAD_GROUPS' |};
 export type LoadingGroups = {| type: 'buzzn_groups/LOADING_GROUPS' |};
@@ -42,10 +56,12 @@ export type SetGroupsStats = {| type: 'buzzn_groups/SET_GROUPS_STATS', groupsSta
 export type GroupsAction =
   SetApiParams |
   SetToken |
+  SetValidationRules |
   LoadGroup |
   LoadingGroup |
   LoadedGroup |
   SetGroup |
+  UpdateGroup |
   LoadGroups |
   LoadingGroups |
   LoadedGroups |
@@ -59,10 +75,16 @@ export const actions = {
   setApiParams: ({ apiPath, apiUrl }: { apiPath: string, apiUrl: string }): SetApiParams => ({ type: constants.SET_API_PARAMS, apiPath, apiUrl }),
   setToken: (token: string): SetToken => ({ type: constants.SET_TOKEN, token }),
 
+  setValidationRules: (validationRules: Object): SetValidationRules => ({ type: constants.SET_VALIDATION_RULES, validationRules }),
+
   loadGroup: (groupId: string): LoadGroup => ({ type: constants.LOAD_GROUP, groupId }),
   loadingGroup: (): LoadingGroup => ({ type: constants.LOADING_GROUP }),
   loadedGroup: (): LoadedGroup => ({ type: constants.LOADED_GROUP }),
   setGroup: (group: Object): SetGroup => ({ type: constants.SET_GROUP, group }),
+
+  updateGroup: ({ params, resolve, reject, groupId }:
+    { params: Object, resolve: Promise.resolve<*>, reject: Promise.reject<*>, groupId: string }): UpdateGroup => (
+    { type: constants.UPDATE_GROUP, params, resolve, reject, groupId }),
 
   loadGroups: (): LoadGroups => ({ type: constants.LOAD_GROUPS }),
   loadingGroups: (): LoadingGroups => ({ type: constants.LOADING_GROUPS }),

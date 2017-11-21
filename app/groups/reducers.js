@@ -10,6 +10,7 @@ export const initialState = {
   groups: { _status: null, array: [] },
   group: { _status: null },
   groupsStats: {},
+  validationRules: { _status: null },
 };
 
 export type GroupStats = {
@@ -29,6 +30,7 @@ export type GroupsState = {
   +groups: { _status: null | number, array?: Array<Object> },
   +group: Object,
   +groupsStats: GroupsStats,
+  +validationRules: Object,
 };
 
 export default function (state: GroupsState = initialState, action: GroupsAction): GroupsState {
@@ -41,6 +43,9 @@ export default function (state: GroupsState = initialState, action: GroupsAction
       return { ...state, loadingGroup: false };
     case constants.SET_GROUP:
       return { ...state, group: action.group };
+
+    case constants.SET_VALIDATION_RULES:
+      return { ...state, validationRules: action.validationRules };
 
     case constants.LOADING_GROUPS:
       return { ...state, loadingGroups: true };
