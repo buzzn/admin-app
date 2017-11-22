@@ -3,36 +3,35 @@
   .field-toggle-switch {
   	cursor: pointer;
   	// text-indent: -9999px;
-  	width: 2rem;
-  	height: 1rem;
-  	background: grey;
+  	width: 2.5rem;
+  	height: 1.5rem;
+  	background: #ffffff;
+    border: 1px solid #D8D8D8;
+    border-radius: 0.75rem;
   	display: block;
-  	border-radius: 0.5rem;
   	position: relative;
   }
 
   .field-toggle-switch:after {
   	content: '';
   	position: absolute;
-  	top: 0.05rem;
-  	left: 0.05rem;
-  	width: 0.9rem;
-  	height: 0.9rem;
-  	background: #fff;
+  	top: 0.125rem;
+  	left: 0.125rem;
+  	width: 1.125rem;
+  	height: 1.125rem;
+  	background: #D8D8D8;
   	border-radius: 0.9rem;
-  	transition: 0.3s;
+  	transition: 0.2s;
   }
 
   .field-toggle-switch.on {
-  	background: #bada55;
+    border: 1px solid #21D343;
+  	background: #ffffff;
   }
 
   .field-toggle-switch.on:after {
-  	left: calc(100% - 1px);
+  	left: calc(100% - 0.125rem);
   	transform: translateX(-100%);
-  }
-
-  .field-toggle-switch:active:after {
-  	width: 1.3rem;
+    background-color: #21D343;
   }
 }
