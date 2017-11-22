@@ -2,6 +2,7 @@ import { actions } from 'actions';
 import Meters from 'meters';
 import Registers from 'registers';
 import Readings from 'readings';
+import Groups from 'groups';
 
 export const authList = [
   {
@@ -11,6 +12,10 @@ export const authList = [
 ];
 
 export default [
+  {
+    swaggerPath: '/localpools/{localpool_id}.patch.parameters',
+    setAction: Groups.actions.setValidationRules,
+  },
   {
     swaggerPath: '/localpools/{localpool_id}/meters/{real_meter_id}.patch.parameters',
     setAction: Meters.actions.setRealValidationRules,

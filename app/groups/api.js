@@ -1,7 +1,7 @@
 // @flow
 import 'whatwg-fetch';
 import some from 'lodash/some';
-import { prepareHeaders, parseResponse, camelizeResponseKeys } from '../_util';
+import { prepareHeaders, parseResponse, camelizeResponseKeys, snakeReq } from '../_util';
 
 type Api = {
   token: string,
@@ -23,6 +23,14 @@ export default {
     })
       .then(parseResponse)
       .then(camelizeResponseKeys);
+  },
+  updateGroup({ token, apiUrl, apiPath, params, groupId }: Api & { params: Object, groupId: string }): Promise<Object> {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}`, {
+      headers: prepareHeaders(token),
+      method: 'PATCH',
+      body: JSON.stringify(snakeReq(params)),
+    })
+      .then(parseResponse);
   },
   fetchGroups({ token, apiUrl, apiPath }: Api): Promise<Object> {
     return fetch(`${apiUrl}${apiPath}/localpools?include=registers`, {

@@ -5,11 +5,15 @@ import type { MapStateToProps } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { intlShape } from 'react-intl';
+import { reduxForm, Field } from 'redux-form';
+import type { FormProps } from 'redux-form';
 import { Col, Row } from 'reactstrap';
+import pick from 'lodash/pick';
 import Groups from 'groups';
 import type { GroupsState, GroupStats } from 'groups/reducers';
 import LinkBack from 'components/link_back';
 import Breadcrumbs from 'components/breadcrumbs';
+import FieldToggle from 'components/field_toggle';
 
 import './style.scss';
 
@@ -25,9 +29,10 @@ type Props = {
   loading: boolean,
   loadGroup: Function,
   setGroup: Function,
+  updateGroup: Function,
   match: { url: string, params: { groupId: string } },
   intl: intlShape,
-};
+} & FormProps;
 
 class GroupSettings extends React.Component<Props> {
   static defaultProps = {
@@ -48,6 +53,8 @@ class GroupSettings extends React.Component<Props> {
       electricitySupplier,
       groupStats,
       setGroup,
+      updateGroup,
+      handleSubmit,
       intl,
     } = this.props;
 
@@ -64,6 +71,26 @@ class GroupSettings extends React.Component<Props> {
       { id: group.id || 1, title: group.name },
     ];
 
+    const submit = (values) => {
+      const changed = Object.keys(values).reduce((sum, key) => {
+        if (values[key] !== group[key]) {
+          return { ...sum, [key]: values[key] };
+        } else {
+          return sum;
+        }
+      }, { updatedAt: values.updatedAt });
+      return new Promise((resolve, reject) => {
+        updateGroup({
+          groupId: group.id,
+          params: changed,
+          resolve,
+          reject,
+        });
+      });
+    };
+
+    const submitForm = handleSubmit(submit);
+
     return [
       <div key={ 1 } className="row center-content-header center-content-header-nomargin-bottom">
         <Col xs="7">
@@ -75,60 +102,97 @@ class GroupSettings extends React.Component<Props> {
         <div className="group-image">
           <img src={ DefaultImage }/>
         </div>
-        <Row>
-          <Col xs="6">
-            <p className="h5 grey-underline header"><FormattedMessage id={ `${prefix}.headerGroup` }/></p>
-            <Row className="fieldgroup">
-              <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.name` }/></Col>
-              <Col xs="8" className="grey-underline">{ group.name }</Col>
-            </Row>
-            <Row className="fieldgroup">
-              <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.energySources` }/></Col>
-              <Col xs="8" className="grey-underline">
-                <span>
-                  { groupStats.fire && <i className="fa fa-fire" style={{ marginRight: '4px' }} /> }
-                  { groupStats.solar && <i className="fa fa-sun-o" /> }
-                </span>
-              </Col>
-            </Row>
-            <Row className="fieldgroup">
-              <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.startDate` }/></Col>
-              <Col xs="8" className="grey-underline">{ group.startDate }</Col>
-            </Row>
-            <Row className="fieldgroup">
-              <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.distributionSystemOperator` }/></Col>
-              <Col xs="8" className="grey-underline">{ distributionSystemOperator.name }</Col>
-            </Row>
-            <Row className="fieldgroup">
-              <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.transmissionSystemOperator` }/></Col>
-              <Col xs="8" className="grey-underline">{ transmissionSystemOperator.name }</Col>
-            </Row>
-            <Row className="fieldgroup">
-              <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.electricitySupplier` }/></Col>
-              <Col xs="8" className="grey-underline">{ electricitySupplier.name }</Col>
-            </Row>
-            <Row className="fieldgroup">
-              <Col xs="4" className="fieldname"><FormattedMessage id={ `${addressPrefix}.address` }/></Col>
-              <Col xs="8" className="grey-underline">{ address.street }</Col>
-            </Row>
-            <Row className="fieldgroup">
-              <Col xs="4" className="fieldname"></Col>
-              <Col xs="2" className="grey-underline">{ address.zip }</Col>
-              <Col xs="6" className="grey-underline">{ address.city }</Col>
-            </Row>
-          </Col>
-          <Col xs="6"></Col>
-        </Row>
+        <form
+          onSubmit={ submitForm }
+          onBlur={ (event) => { if (event.target.type !== 'checkbox') setTimeout(submitForm); } }
+          onChange={ (event) => { if (event.target.type === 'checkbox') setTimeout(submitForm); } }>
+          <Row>
+            <Col xs="6">
+              <p className="h5 grey-underline header"><FormattedMessage id={ `${prefix}.headerGroup` }/></p>
+              <Row className="fieldgroup">
+                <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.name` }/></Col>
+                <Col xs="8" className="grey-underline">{ group.name }</Col>
+              </Row>
+              <Row className="fieldgroup">
+                <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.energySources` }/></Col>
+                <Col xs="8" className="grey-underline">
+                  <span>
+                    { groupStats.fire && <i className="fa fa-fire" style={{ marginRight: '4px' }} /> }
+                    { groupStats.solar && <i className="fa fa-sun-o" /> }
+                  </span>
+                </Col>
+              </Row>
+              <Row className="fieldgroup">
+                <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.startDate` }/></Col>
+                <Col xs="8" className="grey-underline">{ group.startDate }</Col>
+              </Row>
+              <Row className="fieldgroup">
+                <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.distributionSystemOperator` }/></Col>
+                <Col xs="8" className="grey-underline">{ distributionSystemOperator.name }</Col>
+              </Row>
+              <Row className="fieldgroup">
+                <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.transmissionSystemOperator` }/></Col>
+                <Col xs="8" className="grey-underline">{ transmissionSystemOperator.name }</Col>
+              </Row>
+              <Row className="fieldgroup">
+                <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.electricitySupplier` }/></Col>
+                <Col xs="8" className="grey-underline">{ electricitySupplier.name }</Col>
+              </Row>
+              <Row className="fieldgroup">
+                <Col xs="4" className="fieldname"><FormattedMessage id={ `${addressPrefix}.address` }/></Col>
+                <Col xs="8" className="grey-underline">{ address.street }</Col>
+              </Row>
+              <Row className="fieldgroup">
+                <Col xs="4" className="fieldname"></Col>
+                <Col xs="2" className="grey-underline">{ address.zip }</Col>
+                <Col xs="6" className="grey-underline">{ address.city }</Col>
+              </Row>
+              <Row className="fieldgroup">
+                <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.visibility` }/></Col>
+                <Col xs="8" className="grey-underline">
+                  <FormattedMessage id={ `${prefix}.showObject` }/>
+                  <Field className="float-right" name="showObject" component={ FieldToggle } submitForm={ submitForm }/>
+                </Col>
+              </Row>
+              <Row className="fieldgroup">
+                <Col xs="4" className="fieldname"></Col>
+                <Col xs="8" className="grey-underline">
+                  <FormattedMessage id={ `${prefix}.showProduction` }/>
+                  <Field className="float-right" name="showProduction" component={ FieldToggle } submitForm={ submitForm }/>
+                </Col>
+              </Row>
+              <Row className="fieldgroup">
+                <Col xs="4" className="fieldname"></Col>
+                <Col xs="8" className="grey-underline">
+                  <FormattedMessage id={ `${prefix}.showEnergy` }/>
+                  <Field className="float-right" name="showEnergy" component={ FieldToggle } submitForm={ submitForm }/>
+                </Col>
+              </Row>
+              <Row className="fieldgroup">
+                <Col xs="4" className="fieldname"></Col>
+                <Col xs="8" className="grey-underline">
+                  <FormattedMessage id={ `${prefix}.showContact` }/>
+                  <Field className="float-right" name="showContact" component={ FieldToggle } submitForm={ submitForm }/>
+                </Col>
+              </Row>
+            </Col>
+            <Col xs="6"></Col>
+          </Row>
+        </form>
       </div>,
     ];
   }
 }
 
-export const GroupSettingsIntl = injectIntl(GroupSettings);
+export const GroupSettingsForm = reduxForm({
+  form: 'groupUpdateForm',
+  enableReinitialize: true,
+})(injectIntl(GroupSettings));
 
 const mapStateToProps: MapStateToProps<{ groups: GroupsState }, *, *> = (state, props) => ({
   groupStats: state.groups.groupsStats[props.match.params.groupId] || {},
   group: state.groups.group,
+  initialValues: pick(state.groups.group, ['showObject', 'showProduction', 'showEnergy', 'showContact', 'updatedAt']),
   address: state.groups.group.address || {},
   distributionSystemOperator: state.groups.group.distributionSystemOperator || {},
   transmissionSystemOperator: state.groups.group.transmissionSystemOperator || {},
@@ -139,4 +203,5 @@ const mapStateToProps: MapStateToProps<{ groups: GroupsState }, *, *> = (state, 
 export default connect(mapStateToProps, {
   loadGroup: Groups.actions.loadGroup,
   setGroup: Groups.actions.setGroup,
-})(GroupSettingsIntl);
+  updateGroup: Groups.actions.updateGroup,
+})(GroupSettingsForm);

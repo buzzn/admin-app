@@ -1,5 +1,6 @@
 // @flow
 import { put, call, takeLatest, take, fork, cancel, select } from 'redux-saga/effects';
+import { SubmissionError } from 'redux-form';
 import { logException } from '_util';
 import { actions, constants } from './actions';
 import api from './api';
@@ -26,6 +27,22 @@ export function* getGroup({ apiUrl, apiPath, token }: Api, { groupId }: { groupI
   yield put(actions.loadedGroup());
 }
 
+export function* updateGroup({ apiUrl, apiPath, token }: Api,
+  { params, resolve, reject, groupId }:
+  { params: Object, resolve: Promise.resolve<*>, reject: Promise.reject<*>, groupId: string }): Generator<*, *, *> {
+  try {
+    const res = yield call(api.updateGroup, { apiUrl, apiPath, token, params, groupId });
+    if (res._error) {
+      yield call(reject, new SubmissionError(res));
+    } else {
+      yield call(resolve, res);
+      yield call(getGroup, { apiUrl, apiPath, token }, { groupId });
+    }
+  } catch (error) {
+    logException(error);
+  }
+}
+
 export function* getGroups({ apiUrl, apiPath, token }: Api): Generator<*, *, *> {
   yield put(actions.loadingGroups());
   try {
@@ -41,6 +58,7 @@ export function* getGroups({ apiUrl, apiPath, token }: Api): Generator<*, *, *> 
 export function* groupsSagas({ apiUrl, apiPath, token }: Api): Generator<*, *, *> {
   yield takeLatest(constants.LOAD_GROUPS, getGroups, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUP, getGroup, { apiUrl, apiPath, token });
+  yield takeLatest(constants.UPDATE_GROUP, updateGroup, { apiUrl, apiPath, token });
   yield call(getGroups, { apiUrl, apiPath, token });
   const groupId = yield select(selectGroupId);
   if (groupId) yield call(getGroup, { apiUrl, apiPath, token }, { groupId });
