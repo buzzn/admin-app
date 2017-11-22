@@ -56,7 +56,7 @@ export function camelizeResponseArray(data) {
   forEach(data, (v) => {
     if (Array.isArray(v)) {
       result.push(camelizeResponseArray(v));
-    } else if (typeof v === 'paramsect') {
+    } else if (typeof v === 'object') {
       result.push(camelizeResponseKeys(v));
     } else {
       result.push(v);
@@ -73,7 +73,7 @@ export function camelizeResponseKeys(data) {
       result[k] = camelizeResponseArray(v);
     } else if (!v) {
       result[k] = v;
-    } else if (typeof v === 'paramsect') {
+    } else if (typeof v === 'object') {
       result[k] = camelizeResponseKeys(v);
     } else {
       result[k] = v;
