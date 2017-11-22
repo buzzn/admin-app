@@ -34,4 +34,8 @@
   	transform: translateX(-100%);
     background-color: #21D343;
   }
+
+  .field-toggle-switch:active:after {
+   	width: 1.4rem;
+  }
 }
