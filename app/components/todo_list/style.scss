@@ -1,6 +1,18 @@
 .todo-list-block {
   background-color: #F5F5F5;
   padding: 24px;
+  .incompleteness {
+    margin-bottom: 3rem;
+    .incompleteness-item {
+      padding: 6px;
+      .incompleteness-title {
+        font-weight: bold;
+      }
+      .incompleteness-errors {
+        color: #f57c00;
+      }
+    }
+  }
   .todo-list-block {
     .todo-header {}
     .todo-list {

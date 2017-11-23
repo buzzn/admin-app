@@ -10,6 +10,8 @@ export const constants = {
   SET_HEALTH: 'buzzn_admin/SET_HEALTH',
 
   SET_DEV_MODE: 'buzzn_admin/SET_DEV_MODE',
+
+  SET_INCOMPLETE_SCREEN: 'buzzn_admin/SET_INCOMPLETE_SCREEN',
 };
 
 export const actions = {
@@ -23,4 +25,6 @@ export const actions = {
   setHealth: health => ({ type: constants.SET_HEALTH, health }),
 
   setDevMode: mode => ({ type: constants.SET_DEV_MODE, mode }),
+
+  setIncompleteScreen: incompleteScreen => ({ type: constants.SET_INCOMPLETE_SCREEN, incompleteScreen }),
 };

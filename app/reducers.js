@@ -24,6 +24,7 @@ export const initialState = {
   uiVer: '',
   health: {},
   devMode: false,
+  incompleteScreen: [],
 };
 
 export function appReducer(state = initialState, action) {
@@ -42,6 +43,9 @@ export function appReducer(state = initialState, action) {
 
     case constants.SET_DEV_MODE:
       return { ...state, devMode: action.mode };
+
+    case constants.SET_INCOMPLETE_SCREEN:
+      return { ...state, incompleteScreen: action.incompleteScreen };
 
     default:
       return state;
