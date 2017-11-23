@@ -12,7 +12,7 @@ import moment from 'moment';
 import pick from 'lodash/pick';
 import get from 'lodash/get';
 import Groups from 'groups';
-import type { GroupsState, GroupStats } from 'groups/reducers';
+import type { GroupsState } from 'groups/reducers';
 import LinkBack from 'components/link_back';
 import Breadcrumbs from 'components/breadcrumbs';
 import FieldToggle from 'components/field_toggle';
@@ -28,7 +28,6 @@ type Props = {
   distributionSystemOperator: Object,
   transmissionSystemOperator: Object,
   electricitySupplier: Object,
-  groupStats: Object | GroupStats,
   owner: Object,
   ownerAddress: Object,
   ownerBankAccounts: Array<Object>,
@@ -44,10 +43,6 @@ type Props = {
 } & FormProps;
 
 class GroupSettings extends React.Component<Props> {
-  static defaultProps = {
-    groupStats: {},
-  };
-
   componentWillMount() {
     const { loadGroup, group, match: { params: { groupId } } } = this.props;
     if (group.id !== groupId) loadGroup(groupId);
@@ -60,7 +55,6 @@ class GroupSettings extends React.Component<Props> {
       distributionSystemOperator,
       transmissionSystemOperator,
       electricitySupplier,
-      groupStats,
       owner,
       ownerAddress,
       ownerBankAccounts,
@@ -129,31 +123,6 @@ class GroupSettings extends React.Component<Props> {
                 <Col xs="8" className="grey-underline">{ group.name }</Col>
               </Row>
               <Row className="fieldgroup">
-                <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.energySources` }/></Col>
-                <Col xs="8" className="grey-underline">
-                  <span>
-                    { groupStats.fire && <i className="fa fa-fire" style={{ marginRight: '4px' }} /> }
-                    { groupStats.solar && <i className="fa fa-sun-o" /> }
-                  </span>
-                </Col>
-              </Row>
-              <Row className="fieldgroup">
-                <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.startDate` }/></Col>
-                <Col xs="8" className="grey-underline">{ group.startDate ? moment(group.startDate).format('DD.MM.YYYY') : '' }</Col>
-              </Row>
-              <Row className="fieldgroup">
-                <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.distributionSystemOperator` }/></Col>
-                <Col xs="8" className="grey-underline">{ distributionSystemOperator.name }</Col>
-              </Row>
-              <Row className="fieldgroup">
-                <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.transmissionSystemOperator` }/></Col>
-                <Col xs="8" className="grey-underline">{ transmissionSystemOperator.name }</Col>
-              </Row>
-              <Row className="fieldgroup">
-                <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.electricitySupplier` }/></Col>
-                <Col xs="8" className="grey-underline">{ electricitySupplier.name }</Col>
-              </Row>
-              <Row className="fieldgroup">
                 <Col xs="4" className="fieldname"><FormattedMessage id={ `${addressPrefix}.address` }/></Col>
                 <Col xs="8" className="grey-underline">{ address.street }</Col>
               </Row>
@@ -161,6 +130,22 @@ class GroupSettings extends React.Component<Props> {
                 <Col xs="4" className="fieldname"></Col>
                 <Col xs="2" className="grey-underline">{ address.zip }</Col>
                 <Col xs="6" className="grey-underline">{ address.city }</Col>
+              </Row>
+              <Row className="fieldgroup">
+                <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.startDate` }/></Col>
+                <Col xs="8" className="grey-underline">{ group.startDate ? moment(group.startDate).format('DD.MM.YYYY') : '' }</Col>
+              </Row>
+              <Row className="fieldgroup">
+                <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.transmissionSystemOperator` }/></Col>
+                <Col xs="8" className="grey-underline">{ transmissionSystemOperator.name }</Col>
+              </Row>
+              <Row className="fieldgroup">
+                <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.distributionSystemOperator` }/></Col>
+                <Col xs="8" className="grey-underline">{ distributionSystemOperator.name }</Col>
+              </Row>
+              <Row className="fieldgroup">
+                <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.electricitySupplier` }/></Col>
+                <Col xs="8" className="grey-underline">{ electricitySupplier.name }</Col>
               </Row>
               <Row className="fieldgroup">
                 <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.visibility` }/></Col>
@@ -214,8 +199,7 @@ export const GroupSettingsForm = reduxForm({
   enableReinitialize: true,
 })(injectIntl(GroupSettings));
 
-const mapStateToProps: MapStateToProps<{ groups: GroupsState }, *, *> = (state, props) => ({
-  groupStats: state.groups.groupsStats[props.match.params.groupId] || {},
+const mapStateToProps: MapStateToProps<{ groups: GroupsState }, *, *> = (state) => ({
   group: state.groups.group,
   initialValues: pick(state.groups.group, ['showObject', 'showProduction', 'showEnergy', 'showContact', 'updatedAt']),
   address: state.groups.group.address || {},

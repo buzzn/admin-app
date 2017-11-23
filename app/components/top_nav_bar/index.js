@@ -11,7 +11,7 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavDropdown,
+  Dropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
@@ -73,9 +73,9 @@ export class TopNavBar extends React.Component<Props, State> {
     return (
       <Navbar fixed="top" expand light className="new-top-nav-bar">
         <Container style={{ maxWidth: '1440px' }}>
-          <NavbarBrand href="">
+          <Link className="navbar-brand" to="/">
             <img src={ LogoImg } />
-          </NavbarBrand>
+          </Link>
           <NavbarToggler onClick={ this.toggle.bind(this) } />
           <Collapse isOpen={ isOpen } navbar>
             <InputGroup className={ `nav-search ${devMode ? '' : 'under-construction'}` }>
@@ -91,7 +91,7 @@ export class TopNavBar extends React.Component<Props, State> {
               <NavItem className={ `icon-nav-item ${devMode ? '' : 'under-construction'}` }>
                 <i className="fa fa-cog"/>
               </NavItem>
-              <NavDropdown isOpen={ profileOpen } toggle={ this.toggleProfile.bind(this) }>
+              <Dropdown nav isOpen={ profileOpen } toggle={ this.toggleProfile.bind(this) }>
                 <DropdownToggle nav caret>
                   <img className="top-avatar" src={ image || DefaultPerson } />
                   { myName }
@@ -103,7 +103,7 @@ export class TopNavBar extends React.Component<Props, State> {
                   <DropdownItem divider />
                   <DropdownItem onClick={ () => signOut() }>Sign Out</DropdownItem>
                 </DropdownMenu>
-              </NavDropdown>
+              </Dropdown>
             </Nav>
           </Collapse>
         </Container>
