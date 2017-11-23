@@ -8,12 +8,15 @@ import { intlShape } from 'react-intl';
 import { reduxForm, Field } from 'redux-form';
 import type { FormProps } from 'redux-form';
 import { Col, Row } from 'reactstrap';
+import moment from 'moment';
 import pick from 'lodash/pick';
+import get from 'lodash/get';
 import Groups from 'groups';
 import type { GroupsState } from 'groups/reducers';
 import LinkBack from 'components/link_back';
 import Breadcrumbs from 'components/breadcrumbs';
 import FieldToggle from 'components/field_toggle';
+import Owner from './owner';
 
 import './style.scss';
 
@@ -25,6 +28,12 @@ type Props = {
   distributionSystemOperator: Object,
   transmissionSystemOperator: Object,
   electricitySupplier: Object,
+  owner: Object,
+  ownerAddress: Object,
+  ownerBankAccounts: Array<Object>,
+  ownerContact: Object,
+  ownerContactAddress: Object,
+  ownerContactBankAccounts: Array<Object>,
   loading: boolean,
   loadGroup: Function,
   setGroup: Function,
@@ -46,6 +55,12 @@ class GroupSettings extends React.Component<Props> {
       distributionSystemOperator,
       transmissionSystemOperator,
       electricitySupplier,
+      owner,
+      ownerAddress,
+      ownerBankAccounts,
+      ownerContact,
+      ownerContactAddress,
+      ownerContactBankAccounts,
       setGroup,
       updateGroup,
       handleSubmit,
@@ -102,7 +117,7 @@ class GroupSettings extends React.Component<Props> {
           onChange={ (event) => { if (event.target.type === 'checkbox') setTimeout(submitForm); } }>
           <Row>
             <Col xs="6">
-              <p className="h5 grey-underline header"><FormattedMessage id={ `${prefix}.headerGroup` }/></p>
+              <p className="h5 grey-underline header text-uppercase"><FormattedMessage id={ `${prefix}.headerGroup` }/></p>
               <Row className="fieldgroup">
                 <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.name` }/></Col>
                 <Col xs="8" className="grey-underline">{ group.name }</Col>
@@ -118,7 +133,7 @@ class GroupSettings extends React.Component<Props> {
               </Row>
               <Row className="fieldgroup">
                 <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.startDate` }/></Col>
-                <Col xs="8" className="grey-underline">{ group.startDate }</Col>
+                <Col xs="8" className="grey-underline">{ group.startDate ? moment(group.startDate).format('DD.MM.YYYY') : '' }</Col>
               </Row>
               <Row className="fieldgroup">
                 <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.transmissionSystemOperator` }/></Col>
@@ -161,7 +176,17 @@ class GroupSettings extends React.Component<Props> {
                 </Col>
               </Row>
             </Col>
-            <Col xs="6"></Col>
+            <Col xs="6">
+              <p className="h5 grey-underline header text-uppercase"><FormattedMessage id={ `${prefix}.headerPowergiver` }/></p>
+              {
+                owner.type === 'person' ?
+                  <Owner {...{ address: ownerAddress, owner }}/> :
+                  [
+                    <Owner key={ 1 } {...{ address: ownerAddress, owner }}/>,
+                    <Owner key={ 2 } {...{ contact: true, address: ownerContactAddress, owner: ownerContact }}/>,
+                  ]
+              }
+            </Col>
           </Row>
         </form>
       </div>,
@@ -181,6 +206,12 @@ const mapStateToProps: MapStateToProps<{ groups: GroupsState }, *, *> = (state) 
   distributionSystemOperator: state.groups.group.distributionSystemOperator || {},
   transmissionSystemOperator: state.groups.group.transmissionSystemOperator || {},
   electricitySupplier: state.groups.group.electricitySupplier || {},
+  owner: state.groups.group.owner || {},
+  ownerAddress: get(state.groups.group, 'owner.address') || {},
+  ownerBankAccounts: get(state.groups.group, 'owner.bankAccounts.array') || [],
+  ownerContact: get(state.groups.group, 'owner.contact') || {},
+  ownerContactAddress: get(state.groups.group, 'owner.contact.address') || {},
+  ownerContactBankAccounts: get(state.groups.group, 'owner.contact.bankAccounts.array') || [],
   loading: state.groups.loadingGroup,
 });
 
