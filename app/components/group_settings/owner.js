@@ -12,9 +12,9 @@ type Props = {
 const Owner = ({ owner, address, contact }: Props) => {
   const prefix = owner.type === 'person' ? 'admin.persons' : 'admin.organizations';
   const name = owner.type === 'person' ? `${owner.firstName} ${owner.lastName}` : owner.name;
-  let ownerType = 'person';
-  if (owner.type === 'organization') ownerType = 'organization';
-  if (contact) ownerType = 'contact';
+  let ownerType = 'headerContact';
+  if (owner.type === 'organization') ownerType = 'headerOrganization';
+  if (contact) ownerType = 'headerContact';
 
   return [
     <Row key={ 1 } className="fieldgroup">

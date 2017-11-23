@@ -123,7 +123,7 @@ class GroupSettings extends React.Component<Props> {
           onChange={ (event) => { if (event.target.type === 'checkbox') setTimeout(submitForm); } }>
           <Row>
             <Col xs="6">
-              <p className="h5 grey-underline header"><FormattedMessage id={ `${prefix}.headerGroup` }/></p>
+              <p className="h5 grey-underline header text-uppercase"><FormattedMessage id={ `${prefix}.headerGroup` }/></p>
               <Row className="fieldgroup">
                 <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.name` }/></Col>
                 <Col xs="8" className="grey-underline">{ group.name }</Col>
@@ -192,6 +192,7 @@ class GroupSettings extends React.Component<Props> {
               </Row>
             </Col>
             <Col xs="6">
+              <p className="h5 grey-underline header text-uppercase"><FormattedMessage id={ `${prefix}.headerPowergiver` }/></p>
               {
                 owner.type === 'person' ?
                   <Owner {...{ address: ownerAddress, owner }}/> :
