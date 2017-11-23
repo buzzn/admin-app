@@ -28,6 +28,7 @@ type Props = {
   distributionSystemOperator: Object,
   transmissionSystemOperator: Object,
   electricitySupplier: Object,
+  bankAccount: Object,
   owner: Object,
   ownerAddress: Object,
   ownerBankAccounts: Array<Object>,
@@ -55,6 +56,7 @@ class GroupSettings extends React.Component<Props> {
       distributionSystemOperator,
       transmissionSystemOperator,
       electricitySupplier,
+      bankAccount,
       owner,
       ownerAddress,
       ownerBankAccounts,
@@ -186,6 +188,18 @@ class GroupSettings extends React.Component<Props> {
                     <Owner key={ 2 } {...{ contact: true, address: ownerContactAddress, owner: ownerContact }}/>,
                   ]
               }
+              <Row className="fieldgroup">
+                <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.bankAccount` }/></Col>
+                <Col xs="8" className="grey-underline">{ bankAccount.holder }</Col>
+              </Row>
+              <Row className="fieldgroup">
+                <Col xs="4" className="fieldname"></Col>
+                <Col xs="8" className="grey-underline">{ bankAccount.bankName }</Col>
+              </Row>
+              <Row className="fieldgroup">
+                <Col xs="4" className="fieldname"></Col>
+                <Col xs="8" className="grey-underline">{ bankAccount.iban }</Col>
+              </Row>
             </Col>
           </Row>
         </form>
@@ -206,6 +220,7 @@ const mapStateToProps: MapStateToProps<{ groups: GroupsState }, *, *> = (state) 
   distributionSystemOperator: state.groups.group.distributionSystemOperator || {},
   transmissionSystemOperator: state.groups.group.transmissionSystemOperator || {},
   electricitySupplier: state.groups.group.electricitySupplier || {},
+  bankAccount: state.groups.group.bankAccount || {},
   owner: state.groups.group.owner || {},
   ownerAddress: get(state.groups.group, 'owner.address') || {},
   ownerBankAccounts: get(state.groups.group, 'owner.bankAccounts.array') || [],
