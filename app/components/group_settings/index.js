@@ -12,6 +12,7 @@ import moment from 'moment';
 import pick from 'lodash/pick';
 import get from 'lodash/get';
 import map from 'lodash/map';
+import isEqual from 'lodash/isEqual';
 import Groups from 'groups';
 import type { GroupsState } from 'groups/reducers';
 import { actions } from 'actions';
@@ -55,13 +56,19 @@ class GroupSettings extends React.Component<Props> {
   }
 
   componentWillMount() {
-    const { loadGroup, group, match: { params: { groupId } } } = this.props;
+    const { loadGroup, loading, group, match: { params: { groupId } } } = this.props;
     if (group.id !== groupId) loadGroup(groupId);
-    this.setIncompletness(group);
+    if (!loading) this.setIncompletness(group);
+  }
+
+  componentWillUnmount() {
+    this.props.setIncompleteScreen([]);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setIncompletness(nextProps.group);
+    const { group: newGroup, loading } = nextProps;
+    const { group } = this.props;
+    if (!loading && !isEqual(group.incompleteness, newGroup.incompleteness)) this.setIncompletness(newGroup);
   }
 
   render() {

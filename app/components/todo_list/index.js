@@ -21,7 +21,7 @@ type Props = {
 const TodoList = ({ devMode, incompleteScreen }: Props) => (
   <div className={ `todo-list-block ${devMode ? '' : 'under-construction'}` }>
     {
-      incompleteScreen.length &&
+      !!incompleteScreen.length &&
       <div className="incompleteness">
         { incompleteScreen.map((incompleteness, idx) => (
           <div key={ `${incompleteness.title}${idx}` } className="incompleteness-item">
