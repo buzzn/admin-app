@@ -38,6 +38,10 @@ const Owner = ({ owner, address, contact }: Props) => {
       <Col xs="4" className="fieldname"></Col>
       <Col xs="8" className="grey-underline">{ owner.email }</Col>
     </Row>,
+    <Row key={ 6 } className="fieldgroup">
+      <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.customerNumber` }/></Col>
+      <Col xs="8" className="grey-underline">{ owner.customerNumber }</Col>
+    </Row>,
   ];
 }
 
