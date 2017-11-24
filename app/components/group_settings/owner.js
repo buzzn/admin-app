@@ -47,10 +47,6 @@ const Owner = ({ owner, address, contact }: Props) => {
         </Row>
       }
     </div>,
-    <Row key={ 7 } className="fieldgroup">
-      <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.customerNumber` }/></Col>
-      <Col xs="8" className="grey-underline">{ owner.customerNumber }</Col>
-    </Row>,
   ];
 }
 
