@@ -189,6 +189,10 @@ class GroupSettings extends React.Component<Props> {
                   ]
               }
               <Row className="fieldgroup">
+                <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.customerNumber` }/></Col>
+                <Col xs="8" className="grey-underline">{ owner.customerNumber }</Col>
+              </Row>
+              <Row className="fieldgroup">
                 <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.bankAccount` }/></Col>
                 <Col xs="8" className="grey-underline">{ bankAccount.holder }</Col>
               </Row>
