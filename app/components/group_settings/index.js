@@ -56,9 +56,9 @@ class GroupSettings extends React.Component<Props> {
   }
 
   componentWillMount() {
-    const { loadGroup, loading, group, match: { params: { groupId } } } = this.props;
+    const { loadGroup, group, match: { params: { groupId } } } = this.props;
     if (group.id !== groupId) loadGroup(groupId);
-    if (!loading) this.setIncompletness(group);
+    this.setIncompletness(group);
   }
 
   componentWillUnmount() {
@@ -66,9 +66,9 @@ class GroupSettings extends React.Component<Props> {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { group: newGroup, loading } = nextProps;
+    const { group: newGroup } = nextProps;
     const { group } = this.props;
-    if (!loading && !isEqual(group.incompleteness, newGroup.incompleteness)) this.setIncompletness(newGroup);
+    if (!isEqual(group.incompleteness, newGroup.incompleteness)) this.setIncompletness(newGroup);
   }
 
   render() {
