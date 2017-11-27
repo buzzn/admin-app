@@ -76,6 +76,10 @@ export const tableParts = {
         { value.solar && <i className="fa fa-sun-o" /> }
       </span>
     ),
+    incompleteCell: ({ value }: { value: Object }): React.Node => {
+      if (!value) return false;
+      return <i className="fa fa-exclamation-triangle" style={{ color: '#f57c00' }}/>;
+    },
     headerCell: ({ title }: { title: string }): React.Node => (
       <span>
         { title }{ ' ' }

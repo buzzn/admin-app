@@ -11,8 +11,11 @@ import { Col, Row } from 'reactstrap';
 import moment from 'moment';
 import pick from 'lodash/pick';
 import get from 'lodash/get';
+import map from 'lodash/map';
+import isEqual from 'lodash/isEqual';
 import Groups from 'groups';
 import type { GroupsState } from 'groups/reducers';
+import { actions } from 'actions';
 import LinkBack from 'components/link_back';
 import Breadcrumbs from 'components/breadcrumbs';
 import FieldToggle from 'components/field_toggle';
@@ -39,14 +42,32 @@ type Props = {
   loadGroup: Function,
   setGroup: Function,
   updateGroup: Function,
+  setIncompleteScreen: Function,
   match: { url: string, params: { groupId: string } },
   intl: intlShape,
 } & FormProps;
 
 class GroupSettings extends React.Component<Props> {
+  setIncompletness(group) {
+    const { setIncompleteScreen } = this.props;
+    if (group.incompleteness && Object.keys(group.incompleteness).length) {
+      setIncompleteScreen(map(group.incompleteness, (v, k) => ({ title: `admin.groups.${k}`, errors: v })));
+    }
+  }
+
   componentWillMount() {
     const { loadGroup, group, match: { params: { groupId } } } = this.props;
     if (group.id !== groupId) loadGroup(groupId);
+  }
+
+  componentWillUnmount() {
+    this.props.setIncompleteScreen([]);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { group: newGroup } = nextProps;
+    const { group } = this.props;
+    if (!isEqual(group.incompleteness, newGroup.incompleteness)) this.setIncompletness(newGroup);
   }
 
   render() {
@@ -238,4 +259,5 @@ export default connect(mapStateToProps, {
   loadGroup: Groups.actions.loadGroup,
   setGroup: Groups.actions.setGroup,
   updateGroup: Groups.actions.updateGroup,
+  setIncompleteScreen: actions.setIncompleteScreen,
 })(GroupSettingsForm);

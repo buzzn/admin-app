@@ -37,6 +37,7 @@ class LocalpoolsList extends React.Component<Props> {
       ...g,
       nameWithImage: { value: g.name, image: g.image || DefaultImage, type: 'group' },
       energyTypes: groupsStats[g.id] || {},
+      incomplete: g.incompleteness && Object.keys(g.incompleteness).length,
     }));
 
     const columns = [
@@ -55,6 +56,14 @@ class LocalpoolsList extends React.Component<Props> {
         sortable: false,
         filterable: false,
         resizable: true,
+      },
+      {
+        Header: '',
+        accessor: 'incomplete',
+        sortable: false,
+        filterable: false,
+        resizable: true,
+        Cell: TableParts.components.incompleteCell,
       },
     ];
 

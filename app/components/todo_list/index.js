@@ -1,18 +1,36 @@
 // @flow
 import * as React from 'react';
+import { connect } from 'react-redux';
 import {
   Nav,
   NavLink,
+  ListGroup,
+  ListGroupItem,
+  ListGroupItemHeading,
+  ListGroupItemText,
 } from 'reactstrap';
+import { FormattedMessage } from 'react-intl';
 
 import './style.scss';
 
 type Props = {
   devMode: boolean,
+  incompleteScreen: Array<{ title: string, errors: Array<string> }>,
 };
 
-const TodoList = ({ devMode }: Props) => (
+const TodoList = ({ devMode, incompleteScreen }: Props) => (
   <div className={ `todo-list-block ${devMode ? '' : 'under-construction'}` }>
+    {
+      !!incompleteScreen.length &&
+      <div className="incompleteness">
+        { incompleteScreen.map((incompleteness, idx) => (
+          <div key={ `${incompleteness.title}${idx}` } className="incompleteness-item">
+            <div className="incompleteness-title"><FormattedMessage id={ incompleteness.title }/></div>
+            <div className="incompleteness-errors">{ incompleteness.errors.join(' ,') }</div>
+          </div>
+        )) }
+      </div>
+    }
     <Nav className="sub-nav">
       <NavLink className="active">TODOS</NavLink>
       <NavLink>Finished</NavLink>
@@ -44,4 +62,10 @@ const TodoList = ({ devMode }: Props) => (
   </div>
 );
 
-export default TodoList;
+function mapStateToProps(state) {
+  return {
+    incompleteScreen: state.app.incompleteScreen,
+  };
+}
+
+export default connect(mapStateToProps, {})(TodoList);
