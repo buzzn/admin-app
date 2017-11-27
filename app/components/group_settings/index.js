@@ -58,7 +58,6 @@ class GroupSettings extends React.Component<Props> {
   componentWillMount() {
     const { loadGroup, group, match: { params: { groupId } } } = this.props;
     if (group.id !== groupId) loadGroup(groupId);
-    this.setIncompletness(group);
   }
 
   componentWillUnmount() {
