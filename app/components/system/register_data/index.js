@@ -58,12 +58,12 @@ class RegisterData extends React.Component<Props> {
           <Col xs="8" className="grey-underline">{ register.obis }</Col>
         </Row>
         <Row className="fieldgroup">
-          <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.sharePublic` }/></Col>
-          <Col xs="8" className="grey-underline">{ register.sharePublic }</Col>
+          <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.sharePublicly` }/></Col>
+          <Col xs="8" className="grey-underline">{ register.sharePublicly ? 'Yes' : 'No' }</Col>
         </Row>
         <Row className="fieldgroup">
           <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.shareGroup` }/></Col>
-          <Col xs="8" className="grey-underline">{ register.shareGroup }</Col>
+          <Col xs="8" className="grey-underline">{ register.shareWithGroup ? 'Yes' : 'No' }</Col>
         </Row>
       </div>
     );
