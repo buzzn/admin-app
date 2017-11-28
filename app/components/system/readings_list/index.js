@@ -6,15 +6,12 @@ import { tableParts as TableParts } from 'react_table_config';
 
 type Props = {
   readings: Array<Object>,
-  subComponent?: boolean,
-  deleteReading: Function,
 };
 
-const ReadingsList = ({ readings, subComponent, deleteReading }: Props) => {
+const ReadingsList = ({ readings }: Props) => {
   const data = readings.map(r => ({
     ...r,
     date: moment(r.date).format('DD.MM.YYYY'),
-    deleteReading: () => { deleteReading(r.id) },
   }));
 
   const columns = [
@@ -42,28 +39,14 @@ const ReadingsList = ({ readings, subComponent, deleteReading }: Props) => {
       filterMethod: TableParts.filters.filterByValue,
       sortMethod: TableParts.sort.sortByValue,
     },
-    {
-      Header: '',
-      accessor: 'link',
-      sortable: false,
-      filterable: false,
-      resizable: false,
-      width: 100,
-      Cell: row => <TableParts.components.iconCell icon="times" action={ row.original.deleteReading }/>,
-    },
   ];
 
-  const components = [];
-
-  if (!subComponent) {
-    components.push(<p key={ 1 } className="h4">Readings:</p>);
-  }
-
-  components.push(<div className={ subComponent ? 'p-4 sub-component' : 'p-0' } key={ 2 }>
-    <ReactTable {...{ data, columns }} />
-  </div>);
-
-  return components;
+  return (
+    <div className="p-0" style={{ marginBottom: '2rem' }} key={ 2 }>
+      <h5>Readings</h5>
+      <ReactTable {...{ data, columns }} />
+    </div>
+  );
 }
 
 export default ReadingsList;
