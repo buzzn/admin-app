@@ -1,192 +1,73 @@
 // @flow
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { reduxForm } from 'redux-form';
-import type { FormProps } from 'redux-form';
-import EditableInput from 'components/editable_input';
-import EditableSelect from 'components/editable_select';
-import TwoColField from 'components/two_col_field';
-import EditableCheckbox from 'components/editable_checkbox';
+import { Row, Col } from 'reactstrap';
+import ReadingList from '../readings_list';
 
 type Props = {
-  updateRegister?: Function,
-  validationRules: Object,
+  devMode: boolean,
   register: Object,
-} & FormProps;
-
-type State = {
-  editMode: boolean,
+  meter: Object,
 };
 
-class MeterData extends React.Component<Props, State> {
-  state = {
-    editMode: false,
-  };
-
-  handleEditSwitch(event) {
-    event.preventDefault();
-
-    const { updateRegister, reset, validationRules } = this.props;
-    if (!updateRegister || Object.keys(validationRules).length === 0) {
-      this.setState({ editMode: false });
-    }
-    this.setState({ editMode: !this.state.editMode });
-    reset();
-    return false;
-  }
-
+class RegisterData extends React.Component<Props> {
   render() {
     const {
+      devMode,
       register,
-      updateRegister,
-      handleSubmit,
-      pristine,
-      submitting,
-      validationRules
+      meter,
     } = this.props;
-
-    const submit = values => new Promise((resolve, reject) => {
-      updateRegister({
-        registerId: register.id,
-        params: values,
-        resolve,
-        reject,
-      });
-    })
-      .then(() => this.setState({ editMode: false }));
 
     const prefix = 'admin.registers';
 
     return (
-      <form onSubmit={ handleSubmit(submit) }>
-        <div className="row">
-          <div className="col-12">
-            <h5><FormattedMessage id={ `${prefix}.headerRegisterData` }/></h5>
-            <TwoColField
-              prefix={ prefix }
-              name="meteringPointId"
-              editMode={ this.state.editMode }
-              validationRules={ validationRules }
-              component={ EditableInput }
-            />
-            <TwoColField
-              prefix={ prefix }
-              name="type"
-              editMode={ this.state.editMode }
-              validationRules={ validationRules }
-              component={ EditableSelect }
-            />
-            <TwoColField
-              prefix={ prefix }
-              name="name"
-              editMode={ this.state.editMode }
-              validationRules={ validationRules }
-              component={ EditableInput }
-            />
-            <TwoColField
-              prefix={ prefix }
-              name="label"
-              editMode={ this.state.editMode }
-              validationRules={ validationRules }
-              component={ EditableSelect }
-            />
-            <TwoColField
-              prefix={ prefix }
-              name="direction"
-              editMode={ this.state.editMode }
-              validationRules={ validationRules }
-              component={ EditableSelect }
-            />
-            <TwoColField
-              prefix={ prefix }
-              name="obis"
-              editMode={ this.state.editMode }
-              validationRules={ validationRules }
-              component={ EditableInput }
-            />
-            <TwoColField
-              prefix={ prefix }
-              name="preDecimalPosition"
-              editMode={ this.state.editMode }
-              validationRules={ validationRules }
-              component={ EditableInput }
-            />
-            <TwoColField
-              prefix={ prefix }
-              name="postDecimalPosition"
-              editMode={ this.state.editMode }
-              validationRules={ validationRules }
-              component={ EditableInput }
-            />
-            <TwoColField
-              prefix={ prefix }
-              name="lowLoadAbility"
-              editMode={ this.state.editMode }
-              validationRules={ validationRules }
-              component={ EditableCheckbox }
-            />
-            <h5><FormattedMessage id={ `${prefix}.headerObservation` }/></h5>
-            <TwoColField
-              prefix={ prefix }
-              name="observerEnabled"
-              editMode={ this.state.editMode }
-              validationRules={ validationRules }
-              component={ EditableCheckbox }
-            />
-            <TwoColField
-              prefix={ prefix }
-              name="observerMinThreshold"
-              editMode={ this.state.editMode }
-              validationRules={ validationRules }
-              component={ EditableInput }
-            />
-            <TwoColField
-              prefix={ prefix }
-              name="observerMaxThreshold"
-              editMode={ this.state.editMode }
-              validationRules={ validationRules }
-              component={ EditableInput }
-            />
-            <TwoColField
-              prefix={ prefix }
-              name="observerOfflineMonitoring"
-              editMode={ this.state.editMode }
-              validationRules={ validationRules }
-              component={ EditableCheckbox }
-            />
-            <div className="row" style={{ height: '40px' }}>
-              <div className="col-6">
-                <FormattedMessage id={ `${prefix}.lastObserved` } />:
-              </div>
-              <div className="col-6">
-                { register.lastObserved }
-              </div>
-            </div>
+      <div>
+        {
+          register.readings && !!register.readings.array.length &&
+          <div className={ devMode ? '' : 'under-construction' }>
+            <ReadingList readings={ register.readings.array }/>
           </div>
-        </div>
-        <div className="row">
-          <div className="col-12">
-            {
-              updateRegister && Object.keys(validationRules).length !== 0 && register.updatable &&
-              <div className="edit-buttons" style={{ float: 'right' }}>
-                {
-                  this.state.editMode ?
-                    <span>
-                      <button type="submit" className="btn btn-primary" disabled={pristine || submitting}>Submit</button>
-                      <button type="button" className="btn btn-link" disabled={submitting} onClick={ this.handleEditSwitch.bind(this) }>Cancel</button>
-                    </span> :
-                    <button className="btn btn-primary" onClick={ this.handleEditSwitch.bind(this) }>Edit</button>
-                }
-              </div>
-            }
-          </div>
-        </div>
-      </form>
+        }
+        <p className="h5 grey-underline header"><FormattedMessage id={ `${prefix}.headerRegisterDetails` }/></p>
+        <Row className="fieldgroup">
+          <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.name` }/></Col>
+          <Col xs="8" className="grey-underline fieldvalue">{ register.name }</Col>
+        </Row>
+        <Row className="fieldgroup">
+          <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.direction` }/></Col>
+          <Col xs="8" className="grey-underline fieldvalue">{ register.direction }</Col>
+        </Row>
+        <Row className="fieldgroup">
+          <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.label` }/></Col>
+          <Col xs="8" className="grey-underline fieldvalue">{ register.label }</Col>
+        </Row>
+        <Row className="fieldgroup">
+          <Col xs="4" className="fieldname"><FormattedMessage id="admin.meters.productSerialnumber"/></Col>
+          <Col xs="8" className="grey-underline fieldvalue">{ meter.productSerialnumber }</Col>
+        </Row>
+        <Row className="fieldgroup">
+          <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.meteringPointId` }/></Col>
+          <Col xs="8" className="grey-underline fieldvalue">{ register.meteringPointId }</Col>
+        </Row>
+        <Row className="fieldgroup">
+          <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.lowLoadAbility` }/></Col>
+          <Col xs="8" className="grey-underline fieldvalue">{ register.lowLoadAbility ? 'Yes' : 'No' }</Col>
+        </Row>
+        <Row className="fieldgroup">
+          <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.obis` }/></Col>
+          <Col xs="8" className="grey-underline fieldvalue">{ register.obis }</Col>
+        </Row>
+        <Row className="fieldgroup">
+          <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.sharePublicly` }/></Col>
+          <Col xs="8" className="grey-underline fieldvalue">{ register.sharePublicly ? 'Yes' : 'No' }</Col>
+        </Row>
+        <Row className="fieldgroup">
+          <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.shareGroup` }/></Col>
+          <Col xs="8" className="grey-underline fieldvalue">{ register.shareWithGroup ? 'Yes' : 'No' }</Col>
+        </Row>
+      </div>
     );
   }
 }
 
-export default reduxForm({
-  form: 'registerUpdateForm',
-  enableReinitialize: true,
-})(MeterData);
+export default RegisterData;
