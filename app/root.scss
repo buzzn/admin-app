@@ -32,6 +32,9 @@ body {
 
         content: '';
     }
+    .grey-underline {
+      border-bottom: 1px solid #e0e0e0;
+    }
     .header {
       padding-bottom: 16px;
       margin-bottom: 0;
@@ -45,8 +48,7 @@ body {
         font-weight: bold;
         text-transform: uppercase;
       }
-      .grey-underline {
-        border-bottom: 1px solid #e0e0e0;
+      .fieldvalue {
         padding: 8px 0;
         min-height: 56px;
         display: inline-flex;

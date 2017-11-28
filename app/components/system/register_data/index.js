@@ -31,39 +31,39 @@ class RegisterData extends React.Component<Props> {
         <p className="h5 grey-underline header"><FormattedMessage id={ `${prefix}.headerRegisterDetails` }/></p>
         <Row className="fieldgroup">
           <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.name` }/></Col>
-          <Col xs="8" className="grey-underline">{ register.name }</Col>
+          <Col xs="8" className="grey-underline fieldvalue">{ register.name }</Col>
         </Row>
         <Row className="fieldgroup">
           <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.direction` }/></Col>
-          <Col xs="8" className="grey-underline">{ register.direction }</Col>
+          <Col xs="8" className="grey-underline fieldvalue">{ register.direction }</Col>
         </Row>
         <Row className="fieldgroup">
           <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.label` }/></Col>
-          <Col xs="8" className="grey-underline">{ register.label }</Col>
+          <Col xs="8" className="grey-underline fieldvalue">{ register.label }</Col>
         </Row>
         <Row className="fieldgroup">
           <Col xs="4" className="fieldname"><FormattedMessage id="admin.meters.productSerialnumber"/></Col>
-          <Col xs="8" className="grey-underline">{ meter.productSerialnumber }</Col>
+          <Col xs="8" className="grey-underline fieldvalue">{ meter.productSerialnumber }</Col>
         </Row>
         <Row className="fieldgroup">
           <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.meteringPointId` }/></Col>
-          <Col xs="8" className="grey-underline">{ register.meteringPointId }</Col>
+          <Col xs="8" className="grey-underline fieldvalue">{ register.meteringPointId }</Col>
         </Row>
         <Row className="fieldgroup">
           <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.lowLoadAbility` }/></Col>
-          <Col xs="8" className="grey-underline">{ register.lowLoadAbility ? 'Yes' : 'No' }</Col>
+          <Col xs="8" className="grey-underline fieldvalue">{ register.lowLoadAbility ? 'Yes' : 'No' }</Col>
         </Row>
         <Row className="fieldgroup">
           <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.obis` }/></Col>
-          <Col xs="8" className="grey-underline">{ register.obis }</Col>
+          <Col xs="8" className="grey-underline fieldvalue">{ register.obis }</Col>
         </Row>
         <Row className="fieldgroup">
           <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.sharePublicly` }/></Col>
-          <Col xs="8" className="grey-underline">{ register.sharePublicly ? 'Yes' : 'No' }</Col>
+          <Col xs="8" className="grey-underline fieldvalue">{ register.sharePublicly ? 'Yes' : 'No' }</Col>
         </Row>
         <Row className="fieldgroup">
           <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.shareGroup` }/></Col>
-          <Col xs="8" className="grey-underline">{ register.shareWithGroup ? 'Yes' : 'No' }</Col>
+          <Col xs="8" className="grey-underline fieldvalue">{ register.shareWithGroup ? 'Yes' : 'No' }</Col>
         </Row>
       </div>
     );

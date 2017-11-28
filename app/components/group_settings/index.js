@@ -143,57 +143,57 @@ class GroupSettings extends React.Component<Props> {
               <p className="h5 grey-underline header text-uppercase"><FormattedMessage id={ `${prefix}.headerGroup` }/></p>
               <Row className="fieldgroup">
                 <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.name` }/></Col>
-                <Col xs="8" className="grey-underline">{ group.name }</Col>
+                <Col xs="8" className="grey-underline fieldvalue">{ group.name }</Col>
               </Row>
               <Row className="fieldgroup">
                 <Col xs="4" className="fieldname"><FormattedMessage id={ `${addressPrefix}.address` }/></Col>
-                <Col xs="8" className="grey-underline">{ address.street }</Col>
+                <Col xs="8" className="grey-underline fieldvalue">{ address.street }</Col>
               </Row>
               <Row className="fieldgroup">
                 <Col xs="4" className="fieldname"></Col>
-                <Col xs="2" className="grey-underline">{ address.zip }</Col>
-                <Col xs="6" className="grey-underline">{ address.city }</Col>
+                <Col xs="2" className="grey-underline fieldvalue">{ address.zip }</Col>
+                <Col xs="6" className="grey-underline fieldvalue">{ address.city }</Col>
               </Row>
               <Row className="fieldgroup">
                 <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.startDate` }/></Col>
-                <Col xs="8" className="grey-underline">{ group.startDate ? moment(group.startDate).format('DD.MM.YYYY') : '' }</Col>
+                <Col xs="8" className="grey-underline fieldvalue">{ group.startDate ? moment(group.startDate).format('DD.MM.YYYY') : '' }</Col>
               </Row>
               <Row className="fieldgroup">
                 <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.transmissionSystemOperator` }/></Col>
-                <Col xs="8" className="grey-underline">{ transmissionSystemOperator.name }</Col>
+                <Col xs="8" className="grey-underline fieldvalue">{ transmissionSystemOperator.name }</Col>
               </Row>
               <Row className="fieldgroup">
                 <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.distributionSystemOperator` }/></Col>
-                <Col xs="8" className="grey-underline">{ distributionSystemOperator.name }</Col>
+                <Col xs="8" className="grey-underline fieldvalue">{ distributionSystemOperator.name }</Col>
               </Row>
               <Row className="fieldgroup">
                 <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.electricitySupplier` }/></Col>
-                <Col xs="8" className="grey-underline">{ electricitySupplier.name }</Col>
+                <Col xs="8" className="grey-underline fieldvalue">{ electricitySupplier.name }</Col>
               </Row>
               <Row className="fieldgroup">
                 <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.visibility` }/></Col>
-                <Col xs="8" className="grey-underline">
+                <Col xs="8" className="grey-underline fieldvalue">
                   <FormattedMessage id={ `${prefix}.showObject` }/>
                   <Field className="float-right" name="showObject" component={ FieldToggle } submitForm={ submitForm }/>
                 </Col>
               </Row>
               <Row className="fieldgroup">
                 <Col xs="4" className="fieldname"></Col>
-                <Col xs="8" className="grey-underline">
+                <Col xs="8" className="grey-underline fieldvalue">
                   <FormattedMessage id={ `${prefix}.showProduction` }/>
                   <Field className="float-right" name="showProduction" component={ FieldToggle } submitForm={ submitForm }/>
                 </Col>
               </Row>
               <Row className="fieldgroup">
                 <Col xs="4" className="fieldname"></Col>
-                <Col xs="8" className="grey-underline">
+                <Col xs="8" className="grey-underline fieldvalue">
                   <FormattedMessage id={ `${prefix}.showEnergy` }/>
                   <Field className="float-right" name="showEnergy" component={ FieldToggle } submitForm={ submitForm }/>
                 </Col>
               </Row>
               <Row className="fieldgroup">
                 <Col xs="4" className="fieldname"></Col>
-                <Col xs="8" className="grey-underline">
+                <Col xs="8" className="grey-underline fieldvalue">
                   <FormattedMessage id={ `${prefix}.showContact` }/>
                   <Field className="float-right" name="showContact" component={ FieldToggle } submitForm={ submitForm }/>
                 </Col>
@@ -211,19 +211,19 @@ class GroupSettings extends React.Component<Props> {
               }
               <Row className="fieldgroup">
                 <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.customerNumber` }/></Col>
-                <Col xs="8" className="grey-underline">{ owner.customerNumber }</Col>
+                <Col xs="8" className="grey-underline fieldvalue">{ owner.customerNumber }</Col>
               </Row>
               <Row className="fieldgroup">
                 <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.bankAccount` }/></Col>
-                <Col xs="8" className="grey-underline">{ bankAccount.holder }</Col>
+                <Col xs="8" className="grey-underline fieldvalue">{ bankAccount.holder }</Col>
               </Row>
               <Row className="fieldgroup">
                 <Col xs="4" className="fieldname"></Col>
-                <Col xs="8" className="grey-underline">{ bankAccount.bankName }</Col>
+                <Col xs="8" className="grey-underline fieldvalue">{ bankAccount.bankName }</Col>
               </Row>
               <Row className="fieldgroup">
                 <Col xs="4" className="fieldname"></Col>
-                <Col xs="8" className="grey-underline">{ bankAccount.iban }</Col>
+                <Col xs="8" className="grey-underline fieldvalue">{ bankAccount.iban }</Col>
               </Row>
             </Col>
           </Row>
