@@ -1,4 +1,11 @@
 // @flow
+import 'buzzn-style';
+import 'react-table/react-table.css';
+import 'react-widgets/dist/css/react-widgets.css';
+import 'react-s-alert/dist/s-alert-default.css';
+import 'react-s-alert/dist/s-alert-css-effects/genie.css';
+import './root.scss';
+
 import * as React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -19,13 +26,6 @@ import GroupSettingsContainer from 'components/group_settings';
 import BubblesContainer from 'components/bubbles';
 import HealthContainer from 'components/health';
 import './react_table_config';
-
-import 'buzzn-style';
-import 'react-table/react-table.css';
-import 'react-widgets/dist/css/react-widgets.css';
-import 'react-s-alert/dist/s-alert-default.css';
-import 'react-s-alert/dist/s-alert-css-effects/genie.css';
-import './root.scss';
 
 type Props = {
   token?: string,

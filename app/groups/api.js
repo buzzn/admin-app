@@ -2,6 +2,7 @@
 import 'whatwg-fetch';
 import some from 'lodash/some';
 import { prepareHeaders, parseResponse, camelizeResponseKeys, snakeReq } from '../_util';
+import type { GroupStats } from './reducers';
 
 type Api = {
   token: string,
@@ -9,10 +10,11 @@ type Api = {
   apiPath: string,
 };
 
-export function prepareTypes(groupReg: Array<Object>): { solar: boolean, fire: boolean } {
+export function prepareTypes(groupReg: Array<Object>): GroupStats {
   return {
     solar: some(groupReg, r => r.label.toLowerCase() === 'production_pv'),
     fire: some(groupReg, r => r.label.toLowerCase() === 'production_chp'),
+    production: '--', consumption: '--', autarchy: null,
   };
 }
 
