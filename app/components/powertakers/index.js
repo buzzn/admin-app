@@ -42,63 +42,71 @@ export class Powertakers extends React.Component<Props> {
       { id: group.id || 1, link: url, title: group.name },
     ];
 
-    return [
+    return (
+      <React.Fragment>
 
-      /* Breadcrumbs */
-      <div className="row center-content-header" key={ 1 }>
-        <div className="col-7">
+        {/* Breadcrumbs */}
+        <div className="row center-content-header">
+          <div className="col-7">
+            <Switch>
+              <Route path={ `${url}/:contractId` } render={ ({ match: { url: powertakerUrl, params: { contractId } } }) => {
+                const contract = find(powertakers.array, p => p.id === contractId);
+                if (!contract) return <Redirect to={ url }/>;
+                breadcrumbs.push({ id: contract.id, type: 'contract', title: contract.customerNumber, link: undefined });
+                return (
+                  <React.Fragment>
+                    <Breadcrumbs breadcrumbs={ breadcrumbs }/>
+                    <LinkBack url={ url } title={ contract.customerNumber }/>
+                  </React.Fragment>
+                );
+              } }/>
+              <Route path={ url } render={ () => (
+                <React.Fragment>
+                  <Breadcrumbs breadcrumbs={ breadcrumbs.concat([{ id: '-----', title: 'Powertakers' }]) }/>
+                  <LinkBack title="Localpool powertakers"/>
+                </React.Fragment>
+              ) }/>
+            </Switch>
+          </div>
+          <div className="col-5">
+          </div>
+        </div>
+        {/* End of Breadcrumbs */}
+
+        <div className="center-content">
           <Switch>
+
+            {/* Detailed UI */}
             <Route path={ `${url}/:contractId` } render={ ({ match: { url: powertakerUrl, params: { contractId } } }) => {
               const contract = find(powertakers.array, p => p.id === contractId);
               if (!contract) return <Redirect to={ url }/>;
-              breadcrumbs.push({ id: contract.id, type: 'contract', title: contract.customerNumber, link: undefined });
-              return [
-                <Breadcrumbs key={ 1 } breadcrumbs={ breadcrumbs }/>,
-                <LinkBack key={ 2 } url={ url } title={ contract.customerNumber }/>,
-              ];
+              return (
+                <React.Fragment>
+                  {/* Sub nav */}
+                  {/* End of sub nav */}
+
+                  {/* Main UI */}
+                  <Switch>
+                    <Route path={ powertakerUrl }>
+                      <PowertakerData powertaker={ contract.customer }/>
+                    </Route>
+                  </Switch>
+                  {/* End of main UI */}
+                </React.Fragment>
+              );
             } }/>
-            <Route path={ url } render={ () => ([
-              <Breadcrumbs key={ 1 } breadcrumbs={ breadcrumbs.concat([{ id: '-----', title: 'Powertakers' }]) }/>,
-              <LinkBack key={ 2 } title="Localpool powertakers"/>,
-            ]) }/>
+            {/* End of detailed UI */}
+
+            {/* Powertakers List */}
+            <Route path={ url }>
+              <PowertakersList {...{ powertakers: map(powertakers.array, p => ({ ...p.customer, contractId: p.id })), loading, url }}/>
+            </Route>
+            {/* End of powertakers List */}
+
           </Switch>
         </div>
-        <div className="col-5">
-        </div>
-      </div>,
-      /* End of Breadcrumbs */
-
-      <div className="center-content" key={ 2 }>
-        <Switch>
-
-          /* Detailed UI */
-          <Route path={ `${url}/:contractId` } render={ ({ match: { url: powertakerUrl, params: { contractId } } }) => {
-            const contract = find(powertakers.array, p => p.id === contractId);
-            if (!contract) return <Redirect to={ url }/>;
-            return [
-              /* Sub nav */
-              /* End of sub nav */
-
-              /* Main UI */
-              <Switch key={ 2 }>
-                <Route path={ powertakerUrl }>
-                  <PowertakerData powertaker={ contract.customer }/>
-                </Route>
-              </Switch>
-              /* End of main UI */
-            ];
-          } }/>
-          /* End of detailed UI */
-
-          /* Powertakers List */
-          <Route path={ url }>
-            <PowertakersList {...{ powertakers: map(powertakers.array, p => ({ ...p.customer, contractId: p.id })), loading, url }}/>
-          </Route>
-          /* End of powertakers List */
-
-        </Switch>
-      </div>,
-    ];
+      </React.Fragment>
+    );
   }
 }
 

@@ -68,121 +68,131 @@ export class System extends React.Component<Props> {
       { id: group.id || 1, link: url, title: group.name },
     ];
 
-    return [
+    return (
+      <React.Fragment>
 
-      /* Breadcrumbs */
-      <div className="row center-content-header" key={ 1 }>
-        <div className="col-7">
+        {/* Breadcrumbs */}
+        <div className="row center-content-header">
+          <div className="col-7">
+            <Switch>
+              <Route path={ `${url}/:meterId` } render={ ({ match: { url: meterUrl, params: { meterId } } }) => {
+                const meter = find(meters.array, m => m.id === meterId);
+                if (!meter) return <Redirect to={ url }/>;
+                breadcrumbs.push({ id: meter.id, type: 'meter', title: meter.productSerialnumber, link: undefined });
+                return (
+                  <Switch>
+                    <Route path={ `${meterUrl}/registers/:registerId` } render={ ({ match: { params: { registerId } } }) => {
+                      const register = find(meter.registers.array, r => r.id === registerId);
+                      if (!register) return <Redirect to={ meterUrl }/>;
+                      breadcrumbs[2].link = meterUrl;
+                      breadcrumbs.push({ id: register.id, type: 'register', title: register.name, link: undefined });
+                      return (
+                        <React.Fragment>
+                          <Breadcrumbs breadcrumbs={ breadcrumbs }/>
+                          <LinkBack url={ meterUrl } title={ register.name }/>
+                        </React.Fragment>
+                      );
+                    } }/>
+                    <Route path={ `${url}/:meterId` } render={ () => (
+                      <React.Fragment>
+                        <Breadcrumbs breadcrumbs={ breadcrumbs }/>
+                        <LinkBack url={ url } title={ meter.productSerialnumber }/>
+                      </React.Fragment>
+                    )}/>
+                  </Switch>
+                );
+              }}/>
+              <Route path={ url } render={ () => (
+                <React.Fragment>
+                  <Breadcrumbs breadcrumbs={ breadcrumbs.concat([{ id: '-----', title: 'System setup' }]) }/>
+                  <LinkBack title="System setup"/>
+                </React.Fragment>
+              ) }/>
+            </Switch>
+          </div>
+          <div className="col-5">
+          </div>
+        </div>
+        {/* End of Breadcrumbs */}
+
+        <div className="center-content">
           <Switch>
+
+            {/* Detailed UI */}
             <Route path={ `${url}/:meterId` } render={ ({ match: { url: meterUrl, params: { meterId } } }) => {
               const meter = find(meters.array, m => m.id === meterId);
               if (!meter) return <Redirect to={ url }/>;
-              breadcrumbs.push({ id: meter.id, type: 'meter', title: meter.productSerialnumber, link: undefined });
               return (
-                <Switch>
-                  <Route path={ `${meterUrl}/registers/:registerId` } render={ ({ match: { params: { registerId } } }) => {
-                    const register = find(meter.registers.array, r => r.id === registerId);
-                    if (!register) return <Redirect to={ meterUrl }/>;
-                    breadcrumbs[2].link = meterUrl;
-                    breadcrumbs.push({ id: register.id, type: 'register', title: register.name, link: undefined });
-                    return [
-                      <Breadcrumbs key={ 1 } breadcrumbs={ breadcrumbs }/>,
-                      <LinkBack key={ 2 } url={ meterUrl } title={ register.name }/>,
-                    ];
-                  } }/>
-                  <Route path={ `${url}/:meterId` } render={ () => ([
-                    <Breadcrumbs key={ 1 } breadcrumbs={ breadcrumbs }/>,
-                    <LinkBack key={ 2 } url={ url } title={ meter.productSerialnumber }/>,
-                  ])}/>
-                </Switch>
+                <React.Fragment>
+
+                  {/* Sub nav */}
+                  <Switch>
+                    <Route path={ `${meterUrl}/registers/:registerId`}/>
+                    <Route path={ meterUrl }>
+                      <Nav className="sub-nav">
+                        <NavLink to={ meterUrl } exact className="nav-link">Meter data</NavLink>
+                        {
+                          meter.type === 'meter_real' ?
+                            <NavLink to={ `${meterUrl}/registers` } className="nav-link">Registers</NavLink> :
+                            <NavLink to={ `${meterUrl}/formulas` } className="nav-link">Formulas</NavLink>
+                        }
+                      </Nav>
+                    </Route>
+                  </Switch>
+                  {/* End of Sub nav */}
+
+                  {/* Main UI */}
+                  <Switch>
+                    <Route path={ `${meterUrl}/registers/:registerId` } render={ ({ match: { params: { registerId } } }) => {
+                      const register = find(meter.registers.array, r => r.id === registerId);
+                      if (!register) return <Redirect to={ url }/>;
+                      return (
+                        <RegisterDataForm {...{ register, meter, devMode }}/>
+                      );
+                    } }/>
+                    <Route path={ `${meterUrl}/registers` } render={ () => (
+                      <RegistersList
+                        registers={ meter.registers.array }
+                        meterId={ meter.id }
+                        url={ `${meterUrl}/registers` } />
+                    ) }/>
+                    <Route path={ `${meterUrl}/formulas` } render={ () => (
+                      <Formulas
+                        formulas={ meter.formulaParts.array }
+                        registers={ registers.array || [] }
+                        updateFormula={ params => updateFormula({ meterId: meter.id, groupId, ...params }) } />
+                    ) }/>
+                    <Route path={ meterUrl } render={ () => <MeterDataForm {...{
+                      updateMeter: params => updateMeter({ groupId, ...params }),
+                      realValidationRules,
+                      virtualValidationRules,
+                      meter,
+                      initialValues: meter,
+                    }}/> }/>
+                  </Switch>
+                  {/* End of Main UI */}
+                </React.Fragment>
               );
-            }}/>
-            <Route path={ url } render={ () => [
-              <Breadcrumbs key={ 1 } breadcrumbs={ breadcrumbs.concat([{ id: '-----', title: 'System setup' }]) }/>,
-              <LinkBack key={ 2 } title="System setup"/>,
-            ] }/>
+            } }/>
+            {/* End of Detailed UI */}
+
+            {/* Meters list */}
+            <Route path={ url } render={ () => (
+              <MetersList {...{
+                groupId,
+                loading,
+                meters: meters.array,
+                url,
+              }}/>
+            ) }/>
+            {/* End of Meters list */}
+
           </Switch>
         </div>
-        <div className="col-5">
-        </div>
-      </div>,
-      /* End of Breadcrumbs */
 
-      <div className="center-content" key={ 2 }>
-        <Switch>
-
-          /* Detailed UI */
-          <Route path={ `${url}/:meterId` } render={ ({ match: { url: meterUrl, params: { meterId } } }) => {
-            const meter = find(meters.array, m => m.id === meterId);
-            if (!meter) return <Redirect to={ url }/>;
-            return [
-
-              /* Sub nav */
-              <Switch key={ 1 }>
-                <Route path={ `${meterUrl}/registers/:registerId`}/>
-                <Route path={ meterUrl }>
-                  <Nav className="sub-nav">
-                    <NavLink to={ meterUrl } exact className="nav-link">Meter data</NavLink>
-                    {
-                      meter.type === 'meter_real' ?
-                        <NavLink to={ `${meterUrl}/registers` } className="nav-link">Registers</NavLink> :
-                        <NavLink to={ `${meterUrl}/formulas` } className="nav-link">Formulas</NavLink>
-                    }
-                  </Nav>
-                </Route>
-              </Switch>,
-              /* End of Sub nav */
-
-              /* Main UI */
-              <Switch key={ 2 }>
-                <Route path={ `${meterUrl}/registers/:registerId` } render={ ({ match: { params: { registerId } } }) => {
-                  const register = find(meter.registers.array, r => r.id === registerId);
-                  if (!register) return <Redirect to={ url }/>;
-                  return (
-                    <RegisterDataForm {...{ register, meter, devMode }}/>
-                  );
-                } }/>
-                <Route path={ `${meterUrl}/registers` } render={ () => (
-                  <RegistersList
-                    registers={ meter.registers.array }
-                    meterId={ meter.id }
-                    url={ `${meterUrl}/registers` } />
-                ) }/>
-                <Route path={ `${meterUrl}/formulas` } render={ () => (
-                  <Formulas
-                    formulas={ meter.formulaParts.array }
-                    registers={ registers.array || [] }
-                    updateFormula={ params => updateFormula({ meterId: meter.id, groupId, ...params }) } />
-                ) }/>
-                <Route path={ meterUrl } render={ () => <MeterDataForm {...{
-                  updateMeter: params => updateMeter({ groupId, ...params }),
-                  realValidationRules,
-                  virtualValidationRules,
-                  meter,
-                  initialValues: meter,
-                }}/> }/>
-              </Switch>,
-              /* End of Main UI */
-            ];
-          } }/>
-          /* End of Detailed UI */
-
-          /* Meters list */
-          <Route path={ url } render={ () => (
-            <MetersList {...{
-              groupId,
-              loading,
-              meters: meters.array,
-              url,
-            }}/>
-          ) }/>
-          /* End of Meters list */
-
-        </Switch>
-      </div>,
-
-      /* Modals */
-    ];
+        {/* Modals */}
+      </React.Fragment>
+    );
   }
 }
 

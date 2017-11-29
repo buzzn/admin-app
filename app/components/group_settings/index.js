@@ -125,113 +125,115 @@ class GroupSettings extends React.Component<Props> {
 
     const submitForm = handleSubmit(submit);
 
-    return [
-      <div key={ 1 } className="row center-content-header center-content-header-nomargin-bottom">
-        <Col xs="7">
-          <Breadcrumbs breadcrumbs={ breadcrumbs }/>
-          <LinkBack title={ intl.formatMessage({ id: `${prefix}.headerSettings` }) }/>
-        </Col>
-      </div>,
-      <div className="center-content group-settings" key={ 2 }>
-        <div className="group-image">
-          <img src={ DefaultImage }/>
+    return (
+      <React.Fragment>
+        <div className="row center-content-header center-content-header-nomargin-bottom">
+          <Col xs="7">
+            <Breadcrumbs breadcrumbs={ breadcrumbs }/>
+            <LinkBack title={ intl.formatMessage({ id: `${prefix}.headerSettings` }) }/>
+          </Col>
         </div>
-        <form
-          onSubmit={ submitForm }
-          onBlur={ (event) => { if (event.target.type !== 'checkbox') setTimeout(submitForm); } }
-          onChange={ (event) => { if (event.target.type === 'checkbox') setTimeout(submitForm); } }>
-          <Row>
-            <Col xs="6">
-              <p className="h5 grey-underline header text-uppercase"><FormattedMessage id={ `${prefix}.headerGroup` }/></p>
-              <Row className="fieldgroup">
-                <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.name` }/></Col>
-                <Col xs="8" className="grey-underline fieldvalue">{ group.name }</Col>
-              </Row>
-              <Row className="fieldgroup">
-                <Col xs="4" className="fieldname"><FormattedMessage id={ `${addressPrefix}.address` }/></Col>
-                <Col xs="8" className="grey-underline fieldvalue">{ address.street }</Col>
-              </Row>
-              <Row className="fieldgroup">
-                <Col xs="4" className="fieldname"></Col>
-                <Col xs="2" className="grey-underline fieldvalue">{ address.zip }</Col>
-                <Col xs="6" className="grey-underline fieldvalue">{ address.city }</Col>
-              </Row>
-              <Row className="fieldgroup">
-                <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.startDate` }/></Col>
-                <Col xs="8" className="grey-underline fieldvalue">{ group.startDate ? moment(group.startDate).format('DD.MM.YYYY') : '' }</Col>
-              </Row>
-              <Row className="fieldgroup">
-                <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.transmissionSystemOperator` }/></Col>
-                <Col xs="8" className="grey-underline fieldvalue">{ transmissionSystemOperator.name }</Col>
-              </Row>
-              <Row className="fieldgroup">
-                <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.distributionSystemOperator` }/></Col>
-                <Col xs="8" className="grey-underline fieldvalue">{ distributionSystemOperator.name }</Col>
-              </Row>
-              <Row className="fieldgroup">
-                <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.electricitySupplier` }/></Col>
-                <Col xs="8" className="grey-underline fieldvalue">{ electricitySupplier.name }</Col>
-              </Row>
-              <Row className="fieldgroup">
-                <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.visibility` }/></Col>
-                <Col xs="8" className="grey-underline fieldvalue">
-                  <FormattedMessage id={ `${prefix}.showObject` }/>
-                  <Field className="float-right" name="showObject" component={ FieldToggle } submitForm={ submitForm }/>
-                </Col>
-              </Row>
-              <Row className="fieldgroup">
-                <Col xs="4" className="fieldname"></Col>
-                <Col xs="8" className="grey-underline fieldvalue">
-                  <FormattedMessage id={ `${prefix}.showProduction` }/>
-                  <Field className="float-right" name="showProduction" component={ FieldToggle } submitForm={ submitForm }/>
-                </Col>
-              </Row>
-              <Row className="fieldgroup">
-                <Col xs="4" className="fieldname"></Col>
-                <Col xs="8" className="grey-underline fieldvalue">
-                  <FormattedMessage id={ `${prefix}.showEnergy` }/>
-                  <Field className="float-right" name="showEnergy" component={ FieldToggle } submitForm={ submitForm }/>
-                </Col>
-              </Row>
-              <Row className="fieldgroup">
-                <Col xs="4" className="fieldname"></Col>
-                <Col xs="8" className="grey-underline fieldvalue">
-                  <FormattedMessage id={ `${prefix}.showContact` }/>
-                  <Field className="float-right" name="showContact" component={ FieldToggle } submitForm={ submitForm }/>
-                </Col>
-              </Row>
-            </Col>
-            <Col xs="6">
-              <p className="h5 grey-underline header text-uppercase"><FormattedMessage id={ `${prefix}.headerPowergiver` }/></p>
-              {
-                owner.type === 'person' ?
-                  <Owner {...{ address: ownerAddress, owner }}/> :
-                  [
-                    <Owner key={ 1 } {...{ address: ownerAddress, owner }}/>,
-                    <Owner key={ 2 } {...{ contact: true, address: ownerContactAddress, owner: ownerContact }}/>,
-                  ]
-              }
-              <Row className="fieldgroup">
-                <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.customerNumber` }/></Col>
-                <Col xs="8" className="grey-underline fieldvalue">{ owner.customerNumber }</Col>
-              </Row>
-              <Row className="fieldgroup">
-                <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.bankAccount` }/></Col>
-                <Col xs="8" className="grey-underline fieldvalue">{ bankAccount.holder }</Col>
-              </Row>
-              <Row className="fieldgroup">
-                <Col xs="4" className="fieldname"></Col>
-                <Col xs="8" className="grey-underline fieldvalue">{ bankAccount.bankName }</Col>
-              </Row>
-              <Row className="fieldgroup">
-                <Col xs="4" className="fieldname"></Col>
-                <Col xs="8" className="grey-underline fieldvalue">{ bankAccount.iban }</Col>
-              </Row>
-            </Col>
-          </Row>
-        </form>
-      </div>,
-    ];
+        <div className="center-content group-settings">
+          <div className="group-image">
+            <img src={ DefaultImage }/>
+          </div>
+          <form
+            onSubmit={ submitForm }
+            onBlur={ (event) => { if (event.target.type !== 'checkbox') setTimeout(submitForm); } }
+            onChange={ (event) => { if (event.target.type === 'checkbox') setTimeout(submitForm); } }>
+            <Row>
+              <Col xs="6">
+                <p className="h5 grey-underline header text-uppercase"><FormattedMessage id={ `${prefix}.headerGroup` }/></p>
+                <Row className="fieldgroup">
+                  <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.name` }/></Col>
+                  <Col xs="8" className="grey-underline fieldvalue">{ group.name }</Col>
+                </Row>
+                <Row className="fieldgroup">
+                  <Col xs="4" className="fieldname"><FormattedMessage id={ `${addressPrefix}.address` }/></Col>
+                  <Col xs="8" className="grey-underline fieldvalue">{ address.street }</Col>
+                </Row>
+                <Row className="fieldgroup">
+                  <Col xs="4" className="fieldname"></Col>
+                  <Col xs="2" className="grey-underline fieldvalue">{ address.zip }</Col>
+                  <Col xs="6" className="grey-underline fieldvalue">{ address.city }</Col>
+                </Row>
+                <Row className="fieldgroup">
+                  <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.startDate` }/></Col>
+                  <Col xs="8" className="grey-underline fieldvalue">{ group.startDate ? moment(group.startDate).format('DD.MM.YYYY') : '' }</Col>
+                </Row>
+                <Row className="fieldgroup">
+                  <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.transmissionSystemOperator` }/></Col>
+                  <Col xs="8" className="grey-underline fieldvalue">{ transmissionSystemOperator.name }</Col>
+                </Row>
+                <Row className="fieldgroup">
+                  <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.distributionSystemOperator` }/></Col>
+                  <Col xs="8" className="grey-underline fieldvalue">{ distributionSystemOperator.name }</Col>
+                </Row>
+                <Row className="fieldgroup">
+                  <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.electricitySupplier` }/></Col>
+                  <Col xs="8" className="grey-underline fieldvalue">{ electricitySupplier.name }</Col>
+                </Row>
+                <Row className="fieldgroup">
+                  <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.visibility` }/></Col>
+                  <Col xs="8" className="grey-underline fieldvalue">
+                    <FormattedMessage id={ `${prefix}.showObject` }/>
+                    <Field className="float-right" name="showObject" component={ FieldToggle } submitForm={ submitForm }/>
+                  </Col>
+                </Row>
+                <Row className="fieldgroup">
+                  <Col xs="4" className="fieldname"></Col>
+                  <Col xs="8" className="grey-underline fieldvalue">
+                    <FormattedMessage id={ `${prefix}.showProduction` }/>
+                    <Field className="float-right" name="showProduction" component={ FieldToggle } submitForm={ submitForm }/>
+                  </Col>
+                </Row>
+                <Row className="fieldgroup">
+                  <Col xs="4" className="fieldname"></Col>
+                  <Col xs="8" className="grey-underline fieldvalue">
+                    <FormattedMessage id={ `${prefix}.showEnergy` }/>
+                    <Field className="float-right" name="showEnergy" component={ FieldToggle } submitForm={ submitForm }/>
+                  </Col>
+                </Row>
+                <Row className="fieldgroup">
+                  <Col xs="4" className="fieldname"></Col>
+                  <Col xs="8" className="grey-underline fieldvalue">
+                    <FormattedMessage id={ `${prefix}.showContact` }/>
+                    <Field className="float-right" name="showContact" component={ FieldToggle } submitForm={ submitForm }/>
+                  </Col>
+                </Row>
+              </Col>
+              <Col xs="6">
+                <p className="h5 grey-underline header text-uppercase"><FormattedMessage id={ `${prefix}.headerPowergiver` }/></p>
+                {
+                  owner.type === 'person' ?
+                    <Owner {...{ address: ownerAddress, owner }}/> :
+                    <React.Fragment>
+                      <Owner {...{ address: ownerAddress, owner }}/>
+                      <Owner {...{ contact: true, address: ownerContactAddress, owner: ownerContact }}/>
+                    </React.Fragment>
+                }
+                <Row className="fieldgroup">
+                  <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.customerNumber` }/></Col>
+                  <Col xs="8" className="grey-underline fieldvalue">{ owner.customerNumber }</Col>
+                </Row>
+                <Row className="fieldgroup">
+                  <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.bankAccount` }/></Col>
+                  <Col xs="8" className="grey-underline fieldvalue">{ bankAccount.holder }</Col>
+                </Row>
+                <Row className="fieldgroup">
+                  <Col xs="4" className="fieldname"></Col>
+                  <Col xs="8" className="grey-underline fieldvalue">{ bankAccount.bankName }</Col>
+                </Row>
+                <Row className="fieldgroup">
+                  <Col xs="4" className="fieldname"></Col>
+                  <Col xs="8" className="grey-underline fieldvalue">{ bankAccount.iban }</Col>
+                </Row>
+              </Col>
+            </Row>
+          </form>
+        </div>
+      </React.Fragment>
+    );
   }
 }
 
