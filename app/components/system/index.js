@@ -4,43 +4,33 @@ import { connect } from 'react-redux';
 import { Switch, Route, Redirect, NavLink } from 'react-router-dom';
 import { Nav } from 'reactstrap';
 import find from 'lodash/find';
+import flatten from 'lodash/flatten';
+import compact from 'lodash/compact';
 import Meters from 'meters';
-import Registers from 'registers';
 import Groups from 'groups';
-import Readings from 'readings';
 import Breadcrumbs from 'components/breadcrumbs';
 import LinkBack from 'components/link_back';
-import MetersList from './meters_list';
-import MeterDataForm from './meter_data';
 import RegistersList from './registers_list';
 import RegisterDataForm from './register_data';
-import Formulas from './formulas';
 
 type Props = {
   devMode: boolean,
   loading: boolean,
   meters: { _status: null | number, array?: Array<Object> },
-  registers: { _status: null | number, array?: Array<Object> },
+  registers: Array<Object>,
   group: Object,
   // TODO: replace with action
   loadGroupMeters: Function,
   setGroupMeters: Function,
   loadGroup: Function,
-  loadRegisters: Function,
-  updateMeter: Function,
-  updateFormula: Function,
-  realValidationRules: Object,
-  virtualValidationRules: Object,
   match: { url: string, params: { groupId: string, meterId: string, registerId: string } },
 };
 
 export class System extends React.Component<Props> {
   componentWillMount() {
-    const { loadGroupMeters, loadGroup, loadRegisters, group, match: { params: { groupId } } } = this.props;
+    const { loadGroupMeters, loadGroup, group, match: { params: { groupId } } } = this.props;
     if (group.id !== groupId) loadGroup(groupId);
     loadGroupMeters(groupId);
-    // for formulaPart
-    loadRegisters({ groupId });
   }
 
   render() {
@@ -51,10 +41,6 @@ export class System extends React.Component<Props> {
       setGroupMeters,
       registers,
       group,
-      updateMeter,
-      updateFormula,
-      realValidationRules,
-      virtualValidationRules,
       match: { url, params: { groupId } },
     } = this.props;
 
@@ -78,27 +64,19 @@ export class System extends React.Component<Props> {
               <Route path={ `${url}/:meterId` } render={ ({ match: { url: meterUrl, params: { meterId } } }) => {
                 const meter = find(meters.array, m => m.id === meterId);
                 if (!meter) return <Redirect to={ url }/>;
-                breadcrumbs.push({ id: meter.id, type: 'meter', title: meter.productSerialnumber, link: undefined });
                 return (
                   <Switch>
                     <Route path={ `${meterUrl}/registers/:registerId` } render={ ({ match: { params: { registerId } } }) => {
                       const register = find(meter.registers.array, r => r.id === registerId);
                       if (!register) return <Redirect to={ meterUrl }/>;
-                      breadcrumbs[2].link = meterUrl;
                       breadcrumbs.push({ id: register.id, type: 'register', title: register.name, link: undefined });
                       return (
                         <React.Fragment>
                           <Breadcrumbs breadcrumbs={ breadcrumbs }/>
-                          <LinkBack url={ meterUrl } title={ register.name }/>
+                          <LinkBack url={ url } title={ register.name }/>
                         </React.Fragment>
                       );
                     } }/>
-                    <Route path={ `${url}/:meterId` } render={ () => (
-                      <React.Fragment>
-                        <Breadcrumbs breadcrumbs={ breadcrumbs }/>
-                        <LinkBack url={ url } title={ meter.productSerialnumber }/>
-                      </React.Fragment>
-                    )}/>
                   </Switch>
                 );
               }}/>
@@ -116,6 +94,18 @@ export class System extends React.Component<Props> {
         {/* End of Breadcrumbs */}
 
         <div className="center-content">
+
+          {/* Root sub nav */}
+          <Route path={ url } exact render={ () => {
+            return (
+              <Nav className="sub-nav">
+                <NavLink to={ url } exact className="nav-link">Registers</NavLink>
+                <NavLink to="#" disabled className="nav-link">To be announced</NavLink>
+              </Nav>
+            );
+          } }/>
+          {/* End of root sub nav */}
+
           <Switch>
 
             {/* Detailed UI */}
@@ -126,19 +116,6 @@ export class System extends React.Component<Props> {
                 <React.Fragment>
 
                   {/* Sub nav */}
-                  <Switch>
-                    <Route path={ `${meterUrl}/registers/:registerId`}/>
-                    <Route path={ meterUrl }>
-                      <Nav className="sub-nav">
-                        <NavLink to={ meterUrl } exact className="nav-link">Meter data</NavLink>
-                        {
-                          meter.type === 'meter_real' ?
-                            <NavLink to={ `${meterUrl}/registers` } className="nav-link">Registers</NavLink> :
-                            <NavLink to={ `${meterUrl}/formulas` } className="nav-link">Formulas</NavLink>
-                        }
-                      </Nav>
-                    </Route>
-                  </Switch>
                   {/* End of Sub nav */}
 
                   {/* Main UI */}
@@ -150,25 +127,6 @@ export class System extends React.Component<Props> {
                         <RegisterDataForm {...{ register, meter, devMode, groupId }}/>
                       );
                     } }/>
-                    <Route path={ `${meterUrl}/registers` } render={ () => (
-                      <RegistersList
-                        registers={ meter.registers.array }
-                        meterId={ meter.id }
-                        url={ `${meterUrl}/registers` } />
-                    ) }/>
-                    <Route path={ `${meterUrl}/formulas` } render={ () => (
-                      <Formulas
-                        formulas={ meter.formulaParts.array }
-                        registers={ registers.array || [] }
-                        updateFormula={ params => updateFormula({ meterId: meter.id, groupId, ...params }) } />
-                    ) }/>
-                    <Route path={ meterUrl } render={ () => <MeterDataForm {...{
-                      updateMeter: params => updateMeter({ groupId, ...params }),
-                      realValidationRules,
-                      virtualValidationRules,
-                      meter,
-                      initialValues: meter,
-                    }}/> }/>
                   </Switch>
                   {/* End of Main UI */}
                 </React.Fragment>
@@ -176,16 +134,11 @@ export class System extends React.Component<Props> {
             } }/>
             {/* End of Detailed UI */}
 
-            {/* Meters list */}
-            <Route path={ url } render={ () => (
-              <MetersList {...{
-                groupId,
-                loading,
-                meters: meters.array,
-                url,
-              }}/>
+            {/* Root list */}
+            <Route path={ url } render={ ({ history }) => (
+              <RegistersList registers={ registers } url={ url } history={ history }/>
             ) }/>
-            {/* End of Meters list */}
+            {/* End of Root list */}
 
           </Switch>
         </div>
@@ -197,14 +150,19 @@ export class System extends React.Component<Props> {
 }
 
 function mapStateToProps(state) {
+  const registers = state.meters.groupMeters._status === 200 ?
+    compact(flatten(state.meters.groupMeters.array.map((m) => {
+      if (!m.registers) return [];
+      return m.registers.array.map(r => ({ ...r, meterId: m.id }));
+    }))) :
+    [];
+
   return {
     devMode: state.app.devMode,
     group: state.groups.group,
     loading: state.meters.loadingGroupMeters || !state.groups.group.id,
     meters: state.meters.groupMeters,
-    registers: state.registers.registers,
-    realValidationRules: state.meters.realValidationRules,
-    virtualValidationRules: state.meters.virtualValidationRules,
+    registers,
   };
 }
 
@@ -212,7 +170,4 @@ export default connect(mapStateToProps, {
   loadGroupMeters: Meters.actions.loadGroupMeters,
   setGroupMeters: Meters.actions.setGroupMeters,
   loadGroup: Groups.actions.loadGroup,
-  loadRegisters: Registers.actions.loadRegisters,
-  updateMeter: Meters.actions.updateMeter,
-  updateFormula: Meters.actions.updateFormulaPart,
 })(System);

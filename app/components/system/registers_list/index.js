@@ -1,60 +1,59 @@
 // @flow
 import * as React from 'react';
 import ReactTable from 'react-table';
+import { injectIntl } from 'react-intl';
+import type { intlShape } from 'react-intl';
 import { tableParts as TableParts } from 'react_table_config';
 
 type Props = {
   registers: Array<Object>,
-  subComponent?: boolean,
+  history: Object,
   url: string,
+  intl: intlShape,
 };
 
-const RegistersList = ({ registers, subComponent, url }: Props) => {
-  if (subComponent && registers.length === 0) return false;
-
+const RegistersList = ({ registers, url, history, intl }: Props) => {
   const data = registers.map(r => ({
     ...r,
-    linkRegister: `${url}/${r.id}`,
+    linkRegister: `${url}/${r.meterId}/registers/${r.id}`,
   }));
 
   const columns = [
     {
-      Header: () => <TableParts.components.headerCell title="Type"/>,
-      accessor: 'type',
-    },
-    {
-      Header: () => <TableParts.components.headerCell title="Obis"/>,
-      accessor: 'obis',
-    },
-    {
-      Header: () => <TableParts.components.headerCell title="Name"/>,
+      Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.registers.tableName' }) }/>,
       accessor: 'name',
     },
     {
-      Header: () => <TableParts.components.headerCell title="Last Reading"/>,
-      accessor: 'lastReading',
+      Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.registers.tableMeteringPointId' }) }/>,
+      accessor: 'meteringPointId',
     },
     {
-      Header: '',
-      accessor: '',
-      sortable: false,
-      filterable: false,
-      resizable: false,
-      width: 100,
-      className: 'dropdown-fix',
-      Cell: row => <TableParts.components.dropDownCell row={ row } menuItems={ (() => ([{ action: 'linkRegister', title: 'View register' }]))() }/>,
+      Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.registers.tableDirection' }) }/>,
+      accessor: 'direction',
+    },
+    {
+      Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.registers.tableLabel' }) }/>,
+      accessor: 'label',
     },
   ];
 
-  const components = [];
-  type TableProps = { data: Array<Object>, columns: Array<Object>, SubComponent?: Function };
-  const tableProps: TableProps = { data, columns, collapseOnDataChange: false };
-
   return (
-    <div className={ subComponent ? 'p-4 sub-component' : 'p-0' } key={ 2 }>
-      <ReactTable {...tableProps} />
+    <div className="p-0">
+      <ReactTable {...{
+        data,
+        columns,
+        collapseOnDataChange: false,
+        getTrProps: (state, rowinfo) => ({
+          onClick: () => {
+            history.push(rowinfo.original.linkRegister);
+          },
+          style: {
+            cursor: 'pointer',
+          },
+        }),
+      }} />
     </div>
   );
 };
 
-export default RegistersList;
+export default injectIntl(RegistersList);
