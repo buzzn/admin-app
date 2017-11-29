@@ -5,6 +5,7 @@ export const initialState = {
   loadingRegister: false,
   registers: { _status: null, array: [] },
   register: { _status: null },
+  registerPower: { _status: null },
   readings: { _status: null, array: [] },
   validationRules: {},
 };
@@ -19,6 +20,9 @@ export default function (state = initialState, action) {
       return { ...state, loadingRegister: false };
     case constants.SET_REGISTER:
       return { ...state, register: action.register, readings: action.readings };
+
+    case constants.SET_REGISTER_POWER:
+      return { ...state, registerPower: action.power };
 
     case constants.LOAD_REGISTERS:
       return { ...state, groupId: action.groupId };

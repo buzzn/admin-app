@@ -9,6 +9,13 @@ export default {
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
+  fetchRegisterPower({ token, apiUrl, apiPath, registerId, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/registers/${registerId}/ticker`, {
+      headers: prepareHeaders(token),
+    })
+      .then(parseResponse)
+      .then(camelizeResponseKeys);
+  },
   updateRegister({ token, apiUrl, apiPath, meterId, registerId, params, groupId }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/meters/${meterId}/registers/${registerId}`, {
       headers: prepareHeaders(token),
