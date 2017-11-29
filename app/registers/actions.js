@@ -9,6 +9,9 @@ export const constants = {
   LOADED_REGISTER: 'buzzn_registers/LOADED_REGISTER',
   SET_REGISTER: 'buzzn_registers/SET_REGISTER',
 
+  LOAD_REGISTER_POWER: 'buzzn_registers/LOAD_REGISTER_POWER',
+  SET_REGISTER_POWER: 'buzzn_registers/SET_REGISTER_POWER',
+
   UPDATE_REGISTER: 'buzzn_registers/UPDATE_REGISTER',
 
   LOAD_REGISTERS: 'buzzn_registers/LOAD_REGISTERS',
@@ -27,6 +30,9 @@ export const actions = {
   loadingRegister: () => ({ type: constants.LOADING_REGISTER }),
   loadedRegister: () => ({ type: constants.LOADED_REGISTER }),
   setRegister: ({ register, readings }) => ({ type: constants.SET_REGISTER, register, readings }),
+
+  loadRegisterPower: ({ registerId, groupId }) => ({ type: constants.LOAD_REGISTER_POWER, registerId, groupId }),
+  setRegisterPower: ({ power }) => ({ type: constants.SET_REGISTER_POWER, power }),
 
   updateRegister: ({ meterId, registerId, params, resolve, reject, groupId }) => (
     { type: constants.UPDATE_REGISTER, meterId, registerId, params, resolve, reject, groupId }),

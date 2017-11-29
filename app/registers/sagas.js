@@ -19,6 +19,15 @@ export function* getRegister({ apiUrl, apiPath, token }, { registerId, groupId }
   yield put(actions.loadedRegister());
 }
 
+export function* getRegisterPower({ apiUrl, apiPath, token }, { registerId, groupId }) {
+  try {
+    const power = yield call(api.fetchRegisterPower, { apiUrl, apiPath, token, registerId, groupId });
+    yield put(actions.setRegisterPower({ power }));
+  } catch (error) {
+    logException(error);
+  }
+}
+
 export function* updateRegister({ apiUrl, apiPath, token }, { meterId, registerId, params, resolve, reject, groupId }) {
   try {
     const res = yield call(api.updateRegister, { apiUrl, apiPath, token, meterId, registerId, params, groupId });
@@ -50,6 +59,7 @@ export function* getRegisters({ apiUrl, apiPath, token }, { groupId }) {
 export function* registersSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_REGISTERS, getRegisters, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_REGISTER, getRegister, { apiUrl, apiPath, token });
+  yield takeLatest(constants.LOAD_REGISTER_POWER, getRegisterPower, { apiUrl, apiPath, token });
   yield takeLatest(constants.UPDATE_REGISTER, updateRegister, { apiUrl, apiPath, token });
   const { groupId } = yield select(selectGroup);
   const { registerId } = yield select(selectRegister);
@@ -57,6 +67,7 @@ export function* registersSagas({ apiUrl, apiPath, token }) {
     yield call(getRegisters, { apiUrl, apiPath, token }, { groupId });
     if (registerId) {
       yield call(getRegister, { apiUrl, apiPath, token }, { registerId, groupId });
+      yield call(getRegisterPower, { apiUrl, apiPath, token }, { registerId, groupId });
     }
   }
 }

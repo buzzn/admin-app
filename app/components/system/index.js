@@ -147,7 +147,7 @@ export class System extends React.Component<Props> {
                       const register = find(meter.registers.array, r => r.id === registerId);
                       if (!register) return <Redirect to={ url }/>;
                       return (
-                        <RegisterDataForm {...{ register, meter, devMode }}/>
+                        <RegisterDataForm {...{ register, meter, devMode, groupId }}/>
                       );
                     } }/>
                     <Route path={ `${meterUrl}/registers` } render={ () => (

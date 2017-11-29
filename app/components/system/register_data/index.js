@@ -3,11 +3,13 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Row, Col } from 'reactstrap';
 import ReadingList from '../readings_list';
+import RegisterPower from '../register_power';
 
 type Props = {
   devMode: boolean,
   register: Object,
   meter: Object,
+  groupId: string,
 };
 
 class RegisterData extends React.Component<Props> {
@@ -16,12 +18,14 @@ class RegisterData extends React.Component<Props> {
       devMode,
       register,
       meter,
+      groupId,
     } = this.props;
 
     const prefix = 'admin.registers';
 
     return (
       <div>
+        <RegisterPower {...{ registerId: register.id, groupId }}/>
         {
           register.readings && !!register.readings.array.length &&
           <div className={ devMode ? '' : 'under-construction' }>
