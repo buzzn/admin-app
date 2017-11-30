@@ -11,6 +11,7 @@ import sample from 'lodash/sample';
 import { CardDeck } from 'reactstrap';
 import Groups from 'groups';
 import type { GroupsStats } from 'groups/reducers';
+import { actions } from 'actions';
 import { tableParts as TableParts } from 'react_table_config';
 import withHover from 'components/with_hover';
 import LocalpoolCard from './localpool_card';
@@ -25,6 +26,8 @@ import DefaultImage4 from 'images/energygroup_noimage_09.jpg';
 type Props = {
   // TODO: proper action type
   loadGroups: Function,
+  setUI: Function,
+  groupsListTiles: void | boolean,
   groups: Array<Object>,
   groupsStats: GroupsStats,
   intl: intlShape,
@@ -33,7 +36,7 @@ type Props = {
 };
 
 type State = {
-  cardView: boolean,
+  groupsListTiles: void | boolean,
 };
 
 class LocalpoolsList extends React.Component<Props, State> {
@@ -42,20 +45,22 @@ class LocalpoolsList extends React.Component<Props, State> {
   };
 
   state = {
-    cardView: false,
+    groupsListTiles: false,
   };
 
   componentWillMount() {
+    this.setState({ groupsListTiles: this.props.groupsListTiles });
     this.props.loadGroups();
   }
 
-  switchView(cardView) {
-    this.setState({ cardView });
+  switchView(groupsListTiles) {
+    this.setState({ groupsListTiles });
+    this.props.setUI({ groupsListTiles })
   }
 
   render() {
     const { groups, groupsStats, intl, history, match: { url } } = this.props;
-    const { cardView } = this.state;
+    const { groupsListTiles } = this.state;
 
     const data = groups.map(g => ({
       ...g,
@@ -99,15 +104,15 @@ class LocalpoolsList extends React.Component<Props, State> {
             <i
               className="fa fa-th-large"
               onClick={ this.switchView.bind(this, true) }
-              style={{ marginRight: '0.5rem', color: cardView ? 'black' : '#afafaf', cursor: 'pointer' }}/>
+              style={{ marginRight: '0.5rem', color: groupsListTiles ? 'black' : '#afafaf', cursor: 'pointer' }}/>
             <i
               className="fa fa-th-list"
               onClick={ this.switchView.bind(this, false) }
-              style={{ color: !cardView ? 'black' : '#afafaf', cursor: 'pointer' }}/>
+              style={{ color: !groupsListTiles ? 'black' : '#afafaf', cursor: 'pointer' }}/>
           </div>
         </div>
         {
-          cardView ?
+          groupsListTiles ?
           chunk(groups, 2).map(groupPair => (
             <CardDeck key={ groupPair[0].id }>
               {
@@ -146,9 +151,11 @@ function mapStateToProps(state) {
   return {
     groups: sortBy(groups, 'name'),
     groupsStats: state.groups.groupsStats,
+    groupsListTiles: state.app.ui.groupsListTiles,
   };
 }
 
 export default connect(mapStateToProps, {
   loadGroups: Groups.actions.loadGroups,
+  setUI: actions.setUI,
 })(LocalpoolsListIntl);

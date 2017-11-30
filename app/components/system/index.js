@@ -173,7 +173,7 @@ function mapStateToProps(state) {
     [];
 
   return {
-    devMode: state.app.devMode,
+    devMode: state.app.ui.devMode,
     group: state.groups.group,
     loading: state.meters.loadingGroupMeters || !state.groups.group.id,
     meters: state.meters.groupMeters,

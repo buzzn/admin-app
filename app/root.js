@@ -83,6 +83,6 @@ const NewRoot = ({ token, devMode }: Props) => (
   </BrowserRouter>
 );
 
-const mapStateToProps: MapStateToProps<*, *, *> = state => ({ token: state.auth.token, devMode: state.app.devMode });
+const mapStateToProps: MapStateToProps<*, *, *> = state => ({ token: state.auth.token, devMode: state.app.ui.devMode });
 
 export default connect(mapStateToProps)(NewRoot);

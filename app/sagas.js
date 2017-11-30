@@ -20,6 +20,7 @@ import loadingList, { authList } from 'validation_rules_list';
 
 export const getConfig = state => state.config;
 export const getAuth = state => state.auth;
+export const getUI = state => state.app.ui;
 
 export function* getUserMe({ apiUrl, apiPath, token }) {
   try {
@@ -70,16 +71,21 @@ export function* setHealth({ apiUrl }) {
   }
 }
 
-export function* setDevMode() {
+export function* setUI() {
   const devModeUrl = getAllUrlParams().devmode;
-  let devMode = false;
+  let ui = yield call(api.getUI);
   if (devModeUrl) {
-    devMode = devModeUrl === 'true';
-    yield call(api.setDevMode, devMode);
-  } else {
-    devMode = yield call(api.getDevMode);
+    ui.devMode = devModeUrl === 'true';
+    yield call(api.setUI, ui);
   }
-  yield put(actions.setDevMode(devMode));
+  yield put(actions.setUI(ui));
+
+  while (true) {
+    const { ui: uiPart } = yield take(constants.SET_UI);
+    ui = { ...ui, ...uiPart };
+    yield put(actions.setUI(ui));
+    yield call(api.setUI, ui);
+  }
 }
 
 export default function* () {
@@ -101,7 +107,7 @@ export default function* () {
   yield put(ValidationRules.actions.setApiParams({ apiUrl, apiPath }));
 
   yield fork(setHealth, { apiUrl });
-  yield fork(setDevMode);
+  yield fork(setUI);
 
   let { token } = yield select(getAuth);
 

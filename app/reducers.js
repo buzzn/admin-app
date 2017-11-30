@@ -23,9 +23,22 @@ export const initialState = {
   userMeValidationRules: {},
   uiVer: '',
   health: {},
-  devMode: false,
+  ui: {
+    devMode: false,
+    groupsListTiles: false,
+  },
   incompleteScreen: [],
 };
+
+export function uiReducer(state, action) {
+  switch (action.type) {
+    case constants.SET_UI:
+      return { ...state, ...action.ui };
+
+    default:
+      return state;
+  }
+}
 
 export function appReducer(state = initialState, action) {
   switch (action.type) {
@@ -41,8 +54,8 @@ export function appReducer(state = initialState, action) {
     case constants.SET_HEALTH:
       return { ...state, health: action.health };
 
-    case constants.SET_DEV_MODE:
-      return { ...state, devMode: action.mode };
+    case constants.SET_UI:
+      return { ...state, ui: uiReducer(state.ui, action) };
 
     case constants.SET_INCOMPLETE_SCREEN:
       return { ...state, incompleteScreen: action.incompleteScreen };
