@@ -25,6 +25,7 @@ const RegistersList = ({ registers, url, history, intl }: Props) => {
       accessor: 'name',
       style: {
         cursor: 'pointer',
+        textDecoration: 'underline',
       },
     },
     {
@@ -32,6 +33,7 @@ const RegistersList = ({ registers, url, history, intl }: Props) => {
       accessor: 'meterProductSerialnumber',
       style: {
         cursor: 'pointer',
+        textDecoration: 'underline',
       },
     },
     {
