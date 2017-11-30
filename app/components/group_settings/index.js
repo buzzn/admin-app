@@ -94,14 +94,14 @@ class GroupSettings extends React.Component<Props> {
 
     if (group.status === 404 || group.status === 403) {
       setGroup({ _status: null });
-      return <Redirect to="/localpools"/>;
+      return <Redirect to="/groups"/>;
     }
 
     const prefix = 'admin.groups';
     const addressPrefix = 'admin.addresses';
 
     const breadcrumbs = [
-      { id: 0, link: '/localpools', title: intl.formatMessage({ id: `${prefix}.breadcrumbsMyLocalpools` }) },
+      { id: 0, link: '/groups', title: intl.formatMessage({ id: `${prefix}.breadcrumbsMyLocalpools` }) },
       { id: group.id || 1, title: group.name },
     ];
 

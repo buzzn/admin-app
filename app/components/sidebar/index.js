@@ -11,7 +11,7 @@ type Props = {
 
 const Sidebar = ({ url, devMode }: Props) => (
   <div className="sidebar">
-    <SidebarItem to="/localpools" exact={ true } icon="th-large">My Groups</SidebarItem>
+    <SidebarItem to="/groups" exact={ true } icon="th-large">My Groups</SidebarItem>
     <SidebarItem to={ `${url}/analytics` } icon="bolt" devMode={ devMode }>Analytics</SidebarItem>
     <SidebarItem to={ `${url}/powertakers` } icon="users" devMode={ devMode }>Powertakers</SidebarItem>
     <SidebarItem to={ `${url}/prices` } icon="eur" devMode={ devMode }>Prices</SidebarItem>

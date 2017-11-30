@@ -39,30 +39,30 @@ const NewRoot = ({ token, devMode }: Props) => (
       { token && <TopNavBarContainer devMode={ devMode }/> }
       { token ?
         <Container style={{ maxWidth: '1440px' }}>
-          <Route exact path="/" render={ () => <Redirect to="/localpools"/> } />
+          <Route exact path="/" render={ () => <Redirect to="/groups"/> } />
           <Row>
 
-            <Route path="/localpools/:groupId" render={ ({ match: { url } }) => (
+            <Route path="/groups/:groupId" render={ ({ match: { url } }) => (
               <Col xs="1" className="pl-0 pr-0">
                 <Sidebar url={ url || '' } devMode={ devMode }/>
               </Col>
             ) }/>
 
             <Route path="/*" render={ ({ match: { url } }) =>
-              <Col xs={ (url === '/' || url === '/localpools') ? '9' : '8' } className="pl-0 pr-0">
+              <Col xs={ (url === '/' || url === '/groups') ? '9' : '8' } className="pl-0 pr-0">
                 <div className="center-content-wrapper">
                   <PartErrorBoundary part="main-part">
                     <Switch>
-                      <Route path="/localpools/:groupId/analytics" component={ AnalyticsContainer }/>
-                      <Route path="/localpools/:groupId/powertakers" component={ PowertakersContainer }/>
-                      <Route path="/localpools/:groupId/contracts" component={ ContractsContainer }/>
-                      <Route path="/localpools/:groupId/system" component={ SystemContainer }/>
-                      <Route path="/localpools/:groupId/bubbles" component={ BubblesContainer }/>
-                      <Route path="/localpools/:groupId/settings" component={ GroupSettingsContainer }/>
+                      <Route path="/groups/:groupId/analytics" component={ AnalyticsContainer }/>
+                      <Route path="/groups/:groupId/powertakers" component={ PowertakersContainer }/>
+                      <Route path="/groups/:groupId/contracts" component={ ContractsContainer }/>
+                      <Route path="/groups/:groupId/system" component={ SystemContainer }/>
+                      <Route path="/groups/:groupId/bubbles" component={ BubblesContainer }/>
+                      <Route path="/groups/:groupId/settings" component={ GroupSettingsContainer }/>
                       <Route
-                        path="/localpools/:groupId"
-                        render={ ({ match: { params: { groupId } } }) => <Redirect to={ `/localpools/${groupId || ''}/settings` }/> }/>
-                      <Route path="/localpools" component={ LocalpoolsListContainer }/>
+                        path="/groups/:groupId"
+                        render={ ({ match: { params: { groupId } } }) => <Redirect to={ `/groups/${groupId || ''}/settings` }/> }/>
+                      <Route path="/groups" component={ LocalpoolsListContainer }/>
                       <Route render={ () => (<div>404</div>) } />
                     </Switch>
                   </PartErrorBoundary>

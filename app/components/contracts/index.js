@@ -33,11 +33,11 @@ export class Contracts extends React.Component<Props> {
 
     if (group.status === 404 || group.status === 403) {
       setGroup({ _status: null });
-      return <Redirect to="/localpools"/>;
+      return <Redirect to="/groups"/>;
     }
 
     const breadcrumbs = [
-      { id: 0, link: '/localpools', title: 'My localpools' },
+      { id: 0, link: '/groups', title: 'My groups' },
       { id: group.id | 1, link: url, title: group.name },
     ];
 

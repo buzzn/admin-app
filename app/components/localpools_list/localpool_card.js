@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { Card } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 import Transition from 'react-transition-group/Transition';
 import type { GroupStats } from 'groups/reducers';
 
@@ -37,17 +38,17 @@ const LocalpoolCard = ({ group, url, groupStats, hover, onMouseOver, onMouseOut 
             <div className="group-stat">
               <div className="value">{ groupStats.production.split(' ')[0] }</div>
               <div className="unit">{ groupStats.production.split(' ')[1] }</div>
-              <div className="label">Production</div>
+              <div className="label"><FormattedMessage id="admin.groups.statProduction"/></div>
             </div>
             <div className="group-stat">
               <div className="value">{ groupStats.consumption.split(' ')[0] }</div>
               <div className="unit">{ groupStats.consumption.split(' ')[1] }</div>
-              <div className="label">Consumption</div>
+              <div className="label"><FormattedMessage id="admin.groups.statConsumption"/></div>
             </div>
             <div className="group-stat">
               <div className="value">{ groupStats.autarchy ? `${(Number(groupStats.autarchy) * 100).toFixed(0)}%` : 'n.a.' }</div>
               <div className="unit">&nbsp;</div>
-              <div className="label">Autarchy</div>
+              <div className="label"><FormattedMessage id="admin.groups.statAutarchy"/></div>
             </div>
           </React.Fragment>
       }

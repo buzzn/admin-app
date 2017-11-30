@@ -51,11 +51,11 @@ export class System extends React.Component<Props> {
 
     if (meters.status === 404 || meters.status === 403) {
       setGroupMeters({ _status: null, array: [] });
-      return <Redirect to="/localpools"/>;
+      return <Redirect to="/groups"/>;
     }
 
     const breadcrumbs = [
-      { id: 0, link: '/localpools', title: 'My localpools' },
+      { id: 0, link: '/groups', title: 'My groups' },
       { id: group.id || 1, link: url, title: group.name },
     ];
 
