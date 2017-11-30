@@ -15,6 +15,7 @@ type Props = {
 const RegistersList = ({ registers, url, history, intl }: Props) => {
   const data = registers.map(r => ({
     ...r,
+    linkMeter: `${url}/${r.meterId}`,
     linkRegister: `${url}/${r.meterId}/registers/${r.id}`,
   }));
 
@@ -22,10 +23,16 @@ const RegistersList = ({ registers, url, history, intl }: Props) => {
     {
       Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.registers.tableName' }) }/>,
       accessor: 'name',
+      style: {
+        cursor: 'pointer',
+      },
     },
     {
-      Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.registers.tableMeteringPointId' }) }/>,
-      accessor: 'meteringPointId',
+      Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.meters.tableProductSerialnumber' }) }/>,
+      accessor: 'meterProductSerialnumber',
+      style: {
+        cursor: 'pointer',
+      },
     },
     {
       Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.registers.tableDirection' }) }/>,
@@ -43,12 +50,11 @@ const RegistersList = ({ registers, url, history, intl }: Props) => {
         data,
         columns,
         collapseOnDataChange: false,
-        getTrProps: (state, rowinfo) => ({
-          onClick: () => {
-            history.push(rowinfo.original.linkRegister);
-          },
-          style: {
-            cursor: 'pointer',
+        getTdProps: (state, rowInfo, column) => ({
+          onClick: (e, handleOriginal) => {
+            if (column.id === 'name') history.push(rowInfo.original.linkRegister);
+            if (column.id === 'meterProductSerialnumber') history.push(rowInfo.original.linkMeter);
+            if (handleOriginal) handleOriginal();
           },
         }),
       }} />

@@ -12,6 +12,7 @@ import Breadcrumbs from 'components/breadcrumbs';
 import LinkBack from 'components/link_back';
 import RegistersList from './registers_list';
 import RegisterDataForm from './register_data';
+import MeterDataForm from './meter_data';
 
 type Props = {
   devMode: boolean,
@@ -19,6 +20,8 @@ type Props = {
   meters: { _status: null | number, array?: Array<Object> },
   registers: Array<Object>,
   group: Object,
+  realValidationRules: Object,
+  virtualValidationRules: Object,
   // TODO: replace with action
   loadGroupMeters: Function,
   setGroupMeters: Function,
@@ -41,6 +44,8 @@ export class System extends React.Component<Props> {
       setGroupMeters,
       registers,
       group,
+      realValidationRules,
+      virtualValidationRules,
       match: { url, params: { groupId } },
     } = this.props;
 
@@ -74,6 +79,15 @@ export class System extends React.Component<Props> {
                         <React.Fragment>
                           <Breadcrumbs breadcrumbs={ breadcrumbs }/>
                           <LinkBack url={ url } title={ register.name }/>
+                        </React.Fragment>
+                      );
+                    } }/>
+                    <Route path={ meterUrl } render={ () => {
+                      breadcrumbs.push({ id: meter.id, type: 'meter', title: meter.productSerialnumber, link: undefined });
+                      return (
+                        <React.Fragment>
+                          <Breadcrumbs breadcrumbs={ breadcrumbs }/>
+                          <LinkBack url={ url } title={ meter.productSerialnumber }/>
                         </React.Fragment>
                       );
                     } }/>
@@ -127,6 +141,7 @@ export class System extends React.Component<Props> {
                         <RegisterDataForm {...{ register, meter, devMode, groupId }}/>
                       );
                     } }/>
+                    <Route path={ meterUrl } render={ () => <MeterDataForm {...{ meter, realValidationRules, virtualValidationRules, initialValues: meter }}/>}/>
                   </Switch>
                   {/* End of Main UI */}
                 </React.Fragment>
@@ -153,7 +168,7 @@ function mapStateToProps(state) {
   const registers = state.meters.groupMeters._status === 200 ?
     compact(flatten(state.meters.groupMeters.array.map((m) => {
       if (!m.registers) return [];
-      return m.registers.array.map(r => ({ ...r, meterId: m.id }));
+      return m.registers.array.map(r => ({ ...r, meterId: m.id, meterProductSerialnumber: m.productSerialnumber }));
     }))) :
     [];
 
@@ -163,6 +178,8 @@ function mapStateToProps(state) {
     loading: state.meters.loadingGroupMeters || !state.groups.group.id,
     meters: state.meters.groupMeters,
     registers,
+    realValidationRules: state.meters.realValidationRules,
+    virtualValidationRules: state.meters.virtualValidationRules,
   };
 }
 
