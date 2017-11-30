@@ -129,3 +129,66 @@ export function getAllUrlParams() {
     return {};
   }
 }
+
+function formatNumber(value) {
+  const decimalPoint = ',';
+  let remainder = 0;
+  let leadingNumber = 0;
+  let formattedNumber = '';
+
+  if (value >= 1000000000000000) {
+    remainder = Number(((value % 1000000000000000) / 1000000000000).toFixed(0));
+    leadingNumber = Math.floor(value / 1000000000000000);
+  } else if (value >= 1000000000000) {
+    remainder = Number(((value % 1000000000000) / 1000000000).toFixed(0));
+    leadingNumber = Math.floor(value / 1000000000000);
+  } else if (value >= 1000000000) {
+    remainder = Number(((value % 1000000000) / 1000000).toFixed(0));
+    leadingNumber = Math.floor(value / 1000000000);
+  } else if (value >= 1000000) {
+    remainder = Number(((value % 1000000) / 1000).toFixed(0));
+    leadingNumber = Math.floor(value / 1000000);
+  } else if (value >= 1000) {
+    remainder = Number((value % 1000).toFixed(0));
+    leadingNumber = Math.floor(value / 1000);
+  } else {
+    remainder = 0;
+    leadingNumber = value.toFixed(0);
+  }
+  if (remainder !== 0) {
+    if (remainder < 1) {
+      formattedNumber = leadingNumber.toString();
+    } else if (remainder < 10) {
+      formattedNumber = `${leadingNumber}${decimalPoint}00`;
+    } else if (remainder < 100) {
+      formattedNumber = `${leadingNumber}${decimalPoint}0${((remainder / 10).toFixed(0))}`;
+    } else if (remainder < 1000) {
+      formattedNumber = `${leadingNumber}${decimalPoint}${((remainder / 10).toFixed(0))}`;
+    }
+  } else {
+    formattedNumber = leadingNumber.toString();
+  }
+
+  return formattedNumber;
+}
+
+export function formatLabel(value, type) {
+  if (typeof value !== 'number') return value;
+  let result = '';
+
+  const number = formatNumber(value);
+  if (value >= 1000000000000000) {
+    result = `${number} PW`;
+  } else if (value >= 1000000000000) {
+    result = `${number} TW`;
+  } else if (value >= 1000000000) {
+    result = `${number} GW`;
+  } else if (value >= 1000000) {
+    result = `${number} MW`;
+  } else if (value >= 1000) {
+    result = `${number} kW`;
+  } else {
+    result = `${number} W`;
+  }
+  return type === 'h' ? `${result}h` : result;
+}
