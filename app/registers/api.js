@@ -15,7 +15,7 @@ export default {
     })
       .then(parseResponse)
       .then(camelizeResponseKeys)
-      .then(res => ({ ...res, value: formatLabel(res.value, 'h') }));
+      .then(res => ({ ...res, value: formatLabel(res.value) }));
   },
   updateRegister({ token, apiUrl, apiPath, meterId, registerId, params, groupId }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/meters/${meterId}/registers/${registerId}`, {
