@@ -24,7 +24,6 @@ class RegisterPower extends React.Component<Props> {
 
     return (
       <div style={{ marginBottom: '2rem' }}>
-        <p className="h5 grey-underline header"><FormattedMessage id={ `${prefix}.headerRegisterPower` }/></p>
         <span style={{ fontSize: '2rem' }}>{ value.split(' ')[0] }</span> { value.split(' ')[1] }
       </div>
     );

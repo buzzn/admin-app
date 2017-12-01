@@ -76,6 +76,7 @@ body {
     }
     .sub-nav {
       border-bottom: #e0e0e0 solid 1px;
+      margin-bottom: 2rem;
       .nav-link {
         text-transform: uppercase;
         color: #9E9E9E;
@@ -130,7 +131,7 @@ body {
           .rt-tr-group {
             border-bottom: 1px solid #e0e0e0;
             &:hover, &:focus {
-              border-bottom: 1px solid #000;
+              background-color: #F5F5F5;
             }
           }
           .rt-td {
