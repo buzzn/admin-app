@@ -43,7 +43,6 @@ const ReadingsList = ({ readings }: Props) => {
 
   return (
     <div className="p-0" style={{ marginBottom: '2rem' }} key={ 2 }>
-      <h5>Readings</h5>
       <ReactTable {...{ data, columns }} />
     </div>
   );

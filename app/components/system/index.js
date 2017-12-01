@@ -12,6 +12,8 @@ import Breadcrumbs from 'components/breadcrumbs';
 import LinkBack from 'components/link_back';
 import RegistersList from './registers_list';
 import RegisterDataForm from './register_data';
+import ReadingsList from './readings_list';
+import RegisterPowerContainer from './register_power';
 import MeterDataForm from './meter_data';
 
 type Props = {
@@ -129,16 +131,45 @@ export class System extends React.Component<Props> {
               return (
                 <React.Fragment>
 
-                  {/* Sub nav */}
-                  {/* End of Sub nav */}
-
                   {/* Main UI */}
                   <Switch>
-                    <Route path={ `${meterUrl}/registers/:registerId` } render={ ({ match: { params: { registerId } } }) => {
+                    <Route path={ `${meterUrl}/registers/:registerId` } render={ ({ match: { url: registerUrl, params: { registerId } } }) => {
                       const register = find(meter.registers.array, r => r.id === registerId);
                       if (!register) return <Redirect to={ url }/>;
                       return (
-                        <RegisterDataForm {...{ register, meter, devMode, groupId }}/>
+                        <React.Fragment>
+
+                          <RegisterPowerContainer {...{ groupId, registerId: register.id }}/>
+
+                          {/* Sub nav */}
+                          <Nav className="sub-nav">
+                            <NavLink to={ `${registerUrl}/readings` } exact className="nav-link">Readings</NavLink>
+                            <NavLink to={ `${registerUrl}/contracts` } exact className="nav-link">Contracts</NavLink>
+                            <NavLink to={ `${registerUrl}/devices` } exact className="nav-link">Devices</NavLink>
+                            <NavLink to={ registerUrl } exact className="nav-link">Details</NavLink>
+                          </Nav>
+                          {/* End of Sub nav */}
+
+                          <Switch>
+                            <Route path={ `${registerUrl}/readings` }>
+                            {
+                              register.readings && !!register.readings.array.length &&
+                              <div className={ devMode ? '' : 'under-construction' }>
+                                <ReadingsList readings={ register.readings.array }/>
+                              </div>
+                            }
+                            </Route>
+                            <Route path={ `${registerUrl}/contracts` }>
+                              <div className={ devMode ? '' : 'under-construction' } style={{ height: '8rem' }}></div>
+                            </Route>
+                            <Route path={ `${registerUrl}/devices` }>
+                              <div className={ devMode ? '' : 'under-construction' } style={{ height: '8rem' }}></div>
+                            </Route>
+                            <Route path={ registerUrl } exact>
+                              <RegisterDataForm {...{ register, meter }}/>
+                            </Route>
+                          </Switch>
+                        </React.Fragment>
                       );
                     } }/>
                     <Route path={ meterUrl } render={ () => <MeterDataForm {...{ meter, realValidationRules, virtualValidationRules, initialValues: meter }}/>}/>
