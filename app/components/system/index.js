@@ -33,8 +33,8 @@ type Props = {
 
 export class System extends React.Component<Props> {
   componentWillMount() {
-    const { loadGroupMeters, loadGroup, group, match: { params: { groupId } } } = this.props;
-    if (group.id !== groupId) loadGroup(groupId);
+    const { loadGroupMeters, loadGroup, match: { params: { groupId } } } = this.props;
+    loadGroup(groupId);
     loadGroupMeters(groupId);
   }
 
