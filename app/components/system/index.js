@@ -139,7 +139,7 @@ export class System extends React.Component<Props> {
                       return (
                         <React.Fragment>
 
-                          <RegisterPowerContainer {...{ groupId, registerId: register.id }}/>
+                          <RegisterPowerContainer {...{ groupId, meterId, registerId: register.id }}/>
 
                           {/* Sub nav */}
                           <Nav className="sub-nav">

@@ -7,14 +7,15 @@ import Registers from 'registers';
 type Props = {
   registerId: string,
   groupId: string,
+  meterId: string,
   loadRegisterPower: Function,
   registerPower: Object,
 };
 
 class RegisterPower extends React.Component<Props> {
   componentWillMount() {
-    const { registerId, groupId, loadRegisterPower } = this.props;
-    loadRegisterPower({ registerId, groupId });
+    const { registerId, groupId, loadRegisterPower, meterId } = this.props;
+    loadRegisterPower({ registerId, groupId, meterId });
   }
 
   render() {

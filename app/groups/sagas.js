@@ -4,7 +4,6 @@ import { SubmissionError } from 'redux-form';
 import { logException } from '_util';
 import { actions, constants } from './actions';
 import api from './api';
-import Registers from '../registers';
 import type GroupsState from './reducers';
 
 type Api = {
@@ -20,7 +19,6 @@ export function* getGroup({ apiUrl, apiPath, token }: Api, { groupId }: { groupI
   try {
     const group = yield call(api.fetchGroup, { apiUrl, apiPath, token, groupId });
     yield put(actions.setGroup(group));
-    yield put(Registers.actions.loadRegisters({ groupId }));
   } catch (error) {
     logException(error);
   }

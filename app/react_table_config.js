@@ -73,7 +73,9 @@ export const tableParts = {
     energyTypesCell: ({ value }: { value: { fire: void | boolean, solar: void | boolean }}): React.Node => (
       <span style={{ fontSize: '18px' }}>
         { value.fire && <i className="fa fa-fire" style={{ marginRight: '4px' }} /> }
-        { value.solar && <i className="fa fa-sun-o" /> }
+        { value.solar && <i className="fa fa-sun-o" style={{ marginRight: '4px' }} /> }
+        { value.water && <i className="fa fa-tint" style={{ marginRight: '4px' }} /> }
+        { value.wind && <i className="fa fa-modx" /> }
       </span>
     ),
     incompleteCell: ({ value }: { value: Object }): React.Node => {
