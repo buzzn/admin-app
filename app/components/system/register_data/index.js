@@ -26,7 +26,7 @@ class RegisterData extends React.Component<Props> {
         </Row>
         <Row className="fieldgroup">
           <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.label` }/></Col>
-          <Col xs="8" className="grey-underline fieldvalue">{ register.label }</Col>
+          <Col xs="8" className="grey-underline fieldvalue"><FormattedMessage id={ `${prefix}.${register.label}` }/></Col>
         </Row>
         <Row className="fieldgroup">
           <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.direction` }/></Col>

@@ -23,6 +23,7 @@ import Auth from '@buzzn/module_auth';
 
 import './style.scss';
 import LogoImg from '../../images/logo_black.png';
+import DevLogoImg from '../../images/dev_logo_black.png';
 import DefaultPerson from '../../images/default_person.jpg';
 
 type Props = {
@@ -74,7 +75,7 @@ export class TopNavBar extends React.Component<Props, State> {
       <Navbar fixed="top" expand light className="new-top-nav-bar">
         <Container style={{ maxWidth: '1440px' }}>
           <Link className="navbar-brand" to="/">
-            <img src={ LogoImg } />
+            <img src={ devMode ? DevLogoImg : LogoImg } />
           </Link>
           <NavbarToggler onClick={ this.toggle.bind(this) } />
           <Collapse isOpen={ isOpen } navbar>

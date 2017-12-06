@@ -16,6 +16,8 @@ export const initialState = {
 export type GroupStats = {
   solar: boolean,
   fire: boolean,
+  water: boolean,
+  wind: boolean,
   production: string,
   consumption: string,
   autarchy: void | string,

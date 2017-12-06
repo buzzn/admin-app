@@ -5,13 +5,13 @@ import { actions, constants } from './actions';
 import api from './api';
 
 export const selectGroup = state => ({ groupId: state.registers.groupId });
-export const selectRegister = state => ({ registerId: state.registers.registerId });
+export const selectRegister = state => ({ registerId: state.registers.registerId, meterId: state.registers.meterId });
 
-export function* getRegister({ apiUrl, apiPath, token }, { registerId, groupId }) {
+export function* getRegister({ apiUrl, apiPath, token }, { registerId, groupId, meterId }) {
   yield put(actions.loadingRegister());
   try {
-    const register = yield call(api.fetchRegister, { apiUrl, apiPath, token, registerId, groupId });
-    const readings = yield call(api.fetchRegisterReadings, { apiUrl, apiPath, token, registerId, groupId });
+    const register = yield call(api.fetchRegister, { apiUrl, apiPath, token, registerId, groupId, meterId });
+    const readings = yield call(api.fetchRegisterReadings, { apiUrl, apiPath, token, registerId, groupId, meterId });
     yield put(actions.setRegister({ register, readings }));
   } catch (error) {
     logException(error);
@@ -19,9 +19,9 @@ export function* getRegister({ apiUrl, apiPath, token }, { registerId, groupId }
   yield put(actions.loadedRegister());
 }
 
-export function* getRegisterPower({ apiUrl, apiPath, token }, { registerId, groupId }) {
+export function* getRegisterPower({ apiUrl, apiPath, token }, { registerId, groupId, meterId }) {
   try {
-    const power = yield call(api.fetchRegisterPower, { apiUrl, apiPath, token, registerId, groupId });
+    const power = yield call(api.fetchRegisterPower, { apiUrl, apiPath, token, registerId, groupId, meterId });
     yield put(actions.setRegisterPower({ power }));
   } catch (error) {
     logException(error);
@@ -42,32 +42,16 @@ export function* updateRegister({ apiUrl, apiPath, token }, { meterId, registerI
   }
 }
 
-// TODO: if there will be another load case for registers, then it'll be better to separate actions/reducers
-// current implementation is incompatible with cache
-export function* getRegisters({ apiUrl, apiPath, token }, { groupId }) {
-  yield put(actions.loadingRegisters());
-  try {
-    let registers = [];
-    registers = yield call(api.fetchGroupRegisters, { apiUrl, apiPath, token, groupId });
-    yield put(actions.setRegisters(registers));
-  } catch (error) {
-    logException(error);
-  }
-  yield put(actions.loadedRegisters());
-}
-
 export function* registersSagas({ apiUrl, apiPath, token }) {
-  yield takeLatest(constants.LOAD_REGISTERS, getRegisters, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_REGISTER, getRegister, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_REGISTER_POWER, getRegisterPower, { apiUrl, apiPath, token });
   yield takeLatest(constants.UPDATE_REGISTER, updateRegister, { apiUrl, apiPath, token });
   const { groupId } = yield select(selectGroup);
-  const { registerId } = yield select(selectRegister);
+  const { registerId, meterId } = yield select(selectRegister);
   if (groupId) {
-    yield call(getRegisters, { apiUrl, apiPath, token }, { groupId });
-    if (registerId) {
-      yield call(getRegister, { apiUrl, apiPath, token }, { registerId, groupId });
-      yield call(getRegisterPower, { apiUrl, apiPath, token }, { registerId, groupId });
+    if (registerId && meterId) {
+      yield call(getRegister, { apiUrl, apiPath, token }, { registerId, groupId, meterId });
+      yield call(getRegisterPower, { apiUrl, apiPath, token }, { registerId, groupId, meterId });
     }
   }
 }

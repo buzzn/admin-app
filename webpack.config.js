@@ -8,7 +8,7 @@ module.exports = {
     historyApiFallback: true,
   },
   entry: [
-    'babel-polyfill',
+    '@babel/polyfill',
     'bootstrap-loader',
     'react-hot-loader/patch',
     'webpack/hot/only-dev-server',
@@ -27,8 +27,26 @@ module.exports = {
         exclude: /(node_modules|bower_components)/,
         loader: 'babel-loader',
         query: {
-          presets: [['es2015', { modules: false }], 'stage-0', 'react'],
-          plugins: ['react-hot-loader/babel'],
+          presets: [
+            ['@babel/env', {
+              targets: {
+                browsers: ['last 2 versions', 'safari >= 7'],
+                modules: false,
+                debug: true,
+              },
+            }],
+            '@babel/react',
+          ],
+          plugins: [
+            'react-hot-loader/babel',
+            '@babel/plugin-proposal-object-rest-spread',
+            '@babel/plugin-proposal-class-properties',
+            '@babel/plugin-syntax-class-properties',
+            '@babel/plugin-syntax-flow',
+            '@babel/plugin-syntax-object-rest-spread',
+            '@babel/plugin-transform-flow-comments',
+            '@babel/plugin-transform-flow-strip-types',
+          ],
         },
       },
       {
@@ -63,7 +81,7 @@ module.exports = {
     ],
   },
   resolve: {
-    modules: [path.resolve(__dirname, 'app'), 'node_modules'],
+    modules: [path.resolve(__dirname, 'node_modules'), path.resolve(__dirname, 'app'), 'node_modules'],
     alias: {
       moment$: 'moment/moment.js',
     },

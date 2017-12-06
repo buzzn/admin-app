@@ -2,15 +2,15 @@ import 'whatwg-fetch';
 import { prepareHeaders, parseResponse, camelizeResponseKeys, snakeReq, formatLabel } from '../_util';
 
 export default {
-  fetchRegister({ token, apiUrl, apiPath, registerId, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/registers/${registerId}`, {
+  fetchRegister({ token, apiUrl, apiPath, registerId, groupId, meterId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/meters/${meterId}/registers/${registerId}`, {
       headers: prepareHeaders(token),
     })
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
-  fetchRegisterPower({ token, apiUrl, apiPath, registerId, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/registers/${registerId}/ticker`, {
+  fetchRegisterPower({ token, apiUrl, apiPath, registerId, groupId, meterId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/meters/${meterId}/registers/${registerId}/ticker`, {
       headers: prepareHeaders(token),
     })
       .then(parseResponse)
@@ -25,15 +25,8 @@ export default {
     })
       .then(parseResponse);
   },
-  fetchRegisterReadings({ token, apiUrl, apiPath, registerId, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/registers/${registerId}/readings`, {
-      headers: prepareHeaders(token),
-    })
-      .then(parseResponse)
-      .then(camelizeResponseKeys);
-  },
-  fetchGroupRegisters({ token, apiUrl, apiPath, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/registers`, {
+  fetchRegisterReadings({ token, apiUrl, apiPath, registerId, groupId, meterId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/meters/${meterId}/registers/${registerId}/readings`, {
       headers: prepareHeaders(token),
     })
       .then(parseResponse)
