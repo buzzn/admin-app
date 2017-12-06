@@ -1,5 +1,5 @@
 import 'whatwg-fetch';
-import { prepareHeaders, parseResponse, camelizeResponseKeys, snakeReq, formatLabel } from '../_util';
+import { prepareHeaders, parseResponse, camelizeResponseKeys, snakeReq } from '../_util';
 
 export default {
   fetchRegister({ token, apiUrl, apiPath, registerId, groupId, meterId }) {
@@ -14,8 +14,7 @@ export default {
       headers: prepareHeaders(token),
     })
       .then(parseResponse)
-      .then(camelizeResponseKeys)
-      .then(res => ({ ...res, value: formatLabel(res.value) }));
+      .then(camelizeResponseKeys);
   },
   updateRegister({ token, apiUrl, apiPath, meterId, registerId, params, groupId }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/meters/${meterId}/registers/${registerId}`, {

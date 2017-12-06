@@ -3,6 +3,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import Registers from 'registers';
+import { formatLabel } from '_util';
 
 type Props = {
   registerId: string,
@@ -21,7 +22,15 @@ class RegisterPower extends React.Component<Props> {
   render() {
     const { registerPower } = this.props;
     const prefix = 'admin.registers';
-    const value = registerPower.value || '';
+
+    let value = '';
+    if (registerPower.status === 404) {
+      value = '--.--';
+    } else if (registerPower.value === -1) {
+      value = '!!.!!';
+    } else {
+      value = formatLabel(registerPower.value || 0);
+    }
 
     return (
       <div style={{ marginBottom: '2rem' }}>
