@@ -19,7 +19,7 @@ import { logException } from '_util';
 function* rootSaga() {
   yield all([
     call(Auth.sagas),
-    call(Bubbles.sagas, logException),
+    call(Bubbles.sagas, logException, true),
     call(Charts.sagas),
     call(Groups.sagas),
     call(Meters.sagas),
