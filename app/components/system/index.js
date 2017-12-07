@@ -153,7 +153,7 @@ export class System extends React.Component<Props> {
                           <Switch>
                             <Route path={ `${registerUrl}/readings` }>
                             {
-                              register.readings && !!register.readings.array.length &&
+                              register.readings &&
                               <div className={ devMode ? '' : 'under-construction' }>
                                 <ReadingsList readings={ register.readings.array }/>
                               </div>
