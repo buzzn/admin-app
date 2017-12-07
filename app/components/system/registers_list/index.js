@@ -13,15 +13,18 @@ type Props = {
 };
 
 const RegistersList = ({ registers, url, history, intl }: Props) => {
+  const prefix = 'admin.registers';
+
   const data = registers.map(r => ({
     ...r,
+    label: intl.formatMessage({ id: `${prefix}.${r.label}` }),
     linkMeter: `${url}/${r.meterId}`,
     linkRegister: `${url}/${r.meterId}/registers/${r.id}`,
   }));
 
   const columns = [
     {
-      Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.registers.tableName' }) }/>,
+      Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: `${prefix}.tableName` }) }/>,
       accessor: 'name',
       style: {
         cursor: 'pointer',
@@ -37,11 +40,11 @@ const RegistersList = ({ registers, url, history, intl }: Props) => {
       },
     },
     {
-      Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.registers.tableDirection' }) }/>,
+      Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: `${prefix}.tableDirection` }) }/>,
       accessor: 'direction',
     },
     {
-      Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: 'admin.registers.tableLabel' }) }/>,
+      Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: `${prefix}.tableLabel` }) }/>,
       accessor: 'label',
     },
   ];
