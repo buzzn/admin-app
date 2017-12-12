@@ -19,7 +19,7 @@ const RegistersList = ({ registers, url, history, intl }: Props) => {
     ...r,
     label: intl.formatMessage({ id: `${prefix}.${r.label}` }),
     linkMeter: `${url}/${r.meterId}`,
-    linkRegister: `${url}/${r.meterId}/registers/${r.id}`,
+    linkRegister: `${url}/${r.meterId}/registers/${r.id}/readings`,
   }));
 
   const columns = [

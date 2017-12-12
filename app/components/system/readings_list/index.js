@@ -1,6 +1,7 @@
 import * as React from 'react';
 import ReactTable from 'react-table';
 import moment from 'moment';
+import orderBy from 'lodash/orderBy';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { Row, Col } from 'reactstrap';
 import { tableParts as TableParts } from 'react_table_config';
@@ -19,7 +20,7 @@ class ReadingsList extends React.Component<Props, State> {
     const { readings, intl } = this.props;
     const prefix = 'admin.readings';
 
-    const data = readings.map(r => ({
+    const data = orderBy(readings, ['date', 'reason'], ['desc', 'asc']).map(r => ({
       ...r,
       date: moment(r.date).format('DD.MM.YYYY'),
       value: formatLabel(r.value, 'h'),
@@ -50,8 +51,8 @@ class ReadingsList extends React.Component<Props, State> {
           <div>
             {
               isExpanded
-              ? <i className="fa fa-chevron-down"/>
-              : <i className="fa fa-chevron-up"/>
+              ? <i className="fa fa-chevron-up"/>
+              : <i className="fa fa-chevron-down"/>
             }
           </div>
         ),
@@ -76,7 +77,7 @@ class ReadingsList extends React.Component<Props, State> {
               <Col sm="4"><b><FormattedMessage id={ `${prefix}.status` }/>:</b> <FormattedMessage id={ `${prefix}.${row.original.status}` }/></Col>
               <Col sm="4"><b><FormattedMessage id={ `${prefix}.quality` }/>:</b> <FormattedMessage id={ `${prefix}.${row.original.quality}` }/></Col>
               <Col sm="4"><b><FormattedMessage id={ `${prefix}.readBy` }/>:</b> <FormattedMessage id={ `${prefix}.${row.original.readBy}` }/></Col>
-              <Col sm="12" style={{ marginTop: '10px' }}><b><FormattedMessage id={ `${prefix}.comment` }/>:</b> { row.original.comment }</Col>
+              { row.original.comment && <Col sm="12" style={{ marginTop: '10px' }}><b><FormattedMessage id={ `${prefix}.comment` }/>:</b> { row.original.comment }</Col> }
             </Row>
           ),
           expanded: this.state.expanded,
