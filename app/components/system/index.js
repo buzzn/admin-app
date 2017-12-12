@@ -152,12 +152,7 @@ export class System extends React.Component<Props> {
 
                           <Switch>
                             <Route path={ `${registerUrl}/readings` }>
-                            {
-                              register.readings &&
-                              <div className={ devMode ? '' : 'under-construction' }>
-                                <ReadingsList readings={ register.readings.array }/>
-                              </div>
-                            }
+                            { register.readings && <ReadingsList readings={ register.readings.array }/> }
                             </Route>
                             <Route path={ `${registerUrl}/contracts` }>
                               <div className={ devMode ? '' : 'under-construction' } style={{ height: '8rem' }}></div>
