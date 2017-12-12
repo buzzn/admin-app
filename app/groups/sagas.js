@@ -56,8 +56,7 @@ export function* groupsSagas({ apiUrl, apiPath, token }: Api): Generator<*, *, *
   yield takeLatest(constants.LOAD_GROUPS, getGroups, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUP, getGroup, { apiUrl, apiPath, token });
   yield takeLatest(constants.UPDATE_GROUP, updateGroup, { apiUrl, apiPath, token });
-  // Put it back when server will be more stable
-  // yield call(getGroups, { apiUrl, apiPath, token });
+  yield call(getGroups, { apiUrl, apiPath, token });
   const groupId = yield select(selectGroupId);
   if (groupId) yield call(getGroup, { apiUrl, apiPath, token }, { groupId });
 }
