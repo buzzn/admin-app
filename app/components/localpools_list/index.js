@@ -10,7 +10,6 @@ import chunk from 'lodash/chunk';
 import sample from 'lodash/sample';
 import { CardDeck } from 'reactstrap';
 import Groups from 'groups';
-import type { GroupsStats } from 'groups/reducers';
 import { actions } from 'actions';
 import { tableParts as TableParts } from 'react_table_config';
 import withHover from 'components/with_hover';
@@ -29,7 +28,6 @@ type Props = {
   setUI: Function,
   groupsListTiles: void | boolean,
   groups: Array<Object>,
-  groupsStats: GroupsStats,
   intl: intlShape,
   history: Object,
   match: { url: string },
@@ -59,13 +57,12 @@ class LocalpoolsList extends React.Component<Props, State> {
   }
 
   render() {
-    const { groups, groupsStats, intl, history, match: { url } } = this.props;
+    const { groups, intl, history, match: { url } } = this.props;
     const { groupsListTiles } = this.state;
 
     const data = groups.map(g => ({
       ...g,
       nameWithImage: { value: g.name, image: g.image, type: 'group' },
-      energyTypes: groupsStats[g.id] || {},
       incomplete: g.incompleteness && Object.keys(g.incompleteness).length,
     }));
 
@@ -80,7 +77,7 @@ class LocalpoolsList extends React.Component<Props, State> {
       },
       {
         Header: () => <FormattedMessage id="admin.groups.tableEnergyType"/>,
-        accessor: 'energyTypes',
+        accessor: 'powerSources',
         Cell: TableParts.components.energyTypesCell,
         sortable: false,
         filterable: false,
@@ -119,7 +116,6 @@ class LocalpoolsList extends React.Component<Props, State> {
                 groupPair.map(group => <HoverCard
                   key={ group.id }
                   group={ group }
-                  groupStats={ groupsStats[group.id] }
                   url={ url }/>)
               }
             </CardDeck>
@@ -150,7 +146,6 @@ function mapStateToProps(state) {
 
   return {
     groups: sortBy(groups, 'name'),
-    groupsStats: state.groups.groupsStats,
     groupsListTiles: state.app.ui.groupsListTiles,
   };
 }

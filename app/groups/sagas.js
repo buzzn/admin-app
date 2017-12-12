@@ -44,9 +44,8 @@ export function* updateGroup({ apiUrl, apiPath, token }: Api,
 export function* getGroups({ apiUrl, apiPath, token }: Api): Generator<*, *, *> {
   yield put(actions.loadingGroups());
   try {
-    const { groups, groupsStats } = yield call(api.fetchGroups, { apiUrl, apiPath, token });
+    const groups = yield call(api.fetchGroups, { apiUrl, apiPath, token });
     yield put(actions.setGroups(groups));
-    yield put(actions.setGroupsStats(groupsStats));
   } catch (error) {
     logException(error);
   }

@@ -70,12 +70,12 @@ export const tableParts = {
         </DropdownMenu>
       </UncontrolledDropdown>
     ),
-    energyTypesCell: ({ value }: { value: { fire: void | boolean, solar: void | boolean, water: void | boolean, wind: void | boolean }}): React.Node => (
+    energyTypesCell: ({ value }: { value: Array<string> }): React.Node => (
       <span style={{ fontSize: '18px' }}>
-        { value.fire && <i className="fa fa-fire" style={{ marginRight: '4px' }} /> }
-        { value.solar && <i className="fa fa-sun-o" style={{ marginRight: '4px' }} /> }
-        { value.water && <i className="fa fa-tint" style={{ marginRight: '4px' }} /> }
-        { value.wind && <i className="fa fa-modx" /> }
+        { value.includes('chp') && <i className="fa fa-fire" style={{ marginRight: '4px' }} /> }
+        { value.includes('pv') && <i className="fa fa-sun-o" style={{ marginRight: '4px' }} /> }
+        { value.includes('water') && <i className="fa fa-tint" style={{ marginRight: '4px' }} /> }
+        { value.includes('wind') && <i className="fa fa-modx" /> }
       </span>
     ),
     incompleteCell: ({ value }: { value: Object }): React.Node => {
