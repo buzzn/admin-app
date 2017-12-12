@@ -1,26 +1,12 @@
 // @flow
 import 'whatwg-fetch';
-import some from 'lodash/some';
-import get from 'lodash/get';
 import { prepareHeaders, parseResponse, camelizeResponseKeys, snakeReq } from '../_util';
-import type { GroupStats } from './reducers';
 
 type Api = {
   token: string,
   apiUrl: string,
   apiPath: string,
 };
-
-export function prepareTypes(groupMeters: Array<Object>): GroupStats {
-  const groupReg = groupMeters.reduce((sum, meter) => get(meter.registers, 'array', []).concat(sum), []);
-  return {
-    solar: some(groupReg, r => r.label.toLowerCase() === 'production_pv'),
-    fire: some(groupReg, r => r.label.toLowerCase() === 'production_chp'),
-    water: some(groupReg, r => r.label.toLowerCase() === 'production_water'),
-    wind: some(groupReg, r => r.label.toLowerCase() === 'production_wind'),
-    production: '--', consumption: '--', autarchy: null,
-  };
-}
 
 export default {
   fetchGroup({ token, apiUrl, apiPath, groupId }: Api & { groupId: string }): Promise<Object> {
@@ -39,17 +25,10 @@ export default {
       .then(parseResponse);
   },
   fetchGroups({ token, apiUrl, apiPath }: Api): Promise<Object> {
-    return fetch(`${apiUrl}${apiPath}/localpools?include=meters:[registers]`, {
+    return fetch(`${apiUrl}${apiPath}/localpools`, {
       headers: prepareHeaders(token),
     })
       .then(parseResponse)
-      .then(camelizeResponseKeys)
-      .then(groups => {
-        const groupsStats = groups.array.reduce((sum, group) => ({ ...sum, [group.id]: prepareTypes(group.meters.array) }), {});
-        return {
-          groups,
-          groupsStats,
-        };
-      });
+      .then(camelizeResponseKeys);
   },
 };
