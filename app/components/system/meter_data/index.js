@@ -1,259 +1,229 @@
 // @flow
 import * as React from 'react';
+import ReactTable from 'react-table';
 import { FormattedMessage } from 'react-intl';
-import { reduxForm } from 'redux-form';
-import type { FormProps } from 'redux-form';
-import range from 'lodash/range';
-import EditableInput from 'components/editable_input';
-import EditableSelect from 'components/editable_select';
-import TwoColField from 'components/two_col_field';
-import EditableDate from 'components/editable_date';
-import { dateNormalizer } from 'validation_normalizers';
+import moment from 'moment';
+import get from 'lodash/get';
+import orderBy from 'lodash/orderBy';
+import { Row, Col } from 'reactstrap';
+import { tableParts as TableParts } from 'react_table_config';
+
+import './style.scss';
 
 type Props = {
-  updateMeter?: Function,
-  realValidationRules: Object,
-  virtualValidationRules: Object,
   meter: Object,
-} & FormProps;
+};
 
 type State = {
-  editMode: boolean,
+  expanded: {
+    [number]: boolean,
+  },
 };
 
 class MeterData extends React.Component<Props, State> {
   state = {
-    editMode: false,
-  };
+    expanded: {},
+  }
 
-  handleEditSwitch(event) {
-    event.preventDefault();
-
-    const { updateMeter, reset, realValidationRules, virtualValidationRules, meter } = this.props;
-    if (!updateMeter || !meter.updatable ||
-      (meter.type === 'meter_real' && Object.keys(realValidationRules).length === 0) ||
-      (meter.type === 'meter_virtual' && Object.keys(virtualValidationRules).length === 0)) {
-      this.setState({ editMode: false });
-    }
-    this.setState({ editMode: !this.state.editMode });
-    reset();
-    return false;
+  handleRowClick(rowNum: number) {
+    this.setState(state => ({ expanded: { ...state.expanded, [rowNum]: !state.expanded[rowNum] } }));
   }
 
   render() {
     const {
       meter,
-      updateMeter,
-      handleSubmit,
-      pristine,
-      submitting,
-      realValidationRules,
-      virtualValidationRules,
     } = this.props;
 
-    const submit = (values) => {
-      if (!updateMeter) return false;
-      return new Promise((resolve, reject) => {
-        updateMeter({
-          meterId: meter.id,
-          params: values,
-          resolve,
-          reject,
-        });
-      })
-        .then(() => this.setState({ editMode: false }));
-    };
+    const data = get(meter.registers, 'array', []).map(r => ({
+      ...r,
+      lastReading: get(r.readings, 'array[0]', {}),
+    }));
+
+    const columns = [
+      {
+        Header: () => <FormattedMessage id="admin.registers.tableName"/>,
+        accessor: 'name',
+        filterable: false,
+        sortable: false,
+      },
+      {
+        Header: () => <FormattedMessage id="admin.readings.tableDate"/>,
+        accessor: 'lastReading.date',
+        filterable: false,
+        sortable: false,
+        Cell: ({ value }) => <span>{ value ? moment(value).format('DD.MM.YYYY') : '' }</span>,
+      },
+      {
+        Header: () => <FormattedMessage id="admin.readings.tableValue"/>,
+        accessor: 'lastReading.value',
+        filterable: false,
+        sortable: false,
+        Cell: (row) => <span>{ `${row.value} ${row.original.lastReading.unit}` }</span>,
+      },
+      {
+        expander: true,
+        Expander: ({ isExpanded }) => (
+          <div>
+            {
+              isExpanded
+              ? <i className="fa fa-chevron-up"/>
+              : <i className="fa fa-chevron-down"/>
+            }
+          </div>
+        ),
+        style: {
+          color: '#bdbdbd',
+        },
+      },
+    ];
 
     const prefix = 'admin.meters';
 
     return (
-      <form onSubmit={ handleSubmit(submit) }>
-        <div className="row">
-          {
-            meter.type === 'meter_real' ?
-              <div className="col-12">
-                <h5><FormattedMessage id={`${prefix}.headerMeterData`}/></h5>
-                <TwoColField
-                  prefix={prefix}
-                  name="section"
-                  editMode={this.state.editMode}
-                  validationRules={realValidationRules}
-                  component={EditableSelect}
-                />
-                <TwoColField
-                  prefix={prefix}
-                  name="ownership"
-                  editMode={this.state.editMode}
-                  validationRules={realValidationRules}
-                  component={EditableSelect}
-                />
-                <TwoColField
-                  prefix={prefix}
-                  name="manufacturerName"
-                  editMode={this.state.editMode}
-                  validationRules={realValidationRules}
-                  component={EditableSelect}
-                />
-                <TwoColField
-                  prefix={prefix}
-                  name="productName"
-                  editMode={this.state.editMode}
-                  validationRules={realValidationRules}
-                  component={EditableInput}
-                />
-                <TwoColField
-                  prefix={prefix}
-                  name="productSerialnumber"
-                  editMode={this.state.editMode}
-                  validationRules={realValidationRules}
-                  component={EditableInput}
-                />
-                <TwoColField
-                  prefix={prefix}
-                  name="buildYear"
-                  editMode={this.state.editMode}
-                  noValTranslations={true}
-                  field={{ enum: range(1990, (new Date()).getFullYear() + 1).map(y => y) }}
-                  validationRules={realValidationRules}
-                  component={EditableSelect}
-                />
-                <TwoColField
-                  prefix={prefix}
-                  name="calibratedUntil"
-                  editMode={this.state.editMode}
-                  validationRules={realValidationRules}
-                  normalize={dateNormalizer('YYYY-MM-DD')}
-                  component={EditableDate}
-                />
-                <TwoColField
-                  prefix={prefix}
-                  name="sentDataDso"
-                  editMode={this.state.editMode}
-                  validationRules={realValidationRules}
-                  normalize={dateNormalizer('YYYY-MM-DD')}
-                  component={EditableDate}
-                />
-                <h5 style={{ marginTop: '16px' }}><FormattedMessage id={`${prefix}.headerClassification`}/></h5>
-                <TwoColField
-                  prefix={prefix}
-                  name="edifactMeteringType"
-                  editMode={this.state.editMode}
-                  validationRules={realValidationRules}
-                  component={EditableSelect}
-                />
-                <TwoColField
-                  prefix={prefix}
-                  name="directionNumber"
-                  editMode={this.state.editMode}
-                  validationRules={realValidationRules}
-                  component={EditableSelect}
-                />
-                <TwoColField
-                  prefix={prefix}
-                  name="edifactTariff"
-                  editMode={this.state.editMode}
-                  validationRules={realValidationRules}
-                  component={EditableSelect}
-                />
-                <TwoColField
-                  prefix={prefix}
-                  name="edifactMeterSize"
-                  editMode={this.state.editMode}
-                  validationRules={realValidationRules}
-                  component={EditableSelect}
-                />
-                <TwoColField
-                  prefix={prefix}
-                  name="edifactMountingMethod"
-                  editMode={this.state.editMode}
-                  validationRules={realValidationRules}
-                  component={EditableSelect}
-                />
-                <TwoColField
-                  prefix={prefix}
-                  name="edifactMeasurementMethod"
-                  editMode={this.state.editMode}
-                  validationRules={realValidationRules}
-                  component={EditableSelect}
-                />
-                <TwoColField
-                  prefix={prefix}
-                  name="edifactVoltageLevel"
-                  editMode={this.state.editMode}
-                  validationRules={realValidationRules}
-                  component={EditableSelect}
-                />
-                <TwoColField
-                  prefix={prefix}
-                  name="edifactCycleInterval"
-                  editMode={this.state.editMode}
-                  validationRules={realValidationRules}
-                  component={EditableSelect}
-                />
-                <TwoColField
-                  prefix={prefix}
-                  name="edifactDataLogging"
-                  editMode={this.state.editMode}
-                  validationRules={realValidationRules}
-                  component={EditableSelect}
-                />
-                <TwoColField
-                  prefix={prefix}
-                  name="converterConstant"
-                  editMode={this.state.editMode}
-                  validationRules={realValidationRules}
-                  component={EditableInput}
-                />
-              </div> :
-              <div className="col-12">
-                <div className="row">
-                  <div className="col-6"><FormattedMessage id={ `${prefix}.type` }/>:</div>
-                  <div className="col-6">
-                    <FormattedMessage id={ `${prefix}.${meter.type}` }/>
-                  </div>
-                </div>
-                <TwoColField
-                  prefix={prefix}
-                  name="productSerialnumber"
-                  editMode={this.state.editMode}
-                  validationRules={virtualValidationRules}
-                  component={EditableInput}
-                />
-                <TwoColField
-                  prefix={prefix}
-                  name="productName"
-                  editMode={this.state.editMode}
-                  validationRules={virtualValidationRules}
-                  component={EditableInput}
-                />
-              </div>
-          }
-        </div>
-        <div className="row">
-          <div className="col-12">
-            {
-              updateMeter && meter.updatable &&
-              ((Object.keys(realValidationRules).length !== 0 && meter.type === 'meter_real') ||
-                (Object.keys(virtualValidationRules).length !== 0 && meter.type === 'meter_virtual')) &&
-              <div className="edit-buttons" style={{ float: 'right' }}>
-                {
-                  this.state.editMode ?
-                    <span>
-                      <button type="submit" className="btn btn-primary" disabled={pristine || submitting}>Submit</button>
-                      <button type="button" className="btn btn-link" disabled={submitting} onClick={ this.handleEditSwitch.bind(this) }>Cancel</button>
-                    </span> :
-                    <button className="btn btn-primary" onClick={ this.handleEditSwitch.bind(this) }>Edit</button>
-                }
-              </div>
-            }
-          </div>
-        </div>
-      </form>
+      <div className="meter-data">
+        <Row className="meter-header">
+          <Col xs="3">
+            <div className="value">
+              <FormattedMessage id={ `${prefix}.${meter.manufacturerName}` }/>
+            </div>
+            <div className="label">
+              <FormattedMessage id={ `${prefix}.manufacturerName` }/>
+            </div>
+          </Col>
+          <Col xs="3">
+            <div className="value">
+              { meter.productName }
+            </div>
+            <div className="label">
+              <FormattedMessage id={ `${prefix}.productName` }/>
+            </div>
+          </Col>
+          <Col xs="2">
+            <div className="value">
+              <FormattedMessage id={ `${prefix}.${meter.type}` }/>
+            </div>
+            <div className="label">
+              <FormattedMessage id={ `${prefix}.type` }/>
+            </div>
+          </Col>
+          <Col xs="2">
+            <div className="value">
+              { meter.converterConstant }
+            </div>
+            <div className="label">
+              <FormattedMessage id={ `${prefix}.converterConstant` }/>
+            </div>
+          </Col>
+          <Col xs="1"></Col>
+        </Row>
+        <Row>
+          <Col xs="12">
+            <h5><FormattedMessage id={`${prefix}.headerRegistersReadings`}/></h5>
+            <ReactTable {...{
+              data: orderBy(data, 'lastReading.date', 'desc'),
+              columns,
+              SubComponent: (row) => (
+                <Row style={{
+                  backgroundColor: '#F5F5F5',
+                  boxShadow: 'inset 0 1px 8px 0 rgba(0,0,0,0.07)',
+                  padding: '20px 10px',
+                  margin: 0,
+                }}>
+                  <Col sm="4"><b><FormattedMessage id={ 'admin.readings.status' }/>:</b> <FormattedMessage id={ `admin.readings.${row.original.lastReading.status}` }/></Col>
+                  <Col sm="4"><b><FormattedMessage id={ 'admin.readings.quality' }/>:</b> <FormattedMessage id={ `admin.readings.${row.original.lastReading.quality}` }/></Col>
+                  <Col sm="4"><b><FormattedMessage id={ 'admin.readings.readBy' }/>:</b> <FormattedMessage id={ `admin.readings.${row.original.lastReading.readBy}` }/></Col>
+                  { row.original.lastReading.comment && <Col sm="12" style={{ marginTop: '10px' }}><b><FormattedMessage id={ 'admin.readings.comment' }/>:</b> { row.original.lastReading.comment }</Col> }
+                </Row>
+              ),
+              expanded: this.state.expanded,
+              getTrProps: (state, rowInfo) => ({
+                onClick: (event, handleOriginal) => {
+                  this.handleRowClick(rowInfo.viewIndex);
+                  handleOriginal && handleOriginal();
+                },
+              }),
+            }}/>
+          </Col>
+        </Row>
+        {
+          meter.type === 'meter_real' ?
+          <React.Fragment>
+            <h5><FormattedMessage id={`${prefix}.headerMeterDetails`}/></h5>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.manufacturerName` }/></Col>
+              <Col xs="8" className="grey-underline fieldvalue"><div>{ meter.manufacturerName } - <FormattedMessage id={ `${prefix}.${meter.manufacturerName}` }/></div></Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.productName` }/></Col>
+              <Col xs="8" className="grey-underline fieldvalue">{ meter.productName }</Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.ownership` }/></Col>
+              <Col xs="8" className="grey-underline fieldvalue">{ meter.ownership }</Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.buildYear` }/></Col>
+              <Col xs="8" className="grey-underline fieldvalue">{ meter.buildYear }</Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.calibratedUntil` }/></Col>
+              <Col xs="8" className="grey-underline fieldvalue">{ meter.calibratedUntil }</Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.converterConstant` }/></Col>
+              <Col xs="8" className="grey-underline fieldvalue">{ meter.converterConstant }</Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.sentDataDso` }/></Col>
+              <Col xs="8" className="grey-underline fieldvalue">{ meter.sentDataDso }</Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.directionNumber` }/></Col>
+              <Col xs="8" className="grey-underline fieldvalue">{ meter.directionNumber }</Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.sequenceNumber` }/></Col>
+              <Col xs="8" className="grey-underline fieldvalue">{ meter.sequenceNumber }</Col>
+            </Row>
+            <h5><FormattedMessage id={`${prefix}.headerEdifactInformation`}/></h5>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.edifactCycleInterval` }/></Col>
+              <Col xs="8" className="grey-underline fieldvalue">{ meter.edifactCycleInterval }</Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.edifactDataLogging` }/></Col>
+              <Col xs="8" className="grey-underline fieldvalue">{ meter.edifactDataLogging }</Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.edifactMeasurementMethod` }/></Col>
+              <Col xs="8" className="grey-underline fieldvalue">{ meter.edifactMeasurementMethod }</Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.edifactMeterSize` }/></Col>
+              <Col xs="8" className="grey-underline fieldvalue">{ meter.edifactMeterSize }</Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.edifactMeteringType` }/></Col>
+              <Col xs="8" className="grey-underline fieldvalue">{ meter.edifactMeteringType }</Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.edifactMountingMethod` }/></Col>
+              <Col xs="8" className="grey-underline fieldvalue">{ meter.edifactMountingMethod }</Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.edifactTariff` }/></Col>
+              <Col xs="8" className="grey-underline fieldvalue">{ meter.edifactTariff }</Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.edifactVoltageLevel` }/></Col>
+              <Col xs="8" className="grey-underline fieldvalue">{ meter.edifactVoltageLevel }</Col>
+            </Row>
+          </React.Fragment> :
+          <React.Fragment></React.Fragment>
+        }
+      </div>
     );
   }
 }
 
-export default reduxForm({
-  form: 'meterUpdateForm',
-  enableReinitialize: true,
-})(MeterData);
+export default MeterData;
