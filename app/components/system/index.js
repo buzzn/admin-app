@@ -89,7 +89,7 @@ export class System extends React.Component<Props> {
                       return (
                         <React.Fragment>
                           <Breadcrumbs breadcrumbs={ breadcrumbs }/>
-                          <LinkBack url={ url } title={ `Meter № ${meter.productSerialnumber}` }/>
+                          <LinkBack url={ url } title={ `Meter ${meter.productSerialnumber}` }/>
                         </React.Fragment>
                       );
                     } }/>
