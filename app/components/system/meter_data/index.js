@@ -194,7 +194,7 @@ class MeterData extends React.Component<Props, State> {
             </Row>
             <Row className="fieldgroup">
               <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.directionNumber` }/></Col>
-              <Col xs="8" className="grey-underline fieldvalue">{ meter.directionNumber }</Col>
+              <Col xs="8" className="grey-underline fieldvalue"><FormattedMessage id={ `${prefix}.${meter.directionNumber}` }/></Col>
             </Row>
             <Row className="fieldgroup">
               <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.productSerialnumber` }/></Col>
