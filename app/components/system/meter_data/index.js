@@ -178,7 +178,7 @@ class MeterData extends React.Component<Props, State> {
             </Row>
             <Row className="fieldgroup">
               <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.calibratedUntil` }/></Col>
-              <Col xs="8" className="grey-underline fieldvalue">{ meter.calibratedUntil }</Col>
+              <Col xs="8" className="grey-underline fieldvalue">{ moment(meter.calibratedUntil).format('DD.MM.YYYY') }</Col>
             </Row>
             <Row className="fieldgroup">
               <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.converterConstant` }/></Col>
