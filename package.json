@@ -79,7 +79,7 @@
     "@babel/polyfill": "^7.0.0-beta.34",
     "@buzzn/i18n": "git+https://github.com/buzzn/i18n.git#master",
     "@buzzn/module_auth": "git+https://github.com/buzzn/module-auth.git#master",
-    "@buzzn/module_bubbles": "git+https://github.com/buzzn/module-bubbles.git#new_api_labels_fix",
+    "@buzzn/module_bubbles": "git+https://github.com/buzzn/module-bubbles.git#master",
     "@buzzn/module_charts": "git+https://github.com/buzzn/module-charts.git#new_api_labels_fix",
     "bootstrap": "4.0.0-beta.2",
     "buzzn-style": "git://github.com/buzzn/buzzn-style.git",
