@@ -201,6 +201,22 @@ class GroupSettings extends React.Component<Props> {
                     <Field className="float-right" name="showContact" component={ FieldToggle } submitForm={ submitForm }/>
                   </Col>
                 </Row>
+                <Row className="fieldgroup">
+                  <Col xs="4" className="fieldname"></Col>
+                  <Col xs="8" className="grey-underline fieldvalue">
+                    <FormattedMessage id={ `${prefix}.showDisplayApp` }/>
+                    <Field className="float-right" name="showDisplayApp" component={ FieldToggle } submitForm={ submitForm }/>
+                  </Col>
+                </Row>
+                {
+                  group.showDisplayApp &&
+                    <Row className="fieldgroup">
+                      <Col xs="4" className="fieldname"/>
+                      <Col xs="8" className="grey-underline fieldvalue">
+                        <a href={ group.displayAppUrl } target="_blank">{ group.slug } <i className="fa fa-external-link"/></a>
+                      </Col>
+                    </Row>
+                }
               </Col>
               <Col xs="6">
                 <p className="h5 grey-underline header text-uppercase"><FormattedMessage id={ `${prefix}.headerPowergiver` }/></p>
@@ -244,7 +260,7 @@ export const GroupSettingsForm = reduxForm({
 
 const mapStateToProps: MapStateToProps<{ groups: GroupsState }, *, *> = (state) => ({
   group: state.groups.group,
-  initialValues: pick(state.groups.group, ['showObject', 'showProduction', 'showEnergy', 'showContact', 'updatedAt']),
+  initialValues: pick(state.groups.group, ['showObject', 'showProduction', 'showEnergy', 'showContact', 'showDisplayApp', 'updatedAt']),
   address: state.groups.group.address || {},
   distributionSystemOperator: state.groups.group.distributionSystemOperator || {},
   transmissionSystemOperator: state.groups.group.transmissionSystemOperator || {},
