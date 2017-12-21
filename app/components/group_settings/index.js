@@ -138,7 +138,7 @@ class GroupSettings extends React.Component<Props> {
             <img src={ DefaultImage }/>
           </div>
           <form
-            onSubmit={ submitForm }
+            onSubmit={ () => setTimeout(submitForm) }
             onBlur={ (event) => { if (event.target.type !== 'checkbox') setTimeout(submitForm); } }
             onChange={ (event) => { if (event.target.type === 'checkbox') setTimeout(submitForm); } }>
             <Row>
@@ -177,35 +177,35 @@ class GroupSettings extends React.Component<Props> {
                   <Col xs="4" className="fieldname"><FormattedMessage id={ `${prefix}.visibility` }/></Col>
                   <Col xs="8" className="grey-underline fieldvalue">
                     <FormattedMessage id={ `${prefix}.showObject` }/>
-                    <Field className="float-right" name="showObject" component={ FieldToggle } formName="groupUpdateForm"/>
+                    <Field className="float-right" name="showObject" component={ FieldToggle } submitForm={ submitForm }/>
                   </Col>
                 </Row>
                 <Row className="fieldgroup">
                   <Col xs="4" className="fieldname"></Col>
                   <Col xs="8" className="grey-underline fieldvalue">
                     <FormattedMessage id={ `${prefix}.showProduction` }/>
-                    <Field className="float-right" name="showProduction" component={ FieldToggle } formName="groupUpdateForm"/>
+                    <Field className="float-right" name="showProduction" component={ FieldToggle } submitForm={ submitForm }/>
                   </Col>
                 </Row>
                 <Row className="fieldgroup">
                   <Col xs="4" className="fieldname"></Col>
                   <Col xs="8" className="grey-underline fieldvalue">
                     <FormattedMessage id={ `${prefix}.showEnergy` }/>
-                    <Field className="float-right" name="showEnergy" component={ FieldToggle } formName="groupUpdateForm"/>
+                    <Field className="float-right" name="showEnergy" component={ FieldToggle } submitForm={ submitForm }/>
                   </Col>
                 </Row>
                 <Row className="fieldgroup">
                   <Col xs="4" className="fieldname"></Col>
                   <Col xs="8" className="grey-underline fieldvalue">
                     <FormattedMessage id={ `${prefix}.showContact` }/>
-                    <Field className="float-right" name="showContact" component={ FieldToggle } formName="groupUpdateForm"/>
+                    <Field className="float-right" name="showContact" component={ FieldToggle } submitForm={ submitForm }/>
                   </Col>
                 </Row>
                 <Row className="fieldgroup">
                   <Col xs="4" className="fieldname"></Col>
                   <Col xs="8" className="grey-underline fieldvalue">
                     <FormattedMessage id={ `${prefix}.showDisplayApp` }/>
-                    <Field className="float-right" name="showDisplayApp" component={ FieldToggle } formName="groupUpdateForm"/>
+                    <Field className="float-right" name="showDisplayApp" component={ FieldToggle } submitForm={ submitForm }/>
                   </Col>
                 </Row>
                 {
