@@ -14,7 +14,7 @@ const FieldToggle = ({ input, submitForm, className, meta: { touched, error } }:
     <span className={ `field-toggle ${(touched && error) && 'has-danger'} ${className}` }>
       <span
         className={ `field-toggle-switch ${input.value ? 'on' : 'off'}` }
-        onClick={ () => { input.onChange(!input.value); setTimeout(submitForm); } } />
+        onClick={ () => { input.onChange(!input.value); setTimeout(submitForm, 100); } } />
       { touched && error && <span className="form-control-feedback">{ error }</span> }
     </span>
   );
