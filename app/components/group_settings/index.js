@@ -213,8 +213,8 @@ class GroupSettings extends React.Component<Props> {
                     <Row className="fieldgroup">
                       <Col xs="4" className="fieldname"/>
                       <Col xs="8" className="grey-underline fieldvalue">
-                        <a href={ group.displayAppUrl } target="_blank" style={{ textDecoration: 'underline' }}>
-                          { group.slug }&nbsp;&nbsp;&nbsp;<i className="fa fa-external-link"/>
+                        <a href={ group.displayAppUrl } target="_blank">
+                          <span style={{ textDecoration: 'underline' }}>{ group.slug }</span>&nbsp;&nbsp;&nbsp;<i className="fa fa-external-link"/>
                         </a>
                       </Col>
                     </Row>
