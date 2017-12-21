@@ -1,23 +1,18 @@
-// @flow
 import React from 'react';
-import type { FormProps } from 'redux-form';
+import { connect } from 'react-redux';
+import { submit } from 'redux-form';
 
 import './style.scss';
 
-type Props = {
-  submitForm: Function,
-  className?: string,
-} & FormProps;
-
-const FieldToggle = ({ input, submitForm, className, meta: { touched, error } }: Props) => {
+const FieldToggle = ({ input, dispatch, formName, className, meta: { touched, error } }) => {
   return (
     <span className={ `field-toggle ${(touched && error) && 'has-danger'} ${className}` }>
       <span
         className={ `field-toggle-switch ${input.value ? 'on' : 'off'}` }
-        onClick={ () => { input.onChange(!input.value); submitForm(); } } />
+        onClick={ () => { input.onChange(!input.value); setTimeout(dispatch(submit(formName))); } } />
       { touched && error && <span className="form-control-feedback">{ error }</span> }
     </span>
   );
 };
 
-export default FieldToggle;
+export default connect()(FieldToggle);
