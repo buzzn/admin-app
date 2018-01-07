@@ -7,16 +7,15 @@
         "debug": true
       }
     }],
-    "@babel/react"
+    "@babel/stage-3",
+    "@babel/react",
+    "@babel/typescript"
   ],
   "plugins": [
     "react-hot-loader/babel",
     "@babel/plugin-proposal-object-rest-spread",
     "@babel/plugin-proposal-class-properties",
     "@babel/plugin-syntax-class-properties",
-    "@babel/plugin-syntax-flow",
-    "@babel/plugin-syntax-object-rest-spread",
-    "@babel/plugin-transform-flow-comments",
-    "@babel/plugin-transform-flow-strip-types"
+    "@babel/plugin-syntax-object-rest-spread"
   ]
 }

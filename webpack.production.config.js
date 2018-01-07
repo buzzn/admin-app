@@ -21,7 +21,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(ts|tsx|js)$/,
         exclude: /(node_modules|bower_components)/,
         loader: 'babel-loader',
         query: {
@@ -33,17 +33,16 @@ module.exports = {
                 debug: true,
               },
             }],
+            '@babel/stage-3',
             '@babel/react',
+            '@babel/typescript',
           ],
           plugins: [
             'react-hot-loader/babel',
             '@babel/plugin-proposal-object-rest-spread',
             '@babel/plugin-proposal-class-properties',
             '@babel/plugin-syntax-class-properties',
-            '@babel/plugin-syntax-flow',
             '@babel/plugin-syntax-object-rest-spread',
-            '@babel/plugin-transform-flow-comments',
-            '@babel/plugin-transform-flow-strip-types',
           ],
         },
       },
@@ -80,6 +79,7 @@ module.exports = {
   },
   resolve: {
     modules: [path.resolve(__dirname, 'node_modules'), path.resolve(__dirname, 'app'), 'node_modules'],
+    extensions: ['.ts', '.tsx', '.js', '.json'],
     alias: {
       moment$: 'moment/moment.js',
     },

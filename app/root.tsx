@@ -1,4 +1,3 @@
-// @flow
 import 'buzzn-style';
 import 'react-table/react-table.css';
 import 'react-widgets/dist/css/react-widgets.css';
