@@ -11,7 +11,8 @@ export function* validationRulesSagas({ apiUrl, apiPath, token }, { loadingList,
     for (const module of loadingList) {
       const rawRules = get(rulesList.paths, module.swaggerPath);
       if (rawRules) {
-        const validationRules = rawRules.filter(rule => rule.in === 'formData')
+        const validationRules = rawRules
+          .filter(rule => rule.in === 'formData')
           .reduce((res, rule) => ({ ...res, [camelCase(rule.name)]: { ...rule } }), {});
         yield put(module.setAction(validationRules));
       }

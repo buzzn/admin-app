@@ -6,8 +6,16 @@ export const constants = {
 };
 
 export const actions = {
-  setApiParams: ({ apiPath, apiUrl }) => ({ type: constants.SET_API_PARAMS, apiPath, apiUrl }),
+  setApiParams: ({ apiPath, apiUrl }) => ({
+    type: constants.SET_API_PARAMS,
+    apiPath,
+    apiUrl,
+  }),
   setToken: token => ({ type: constants.SET_TOKEN, token }),
 
-  setLoadingList: ({ loadingList, pathOverride }) => ({ type: constants.SET_LOADING_LIST, loadingList, pathOverride }),
+  setLoadingList: ({ loadingList, pathOverride }) => ({
+    type: constants.SET_LOADING_LIST,
+    loadingList,
+    pathOverride,
+  }),
 };
