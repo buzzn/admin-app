@@ -9,7 +9,7 @@ import TwoColField from 'components/two_col_field';
 
 const chance = require('chance').Chance();
 
-const DecoratedTwoColField = reduxForm({ form: 'testForm' })(TwoColField)
+const DecoratedTwoColField = reduxForm({ form: 'testForm' })(TwoColField);
 
 const props = {
   prefix: 'admin.persons',
@@ -22,16 +22,12 @@ const props = {
 
 storiesOf('Molecules/TwoColField/single')
   .addDecorator(withKnobs)
-  .addDecorator(backgrounds([
-    { name: 'twitter', value: '#00aced' },
-    { name: 'facebook', value: '#3b5998' },
-  ]))
-  .add('view', () => {
-    return <DecoratedTwoColField {...props} component={ EditableInput }/>;
-  })
-  .add('edit', () => {
-    return <DecoratedTwoColField {...{ ...props, editMode: true }} component={ EditableInput }/>;
-  })
-  .add('error', () => {
-    return <DecoratedTwoColField {...{ ...props, editMode: true, meta: { touched: true, error: 'some error' } }} component={ EditableInput }/>;
-  });
+  .addDecorator(backgrounds([{ name: 'twitter', value: '#00aced' }, { name: 'facebook', value: '#3b5998' }]))
+  .add('view', () => <DecoratedTwoColField {...props} component={EditableInput} />)
+  .add('edit', () => <DecoratedTwoColField {...{ ...props, editMode: true }} component={EditableInput} />)
+  .add('error', () => (
+      <DecoratedTwoColField
+        {...{ ...props, editMode: true, meta: { touched: true, error: 'some error' } }}
+        component={EditableInput}
+      />
+  ));

@@ -1,23 +1,21 @@
-// @flow
 import * as React from 'react';
-import type { FormProps } from 'redux-form';
 import find from 'lodash/find';
 import { injectIntl } from 'react-intl';
-import type { intlShape } from 'react-intl';
 
 import './style.scss';
 
-type Props = {
-  editMode: boolean,
-  prefix: string,
-  intl: intlShape,
-  defaultValue?: { value: string | number, label: string },
-  listOverride?: Array<{ value: string | number, label: string }>,
-  noValTranslations?: boolean,
-  noDefault?: boolean,
-} & FormProps;
-
-const EditableSelect = ({ editMode, input, field, prefix, intl, defaultValue, listOverride, noValTranslations, noDefault, meta: { touched, error } }: Props) => {
+const EditableSelect = ({
+  editMode,
+  input,
+  field,
+  prefix,
+  intl,
+  defaultValue,
+  listOverride,
+  noValTranslations,
+  noDefault,
+  meta: { touched, error },
+}) => {
   let list = [input.value];
   let options = [];
   if (listOverride) {
@@ -35,26 +33,24 @@ const EditableSelect = ({ editMode, input, field, prefix, intl, defaultValue, li
 
   if (editMode) {
     return (
-      <div className={ `editable-select form-group ${(touched && error) && 'has-danger'}` }>
-        <select className={ `custom-select form-control ${(touched && error) && 'form-control-danger'}` } { ...input }>
-          { !noDefault && <option value={ defaultValue.value }>{ defaultValue.label }</option> }
-          {
-            options.map(o => (
-              <option key={ o.value } value={ o.value }>{ o.label }</option>
-            ))
-          }
+      <div className={`editable-select form-group ${touched && error && 'has-danger'}`}>
+        <select className={`custom-select form-control ${touched && error && 'form-control-danger'}`} {...input}>
+          {!noDefault && <option value={defaultValue.value}>{defaultValue.label}</option>}
+          {options.map(o => (
+            <option key={o.value} value={o.value}>
+              {o.label}
+            </option>
+          ))}
         </select>
-        { touched && error && <div className="form-control-feedback">{ error }</div> }
+        {touched && error && <div className="form-control-feedback">{error}</div>}
       </div>
     );
   }
 
   const label = find(options, o => o.value === input.value);
-  return <span>{ (label || {}).label }</span>;
+  return <span>{(label || {}).label}</span>;
 };
 
-EditableSelect.defaultProps = {
-  defaultValue: { value: '', label: '-----' },
-};
+EditableSelect.defaultProps = { defaultValue: { value: '', label: '-----' } };
 
 export default injectIntl(EditableSelect);

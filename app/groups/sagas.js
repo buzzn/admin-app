@@ -1,20 +1,12 @@
-// @flow
 import { put, call, takeLatest, take, fork, cancel, select } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import { logException } from '_util';
 import { actions, constants } from './actions';
 import api from './api';
-import type GroupsState from './reducers';
 
-type Api = {
-  token: string,
-  apiUrl: string,
-  apiPath: string,
-};
+export const selectGroupId = state => state.groups.groupId;
 
-export const selectGroupId = (state: { groups: GroupsState }): string => state.groups.groupId;
-
-export function* getGroup({ apiUrl, apiPath, token }: Api, { groupId }: { groupId: string }): Generator<*, *, *> {
+export function* getGroup({ apiUrl, apiPath, token }, { groupId }) {
   yield put(actions.loadingGroup());
   try {
     const group = yield call(api.fetchGroup, { apiUrl, apiPath, token, groupId });
@@ -25,9 +17,7 @@ export function* getGroup({ apiUrl, apiPath, token }: Api, { groupId }: { groupI
   yield put(actions.loadedGroup());
 }
 
-export function* updateGroup({ apiUrl, apiPath, token }: Api,
-  { params, resolve, reject, groupId }:
-  { params: Object, resolve: Promise.resolve<*>, reject: Promise.reject<*>, groupId: string }): Generator<*, *, *> {
+export function* updateGroup({ apiUrl, apiPath, token }, { params, resolve, reject, groupId }) {
   try {
     const res = yield call(api.updateGroup, { apiUrl, apiPath, token, params, groupId });
     if (res._error) {
@@ -41,7 +31,7 @@ export function* updateGroup({ apiUrl, apiPath, token }: Api,
   }
 }
 
-export function* getGroups({ apiUrl, apiPath, token }: Api): Generator<*, *, *> {
+export function* getGroups({ apiUrl, apiPath, token }) {
   yield put(actions.loadingGroups());
   try {
     const groups = yield call(api.fetchGroups, { apiUrl, apiPath, token });
@@ -52,7 +42,7 @@ export function* getGroups({ apiUrl, apiPath, token }: Api): Generator<*, *, *> 
   yield put(actions.loadedGroups());
 }
 
-export function* groupsSagas({ apiUrl, apiPath, token }: Api): Generator<*, *, *> {
+export function* groupsSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_GROUPS, getGroups, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUP, getGroup, { apiUrl, apiPath, token });
   yield takeLatest(constants.UPDATE_GROUP, updateGroup, { apiUrl, apiPath, token });
@@ -61,7 +51,7 @@ export function* groupsSagas({ apiUrl, apiPath, token }: Api): Generator<*, *, *
   if (groupId) yield call(getGroup, { apiUrl, apiPath, token }, { groupId });
 }
 
-export default function* (): Generator<*, *, *> {
+export default function* () {
   const { apiUrl, apiPath } = yield take(constants.SET_API_PARAMS);
   let { token } = yield take(constants.SET_TOKEN);
   let sagas;

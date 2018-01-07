@@ -7,10 +7,8 @@ import { Row, Col } from 'reactstrap';
 import { tableParts as TableParts } from 'react_table_config';
 import { formatLabel } from '_util';
 
-class ReadingsList extends React.Component<Props, State> {
-  state = {
-    expanded: {},
-  }
+class ReadingsList extends React.Component {
+  state = { expanded: {} };
 
   handleRowClick(rowNum) {
     this.setState(state => ({ expanded: { ...state.expanded, [rowNum]: !state.expanded[rowNum] } }));
@@ -28,19 +26,19 @@ class ReadingsList extends React.Component<Props, State> {
 
     const columns = [
       {
-        Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: `${prefix}.tableDate` }) }/>,
+        Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableDate` })} />,
         accessor: 'date',
         filterMethod: TableParts.filters.filterByValue,
         sortMethod: TableParts.sort.sortByValue,
       },
       {
-        Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: `${prefix}.tableValue` }) }/>,
+        Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableValue` })} />,
         accessor: 'value',
         filterMethod: TableParts.filters.filterByValue,
         sortMethod: TableParts.sort.sortByValue,
       },
       {
-        Header: () => <TableParts.components.headerCell title={ intl.formatMessage({ id: `${prefix}.tableReason` }) }/>,
+        Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableReason` })} />,
         accessor: 'reason',
         filterMethod: TableParts.filters.filterByValue,
         sortMethod: TableParts.sort.sortByValue,
@@ -48,46 +46,64 @@ class ReadingsList extends React.Component<Props, State> {
       {
         expander: true,
         Expander: ({ isExpanded }) => (
-          <div>
-            {
-              isExpanded
-              ? <i className="fa fa-chevron-up"/>
-              : <i className="fa fa-chevron-down"/>
-            }
-          </div>
+          <div>{isExpanded ? <i className="fa fa-chevron-up" /> : <i className="fa fa-chevron-down" />}</div>
         ),
-        style: {
-          color: '#bdbdbd',
-        },
+        style: { color: '#bdbdbd' },
       },
     ];
 
     return (
-      <div className="p-0" style={{ marginBottom: '2rem' }} key={ 2 }>
-        <ReactTable {...{
-          data,
-          columns,
-          SubComponent: (row) => (
-            <Row style={{
-              backgroundColor: '#F5F5F5',
-              boxShadow: 'inset 0 1px 8px 0 rgba(0,0,0,0.07)',
-              padding: '20px 10px',
-              margin: 0,
-            }}>
-              <Col sm="4"><b><FormattedMessage id={ `${prefix}.status` }/>:</b> <FormattedMessage id={ `${prefix}.${row.original.status}` }/></Col>
-              <Col sm="4"><b><FormattedMessage id={ `${prefix}.quality` }/>:</b> <FormattedMessage id={ `${prefix}.${row.original.quality}` }/></Col>
-              <Col sm="4"><b><FormattedMessage id={ `${prefix}.readBy` }/>:</b> <FormattedMessage id={ `${prefix}.${row.original.readBy}` }/></Col>
-              { row.original.comment && <Col sm="12" style={{ marginTop: '10px' }}><b><FormattedMessage id={ `${prefix}.comment` }/>:</b> { row.original.comment }</Col> }
-            </Row>
-          ),
-          expanded: this.state.expanded,
-          getTrProps: (state, rowInfo) => ({
-            onClick: (event, handleOriginal) => {
-              this.handleRowClick(rowInfo.viewIndex);
-              handleOriginal && handleOriginal();
-            },
-          }),
-        }} />
+      <div className="p-0" style={{ marginBottom: '2rem' }} key={2}>
+        <ReactTable
+          {...{
+            data,
+            columns,
+            SubComponent: row => (
+              <Row
+                style={{
+                  backgroundColor: '#F5F5F5',
+                  boxShadow: 'inset 0 1px 8px 0 rgba(0,0,0,0.07)',
+                  padding: '20px 10px',
+                  margin: 0,
+                }}
+              >
+                <Col sm="4">
+                  <b>
+                    <FormattedMessage id={`${prefix}.status`} />:
+                  </b>{' '}
+                  <FormattedMessage id={`${prefix}.${row.original.status}`} />
+                </Col>
+                <Col sm="4">
+                  <b>
+                    <FormattedMessage id={`${prefix}.quality`} />:
+                  </b>{' '}
+                  <FormattedMessage id={`${prefix}.${row.original.quality}`} />
+                </Col>
+                <Col sm="4">
+                  <b>
+                    <FormattedMessage id={`${prefix}.readBy`} />:
+                  </b>{' '}
+                  <FormattedMessage id={`${prefix}.${row.original.readBy}`} />
+                </Col>
+                {row.original.comment && (
+                  <Col sm="12" style={{ marginTop: '10px' }}>
+                    <b>
+                      <FormattedMessage id={`${prefix}.comment`} />:
+                    </b>{' '}
+                    {row.original.comment}
+                  </Col>
+                )}
+              </Row>
+            ),
+            expanded: this.state.expanded,
+            getTrProps: (state, rowInfo) => ({
+              onClick: (event, handleOriginal) => {
+                this.handleRowClick(rowInfo.viewIndex);
+                handleOriginal && handleOriginal();
+              },
+            }),
+          }}
+        />
       </div>
     );
   }

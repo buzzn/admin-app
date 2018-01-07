@@ -1,22 +1,15 @@
-// @flow
 import * as React from 'react';
 import { connect } from 'react-redux';
 import Bubbles from '@buzzn/module_bubbles';
 import BubblesLayout from './bubbles_layout';
 
-type Props = {
-  loadBubbles: Function,
-  stopBubbles: Function,
-  match: { params: { groupId: string } },
-};
-
-export class LocalpoolOverview extends React.Component<Props> {
+export class LocalpoolOverview extends React.Component {
   componentWillMount() {
     const { loadBubbles, match: { params: { groupId } } } = this.props;
     loadBubbles(groupId);
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  componentWillReceiveProps(nextProps) {
     const { loadBubbles, match: { params: { groupId } } } = this.props;
     const { match: { params: { groupId: newGroupId } } } = nextProps;
     if (groupId !== newGroupId) {
@@ -31,7 +24,7 @@ export class LocalpoolOverview extends React.Component<Props> {
   render() {
     return (
       <div className="center-content">
-        <Bubbles.container Layout={ BubblesLayout } />
+        <Bubbles.container Layout={BubblesLayout} />
       </div>
     );
   }

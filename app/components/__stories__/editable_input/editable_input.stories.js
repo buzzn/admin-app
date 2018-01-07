@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, text, boolean } from '@storybook/addon-knobs';
@@ -14,20 +13,14 @@ const props = {
 
 storiesOf('Atoms/EditableInput')
   .addDecorator(withKnobs)
-  .add('view', () => {
-    return <EditableInput {...props}/>;
-  })
-  .add('edit', () => {
-    return <EditableInput {...props} editMode={ true }/>;
-  })
-  .add('error', () => {
-    return <EditableInput {...props} editMode={ true } meta={{ touched: true, error: 'some error' }}/>;
-  })
+  .add('view', () => <EditableInput {...props} />)
+  .add('edit', () => <EditableInput {...props} editMode={true} />)
+  .add('error', () => <EditableInput {...props} editMode={true} meta={{ touched: true, error: 'some error' }} />)
   .add('dynamic', () => {
     const dynamicProps = {
       editMode: boolean('Edit mode', false),
       input: { value: text('Value', 'test data') },
       meta: { touched: boolean('Touched', false), error: text('Error message', '') },
     };
-    return <EditableInput {...dynamicProps}/>;
+    return <EditableInput {...dynamicProps} />;
   });

@@ -1,7 +1,5 @@
-// @flow
 import get from 'lodash/get';
 import { constants } from './actions';
-import type { MetersAction } from './actions';
 
 export const initialState = {
   loadingGroupMeters: false,
@@ -13,17 +11,7 @@ export const initialState = {
   virtualValidationRules: { _status: null },
 };
 
-export type MetersState = {
-  +loadingGroupMeters: boolean,
-  +loadingMeter: boolean,
-  +groupMeters: { _status: null | number, array?: Array<Object> },
-  +meter: Object,
-  +meterRegisters: { _status: null | number, array: Array<Object> },
-  +realValidationRules: Object,
-  +virtualValidationRules: Object,
-};
-
-export default function (state: MetersState = initialState, action: MetersAction): MetersState {
+export default function (state = initialState, action) {
   switch (action.type) {
     case constants.LOAD_METER:
       return { ...state, meterId: action.meterId, groupId: action.groupId };

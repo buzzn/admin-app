@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import EditableCheckbox from 'components/editable_checkbox';
@@ -12,12 +11,6 @@ const props = {
 };
 
 storiesOf('Atoms/EditableCheckbox')
-  .add('view', () => {
-    return <EditableCheckbox {...props}/>;
-  })
-  .add('edit', () => {
-    return <EditableCheckbox {...props} editMode={ true }/>;
-  })
-  .add('error', () => {
-    return <EditableCheckbox {...props} editMode={ true } meta={{ touched: true, error: 'some error' }}/>;
-  });
+  .add('view', () => <EditableCheckbox {...props} />)
+  .add('edit', () => <EditableCheckbox {...props} editMode={true} />)
+  .add('error', () => <EditableCheckbox {...props} editMode={true} meta={{ touched: true, error: 'some error' }} />);

@@ -1,31 +1,11 @@
-// @flow
 import * as React from 'react';
 import { connect } from 'react-redux';
-import type { MapStateToProps } from 'react-redux';
 
-type Props = {
-  health: {} | {
-    build: string | { version: string, timestamp: string },
-    database: string,
-    redis: string,
-    mongo: string,
-    healthy: boolean,
-  }
-};
-
-type State = {
-  isOpen: boolean,
-};
-
-class Health extends React.Component<Props, State> {
-  state = {
-    isOpen: false,
-  };
+class Health extends React.Component {
+  state = { isOpen: false };
 
   switchWidget() {
-    this.setState({
-      isOpen: !this.state.isOpen,
-    });
+    this.setState({ isOpen: !this.state.isOpen });
   }
 
   render() {
@@ -34,7 +14,7 @@ class Health extends React.Component<Props, State> {
 
     return (
       <div
-        onClick={ this.switchWidget.bind(this) }
+        onClick={this.switchWidget.bind(this)}
         style={{
           position: 'fixed',
           bottom: '20px',
@@ -43,16 +23,15 @@ class Health extends React.Component<Props, State> {
           background: health.healthy ? '#D4E157' : '#D84315',
           cursor: 'pointer',
           padding: '10px',
-        }}>
-        <span style={{ fontWeight: 'bold' }}>
-          Server health:
-        </span>
-        { isOpen && <pre>{ JSON.stringify(health, null, 2) }</pre> }
+        }}
+      >
+        <span style={{ fontWeight: 'bold' }}>Server health:</span>
+        {isOpen && <pre>{JSON.stringify(health, null, 2)}</pre>}
       </div>
     );
   }
 }
 
-const mapStateToProps: MapStateToProps<*, *, *> = state => ({ health: state.app.health });
+const mapStateToProps = state => ({ health: state.app.health });
 
 export default connect(mapStateToProps)(Health);

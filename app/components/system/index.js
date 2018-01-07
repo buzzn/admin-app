@@ -1,4 +1,3 @@
-// @flow
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Switch, Route, Redirect, NavLink } from 'react-router-dom';
@@ -16,22 +15,7 @@ import ReadingsList from './readings_list';
 import RegisterPowerContainer from './register_power';
 import MeterDataForm from './meter_data';
 
-type Props = {
-  devMode: boolean,
-  loading: boolean,
-  meters: { _status: null | number, array?: Array<Object> },
-  registers: Array<Object>,
-  group: Object,
-  realValidationRules: Object,
-  virtualValidationRules: Object,
-  // TODO: replace with action
-  loadGroupMeters: Function,
-  setGroupMeters: Function,
-  loadGroup: Function,
-  match: { url: string, params: { groupId: string, meterId: string, registerId: string } },
-};
-
-export class System extends React.Component<Props> {
+export class System extends React.Component {
   componentWillMount() {
     const { loadGroupMeters, loadGroup, match: { params: { groupId } } } = this.props;
     loadGroup(groupId);
@@ -53,7 +37,7 @@ export class System extends React.Component<Props> {
 
     if (meters.status === 404 || meters.status === 403) {
       setGroupMeters({ _status: null, array: [] });
-      return <Redirect to="/groups"/>;
+      return <Redirect to="/groups" />;
     }
 
     const breadcrumbs = [
@@ -63,124 +47,167 @@ export class System extends React.Component<Props> {
 
     return (
       <React.Fragment>
-
         {/* Breadcrumbs */}
         <div className="row center-content-header">
           <div className="col-7">
             <Switch>
-              <Route path={ `${url}/:meterId` } render={ ({ match: { url: meterUrl, params: { meterId } } }) => {
-                const meter = find(meters.array, m => m.id === meterId);
-                if (!meter) return <Redirect to={ url }/>;
-                return (
-                  <Switch>
-                    <Route path={ `${meterUrl}/registers/:registerId` } render={ ({ match: { params: { registerId } } }) => {
-                      const register = find(meter.registers.array, r => r.id === registerId);
-                      if (!register) return <Redirect to={ meterUrl }/>;
-                      breadcrumbs.push({ id: register.id, type: 'register', title: register.name, link: undefined });
-                      return (
-                        <React.Fragment>
-                          <Breadcrumbs breadcrumbs={ breadcrumbs }/>
-                          <LinkBack url={ url } title={ register.name }/>
-                        </React.Fragment>
-                      );
-                    } }/>
-                    <Route path={ meterUrl } render={ () => {
-                      breadcrumbs.push({ id: meter.id, type: 'meter', title: meter.productSerialnumber, link: undefined });
-                      return (
-                        <React.Fragment>
-                          <Breadcrumbs breadcrumbs={ breadcrumbs }/>
-                          <LinkBack url={ url } title={ `Meter ${meter.productSerialnumber}` }/>
-                        </React.Fragment>
-                      );
-                    } }/>
-                  </Switch>
-                );
-              }}/>
-              <Route path={ url } render={ () => (
-                <React.Fragment>
-                  <Breadcrumbs breadcrumbs={ breadcrumbs.concat([{ id: '-----', title: 'System setup' }]) }/>
-                  <LinkBack title="System setup"/>
-                </React.Fragment>
-              ) }/>
+              <Route
+                path={`${url}/:meterId`}
+                render={({ match: { url: meterUrl, params: { meterId } } }) => {
+                  const meter = find(meters.array, m => m.id === meterId);
+                  if (!meter) return <Redirect to={url} />;
+                  return (
+                    <Switch>
+                      <Route
+                        path={`${meterUrl}/registers/:registerId`}
+                        render={({ match: { params: { registerId } } }) => {
+                          const register = find(meter.registers.array, r => r.id === registerId);
+                          if (!register) return <Redirect to={meterUrl} />;
+                          breadcrumbs.push({
+                            id: register.id,
+                            type: 'register',
+                            title: register.name,
+                            link: undefined,
+                          });
+                          return (
+                            <React.Fragment>
+                              <Breadcrumbs breadcrumbs={breadcrumbs} />
+                              <LinkBack url={url} title={register.name} />
+                            </React.Fragment>
+                          );
+                        }}
+                      />
+                      <Route
+                        path={meterUrl}
+                        render={() => {
+                          breadcrumbs.push({
+                            id: meter.id,
+                            type: 'meter',
+                            title: meter.productSerialnumber,
+                            link: undefined,
+                          });
+                          return (
+                            <React.Fragment>
+                              <Breadcrumbs breadcrumbs={breadcrumbs} />
+                              <LinkBack url={url} title={`Meter ${meter.productSerialnumber}`} />
+                            </React.Fragment>
+                          );
+                        }}
+                      />
+                    </Switch>
+                  );
+                }}
+              />
+              <Route
+                path={url}
+                render={() => (
+                  <React.Fragment>
+                    <Breadcrumbs breadcrumbs={breadcrumbs.concat([{ id: '-----', title: 'System setup' }])} />
+                    <LinkBack title="System setup" />
+                  </React.Fragment>
+                )}
+              />
             </Switch>
           </div>
-          <div className="col-5">
-          </div>
+          <div className="col-5" />
         </div>
         {/* End of Breadcrumbs */}
 
         <div className="center-content">
-
           {/* Root sub nav */}
-          <Route path={ url } exact render={ () => {
-            return (
-              <Nav className="sub-nav">
-                <NavLink to={ url } exact className="nav-link">Registers</NavLink>
-                <NavLink to="#" disabled className="nav-link">To be announced</NavLink>
-              </Nav>
-            );
-          } }/>
+          <Route
+            path={url}
+            exact
+            render={() => (
+                <Nav className="sub-nav">
+                  <NavLink to={url} exact className="nav-link">
+                    Registers
+                  </NavLink>
+                  <NavLink to="#" disabled className="nav-link">
+                    To be announced
+                  </NavLink>
+                </Nav>
+              )}
+          />
           {/* End of root sub nav */}
 
           <Switch>
-
             {/* Detailed UI */}
-            <Route path={ `${url}/:meterId` } render={ ({ match: { url: meterUrl, params: { meterId } } }) => {
-              const meter = find(meters.array, m => m.id === meterId);
-              if (!meter) return <Redirect to={ url }/>;
-              return (
-                <React.Fragment>
+            <Route
+              path={`${url}/:meterId`}
+              render={({ match: { url: meterUrl, params: { meterId } } }) => {
+                const meter = find(meters.array, m => m.id === meterId);
+                if (!meter) return <Redirect to={url} />;
+                return (
+                  <React.Fragment>
+                    {/* Main UI */}
+                    <Switch>
+                      <Route
+                        path={`${meterUrl}/registers/:registerId`}
+                        render={({ match: { url: registerUrl, params: { registerId } } }) => {
+                          const register = find(meter.registers.array, r => r.id === registerId);
+                          if (!register) return <Redirect to={url} />;
+                          return (
+                            <React.Fragment>
+                              <RegisterPowerContainer {...{ groupId, meterId, registerId: register.id }} />
 
-                  {/* Main UI */}
-                  <Switch>
-                    <Route path={ `${meterUrl}/registers/:registerId` } render={ ({ match: { url: registerUrl, params: { registerId } } }) => {
-                      const register = find(meter.registers.array, r => r.id === registerId);
-                      if (!register) return <Redirect to={ url }/>;
-                      return (
-                        <React.Fragment>
+                              {/* Sub nav */}
+                              <Nav className="sub-nav">
+                                <NavLink to={`${registerUrl}/readings`} exact className="nav-link">
+                                  Readings
+                                </NavLink>
+                                <NavLink to={`${registerUrl}/contracts`} exact className="nav-link">
+                                  Contracts
+                                </NavLink>
+                                <NavLink to={`${registerUrl}/devices`} exact className="nav-link">
+                                  Devices
+                                </NavLink>
+                                <NavLink to={registerUrl} exact className="nav-link">
+                                  Details
+                                </NavLink>
+                              </Nav>
+                              {/* End of Sub nav */}
 
-                          <RegisterPowerContainer {...{ groupId, meterId, registerId: register.id }}/>
-
-                          {/* Sub nav */}
-                          <Nav className="sub-nav">
-                            <NavLink to={ `${registerUrl}/readings` } exact className="nav-link">Readings</NavLink>
-                            <NavLink to={ `${registerUrl}/contracts` } exact className="nav-link">Contracts</NavLink>
-                            <NavLink to={ `${registerUrl}/devices` } exact className="nav-link">Devices</NavLink>
-                            <NavLink to={ registerUrl } exact className="nav-link">Details</NavLink>
-                          </Nav>
-                          {/* End of Sub nav */}
-
-                          <Switch>
-                            <Route path={ `${registerUrl}/readings` }>
-                            { register.readings && <ReadingsList readings={ register.readings.array }/> }
-                            </Route>
-                            <Route path={ `${registerUrl}/contracts` }>
-                              <div className={ devMode ? '' : 'under-construction' } style={{ height: '8rem' }}></div>
-                            </Route>
-                            <Route path={ `${registerUrl}/devices` }>
-                              <div className={ devMode ? '' : 'under-construction' } style={{ height: '8rem' }}></div>
-                            </Route>
-                            <Route path={ registerUrl } exact>
-                              <RegisterDataForm {...{ register, meter }}/>
-                            </Route>
-                          </Switch>
-                        </React.Fragment>
-                      );
-                    } }/>
-                    <Route path={ meterUrl } render={ () => <MeterDataForm {...{ meter, realValidationRules, virtualValidationRules, initialValues: meter }}/>}/>
-                  </Switch>
-                  {/* End of Main UI */}
-                </React.Fragment>
-              );
-            } }/>
+                              <Switch>
+                                <Route path={`${registerUrl}/readings`}>
+                                  {register.readings && <ReadingsList readings={register.readings.array} />}
+                                </Route>
+                                <Route path={`${registerUrl}/contracts`}>
+                                  <div className={devMode ? '' : 'under-construction'} style={{ height: '8rem' }} />
+                                </Route>
+                                <Route path={`${registerUrl}/devices`}>
+                                  <div className={devMode ? '' : 'under-construction'} style={{ height: '8rem' }} />
+                                </Route>
+                                <Route path={registerUrl} exact>
+                                  <RegisterDataForm {...{ register, meter }} />
+                                </Route>
+                              </Switch>
+                            </React.Fragment>
+                          );
+                        }}
+                      />
+                      <Route
+                        path={meterUrl}
+                        render={() => (
+                          <MeterDataForm
+                            {...{ meter, realValidationRules, virtualValidationRules, initialValues: meter }}
+                          />
+                        )}
+                      />
+                    </Switch>
+                    {/* End of Main UI */}
+                  </React.Fragment>
+                );
+              }}
+            />
             {/* End of Detailed UI */}
 
             {/* Root list */}
-            <Route path={ url } render={ ({ history }) => (
-              <RegistersList registers={ registers } url={ url } history={ history }/>
-            ) }/>
+            <Route
+              path={url}
+              render={({ history }) => <RegistersList registers={registers} url={url} history={history} />}
+            />
             {/* End of Root list */}
-
           </Switch>
         </div>
 
@@ -191,12 +218,17 @@ export class System extends React.Component<Props> {
 }
 
 function mapStateToProps(state) {
-  const registers = state.meters.groupMeters._status === 200 ?
-    compact(flatten(state.meters.groupMeters.array.map((m) => {
-      if (!m.registers) return [];
-      return m.registers.array.map(r => ({ ...r, meterId: m.id, meterProductSerialnumber: m.productSerialnumber }));
-    }))) :
-    [];
+  const registers =
+    state.meters.groupMeters._status === 200
+      ? compact(flatten(state.meters.groupMeters.array.map((m) => {
+        if (!m.registers) return [];
+        return m.registers.array.map(r => ({
+          ...r,
+          meterId: m.id,
+          meterProductSerialnumber: m.productSerialnumber,
+        }));
+      })))
+      : [];
 
   return {
     devMode: state.app.ui.devMode,

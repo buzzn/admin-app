@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import StoryRouter from 'storybook-router';
@@ -12,7 +11,7 @@ storiesOf('Atoms/Breadcrumbs')
       { id: 2, title: 'Hopf', link: '#' },
       { id: 3, title: '0077832', type: 'contract' },
     ];
-    return <Breadcrumbs breadcrumbs={ breadcrumbs }/>;
+    return <Breadcrumbs breadcrumbs={breadcrumbs} />;
   })
   .add('types', () => {
     const breadcrumbs = [
@@ -24,5 +23,5 @@ storiesOf('Atoms/Breadcrumbs')
       { id: 6, title: '0077832', type: 'formula', link: '#' },
       { id: 7, title: '0077832', type: 'reading' },
     ];
-    return <Breadcrumbs breadcrumbs={ breadcrumbs }/>;
+    return <Breadcrumbs breadcrumbs={breadcrumbs} />;
   });

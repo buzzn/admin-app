@@ -1,4 +1,3 @@
-// @flow
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
@@ -10,18 +9,7 @@ import LinkBack from 'components/link_back';
 import ContractsList from './contracts_list';
 import ContractDataForm from './contract_data';
 
-type Props = {
-  // TODO: replace with action
-  loadGroup: Function,
-  setGroup: Function,
-  loadGroupContracts: Function,
-  contracts: Array<Object>,
-  group: Object,
-  loading: boolean,
-  match: { url: string, params: { groupId: string } },
-};
-
-export class Contracts extends React.Component<Props> {
+export class Contracts extends React.Component {
   componentWillMount() {
     const { loadGroupContracts, loadGroup, group, match: { params: { groupId } } } = this.props;
     if (group.id !== groupId) loadGroup(groupId);
@@ -33,7 +21,7 @@ export class Contracts extends React.Component<Props> {
 
     if (group.status === 404 || group.status === 403) {
       setGroup({ _status: null });
-      return <Redirect to="/groups"/>;
+      return <Redirect to="/groups" />;
     }
 
     const breadcrumbs = [
@@ -43,81 +31,92 @@ export class Contracts extends React.Component<Props> {
 
     return (
       <React.Fragment>
-
         {/* Breadcrumbs */}
         <div className="row center-content-header">
           <div className="col-7">
             <Switch>
-              <Route path={ `${url}/:contractId` } render={ ({ match: { url: contractUrl, params: { contractId } } }) => {
-                const contract = find(contracts, c => c.id === contractId);
-                if (!contract) return <Redirect to={ url }/>;
-                breadcrumbs.push({ id: contract.id, type: 'contract', title: contract.fullContractNumber });
-                return (
-                  <Switch>
-                    <Route path={ contractUrl } render={ () => (
-                      <React.Fragment>
-                        <Breadcrumbs breadcrumbs={ breadcrumbs }/>
-                        <LinkBack url={ contractUrl } title={ contract.fullContractNumber }/>
-                      </React.Fragment>
-                    ) }/>
-                  </Switch>
-                );
-              } }/>
-              <Route path={ url } render={ () => (
-                <React.Fragment>
-                  <Breadcrumbs breadcrumbs={ breadcrumbs.concat([{ id: '-----', title: 'Localpool contracts' }]) }/>
-                  <LinkBack title="Localpool contracts"/>
-                </React.Fragment>
-              ) }/>
+              <Route
+                path={`${url}/:contractId`}
+                render={({ match: { url: contractUrl, params: { contractId } } }) => {
+                  const contract = find(contracts, c => c.id === contractId);
+                  if (!contract) return <Redirect to={url} />;
+                  breadcrumbs.push({ id: contract.id, type: 'contract', title: contract.fullContractNumber });
+                  return (
+                    <Switch>
+                      <Route
+                        path={contractUrl}
+                        render={() => (
+                          <React.Fragment>
+                            <Breadcrumbs breadcrumbs={breadcrumbs} />
+                            <LinkBack url={contractUrl} title={contract.fullContractNumber} />
+                          </React.Fragment>
+                        )}
+                      />
+                    </Switch>
+                  );
+                }}
+              />
+              <Route
+                path={url}
+                render={() => (
+                  <React.Fragment>
+                    <Breadcrumbs breadcrumbs={breadcrumbs.concat([{ id: '-----', title: 'Localpool contracts' }])} />
+                    <LinkBack title="Localpool contracts" />
+                  </React.Fragment>
+                )}
+              />
             </Switch>
           </div>
-          <div className="col-5">
-          </div>
+          <div className="col-5" />
         </div>
         {/* End of Breadcrumbs */}
 
         <div className="center-content">
           <Switch>
-
             {/* Detailed UI */}
-            <Route path={ `${url}/:contractId` } render={ ({ match: { url: contractUrl, params: { contractId } } }) => {
-              const contract = find(contracts, c => c.id === contractId);
-              if (!contract) return <Redirect to={ url }/>;
-              return (
-                <React.Fragment>
-                  {/* Sub nav */}
-                  {/* End of sub nav */}
+            <Route
+              path={`${url}/:contractId`}
+              render={({ match: { url: contractUrl, params: { contractId } } }) => {
+                const contract = find(contracts, c => c.id === contractId);
+                if (!contract) return <Redirect to={url} />;
+                return (
+                  <React.Fragment>
+                    {/* Sub nav */}
+                    {/* End of sub nav */}
 
-                  {/* Main UI */}
-                  <Switch>
-                    <Route path={ contractUrl }>
-                      <ContractDataForm {...{
-                        // TODO: real validation rules and updateContract action
-                        validationRules: {},
-                        contract,
-                        initialValues: contract,
-                      }}/>
-                    </Route>
-                  </Switch>
-                  {/* End of main UI */}
-                </React.Fragment>
-              );
-            } }/>
+                    {/* Main UI */}
+                    <Switch>
+                      <Route path={contractUrl}>
+                        <ContractDataForm
+                          {...{
+                            // TODO: real validation rules and updateContract action
+                            validationRules: {},
+                            contract,
+                            initialValues: contract,
+                          }}
+                        />
+                      </Route>
+                    </Switch>
+                    {/* End of main UI */}
+                  </React.Fragment>
+                );
+              }}
+            />
             {/* End of detailed UI */}
 
             {/* Contracts list */}
-            <Route path={ url }>
-              <ContractsList {...{
-                contracts,
-                url,
-                loading,
-              }}/>
+            <Route path={url}>
+              <ContractsList
+                {...{
+                  contracts,
+                  url,
+                  loading,
+                }}
+              />
             </Route>
             {/* End of contracts list */}
-
           </Switch>
         </div>
-
       </React.Fragment>
     );
   }

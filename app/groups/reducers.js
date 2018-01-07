@@ -1,6 +1,4 @@
-// @flow
 import { constants } from './actions';
-import type { GroupsAction } from './actions';
 
 export const initialState = {
   loadingGroups: false,
@@ -11,16 +9,7 @@ export const initialState = {
   validationRules: { _status: null },
 };
 
-export type GroupsState = {
-  +loadingGroups: boolean,
-  +loadingUserGroups: boolean,
-  +loadingGroup: boolean,
-  +groups: { _status: null | number, array?: Array<Object> },
-  +group: Object,
-  +validationRules: Object,
-};
-
-export default function (state: GroupsState = initialState, action: GroupsAction): GroupsState {
+export default function (state = initialState, action) {
   switch (action.type) {
     case constants.LOAD_GROUP:
       return { ...state, groupId: action.groupId };

@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
@@ -14,12 +13,6 @@ const props = {
 };
 
 storiesOf('Molecules/SignIn')
-  .add('Empty', () => {
-    return <SignInIntl {...{ ...props, username: '', password: '' }}/>;
-  })
-  .add('No error', () => {
-    return <SignInIntl {...props}/>;
-  })
-  .add('Error', () => {
-    return <SignInIntl {...{ ...props, error: 'Wrong credentials' }}/>;
-  });
+  .add('Empty', () => <SignInIntl {...{ ...props, username: '', password: '' }} />)
+  .add('No error', () => <SignInIntl {...props} />)
+  .add('Error', () => <SignInIntl {...{ ...props, error: 'Wrong credentials' }} />);

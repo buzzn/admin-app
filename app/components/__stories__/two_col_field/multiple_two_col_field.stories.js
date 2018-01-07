@@ -9,7 +9,7 @@ import TwoColField from 'components/two_col_field';
 
 const chance = require('chance').Chance();
 
-const DecoratedTwoColField = reduxForm({ form: 'testForm' })(TwoColField)
+const DecoratedTwoColField = reduxForm({ form: 'testForm' })(TwoColField);
 
 const propsFName = {
   prefix: 'admin.persons',
@@ -42,24 +42,30 @@ const propsPrefix = {
 
 storiesOf('Molecules/TwoColField/multiple')
   .addDecorator(withKnobs)
-  .add('view', () => {
-    return [
-      <DecoratedTwoColField key={ 1 } {...propsFName} component={ EditableInput }/>,
-      <DecoratedTwoColField key={ 2 } {...propsLName} component={ EditableInput }/>,
-      <DecoratedTwoColField key={ 3 } {...propsPrefix} component={ EditableSelect }/>,
-    ];
-  })
-  .add('edit', () => {
-    return [
-      <DecoratedTwoColField key={ 1 } {...{ ...propsFName, editMode: true }} component={ EditableInput }/>,
-      <DecoratedTwoColField key={ 2 } {...{ ...propsLName, editMode: true }} component={ EditableInput }/>,
-      <DecoratedTwoColField key={ 3 } {...{ ...propsPrefix, editMode: true }} component={ EditableSelect }/>,
-    ];
-  })
-  .add('error', () => {
-    return [
-      <DecoratedTwoColField key={ 1 } {...{ ...propsFName, editMode: true, meta: { touched: true, error: 'some error' } }} component={ EditableInput }/>,
-      <DecoratedTwoColField key={ 2 } {...{ ...propsLName, editMode: true, meta: { touched: true, error: 'some error' } }} component={ EditableInput }/>,
-      <DecoratedTwoColField key={ 3 } {...{ ...propsPrefix, editMode: true, meta: { touched: true, error: 'some error' } }} component={ EditableSelect }/>,
-    ];
-  });
+  .add('view', () => [
+      <DecoratedTwoColField key={1} {...propsFName} component={EditableInput} />,
+      <DecoratedTwoColField key={2} {...propsLName} component={EditableInput} />,
+      <DecoratedTwoColField key={3} {...propsPrefix} component={EditableSelect} />,
+  ])
+  .add('edit', () => [
+      <DecoratedTwoColField key={1} {...{ ...propsFName, editMode: true }} component={EditableInput} />,
+      <DecoratedTwoColField key={2} {...{ ...propsLName, editMode: true }} component={EditableInput} />,
+      <DecoratedTwoColField key={3} {...{ ...propsPrefix, editMode: true }} component={EditableSelect} />,
+  ])
+  .add('error', () => [
+      <DecoratedTwoColField
+        key={1}
+        {...{ ...propsFName, editMode: true, meta: { touched: true, error: 'some error' } }}
+        component={EditableInput}
+      />,
+      <DecoratedTwoColField
+        key={2}
+        {...{ ...propsLName, editMode: true, meta: { touched: true, error: 'some error' } }}
+        component={EditableInput}
+      />,
+      <DecoratedTwoColField
+        key={3}
+        {...{ ...propsPrefix, editMode: true, meta: { touched: true, error: 'some error' } }}
+        component={EditableSelect}
+      />,
+  ]);
