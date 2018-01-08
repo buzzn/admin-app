@@ -52,6 +52,7 @@
     "eslint-import-resolver-webpack": "^0.8.4",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-prettier": "^2.4.0",
     "eslint-plugin-react": "^7.5.1",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^0.11.2",
@@ -131,7 +132,9 @@
   },
   "eslintConfig": {
     "parser": "babel-eslint",
-    "extends": ["airbnb/base"],
+    "extends": [
+      "airbnb/base"
+    ],
     "env": {
       "browser": true,
       "node": true,
@@ -140,7 +143,10 @@
     "settings": {
       "import/resolver": "webpack"
     },
-    "plugins": ["react"],
+    "plugins": [
+      "react",
+      "prettier"
+    ],
     "rules": {
       "max-len": [
         2,
@@ -151,7 +157,12 @@
           "ignoreComments": false
         }
       ],
-      "object-curly-newline": ["error", { "multiline": true }],
+      "object-curly-newline": [
+        "error",
+        {
+          "multiline": true
+        }
+      ],
       "react/jsx-uses-vars": 2,
       "react/jsx-uses-react": 2
     },
@@ -187,11 +198,20 @@
     }
   },
   "jest": {
-    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
-    "moduleDirectories": ["node_modules", "app"],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "app"
+    ],
     "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
-        "<rootDir>/app/__mocks__/fileMock.js",
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/app/__mocks__/fileMock.js",
       "\\.(css|less)$": "<rootDir>/app/__mocks__/styleMock.js"
     },
     "transform": {
