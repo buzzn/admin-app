@@ -17,6 +17,8 @@ coverage/
 *.ipr
 *.iws
 
+.vscode
+
 /out/
 
 .idea_modules/
