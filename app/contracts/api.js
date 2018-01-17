@@ -10,7 +10,7 @@ export default {
       .then(camelizeResponseKeys);
   },
   fetchGroupPowertakers({ token, apiUrl, apiPath, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/power-taker-contracts?include=customer:[address,contact:address]`, {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/power-taker-contracts?include=register,customer:[address,contact:address]`, {
       headers: prepareHeaders(token),
     })
       .then(parseResponse)
