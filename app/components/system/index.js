@@ -7,6 +7,7 @@ import flatten from 'lodash/flatten';
 import compact from 'lodash/compact';
 import Meters from 'meters';
 import Groups from 'groups';
+import Loading from 'components/loading';
 import Breadcrumbs from 'components/breadcrumbs';
 import LinkBack from 'components/link_back';
 import RegistersList from './registers_list';
@@ -54,6 +55,7 @@ export class System extends React.Component {
               <Route
                 path={`${url}/:meterId`}
                 render={({ match: { url: meterUrl, params: { meterId } } }) => {
+                  if (loading) return <Loading minHeight={4} />;
                   const meter = find(meters.array, m => m.id === meterId);
                   if (!meter) return <Redirect to={url} />;
                   return (
@@ -119,15 +121,15 @@ export class System extends React.Component {
             path={url}
             exact
             render={() => (
-                <Nav className="sub-nav">
-                  <NavLink to={url} exact className="nav-link">
-                    Registers
-                  </NavLink>
-                  <NavLink to="#" disabled className="nav-link">
-                    To be announced
-                  </NavLink>
-                </Nav>
-              )}
+              <Nav className="sub-nav">
+                <NavLink to={url} exact className="nav-link">
+                  Registers
+                </NavLink>
+                <NavLink to="#" disabled className="nav-link">
+                  To be announced
+                </NavLink>
+              </Nav>
+            )}
           />
           {/* End of root sub nav */}
 
@@ -136,6 +138,7 @@ export class System extends React.Component {
             <Route
               path={`${url}/:meterId`}
               render={({ match: { url: meterUrl, params: { meterId } } }) => {
+                if (loading) return <Loading minHeight={40} />;
                 const meter = find(meters.array, m => m.id === meterId);
                 if (!meter) return <Redirect to={url} />;
                 return (
