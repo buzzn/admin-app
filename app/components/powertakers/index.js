@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect, NavLink } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
+import { Nav } from 'reactstrap';
 import find from 'lodash/find';
-import map from 'lodash/map';
 import Contracts from 'contracts';
 import Groups from 'groups';
 import Breadcrumbs from 'components/breadcrumbs';
@@ -37,6 +38,15 @@ export class Powertakers extends React.Component {
           <div className="col-7">
             <Switch>
               <Route
+                path={`${url}/:pType(active|past)`}
+                render={() => (
+                  <React.Fragment>
+                    <Breadcrumbs breadcrumbs={breadcrumbs.concat([{ id: '-----', title: 'Powertakers' }])} />
+                    <LinkBack title="Localpool powertakers" />
+                  </React.Fragment>
+                )}
+              />
+              <Route
                 path={`${url}/:contractId`}
                 render={({ match: { url: powertakerUrl, params: { contractId } } }) => {
                   const contract = find(powertakers.array, p => p.id === contractId);
@@ -55,15 +65,6 @@ export class Powertakers extends React.Component {
                   );
                 }}
               />
-              <Route
-                path={url}
-                render={() => (
-                  <React.Fragment>
-                    <Breadcrumbs breadcrumbs={breadcrumbs.concat([{ id: '-----', title: 'Powertakers' }])} />
-                    <LinkBack title="Localpool powertakers" />
-                  </React.Fragment>
-                )}
-              />
             </Switch>
           </div>
           <div className="col-5" />
@@ -72,6 +73,42 @@ export class Powertakers extends React.Component {
 
         <div className="center-content">
           <Switch>
+            <Route path={url} exact>
+              <Redirect to={`${url}/active`} />
+            </Route>
+
+            {/* Powertakers List */}
+            <Route path={`${url}/:pType(active|past)`}>
+              <React.Fragment>
+                {/* Sub nav */}
+                <Nav className="sub-nav">
+                  <NavLink to={`${url}/active`} exact className="nav-link">
+                    <FormattedMessage id="admin.contracts.navActivePowertakers" />
+                  </NavLink>
+                  <NavLink to={`${url}/past`} exact className="nav-link">
+                    <FormattedMessage id="admin.contracts.navPastPowertakers" />
+                  </NavLink>
+                </Nav>
+                {/* End of sub nav */}
+
+                <Switch>
+                  <Route
+                    path={`${url}/active`}
+                    render={({ history }) => (
+                      <PowertakersList active {...{ powertakers: powertakers.array, loading, url, history }} />
+                    )}
+                  />
+                  <Route
+                    path={`${url}/past`}
+                    render={({ history }) => (
+                      <PowertakersList {...{ powertakers: powertakers.array, loading, url, history }} />
+                    )}
+                  />
+                </Switch>
+              </React.Fragment>
+            </Route>
+            {/* End of powertakers List */}
+
             {/* Detailed UI */}
             <Route
               path={`${url}/:contractId`}
@@ -95,14 +132,6 @@ export class Powertakers extends React.Component {
               }}
             />
             {/* End of detailed UI */}
-
-            {/* Powertakers List */}
-            <Route path={url}>
-              <PowertakersList
-                {...{ powertakers: map(powertakers.array, p => ({ ...p.customer, contractId: p.id })), loading, url }}
-              />
-            </Route>
-            {/* End of powertakers List */}
           </Switch>
         </div>
       </React.Fragment>
