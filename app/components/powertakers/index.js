@@ -83,10 +83,10 @@ export class Powertakers extends React.Component {
                 {/* Sub nav */}
                 <Nav className="sub-nav">
                   <NavLink to={`${url}/active`} exact className="nav-link">
-                    <FormattedMessage id="!!changeId!!.activePowertakers" />
+                    <FormattedMessage id="admin.contracts.navActivePowertakers" />
                   </NavLink>
                   <NavLink to={`${url}/past`} exact className="nav-link">
-                    <FormattedMessage id="!!changeId!!.pastPowertakers" />
+                    <FormattedMessage id="admin.contracts.navPastPowertakers" />
                   </NavLink>
                 </Nav>
                 {/* End of sub nav */}
@@ -94,11 +94,15 @@ export class Powertakers extends React.Component {
                 <Switch>
                   <Route
                     path={`${url}/active`}
-                    render={() => <PowertakersList active {...{ powertakers: powertakers.array, loading, url }} />}
+                    render={({ history }) => (
+                      <PowertakersList active {...{ powertakers: powertakers.array, loading, url, history }} />
+                    )}
                   />
                   <Route
                     path={`${url}/past`}
-                    render={() => <PowertakersList {...{ powertakers: powertakers.array, loading, url }} />}
+                    render={({ history }) => (
+                      <PowertakersList {...{ powertakers: powertakers.array, loading, url, history }} />
+                    )}
                   />
                 </Switch>
               </React.Fragment>

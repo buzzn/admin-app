@@ -8,7 +8,7 @@ import { tableParts as TableParts } from 'react_table_config';
 import DefaultPerson from 'images/default_person.jpg';
 import DefaultOrganisation from 'images/default_organisation.jpg';
 
-const PowertakersList = ({ powertakers, loading, url, intl, active }) => {
+const PowertakersList = ({ powertakers, loading, url, intl, active, history }) => {
   const filteredPowertakers = powertakers.filter(o => (active ? o.status !== 'ended' : o.status === 'ended'));
 
   const data = orderBy(
@@ -26,12 +26,14 @@ const PowertakersList = ({ powertakers, loading, url, intl, active }) => {
         }
         : { value: p.customer.name, image: p.customer.image || DefaultOrganisation, type: 'avatar' },
     registerName: p.register.name,
+    // HACK
+    linkRegister: `${url.split('/').slice(0, -1).join('/')}/system/${p.register.meterId}/registers/${p.register.id}`,
     beginDate: moment(p.beginDate).format('DD.MM.YYYY'),
     endDate: p.endDate ? moment(p.endDate).format('DD.MM.YYYY') : p.endDate,
     link: `${url}/${p.id}`,
   }));
 
-  const prefix = '!!changePrefix!!';
+  const prefix = 'admin.contracts';
 
   const columns = [
     {
@@ -48,6 +50,10 @@ const PowertakersList = ({ powertakers, loading, url, intl, active }) => {
       accessor: 'registerName',
       filterMethod: TableParts.filters.filterByValue,
       sortMethod: TableParts.sort.sortByValue,
+      style: {
+        cursor: 'pointer',
+        textDecoration: 'underline',
+      },
     },
     {
       Header: () => (
@@ -83,7 +89,18 @@ const PowertakersList = ({ powertakers, loading, url, intl, active }) => {
 
   return (
     <div className="p-0" key={2}>
-      <ReactTable {...{ data, columns }} />
+      <ReactTable
+        {...{
+          data,
+          columns,
+          getTdProps: (state, rowInfo, column) => ({
+            onClick: (e, handleOriginal) => {
+              if (column.id === 'registerName') history.push(rowInfo.original.linkRegister);
+              if (handleOriginal) handleOriginal();
+            },
+          }),
+        }}
+      />
     </div>
   );
 };
