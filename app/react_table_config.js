@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 const FilterComponent = ({ filter, onChange }) => (
-  <div className="input-group" style={{ height: '20px' }}>
+  <div className="input-group" style={{ height: '38px' }}>
     <input
       className="form-control"
       type="text"
-      style={{ width: '100%' }}
+      style={{ width: '100%', fontSize: '16px', borderRadius: 0 }}
       value={filter ? filter.value : ''}
       onChange={event => onChange(event.target.value)}
     />

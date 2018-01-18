@@ -102,6 +102,7 @@ class LocalpoolsList extends React.Component {
             {...{
               data,
               columns,
+              filterable: true,
               getTrProps: (state, rowinfo) => ({
                 onClick: () => {
                   history.push(`${url}/${rowinfo.original.id}`);
