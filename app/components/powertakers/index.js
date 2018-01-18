@@ -42,7 +42,7 @@ export class Powertakers extends React.Component {
                 render={() => (
                   <React.Fragment>
                     <Breadcrumbs breadcrumbs={breadcrumbs.concat([{ id: '-----', title: 'Powertakers' }])} />
-                    <LinkBack title="Localpool powertakers" />
+                    <LinkBack title="Powertakers" />
                   </React.Fragment>
                 )}
               />

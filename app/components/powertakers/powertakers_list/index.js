@@ -27,9 +27,12 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }) =
         : { value: p.customer.name, image: p.customer.image || DefaultOrganisation, type: 'avatar' },
     registerName: p.register.name,
     // HACK
-    linkRegister: `${url.split('/').slice(0, -1).join('/')}/system/${p.register.meterId}/registers/${p.register.id}`,
-    beginDate: moment(p.beginDate).format('DD.MM.YYYY'),
-    endDate: p.endDate ? moment(p.endDate).format('DD.MM.YYYY') : p.endDate,
+    linkRegister: `${url
+      .split('/')
+      .slice(0, -1)
+      .join('/')}/system/${p.register.meterId}/registers/${p.register.id}`,
+    beginDate: moment(p.beginDate).toDate(),
+    endDate: p.endDate ? moment(p.endDate).toDate() : p.endDate,
     link: `${url}/${p.id}`,
   }));
 
@@ -66,8 +69,7 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }) =
     {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableBeginDate` })} />,
       accessor: 'beginDate',
-      filterMethod: TableParts.filters.filterByValue,
-      sortMethod: TableParts.sort.sortByValue,
+      Cell: ({ value }) => moment(value).format('DD.MM.YYYY'),
     },
   ];
 
@@ -75,8 +77,7 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }) =
     columns.push({
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableEndDate` })} />,
       accessor: 'endDate',
-      filterMethod: TableParts.filters.filterByValue,
-      sortMethod: TableParts.sort.sortByValue,
+      Cell: ({ value }) => (value ? moment(value).toDate() : null),
     });
   }
 
