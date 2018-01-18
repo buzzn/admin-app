@@ -77,7 +77,7 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }) =
     columns.push({
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableEndDate` })} />,
       accessor: 'endDate',
-      Cell: ({ value }) => (value ? moment(value).toDate() : null),
+      Cell: ({ value }) => (value ? moment(value).format('DD.MM.YYYY') : ''),
     });
   }
 
