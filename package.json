@@ -90,7 +90,7 @@
     "@buzzn/module_auth": "git+https://github.com/buzzn/module-auth.git#master",
     "@buzzn/module_bubbles": "git+https://github.com/buzzn/module-bubbles.git#master",
     "@buzzn/module_charts": "git+https://github.com/buzzn/module-charts.git#new_api_labels_fix",
-    "bootstrap": "4.0.0-beta.2",
+    "bootstrap": "4.0.0",
     "buzzn-style": "git://github.com/buzzn/buzzn-style.git",
     "font-awesome": "^4.7.0",
     "highcharts": "^6.0.4",

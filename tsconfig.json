@@ -10,7 +10,15 @@
     "strictNullChecks": true,
     "pretty": true,
     "skipLibCheck": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "*",
+        "app/*"
+      ]
+    }
   },
   "exclude": [
     "node_modules",

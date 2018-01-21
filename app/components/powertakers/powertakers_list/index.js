@@ -25,6 +25,7 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }) =
           type: 'avatar',
         }
         : { value: p.customer.name, image: p.customer.image || DefaultOrganisation, type: 'avatar' },
+    linkPowertaker: `${url}/${p.id}`,
     registerName: p.register.name,
     // HACK
     linkRegister: `${url
@@ -45,6 +46,10 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }) =
       filterMethod: TableParts.filters.filterByValue,
       sortMethod: TableParts.sort.sortByValue,
       Cell: TableParts.components.iconNameCell,
+      style: {
+        cursor: 'pointer',
+        textDecoration: 'underline',
+      }
     },
     {
       Header: () => (
@@ -97,6 +102,7 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }) =
           getTdProps: (state, rowInfo, column) => ({
             onClick: (e, handleOriginal) => {
               if (column.id === 'registerName') history.push(rowInfo.original.linkRegister);
+              if (column.id === 'name') history.push(rowInfo.original.linkPowertaker);
               if (handleOriginal) handleOriginal();
             },
           }),

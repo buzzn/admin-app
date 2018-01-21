@@ -10,6 +10,7 @@ import Breadcrumbs from 'components/breadcrumbs';
 import LinkBack from 'components/link_back';
 import PowertakersList from './powertakers_list';
 import PowertakerData from './powertaker_data';
+import Loading from 'components/loading';
 
 export class Powertakers extends React.Component {
   componentWillMount() {
@@ -49,6 +50,7 @@ export class Powertakers extends React.Component {
               <Route
                 path={`${url}/:contractId`}
                 render={({ match: { url: powertakerUrl, params: { contractId } } }) => {
+                  if (loading) return <Loading minHeight={4} />;
                   const contract = find(powertakers.array, p => p.id === contractId);
                   if (!contract) return <Redirect to={url} />;
                   breadcrumbs.push({
@@ -113,6 +115,7 @@ export class Powertakers extends React.Component {
             <Route
               path={`${url}/:contractId`}
               render={({ match: { url: powertakerUrl, params: { contractId } } }) => {
+                if (loading) return <Loading minHeight={40} />;
                 const contract = find(powertakers.array, p => p.id === contractId);
                 if (!contract) return <Redirect to={url} />;
                 return (
@@ -123,7 +126,13 @@ export class Powertakers extends React.Component {
                     {/* Main UI */}
                     <Switch>
                       <Route path={powertakerUrl}>
-                        <PowertakerData powertaker={contract.customer} />
+                        <PowertakerData
+                          // FIXME: temporary workaround for organizations
+                          powertaker={contract.customer.type === 'organization' ? contract.customer : null}
+                          groupId={groupId}
+                          userId={contract.customer.type === 'person' ? contract.customer.id : null}
+                          url={url}
+                        />
                       </Route>
                     </Switch>
                     {/* End of main UI */}
