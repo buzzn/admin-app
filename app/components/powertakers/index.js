@@ -4,12 +4,14 @@ import { Switch, Route, Redirect, NavLink } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { Nav } from 'reactstrap';
 import find from 'lodash/find';
+import truncate from 'lodash/truncate';
 import Contracts from 'contracts';
 import Groups from 'groups';
 import Breadcrumbs from 'components/breadcrumbs';
 import LinkBack from 'components/link_back';
 import PowertakersList from './powertakers_list';
 import PowertakerData from './powertaker_data';
+import Loading from 'components/loading';
 
 export class Powertakers extends React.Component {
   componentWillMount() {
@@ -49,8 +51,12 @@ export class Powertakers extends React.Component {
               <Route
                 path={`${url}/:contractId`}
                 render={({ match: { url: powertakerUrl, params: { contractId } } }) => {
+                  if (loading) return <Loading minHeight={4} />;
                   const contract = find(powertakers.array, p => p.id === contractId);
                   if (!contract) return <Redirect to={url} />;
+                  const powertaker = contract.customer;
+                  const powertakerTitle =
+                    powertaker.type === 'person' ? `${powertaker.firstName} ${powertaker.lastName}` : powertaker.name;
                   breadcrumbs.push({
                     id: contract.id,
                     type: 'contract',
@@ -60,7 +66,7 @@ export class Powertakers extends React.Component {
                   return (
                     <React.Fragment>
                       <Breadcrumbs breadcrumbs={breadcrumbs} />
-                      <LinkBack url={url} title={contract.customerNumber} />
+                      <LinkBack url={url} title={truncate(powertakerTitle, 20)} />
                     </React.Fragment>
                   );
                 }}
@@ -112,7 +118,8 @@ export class Powertakers extends React.Component {
             {/* Detailed UI */}
             <Route
               path={`${url}/:contractId`}
-              render={({ match: { url: powertakerUrl, params: { contractId } } }) => {
+              render={({ history, match: { url: powertakerUrl, params: { contractId } } }) => {
+                if (loading) return <Loading minHeight={40} />;
                 const contract = find(powertakers.array, p => p.id === contractId);
                 if (!contract) return <Redirect to={url} />;
                 return (
@@ -123,7 +130,14 @@ export class Powertakers extends React.Component {
                     {/* Main UI */}
                     <Switch>
                       <Route path={powertakerUrl}>
-                        <PowertakerData powertaker={contract.customer} />
+                        <PowertakerData
+                          // FIXME: temporary workaround for organizations
+                          powertaker={contract.customer.type === 'organization' ? contract.customer : null}
+                          groupId={groupId}
+                          userId={contract.customer.type === 'person' ? contract.customer.id : null}
+                          url={url}
+                          history={history}
+                        />
                       </Route>
                     </Switch>
                     {/* End of main UI */}

@@ -9,6 +9,11 @@ export const constants = {
   LOADED_USER: 'buzzn_users/LOADED_USER',
   SET_USER: 'buzzn_users/SET_USER',
 
+  LOAD_GROUP_USER: 'buzzn_users/LOAD_GROUP_USER',
+  LOADING_GROUP_USER: 'buzzn_users/LOADING_GROUP_USER',
+  LOADED_GROUP_USER: 'buzzn_users/LOADED_GROUP_USER',
+  SET_GROUP_USER: 'buzzn_users/SET_GROUP_USER',
+
   LOAD_GROUP_USERS: 'buzzn_users/LOAD_GROUP_USERS',
   LOADING_GROUP_USERS: 'buzzn_users/LOADING_GROUP_USERS',
   LOADED_GROUP_USERS: 'buzzn_users/LOADED_GROUP_USERS',
@@ -26,10 +31,15 @@ export const actions = {
 
   setUserId: userId => ({ type: constants.SET_USER_ID, userId }),
 
-  loadUser: ({ userId, groupId }) => ({ type: constants.LOAD_USER, userId, groupId }),
+  loadUser: ({ userId }) => ({ type: constants.LOAD_USER, userId }),
   loadingUser: () => ({ type: constants.LOADING_USER }),
   loadedUser: () => ({ type: constants.LOADED_USER }),
   setUser: user => ({ type: constants.SET_USER, user }),
+
+  loadGroupUser: ({ userId, groupId }) => ({ type: constants.LOAD_GROUP_USER, userId, groupId }),
+  loadingGroupUser: () => ({ type: constants.LOADING_GROUP_USER }),
+  loadedGroupUser: () => ({ type: constants.LOADED_GROUP_USER }),
+  setGroupUser: user => ({ type: constants.SET_GROUP_USER, user }),
 
   loadGroupUsers: () => ({ type: constants.LOAD_GROUP_USERS }),
   loadingGroupUsers: () => ({ type: constants.LOADING_GROUP_USERS }),
