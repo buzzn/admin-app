@@ -4,6 +4,7 @@ import { Switch, Route, Redirect, NavLink } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { Nav } from 'reactstrap';
 import find from 'lodash/find';
+import truncate from 'lodash/truncate';
 import Contracts from 'contracts';
 import Groups from 'groups';
 import Breadcrumbs from 'components/breadcrumbs';
@@ -53,6 +54,9 @@ export class Powertakers extends React.Component {
                   if (loading) return <Loading minHeight={4} />;
                   const contract = find(powertakers.array, p => p.id === contractId);
                   if (!contract) return <Redirect to={url} />;
+                  const powertaker = contract.customer;
+                  const powertakerTitle =
+                    powertaker.type === 'person' ? `${powertaker.firstName} ${powertaker.lastName}` : powertaker.name;
                   breadcrumbs.push({
                     id: contract.id,
                     type: 'contract',
@@ -62,7 +66,7 @@ export class Powertakers extends React.Component {
                   return (
                     <React.Fragment>
                       <Breadcrumbs breadcrumbs={breadcrumbs} />
-                      <LinkBack url={url} title={contract.customerNumber} />
+                      <LinkBack url={url} title={truncate(powertakerTitle, 20)} />
                     </React.Fragment>
                   );
                 }}
@@ -114,7 +118,7 @@ export class Powertakers extends React.Component {
             {/* Detailed UI */}
             <Route
               path={`${url}/:contractId`}
-              render={({ match: { url: powertakerUrl, params: { contractId } } }) => {
+              render={({ history, match: { url: powertakerUrl, params: { contractId } } }) => {
                 if (loading) return <Loading minHeight={40} />;
                 const contract = find(powertakers.array, p => p.id === contractId);
                 if (!contract) return <Redirect to={url} />;
@@ -132,6 +136,7 @@ export class Powertakers extends React.Component {
                           groupId={groupId}
                           userId={contract.customer.type === 'person' ? contract.customer.id : null}
                           url={url}
+                          history={history}
                         />
                       </Route>
                     </Switch>

@@ -4,7 +4,7 @@ import { prepareHeaders, parseResponse, camelizeResponseKeys } from '../_util';
 export default {
   fetchUser({ token, apiUrl, apiPath, userId }) {
     return fetch(
-      `${apiUrl}${apiPath}/persons/${userId}?include=contracts:[localpool,register]`,
+      `${apiUrl}${apiPath}/persons/${userId}?include=address,contracts:[localpool,register]`,
       { headers: prepareHeaders(token) },
     )
       .then(parseResponse)
