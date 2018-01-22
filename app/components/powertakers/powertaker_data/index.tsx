@@ -352,8 +352,8 @@ class PowertakerData extends React.Component<ExtProps & DispatchProps & StatePro
                 {...{
                   data,
                   columns,
-                  getTdProps: (state, rowInfo, column) => ({
-                    onClick: (e, handleOriginal) => {
+                  getTdProps: (_state, rowInfo, column) => ({
+                    onClick: (_e, handleOriginal) => {
                       if (column.id === 'registerName' && rowInfo.original.linkRegister) {
                         history.push(rowInfo.original.linkRegister);
                       }
