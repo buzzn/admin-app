@@ -11,6 +11,8 @@ import DefaultOrganisation from 'images/default_organisation.jpg';
 const PowertakersList = ({ powertakers, loading, url, intl, active, history }) => {
   const filteredPowertakers = powertakers.filter(o => (active ? o.status !== 'ended' : o.status === 'ended'));
 
+  const prefix = 'admin.contracts';
+
   const data = orderBy(
     filteredPowertakers,
     o => o.customer.name || `${o.customer.firstName} ${o.customer.lastName}`,
@@ -31,13 +33,11 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }) =
     linkRegister: `${url
       .split('/')
       .slice(0, -1)
-      .join('/')}/system/${p.register.meterId}/registers/${p.register.id}`,
+      .join('/')}/system/${p.register.meterId}/registers/${p.register.id}/readings`,
     beginDate: moment(p.beginDate).toDate(),
     endDate: p.endDate ? moment(p.endDate).toDate() : p.endDate,
-    link: `${url}/${p.id}`,
+    status: intl.formatMessage({ id: `${prefix}.${p.status}` }),
   }));
-
-  const prefix = 'admin.contracts';
 
   const columns = [
     {
@@ -49,7 +49,7 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }) =
       style: {
         cursor: 'pointer',
         textDecoration: 'underline',
-      }
+      },
     },
     {
       Header: () => (

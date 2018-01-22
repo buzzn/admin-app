@@ -43,7 +43,7 @@ class PowertakerData extends React.Component<ExtProps & DispatchProps & StatePro
       linkRegister: `${url
         .split('/')
         .slice(0, -1)
-        .join('/')}/system/${c.register.meterId}/registers/${c.register.id}`,
+        .join('/')}/system/${c.register.meterId}/registers/${c.register.id}/readings`,
     }));
 
     const columns = [

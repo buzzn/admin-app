@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Switch, Route, Redirect, NavLink } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { Nav } from 'reactstrap';
 import find from 'lodash/find';
 import truncate from 'lodash/truncate';
@@ -16,12 +16,12 @@ import Loading from 'components/loading';
 export class Powertakers extends React.Component {
   componentWillMount() {
     const { loadGroupPowertakers, loadGroup, group, match: { params: { groupId } } } = this.props;
-    if (group.id !== groupId) loadGroup(groupId);
+    loadGroup(groupId);
     loadGroupPowertakers(groupId);
   }
 
   render() {
-    const { powertakers, setGroupPowertakers, match: { url, params: { groupId } }, loading, group } = this.props;
+    const { intl, powertakers, setGroupPowertakers, match: { url, params: { groupId } }, loading, group } = this.props;
 
     if (powertakers.status === 404 || powertakers.status === 403) {
       setGroupPowertakers({ _status: null, array: [] });
@@ -44,7 +44,7 @@ export class Powertakers extends React.Component {
                 render={() => (
                   <React.Fragment>
                     <Breadcrumbs breadcrumbs={breadcrumbs.concat([{ id: '-----', title: 'Powertakers' }])} />
-                    <LinkBack title="Powertakers" />
+                    <LinkBack title={intl.transtateMessage({ id: 'admin.contracts.backPowertakers' })} />
                   </React.Fragment>
                 )}
               />
@@ -165,4 +165,4 @@ export default connect(mapStateToProps, {
   loadGroupPowertakers: Contracts.actions.loadGroupPowertakers,
   setGroupPowertakers: Contracts.actions.setGroupPowertakers,
   loadGroup: Groups.actions.loadGroup,
-})(Powertakers);
+})(injectIntl(Powertakers));
