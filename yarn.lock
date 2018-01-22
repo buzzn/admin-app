@@ -613,7 +613,7 @@
 
 "@buzzn/i18n@git+https://github.com/buzzn/i18n.git#master":
   version "1.0.0"
-  resolved "git+https://github.com/buzzn/i18n.git#906fdd455423725f110b214129e8ee98a611b802"
+  resolved "git+https://github.com/buzzn/i18n.git#7bcf444d20274013909ae4b1662c1900a9c76528"
   dependencies:
     "@babel/cli" "^7.0.0-beta.34"
     "@babel/core" "^7.0.0-beta.34"
