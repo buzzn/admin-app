@@ -43,7 +43,7 @@ class MeterData extends React.Component {
         accessor: 'lastReading.value',
         filterable: false,
         sortable: false,
-        Cell: row => <span>{`${row.value} ${row.original.lastReading.unit}`}</span>,
+        Cell: row => <span>{row.value ? `${row.value} ${row.original.lastReading.unit}` : ''}</span>,
       },
       {
         Header: () => <FormattedMessage id="admin.readings.tableReason" />,
@@ -52,14 +52,16 @@ class MeterData extends React.Component {
         sortable: false,
         Cell: row => (
           <span>
-            <FormattedMessage id={`admin.readings.${row.value}`} />
+            {row.value ? <FormattedMessage id={`admin.readings.${row.value}`} /> : ''}
           </span>
         ),
       },
       {
         expander: true,
-        Expander: ({ isExpanded }) => (
-          <div>{isExpanded ? <i className="fa fa-chevron-up" /> : <i className="fa fa-chevron-down" />}</div>
+        Expander: row => (
+          row.original.lastReading.value ?
+            <div>{row.isExpanded ? <i className="fa fa-chevron-up" /> : <i className="fa fa-chevron-down" />}</div> :
+            ''
         ),
         style: { color: '#bdbdbd' },
       },
@@ -149,7 +151,7 @@ class MeterData extends React.Component {
                 expanded: this.state.expanded,
                 getTrProps: (state, rowInfo) => ({
                   onClick: (event, handleOriginal) => {
-                    this.handleRowClick(rowInfo.viewIndex);
+                    rowInfo.original.lastReading.value && this.handleRowClick(rowInfo.viewIndex);
                     handleOriginal && handleOriginal();
                   },
                 }),
