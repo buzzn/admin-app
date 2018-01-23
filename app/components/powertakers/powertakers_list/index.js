@@ -4,6 +4,7 @@ import orderBy from 'lodash/orderBy';
 import moment from 'moment';
 import { injectIntl } from 'react-intl';
 import { tableParts as TableParts } from 'react_table_config';
+import ContractStatus from 'components/contract_status';
 
 import DefaultPerson from 'images/default_person.jpg';
 import DefaultOrganisation from 'images/default_organisation.jpg';
@@ -36,7 +37,12 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }) =
       .join('/')}/system/${p.register.meterId}/registers/${p.register.id}/readings`,
     beginDate: moment(p.beginDate).toDate(),
     endDate: p.endDate ? moment(p.endDate).toDate() : p.endDate,
-    status: intl.formatMessage({ id: `${prefix}.${p.status}` }),
+    status: (
+      <div>
+        <ContractStatus {...{ size: 'small', status: p.status }} />
+        {intl.formatMessage({ id: `${prefix}.${p.status}` })}
+      </div>
+    ),
   }));
 
   const columns = [

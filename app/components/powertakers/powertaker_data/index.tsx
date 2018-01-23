@@ -8,6 +8,8 @@ import { Row, Col } from 'reactstrap';
 import Users from 'users';
 import Loading from 'components/loading';
 import { tableParts as TableParts } from 'react_table_config';
+import ContractStatus from 'components/contract_status';
+import ContractType from 'components/contract_type';
 
 const DefaultPerson = require('images/default_person.jpg');
 const DefaultOrganisation = require('images/default_organisation.jpg');
@@ -35,8 +37,8 @@ class PowertakerData extends React.Component<ExtProps & DispatchProps & StatePro
     const contracts = get(powertaker.contracts, 'array', []);
     const data = contracts.map(c => ({
       fullContractNumber: c.fullContractNumber,
-      type: intl.formatMessage({ id: `admin.contracts.${c.type}` }),
-      status: intl.formatMessage({ id: `admin.contracts.${c.status}` }),
+      type: <ContractType {...{ size: 'large', type: c.type }}/>,
+      status: <ContractStatus {...{ size: 'large', status: c.status }}/>,
       groupName: c.localpool.name,
       registerName: get(c.register, 'name', ''),
       // HACK
@@ -86,7 +88,7 @@ class PowertakerData extends React.Component<ExtProps & DispatchProps & StatePro
     return (
       <Row className="powertaker-data">
         <Col xs="3">
-          <img className="avatar" src={powertakerImage}/>
+          <img className="avatar" src={powertakerImage} />
         </Col>
         <Col xs="9">
           <h5 className="grey-underline pb-2">
