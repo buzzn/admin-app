@@ -40,7 +40,7 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }) =
     status: (
       <div>
         <ContractStatus {...{ size: 'small', status: p.status }} />
-        {intl.formatMessage({ id: `${prefix}.${p.status}` })}
+        <span className="ml-2">{intl.formatMessage({ id: `${prefix}.${p.status}` })}</span>
       </div>
     ),
   }));
