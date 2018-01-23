@@ -133,13 +133,13 @@ class PowertakerData extends React.Component<ExtProps & DispatchProps & StatePro
                   <FormattedMessage id="admin.addresses.address" />
                 </Col>
                 <Col xs="6" className="grey-underline fieldvalue">
-                  {powertaker.address.street}
+                  {powertakerAddress.street}
                 </Col>
               </Row>
               <Row className="fieldgroup">
                 <Col xs="6" className="fieldname" />
                 <Col xs="6" className="grey-underline fieldvalue">
-                  {powertaker.address.zip} {powertaker.address.city}
+                  {powertakerAddress.zip} {powertakerAddress.city}
                 </Col>
               </Row>
               <Row className="fieldgroup">
