@@ -38,12 +38,15 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }) =
       .join('/')}/system/${p.register.meterId}/registers/${p.register.id}/readings`,
     beginDate: moment(p.beginDate).toDate(),
     endDate: p.endDate ? moment(p.endDate).toDate() : p.endDate,
-    status: (
-      <div>
-        <ContractStatus {...{ size: 'small', status: p.status }} />
-        <span className="ml-2">{intl.formatMessage({ id: `${prefix}.${p.status}` })}</span>
-      </div>
-    ),
+    status: {
+      value: p.status,
+      Display: (
+        <div>
+          <ContractStatus {...{ size: 'small', status: p.status }} />
+          <span className="ml-2">{intl.formatMessage({ id: `${prefix}.${p.status}` })}</span>
+        </div>
+      ),
+    },
   }));
 
   const columns = [
@@ -63,8 +66,6 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }) =
         <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableRegisterName` })} />
       ),
       accessor: 'registerName',
-      filterMethod: TableParts.filters.filterByValue,
-      sortMethod: TableParts.sort.sortByValue,
       style: {
         cursor: 'pointer',
         textDecoration: 'underline',
@@ -75,8 +76,6 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }) =
         <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableContractNumber` })} />
       ),
       accessor: 'fullContractNumber',
-      filterMethod: TableParts.filters.filterByValue,
-      sortMethod: TableParts.sort.sortByValue,
       style: {
         cursor: 'pointer',
         textDecoration: 'underline',
@@ -102,6 +101,7 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }) =
     accessor: 'status',
     filterMethod: TableParts.filters.filterByValue,
     sortMethod: TableParts.sort.sortByValue,
+    Cell: ({ value: { Display } }) => Display,
   });
 
   return (
