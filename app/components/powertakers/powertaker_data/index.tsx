@@ -37,10 +37,11 @@ class PowertakerData extends React.Component<ExtProps & DispatchProps & StatePro
     const contracts = get(powertaker.contracts, 'array', []);
     const data = contracts.map(c => ({
       fullContractNumber: c.fullContractNumber,
-      type: <ContractType {...{ size: 'large', type: c.type }}/>,
-      status: <ContractStatus {...{ size: 'large', status: c.status }}/>,
+      type: <ContractType {...{ size: 'large', type: c.type }} />,
+      status: <ContractStatus {...{ size: 'large', status: c.status }} />,
       groupName: c.localpool.name,
       registerName: get(c.register, 'name', ''),
+      linkContract: `${url}/${c.id}`,
       // HACK
       linkRegister: `${url
         .split('/')
@@ -54,6 +55,10 @@ class PowertakerData extends React.Component<ExtProps & DispatchProps & StatePro
           <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.contracts.tableContractNumber' })} />
         ),
         accessor: 'fullContractNumber',
+        style: {
+          cursor: 'pointer',
+          textDecoration: 'underline',
+        },
       },
       {
         Header: () => (
@@ -358,6 +363,9 @@ class PowertakerData extends React.Component<ExtProps & DispatchProps & StatePro
                     onClick: (_e, handleOriginal) => {
                       if (column.id === 'registerName' && rowInfo.original.linkRegister) {
                         history.push(rowInfo.original.linkRegister);
+                      }
+                      if (column.id === 'fullContractNumber') {
+                        history.push(rowInfo.original.linkContract);
                       }
                       if (handleOriginal) handleOriginal();
                     },

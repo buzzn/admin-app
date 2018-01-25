@@ -28,7 +28,8 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }) =
           type: 'avatar',
         }
         : { value: p.customer.name, image: p.customer.image || DefaultOrganisation, type: 'avatar' },
-    linkPowertaker: `${url}/${p.id}`,
+    linkPowertaker: `${url}/${p.id}/powertaker`,
+    linkContract: `${url}/${p.id}`,
     registerName: p.register.name,
     // HACK
     linkRegister: `${url
@@ -76,6 +77,10 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }) =
       accessor: 'fullContractNumber',
       filterMethod: TableParts.filters.filterByValue,
       sortMethod: TableParts.sort.sortByValue,
+      style: {
+        cursor: 'pointer',
+        textDecoration: 'underline',
+      },
     },
     {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableBeginDate` })} />,
@@ -109,6 +114,7 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }) =
             onClick: (e, handleOriginal) => {
               if (column.id === 'registerName') history.push(rowInfo.original.linkRegister);
               if (column.id === 'name') history.push(rowInfo.original.linkPowertaker);
+              if (column.id === 'fullContractNumber') history.push(rowInfo.original.linkContract);
               if (handleOriginal) handleOriginal();
             },
           }),
