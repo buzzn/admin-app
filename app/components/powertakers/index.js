@@ -11,6 +11,7 @@ import Breadcrumbs from 'components/breadcrumbs';
 import LinkBack from 'components/link_back';
 import PowertakersList from './powertakers_list';
 import PowertakerData from './powertaker_data';
+import Contract from './contract';
 import Loading from 'components/loading';
 
 export class Powertakers extends React.Component {
@@ -49,25 +50,45 @@ export class Powertakers extends React.Component {
                 )}
               />
               <Route
-                path={`${url}/:contractId`}
+                path={`${url}/:contractId/powertaker`}
                 render={({ match: { url: powertakerUrl, params: { contractId } } }) => {
                   if (loading) return <Loading minHeight={4} />;
                   const contract = find(powertakers.array, p => p.id === contractId);
                   if (!contract) return <Redirect to={url} />;
-                  const powertaker = contract.customer;
-                  const powertakerTitle =
-                    powertaker.type === 'person' ? `${powertaker.firstName} ${powertaker.lastName}` : powertaker.name;
                   breadcrumbs.push({
                     id: contract.id,
                     type: 'contract',
-                    title: contract.customerNumber,
+                    title: contract.fullContractNumber,
                     link: undefined,
                   });
                   return (
-                    <React.Fragment>
-                      <Breadcrumbs breadcrumbs={breadcrumbs} />
-                      <LinkBack url={url} title={truncate(powertakerTitle, 20)} />
-                    </React.Fragment>
+                    <Switch>
+                      <Route
+                        path={`${powertakerUrl}/powertaker`}
+                        render={() => {
+                          const powertaker = contract.customer;
+                          const powertakerTitle =
+                            powertaker.type === 'person'
+                              ? `${powertaker.firstName} ${powertaker.lastName}`
+                              : powertaker.name;
+                          return (
+                            <React.Fragment>
+                              <Breadcrumbs breadcrumbs={breadcrumbs} />
+                              <LinkBack url={url} title={truncate(powertakerTitle, 20)} />
+                            </React.Fragment>
+                          );
+                        }}
+                      />
+                      <Route
+                        path={powertakerUrl}
+                        render={() => (
+                          <React.Fragment>
+                            <Breadcrumbs breadcrumbs={breadcrumbs} />
+                            <LinkBack url={url} title={contract.fullContractNumber} />
+                          </React.Fragment>
+                        )}
+                      />
+                    </Switch>
                   );
                 }}
               />
@@ -129,7 +150,7 @@ export class Powertakers extends React.Component {
 
                     {/* Main UI */}
                     <Switch>
-                      <Route path={powertakerUrl}>
+                      <Route path={`${powertakerUrl}/powertaker`}>
                         <PowertakerData
                           // FIXME: temporary workaround for organizations
                           powertaker={contract.customer.type === 'organization' ? contract.customer : null}
@@ -138,6 +159,9 @@ export class Powertakers extends React.Component {
                           url={url}
                           history={history}
                         />
+                      </Route>
+                      <Route path={powertakerUrl}>
+                        <Contract {...{ groupId, contractId, url }}/>
                       </Route>
                     </Switch>
                     {/* End of main UI */}

@@ -3,7 +3,7 @@ import { prepareHeaders, parseResponse, camelizeResponseKeys, camelizeResponseAr
 
 export default {
   fetchContract({ token, apiUrl, apiPath, contractId, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}?include=contrator_bank_account,contractor:[address],customer_bank_account,customer:[address,contact:address],tariffs,payments`, {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}?include=register:[meter],contrator_bank_account,contractor:[address],customer_bank_account,customer:[address,contact:address],tariffs,payments`, {
       headers: prepareHeaders(token),
     })
       .then(parseResponse)
