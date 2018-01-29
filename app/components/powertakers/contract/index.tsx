@@ -147,7 +147,7 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps & I
             </Row>
             <Row className="fieldgroup">
               <Col xs="6" className="fieldname">
-                <FormattedMessage id={`${prefix}.contractorNumber`} />
+                <FormattedMessage id={`${prefix}.contractor`} />
               </Col>
               <Col xs="6" className="grey-underline fieldvalue">
                 {contractor.name || `${contractor.firstName} ${contractor.lastName}`}
