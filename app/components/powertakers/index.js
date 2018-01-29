@@ -50,7 +50,7 @@ export class Powertakers extends React.Component {
                 )}
               />
               <Route
-                path={`${url}/:contractId/powertaker`}
+                path={`${url}/:contractId`}
                 render={({ match: { url: powertakerUrl, params: { contractId } } }) => {
                   if (loading) return <Loading minHeight={4} />;
                   const contract = find(powertakers.array, p => p.id === contractId);

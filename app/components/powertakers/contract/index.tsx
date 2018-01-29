@@ -4,6 +4,7 @@ import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import { Redirect, Link } from 'react-router-dom';
 import { Row, Col } from 'reactstrap';
 import get from 'lodash/get';
+import truncate from 'lodash/truncate';
 import moment from 'moment';
 import { formatLabel } from '_util';
 import Contracts from 'contracts';
@@ -32,39 +33,52 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps & I
     return (
       <div className="contract-data">
         <Row className="contract-header">
-          <Col xs="11" style={{ borderRight: '1px black solid' }}>
-            <Row style={{ borderBottom: '1px black solid', height: '80px' }}>
+          <Col xs="11" style={{ borderRight: '1px #E0E0E0 solid' }}>
+            <Row style={{ borderBottom: '1px #E0E0E0 solid', height: '80px' }}>
               <Col xs="6" style={{ padding: '20px 0 20px 20px' }}>
-                <Link to={`${url}/${contract.id}/powertaker`}>
-                  {contract.customer.name || `${contract.customer.firstName} ${contract.customer.lastName}`}
+                <Link to={`${url}/${contract.id}/powertaker`} className="big-link">
+                  {truncate(contract.customer.name || `${contract.customer.firstName} ${contract.customer.lastName}`, { length: 25 })}{' '}
+                  >
                 </Link>
+                <span className="link-type">
+                  <FormattedMessage id={`${prefix}.objectTypePowerGiver`} />
+                </span>
               </Col>
               <Col xs="6" style={{ padding: '20px 0 20px 20px' }}>
                 <Link
+                  className="big-link"
                   to={`${url
                     .split('/')
                     .slice(0, -1)
                     .join('/')}/system/${register.meterId}/registers/${register.id}/readings`}
                 >
-                  {register.name}
+                  {truncate(register.name, { length: 25 })} >
                 </Link>
+                <span className="link-type">
+                  <FormattedMessage id={`${prefix}.objectTypePowerRegister`} />
+                </span>
               </Col>
             </Row>
             <Row style={{ height: '80px' }}>
               <Col xs="6" style={{ padding: '20px 0 20px 20px' }}>
-                {contractor.name || `${contractor.firstName} ${contractor.lastName}`}
+                <span className="big-link">
+                  {truncate(contractor.name || `${contractor.firstName} ${contractor.lastName}`, { length: 25 })}
+                </span>
+                <span className="link-type">
+                  <FormattedMessage id={`${prefix}.objectTypePowerTaker`} />
+                </span>
               </Col>
               <Col xs="6" />
             </Row>
           </Col>
           <Col xs="1">
             <Row style={{ height: '80px' }}>
-              <Col xs="12" style={{ padding: '20px 20px 20px 0' }}>
+              <Col xs="12" style={{ padding: '30px 20px 20px 20px' }}>
                 <ContractStatus status={contract.status} size="large" />
               </Col>
             </Row>
             <Row style={{ height: '80px' }}>
-              <Col xs="12" style={{ padding: '20px 20px 20px 0' }}>
+              <Col xs="12" style={{ padding: '20px 20px 20px 16px' }}>
                 <ContractType type={contract.type} size="large" />
               </Col>
             </Row>
@@ -195,7 +209,7 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps & I
                 <FormattedMessage id={`${prefix}.status`} />
               </Col>
               <Col xs="6" className="grey-underline fieldvalue">
-                {contract.status}
+                <FormattedMessage id={`${prefix}.${contract.status}`}/>
                 <ContractStatus status={contract.status} size="large" />
               </Col>
             </Row>

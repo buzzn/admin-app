@@ -4,14 +4,14 @@ import { Link } from 'react-router-dom';
 const LinkBack = ({ url, title }) => {
   if (url) {
     return (
-      <h1 className="h3">
+      <span className="h3">
         <Link to={url}>
           <i className="fa fa-chevron-left" /> {title}
         </Link>
-      </h1>
+      </span>
     );
   }
-  return <h1 className="h3">{title}</h1>;
+  return <span className="h3">{title}</span>;
 };
 
 export default LinkBack;
