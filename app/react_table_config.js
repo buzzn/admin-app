@@ -1,3 +1,4 @@
+/* eslint import/prefer-default-export: 0 */
 import * as React from 'react';
 import { ReactTableDefaults } from 'react-table';
 import { Link } from 'react-router-dom';
@@ -66,12 +67,12 @@ export const tableParts = {
           menuItems.map((m, i) => {
             if (m.divider) return <DropdownItem key={i} divider />;
             if (typeof m.action === 'string') {
- return (
+              return (
                 <Link key={i} to={row.original[m.action]}>
                   <DropdownItem>{m.title}</DropdownItem>
                 </Link>
               );
-}
+            }
             return (
               <DropdownItem key={i} onClick={m.action}>
                 {m.title}

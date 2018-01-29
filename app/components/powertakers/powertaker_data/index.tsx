@@ -41,12 +41,14 @@ class PowertakerData extends React.Component<ExtProps & DispatchProps & StatePro
       status: <ContractStatus {...{ size: 'large', status: c.status }} />,
       groupName: c.localpool.name,
       registerName: get(c.register, 'name', ''),
-      linkContract: `${url}/${c.id}`,
+      linkContract: (c.type === 'contract_localpool_power_taker' ? `${url}/${c.id}` : ''),
       // HACK
-      linkRegister: c.register ? `${url
-        .split('/')
-        .slice(0, -1)
-        .join('/')}/system/${c.register.meterId}/registers/${c.register.id}/readings` : '',
+      linkRegister: c.register
+        ? `${url
+          .split('/')
+          .slice(0, -1)
+          .join('/')}/system/${c.register.meterId}/registers/${c.register.id}/readings`
+        : '',
     }));
 
     const columns = [
@@ -364,7 +366,7 @@ class PowertakerData extends React.Component<ExtProps & DispatchProps & StatePro
                       if (column.id === 'registerName' && rowInfo.original.linkRegister) {
                         history.push(rowInfo.original.linkRegister);
                       }
-                      if (column.id === 'fullContractNumber') {
+                      if (column.id === 'fullContractNumber' && rowInfo.original.linkContract.length) {
                         history.push(rowInfo.original.linkContract);
                       }
                       if (handleOriginal) handleOriginal();

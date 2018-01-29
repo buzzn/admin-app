@@ -22,6 +22,9 @@ const ContractType = ({ type, size }: Props) => {
       inverted: 'inverted',
     },
   };
+
+  if (!types[type]) return null;
+
   return (
     <span className={`contract-type ${size} ${types[type].inverted}`}
       style={{
