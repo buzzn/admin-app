@@ -124,7 +124,9 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps & I
                 <FormattedMessage id={`${prefix}.renewableEnergyLawTaxation`} />
               </Col>
               <Col xs="6" className="grey-underline fieldvalue">
-                {intl.formatMessage({ id: `${prefix}.${contract.renewableEnergyLawTaxation}` })}
+                {contract.renewableEnergyLawTaxation
+                  ? intl.formatMessage({ id: `${prefix}.${contract.renewableEnergyLawTaxation}` })
+                  : ''}
               </Col>
             </Row>
             <Row className="fieldgroup">
@@ -209,7 +211,7 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps & I
                 <FormattedMessage id={`${prefix}.status`} />
               </Col>
               <Col xs="6" className="grey-underline fieldvalue">
-                <FormattedMessage id={`${prefix}.${contract.status}`}/>
+                <FormattedMessage id={`${prefix}.${contract.status}`} />
                 <ContractStatus status={contract.status} size="large" />
               </Col>
             </Row>
