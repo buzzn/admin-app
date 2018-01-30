@@ -66,7 +66,7 @@ class GroupSettings extends React.Component {
       intl,
     } = this.props;
 
-    if (group.status === 404 || group.status === 403) {
+    if (group._status === 404 || group._status === 403) {
       setGroup({ _status: null });
       return <Redirect to="/groups" />;
     }

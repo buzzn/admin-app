@@ -36,7 +36,7 @@ export class System extends React.Component {
       match: { url, params: { groupId } },
     } = this.props;
 
-    if (meters.status === 404 || meters.status === 403) {
+    if (meters._status === 404 || meters._status === 403) {
       setGroupMeters({ _status: null, array: [] });
       return <Redirect to="/groups" />;
     }

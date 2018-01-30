@@ -24,7 +24,7 @@ export class Powertakers extends React.Component {
   render() {
     const { intl, powertakers, setGroupPowertakers, match: { url, params: { groupId } }, loading, group } = this.props;
 
-    if (powertakers.status === 404 || powertakers.status === 403) {
+    if (powertakers._status === 404 || powertakers._status === 403) {
       setGroupPowertakers({ _status: null, array: [] });
       return <Redirect to="/groups" />;
     }
