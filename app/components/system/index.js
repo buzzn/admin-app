@@ -15,6 +15,7 @@ import RegisterDataForm from './register_data';
 import ReadingsList from './readings_list';
 import RegisterPowerContainer from './register_power';
 import MeterDataForm from './meter_data';
+import RegisterContracts from './register_contracts';
 
 export class System extends React.Component {
   componentWillMount() {
@@ -176,7 +177,7 @@ export class System extends React.Component {
                                   {register.readings && <ReadingsList readings={register.readings.array} />}
                                 </Route>
                                 <Route path={`${registerUrl}/contracts`}>
-                                  <div className={devMode ? '' : 'under-construction'} style={{ height: '8rem' }} />
+                                  {register.contracts && <RegisterContracts contracts={register.contracts.array} />}
                                 </Route>
                                 <Route path={`${registerUrl}/devices`}>
                                   <div className={devMode ? '' : 'under-construction'} style={{ height: '8rem' }} />

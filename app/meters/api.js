@@ -26,7 +26,7 @@ export default {
   },
   fetchGroupMeters({ token, apiUrl, apiPath, groupId }) {
     return fetch(
-      `${apiUrl}${apiPath}/localpools/${groupId}/meters?include=registers:[readings],formula_parts:register`,
+      `${apiUrl}${apiPath}/localpools/${groupId}/meters?include=registers:[readings,contracts:[customer]],formula_parts:register`,
       { headers: prepareHeaders(token) },
     )
       .then(parseResponse)
