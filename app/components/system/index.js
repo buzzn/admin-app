@@ -148,7 +148,7 @@ export class System extends React.Component {
                     <Switch>
                       <Route
                         path={`${meterUrl}/registers/:registerId`}
-                        render={({ match: { url: registerUrl, params: { registerId } } }) => {
+                        render={({ history, match: { url: registerUrl, params: { registerId } } }) => {
                           const register = find(meter.registers.array, r => r.id === registerId);
                           if (!register) return <Redirect to={url} />;
                           return (
@@ -177,7 +177,13 @@ export class System extends React.Component {
                                   {register.readings && <ReadingsList readings={register.readings.array} />}
                                 </Route>
                                 <Route path={`${registerUrl}/contracts`}>
-                                  {register.contracts && <RegisterContracts contracts={register.contracts.array} />}
+                                  {register.contracts && (
+                                    <RegisterContracts
+                                      contracts={register.contracts.array}
+                                      url={url}
+                                      history={history}
+                                    />
+                                  )}
                                 </Route>
                                 <Route path={`${registerUrl}/devices`}>
                                   <div className={devMode ? '' : 'under-construction'} style={{ height: '8rem' }} />

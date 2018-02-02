@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ReactTable from 'react-table';
-import { injectIntl, FormattedMessage, InjectIntlProps } from 'react-intl';
+import { injectIntl, InjectIntlProps } from 'react-intl';
 import orderBy from 'lodash/orderBy';
 import moment from 'moment';
 import { tableParts as TableParts } from 'react_table_config';
@@ -12,9 +12,10 @@ const DefaultOrganisation = require('images/default_organisation.jpg');
 interface Props {
   contracts: Array<any>;
   url: string;
+  history: { [key: string]: any };
 }
 
-const RegisterContracts = ({ contracts, url, intl }: Props & InjectIntlProps) => {
+const RegisterContracts = ({ contracts, url, intl, history }: Props & InjectIntlProps) => {
   const prefix = 'admin.contracts';
   const data = orderBy(contracts, c => new Date(c.beginDate), 'desc').map(c => ({
     ...c,
@@ -28,8 +29,17 @@ const RegisterContracts = ({ contracts, url, intl }: Props & InjectIntlProps) =>
             type: 'avatar',
           }
           : { value: c.customer.name, image: c.customer.image || DefaultOrganisation, type: 'avatar' },
-    linkPowertaker: c.type === 'contract_localpool_third_party' ? '' : `${url}/${c.id}/powertaker`,
-    linkContract: `${url}/${c.id}`,
+    linkPowertaker:
+      c.type === 'contract_localpool_third_party'
+        ? ''
+        : `${url
+          .split('/')
+          .slice(0, -1)
+          .join('/')}/powertakers/${c.id}/powertaker`,
+    linkContract: `${url
+      .split('/')
+      .slice(0, -1)
+      .join('/')}/powertakers/${c.id}`,
     status: {
       value: c.status,
       Display: (
@@ -85,10 +95,19 @@ const RegisterContracts = ({ contracts, url, intl }: Props & InjectIntlProps) =>
 
   return (
     <div className="p-0" style={{ marginBottom: '2rem' }}>
-      <ReactTable {...{
-        data,
-        columns,
-      }}/>
+      <ReactTable
+        {...{
+          data,
+          columns,
+          getTdProps: (_state, rowInfo, column) => ({
+            onClick: (_e, handleOriginal) => {
+              if (column.id === 'name' && rowInfo.original.linkPowertaker) history.push(rowInfo.original.linkPowertaker);
+              if (column.id === 'fullContractNumber') history.push(rowInfo.original.linkContract);
+              if (handleOriginal) handleOriginal();
+            },
+          }),
+        }}
+      />
     </div>
   );
 };
