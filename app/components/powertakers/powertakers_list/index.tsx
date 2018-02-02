@@ -2,33 +2,49 @@ import * as React from 'react';
 import ReactTable from 'react-table';
 import orderBy from 'lodash/orderBy';
 import moment from 'moment';
-import { injectIntl } from 'react-intl';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { tableParts as TableParts } from 'react_table_config';
 import ContractStatus from 'components/contract_status';
+import Loading from 'components/loading';
 
-import DefaultPerson from 'images/default_person.jpg';
-import DefaultOrganisation from 'images/default_organisation.jpg';
+const DefaultPerson = require('images/default_person.jpg');
+const DefaultOrganisation = require('images/default_organisation.jpg');
 
-const PowertakersList = ({ powertakers, loading, url, intl, active, history }) => {
+interface Props {
+  powertakers: Array<any>;
+  loading: boolean;
+  url: string;
+  active: boolean;
+  history: any;
+}
+
+const PowertakersList = ({ powertakers, loading, url, intl, active, history }: Props & InjectedIntlProps) => {
+  if (loading) return <Loading minHeight={40} />;
+
   const filteredPowertakers = powertakers.filter(o => (active ? o.status !== 'ended' : o.status === 'ended'));
 
   const prefix = 'admin.contracts';
 
   const data = orderBy(
     filteredPowertakers,
-    o => o.customer.name || `${o.customer.firstName} ${o.customer.lastName}`,
+    o =>
+      (o.type === 'contract_localpool_third_party'
+        ? null
+        : o.customer.name || `${o.customer.firstName} ${o.customer.lastName}`),
     'asc',
   ).map(p => ({
     ...p,
     name:
-      p.customer.type === 'person'
-        ? {
-          value: `${p.customer.firstName} ${p.customer.lastName}`,
-          image: p.customer.image || DefaultPerson,
-          type: 'avatar',
-        }
-        : { value: p.customer.name, image: p.customer.image || DefaultOrganisation, type: 'avatar' },
-    linkPowertaker: `${url}/${p.id}/powertaker`,
+      p.type === 'contract_localpool_third_party'
+        ? { value: 'drittbeliefert' }
+        : p.customer.type === 'person'
+          ? {
+            value: `${p.customer.firstName} ${p.customer.lastName}`,
+            image: p.customer.image || DefaultPerson,
+            type: 'avatar',
+          }
+          : { value: p.customer.name, image: p.customer.image || DefaultOrganisation, type: 'avatar' },
+    linkPowertaker: p.type === 'contract_localpool_third_party' ? '' : `${url}/${p.id}/powertaker`,
     linkContract: `${url}/${p.id}`,
     registerName: p.register.name,
     // HACK
@@ -110,10 +126,10 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }) =
         {...{
           data,
           columns,
-          getTdProps: (state, rowInfo, column) => ({
-            onClick: (e, handleOriginal) => {
+          getTdProps: (_state, rowInfo, column) => ({
+            onClick: (_e, handleOriginal) => {
               if (column.id === 'registerName') history.push(rowInfo.original.linkRegister);
-              if (column.id === 'name') history.push(rowInfo.original.linkPowertaker);
+              if (column.id === 'name' && rowInfo.original.linkPowertaker.length) { history.push(rowInfo.original.linkPowertaker); }
               if (column.id === 'fullContractNumber') history.push(rowInfo.original.linkContract);
               if (handleOriginal) handleOriginal();
             },
