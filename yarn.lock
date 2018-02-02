@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@babel/cli@^7.0.0-beta.34":
+"@babel/cli@^7.0.0-beta.34", "@babel/cli@^7.0.0-beta.39":
   version "7.0.0-beta.39"
   resolved "https://registry.yarnpkg.com/@babel/cli/-/cli-7.0.0-beta.39.tgz#0764d7ed63880ab322762f1401cc32bb9b4ec006"
   dependencies:
@@ -56,7 +56,7 @@
     esutils "^2.0.2"
     js-tokens "^3.0.0"
 
-"@babel/core@^7.0.0-beta.34":
+"@babel/core@^7.0.0-beta.34", "@babel/core@^7.0.0-beta.39":
   version "7.0.0-beta.39"
   resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.0.0-beta.39.tgz#242b8c0b99573de0395eaaa94e2d82a9cd008cf3"
   dependencies:
@@ -145,6 +145,13 @@
   resolved "https://registry.yarnpkg.com/@babel/helper-builder-react-jsx/-/helper-builder-react-jsx-7.0.0-beta.38.tgz#a6f8ffcdd3d48a257e33cfcc1f089e16bd2ce7de"
   dependencies:
     "@babel/types" "7.0.0-beta.38"
+    esutils "^2.0.0"
+
+"@babel/helper-builder-react-jsx@7.0.0-beta.39":
+  version "7.0.0-beta.39"
+  resolved "https://registry.yarnpkg.com/@babel/helper-builder-react-jsx/-/helper-builder-react-jsx-7.0.0-beta.39.tgz#ccac98469704b15c27ef0752bb125aec900c405a"
+  dependencies:
+    "@babel/types" "7.0.0-beta.39"
     esutils "^2.0.0"
 
 "@babel/helper-call-delegate@7.0.0-beta.38":
@@ -411,7 +418,14 @@
     "@babel/helper-remap-async-to-generator" "7.0.0-beta.39"
     "@babel/plugin-syntax-async-generators" "7.0.0-beta.39"
 
-"@babel/plugin-proposal-class-properties@7.0.0-beta.38", "@babel/plugin-proposal-class-properties@^7.0.0-beta.34", "@babel/plugin-proposal-class-properties@^7.0.0-beta.36":
+"@babel/plugin-proposal-class-properties@7.0.0-beta.39", "@babel/plugin-proposal-class-properties@^7.0.0-beta.39":
+  version "7.0.0-beta.39"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-class-properties/-/plugin-proposal-class-properties-7.0.0-beta.39.tgz#251bf1cdbaa2d533897b57d26ac39cf52e25c734"
+  dependencies:
+    "@babel/helper-function-name" "7.0.0-beta.39"
+    "@babel/plugin-syntax-class-properties" "7.0.0-beta.39"
+
+"@babel/plugin-proposal-class-properties@^7.0.0-beta.34", "@babel/plugin-proposal-class-properties@^7.0.0-beta.36":
   version "7.0.0-beta.38"
   resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-class-properties/-/plugin-proposal-class-properties-7.0.0-beta.38.tgz#3cfa2fdedf7017ee14472d6859c3fb98654c0f22"
   dependencies:
@@ -424,7 +438,7 @@
   dependencies:
     "@babel/plugin-syntax-object-rest-spread" "7.0.0-beta.38"
 
-"@babel/plugin-proposal-object-rest-spread@7.0.0-beta.39", "@babel/plugin-proposal-object-rest-spread@^7.0.0-beta.34":
+"@babel/plugin-proposal-object-rest-spread@7.0.0-beta.39", "@babel/plugin-proposal-object-rest-spread@^7.0.0-beta.34", "@babel/plugin-proposal-object-rest-spread@^7.0.0-beta.39":
   version "7.0.0-beta.39"
   resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-object-rest-spread/-/plugin-proposal-object-rest-spread-7.0.0-beta.39.tgz#ea4d6ea974a364028e5074b1abe6505924d179a3"
   dependencies:
@@ -468,23 +482,31 @@
   version "7.0.0-beta.38"
   resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-class-properties/-/plugin-syntax-class-properties-7.0.0-beta.38.tgz#e06a9bf6446611d78dfc71f84cddfe9219fb2829"
 
-"@babel/plugin-syntax-dynamic-import@7.0.0-beta.38":
-  version "7.0.0-beta.38"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-dynamic-import/-/plugin-syntax-dynamic-import-7.0.0-beta.38.tgz#b74bc5d57b4cbe6a341570ea6d7db9ffba450f7b"
+"@babel/plugin-syntax-class-properties@7.0.0-beta.39", "@babel/plugin-syntax-class-properties@^7.0.0-beta.39":
+  version "7.0.0-beta.39"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-class-properties/-/plugin-syntax-class-properties-7.0.0-beta.39.tgz#a1a0e89c6042635cd21aafbdec3f006f06c368aa"
 
-"@babel/plugin-syntax-import-meta@7.0.0-beta.38":
-  version "7.0.0-beta.38"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-import-meta/-/plugin-syntax-import-meta-7.0.0-beta.38.tgz#0da0626a421cc21993326612d7bc92f25a3ab9cf"
+"@babel/plugin-syntax-dynamic-import@7.0.0-beta.39":
+  version "7.0.0-beta.39"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-dynamic-import/-/plugin-syntax-dynamic-import-7.0.0-beta.39.tgz#75c15750bc7df0d89d5d81dcf28cf84516b25e7c"
+
+"@babel/plugin-syntax-import-meta@7.0.0-beta.39":
+  version "7.0.0-beta.39"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-import-meta/-/plugin-syntax-import-meta-7.0.0-beta.39.tgz#56658e7487227ca7c350b67031c0e16ce987558d"
 
 "@babel/plugin-syntax-jsx@7.0.0-beta.38":
   version "7.0.0-beta.38"
   resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-jsx/-/plugin-syntax-jsx-7.0.0-beta.38.tgz#1644f05630105cdbf0d6b4285f62af79fd8dd37f"
 
+"@babel/plugin-syntax-jsx@7.0.0-beta.39":
+  version "7.0.0-beta.39"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-jsx/-/plugin-syntax-jsx-7.0.0-beta.39.tgz#c7f0d1a7e6bbe503a814a265d7d7322f2b230bf6"
+
 "@babel/plugin-syntax-object-rest-spread@7.0.0-beta.38", "@babel/plugin-syntax-object-rest-spread@^7.0.0-beta.36":
   version "7.0.0-beta.38"
   resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-object-rest-spread/-/plugin-syntax-object-rest-spread-7.0.0-beta.38.tgz#a7288d08b5f3a3bf823c76f11118eb43dee74d43"
 
-"@babel/plugin-syntax-object-rest-spread@7.0.0-beta.39", "@babel/plugin-syntax-object-rest-spread@^7.0.0-beta.34":
+"@babel/plugin-syntax-object-rest-spread@7.0.0-beta.39", "@babel/plugin-syntax-object-rest-spread@^7.0.0-beta.34", "@babel/plugin-syntax-object-rest-spread@^7.0.0-beta.39":
   version "7.0.0-beta.39"
   resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-object-rest-spread/-/plugin-syntax-object-rest-spread-7.0.0-beta.39.tgz#f19f0761ccebf1d579197705e2efda36e1a45545"
 
@@ -496,9 +518,9 @@
   version "7.0.0-beta.39"
   resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-optional-catch-binding/-/plugin-syntax-optional-catch-binding-7.0.0-beta.39.tgz#b6d3c27d2ceab69cfd132ba19a6d22fd37817fb2"
 
-"@babel/plugin-syntax-typescript@7.0.0-beta.38":
-  version "7.0.0-beta.38"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-typescript/-/plugin-syntax-typescript-7.0.0-beta.38.tgz#c62b1148da53a071ac8e8013797d2783eefab631"
+"@babel/plugin-syntax-typescript@7.0.0-beta.39":
+  version "7.0.0-beta.39"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-typescript/-/plugin-syntax-typescript-7.0.0-beta.39.tgz#899d8c6e0c243f4b1d4ca4b687492b0b12314063"
 
 "@babel/plugin-transform-arrow-functions@7.0.0-beta.38":
   version "7.0.0-beta.38"
@@ -730,11 +752,21 @@
   version "7.0.0-beta.38"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-react-display-name/-/plugin-transform-react-display-name-7.0.0-beta.38.tgz#95b406c30fd6569f90e15003b2b9296c38d0b77e"
 
+"@babel/plugin-transform-react-display-name@7.0.0-beta.39":
+  version "7.0.0-beta.39"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-react-display-name/-/plugin-transform-react-display-name-7.0.0-beta.39.tgz#450f3ff1e42761af45119888d9c32c6cc54ad091"
+
 "@babel/plugin-transform-react-jsx-self@7.0.0-beta.38":
   version "7.0.0-beta.38"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-react-jsx-self/-/plugin-transform-react-jsx-self-7.0.0-beta.38.tgz#1cd41178d16373a64280de0d62355c96e8fbe6af"
   dependencies:
     "@babel/plugin-syntax-jsx" "7.0.0-beta.38"
+
+"@babel/plugin-transform-react-jsx-self@7.0.0-beta.39":
+  version "7.0.0-beta.39"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-react-jsx-self/-/plugin-transform-react-jsx-self-7.0.0-beta.39.tgz#ad2f4f357b5be61929d989b5be60dac943e8434a"
+  dependencies:
+    "@babel/plugin-syntax-jsx" "7.0.0-beta.39"
 
 "@babel/plugin-transform-react-jsx-source@7.0.0-beta.38":
   version "7.0.0-beta.38"
@@ -742,12 +774,25 @@
   dependencies:
     "@babel/plugin-syntax-jsx" "7.0.0-beta.38"
 
+"@babel/plugin-transform-react-jsx-source@7.0.0-beta.39":
+  version "7.0.0-beta.39"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-react-jsx-source/-/plugin-transform-react-jsx-source-7.0.0-beta.39.tgz#632decbb1ad66592a3fae6cac3103b820bc89877"
+  dependencies:
+    "@babel/plugin-syntax-jsx" "7.0.0-beta.39"
+
 "@babel/plugin-transform-react-jsx@7.0.0-beta.38":
   version "7.0.0-beta.38"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-react-jsx/-/plugin-transform-react-jsx-7.0.0-beta.38.tgz#6abd97c2dde5a007f0fba77d4c4bd7b2a68e7316"
   dependencies:
     "@babel/helper-builder-react-jsx" "7.0.0-beta.38"
     "@babel/plugin-syntax-jsx" "7.0.0-beta.38"
+
+"@babel/plugin-transform-react-jsx@7.0.0-beta.39":
+  version "7.0.0-beta.39"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-react-jsx/-/plugin-transform-react-jsx-7.0.0-beta.39.tgz#43157bc2274fa3b6925f67ae1ccec03f9421432f"
+  dependencies:
+    "@babel/helper-builder-react-jsx" "7.0.0-beta.39"
+    "@babel/plugin-syntax-jsx" "7.0.0-beta.39"
 
 "@babel/plugin-transform-regenerator@7.0.0-beta.38":
   version "7.0.0-beta.38"
@@ -809,11 +854,11 @@
   version "7.0.0-beta.39"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-typeof-symbol/-/plugin-transform-typeof-symbol-7.0.0-beta.39.tgz#ac2134df64e014e864f7678e46770ecd13f604e9"
 
-"@babel/plugin-transform-typescript@7.0.0-beta.38":
-  version "7.0.0-beta.38"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-typescript/-/plugin-transform-typescript-7.0.0-beta.38.tgz#ff08fdcef11dc76915b7194524503b17820bf95c"
+"@babel/plugin-transform-typescript@7.0.0-beta.39":
+  version "7.0.0-beta.39"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-typescript/-/plugin-transform-typescript-7.0.0-beta.39.tgz#44282884d76056c2f1a05105bc3f3d8cbf1a7780"
   dependencies:
-    "@babel/plugin-syntax-typescript" "7.0.0-beta.38"
+    "@babel/plugin-syntax-typescript" "7.0.0-beta.39"
 
 "@babel/plugin-transform-unicode-regex@7.0.0-beta.38":
   version "7.0.0-beta.38"
@@ -829,14 +874,14 @@
     "@babel/helper-regex" "7.0.0-beta.39"
     regexpu-core "^4.1.3"
 
-"@babel/polyfill@^7.0.0-beta.36":
-  version "7.0.0-beta.38"
-  resolved "https://registry.yarnpkg.com/@babel/polyfill/-/polyfill-7.0.0-beta.38.tgz#df9ca32ffe4f6de0b99ab495c197837f422bb12e"
+"@babel/polyfill@^7.0.0-beta.39":
+  version "7.0.0-beta.39"
+  resolved "https://registry.yarnpkg.com/@babel/polyfill/-/polyfill-7.0.0-beta.39.tgz#3711a88b11f5982b936d5a60f239410ce75c6529"
   dependencies:
-    core-js "^2.4.0"
+    core-js "^2.5.3"
     regenerator-runtime "^0.11.1"
 
-"@babel/preset-env@^7.0.0-beta.34":
+"@babel/preset-env@^7.0.0-beta.34", "@babel/preset-env@^7.0.0-beta.39":
   version "7.0.0-beta.39"
   resolved "https://registry.yarnpkg.com/@babel/preset-env/-/preset-env-7.0.0-beta.39.tgz#3977e2d4dc7d196b07bb3bd23fb18bc280b20fa3"
   dependencies:
@@ -931,29 +976,39 @@
     "@babel/plugin-transform-react-jsx-self" "7.0.0-beta.38"
     "@babel/plugin-transform-react-jsx-source" "7.0.0-beta.38"
 
-"@babel/preset-stage-3@^7.0.0-beta.36":
-  version "7.0.0-beta.38"
-  resolved "https://registry.yarnpkg.com/@babel/preset-stage-3/-/preset-stage-3-7.0.0-beta.38.tgz#f542ca4f043ddeb4456ac671b5f9ab47e9ab1456"
+"@babel/preset-react@^7.0.0-beta.39":
+  version "7.0.0-beta.39"
+  resolved "https://registry.yarnpkg.com/@babel/preset-react/-/preset-react-7.0.0-beta.39.tgz#e2ee52660233016c05fc1f211ab20d1141e848d0"
   dependencies:
-    "@babel/plugin-proposal-async-generator-functions" "7.0.0-beta.38"
-    "@babel/plugin-proposal-class-properties" "7.0.0-beta.38"
-    "@babel/plugin-proposal-object-rest-spread" "7.0.0-beta.38"
-    "@babel/plugin-proposal-optional-catch-binding" "7.0.0-beta.38"
-    "@babel/plugin-proposal-unicode-property-regex" "7.0.0-beta.38"
-    "@babel/plugin-syntax-dynamic-import" "7.0.0-beta.38"
-    "@babel/plugin-syntax-import-meta" "7.0.0-beta.38"
+    "@babel/plugin-syntax-jsx" "7.0.0-beta.39"
+    "@babel/plugin-transform-react-display-name" "7.0.0-beta.39"
+    "@babel/plugin-transform-react-jsx" "7.0.0-beta.39"
+    "@babel/plugin-transform-react-jsx-self" "7.0.0-beta.39"
+    "@babel/plugin-transform-react-jsx-source" "7.0.0-beta.39"
 
-"@babel/preset-typescript@^7.0.0-beta.36":
-  version "7.0.0-beta.38"
-  resolved "https://registry.yarnpkg.com/@babel/preset-typescript/-/preset-typescript-7.0.0-beta.38.tgz#3c46ad5129db53ea4a62186a59695d4343898149"
+"@babel/preset-stage-3@^7.0.0-beta.39":
+  version "7.0.0-beta.39"
+  resolved "https://registry.yarnpkg.com/@babel/preset-stage-3/-/preset-stage-3-7.0.0-beta.39.tgz#30a313d79369aa1b4d6652ae621dc1d162255ac9"
   dependencies:
-    "@babel/plugin-transform-typescript" "7.0.0-beta.38"
+    "@babel/plugin-proposal-async-generator-functions" "7.0.0-beta.39"
+    "@babel/plugin-proposal-class-properties" "7.0.0-beta.39"
+    "@babel/plugin-proposal-object-rest-spread" "7.0.0-beta.39"
+    "@babel/plugin-proposal-optional-catch-binding" "7.0.0-beta.39"
+    "@babel/plugin-proposal-unicode-property-regex" "7.0.0-beta.39"
+    "@babel/plugin-syntax-dynamic-import" "7.0.0-beta.39"
+    "@babel/plugin-syntax-import-meta" "7.0.0-beta.39"
 
-"@babel/register@^7.0.0-beta.36":
-  version "7.0.0-beta.38"
-  resolved "https://registry.yarnpkg.com/@babel/register/-/register-7.0.0-beta.38.tgz#3336e7bf5e830eb464a2b47c4df28b52e519f873"
+"@babel/preset-typescript@^7.0.0-beta.39":
+  version "7.0.0-beta.39"
+  resolved "https://registry.yarnpkg.com/@babel/preset-typescript/-/preset-typescript-7.0.0-beta.39.tgz#da4c7649ff77310ac5bfef465a78bbdb1eb9c556"
   dependencies:
-    core-js "^2.4.0"
+    "@babel/plugin-transform-typescript" "7.0.0-beta.39"
+
+"@babel/register@^7.0.0-beta.39":
+  version "7.0.0-beta.39"
+  resolved "https://registry.yarnpkg.com/@babel/register/-/register-7.0.0-beta.39.tgz#40994219d69963a88c55e259e32fd076cdd668dc"
+  dependencies:
+    core-js "^2.5.3"
     find-cache-dir "^1.0.0"
     home-or-tmp "^3.0.0"
     lodash "^4.2.0"
@@ -3836,13 +3891,9 @@ d3-force@1.1.0:
     d3-quadtree "1"
     d3-timer "1"
 
-d3-format@1:
+d3-format@1, d3-format@1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/d3-format/-/d3-format-1.2.2.tgz#1a39c479c8a57fe5051b2e67a3bee27061a74e7a"
-
-d3-format@1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/d3-format/-/d3-format-1.2.1.tgz#4e19ecdb081a341dafaf5f555ee956bcfdbf167f"
 
 d3-geo@1.9.1:
   version "1.9.1"
@@ -3901,9 +3952,13 @@ d3-scale@1.0.7:
     d3-time "1"
     d3-time-format "2"
 
-d3-selection@1, d3-selection@1.2.0, d3-selection@^1.1.0:
+d3-selection@1, d3-selection@^1.1.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/d3-selection/-/d3-selection-1.2.0.tgz#1b8ec1c7cedadfb691f2ba20a4a3cfbeb71bbc88"
+
+d3-selection@1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/d3-selection/-/d3-selection-1.3.0.tgz#d53772382d3dc4f7507bfb28bcd2d6aed2a0ad6d"
 
 d3-shape@1.2.0:
   version "1.2.0"
@@ -3950,9 +4005,9 @@ d3-zoom@1.7.1:
     d3-selection "1"
     d3-transition "1"
 
-d3@^4.12.2:
-  version "4.12.2"
-  resolved "https://registry.yarnpkg.com/d3/-/d3-4.12.2.tgz#12f775564c6a9de229f63db03446e2cb7bb56c8f"
+d3@^4.13.0:
+  version "4.13.0"
+  resolved "https://registry.yarnpkg.com/d3/-/d3-4.13.0.tgz#ab236ff8cf0cfc27a81e69bf2fb7518bc9b4f33d"
   dependencies:
     d3-array "1.2.1"
     d3-axis "1.0.8"
@@ -3965,7 +4020,7 @@ d3@^4.12.2:
     d3-dsv "1.0.8"
     d3-ease "1.0.3"
     d3-force "1.1.0"
-    d3-format "1.2.1"
+    d3-format "1.2.2"
     d3-geo "1.9.1"
     d3-hierarchy "1.1.5"
     d3-interpolate "1.1.6"
@@ -3976,7 +4031,7 @@ d3@^4.12.2:
     d3-random "1.1.0"
     d3-request "1.0.6"
     d3-scale "1.0.7"
-    d3-selection "1.2.0"
+    d3-selection "1.3.0"
     d3-shape "1.2.0"
     d3-time "1.0.8"
     d3-time-format "2.1.1"
@@ -5542,9 +5597,13 @@ he@1.1.x:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/he/-/he-1.1.1.tgz#93410fd21b009735151f8868c2f271f3427e23fd"
 
-highcharts@^6.0.0, highcharts@^6.0.4:
+highcharts@^6.0.4:
   version "6.0.4"
   resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-6.0.4.tgz#bb6956de2fbe24fa4b6141be7ceadc052ca2abf9"
+
+highcharts@^6.0.5:
+  version "6.0.5"
+  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-6.0.5.tgz#ef2002a5e90bf6d831bd535874634b10a6963946"
 
 history@^4.7.2:
   version "4.7.2"
@@ -7970,7 +8029,7 @@ podda@^1.2.2:
     babel-runtime "^6.11.6"
     immutable "^3.8.1"
 
-popper.js@^1.12.5, popper.js@^1.12.6:
+popper.js@^1.12.5, popper.js@^1.12.9:
   version "1.12.9"
   resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.12.9.tgz#0dfbc2dff96c451bb332edcfcfaaf566d331d5b3"
 
@@ -8756,11 +8815,11 @@ react-helmet@^5.2.0:
     prop-types "^15.5.4"
     react-side-effect "^1.1.0"
 
-react-highcharts@^15.0.0:
-  version "15.0.0"
-  resolved "https://registry.yarnpkg.com/react-highcharts/-/react-highcharts-15.0.0.tgz#b3eea96ad6a7f04c3e70827a34e9b1b47d88a2bb"
+react-highcharts@^16.0.2:
+  version "16.0.2"
+  resolved "https://registry.yarnpkg.com/react-highcharts/-/react-highcharts-16.0.2.tgz#7bdae039f9abb3f753ba88b6578d52630c18537a"
   dependencies:
-    highcharts "^6.0.0"
+    highcharts "^6.0.4"
 
 react-hot-loader@3.1.3, react-hot-loader@^3.0.0-beta.7, react-hot-loader@^3.1.3:
   version "3.1.3"
@@ -9020,9 +9079,9 @@ reactcss@^1.2.0:
   dependencies:
     lodash "^4.0.1"
 
-reactstrap@^5.0.0-alpha.4:
-  version "5.0.0-alpha.4"
-  resolved "https://registry.yarnpkg.com/reactstrap/-/reactstrap-5.0.0-alpha.4.tgz#1de9cf3b16344ca99120c2a20e0efd4aaaebc1d8"
+reactstrap@^5.0.0-beta:
+  version "5.0.0-beta"
+  resolved "https://registry.yarnpkg.com/reactstrap/-/reactstrap-5.0.0-beta.tgz#0372acae7665ec3396abe87e5cdddf3077e98995"
   dependencies:
     classnames "^2.2.3"
     lodash.isfunction "^3.0.8"
