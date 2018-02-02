@@ -19,6 +19,7 @@ import LocalpoolsListContainer from 'components/localpools_list';
 import TodoList from 'components/todo_list';
 import AnalyticsContainer from 'components/analytics';
 import PowertakersContainer from 'components/powertakers';
+import TariffsContainer from 'components/tariffs';
 import ContractsContainer from 'components/contracts';
 import SystemContainer from 'components/system';
 import GroupSettingsContainer from 'components/group_settings';
@@ -54,6 +55,7 @@ const NewRoot = ({ token, devMode }) => (
                         <Switch>
                           <Route path="/groups/:groupId/analytics" component={AnalyticsContainer} />
                           <Route path="/groups/:groupId/powertakers" component={PowertakersContainer} />
+                          <Route path="/groups/:groupId/tariffs" component={TariffsContainer} />
                           <Route path="/groups/:groupId/contracts" component={ContractsContainer} />
                           <Route path="/groups/:groupId/system" component={SystemContainer} />
                           <Route path="/groups/:groupId/bubbles" component={BubblesContainer} />
