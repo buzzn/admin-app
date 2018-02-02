@@ -254,6 +254,7 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps & I
   }
 }
 
+// FIXME: put it to contracts types
 interface StatePart {
   contracts: { loadingContract: boolean; contract: { _status: null | number; [key: string]: any } };
   groups: { loadingGroup: boolean; group: { _status: null | number; [key: string]: any } };

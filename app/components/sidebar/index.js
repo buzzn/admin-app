@@ -14,8 +14,8 @@ const Sidebar = ({ url, devMode }) => (
     <SidebarItem to={`${url}/powertakers`} icon="users">
       Powertakers
     </SidebarItem>
-    <SidebarItem to={`${url}/prices`} icon="eur" devMode={devMode}>
-      Prices
+    <SidebarItem to={`${url}/tariffs`} icon="eur">
+      Tariffs
     </SidebarItem>
     <SidebarItem to={`${url}/invoices`} icon="money" devMode={devMode}>
       Invoices
