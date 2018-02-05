@@ -45,7 +45,6 @@ const TariffsList = ({ active, tariffs, intl }: Props & InjectIntlProps) => {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableName` })} />,
       accessor: 'name',
     },
-
     {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableBeginDate` })} />,
       accessor: 'beginDate',
@@ -68,6 +67,13 @@ const TariffsList = ({ active, tariffs, intl }: Props & InjectIntlProps) => {
       filterMethod: TableParts.filters.filterByValue,
       sortMethod: TableParts.sort.sortByValue,
       Cell: ({ value: { Display } }) => Display,
+    },
+    {
+      Header: () => (
+        <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.numberOfContracts` })} />
+      ),
+      accessor: 'numberOfContracts',
+      Cell: ({ value }) => value || 0,
     },
   ];
 
