@@ -8,6 +8,7 @@ import ContractStatus from 'components/contract_status';
 
 const DefaultPerson = require('images/default_person.jpg');
 const DefaultOrganisation = require('images/default_organisation.jpg');
+const DefaultThirdParty = require('images/default_3rd_party.jpg');
 
 interface Props {
   contracts: Array<any>;
@@ -21,7 +22,7 @@ const RegisterContracts = ({ contracts, url, intl, history }: Props & InjectIntl
     ...c,
     name:
       c.type === 'contract_localpool_third_party'
-        ? { value: 'drittbeliefert' }
+        ? { value: 'drittbeliefert', image: DefaultThirdParty, type: 'avatar' }
         : c.customer.type === 'person'
           ? {
             value: `${c.customer.firstName} ${c.customer.lastName}`,
@@ -101,7 +102,7 @@ const RegisterContracts = ({ contracts, url, intl, history }: Props & InjectIntl
           columns,
           getTdProps: (_state, rowInfo, column) => ({
             onClick: (_e, handleOriginal) => {
-              if (column.id === 'name' && rowInfo.original.linkPowertaker) history.push(rowInfo.original.linkPowertaker);
+              if (column.id === 'name' && rowInfo.original.linkPowertaker) { history.push(rowInfo.original.linkPowertaker); }
               if (column.id === 'fullContractNumber') history.push(rowInfo.original.linkContract);
               if (handleOriginal) handleOriginal();
             },

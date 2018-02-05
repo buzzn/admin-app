@@ -9,6 +9,7 @@ import Loading from 'components/loading';
 
 const DefaultPerson = require('images/default_person.jpg');
 const DefaultOrganisation = require('images/default_organisation.jpg');
+const DefaultThirdParty = require('images/default_3rd_party.jpg');
 
 interface Props {
   powertakers: Array<any>;
@@ -36,7 +37,7 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }: P
     ...p,
     name:
       p.type === 'contract_localpool_third_party'
-        ? { value: 'drittbeliefert' }
+        ? { value: 'drittbeliefert', image: DefaultThirdParty, type: 'avatar' }
         : p.customer.type === 'person'
           ? {
             value: `${p.customer.firstName} ${p.customer.lastName}`,
@@ -102,23 +103,22 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }: P
       accessor: 'beginDate',
       Cell: ({ value }) => moment(value).format('DD.MM.YYYY'),
     },
+    {
+      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableStatus` })} />,
+      accessor: 'status',
+      filterMethod: TableParts.filters.filterByValue,
+      sortMethod: TableParts.sort.sortByValue,
+      Cell: ({ value: { Display } }) => Display,
+    },
   ];
 
   if (!active) {
-    columns.push({
+    columns.splice(4, 0, {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableEndDate` })} />,
       accessor: 'endDate',
       Cell: ({ value }) => (value ? moment(value).format('DD.MM.YYYY') : ''),
     });
   }
-
-  columns.push({
-    Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableStatus` })} />,
-    accessor: 'status',
-    filterMethod: TableParts.filters.filterByValue,
-    sortMethod: TableParts.sort.sortByValue,
-    Cell: ({ value: { Display } }) => Display,
-  });
 
   return (
     <div className="p-0" key={2}>
@@ -129,7 +129,9 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }: P
           getTdProps: (_state, rowInfo, column) => ({
             onClick: (_e, handleOriginal) => {
               if (column.id === 'registerName') history.push(rowInfo.original.linkRegister);
-              if (column.id === 'name' && rowInfo.original.linkPowertaker.length) { history.push(rowInfo.original.linkPowertaker); }
+              if (column.id === 'name' && rowInfo.original.linkPowertaker.length) {
+                history.push(rowInfo.original.linkPowertaker);
+              }
               if (column.id === 'fullContractNumber') history.push(rowInfo.original.linkContract);
               if (handleOriginal) handleOriginal();
             },
