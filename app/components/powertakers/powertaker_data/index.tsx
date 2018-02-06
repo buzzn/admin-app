@@ -26,7 +26,7 @@ class PowertakerData extends React.Component<ExtProps & DispatchProps & StatePro
   render() {
     const { powertaker, loading, url, intl, history } = this.props;
 
-    if (loading) return <Loading minHeight={40} />;
+    if (powertaker._status === null || loading) return <Loading minHeight={40} />;
     if (powertaker._status && powertaker._status !== 200) return <Redirect to={url} />;
 
     const powertakerImage = powertaker.image || (powertaker.type === 'person' ? DefaultPerson : DefaultOrganisation);
