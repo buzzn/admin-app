@@ -42,6 +42,8 @@ export class System extends React.Component {
       return <Redirect to="/groups" />;
     }
 
+    if (meters._status === null || loading) return <Loading minHeight={40} />;
+
     const breadcrumbs = [
       { id: 0, link: '/groups', title: 'My groups' },
       { id: group.id || 1, link: url, title: group.name },
@@ -56,7 +58,6 @@ export class System extends React.Component {
               <Route
                 path={`${url}/:meterId`}
                 render={({ match: { url: meterUrl, params: { meterId } } }) => {
-                  if (loading) return <Loading minHeight={4} />;
                   const meter = find(meters.array, m => m.id === meterId);
                   if (!meter) return <Redirect to={url} />;
                   return (
@@ -139,7 +140,6 @@ export class System extends React.Component {
             <Route
               path={`${url}/:meterId`}
               render={({ match: { url: meterUrl, params: { meterId } } }) => {
-                if (loading) return <Loading minHeight={40} />;
                 const meter = find(meters.array, m => m.id === meterId);
                 if (!meter) return <Redirect to={url} />;
                 return (

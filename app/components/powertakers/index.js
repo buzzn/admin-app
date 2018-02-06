@@ -30,6 +30,8 @@ export class Powertakers extends React.Component {
       return <Redirect to="/groups" />;
     }
 
+    if (powertakers._status === null || loading) return <Loading minHeight={40} />;
+
     const breadcrumbs = [
       { id: 0, link: '/groups', title: 'My groups' },
       { id: group.id || 1, link: url, title: group.name },
@@ -53,7 +55,6 @@ export class Powertakers extends React.Component {
               <Route
                 path={`${url}/:contractId`}
                 render={({ match: { url: powertakerUrl, params: { contractId } } }) => {
-                  if (loading) return <Loading minHeight={4} />;
                   const contract = find(powertakers.array, p => p.id === contractId);
                   if (!contract) return <Redirect to={url} />;
                   breadcrumbs.push({
@@ -141,7 +142,6 @@ export class Powertakers extends React.Component {
             <Route
               path={`${url}/:contractId`}
               render={({ history, match: { url: powertakerUrl, params: { contractId } } }) => {
-                if (loading) return <Loading minHeight={40} />;
                 const contract = find(powertakers.array, p => p.id === contractId);
                 if (!contract) return <Redirect to={url} />;
                 return (
