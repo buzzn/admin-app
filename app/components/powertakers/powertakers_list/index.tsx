@@ -43,8 +43,9 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }: P
             value: `${p.customer.firstName} ${p.customer.lastName}`,
             image: p.customer.image || DefaultPerson,
             type: 'avatar',
+            clickable: true,
           }
-          : { value: p.customer.name, image: p.customer.image || DefaultOrganisation, type: 'avatar' },
+          : { value: p.customer.name, image: p.customer.image || DefaultOrganisation, type: 'avatar', clickable: true },
     linkPowertaker: p.type === 'contract_localpool_third_party' ? '' : `${url}/${p.id}/powertaker`,
     linkContract: `${url}/${p.id}`,
     registerName: p.register.name,
@@ -73,10 +74,6 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }: P
       filterMethod: TableParts.filters.filterByValue,
       sortMethod: TableParts.sort.sortByValue,
       Cell: TableParts.components.iconNameCell,
-      style: {
-        cursor: 'pointer',
-        textDecoration: 'underline',
-      },
     },
     {
       Header: () => (

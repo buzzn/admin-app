@@ -37,12 +37,16 @@ Object.assign(ReactTableDefaults, {
 
 export const tableParts = {
   components: {
-    iconNameCell: ({ value }) => (
-      <span>
-        {value.image && <img src={value.image} className={`table-icon-${value.type}`} />}
-        {value.value}
-      </span>
-    ),
+    iconNameCell: ({ value }) => {
+      let style = {};
+      if (value.clickable) style = { cursor: 'pointer', textDecoration: 'underline' };
+      return (
+        <span style={style}>
+          {value.image && <img src={value.image} className={`table-icon-${value.type}`} />}
+          {value.value}
+        </span>
+      );
+    },
     linkCell: ({ value }) => (
       <Link to={value} className="btn btn-outline-secondary" style={{ float: 'right', marginRight: '15px' }}>
         View
