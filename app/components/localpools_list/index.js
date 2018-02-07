@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import ReactTable from 'react-table';
+import ReactTableSorted from 'components/react_table_sorted';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import filter from 'lodash/filter';
 import sortBy from 'lodash/sortBy';
@@ -98,7 +98,7 @@ class LocalpoolsList extends React.Component {
             </CardDeck>
           ))
         ) : (
-          <ReactTable
+          <ReactTableSorted
             {...{
               data,
               columns,
@@ -109,6 +109,7 @@ class LocalpoolsList extends React.Component {
                 },
                 style: { cursor: 'pointer' },
               }),
+              uiSortPath: 'localpoolList',
             }}
           />
         )}

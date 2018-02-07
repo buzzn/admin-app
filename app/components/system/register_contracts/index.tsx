@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ReactTable from 'react-table';
+import ReactTableSorted from 'components/react_table_sorted';
 import { injectIntl, InjectIntlProps } from 'react-intl';
 import orderBy from 'lodash/orderBy';
 import moment from 'moment';
@@ -16,7 +16,7 @@ interface Props {
   history: { [key: string]: any };
 }
 
-const RegisterContracts = ({ contracts, url, intl, history }: Props & InjectIntlProps) => {
+const RegisterContracts = ({ contracts, url, intl, history, registerId }: Props & InjectIntlProps) => {
   const prefix = 'admin.contracts';
   const data = orderBy(contracts, c => new Date(c.beginDate), 'desc').map(c => ({
     ...c,
@@ -96,17 +96,20 @@ const RegisterContracts = ({ contracts, url, intl, history }: Props & InjectIntl
 
   return (
     <div className="p-0" style={{ marginBottom: '2rem' }}>
-      <ReactTable
+      <ReactTableSorted
         {...{
           data,
           columns,
           getTdProps: (_state, rowInfo, column) => ({
             onClick: (_e, handleOriginal) => {
-              if (column.id === 'name' && rowInfo.original.linkPowertaker) { history.push(rowInfo.original.linkPowertaker); }
+              if (column.id === 'name' && rowInfo.original.linkPowertaker) {
+                history.push(rowInfo.original.linkPowertaker);
+              }
               if (column.id === 'fullContractNumber') history.push(rowInfo.original.linkContract);
               if (handleOriginal) handleOriginal();
             },
           }),
+          uiSortPath: `registers.${registerId}.contracts`,
         }}
       />
     </div>

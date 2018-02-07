@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ReactTable from 'react-table';
+import ReactTableSorted from 'components/react_table_sorted';
 import orderBy from 'lodash/orderBy';
 import moment from 'moment';
 import { FormattedNumber, injectIntl, InjectIntlProps } from 'react-intl';
@@ -10,7 +10,7 @@ interface Props {
   tariffs: Array<any>;
 }
 
-const TariffsList = ({ active, tariffs, intl }: Props & InjectIntlProps) => {
+const TariffsList = ({ active, tariffs, intl, groupId }: Props & InjectIntlProps) => {
   const filteredTariffs = tariffs.filter(t => (active ? !t.endDate : !!t.endDate));
 
   const prefix = 'admin.tariffs';
@@ -87,10 +87,11 @@ const TariffsList = ({ active, tariffs, intl }: Props & InjectIntlProps) => {
 
   return (
     <div className="p-0">
-      <ReactTable
+      <ReactTableSorted
         {...{
           data,
           columns,
+          uiSortPath: `groups.${groupId}.tariffs`,
         }}
       />
     </div>

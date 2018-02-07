@@ -174,14 +174,24 @@ export class System extends React.Component {
 
                               <Switch>
                                 <Route path={`${registerUrl}/readings`}>
-                                  {register.readings && <ReadingsList readings={register.readings.array} />}
+                                  {register.readings && (
+                                    <ReadingsList
+                                      {...{
+                                        readings: register.readings.array,
+                                        registerId: register.id,
+                                      }}
+                                    />
+                                  )}
                                 </Route>
                                 <Route path={`${registerUrl}/contracts`}>
                                   {register.contracts && (
                                     <RegisterContracts
-                                      contracts={register.contracts.array}
-                                      url={url}
-                                      history={history}
+                                      {...{
+                                        contracts: register.contracts.array,
+                                        url,
+                                        history,
+                                        registerId: register.id,
+                                      }}
                                     />
                                   )}
                                 </Route>
@@ -215,7 +225,16 @@ export class System extends React.Component {
             {/* Root list */}
             <Route
               path={url}
-              render={({ history }) => <RegistersList registers={registers} url={url} history={history} />}
+              render={({ history }) => (
+                <RegistersList
+                  {...{
+                    registers,
+                    url,
+                    history,
+                    groupId,
+                  }}
+                />
+              )}
             />
             {/* End of Root list */}
           </Switch>
