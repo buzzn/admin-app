@@ -1,9 +1,9 @@
 import * as React from 'react';
-import ReactTable from 'react-table';
+import ReactTableSorted from 'components/react_table_sorted';
 import { injectIntl } from 'react-intl';
 import { tableParts as TableParts } from 'react_table_config';
 
-const RegistersList = ({ registers, url, history, intl }) => {
+const RegistersList = ({ registers, url, history, intl, groupId }) => {
   const prefix = 'admin.registers';
 
   const data = registers.map(r => ({
@@ -44,7 +44,7 @@ const RegistersList = ({ registers, url, history, intl }) => {
 
   return (
     <div className="p-0">
-      <ReactTable
+      <ReactTableSorted
         {...{
           data,
           columns,
@@ -56,6 +56,7 @@ const RegistersList = ({ registers, url, history, intl }) => {
               if (handleOriginal) handleOriginal();
             },
           }),
+          uiSortPath: `groups.${groupId}.registers`,
         }}
       />
     </div>

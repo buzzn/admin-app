@@ -1,4 +1,4 @@
-import { put, take, select, call, takeLatest, fork } from 'redux-saga/effects';
+import { put, take, select, call, takeLatest, fork, race } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { SubmissionError } from 'redux-form';
 import Auth from '@buzzn/module_auth';
@@ -81,9 +81,11 @@ export function* setUI() {
   yield put(actions.setUI(ui));
 
   while (true) {
-    const { ui: uiPart } = yield take(constants.SET_UI);
-    ui = { ...ui, ...uiPart };
-    yield put(actions.setUI(ui));
+    yield race({
+      ui: take(constants.SET_UI),
+      sort: take(constants.SET_TABLE_SORT),
+    });
+    ui = yield select(getUI);
     yield call(api.setUI, ui);
   }
 }

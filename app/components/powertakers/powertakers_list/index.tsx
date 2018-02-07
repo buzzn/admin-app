@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ReactTable from 'react-table';
+import ReactTableSorted from 'components/react_table_sorted';
 import orderBy from 'lodash/orderBy';
 import moment from 'moment';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -14,12 +14,13 @@ const DefaultThirdParty = require('images/default_3rd_party.jpg');
 interface Props {
   powertakers: Array<any>;
   loading: boolean;
+  groupId: string;
   url: string;
   active: boolean;
   history: any;
 }
 
-const PowertakersList = ({ powertakers, loading, url, intl, active, history }: Props & InjectedIntlProps) => {
+const PowertakersList = ({ powertakers, loading, groupId, url, intl, active, history }: Props & InjectedIntlProps) => {
   if (loading) return <Loading minHeight={40} />;
 
   const filteredPowertakers = powertakers.filter(o => (active ? o.status !== 'ended' : o.status === 'ended'));
@@ -119,7 +120,7 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }: P
 
   return (
     <div className="p-0" key={2}>
-      <ReactTable
+      <ReactTableSorted
         {...{
           data,
           columns,
@@ -133,6 +134,7 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }: P
               if (handleOriginal) handleOriginal();
             },
           }),
+          uiSortPath: `groups.${groupId}.powertakers`,
         }}
       />
     </div>

@@ -124,13 +124,30 @@ export class Powertakers extends React.Component {
                   <Route
                     path={`${url}/active`}
                     render={({ history }) => (
-                      <PowertakersList active {...{ powertakers: powertakers.array, loading, url, history }} />
+                      <PowertakersList
+                        active
+                        {...{
+                          powertakers: powertakers.array,
+                          loading,
+                          groupId,
+                          url,
+                          history,
+                        }}
+                      />
                     )}
                   />
                   <Route
                     path={`${url}/past`}
                     render={({ history }) => (
-                      <PowertakersList {...{ powertakers: powertakers.array, loading, url, history }} />
+                      <PowertakersList
+                        {...{
+                          powertakers: powertakers.array,
+                          loading,
+                          groupId,
+                          url,
+                          history,
+                        }}
+                      />
                     )}
                   />
                 </Switch>

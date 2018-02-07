@@ -18,7 +18,7 @@ class Tariffs extends React.Component<StateProps & DispatchProps & ExtProps & In
   }
 
   render() {
-    const { loading, intl, group, setGroup, match: { url } } = this.props;
+    const { loading, intl, group, setGroup, match: { url, params: { groupId } } } = this.props;
 
     if (group._status === 404 || group._status === 403) {
       setGroup({ _status: null });
@@ -83,8 +83,8 @@ class Tariffs extends React.Component<StateProps & DispatchProps & ExtProps & In
                   {/* End of sub nav */}
 
                   <Switch>
-                    <Route path={`${url}/active`} render={() => <TariffsList active {...{ tariffs }} />} />
-                    <Route path={`${url}/past`} render={() => <TariffsList {...{ tariffs }} />} />
+                    <Route path={`${url}/active`} render={() => <TariffsList active {...{ tariffs, groupId }} />} />
+                    <Route path={`${url}/past`} render={() => <TariffsList {...{ tariffs, groupId }} />} />
                   </Switch>
                 </React.Fragment>
               )}

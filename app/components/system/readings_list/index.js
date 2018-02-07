@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ReactTable from 'react-table';
+import ReactTableSorted from 'components/react_table_sorted';
 import moment from 'moment';
 import orderBy from 'lodash/orderBy';
 import { injectIntl, FormattedMessage } from 'react-intl';
@@ -15,7 +15,7 @@ class ReadingsList extends React.Component {
   }
 
   render() {
-    const { readings, intl } = this.props;
+    const { readings, intl, registerId } = this.props;
     const prefix = 'admin.readings';
 
     const data = orderBy(readings, ['date', 'reason'], ['desc', 'asc']).map(r => ({
@@ -54,7 +54,7 @@ class ReadingsList extends React.Component {
 
     return (
       <div className="p-0" style={{ marginBottom: '2rem' }} key={2}>
-        <ReactTable
+        <ReactTableSorted
           {...{
             data,
             columns,
@@ -102,6 +102,7 @@ class ReadingsList extends React.Component {
                 handleOriginal && handleOriginal();
               },
             }),
+            uiSortPath: `registers.${registerId}.readings`,
           }}
         />
       </div>
