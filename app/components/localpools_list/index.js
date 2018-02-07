@@ -12,6 +12,7 @@ import { actions } from 'actions';
 import { tableParts as TableParts } from 'react_table_config';
 import withHover from 'components/with_hover';
 import LocalpoolCard from './localpool_card';
+import Loading from 'components/loading';
 
 const HoverCard = withHover(LocalpoolCard);
 
@@ -36,8 +37,10 @@ class LocalpoolsList extends React.Component {
   }
 
   render() {
-    const { groups, intl, history, match: { url } } = this.props;
+    const { groups, loading, intl, history, match: { url } } = this.props;
     const { groupsListTiles } = this.state;
+
+    if (loading) return <Loading minHeight={40} />;
 
     const data = groups.map(g => ({
       ...g,
@@ -128,6 +131,7 @@ function mapStateToProps(state) {
 
   return {
     groups: sortBy(groups, 'name'),
+    loading: state.groups.loadingGroups,
     groupsListTiles: state.app.ui.groupsListTiles,
   };
 }
