@@ -17,6 +17,10 @@ class Tariffs extends React.Component<StateProps & DispatchProps & ExtProps & In
     loadGroup(groupId);
   }
 
+  componentWillUnmount() {
+    this.props.setGroup({ _status: null });
+  }
+
   render() {
     const { loading, intl, group, setGroup, match: { url, params: { groupId } } } = this.props;
 

@@ -13,6 +13,10 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
     loadContract({ groupId, contractId });
   }
 
+  componentWillUnmount() {
+    this.props.setContract({ _status: null });
+  }
+
   render() {
     const { loading, contract, contractor, url } = this.props;
 
@@ -22,8 +26,12 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
     const register = contract.register || {};
     const prefix = 'admin.contracts';
 
-    if (contract.type === 'contract_localpool_third_party') { return <ThirdPartyContract {...{ contract, register, contractor, prefix, url }} />; }
-    if (contract.type === 'contract_localpool_power_taker') { return <PowertakerContract {...{ contract, register, contractor, prefix, url }} />; }
+    if (contract.type === 'contract_localpool_third_party') {
+      return <ThirdPartyContract {...{ contract, register, contractor, prefix, url }} />;
+    }
+    if (contract.type === 'contract_localpool_power_taker') {
+      return <PowertakerContract {...{ contract, register, contractor, prefix, url }} />;
+    }
     return 'Unknown cobtract type';
   }
 }
@@ -47,6 +55,7 @@ interface StateProps {
 
 interface DispatchProps {
   loadContract: Function;
+  setContract: Function;
 }
 
 function mapStateToProps(state: StatePart) {
@@ -57,4 +66,7 @@ function mapStateToProps(state: StatePart) {
   };
 }
 
-export default connect<StateProps, DispatchProps, ExtProps>(mapStateToProps, { loadContract: Contracts.actions.loadContract })(Contract);
+export default connect<StateProps, DispatchProps, ExtProps>(mapStateToProps, {
+  loadContract: Contracts.actions.loadContract,
+  setContract: Contracts.actions.setContract,
+})(Contract);

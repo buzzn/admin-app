@@ -22,6 +22,10 @@ export class Powertakers extends React.Component {
     loadGroupPowertakers(groupId);
   }
 
+  componentWillUnmount() {
+    this.props.setGroupPowertakers({ _status: null, array: [] });
+  }
+
   render() {
     const { intl, powertakers, setGroupPowertakers, match: { url, params: { groupId } }, loading, group } = this.props;
 

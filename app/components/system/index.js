@@ -24,6 +24,10 @@ export class System extends React.Component {
     loadGroupMeters(groupId);
   }
 
+  componentWillUnmount() {
+    this.props.setGroupMeters({ _status: null, array: [] });
+  }
+
   render() {
     const {
       devMode,
@@ -150,7 +154,7 @@ export class System extends React.Component {
                         path={`${meterUrl}/registers/:registerId`}
                         render={({ history, match: { url: registerUrl, params: { registerId } } }) => {
                           const register = find(meter.registers.array, r => r.id === registerId);
-                          if (!register) return <Redirect to={url} />;
+                          if (!register) return <Redirect to={meterUrl} />;
                           return (
                             <React.Fragment>
                               <RegisterPowerContainer {...{ groupId, meterId, registerId: register.id }} />
