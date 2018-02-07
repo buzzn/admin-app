@@ -51,7 +51,7 @@ const RegisterContracts = ({ contracts, url, intl, history, registerId }: Props 
       ),
     },
     beginDate: moment(c.beginDate).toDate(),
-    endDate: c.endDate ? moment(c.endDate).toDate() : c.endDate,
+    lastDate: c.lastDate ? moment(c.lastDate).toDate() : c.lastDate,
   }));
   const columns = [
     {
@@ -89,7 +89,7 @@ const RegisterContracts = ({ contracts, url, intl, history, registerId }: Props 
     },
     {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableEndDate` })} />,
-      accessor: 'endDate',
+      accessor: 'lastDate',
       Cell: ({ value }) => (value ? moment(value).format('DD.MM.YYYY') : ''),
     },
   ];

@@ -11,14 +11,14 @@ interface Props {
 }
 
 const TariffsList = ({ active, tariffs, intl, groupId }: Props & InjectIntlProps) => {
-  const filteredTariffs = tariffs.filter(t => (active ? !t.endDate : !!t.endDate));
+  const filteredTariffs = tariffs.filter(t => (active ? !t.lastDate : !!t.lastDate));
 
   const prefix = 'admin.tariffs';
 
   const data = orderBy(filteredTariffs, t => new Date(t.beginDate), 'desc').map(t => ({
     ...t,
     beginDate: moment(t.beginDate).toDate(),
-    endDate: t.endDate ? moment(t.endDate).toDate() : t.endDate,
+    lastDate: t.lastDate ? moment(t.lastDate).toDate() : t.lastDate,
     basepriceCentsPerMonth: {
       Display: (
         <FormattedNumber
@@ -80,7 +80,7 @@ const TariffsList = ({ active, tariffs, intl, groupId }: Props & InjectIntlProps
   if (!active) {
     columns.splice(2, 0, {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableEndDate` })} />,
-      accessor: 'endDate',
+      accessor: 'lastDate',
       Cell: ({ value }) => (value ? moment(value).format('DD.MM.YYYY') : ''),
     });
   }

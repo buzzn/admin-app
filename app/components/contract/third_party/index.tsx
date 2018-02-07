@@ -81,7 +81,7 @@ const ThirdPartyContract = ({ url, contract, prefix, register, contractor }: Pro
           <FormattedMessage id={`${prefix}.headerDates`} />
         </h5>
         <TwoColView {...{ prefix, field: 'beginDate' }}>{moment(contract.beginDate).format('DD.MM.YYYY')}</TwoColView>
-        <TwoColView {...{ prefix, field: 'endDate' }}>{moment(contract.endDate).format('DD.MM.YYYY')}</TwoColView>
+        <TwoColView {...{ prefix, field: 'lastDate' }}>{contract.lastDate ? moment(contract.lastDate).format('DD.MM.YYYY') : ''}</TwoColView>
       </Col>
     </Row>
   </div>
