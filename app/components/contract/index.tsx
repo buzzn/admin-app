@@ -14,7 +14,7 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
   }
 
   componentWillUnmount() {
-    this.props.setContract({ _status: null });
+    this.props.setContract({ contract: { _status: null }, contractor: { _status: null }, customer: { _status: null } });
   }
 
   render() {
