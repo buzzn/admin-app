@@ -66,7 +66,7 @@ class ContractData extends React.Component {
             />
             <TwoColField
               prefix={prefix}
-              name="endDate"
+              name="lastDate"
               editMode={this.state.editMode}
               validationRules={validationRules}
               component={EditableDate}

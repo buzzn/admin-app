@@ -141,7 +141,7 @@ const PowertakerContract = ({ url, contract, prefix, register, contractor, intl 
         <TwoColView {...{ prefix, field: 'terminationDate' }}>
           {moment(contract.terminationDate).format('DD.MM.YYYY')}
         </TwoColView>
-        <TwoColView {...{ prefix, field: 'endDate' }}>{moment(contract.endDate).format('DD.MM.YYYY')}</TwoColView>
+        <TwoColView {...{ prefix, field: 'lastDate' }}>{contract.lastDate ? (contract.lastDate).format('DD.MM.YYYY') : ''}</TwoColView>
       </Col>
     </Row>
   </div>

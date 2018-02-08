@@ -56,7 +56,7 @@ const PowertakersList = ({ powertakers, loading, groupId, url, intl, active, his
       .slice(0, -1)
       .join('/')}/system/${p.register.meterId}/registers/${p.register.id}/readings`,
     beginDate: moment(p.beginDate).toDate(),
-    endDate: p.endDate ? moment(p.endDate).toDate() : p.endDate,
+    lastDate: p.lastDate ? moment(p.lastDate).toDate() : p.lastDate,
     status: {
       value: p.status,
       Display: (
@@ -113,7 +113,7 @@ const PowertakersList = ({ powertakers, loading, groupId, url, intl, active, his
   if (!active) {
     columns.splice(4, 0, {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableEndDate` })} />,
-      accessor: 'endDate',
+      accessor: 'lastDate',
       Cell: ({ value }) => (value ? moment(value).format('DD.MM.YYYY') : ''),
     });
   }
