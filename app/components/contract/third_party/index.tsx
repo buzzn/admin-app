@@ -13,20 +13,19 @@ interface Props {
   contract: { _status: null | number; [key: string]: any };
   prefix: string;
   register: any;
-  contractor: any;
 }
 
-const ThirdPartyContract = ({ url, contract, prefix, register, contractor }: Props) => (
+const ThirdPartyContract = ({ url, contract, prefix, register }: Props) => (
   <div className="contract-data">
     <ContractHeader>
       <BorderCol xs="11">
         <InnerRow>
           <LinkCol xs="6">
             <BigSpan>
-              {truncate(contractor.name || `${contractor.firstName} ${contractor.lastName}`, { length: 25 })}
+              <FormattedMessage id={`${prefix}.thirdPartyContractor`} />
             </BigSpan>
             <LinkType>
-              <FormattedMessage id={`${prefix}.objectTypePowerTaker`} />
+              <FormattedMessage id={`${prefix}.objectTypePowerGiver`} />
             </LinkType>
           </LinkCol>
           <LinkCol xs="6">
