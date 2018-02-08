@@ -40,7 +40,7 @@ const PowertakerContract = ({ url, contract, prefix, register, contractor, intl 
               >
             </BigLink>
             <LinkType>
-              <FormattedMessage id={`${prefix}.objectTypePowerGiver`} />
+              <FormattedMessage id={`${prefix}.objectTypePowerTaker`} />
             </LinkType>
           </LinkCol>
           <LinkCol xs="6">
@@ -63,7 +63,7 @@ const PowertakerContract = ({ url, contract, prefix, register, contractor, intl 
               {truncate(contractor.name || `${contractor.firstName} ${contractor.lastName}`, { length: 25 })}
             </BigSpan>
             <LinkType>
-              <FormattedMessage id={`${prefix}.objectTypePowerTaker`} />
+              <FormattedMessage id={`${prefix}.objectTypePowerGiver`} />
             </LinkType>
           </LinkCol>
           <Col xs="6" />
