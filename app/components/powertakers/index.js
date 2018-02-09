@@ -5,13 +5,14 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import { Nav } from 'reactstrap';
 import find from 'lodash/find';
 import truncate from 'lodash/truncate';
+import get from 'lodash/get';
 import Contracts from 'contracts';
 import Groups from 'groups';
 import Breadcrumbs from 'components/breadcrumbs';
 import LinkBack from 'components/link_back';
 import PowertakersList from './powertakers_list';
 import PowertakerData from './powertaker_data';
-import Contract from './contract';
+import Contract from 'components/contract';
 import Loading from 'components/loading';
 
 export class Powertakers extends React.Component {
@@ -21,6 +22,10 @@ export class Powertakers extends React.Component {
     loadGroupPowertakers(groupId);
   }
 
+  componentWillUnmount() {
+    this.props.setGroupPowertakers({ _status: null, array: [] });
+  }
+
   render() {
     const { intl, powertakers, setGroupPowertakers, match: { url, params: { groupId } }, loading, group } = this.props;
 
@@ -28,6 +33,8 @@ export class Powertakers extends React.Component {
       setGroupPowertakers({ _status: null, array: [] });
       return <Redirect to="/groups" />;
     }
+
+    if (powertakers._status === null || loading) return <Loading minHeight={40} />;
 
     const breadcrumbs = [
       { id: 0, link: '/groups', title: 'My groups' },
@@ -52,7 +59,6 @@ export class Powertakers extends React.Component {
               <Route
                 path={`${url}/:contractId`}
                 render={({ match: { url: powertakerUrl, params: { contractId } } }) => {
-                  if (loading) return <Loading minHeight={4} />;
                   const contract = find(powertakers.array, p => p.id === contractId);
                   if (!contract) return <Redirect to={url} />;
                   breadcrumbs.push({
@@ -122,13 +128,30 @@ export class Powertakers extends React.Component {
                   <Route
                     path={`${url}/active`}
                     render={({ history }) => (
-                      <PowertakersList active {...{ powertakers: powertakers.array, loading, url, history }} />
+                      <PowertakersList
+                        active
+                        {...{
+                          powertakers: powertakers.array,
+                          loading,
+                          groupId,
+                          url,
+                          history,
+                        }}
+                      />
                     )}
                   />
                   <Route
                     path={`${url}/past`}
                     render={({ history }) => (
-                      <PowertakersList {...{ powertakers: powertakers.array, loading, url, history }} />
+                      <PowertakersList
+                        {...{
+                          powertakers: powertakers.array,
+                          loading,
+                          groupId,
+                          url,
+                          history,
+                        }}
+                      />
                     )}
                   />
                 </Switch>
@@ -140,7 +163,6 @@ export class Powertakers extends React.Component {
             <Route
               path={`${url}/:contractId`}
               render={({ history, match: { url: powertakerUrl, params: { contractId } } }) => {
-                if (loading) return <Loading minHeight={40} />;
                 const contract = find(powertakers.array, p => p.id === contractId);
                 if (!contract) return <Redirect to={url} />;
                 return (
@@ -153,15 +175,15 @@ export class Powertakers extends React.Component {
                       <Route path={`${powertakerUrl}/powertaker`}>
                         <PowertakerData
                           // FIXME: temporary workaround for organizations
-                          powertaker={contract.customer.type === 'organization' ? contract.customer : null}
+                          powertaker={get(contract.customer, 'type') === 'organization' ? contract.customer : null}
                           groupId={groupId}
-                          userId={contract.customer.type === 'person' ? contract.customer.id : null}
+                          userId={get(contract.customer, 'type') === 'person' ? contract.customer.id : null}
                           url={url}
                           history={history}
                         />
                       </Route>
                       <Route path={powertakerUrl}>
-                        <Contract {...{ groupId, contractId, url }}/>
+                        <Contract {...{ groupId, contractId, url }} />
                       </Route>
                     </Switch>
                     {/* End of main UI */}

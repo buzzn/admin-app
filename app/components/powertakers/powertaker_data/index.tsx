@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ReactTable from 'react-table';
+import ReactTableSorted from 'components/react_table_sorted';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import get from 'lodash/get';
 import { connect } from 'react-redux';
@@ -26,7 +26,7 @@ class PowertakerData extends React.Component<ExtProps & DispatchProps & StatePro
   render() {
     const { powertaker, loading, url, intl, history } = this.props;
 
-    if (loading) return <Loading minHeight={40} />;
+    if (powertaker._status === null || loading) return <Loading minHeight={40} />;
     if (powertaker._status && powertaker._status !== 200) return <Redirect to={url} />;
 
     const powertakerImage = powertaker.image || (powertaker.type === 'person' ? DefaultPerson : DefaultOrganisation);
@@ -41,7 +41,7 @@ class PowertakerData extends React.Component<ExtProps & DispatchProps & StatePro
       status: <ContractStatus {...{ size: 'large', status: c.status }} />,
       groupName: c.localpool.name,
       registerName: get(c.register, 'name', ''),
-      linkContract: (c.type === 'contract_localpool_power_taker' ? `${url}/${c.id}` : ''),
+      linkContract: c.type === 'contract_localpool_power_taker' ? `${url}/${c.id}` : '',
       // HACK
       linkRegister: c.register
         ? `${url
@@ -357,7 +357,7 @@ class PowertakerData extends React.Component<ExtProps & DispatchProps & StatePro
               <h5 className="grey-underline mt-5 pb-2">
                 <FormattedMessage id={'admin.contracts.headerContractsList'} />
               </h5>
-              <ReactTable
+              <ReactTableSorted
                 {...{
                   data,
                   columns,
@@ -372,6 +372,7 @@ class PowertakerData extends React.Component<ExtProps & DispatchProps & StatePro
                       if (handleOriginal) handleOriginal();
                     },
                   }),
+                  uiSortPath: `powertakers.${powertaker.id}.registers`,
                 }}
               />
             </React.Fragment>

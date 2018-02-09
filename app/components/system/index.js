@@ -15,12 +15,17 @@ import RegisterDataForm from './register_data';
 import ReadingsList from './readings_list';
 import RegisterPowerContainer from './register_power';
 import MeterDataForm from './meter_data';
+import RegisterContracts from './register_contracts';
 
 export class System extends React.Component {
   componentWillMount() {
     const { loadGroupMeters, loadGroup, match: { params: { groupId } } } = this.props;
     loadGroup(groupId);
     loadGroupMeters(groupId);
+  }
+
+  componentWillUnmount() {
+    this.props.setGroupMeters({ _status: null, array: [] });
   }
 
   render() {
@@ -41,6 +46,8 @@ export class System extends React.Component {
       return <Redirect to="/groups" />;
     }
 
+    if (meters._status === null || loading) return <Loading minHeight={40} />;
+
     const breadcrumbs = [
       { id: 0, link: '/groups', title: 'My groups' },
       { id: group.id || 1, link: url, title: group.name },
@@ -55,7 +62,6 @@ export class System extends React.Component {
               <Route
                 path={`${url}/:meterId`}
                 render={({ match: { url: meterUrl, params: { meterId } } }) => {
-                  if (loading) return <Loading minHeight={4} />;
                   const meter = find(meters.array, m => m.id === meterId);
                   if (!meter) return <Redirect to={url} />;
                   return (
@@ -138,7 +144,6 @@ export class System extends React.Component {
             <Route
               path={`${url}/:meterId`}
               render={({ match: { url: meterUrl, params: { meterId } } }) => {
-                if (loading) return <Loading minHeight={40} />;
                 const meter = find(meters.array, m => m.id === meterId);
                 if (!meter) return <Redirect to={url} />;
                 return (
@@ -147,9 +152,9 @@ export class System extends React.Component {
                     <Switch>
                       <Route
                         path={`${meterUrl}/registers/:registerId`}
-                        render={({ match: { url: registerUrl, params: { registerId } } }) => {
+                        render={({ history, match: { url: registerUrl, params: { registerId } } }) => {
                           const register = find(meter.registers.array, r => r.id === registerId);
-                          if (!register) return <Redirect to={url} />;
+                          if (!register) return <Redirect to={meterUrl} />;
                           return (
                             <React.Fragment>
                               <RegisterPowerContainer {...{ groupId, meterId, registerId: register.id }} />
@@ -173,10 +178,26 @@ export class System extends React.Component {
 
                               <Switch>
                                 <Route path={`${registerUrl}/readings`}>
-                                  {register.readings && <ReadingsList readings={register.readings.array} />}
+                                  {register.readings && (
+                                    <ReadingsList
+                                      {...{
+                                        readings: register.readings.array,
+                                        registerId: register.id,
+                                      }}
+                                    />
+                                  )}
                                 </Route>
                                 <Route path={`${registerUrl}/contracts`}>
-                                  <div className={devMode ? '' : 'under-construction'} style={{ height: '8rem' }} />
+                                  {register.contracts && (
+                                    <RegisterContracts
+                                      {...{
+                                        contracts: register.contracts.array,
+                                        url,
+                                        history,
+                                        registerId: register.id,
+                                      }}
+                                    />
+                                  )}
                                 </Route>
                                 <Route path={`${registerUrl}/devices`}>
                                   <div className={devMode ? '' : 'under-construction'} style={{ height: '8rem' }} />
@@ -208,7 +229,16 @@ export class System extends React.Component {
             {/* Root list */}
             <Route
               path={url}
-              render={({ history }) => <RegistersList registers={registers} url={url} history={history} />}
+              render={({ history }) => (
+                <RegistersList
+                  {...{
+                    registers,
+                    url,
+                    history,
+                    groupId,
+                  }}
+                />
+              )}
             />
             {/* End of Root list */}
           </Switch>

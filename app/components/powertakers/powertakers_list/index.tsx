@@ -1,34 +1,53 @@
 import * as React from 'react';
-import ReactTable from 'react-table';
+import ReactTableSorted from 'components/react_table_sorted';
 import orderBy from 'lodash/orderBy';
 import moment from 'moment';
-import { injectIntl } from 'react-intl';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { tableParts as TableParts } from 'react_table_config';
 import ContractStatus from 'components/contract_status';
+import Loading from 'components/loading';
 
-import DefaultPerson from 'images/default_person.jpg';
-import DefaultOrganisation from 'images/default_organisation.jpg';
+const DefaultPerson = require('images/default_person.jpg');
+const DefaultOrganisation = require('images/default_organisation.jpg');
+const DefaultThirdParty = require('images/default_3rd_party.jpg');
 
-const PowertakersList = ({ powertakers, loading, url, intl, active, history }) => {
+interface Props {
+  powertakers: Array<any>;
+  loading: boolean;
+  groupId: string;
+  url: string;
+  active: boolean;
+  history: any;
+}
+
+const PowertakersList = ({ powertakers, loading, groupId, url, intl, active, history }: Props & InjectedIntlProps) => {
+  if (loading) return <Loading minHeight={40} />;
+
   const filteredPowertakers = powertakers.filter(o => (active ? o.status !== 'ended' : o.status === 'ended'));
 
   const prefix = 'admin.contracts';
 
   const data = orderBy(
     filteredPowertakers,
-    o => o.customer.name || `${o.customer.firstName} ${o.customer.lastName}`,
+    o =>
+      (o.type === 'contract_localpool_third_party'
+        ? null
+        : o.customer.name || `${o.customer.firstName} ${o.customer.lastName}`),
     'asc',
   ).map(p => ({
     ...p,
     name:
-      p.customer.type === 'person'
-        ? {
-          value: `${p.customer.firstName} ${p.customer.lastName}`,
-          image: p.customer.image || DefaultPerson,
-          type: 'avatar',
-        }
-        : { value: p.customer.name, image: p.customer.image || DefaultOrganisation, type: 'avatar' },
-    linkPowertaker: `${url}/${p.id}/powertaker`,
+      p.type === 'contract_localpool_third_party'
+        ? { value: 'drittbeliefert', image: DefaultThirdParty, type: 'avatar' }
+        : p.customer.type === 'person'
+          ? {
+            value: `${p.customer.firstName} ${p.customer.lastName}`,
+            image: p.customer.image || DefaultPerson,
+            type: 'avatar',
+            clickable: true,
+          }
+          : { value: p.customer.name, image: p.customer.image || DefaultOrganisation, type: 'avatar', clickable: true },
+    linkPowertaker: p.type === 'contract_localpool_third_party' ? '' : `${url}/${p.id}/powertaker`,
     linkContract: `${url}/${p.id}`,
     registerName: p.register.name,
     // HACK
@@ -37,7 +56,7 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }) =
       .slice(0, -1)
       .join('/')}/system/${p.register.meterId}/registers/${p.register.id}/readings`,
     beginDate: moment(p.beginDate).toDate(),
-    endDate: p.endDate ? moment(p.endDate).toDate() : p.endDate,
+    lastDate: p.lastDate ? moment(p.lastDate).toDate() : p.lastDate,
     status: {
       value: p.status,
       Display: (
@@ -56,10 +75,6 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }) =
       filterMethod: TableParts.filters.filterByValue,
       sortMethod: TableParts.sort.sortByValue,
       Cell: TableParts.components.iconNameCell,
-      style: {
-        cursor: 'pointer',
-        textDecoration: 'underline',
-      },
     },
     {
       Header: () => (
@@ -86,38 +101,40 @@ const PowertakersList = ({ powertakers, loading, url, intl, active, history }) =
       accessor: 'beginDate',
       Cell: ({ value }) => moment(value).format('DD.MM.YYYY'),
     },
+    {
+      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableStatus` })} />,
+      accessor: 'status',
+      filterMethod: TableParts.filters.filterByValue,
+      sortMethod: TableParts.sort.sortByValue,
+      Cell: ({ value: { Display } }) => Display,
+    },
   ];
 
   if (!active) {
-    columns.push({
+    columns.splice(4, 0, {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableEndDate` })} />,
-      accessor: 'endDate',
+      accessor: 'lastDate',
       Cell: ({ value }) => (value ? moment(value).format('DD.MM.YYYY') : ''),
     });
   }
 
-  columns.push({
-    Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableStatus` })} />,
-    accessor: 'status',
-    filterMethod: TableParts.filters.filterByValue,
-    sortMethod: TableParts.sort.sortByValue,
-    Cell: ({ value: { Display } }) => Display,
-  });
-
   return (
     <div className="p-0" key={2}>
-      <ReactTable
+      <ReactTableSorted
         {...{
           data,
           columns,
-          getTdProps: (state, rowInfo, column) => ({
-            onClick: (e, handleOriginal) => {
+          getTdProps: (_state, rowInfo, column) => ({
+            onClick: (_e, handleOriginal) => {
               if (column.id === 'registerName') history.push(rowInfo.original.linkRegister);
-              if (column.id === 'name') history.push(rowInfo.original.linkPowertaker);
+              if (column.id === 'name' && rowInfo.original.linkPowertaker.length) {
+                history.push(rowInfo.original.linkPowertaker);
+              }
               if (column.id === 'fullContractNumber') history.push(rowInfo.original.linkContract);
               if (handleOriginal) handleOriginal();
             },
           }),
+          uiSortPath: `groups.${groupId}.powertakers`,
         }}
       />
     </div>

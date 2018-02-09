@@ -26,14 +26,27 @@ export const initialState = {
   ui: {
     devMode: false,
     groupsListTiles: false,
+    tableSort: {},
   },
   incompleteScreen: [],
 };
+
+export function tableSortReducer(state, action) {
+  switch (action.type) {
+    case constants.SET_TABLE_SORT:
+      return { ...state, [action.table]: action.sort };
+
+    default:
+      return state;
+  }
+}
 
 export function uiReducer(state, action) {
   switch (action.type) {
     case constants.SET_UI:
       return { ...state, ...action.ui };
+    case constants.SET_TABLE_SORT:
+      return { ...state, tableSort: tableSortReducer(state.tableSort, action) };
 
     default:
       return state;
@@ -55,6 +68,7 @@ export function appReducer(state = initialState, action) {
       return { ...state, health: action.health };
 
     case constants.SET_UI:
+    case constants.SET_TABLE_SORT:
       return { ...state, ui: uiReducer(state.ui, action) };
 
     case constants.SET_INCOMPLETE_SCREEN:

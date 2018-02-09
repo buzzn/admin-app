@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import ReactTable from 'react-table';
+import ReactTableSorted from 'components/react_table_sorted';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import filter from 'lodash/filter';
 import sortBy from 'lodash/sortBy';
@@ -12,6 +12,7 @@ import { actions } from 'actions';
 import { tableParts as TableParts } from 'react_table_config';
 import withHover from 'components/with_hover';
 import LocalpoolCard from './localpool_card';
+import Loading from 'components/loading';
 
 const HoverCard = withHover(LocalpoolCard);
 
@@ -36,8 +37,10 @@ class LocalpoolsList extends React.Component {
   }
 
   render() {
-    const { groups, intl, history, match: { url } } = this.props;
+    const { groups, loading, intl, history, match: { url } } = this.props;
     const { groupsListTiles } = this.state;
+
+    if (loading) return <Loading minHeight={40} />;
 
     const data = groups.map(g => ({
       ...g,
@@ -98,7 +101,7 @@ class LocalpoolsList extends React.Component {
             </CardDeck>
           ))
         ) : (
-          <ReactTable
+          <ReactTableSorted
             {...{
               data,
               columns,
@@ -109,6 +112,7 @@ class LocalpoolsList extends React.Component {
                 },
                 style: { cursor: 'pointer' },
               }),
+              uiSortPath: 'localpoolList',
             }}
           />
         )}
@@ -127,6 +131,7 @@ function mapStateToProps(state) {
 
   return {
     groups: sortBy(groups, 'name'),
+    loading: state.groups.loadingGroups,
     groupsListTiles: state.app.ui.groupsListTiles,
   };
 }

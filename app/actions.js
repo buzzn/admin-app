@@ -10,6 +10,7 @@ export const constants = {
   SET_HEALTH: 'buzzn_admin/SET_HEALTH',
 
   SET_UI: 'buzzn_admin/SET_UI',
+  SET_TABLE_SORT: 'buzzn_admin/SET_TABLE_SORT',
 
   SET_INCOMPLETE_SCREEN: 'buzzn_admin/SET_INCOMPLETE_SCREEN',
 };
@@ -25,6 +26,7 @@ export const actions = {
   setHealth: health => ({ type: constants.SET_HEALTH, health }),
 
   setUI: ui => ({ type: constants.SET_UI, ui }),
+  setTableSort: ({ table, sort }) => ({ type: constants.SET_TABLE_SORT, table, sort }),
 
   setIncompleteScreen: incompleteScreen => ({ type: constants.SET_INCOMPLETE_SCREEN, incompleteScreen }),
 };

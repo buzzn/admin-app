@@ -1,4 +1,3 @@
-// flow bugs, see #4644, #4709, #4905
 import * as React from 'react';
 
 function withHover(Wrapped) {
