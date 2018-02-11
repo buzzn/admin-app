@@ -18,10 +18,11 @@ import {
   Input,
 } from 'reactstrap';
 import Auth from '@buzzn/module_auth';
+import withHover from 'components/with_hover';
 
 import './style.scss';
-import LogoImg from '../../images/logo_black.png';
-import DevLogoImg from '../../images/dev_logo_black.png';
+import LogoImg from '../../images/logo_white.png';
+import DevLogoImg from '../../images/dev_logo_white.png';
 import DefaultPerson from '../../images/default_person.jpg';
 
 export class TopNavBar extends React.Component {
@@ -35,6 +36,7 @@ export class TopNavBar extends React.Component {
   state = {
     isOpen: false,
     profileOpen: false,
+    scrolled: false,
   };
 
   toggle() {
@@ -45,13 +47,26 @@ export class TopNavBar extends React.Component {
     this.setState({ profileOpen: !this.state.profileOpen });
   }
 
+  handleScroll() {
+    if (document.documentElement.scrollTop > 100) {
+      this.setState({ scrolled: true });
+    } else {
+      this.setState({ scrolled: false });
+    }
+  }
+
+  componentDidMount() {
+    window.onscroll = () => this.handleScroll();
+  }
+
   render() {
-    const { signOut, devMode, myProfile: { firstName, lastName, image } } = this.props;
+    const { signOut, devMode, myProfile: { firstName, lastName, image }, hoverEvents } = this.props;
     const { isOpen, profileOpen } = this.state;
     const myName = firstName ? `${firstName} ${lastName}` : 'My profile';
+    const shrinked = !this.props.hover && this.state.scrolled;
 
     return (
-      <Navbar fixed="top" expand light className="new-top-nav-bar">
+      <Navbar fixed="top" expand dark className={`new-top-nav-bar ${shrinked && 'shrinked'}`} {...hoverEvents}>
         <Container style={{ maxWidth: '1440px' }}>
           <Link className="navbar-brand" to="/">
             <img src={devMode ? DevLogoImg : LogoImg} />
@@ -60,7 +75,7 @@ export class TopNavBar extends React.Component {
           <Collapse isOpen={isOpen} navbar>
             <InputGroup className={`nav-search ${devMode ? '' : 'under-construction'}`}>
               {devMode && <Input placeholder="Search" />}
-              <InputGroupAddon>
+              <InputGroupAddon addonType="append">
                 <i className="fa fa-search" />
               </InputGroupAddon>
             </InputGroup>
@@ -74,7 +89,7 @@ export class TopNavBar extends React.Component {
               <Dropdown nav isOpen={profileOpen} toggle={this.toggleProfile.bind(this)}>
                 <DropdownToggle nav caret>
                   <img className="top-avatar" src={image || DefaultPerson} />
-                  {myName}
+                  <span className="user-name">{myName}</span>
                 </DropdownToggle>
                 <DropdownMenu>
                   <Link to="/my-profile" style={{ color: 'black' }}>
@@ -96,4 +111,4 @@ function mapStateToProps(state) {
   return { myProfile: state.app.userMe };
 }
 
-export default connect(mapStateToProps, { signOut: Auth.actions.signOut })(TopNavBar);
+export default connect(mapStateToProps, { signOut: Auth.actions.signOut })(withHover(TopNavBar));
