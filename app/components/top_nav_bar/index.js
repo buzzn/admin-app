@@ -48,7 +48,7 @@ export class TopNavBar extends React.Component {
   }
 
   handleScroll() {
-    if (document.documentElement.scrollTop > 100) {
+    if (window.pageYOffset > 100) {
       this.setState({ scrolled: true });
     } else {
       this.setState({ scrolled: false });
