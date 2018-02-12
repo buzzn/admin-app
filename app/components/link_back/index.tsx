@@ -1,17 +1,23 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import { TitleLink } from './style';
 
-const LinkBack = ({ url, title }) => {
+interface Props {
+  url?: string;
+  title: string;
+}
+
+const LinkBack = ({ url, title }: Props) => {
   if (url) {
     return (
-      <span className="h3">
+      <TitleLink>
         <Link to={url}>
           <i className="fa fa-chevron-left" /> {title}
         </Link>
-      </span>
+      </TitleLink>
     );
   }
-  return <span className="h3">{title}</span>;
+  return <TitleLink>{title}</TitleLink>;
 };
 
 export default LinkBack;
