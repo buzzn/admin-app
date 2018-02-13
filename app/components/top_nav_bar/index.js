@@ -60,10 +60,10 @@ export class TopNavBar extends React.Component {
   }
 
   render() {
-    const { signOut, devMode, myProfile: { firstName, lastName, image }, hoverEvents } = this.props;
-    const { isOpen, profileOpen } = this.state;
+    const { signOut, devMode, myProfile: { firstName, lastName, image }, hoverEvents, hover } = this.props;
+    const { isOpen, profileOpen, scrolled } = this.state;
     const myName = firstName ? `${firstName} ${lastName}` : 'My profile';
-    const shrinked = !this.props.hover && this.state.scrolled;
+    const shrinked = !hover && scrolled;
 
     return (
       <Navbar fixed="top" expand dark className={`new-top-nav-bar ${shrinked && 'shrinked'}`} {...hoverEvents}>
