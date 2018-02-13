@@ -27,7 +27,7 @@ import BubblesContainer from 'components/bubbles';
 import HealthContainer from 'components/health';
 import './react_table_config';
 
-const NewRoot = ({ token, devMode }) => (
+const NewRoot = ({ token, devMode, multiGroups }) => (
   <BrowserRouter>
     <ScrollToTop>
       <div className={`new-ui ${!token ? 'no-token' : ''}`}>
@@ -39,11 +39,7 @@ const NewRoot = ({ token, devMode }) => (
             <Row>
               <Route
                 path="/groups/:groupId"
-                render={({ match: { url } }) => (
-                  <Col xs="1" className="pl-0 pr-0">
-                    <Sidebar url={url || ''} devMode={devMode} />
-                  </Col>
-                )}
+                render={({ match: { url } }) => <Sidebar url={url || ''} devMode={devMode} multiGroups={multiGroups} />}
               />
 
               <Route
@@ -89,6 +85,10 @@ const NewRoot = ({ token, devMode }) => (
   </BrowserRouter>
 );
 
-const mapStateToProps = state => ({ token: state.auth.token, devMode: state.app.ui.devMode });
+const mapStateToProps = state => ({
+  token: state.auth.token,
+  devMode: state.app.ui.devMode,
+  multiGroups: !!state.groups.groups.array.length,
+});
 
 export default connect(mapStateToProps)(NewRoot);
