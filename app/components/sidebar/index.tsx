@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 import SidebarItem from './sidebar_item';
 import { SidebarBlock, Dummy } from './style';
 
@@ -35,6 +36,7 @@ class Sidebar extends React.Component<Props> {
 
   render() {
     const { url, devMode, multiGroups } = this.props;
+    const prefix = 'admin.sidebar';
 
     return (
       <div
@@ -47,35 +49,35 @@ class Sidebar extends React.Component<Props> {
           <Dummy />
           {multiGroups && (
             <SidebarItem to="/groups" exact={true} icon="th-large">
-              Groups
+              <FormattedMessage id={`${prefix}.groups`} />
             </SidebarItem>
           )}
           <SidebarItem to={`${url}/dashboard`} icon="bolt" devMode={devMode}>
-            Dashboard
+            <FormattedMessage id={`${prefix}.dashboard`} />
           </SidebarItem>
           <SidebarItem to={`${url}/analytics`} icon="bolt" devMode={devMode}>
-            Analytics
+            <FormattedMessage id={`${prefix}.analytics`} />
           </SidebarItem>
           <SidebarItem to={`${url}/powertakers`} icon="users">
-            Powertakers
+            <FormattedMessage id={`${prefix}.powertakers`} />
           </SidebarItem>
           <SidebarItem to={`${url}/tariffs`} icon="eur">
-            Tariffs
+            <FormattedMessage id={`${prefix}.tariffs`} />
           </SidebarItem>
           <SidebarItem to={`${url}/billing`} icon="money" devMode={devMode}>
-            Billing
+            <FormattedMessage id={`${prefix}.billing`} />
           </SidebarItem>
           <SidebarItem to={`${url}/contracts`} icon="file-text-o" devMode={devMode}>
-            Contracts
+            <FormattedMessage id={`${prefix}.contracts`} />
           </SidebarItem>
           <SidebarItem to={`${url}/system`} icon="cogs">
-            System
+            <FormattedMessage id={`${prefix}.system`} />
           </SidebarItem>
           <SidebarItem to={`${url}/documents`} icon="folder-open-o" devMode={devMode}>
-            Documents
+            <FormattedMessage id={`${prefix}.documents`} />
           </SidebarItem>
           <SidebarItem to={`${url}/settings`} icon="tachometer">
-            Settings
+            <FormattedMessage id={`${prefix}.settings`} />
           </SidebarItem>
           <SidebarItem to={`${url}/bubbles`} icon="pie-chart" devMode={devMode}>
             Bubbles
