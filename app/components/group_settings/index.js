@@ -260,7 +260,9 @@ class GroupSettings extends React.Component {
                 ) : (
                   <React.Fragment>
                     <Owner {...{ address: ownerAddress, owner }} />
-                    <Owner {...{ contact: true, address: ownerContactAddress, owner: ownerContact }} />
+                    {!!ownerContact.id && (
+                      <Owner {...{ contact: true, address: ownerContactAddress, owner: ownerContact }} />
+                    )}
                   </React.Fragment>
                 )}
                 <Row className="fieldgroup">
@@ -301,7 +303,9 @@ class GroupSettings extends React.Component {
                     ) : (
                       <React.Fragment>
                         <Owner {...{ address: gapAddress, owner: gap }} />
-                        <Owner {...{ contact: true, address: gapContactAddress, owner: gapContact }} />
+                        {!!gapContact.id && (
+                          <Owner {...{ contact: true, address: gapContactAddress, owner: gapContact }} />
+                        )}
                       </React.Fragment>
                     )}
                   </React.Fragment>
