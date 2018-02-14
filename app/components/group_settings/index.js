@@ -54,12 +54,21 @@ class GroupSettings extends React.Component {
       transmissionSystemOperator,
       electricitySupplier,
       bankAccount,
+
       owner,
       ownerAddress,
       ownerBankAccounts,
       ownerContact,
       ownerContactAddress,
       ownerContactBankAccounts,
+
+      gap,
+      gapAddress,
+      gapBankAccounts,
+      gapContact,
+      gapContactAddress,
+      gapContactBankAccounts,
+
       setGroup,
       updateGroup,
       handleSubmit,
@@ -282,6 +291,21 @@ class GroupSettings extends React.Component {
                     {bankAccount.iban}
                   </Col>
                 </Row>
+                {!!gap.id && (
+                  <React.Fragment>
+                    <p className="h5 grey-underline header text-uppercase mt-4">
+                      <FormattedMessage id={`${prefix}.headerGapCustomer`} />
+                    </p>
+                    {gap.type === 'person' ? (
+                      <Owner {...{ address: gapAddress, owner: gap }} />
+                    ) : (
+                      <React.Fragment>
+                        <Owner {...{ address: gapAddress, owner: gap }} />
+                        <Owner {...{ contact: true, address: gapContactAddress, owner: gapContact }} />
+                      </React.Fragment>
+                    )}
+                  </React.Fragment>
+                )}
               </Col>
             </Row>
           </form>
@@ -311,12 +335,21 @@ const mapStateToProps = state => ({
   transmissionSystemOperator: state.groups.group.transmissionSystemOperator || {},
   electricitySupplier: state.groups.group.electricitySupplier || {},
   bankAccount: state.groups.group.bankAccount || {},
+
   owner: state.groups.group.owner || {},
   ownerAddress: get(state.groups.group, 'owner.address') || {},
   ownerBankAccounts: get(state.groups.group, 'owner.bankAccounts.array') || [],
   ownerContact: get(state.groups.group, 'owner.contact') || {},
   ownerContactAddress: get(state.groups.group, 'owner.contact.address') || {},
   ownerContactBankAccounts: get(state.groups.group, 'owner.contact.bankAccounts.array') || [],
+
+  gap: state.groups.group.gapContractCustomer || {},
+  gapAddress: get(state.groups.group, 'gapContractCustomer.address') || {},
+  gapBankAccounts: get(state.groups.group, 'gapContractCustomer.bankAccounts.array') || [],
+  gapContact: get(state.groups.group, 'gapContractCustomer.contact') || {},
+  gapContactAddress: get(state.groups.group, 'gapContractCustomer.contact.address') || {},
+  gapContactBankAccounts: get(state.groups.group, 'gapContractCustomer.contact.bankAccounts.array') || [],
+
   loading: state.groups.loadingGroup,
 });
 
