@@ -32,7 +32,7 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
     if (contract.type === 'contract_localpool_power_taker') {
       return <PowertakerContract {...{ contract, register, contractor, prefix, url }} />;
     }
-    return 'Unknown cobtract type';
+    return 'Unknown contract type';
   }
 }
 
