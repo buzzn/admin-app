@@ -52,10 +52,10 @@ class Sidebar extends React.Component<Props> {
               <FormattedMessage id={`${prefix}.groups`} />
             </SidebarItem>
           )}
-          <SidebarItem to={`${url}/dashboard`} icon="bolt" devMode={devMode}>
+          <SidebarItem to={`${url}/dashboard`} icon="tachometer" devMode={devMode}>
             <FormattedMessage id={`${prefix}.dashboard`} />
           </SidebarItem>
-          <SidebarItem to={`${url}/analytics`} icon="bolt" devMode={devMode}>
+          <SidebarItem to={`${url}/analytics`} icon="line-chart" devMode={devMode}>
             <FormattedMessage id={`${prefix}.analytics`} />
           </SidebarItem>
           <SidebarItem to={`${url}/powertakers`} icon="users">

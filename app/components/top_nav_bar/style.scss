@@ -15,7 +15,6 @@
     .nav-search {
       input {
         background-color: #2F2F2F;
-        border: #2F2F2F;
         &::placeholder {
           color: #2F2F2F;
         }
@@ -71,7 +70,7 @@
       max-height: 41px !important;
       border-top-left-radius: 27px;
       border-bottom-left-radius: 27px;
-      border-right: none;
+      border: none;
       &:focus {
         border: none;
       }
