@@ -3,14 +3,12 @@ import { connect } from 'react-redux';
 import { Switch, Route, Redirect, NavLink } from 'react-router-dom';
 import { Nav } from 'reactstrap';
 import find from 'lodash/find';
-import flatten from 'lodash/flatten';
-import compact from 'lodash/compact';
-import Meters from 'meters';
 import Groups from 'groups';
+import MarketLocations from 'market_locations';
 import Loading from 'components/loading';
 import Breadcrumbs from 'components/breadcrumbs';
 import LinkBack from 'components/link_back';
-import RegistersList from './registers_list';
+import MarketLocationsList from './market_locations_list';
 import RegisterDataForm from './register_data';
 import ReadingsList from './readings_list';
 import RegisterPowerContainer from './register_power';
@@ -19,9 +17,9 @@ import RegisterContracts from './register_contracts';
 
 export class System extends React.Component {
   componentWillMount() {
-    const { loadGroupMeters, loadGroup, match: { params: { groupId } } } = this.props;
+    const { loadMarketLocations, loadGroup, match: { params: { groupId } } } = this.props;
     loadGroup(groupId);
-    loadGroupMeters(groupId);
+    loadMarketLocations(groupId);
   }
 
   componentWillUnmount() {
@@ -32,21 +30,20 @@ export class System extends React.Component {
     const {
       devMode,
       loading,
-      meters,
-      setGroupMeters,
-      registers,
+      marketLocations,
+      setMarketLocations,
       group,
       realValidationRules,
       virtualValidationRules,
       match: { url, params: { groupId } },
     } = this.props;
 
-    if (meters._status === 404 || meters._status === 403) {
-      setGroupMeters({ _status: null, array: [] });
+    if (marketLocations._status === 404 || marketLocations._status === 403) {
+      setMarketLocations({ _status: null, array: [] });
       return <Redirect to="/groups" />;
     }
 
-    if (meters._status === null || loading) return <Loading minHeight={40} />;
+    if (marketLocations._status === null || loading) return <Loading minHeight={40} />;
 
     const breadcrumbs = [
       { id: 0, link: '/groups', title: 'My groups' },
@@ -59,7 +56,7 @@ export class System extends React.Component {
         <div className="row center-content-header">
           <div className="col-7">
             <Switch>
-              <Route
+              { /* <Route
                 path={`${url}/:meterId`}
                 render={({ match: { url: meterUrl, params: { meterId } } }) => {
                   const meter = find(meters.array, m => m.id === meterId);
@@ -105,7 +102,7 @@ export class System extends React.Component {
                     </Switch>
                   );
                 }}
-              />
+              /> */ }
               <Route
                 path={url}
                 render={() => (
@@ -230,9 +227,9 @@ export class System extends React.Component {
             <Route
               path={url}
               render={({ history }) => (
-                <RegistersList
+                <MarketLocationsList
                   {...{
-                    registers,
+                    marketLocations: marketLocations.array,
                     url,
                     history,
                     groupId,
@@ -251,31 +248,18 @@ export class System extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const registers =
-    state.meters.groupMeters._status === 200
-      ? compact(flatten(state.meters.groupMeters.array.map((m) => {
-        if (!m.registers) return [];
-        return m.registers.array.map(r => ({
-          ...r,
-          meterId: m.id,
-          meterProductSerialnumber: m.productSerialnumber,
-        }));
-      })))
-      : [];
-
   return {
     devMode: state.app.ui.devMode,
     group: state.groups.group,
-    loading: state.meters.loadingGroupMeters || !state.groups.group.id,
-    meters: state.meters.groupMeters,
-    registers,
+    loading: state.marketLocations.loadingMarketLocations || !state.groups.group.id,
+    marketLocations: state.marketLocations.marketLocations,
     realValidationRules: state.meters.realValidationRules,
     virtualValidationRules: state.meters.virtualValidationRules,
   };
 }
 
 export default connect(mapStateToProps, {
-  loadGroupMeters: Meters.actions.loadGroupMeters,
-  setGroupMeters: Meters.actions.setGroupMeters,
+  loadMarketLocations: MarketLocations.actions.loadMarketLocations,
+  setMarketLocations: MarketLocations.actions.setMarketLocations,
   loadGroup: Groups.actions.loadGroup,
 })(System);

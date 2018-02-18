@@ -1,16 +1,23 @@
 import * as React from 'react';
 import ReactTableSorted from 'components/react_table_sorted';
-import { injectIntl } from 'react-intl';
+import { injectIntl, InjectIntlProps } from 'react-intl';
 import { tableParts as TableParts } from 'react_table_config';
 
-const RegistersList = ({ registers, url, history, intl, groupId }) => {
-  const prefix = 'admin.registers';
+interface Props {
+  marketLocations: Array<any>;
+  url: string;
+  history: any;
+  groupId: string;
+}
 
-  const data = registers.map(r => ({
-    ...r,
-    label: intl.formatMessage({ id: `${prefix}.${r.label}` }),
-    linkMeter: `${url}/${r.meterId}`,
-    linkRegister: `${url}/${r.meterId}/registers/${r.id}/readings`,
+const MarketLocationsList = ({ marketLocations, url, history, intl, groupId }: Props & InjectIntlProps) => {
+  const prefix = 'admin.marketLocations';
+
+  const data = marketLocations.map(m => ({
+    ...m,
+    label: intl.formatMessage({ id: `admin.registers.${m.register.label}` }),
+    // linkMeter: `${url}/${m.meterId}`,
+    // linkRegister: `${url}/${m.meterId}/registers/${m.id}/readings`,
   }));
 
   const columns = [
@@ -33,10 +40,6 @@ const RegistersList = ({ registers, url, history, intl, groupId }) => {
       },
     },
     {
-      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableDirection` })} />,
-      accessor: 'direction',
-    },
-    {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableLabel` })} />,
       accessor: 'label',
     },
@@ -49,18 +52,18 @@ const RegistersList = ({ registers, url, history, intl, groupId }) => {
           data,
           columns,
           collapseOnDataChange: false,
-          getTdProps: (state, rowInfo, column) => ({
-            onClick: (e, handleOriginal) => {
-              if (column.id === 'name') history.push(rowInfo.original.linkRegister);
-              if (column.id === 'meterProductSerialnumber') history.push(rowInfo.original.linkMeter);
-              if (handleOriginal) handleOriginal();
-            },
-          }),
-          uiSortPath: `groups.${groupId}.registers`,
+          // getTdProps: (_state, rowInfo, column) => ({
+          //   onClick: (_e, handleOriginal) => {
+          //     if (column.id === 'name') history.push(rowInfo.original.linkRegister);
+          //     if (column.id === 'meterProductSerialnumber') history.push(rowInfo.original.linkMeter);
+          //     if (handleOriginal) handleOriginal();
+          //   },
+          // }),
+          uiSortPath: `groups.${groupId}.marketLocations`,
         }}
       />
     </div>
   );
 };
 
-export default injectIntl(RegistersList);
+export default injectIntl(MarketLocationsList);
