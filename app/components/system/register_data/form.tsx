@@ -2,7 +2,12 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Row, Col } from 'reactstrap';
 
-class RegisterData extends React.Component {
+interface Props {
+  register: any;
+  meter: any;
+}
+
+class RegisterData extends React.Component<Props> {
   render() {
     const { register, meter } = this.props;
 

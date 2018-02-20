@@ -1,12 +1,19 @@
 import * as React from 'react';
-import { injectIntl } from 'react-intl';
+import { injectIntl, InjectIntlProps } from 'react-intl';
 import { Link } from 'react-router-dom';
+import { BreadcrumbsWrap } from './style';
 
-import './style.scss';
+export interface BreadcrumbsProps {
+  breadcrumbs: Array<{
+    id: string | number;
+    link?: string;
+    type?: string;
+    title: string;
+  }>;
+}
 
-// TODO: this can be replaced with fully connected standalone component after preloader will be implemented. #91
-const Breadcrumbs = ({ breadcrumbs, intl }) => (
-  <div className="breadcrumbs">
+const Breadcrumbs = ({ breadcrumbs, intl }: BreadcrumbsProps & InjectIntlProps) => (
+  <BreadcrumbsWrap>
     <ul>
       {breadcrumbs.map(crumb => (
         <li key={crumb.id}>
@@ -38,7 +45,7 @@ const Breadcrumbs = ({ breadcrumbs, intl }) => (
         </li>
       ))}
     </ul>
-  </div>
+  </BreadcrumbsWrap>
 );
 
 export default injectIntl(Breadcrumbs);

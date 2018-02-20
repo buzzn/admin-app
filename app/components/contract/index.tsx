@@ -23,7 +23,9 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
     if (loading || contract._status === null) return <Loading minHeight={40} />;
     if (contract._status && contract._status !== 200) return <Redirect to={url} />;
 
-    const register = contract.register || {};
+    const register = contract.marketLocation
+      ? { ...contract.marketLocation.register, name: contract.marketLocation.name }
+      : {};
     const prefix = 'admin.contracts';
 
     if (contract.type === 'contract_localpool_third_party') {

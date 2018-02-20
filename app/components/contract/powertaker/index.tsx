@@ -48,7 +48,7 @@ const PowertakerContract = ({ url, contract, prefix, register, contractor, intl 
               to={`${url
                 .split('/')
                 .slice(0, -1)
-                .join('/')}/system/${register.meterId}/registers/${register.id}/readings`}
+                .join('/')}/system/registers/${register.id}/readings`}
             >
               {truncate(register.name, { length: 25 })} >
             </BigLink>

@@ -2,12 +2,12 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { TitleLink } from './style';
 
-interface Props {
+export interface LinkBackProps {
   url?: string;
   title: string;
 }
 
-const LinkBack = ({ url, title }: Props) => {
+const LinkBack = ({ url, title }: LinkBackProps) => {
   if (url) {
     return (
       <TitleLink>

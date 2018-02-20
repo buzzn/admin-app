@@ -2,12 +2,21 @@ import * as React from 'react';
 import ReactTableSorted from 'components/react_table_sorted';
 import moment from 'moment';
 import orderBy from 'lodash/orderBy';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage, InjectIntlProps } from 'react-intl';
 import { Row, Col } from 'reactstrap';
 import { tableParts as TableParts } from 'react_table_config';
 import { formatLabel } from '_util';
 
-class ReadingsList extends React.Component {
+interface Props {
+  readings: Array<any>;
+  registerId: string;
+}
+
+interface State {
+  expanded: { [key: number]: boolean };
+}
+
+class ReadingsList extends React.Component<Props & InjectIntlProps, State> {
   state = { expanded: {} };
 
   handleRowClick(rowNum) {
@@ -96,8 +105,8 @@ class ReadingsList extends React.Component {
               </Row>
             ),
             expanded: this.state.expanded,
-            getTrProps: (state, rowInfo) => ({
-              onClick: (event, handleOriginal) => {
+            getTrProps: (_state, rowInfo) => ({
+              onClick: (_event, handleOriginal) => {
                 this.handleRowClick(rowInfo.viewIndex);
                 handleOriginal && handleOriginal();
               },

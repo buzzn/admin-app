@@ -3,7 +3,7 @@ import { prepareHeaders, parseResponse, camelizeResponseKeys, snakeReq } from '.
 
 export default {
   fetchRegister({ token, apiUrl, apiPath, registerId, groupId, meterId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/meters/${meterId}/registers/${registerId}`, {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/meters/${meterId}/registers/${registerId}?include=readings,market_location:[contracts]`, {
       headers: prepareHeaders(token),
     })
       .then(parseResponse)
@@ -23,12 +23,5 @@ export default {
       body: JSON.stringify(snakeReq(params)),
     })
       .then(parseResponse);
-  },
-  fetchRegisterReadings({ token, apiUrl, apiPath, registerId, groupId, meterId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/meters/${meterId}/registers/${registerId}/readings`, {
-      headers: prepareHeaders(token),
-    })
-      .then(parseResponse)
-      .then(camelizeResponseKeys);
   },
 };
