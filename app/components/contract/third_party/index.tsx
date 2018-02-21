@@ -33,12 +33,12 @@ const ThirdPartyContract = ({ url, contract, prefix, register }: Props) => (
               to={`${url
                 .split('/')
                 .slice(0, -1)
-                .join('/')}/system/${register.meterId}/registers/${register.id}/readings`}
+                .join('/')}/system/market-locations/${register.locationId}`}
             >
               {truncate(register.name, { length: 25 })} >
             </BigLink>
             <LinkType>
-              <FormattedMessage id={`${prefix}.objectTypePowerRegister`} />
+              <FormattedMessage id={`${prefix}.objectTypeMarketLocation`} />
             </LinkType>
           </LinkCol>
         </InnerRow>
@@ -80,7 +80,9 @@ const ThirdPartyContract = ({ url, contract, prefix, register }: Props) => (
           <FormattedMessage id={`${prefix}.headerDates`} />
         </h5>
         <TwoColView {...{ prefix, field: 'beginDate' }}>{moment(contract.beginDate).format('DD.MM.YYYY')}</TwoColView>
-        <TwoColView {...{ prefix, field: 'lastDate' }}>{contract.lastDate ? moment(contract.lastDate).format('DD.MM.YYYY') : ''}</TwoColView>
+        <TwoColView {...{ prefix, field: 'lastDate' }}>
+          {contract.lastDate ? moment(contract.lastDate).format('DD.MM.YYYY') : ''}
+        </TwoColView>
       </Col>
     </Row>
   </div>

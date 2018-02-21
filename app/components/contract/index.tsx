@@ -24,7 +24,7 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
     if (contract._status && contract._status !== 200) return <Redirect to={url} />;
 
     const register = contract.marketLocation
-      ? { ...contract.marketLocation.register, name: contract.marketLocation.name }
+      ? { ...contract.marketLocation.register, name: contract.marketLocation.name, locationId: contract.marketLocation.id }
       : {};
     const prefix = 'admin.contracts';
 
