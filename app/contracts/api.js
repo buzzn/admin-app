@@ -3,16 +3,22 @@ import { prepareHeaders, parseResponse, camelizeResponseKeys, camelizeResponseAr
 
 export default {
   fetchContract({ token, apiUrl, apiPath, contractId, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}?include=register:[meter],contrator_bank_account,contractor:[address],customer_bank_account,customer:[address,contact:address],tariffs,payments`, {
-      headers: prepareHeaders(token),
-    })
+    return fetch(
+      `${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}?include=
+                            market_location:[register:[meter]],
+                            contrator_bank_account,contractor:[address],
+                            customer_bank_account,customer:[address,contact:address],
+                            tariffs,payments`,
+      { headers: prepareHeaders(token) },
+    )
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
   fetchGroupPowertakers({ token, apiUrl, apiPath, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/power-taker-contracts?include=register,customer:[address,contact:address]`, {
-      headers: prepareHeaders(token),
-    })
+    return fetch(
+      `${apiUrl}${apiPath}/localpools/${groupId}/power-taker-contracts?include=market_location:[register],customer:[address,contact:address]`,
+      { headers: prepareHeaders(token) },
+    )
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
@@ -21,20 +27,18 @@ export default {
       headers: prepareHeaders(token),
       method: 'PATCH',
       body: JSON.stringify(snakeReq(params)),
-    })
-      .then(parseResponse);
+    }).then(parseResponse);
   },
   fetchOperatorContract({ token, apiUrl, apiPath, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/metering-point-operator-contract?include=customer:[address,contact:address]`, {
-      headers: prepareHeaders(token),
-    })
+    return fetch(
+      `${apiUrl}${apiPath}/localpools/${groupId}/metering-point-operator-contract?include=customer:[address,contact:address]`,
+      { headers: prepareHeaders(token) },
+    )
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
   fetchProcessingContract({ token, apiUrl, apiPath, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/localpool-processing-contract`, {
-      headers: prepareHeaders(token),
-    })
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/localpool-processing-contract`, { headers: prepareHeaders(token) })
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },

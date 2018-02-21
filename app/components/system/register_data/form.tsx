@@ -2,7 +2,12 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Row, Col } from 'reactstrap';
 
-class RegisterData extends React.Component {
+interface Props {
+  register: any;
+  meter: any;
+}
+
+class RegisterData extends React.Component<Props> {
   render() {
     const { register, meter } = this.props;
 
@@ -35,6 +40,14 @@ class RegisterData extends React.Component {
           </Col>
           <Col xs="8" className="grey-underline fieldvalue">
             {register.direction}
+          </Col>
+        </Row>
+        <Row className="fieldgroup">
+          <Col xs="4" className="fieldname">
+            <FormattedMessage id="admin.marketLocations.name" />
+          </Col>
+          <Col xs="8" className="grey-underline fieldvalue">
+            {register.marketLocation.name}
           </Col>
         </Row>
         <Row className="fieldgroup">

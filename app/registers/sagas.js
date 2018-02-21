@@ -11,8 +11,7 @@ export function* getRegister({ apiUrl, apiPath, token }, { registerId, groupId, 
   yield put(actions.loadingRegister());
   try {
     const register = yield call(api.fetchRegister, { apiUrl, apiPath, token, registerId, groupId, meterId });
-    const readings = yield call(api.fetchRegisterReadings, { apiUrl, apiPath, token, registerId, groupId, meterId });
-    yield put(actions.setRegister({ register, readings }));
+    yield put(actions.setRegister(register));
   } catch (error) {
     logException(error);
   }

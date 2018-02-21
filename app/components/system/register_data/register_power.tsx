@@ -1,21 +1,19 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import Registers from 'registers';
 import { formatLabel } from '_util';
 
-class RegisterPower extends React.Component {
-  componentWillMount() {
+class RegisterPower extends React.Component<ExtProps & StateProps & DispatchProps> {
+  componentDidMount() {
     const { registerId, groupId, loadRegisterPower, meterId } = this.props;
     loadRegisterPower({ registerId, groupId, meterId });
   }
 
   render() {
     const { registerPower } = this.props;
-    const prefix = 'admin.registers';
 
     let value = '';
-    if (registerPower.status === 404) {
+    if (registerPower._status === 404) {
       value = '--.--';
     } else if (registerPower.value === -1) {
       value = '!!.!!';
@@ -31,8 +29,26 @@ class RegisterPower extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
+interface StatePart {
+  registers: { registerPower: { _status: null | number; [key: string]: any } };
+}
+
+interface ExtProps {
+  registerId: string;
+  groupId: string;
+  meterId: string;
+}
+
+interface StateProps {
+  registerPower: { _status: null | number; [key: string]: any };
+}
+
+interface DispatchProps {
+  loadRegisterPower: Function;
+}
+
+function mapStateToProps(state: StatePart) {
   return { registerPower: state.registers.registerPower };
 }
 
-export default connect(mapStateToProps, { loadRegisterPower: Registers.actions.loadRegisterPower })(RegisterPower);
+export default connect<StateProps, DispatchProps, ExtProps>(mapStateToProps, { loadRegisterPower: Registers.actions.loadRegisterPower })(RegisterPower);

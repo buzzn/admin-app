@@ -48,12 +48,12 @@ const PowertakerContract = ({ url, contract, prefix, register, contractor, intl 
               to={`${url
                 .split('/')
                 .slice(0, -1)
-                .join('/')}/system/${register.meterId}/registers/${register.id}/readings`}
+                .join('/')}/system/registers/${register.id}/readings`}
             >
               {truncate(register.name, { length: 25 })} >
             </BigLink>
             <LinkType>
-              <FormattedMessage id={`${prefix}.objectTypePowerRegister`} />
+              <FormattedMessage id={`${prefix}.objectTypeMarketLocation`} />
             </LinkType>
           </LinkCol>
         </InnerBorderRow>
@@ -87,7 +87,7 @@ const PowertakerContract = ({ url, contract, prefix, register, contractor, intl 
         <h5 className="grey-underline mt-5 pb-2">
           <FormattedMessage id={`${prefix}.headerContractsDetails`} />
         </h5>
-        <TwoColView {...{ prefix, field: 'registerName' }}>
+        <TwoColView {...{ prefix, field: 'marketLocation' }}>
           <Link
             to={`${url
               .split('/')

@@ -2,28 +2,41 @@ import * as React from 'react';
 import ReactTableSorted from 'components/react_table_sorted';
 import orderBy from 'lodash/orderBy';
 import moment from 'moment';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { NavLink } from 'react-router-dom';
 import { tableParts as TableParts } from 'react_table_config';
 import ContractStatus from 'components/contract_status';
 import Loading from 'components/loading';
+import PageTitle from 'components/page_title';
+import { BreadcrumbsProps } from 'components/breadcrumbs';
+import { CenterContent, SubNav } from 'components/style';
 
 const DefaultPerson = require('images/default_person.jpg');
 const DefaultOrganisation = require('images/default_organisation.jpg');
 const DefaultThirdParty = require('images/default_3rd_party.jpg');
 
 interface Props {
+  pType: 'active' | 'past';
   powertakers: Array<any>;
   loading: boolean;
   groupId: string;
   url: string;
-  active: boolean;
   history: any;
 }
 
-const PowertakersList = ({ powertakers, loading, groupId, url, intl, active, history }: Props & InjectedIntlProps) => {
+const PowertakersList = ({
+  breadcrumbs,
+  pType,
+  powertakers,
+  loading,
+  groupId,
+  url,
+  intl,
+  history,
+}: Props & BreadcrumbsProps & InjectedIntlProps) => {
   if (loading) return <Loading minHeight={40} />;
 
-  const filteredPowertakers = powertakers.filter(o => (active ? o.status !== 'ended' : o.status === 'ended'));
+  const filteredPowertakers = powertakers.filter(o => (pType === 'active' ? o.status !== 'ended' : o.status === 'ended'));
 
   const prefix = 'admin.contracts';
 
@@ -49,12 +62,12 @@ const PowertakersList = ({ powertakers, loading, groupId, url, intl, active, his
           : { value: p.customer.name, image: p.customer.image || DefaultOrganisation, type: 'avatar', clickable: true },
     linkPowertaker: p.type === 'contract_localpool_third_party' ? '' : `${url}/${p.id}/powertaker`,
     linkContract: `${url}/${p.id}`,
-    registerName: p.register.name,
+    marketLocationName: p.marketLocation.name,
     // HACK
-    linkRegister: `${url
+    linkMarketLocation: `${url
       .split('/')
       .slice(0, -1)
-      .join('/')}/system/${p.register.meterId}/registers/${p.register.id}/readings`,
+      .join('/')}/system/market-locations/${p.marketLocation.id}`,
     beginDate: moment(p.beginDate).toDate(),
     lastDate: p.lastDate ? moment(p.lastDate).toDate() : p.lastDate,
     status: {
@@ -78,9 +91,9 @@ const PowertakersList = ({ powertakers, loading, groupId, url, intl, active, his
     },
     {
       Header: () => (
-        <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableRegisterName` })} />
+        <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.marketLocations.tableName' })} />
       ),
-      accessor: 'registerName',
+      accessor: 'marketLocationName',
       style: {
         cursor: 'pointer',
         textDecoration: 'underline',
@@ -110,7 +123,7 @@ const PowertakersList = ({ powertakers, loading, groupId, url, intl, active, his
     },
   ];
 
-  if (!active) {
+  if (pType === 'past') {
     columns.splice(4, 0, {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableEndDate` })} />,
       accessor: 'lastDate',
@@ -119,25 +132,43 @@ const PowertakersList = ({ powertakers, loading, groupId, url, intl, active, his
   }
 
   return (
-    <div className="p-0" key={2}>
-      <ReactTableSorted
+    <React.Fragment>
+      <PageTitle
         {...{
-          data,
-          columns,
-          getTdProps: (_state, rowInfo, column) => ({
-            onClick: (_e, handleOriginal) => {
-              if (column.id === 'registerName') history.push(rowInfo.original.linkRegister);
-              if (column.id === 'name' && rowInfo.original.linkPowertaker.length) {
-                history.push(rowInfo.original.linkPowertaker);
-              }
-              if (column.id === 'fullContractNumber') history.push(rowInfo.original.linkContract);
-              if (handleOriginal) handleOriginal();
-            },
-          }),
-          uiSortPath: `groups.${groupId}.powertakers`,
+          breadcrumbs: breadcrumbs.concat([{ id: '-----', title: 'Powertakers' }]),
+          title: intl.formatMessage({ id: 'admin.contracts.backPowertakers' }),
         }}
       />
-    </div>
+      <CenterContent>
+        <SubNav>
+          <NavLink to={`${url}/active`} exact className="nav-link">
+            <FormattedMessage id="admin.contracts.navActivePowertakers" />
+          </NavLink>
+          <NavLink to={`${url}/past`} exact className="nav-link">
+            <FormattedMessage id="admin.contracts.navPastPowertakers" />
+          </NavLink>
+        </SubNav>
+        <div className="p-0">
+          <ReactTableSorted
+            {...{
+              data,
+              columns,
+              getTdProps: (_state, rowInfo, column) => ({
+                onClick: (_e, handleOriginal) => {
+                  if (column.id === 'marketLocationName') history.push(rowInfo.original.linkMarketLocation);
+                  if (column.id === 'name' && rowInfo.original.linkPowertaker.length) {
+                    history.push(rowInfo.original.linkPowertaker);
+                  }
+                  if (column.id === 'fullContractNumber') history.push(rowInfo.original.linkContract);
+                  if (handleOriginal) handleOriginal();
+                },
+              }),
+              uiSortPath: `groups.${groupId}.powertakers`,
+            }}
+          />
+        </div>
+      </CenterContent>
+    </React.Fragment>
   );
 };
 

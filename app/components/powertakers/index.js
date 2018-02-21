@@ -10,10 +10,10 @@ import Contracts from 'contracts';
 import Groups from 'groups';
 import Breadcrumbs from 'components/breadcrumbs';
 import LinkBack from 'components/link_back';
+import Loading from 'components/loading';
 import PowertakersList from './powertakers_list';
 import PowertakerData from './powertaker_data';
-import Contract from 'components/contract';
-import Loading from 'components/loading';
+import ContractData from './contract_data';
 
 export class Powertakers extends React.Component {
   componentWillMount() {
@@ -42,159 +42,65 @@ export class Powertakers extends React.Component {
     ];
 
     return (
-      <React.Fragment>
-        {/* Breadcrumbs */}
-        <div className="row center-content-header">
-          <div className="col-7">
-            <Switch>
-              <Route
-                path={`${url}/:pType(active|past)`}
-                render={() => (
-                  <React.Fragment>
-                    <Breadcrumbs breadcrumbs={breadcrumbs.concat([{ id: '-----', title: 'Powertakers' }])} />
-                    <LinkBack title={intl.formatMessage({ id: 'admin.contracts.backPowertakers' })} />
-                  </React.Fragment>
-                )}
-              />
-              <Route
-                path={`${url}/:contractId`}
-                render={({ match: { url: powertakerUrl, params: { contractId } } }) => {
-                  const contract = find(powertakers.array, p => p.id === contractId);
-                  if (!contract) return <Redirect to={url} />;
-                  breadcrumbs.push({
-                    id: contract.id,
-                    type: 'contract',
-                    title: contract.fullContractNumber,
-                    link: undefined,
-                  });
-                  return (
-                    <Switch>
-                      <Route
-                        path={`${powertakerUrl}/powertaker`}
-                        render={() => {
-                          const powertaker = contract.customer;
-                          const powertakerTitle =
-                            powertaker.type === 'person'
-                              ? `${powertaker.firstName} ${powertaker.lastName}`
-                              : powertaker.name;
-                          return (
-                            <React.Fragment>
-                              <Breadcrumbs breadcrumbs={breadcrumbs} />
-                              <LinkBack url={url} title={truncate(powertakerTitle, 20)} />
-                            </React.Fragment>
-                          );
-                        }}
-                      />
-                      <Route
-                        path={powertakerUrl}
-                        render={() => (
-                          <React.Fragment>
-                            <Breadcrumbs breadcrumbs={breadcrumbs} />
-                            <LinkBack url={url} title={contract.fullContractNumber} />
-                          </React.Fragment>
-                        )}
-                      />
-                    </Switch>
-                  );
-                }}
-              />
-            </Switch>
-          </div>
-          <div className="col-5" />
-        </div>
-        {/* End of Breadcrumbs */}
-
-        <div className="center-content">
-          <Switch>
-            <Route path={url} exact>
-              <Redirect to={`${url}/active`} />
-            </Route>
-
-            {/* Powertakers List */}
-            <Route path={`${url}/:pType(active|past)`}>
-              <React.Fragment>
-                {/* Sub nav */}
-                <Nav className="sub-nav">
-                  <NavLink to={`${url}/active`} exact className="nav-link">
-                    <FormattedMessage id="admin.contracts.navActivePowertakers" />
-                  </NavLink>
-                  <NavLink to={`${url}/past`} exact className="nav-link">
-                    <FormattedMessage id="admin.contracts.navPastPowertakers" />
-                  </NavLink>
-                </Nav>
-                {/* End of sub nav */}
-
-                <Switch>
-                  <Route
-                    path={`${url}/active`}
-                    render={({ history }) => (
-                      <PowertakersList
-                        active
-                        {...{
-                          powertakers: powertakers.array,
-                          loading,
-                          groupId,
-                          url,
-                          history,
-                        }}
-                      />
-                    )}
-                  />
-                  <Route
-                    path={`${url}/past`}
-                    render={({ history }) => (
-                      <PowertakersList
-                        {...{
-                          powertakers: powertakers.array,
-                          loading,
-                          groupId,
-                          url,
-                          history,
-                        }}
-                      />
-                    )}
-                  />
-                </Switch>
-              </React.Fragment>
-            </Route>
-            {/* End of powertakers List */}
-
-            {/* Detailed UI */}
-            <Route
-              path={`${url}/:contractId`}
-              render={({ history, match: { url: powertakerUrl, params: { contractId } } }) => {
-                const contract = find(powertakers.array, p => p.id === contractId);
-                if (!contract) return <Redirect to={url} />;
-                return (
-                  <React.Fragment>
-                    {/* Sub nav */}
-                    {/* End of sub nav */}
-
-                    {/* Main UI */}
-                    <Switch>
-                      <Route path={`${powertakerUrl}/powertaker`}>
-                        <PowertakerData
-                          // FIXME: temporary workaround for organizations
-                          powertaker={get(contract.customer, 'type') === 'organization' ? contract.customer : null}
-                          groupId={groupId}
-                          userId={get(contract.customer, 'type') === 'person' ? contract.customer.id : null}
-                          url={url}
-                          history={history}
-                        />
-                      </Route>
-                      <Route path={powertakerUrl}>
-                        <Contract {...{ groupId, contractId, url }} />
-                      </Route>
-                    </Switch>
-                    {/* End of main UI */}
-                  </React.Fragment>
-                );
+      <Switch>
+        <Route
+          path={`${url}/:pType(active|past)`}
+          render={({ history, match: { params: { pType } } }) => (
+            <PowertakersList
+              active
+              {...{
+                breadcrumbs,
+                pType,
+                powertakers: powertakers.array,
+                loading,
+                groupId,
+                url,
+                history,
               }}
             />
-            {/* End of detailed UI */}
-          </Switch>
-        </div>
-      </React.Fragment>
+          )}
+        />
+        <Route
+          path={`${url}/:contractId`}
+          render={({ history, match: { url: contractUrl, params: { contractId } } }) => {
+            const contract = find(powertakers.array, p => p.id === contractId);
+            if (!contract) return <Redirect to={url} />;
+            const powertaker = contract.customer;
+            const powertakerTitle =
+              powertaker.type === 'person' ? `${powertaker.firstName} ${powertaker.lastName}` : powertaker.name;
+            breadcrumbs.push({
+              id: contract.id,
+              type: 'contract',
+              title: contract.fullContractNumber,
+              link: undefined,
+            });
+            return (
+              <Switch>
+                <Route path={`${contractUrl}/powertaker`}>
+                  <PowertakerData
+                    {...{
+                      // FIXME: temporary workaround for organizations
+                      powertaker: get(contract.customer, 'type') === 'organization' ? contract.customer : null,
+                      userId: get(contract.customer, 'type') === 'person' ? contract.customer.id : null,
+                      groupId,
+                      url,
+                      history,
+                      breadcrumbs,
+                      title: truncate(powertakerTitle, 20),
+                    }}
+                  />
+                </Route>
+                <Route path={contractUrl}>
+                  <ContractData {...{ breadcrumbs, title: contract.fullContractNumber, groupId, contractId, url }} />
+                </Route>
+              </Switch>
+            );
+          }}
+        />
+        <Route path={url}>
+          <Redirect to={`${url}/active`} />
+        </Route>
+      </Switch>
     );
   }
 }
