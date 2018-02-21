@@ -44,6 +44,14 @@ class RegisterData extends React.Component<Props> {
         </Row>
         <Row className="fieldgroup">
           <Col xs="4" className="fieldname">
+            <FormattedMessage id="admin.marketLocations.name" />
+          </Col>
+          <Col xs="8" className="grey-underline fieldvalue">
+            {register.marketLocation.name}
+          </Col>
+        </Row>
+        <Row className="fieldgroup">
+          <Col xs="4" className="fieldname">
             <FormattedMessage id="admin.meters.productSerialnumber" />
           </Col>
           <Col xs="8" className="grey-underline fieldvalue">

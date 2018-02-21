@@ -7,6 +7,7 @@ import Loading from 'components/loading';
 import MarketLocationsList from './market_locations_list';
 import RegisterData from './register_data';
 import MeterData from './meter_data';
+import MarketLocationData from './market_location_data';
 
 export class System extends React.Component {
   componentDidMount() {
@@ -61,6 +62,14 @@ export class System extends React.Component {
               }}
             />
           )}
+        />
+        <Route
+          path={`${url}/market-locations/:locationId`}
+          render={({ match: { url: locationUrl, params: { locationId } } }) => {
+            const marketLocation = marketLocations.array.find(m => m.id === locationId);
+            if (!marketLocation) return <Redirect to={url} />;
+            return <MarketLocationData {...{ breadcrumbs, url, locationUrl, marketLocation }} />;
+          }}
         />
         <Route
           path={`${url}/meters/:meterId`}

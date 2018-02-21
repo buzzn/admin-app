@@ -62,12 +62,12 @@ const PowertakersList = ({
           : { value: p.customer.name, image: p.customer.image || DefaultOrganisation, type: 'avatar', clickable: true },
     linkPowertaker: p.type === 'contract_localpool_third_party' ? '' : `${url}/${p.id}/powertaker`,
     linkContract: `${url}/${p.id}`,
-    registerName: p.marketLocation.name,
+    marketLocationName: p.marketLocation.name,
     // HACK
-    linkRegister: `${url
+    linkMarketLocation: `${url
       .split('/')
       .slice(0, -1)
-      .join('/')}/system/registers/${p.marketLocation.register.id}/readings`,
+      .join('/')}/system/market-locations/${p.marketLocation.id}`,
     beginDate: moment(p.beginDate).toDate(),
     lastDate: p.lastDate ? moment(p.lastDate).toDate() : p.lastDate,
     status: {
@@ -91,9 +91,9 @@ const PowertakersList = ({
     },
     {
       Header: () => (
-        <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableRegisterName` })} />
+        <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.marketLocations.tableName' })} />
       ),
-      accessor: 'registerName',
+      accessor: 'marketLocationName',
       style: {
         cursor: 'pointer',
         textDecoration: 'underline',
@@ -155,7 +155,7 @@ const PowertakersList = ({
               columns,
               getTdProps: (_state, rowInfo, column) => ({
                 onClick: (_e, handleOriginal) => {
-                  if (column.id === 'registerName') history.push(rowInfo.original.linkRegister);
+                  if (column.id === 'marketLocationName') history.push(rowInfo.original.linkMarketLocation);
                   if (column.id === 'name' && rowInfo.original.linkPowertaker.length) {
                     history.push(rowInfo.original.linkPowertaker);
                   }

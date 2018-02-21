@@ -31,7 +31,7 @@ const MarketLocationsList = ({
     label: intl.formatMessage({ id: `admin.registers.${m.register.label}` }),
     meterProductSerialnumber: m.register.meter.productSerialnumber,
     linkMeter: `${url}/meters/${m.register.meter.id}`,
-    linkRegister: `${url}/registers/${m.register.id}/readings`,
+    linkMarketLocation: `${url}/market-locations/${m.id}`,
   }));
 
   const columns = [
@@ -54,7 +54,9 @@ const MarketLocationsList = ({
       },
     },
     {
-      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableLabel` })} />,
+      Header: () => (
+        <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.registers.tableLabel' })} />
+      ),
       accessor: 'label',
     },
   ];
@@ -81,7 +83,7 @@ const MarketLocationsList = ({
               collapseOnDataChange: false,
               getTdProps: (_state, rowInfo, column) => ({
                 onClick: (_e, handleOriginal) => {
-                  if (column.id === 'name') history.push(rowInfo.original.linkRegister);
+                  if (column.id === 'name') history.push(rowInfo.original.linkMarketLocation);
                   if (column.id === 'meterProductSerialnumber') history.push(rowInfo.original.linkMeter);
                   if (handleOriginal) handleOriginal();
                 },

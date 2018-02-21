@@ -43,14 +43,14 @@ class PowertakerData extends React.Component<
       type: <ContractType {...{ size: 'large', type: c.type }} />,
       status: <ContractStatus {...{ size: 'large', status: c.status }} />,
       groupName: c.localpool.name,
-      registerName: get(c.marketLocation, 'name', ''),
+      marketLocationName: get(c.marketLocation, 'name', ''),
       linkContract: c.type === 'contract_localpool_power_taker' ? `${url}/${c.id}` : '',
       // HACK
-      linkRegister: c.marketLocation
+      linkMarketLocation: c.marketLocation
         ? `${url
           .split('/')
           .slice(0, -1)
-          .join('/')}/system/registers/${c.marketLocation.register.id}/readings`
+          .join('/')}/system/market-locations/${c.marketLocation.id}`
         : '',
     }));
 
@@ -85,11 +85,9 @@ class PowertakerData extends React.Component<
       },
       {
         Header: () => (
-          <TableParts.components.headerCell
-            title={intl.formatMessage({ id: 'admin.contracts.tableMarketLocationName' })}
-          />
+          <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.marketLocations.tableName' })} />
         ),
-        accessor: 'registerName',
+        accessor: 'marketLocationName',
         style: {
           cursor: 'pointer',
           textDecoration: 'underline',
@@ -371,8 +369,8 @@ class PowertakerData extends React.Component<
                       columns,
                       getTdProps: (_state, rowInfo, column) => ({
                         onClick: (_e, handleOriginal) => {
-                          if (column.id === 'registerName' && rowInfo.original.linkRegister) {
-                            history.push(rowInfo.original.linkRegister);
+                          if (column.id === 'marketLocationName' && rowInfo.original.linkMarketLocation) {
+                            history.push(rowInfo.original.linkMarketLocation);
                           }
                           if (column.id === 'fullContractNumber' && rowInfo.original.linkContract.length) {
                             history.push(rowInfo.original.linkContract);

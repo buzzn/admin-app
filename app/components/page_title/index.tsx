@@ -6,11 +6,10 @@ import { CenterContentHeader } from './style';
 
 const PageTitle = ({ breadcrumbs, url, title }: BreadcrumbsProps & LinkBackProps) => (
   <CenterContentHeader>
-    <Col xs={7}>
+    <Col xs={12}>
       <Breadcrumbs {...{ breadcrumbs }} />
       <LinkBack {...{ url, title }} />
     </Col>
-    <Col xs={5} />
   </CenterContentHeader>
 );
 
