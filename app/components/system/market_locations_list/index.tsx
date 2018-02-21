@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ReactTableSorted from 'components/react_table_sorted';
-import { injectIntl, InjectIntlProps } from 'react-intl';
+import { injectIntl, InjectIntlProps, FormattedMessage } from 'react-intl';
 import { NavLink } from 'react-router-dom';
 import { tableParts as TableParts } from 'react_table_config';
 import PageTitle from 'components/page_title';
@@ -69,10 +69,10 @@ const MarketLocationsList = ({
       <CenterContent>
         <SubNav>
           <NavLink to={`${url}/in`} exact className="nav-link">
-            !! Translate in
+            <FormattedMessage id="admin.marketLocations.navConsumption" />
           </NavLink>
           <NavLink to={`${url}/out`} exact className="nav-link">
-            !! Translate out
+            <FormattedMessage id="admin.marketLocations.navProduction" />
           </NavLink>
         </SubNav>
         <div className="p-0">

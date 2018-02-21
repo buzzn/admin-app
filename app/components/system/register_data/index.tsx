@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
 import { Switch, Route, NavLink, Redirect } from 'react-router-dom';
 import get from 'lodash/get';
 import Meters from 'meters';
@@ -53,16 +54,16 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
           <RegisterPowerContainer {...{ groupId, meterId, registerId }} />
           <SubNav>
             <NavLink to={`${registerUrl}/readings`} exact className="nav-link">
-              !! Translate Readings
+              <FormattedMessage id="admin.registers.navReadings" />
             </NavLink>
             <NavLink to={`${registerUrl}/contracts`} exact className="nav-link">
-              !! Translate Contracts
+              <FormattedMessage id="admin.registers.navContracts" />
             </NavLink>
             <NavLink to={`${registerUrl}/devices`} exact className="nav-link">
-              !! Translate Devices
+              <FormattedMessage id="admin.registers.navDevices" />
             </NavLink>
             <NavLink to={registerUrl} exact className="nav-link">
-              !! Translate Details
+              <FormattedMessage id="admin.registers.navDetails" />
             </NavLink>
           </SubNav>
           <Switch>

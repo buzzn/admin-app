@@ -33,10 +33,10 @@ const MarketLocationData = ({ breadcrumbs, url, locationUrl, marketLocation }: P
     <CenterContent>
       <SubNav>
         <NavLink to={`${locationUrl}/contracts`} exact className="nav-link">
-          !! Translate contracts
+          <FormattedMessage id="admin.marketLocations.navContracts" />
         </NavLink>
         <NavLink to={`${locationUrl}/registers`} exact className="nav-link">
-          !! Translate registers
+          <FormattedMessage id="admin.marketLocations.navRegisters" />
         </NavLink>
       </SubNav>
       <Switch>
