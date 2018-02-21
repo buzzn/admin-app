@@ -7,14 +7,16 @@ import { BreadcrumbsProps } from 'components/breadcrumbs';
 import { CenterContent, SubNav } from 'components/style';
 import Contracts from './contracts';
 import Registers from './registers';
+import RegisterPowerContainer from '../register_data/register_power';
 
 interface Props {
   marketLocation: any;
   url: string;
   locationUrl: string;
+  groupId: string;
 }
 
-const MarketLocationData = ({ breadcrumbs, url, locationUrl, marketLocation }: Props & BreadcrumbsProps) => (
+const MarketLocationData = ({ breadcrumbs, url, locationUrl, groupId, marketLocation }: Props & BreadcrumbsProps) => (
   <React.Fragment>
     <PageTitle
       {...{
@@ -31,6 +33,7 @@ const MarketLocationData = ({ breadcrumbs, url, locationUrl, marketLocation }: P
       }}
     />
     <CenterContent>
+      <RegisterPowerContainer {...{ groupId, meterId: marketLocation.register.meterId, registerId: marketLocation.register.id }} />
       <SubNav>
         <NavLink to={`${locationUrl}/contracts`} exact className="nav-link">
           <FormattedMessage id="admin.marketLocations.navContracts" />

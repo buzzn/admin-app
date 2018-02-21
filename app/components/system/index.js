@@ -68,7 +68,7 @@ export class System extends React.Component {
           render={({ match: { url: locationUrl, params: { locationId } } }) => {
             const marketLocation = marketLocations.array.find(m => m.id === locationId);
             if (!marketLocation) return <Redirect to={url} />;
-            return <MarketLocationData {...{ breadcrumbs, url, locationUrl, marketLocation }} />;
+            return <MarketLocationData {...{ breadcrumbs, url, groupId, locationUrl, marketLocation }} />;
           }}
         />
         <Route
