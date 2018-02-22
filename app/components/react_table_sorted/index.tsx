@@ -2,17 +2,24 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
 import { actions } from 'actions';
+import { NoData } from './style';
 
 const ReactTableSorted = props => (
-  <ReactTable
-    {...{
-      defaultSorted: props.defaultSorted,
-      onSortedChange: (sort) => {
-        props.setTableSort({ table: props.uiSortPath, sort });
-      },
-      ...props,
-    }}
-  />
+  <React.Fragment>
+    {props.data.length ? (
+      <ReactTable
+        {...{
+          defaultSorted: props.defaultSorted,
+          onSortedChange: (sort) => {
+            props.setTableSort({ table: props.uiSortPath, sort });
+          },
+          ...props,
+        }}
+      />
+    ) : (
+      <NoData>No data</NoData>
+    )}
+  </React.Fragment>
 );
 
 interface ExtProps {
