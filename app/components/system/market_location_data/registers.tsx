@@ -14,6 +14,7 @@ const Registers = ({ url, history, locationId, registers, intl }: Props & Inject
   const prefix = 'admin.registers';
   const data = registers.map(r => ({
     ...r,
+    label: intl.formatMessage({ id: `admin.registers.${r.label}` }),
     linkRegister: `${url}/registers/${r.id}`,
     linkMeter: `${url}/meters/${r.meter.id}`,
   }));
@@ -37,8 +38,8 @@ const Registers = ({ url, history, locationId, registers, intl }: Props & Inject
       },
     },
     {
-      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableKind` })} />,
-      accessor: 'kind',
+      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.registers.tableLabel' })} />,
+      accessor: 'label',
     },
   ];
 

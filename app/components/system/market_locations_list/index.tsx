@@ -12,7 +12,7 @@ interface Props {
   url: string;
   history: any;
   groupId: string;
-  maloType: 'in' | 'out';
+  maloType: 'consumption' | 'production' | 'system';
 }
 
 const MarketLocationsList = ({
@@ -26,7 +26,7 @@ const MarketLocationsList = ({
 }: Props & BreadcrumbsProps & InjectIntlProps) => {
   const prefix = 'admin.marketLocations';
 
-  const data = marketLocations.filter(m => m.register.direction === maloType).map(m => ({
+  const data = marketLocations.filter(m => m.kind === maloType).map(m => ({
     ...m,
     label: intl.formatMessage({ id: `admin.registers.${m.register.label}` }),
     meterProductSerialnumber: m.register.meter.productSerialnumber,
@@ -64,15 +64,18 @@ const MarketLocationsList = ({
   return (
     <React.Fragment>
       <PageTitle
-        {...{ breadcrumbs: breadcrumbs.concat([{ id: '-----', title: 'System setup' }]), title: 'System' }}
+        {...{ breadcrumbs: breadcrumbs.concat([{ id: '-----', title: 'System' }]), title: 'System' }}
       />
       <CenterContent>
         <SubNav>
-          <NavLink to={`${url}/in`} exact className="nav-link">
+          <NavLink to={`${url}/consumption`} exact className="nav-link">
             <FormattedMessage id="admin.marketLocations.navConsumption" />
           </NavLink>
-          <NavLink to={`${url}/out`} exact className="nav-link">
+          <NavLink to={`${url}/production`} exact className="nav-link">
             <FormattedMessage id="admin.marketLocations.navProduction" />
+          </NavLink>
+          <NavLink to={`${url}/system`} exact className="nav-link">
+            <FormattedMessage id="admin.marketLocations.navSystem" />
           </NavLink>
         </SubNav>
         <div className="p-0">

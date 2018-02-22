@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, InjectIntlProps } from 'react-intl';
 import { NavLink, Switch, Route, Redirect } from 'react-router-dom';
 import get from 'lodash/get';
 import PageTitle from 'components/page_title';
@@ -16,7 +16,14 @@ interface Props {
   groupId: string;
 }
 
-const MarketLocationData = ({ breadcrumbs, url, locationUrl, groupId, marketLocation }: Props & BreadcrumbsProps) => (
+const MarketLocationData = ({
+  breadcrumbs,
+  url,
+  locationUrl,
+  groupId,
+  marketLocation,
+  intl,
+}: Props & BreadcrumbsProps & InjectIntlProps) => (
   <React.Fragment>
     <PageTitle
       {...{
@@ -24,7 +31,7 @@ const MarketLocationData = ({ breadcrumbs, url, locationUrl, groupId, marketLoca
           {
             id: marketLocation.id,
             type: 'marketLocation',
-            title: marketLocation.name,
+            title: intl.formatMessage({ id: `admin.marketLocations.${marketLocation.kind}` }),
             link: undefined,
           },
         ]),
@@ -33,7 +40,9 @@ const MarketLocationData = ({ breadcrumbs, url, locationUrl, groupId, marketLoca
       }}
     />
     <CenterContent>
-      <RegisterPowerContainer {...{ groupId, meterId: marketLocation.register.meterId, registerId: marketLocation.register.id }} />
+      <RegisterPowerContainer
+        {...{ groupId, meterId: marketLocation.register.meterId, registerId: marketLocation.register.id }}
+      />
       <SubNav>
         <NavLink to={`${locationUrl}/contracts`} exact className="nav-link">
           <FormattedMessage id="admin.marketLocations.navContracts" />
@@ -71,4 +80,4 @@ const MarketLocationData = ({ breadcrumbs, url, locationUrl, groupId, marketLoca
   </React.Fragment>
 );
 
-export default MarketLocationData;
+export default injectIntl(MarketLocationData);

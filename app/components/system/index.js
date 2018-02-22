@@ -49,7 +49,7 @@ export class System extends React.Component {
     return (
       <Switch>
         <Route
-          path={`${url}/:maloType(in|out)`}
+          path={`${url}/:maloType(consumption|production|system)`}
           render={({ history, match: { params: { maloType } } }) => (
             <MarketLocationsList
               {...{
@@ -100,7 +100,7 @@ export class System extends React.Component {
           }}
         />
         <Route path={url}>
-          <Redirect to={`${url}/in`} />
+          <Redirect to={`${url}/consumption`} />
         </Route>
       </Switch>
     );
