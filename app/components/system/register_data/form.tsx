@@ -1,15 +1,17 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { Row, Col } from 'reactstrap';
 
 interface Props {
   register: any;
   meter: any;
+  url: string;
 }
 
 class RegisterData extends React.Component<Props> {
   render() {
-    const { register, meter } = this.props;
+    const { register, meter, url } = this.props;
 
     const prefix = 'admin.registers';
 
@@ -47,7 +49,9 @@ class RegisterData extends React.Component<Props> {
             <FormattedMessage id="admin.marketLocations.name" />
           </Col>
           <Col xs="8" className="grey-underline fieldvalue">
-            {register.marketLocation.name}
+            <Link to={`${url}/market-locations/${register.marketLocation.id}`}>
+              {register.marketLocation.name}
+            </Link>
           </Col>
         </Row>
         <Row className="fieldgroup">

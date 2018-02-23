@@ -94,7 +94,7 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
                 <div className={devMode ? '' : 'under-construction'} style={{ height: '8rem' }} />
               </Route>
               <Route path={registerUrl} exact>
-                <RegisterDataForm {...{ register, meter }} />
+                <RegisterDataForm {...{ register, meter, url }} />
               </Route>
             </Switch>
           </Switch>

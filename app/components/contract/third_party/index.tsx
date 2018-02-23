@@ -56,12 +56,12 @@ const ThirdPartyContract = ({ url, contract, prefix, register }: Props) => (
         <h5 className="grey-underline mt-5 pb-2">
           <FormattedMessage id={`${prefix}.headerContractsDetails`} />
         </h5>
-        <TwoColView {...{ prefix, field: 'registerName' }}>
+        <TwoColView {...{ prefix, field: 'marketLocation' }}>
           <Link
             to={`${url
               .split('/')
               .slice(0, -1)
-              .join('/')}/system/${register.meterId}/registers/${register.id}/readings`}
+              .join('/')}/system/market-locations/${register.locationId}`}
           >
             {register.name}
           </Link>
@@ -71,7 +71,7 @@ const ThirdPartyContract = ({ url, contract, prefix, register }: Props) => (
             to={`${url
               .split('/')
               .slice(0, -1)
-              .join('/')}/system/${register.meterId}`}
+              .join('/')}/system/meters/${register.meterId}`}
           >
             {register.meter.productSerialnumber}
           </Link>

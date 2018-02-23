@@ -91,7 +91,7 @@ const PowertakersList = ({
     },
     {
       Header: () => (
-        <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.marketLocations.tableName' })} />
+        <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableMarketLocation` })} />
       ),
       accessor: 'marketLocationName',
       style: {
