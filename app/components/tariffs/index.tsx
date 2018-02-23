@@ -53,7 +53,7 @@ class Tariffs extends React.Component<StateProps & DispatchProps & ExtProps & In
                         { id: '-----', title: intl.formatMessage({ id: 'admin.breadcumbs.tariffs' }), link: null },
                       ])}
                     />
-                    <LinkBack title={intl.formatMessage({ id: `${prefix}.backTariffs` })} url={null} />
+                    <LinkBack title={intl.formatMessage({ id: `${prefix}.backTariffs` })} />
                   </React.Fragment>
                 )}
               />

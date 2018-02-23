@@ -50,19 +50,16 @@ class MeterData extends React.Component {
         accessor: 'lastReading.reason',
         filterable: false,
         sortable: false,
-        Cell: row => (
-          <span>
-            {row.value ? <FormattedMessage id={`admin.readings.${row.value}`} /> : ''}
-          </span>
-        ),
+        Cell: row => <span>{row.value ? <FormattedMessage id={`admin.readings.${row.value}`} /> : ''}</span>,
       },
       {
         expander: true,
-        Expander: row => (
-          row.original.lastReading.value ?
-            <div>{row.isExpanded ? <i className="fa fa-chevron-up" /> : <i className="fa fa-chevron-down" />}</div> :
+        Expander: row =>
+          (row.original.lastReading.value ? (
+            <div>{row.isExpanded ? <i className="fa fa-chevron-up" /> : <i className="fa fa-chevron-down" />}</div>
+          ) : (
             ''
-        ),
+          )),
         style: { color: '#bdbdbd' },
       },
     ];

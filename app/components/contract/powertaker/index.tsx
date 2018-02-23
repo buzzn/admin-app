@@ -48,12 +48,12 @@ const PowertakerContract = ({ url, contract, prefix, register, contractor, intl 
               to={`${url
                 .split('/')
                 .slice(0, -1)
-                .join('/')}/system/${register.meterId}/registers/${register.id}/readings`}
+                .join('/')}/system/market-locations/${register.locationId}`}
             >
               {truncate(register.name, { length: 25 })} >
             </BigLink>
             <LinkType>
-              <FormattedMessage id={`${prefix}.objectTypePowerRegister`} />
+              <FormattedMessage id={`${prefix}.objectTypeMarketLocation`} />
             </LinkType>
           </LinkCol>
         </InnerBorderRow>
@@ -87,12 +87,12 @@ const PowertakerContract = ({ url, contract, prefix, register, contractor, intl 
         <h5 className="grey-underline mt-5 pb-2">
           <FormattedMessage id={`${prefix}.headerContractsDetails`} />
         </h5>
-        <TwoColView {...{ prefix, field: 'registerName' }}>
+        <TwoColView {...{ prefix, field: 'marketLocation' }}>
           <Link
             to={`${url
               .split('/')
               .slice(0, -1)
-              .join('/')}/system/${register.meterId}/registers/${register.id}/readings`}
+              .join('/')}/system/market-locations/${register.locationId}`}
           >
             {register.name}
           </Link>
@@ -102,7 +102,7 @@ const PowertakerContract = ({ url, contract, prefix, register, contractor, intl 
             to={`${url
               .split('/')
               .slice(0, -1)
-              .join('/')}/system/${register.meterId}`}
+              .join('/')}/system/meters/${register.meterId}`}
           >
             {register.meter.productSerialnumber}
           </Link>
@@ -141,7 +141,7 @@ const PowertakerContract = ({ url, contract, prefix, register, contractor, intl 
         <TwoColView {...{ prefix, field: 'terminationDate' }}>
           {moment(contract.terminationDate).format('DD.MM.YYYY')}
         </TwoColView>
-        <TwoColView {...{ prefix, field: 'lastDate' }}>{contract.lastDate ? (contract.lastDate).format('DD.MM.YYYY') : ''}</TwoColView>
+        <TwoColView {...{ prefix, field: 'lastDate' }}>{contract.lastDate ? moment(contract.lastDate).format('DD.MM.YYYY') : ''}</TwoColView>
       </Col>
     </Row>
   </div>

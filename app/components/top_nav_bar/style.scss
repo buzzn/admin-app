@@ -1,9 +1,63 @@
 .new-top-nav-bar {
-  height: 96px;
-  background-color: white;
+  height: 72px;
+  background-color: #2F2F2F;
   box-shadow: 0 2px 32px 0 rgba(0,0,0,0.13);
+
+  transition: all .5s linear;
+  * {
+    transition: all .25s linear, padding .1s ease-out .1s, padding-left .1s ease-out .1s;
+  }
+  &.shrinked {
+    height: 48px;
+    .navbar-brand img {
+      height: 24px;
+    }
+    .nav-search {
+      input {
+        background-color: #2F2F2F;
+        &::placeholder {
+          color: #2F2F2F;
+        }
+      }
+      .input-group-append {
+        background-color: #2F2F2F;
+        i {
+          font-size: 20px;
+          color: white;
+        }
+      }
+    }
+    .icon-nav-item {
+      margin-left: 2px;
+      margin-top: 10px;
+      i {
+        width: 36px;
+        background: #2F2F2F;
+        color: white;
+        font-size: 20px;
+        padding: 0;
+        &.fa-cog {
+          padding-left: 0;
+        }
+      }
+    }
+    .dropdown-toggle::after {
+      opacity: 0;
+    }
+    .top-avatar {
+      height: 24px;
+      border-radius: 12px;
+      margin-right: 8px;
+    }
+    .user-name {
+      opacity: 0;
+      transform: scale(0, 0);
+      transform-origin: right center;
+      font-size: 0;
+    }
+  }
   a {
-    color: black !important;
+    color: white !important;
   }
   .navbar-brand img {
     height: 40px;
@@ -13,16 +67,24 @@
     height: 41px;
     width: 386px;
     input {
+      max-height: 41px !important;
       border-top-left-radius: 27px;
       border-bottom-left-radius: 27px;
-      border-right: none;
+      border: none;
+      &:focus {
+        border: none;
+      }
     }
-    .input-group-addon {
+    .input-group-append {
       border-top-right-radius: 27px;
       border-bottom-right-radius: 27px;
       background-color: white;
       i {
         font-size: 24px;
+        line-height: 36px;
+        padding-left: 2px;
+        padding-right: 8px;
+        color: #BDBDBD;
       }
     }
   }
@@ -32,12 +94,12 @@
     i {
       width: 42px;
       border-radius: 21px;
-      background: black;
-      color: white;
-      font-size: 26px;
-      padding: 8px;
+      background: white;
+      color: black;
+      font-size: 20px;
+      padding: 10px 12px;
       &.fa-cog {
-        padding-left: 10px;
+        padding-left: 13px;
       }
     }
   }
@@ -45,5 +107,8 @@
     height: 40px;
     border-radius: 20px;
     margin-right: 8px;
+  }
+  .user-name {
+    display: inline-block;
   }
 }

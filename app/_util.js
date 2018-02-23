@@ -69,7 +69,9 @@ export function camelizeResponseKeys(data) {
   const result = {};
   forEach(data, (v, _k) => {
     const k = _k === '_status' ? _k : camelCase(_k);
-    if (Array.isArray(v)) {
+    if (k === 'id') {
+      result[k] = String(v);
+    } else if (Array.isArray(v)) {
       result[k] = camelizeResponseArray(v);
     } else if (!v) {
       result[k] = v;

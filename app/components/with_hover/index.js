@@ -2,9 +2,7 @@ import * as React from 'react';
 
 function withHover(Wrapped) {
   return class WithHover extends React.Component {
-    state = {
-      hover: false,
-    };
+    state = { hover: false };
 
     onMouseOver() {
       this.setState({ hover: true });
@@ -15,11 +13,16 @@ function withHover(Wrapped) {
     }
 
     render() {
-      return <Wrapped
-        onMouseOver={ this.onMouseOver.bind(this) }
-        onMouseOut={ this.onMouseOut.bind(this) }
-        hover={ this.state.hover }
-        {...this.props } />;
+      return (
+        <Wrapped
+          hoverEvents={{
+            onMouseOver: this.onMouseOver.bind(this),
+            onMouseOut: this.onMouseOut.bind(this),
+          }}
+          hover={this.state.hover}
+          {...this.props}
+        />
+      );
     }
   };
 }

@@ -6,8 +6,8 @@ import Transition from 'react-transition-group/Transition';
 
 import './style.scss';
 
-const LocalpoolCard = ({ group, url, hover, onMouseOver, onMouseOut }) => (
-  <Card className="localpool-card" onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
+const LocalpoolCard = ({ group, url, hover, hoverEvents }) => (
+  <Card className="localpool-card" {...hoverEvents}>
     <div className="group-info" style={{ background: `url('${group.image}') no-repeat center` }}>
       <div className="group-name">{group.name}</div>
       <div className="group-types">
