@@ -65,7 +65,7 @@ export class Powertakers extends React.Component {
           render={({ history, match: { url: contractUrl, params: { contractId } } }) => {
             const contract = find(powertakers.array, p => p.id === contractId);
             if (!contract) return <Redirect to={url} />;
-            const powertaker = contract.customer;
+            const powertaker = contract.customer || {};
             const powertakerTitle =
               powertaker.type === 'person' ? `${powertaker.firstName} ${powertaker.lastName}` : powertaker.name;
             breadcrumbs.push({
@@ -86,7 +86,7 @@ export class Powertakers extends React.Component {
                       url,
                       history,
                       breadcrumbs,
-                      title: truncate(powertakerTitle, 20),
+                      title: truncate(powertakerTitle || '', 20),
                     }}
                   />
                 </Route>
