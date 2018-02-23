@@ -8,6 +8,7 @@ import { CenterContent, SubNav } from 'components/style';
 import Contracts from './contracts';
 import Registers from './registers';
 import RegisterPowerContainer from '../register_data/register_power';
+import { MarketLocationId } from './style';
 
 interface Props {
   marketLocation: any;
@@ -43,6 +44,13 @@ const MarketLocationData = ({
       <RegisterPowerContainer
         {...{ groupId, meterId: marketLocation.register.meterId, registerId: marketLocation.register.id }}
       />
+      {
+        marketLocation.marketLocationId &&
+        <MarketLocationId>
+          <FormattedMessage id="admin.marketLocations.thirdPartyId" />:{' '}
+          <span className="value">{marketLocation.marketLocationId}</span>
+        </MarketLocationId>
+      }
       <SubNav>
         <NavLink to={`${locationUrl}/contracts`} exact className="nav-link">
           <FormattedMessage id="admin.marketLocations.navContracts" />
