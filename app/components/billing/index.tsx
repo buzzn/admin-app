@@ -2,8 +2,9 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import BillingCycles from 'billing_cycles';
 import BillingList from './billing_list';
+import AddBilling from './add_billing';
 
-class Billing extends React.Component<ExtProps & StateProps & DispatchProps> {
+class Billing extends React.Component<ExtProps & StateProps & DispatchProps, BillingState> {
   componentDidMount() {
     const { loadBillingCycles, match: { params: { groupId } } } = this.props;
     loadBillingCycles(groupId);
@@ -15,6 +16,8 @@ class Billing extends React.Component<ExtProps & StateProps & DispatchProps> {
 }
 
 interface StatePart {}
+
+interface BillingState {}
 
 interface ExtProps {}
 
