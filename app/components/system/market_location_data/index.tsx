@@ -44,13 +44,12 @@ const MarketLocationData = ({
       <RegisterPowerContainer
         {...{ groupId, meterId: marketLocation.register.meterId, registerId: marketLocation.register.id }}
       />
-      {
-        marketLocation.marketLocationId &&
+      {!!marketLocation.marketLocationId && (
         <MarketLocationId>
           <FormattedMessage id="admin.marketLocations.thirdPartyId" />:{' '}
           <span className="value">{marketLocation.marketLocationId}</span>
         </MarketLocationId>
-      }
+      )}
       <SubNav>
         <NavLink to={`${locationUrl}/contracts`} exact className="nav-link">
           <FormattedMessage id="admin.marketLocations.navContracts" />
