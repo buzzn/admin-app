@@ -11,6 +11,8 @@ export const constants = {
   LOADING_BILLING_CYCLE: 'buzzn_billing_cycles/LOADING_BILLING_CYCLE',
   LOADED_BILLING_CYCLE: 'buzzn_billing_cycles/LOADED_BILLING_CYCLE',
   SET_BILLING_CYCLE: 'buzzn_billing_cycles/SET_BILLING_CYCLE',
+
+  ADD_BILLING_CYCLE: 'buzzn_billing_cycles/ADD_BILLING_CYCLE',
 };
 
 export const actions = {
@@ -26,4 +28,12 @@ export const actions = {
   loadingBillingCycle: () => ({ type: constants.LOADING_BILLING_CYCLE }),
   loadedBillingCycle: () => ({ type: constants.LOADED_BILLING_CYCLE }),
   setBillingCycle: billingCycle => ({ type: constants.SET_BILLING_CYCLE, billingCycle }),
+
+  addBillingCycle: ({ params, resolve, reject, groupId }) => ({
+    type: constants.ADD_BILLING_CYCLE,
+    params,
+    resolve,
+    reject,
+    groupId,
+  }),
 };

@@ -1,4 +1,6 @@
 import { put, call, takeLatest, take, fork, cancel, select } from 'redux-saga/effects';
+import { SubmissionError } from 'redux-form';
+import Groups from 'groups';
 import { logException } from '_util';
 import { actions, constants } from './actions';
 import api from './api';
@@ -28,9 +30,26 @@ export function* getBillingCycles({ apiUrl, apiPath, token }, { groupId }) {
   yield put(actions.loadedBillingCycles());
 }
 
+export function* addBillingCycle({ apiUrl, apiPath, token }, { params, resolve, reject, groupId }) {
+  try {
+    const res = yield call(api.addBillingCycle, { apiUrl, apiPath, token, params, groupId });
+    if (res._error) {
+      yield call(reject, new SubmissionError(res));
+    } else {
+      yield call(resolve, res);
+      yield put(Groups.actions.loadGroup(groupId));
+      yield call(getBillingCycles, { apiUrl, apiPath, token }, { groupId });
+    }
+  } catch (error) {
+    logException(error);
+  }
+}
+
 export function* billingCyclesSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_BILLING_CYCLES, getBillingCycles, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_BILLING_CYCLE, getBillingCycle, { apiUrl, apiPath, token });
+  yield takeLatest(constants.ADD_BILLING_CYCLE, addBillingCycle, { apiUrl, apiPath, token });
+
   const billingCycleId = yield select(selectBillingCycleId);
   const groupId = yield select(selectGroupId);
   if (billingCycleId) yield call(getBillingCycle, { apiUrl, apiPath, token }, { billingCycleId, groupId });
