@@ -37,7 +37,7 @@ class AddBilling extends React.Component<Props> {
                     <FieldInput
                       {...{
                         label: 'Begin Date',
-                        meta: { touched: false, error: false },
+                        meta: { active: true, touched: false, error: false },
                         input: { value: moment(nextBillingCycleBeginDate).format('DD.MM.YYYY'), disabled: true },
                       }}
                     />
