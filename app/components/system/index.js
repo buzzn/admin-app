@@ -29,8 +29,6 @@ export class System extends React.Component {
       registers,
       meters,
       group,
-      realValidationRules,
-      virtualValidationRules,
       match: { url, params: { groupId } },
     } = this.props;
 
@@ -76,7 +74,7 @@ export class System extends React.Component {
           render={({ match: { params: { meterId } } }) => {
             const meter = meters.find(m => m.id === meterId);
             if (!meter) return <Redirect to={url} />;
-            return <MeterData {...{ url, breadcrumbs, meter, realValidationRules, virtualValidationRules }} />;
+            return <MeterData {...{ url, breadcrumbs, meterId, groupId }} />;
           }}
         />
         <Route
@@ -117,8 +115,6 @@ function mapStateToProps(state) {
     marketLocations: state.marketLocations.marketLocations,
     registers: getRegisters(state.marketLocations.marketLocations),
     meters: getMeters(state.marketLocations.marketLocations),
-    realValidationRules: state.meters.realValidationRules,
-    virtualValidationRules: state.meters.virtualValidationRules,
   };
 }
 

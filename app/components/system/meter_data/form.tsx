@@ -5,11 +5,18 @@ import moment from 'moment';
 import get from 'lodash/get';
 import orderBy from 'lodash/orderBy';
 import { Row, Col } from 'reactstrap';
-import { tableParts as TableParts } from 'react_table_config';
 
 import './style.scss';
 
-class MeterData extends React.Component {
+interface Props {
+  meter: any;
+}
+
+interface State {
+  expanded: { [key: number]: boolean };
+}
+
+class MeterData extends React.Component<Props, State> {
   state = { expanded: {} };
 
   handleRowClick(rowNum) {
@@ -27,7 +34,7 @@ class MeterData extends React.Component {
     const columns = [
       {
         Header: () => <FormattedMessage id="admin.registers.tableName" />,
-        accessor: 'name',
+        accessor: 'marketLocation.name',
         filterable: false,
         sortable: false,
       },
@@ -146,8 +153,8 @@ class MeterData extends React.Component {
                   </Row>
                 ),
                 expanded: this.state.expanded,
-                getTrProps: (state, rowInfo) => ({
-                  onClick: (event, handleOriginal) => {
+                getTrProps: (_state, rowInfo) => ({
+                  onClick: (_event, handleOriginal) => {
                     rowInfo.original.lastReading.value && this.handleRowClick(rowInfo.viewIndex);
                     handleOriginal && handleOriginal();
                   },
