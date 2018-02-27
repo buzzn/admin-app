@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import Meters from 'meters';
 import Loading from 'components/loading';
-import MeterDataForm from './form';
+import RealMeterDataForm from './real_form';
+import VirtualMeterDataForm from './virtual_form';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
 import { CenterContent } from 'components/style';
 import PageTitle from 'components/page_title';
@@ -41,7 +42,11 @@ class MeterData extends React.Component<ExtProps & DispatchProps & StateProps & 
           }}
         />
         <CenterContent>
-          <MeterDataForm {...{ meter, realValidationRules, virtualValidationRules, initialValues: meter }} />
+          {meter.type === 'meter_real' ? (
+            <RealMeterDataForm {...{ meter, realValidationRules, initialValues: meter }} />
+          ) : (
+            <VirtualMeterDataForm {...{ meter, virtualValidationRules, initialValues: meter }} />
+          )}
         </CenterContent>
       </React.Fragment>
     );
