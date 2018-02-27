@@ -77,4 +77,9 @@ class AddBilling extends React.Component<Props> {
   }
 }
 
-export default reduxForm({ form: 'addBillingCycle' })(AddBilling);
+export default reduxForm({
+  form: 'addBillingCycle',
+  onSubmitSuccess: (_result, _dispatch, { reset }) => {
+    reset();
+  },
+})(AddBilling);

@@ -26,10 +26,22 @@ export const LargeAvatar = styled.img`
 export const FormGroup = styled.div`
   position: relative;
   margin-bottom: 1.5rem;
+  .rw-widget-container {
+    border: none;
+    border-radius: 0;
+  }
+  .rw-widget-picker {
+    height: 3rem;
+  }
+  .rw-select-bordered {
+    border-left: none;
+    border-bottom: solid 1px #e0e0e0;
+    background: #f5f5f5;
+  }
   label {
     position: absolute;
     top: 0;
-    padding: 7px 0 0 13px;
+    padding: 15px 0 0 13px;
     transition: all 200ms;
     opacity: 0.5;
   }
@@ -38,6 +50,7 @@ export const FormGroup = styled.div`
     border: none;
     border-bottom: solid 1px #e0e0e0;
     border-radius: 0;
+    height: 3rem;
   }
   input:focus {
     background: #f5f5f5;
@@ -45,10 +58,9 @@ export const FormGroup = styled.div`
     border-right: solid 3px black;
     border-bottom: solid 1px black;
   }
-  input:focus + label,
-  input:valid + label {
+  label.top {
     font-size: 75%;
-    transform: translate3d(0, -36%, 0);
+    transform: translate3d(0, -46%, 0);
     opacity: 1;
   }
 `;
