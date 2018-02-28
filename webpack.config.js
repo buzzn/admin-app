@@ -91,8 +91,6 @@ module.exports = {
       template: 'app/index.html',
       filename: 'index.html',
     }),
-    new webpack.optimize.ModuleConcatenationPlugin(),
-    new webpack.NamedModulesPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'),
     }),
