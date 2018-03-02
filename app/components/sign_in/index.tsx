@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { FormattedMessage, injectIntl, InjectIntlProps } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import Auth from '@buzzn/module_auth';
 import { FormGroup } from 'components/style';
 import { SignInWrapper } from './style';
@@ -8,14 +8,14 @@ import Bubbles from './bubbles';
 
 const BuzznLogo = require('images/logo_black.png');
 
-class SignIn extends React.Component<ExtProps & DispatchProps & StateProps & InjectIntlProps> {
+class SignIn extends React.Component<ExtProps & DispatchProps & StateProps> {
   signIn(event) {
     event.preventDefault();
     this.props.startAuth();
   }
 
   render() {
-    const { setLogin, setPassword, login, password, error, intl } = this.props;
+    const { setLogin, setPassword, login, password, error } = this.props;
 
     return (
       <SignInWrapper>
@@ -69,8 +69,6 @@ class SignIn extends React.Component<ExtProps & DispatchProps & StateProps & Inj
   }
 }
 
-export const SignInIntl = injectIntl(SignIn);
-
 interface StatePart {
   auth: { login: string; password: string; error: string };
 }
@@ -101,4 +99,4 @@ export default connect<StateProps, DispatchProps, ExtProps>(mapStateToProps, {
   setLogin: Auth.actions.setLogin,
   setPassword: Auth.actions.setPassword,
   startAuth: Auth.actions.startAuth,
-})(SignInIntl);
+})(SignIn);
