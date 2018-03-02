@@ -23,10 +23,6 @@ export const LargeAvatar = styled.img`
   border-radius: 50%;
 `;
 
-export const SpanClick = styled.span`
-  cursor: pointer;
-`;
-
 export const FormGroup = styled.div`
   position: relative;
   margin-bottom: 1.5rem;
