@@ -8,7 +8,7 @@ import ReactTableSorted from 'components/react_table_sorted';
 import { tableParts as TableParts } from 'react_table_config';
 import PageTitle from 'components/page_title';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
-import { CenterContent } from 'components/style';
+import { CenterContent, SpanClick } from 'components/style';
 import AddBilling from '../add_billing';
 
 class BillingList extends React.Component<
@@ -70,9 +70,9 @@ class BillingList extends React.Component<
           }}
         />
         <CenterContent>
-          <span onClick={this.switchAddBilling.bind(this)} className="float-right">
+          <SpanClick onClick={this.switchAddBilling.bind(this)} className="float-right">
             <FormattedMessage id="admin.billingCycles.addNew" /> <i className="fa fa-plus-circle" />
-          </span>
+          </SpanClick>
           <AddBilling
             {...{
               isOpen,
