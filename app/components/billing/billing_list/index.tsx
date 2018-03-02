@@ -8,7 +8,7 @@ import ReactTableSorted from 'components/react_table_sorted';
 import { tableParts as TableParts } from 'react_table_config';
 import PageTitle from 'components/page_title';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
-import { CenterContent } from 'components/style';
+import { CenterContent, SpanClick } from 'components/style';
 import AddBilling from '../add_billing';
 
 class BillingList extends React.Component<
@@ -36,7 +36,7 @@ class BillingList extends React.Component<
   }
 
   render() {
-    const { billingCycles, nextBillingCycleBeginDate, loading, intl, breadcrumbs, groupId } = this.props;
+    const { billingCycles, nextBillingCycleBeginDate, loading, intl, breadcrumbs, groupId, groupName } = this.props;
     const { isOpen } = this.state;
 
     const data = billingCycles.array.map(b => ({
@@ -64,15 +64,16 @@ class BillingList extends React.Component<
         <PageTitle
           {...{
             breadcrumbs: breadcrumbs.concat([
+              { id: 1, link: `/groups/${groupId}`, title: groupName },
               { id: '-----', title: intl.formatMessage({ id: 'admin.breadcumbs.billingCycles' }) },
             ]),
             title: intl.formatMessage({ id: 'admin.billingCycles.backBillingCycles' }),
           }}
         />
         <CenterContent>
-          <span onClick={this.switchAddBilling.bind(this)} className="float-right">
+          <SpanClick onClick={this.switchAddBilling.bind(this)} className="float-right">
             <FormattedMessage id="admin.billingCycles.addNew" /> <i className="fa fa-plus-circle" />
-          </span>
+          </SpanClick>
           <AddBilling
             {...{
               isOpen,
@@ -100,7 +101,7 @@ class BillingList extends React.Component<
 
 interface StatePart {
   billingCycles: { billingCycles: { _status: null | number; array: Array<any> }; loadingBillingCycles: boolean };
-  groups: { group: { nextBillingCycleBeginDate: string }; loadingGroup: boolean };
+  groups: { group: { nextBillingCycleBeginDate: string; name: string }; loadingGroup: boolean };
 }
 
 interface BillingState {
@@ -127,6 +128,7 @@ interface DispatchProps {
 function mapStateToProps(state: StatePart) {
   return {
     billingCycles: state.billingCycles.billingCycles,
+    groupName: state.groups.group.name,
     nextBillingCycleBeginDate: state.groups.group.nextBillingCycleBeginDate,
     loading: state.groups.loadingGroup || state.billingCycles.loadingBillingCycles,
   };
