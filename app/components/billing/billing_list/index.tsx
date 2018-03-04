@@ -36,12 +36,23 @@ class BillingList extends React.Component<
   }
 
   render() {
-    const { billingCycles, nextBillingCycleBeginDate, loading, intl, breadcrumbs, groupId, groupName } = this.props;
+    const {
+      billingCycles,
+      nextBillingCycleBeginDate,
+      loading,
+      intl,
+      breadcrumbs,
+      groupId,
+      groupName,
+      url,
+      history,
+    } = this.props;
     const { isOpen } = this.state;
 
     const data = billingCycles.array.map(b => ({
       ...b,
       dates: `${moment(b.beginDate).format('DD.MM.YYYY')} - ${moment(b.lastDate).format('DD.MM.YYYY')}`,
+      billingCycleLink: `${url}/${b.id}`,
     }));
 
     const columns = [
@@ -89,6 +100,14 @@ class BillingList extends React.Component<
               {...{
                 data,
                 columns,
+                getTdProps: (_state, rowInfo, column) => ({
+                  onClick: (_e, handleOriginal) => {
+                    if (column.id === 'name') {
+                      history.push(rowInfo.original.billingCycleLink);
+                    }
+                    if (handleOriginal) handleOriginal();
+                  },
+                }),
                 uiSortPath: `groups.${groupId}.billingCycles`,
               }}
             />
@@ -110,6 +129,8 @@ interface BillingState {
 
 interface ExtProps {
   groupId: string;
+  url: string;
+  history: any;
 }
 
 interface StateProps {

@@ -5,14 +5,21 @@ import { logException } from '_util';
 import { actions, constants } from './actions';
 import api from './api';
 
-export const selectBillingCycleId = state => state.marketLocations.billingCycleId;
-export const selectGroupId = state => state.marketLocations.groupId;
+export const selectBillingCycleId = state => state.billingCycles.billingCycleId;
+export const selectGroupId = state => state.billingCycles.groupId;
 
 export function* getBillingCycle({ apiUrl, apiPath, token }, { billingCycleId, groupId }) {
   yield put(actions.loadingBillingCycle());
   try {
-    const marketLocation = yield call(api.fetchBillingCycle, { apiUrl, apiPath, token, billingCycleId, groupId });
-    yield put(actions.setBillingCycle(marketLocation));
+    const billingCycle = yield call(api.fetchBillingCycle, { apiUrl, apiPath, token, billingCycleId, groupId });
+    const billingCycleBricks = yield call(api.fetchBillingCycleBricks, {
+      apiUrl,
+      apiPath,
+      token,
+      billingCycleId,
+      groupId,
+    });
+    yield put(actions.setBillingCycle({ billingCycle, billingCycleBricks }));
   } catch (error) {
     logException(error);
   }
@@ -22,8 +29,8 @@ export function* getBillingCycle({ apiUrl, apiPath, token }, { billingCycleId, g
 export function* getBillingCycles({ apiUrl, apiPath, token }, { groupId }) {
   yield put(actions.loadingBillingCycles());
   try {
-    const marketLocations = yield call(api.fetchBillingCycles, { apiUrl, apiPath, token, groupId });
-    yield put(actions.setBillingCycles(marketLocations));
+    const billingCycles = yield call(api.fetchBillingCycles, { apiUrl, apiPath, token, groupId });
+    yield put(actions.setBillingCycles(billingCycles));
   } catch (error) {
     logException(error);
   }
