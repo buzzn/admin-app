@@ -4,11 +4,11 @@ function withHover(Wrapped) {
   return class WithHover extends React.Component {
     state = { hover: false };
 
-    onMouseOver() {
+    onMouseOver = () => {
       this.setState({ hover: true });
     }
 
-    onMouseOut() {
+    onMouseOut = () => {
       this.setState({ hover: false });
     }
 
@@ -16,8 +16,8 @@ function withHover(Wrapped) {
       return (
         <Wrapped
           hoverEvents={{
-            onMouseOver: this.onMouseOver.bind(this),
-            onMouseOut: this.onMouseOut.bind(this),
+            onMouseOver: this.onMouseOver,
+            onMouseOut: this.onMouseOut,
           }}
           hover={this.state.hover}
           {...this.props}

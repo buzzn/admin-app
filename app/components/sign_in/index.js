@@ -8,7 +8,7 @@ import './style.scss';
 import BuzznLogo from 'images/logo_black.png';
 
 class SignIn extends React.Component {
-  signIn(event) {
+  signIn = (event) => {
     event.preventDefault();
     this.props.startAuth();
   }
@@ -19,7 +19,7 @@ class SignIn extends React.Component {
     return (
       <div className="signin-background">
         <div className="form-signin-wrapper">
-          <form className="form-signin" onSubmit={this.signIn.bind(this)}>
+          <form className="form-signin" onSubmit={this.signIn}>
             <img className="signin-logo" src={BuzznLogo} />
             {error &&
               error !== 'Sign out' && (
@@ -52,7 +52,7 @@ class SignIn extends React.Component {
               placeholder={intl.formatMessage({ id: 'admin.auth.enterPassword' })}
               required
             />
-            <button type="submit" onClick={this.signIn.bind(this)} className="btn btn-primary">
+            <button type="submit" onClick={this.signIn} className="btn btn-primary">
               <FormattedMessage id="admin.auth.signinButton" /> <i className="fa fa-check" />
             </button>
           </form>

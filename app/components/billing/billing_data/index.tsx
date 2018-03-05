@@ -1,32 +1,43 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import Moment from 'moment';
+import orderBy from 'lodash/orderBy';
 import { extendMoment } from 'moment-range';
 import BillingCycles from 'billing_cycles';
 import PageTitle from 'components/page_title';
 import { CenterContent } from 'components/style';
 import Loading from 'components/loading';
+import { BreadcrumbsProps } from 'components/breadcrumbs';
+import { MaLoListHeader, MaLoRow, Brick, Legend } from './style';
 
 const d3 = require('d3');
 
 const moment = extendMoment(Moment);
 
-class BillingData extends React.Component {
+class BillingData extends React.Component<ExtProps & StateProps & DispatchProps & BreadcrumbsProps, BillingDataState> {
+  state = { maLoSortAsc: true };
+
   componentDidMount() {
     const { billingCycleId, groupId, loadBillingCycle } = this.props;
     loadBillingCycle({ billingCycleId, groupId });
   }
 
+  switchMaLoSort = () => {
+    this.setState({ maLoSortAsc: !this.state.maLoSortAsc });
+  };
+
   render() {
     const { billingCycle, billingCycleBricks, breadcrumbs, url, loading } = this.props;
+    const { maLoSortAsc } = this.state;
 
     if (loading || billingCycle._status === null) return <Loading minHeight={40} />;
     if (billingCycle._status && billingCycle._status !== 200) return <Redirect to={url} />;
 
     const cycleBegin = new Date(billingCycle.beginDate);
     const cycleEnd = new Date(billingCycle.lastDate);
-    const cycleMonths = Array.from(moment.range(cycleBegin, cycleEnd).by('month'));
+    // FIXME: proper moment-range typings will be in 3.2.0 or 4.0.0
+    const cycleMonths: Array<any> = Array.from(moment.range(cycleBegin, cycleEnd).by('month'));
     const labelFormat = cycleMonths.length > 12 ? 'MMM YY' : 'MMM';
     const labels = [
       cycleMonths[0].format(labelFormat),
@@ -52,75 +63,136 @@ class BillingData extends React.Component {
           }}
         />
         <CenterContent>
-          <div style={{ width: '100%', height: '57px', display: 'flex' }}>
-            <div style={{ width: '20%' }}>MaLo title</div>
-            <div style={{ display: 'flex', flexDirection: 'column', width: '80%' }}>
-              <div style={{ height: '50%' }}>
-                {moment(cycleBegin).format('DD.MM.YYYY')} - {moment(cycleEnd).format('DD.MM.YYYY')}
+          <MaLoListHeader>
+            <div className="name">
+              <div onClick={this.switchMaLoSort}>MaLo title</div>
+            </div>
+            <div className="labels">
+              <div className="dates">
+                <div className="begin">
+                  {moment(cycleBegin).format('DD.MM.YYYY')} <i className="fa fa-calendar" />
+                </div>
+                <div className="end">
+                  <i className="fa fa-calendar" /> {moment(cycleEnd).format('DD.MM.YYYY')}
+                </div>
               </div>
-              <div
-                style={{
-                  display: 'flex',
-                  height: '50%',
-                  backgroundSize: '8.333% 100%',
-                  backgroundImage: `repeating-linear-gradient(
-                  to right,
-                  #e0e0e0,
-                  #e0e0e0 1px,
-                  transparent 1px,
-                  transparent 100%
-                )`,
-                }}
-              >
-                <div style={{ width: '25%' }}>{labels[0]}</div>
-                <div style={{ width: '25%' }}>{labels[1]}</div>
-                <div style={{ width: '25%' }}>{labels[2]}</div>
-                <div style={{ width: '25%' }}>
-                  {labels[3]} {labels[4]}
+              <div className="months">
+                <div className="month">{labels[0]}</div>
+                <div className="month">{labels[1]}</div>
+                <div className="month">{labels[2]}</div>
+                <div className="month">
+                  <div>{labels[3]}</div>
+                  <div>{labels[4]}</div>
                 </div>
               </div>
             </div>
-          </div>
-          {billingCycleBricks.array.map(m => (
-            <div style={{ width: '100%', height: '57px', display: 'flex' }}>
-              <div style={{ width: '20%' }}>{m.name}</div>
-              <div
-                style={{
-                  display: 'flex',
-                  width: '80%',
-                  height: '100%',
-                  backgroundSize: '8.333% 100%',
-                  backgroundImage: `repeating-linear-gradient(
-                  to right,
-                  #e0e0e0,
-                  #e0e0e0 1px,
-                  transparent 1px,
-                  transparent 100%
-                )`,
-                }}
-              >
+          </MaLoListHeader>
+          {orderBy(billingCycleBricks.array, 'name', maLoSortAsc ? 'asc' : 'desc').map(m => (
+            <MaLoRow key={m.id}>
+              <div className="name">
+                <div>
+                  <Link
+                    to={`${url
+                      .split('/')
+                      .slice(0, -1)
+                      .join('/')}/system/market-locations/${m.id}`}
+                  >
+                    {m.name}
+                  </Link>
+                </div>
+              </div>
+              <div className="bricks">
                 {m.bricks.array.map((b, i) => {
                   const beginDate = new Date(b.beginDate);
                   const endDate = new Date(b.endDate);
                   const fixedBeginDate = beginDate < cycleBegin ? cycleBegin : beginDate;
                   const fixedEndDate = endDate < cycleEnd ? cycleEnd : endDate;
-                  const bricks = [];
-                  if (i === 0 && fixedBeginDate > cycleBegin) bricks.push(<div key={0} style={{ backgroundColor: 'transparent', width: `${brickScale(fixedBeginDate)}%`, height: '80%' }} />);
-                  const brickStyle = { backgroundColor: b.status === 'open' ? 'rgba(0,188,212,0.25)' : 'rgba(175,175,175,0.5)', width: `${brickScale(fixedEndDate) - brickScale(fixedBeginDate)}%`, height: '80%', borderLeft: '2px solid black', borderRight: '2px solid black' };
-                  if (b.contractType === 'gap') brickStyle.backgroundImage = `repeating-linear-gradient(45deg, transparent, transparent 14px, rgba(175,175,175,0.75) 4px, rgba(175,175,175,0.75) 18px)`;
-                  bricks.push(<div key={1} style={brickStyle} />);
+                  const bricks: Array<JSX.Element> = [];
+                  if (i === 0 && fixedBeginDate > cycleBegin) {
+                    bricks.push(<Brick key={0} {...{ width: brickScale(fixedBeginDate), transparent: true }} />);
+                  }
+                  bricks.push(<Brick
+                      key={b.beginDate}
+                      {...{
+                        width: brickScale(fixedEndDate) - brickScale(fixedBeginDate),
+                        status: b.status,
+                        contractType: b.contractType,
+                      }}
+                    />);
                   return bricks;
-          })}
+                })}
+              </div>
+            </MaLoRow>
+          ))}
+          <Legend>
+            <div className="title">Legend</div>
+            <div className="rw">
+              <div />
+              <div>ABG</div>
+              <div>REC</div>
+            </div>
+            <div className="rw">
+              <div>SN</div>
+              <div>
+                <Brick {...{ width: 80, status: 'closed' }} />
+              </div>
+              <div>
+                <Brick {...{ width: 80, status: 'open' }} />
               </div>
             </div>
-          ))}
+            <div className="rw">
+              <div>LU</div>
+              <div>
+                <Brick {...{ width: 80, status: 'closed' }} />
+              </div>
+              <div>
+                <Brick {...{ width: 80, status: 'open' }} />
+              </div>
+            </div>
+            <div className="rw">
+              <div>DR</div>
+              <div>
+                <Brick {...{ width: 80, status: 'closed', contractType: 'gap' }} />
+              </div>
+              <div>-</div>
+            </div>
+          </Legend>
         </CenterContent>
       </React.Fragment>
     );
   }
 }
 
-function mapStateToProps(state) {
+interface StatePart {
+  billingCycles: {
+    billingCycle: { _status: null | number; [key: string]: any };
+    loadingBillingCycle: boolean;
+    billingCycleBricks: { _status: null | number; array: Array<any> };
+  };
+}
+
+interface BillingDataState {
+  maLoSortAsc: boolean;
+}
+
+interface ExtProps {
+  url: string;
+  billingCycleId: string;
+  groupId: string;
+}
+
+interface StateProps {
+  billingCycle: { _status: null | number; [key: string]: any };
+  billingCycleBricks: { _status: null | number; array: Array<any> };
+  loading: boolean;
+}
+
+interface DispatchProps {
+  loadBillingCycle: Function;
+  setBillingCycle: Function;
+}
+
+function mapStateToProps(state: StatePart) {
   return {
     billingCycle: state.billingCycles.billingCycle,
     billingCycleBricks: state.billingCycles.billingCycleBricks,
@@ -128,7 +200,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, {
+export default connect<StateProps, DispatchProps, ExtProps>(mapStateToProps, {
   loadBillingCycle: BillingCycles.actions.loadBillingCycle,
   setBillingCycle: BillingCycles.actions.setBillingCycle,
 })(BillingData);

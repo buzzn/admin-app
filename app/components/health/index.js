@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 class Health extends React.Component {
   state = { isOpen: false };
 
-  switchWidget() {
+  switchWidget = () => {
     this.setState({ isOpen: !this.state.isOpen });
   }
 
@@ -14,7 +14,7 @@ class Health extends React.Component {
 
     return (
       <div
-        onClick={this.switchWidget.bind(this)}
+        onClick={this.switchWidget}
         style={{
           position: 'fixed',
           bottom: '20px',

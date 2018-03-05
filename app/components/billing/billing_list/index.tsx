@@ -23,11 +23,11 @@ class BillingList extends React.Component<
     loadGroup(groupId);
   }
 
-  switchAddBilling() {
+  switchAddBilling = () => {
     this.setState({ isOpen: !this.state.isOpen });
   }
 
-  addBillingCycle(values) {
+  addBillingCycle = (values) => {
     const { addBillingCycle, groupId } = this.props;
 
     return new Promise((resolve, reject) => {
@@ -82,15 +82,15 @@ class BillingList extends React.Component<
           }}
         />
         <CenterContent>
-          <SpanClick onClick={this.switchAddBilling.bind(this)} className="float-right">
+          <SpanClick onClick={this.switchAddBilling} className="float-right">
             <FormattedMessage id="admin.billingCycles.addNew" /> <i className="fa fa-plus-circle" />
           </SpanClick>
           <AddBilling
             {...{
               isOpen,
-              toggle: this.switchAddBilling.bind(this),
+              toggle: this.switchAddBilling,
               loading,
-              onSubmit: this.addBillingCycle.bind(this),
+              onSubmit: this.addBillingCycle,
               nextBillingCycleBeginDate,
             }}
           />
