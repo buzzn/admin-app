@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 import Moment from 'moment';
 import orderBy from 'lodash/orderBy';
 import { extendMoment } from 'moment-range';
+import Groups from 'groups';
 import BillingCycles from 'billing_cycles';
 import PageTitle from 'components/page_title';
 import { CenterContent } from 'components/style';
@@ -19,7 +21,8 @@ class BillingData extends React.Component<ExtProps & StateProps & DispatchProps 
   state = { maLoSortAsc: true };
 
   componentDidMount() {
-    const { billingCycleId, groupId, loadBillingCycle } = this.props;
+    const { billingCycleId, groupId, loadBillingCycle, loadGroup } = this.props;
+    loadGroup(groupId);
     loadBillingCycle({ billingCycleId, groupId });
   }
 
@@ -28,12 +31,13 @@ class BillingData extends React.Component<ExtProps & StateProps & DispatchProps 
   };
 
   render() {
-    const { billingCycle, billingCycleBricks, breadcrumbs, url, loading } = this.props;
+    const { billingCycle, billingCycleBricks, breadcrumbs, url, loading, groupId, groupName } = this.props;
     const { maLoSortAsc } = this.state;
 
     if (loading || billingCycle._status === null) return <Loading minHeight={40} />;
     if (billingCycle._status && billingCycle._status !== 200) return <Redirect to={url} />;
 
+    const prefix = 'admin.billingCycles';
     const cycleBegin = new Date(billingCycle.beginDate);
     const cycleEnd = new Date(billingCycle.lastDate);
     // FIXME: proper moment-range typings will be in 3.2.0 or 4.0.0
@@ -56,7 +60,7 @@ class BillingData extends React.Component<ExtProps & StateProps & DispatchProps 
         <PageTitle
           {...{
             breadcrumbs: breadcrumbs.concat([
-              // { id: 1, link: `/groups/${groupId}`, title: groupName },
+              { id: 1, link: `/groups/${groupId}`, title: groupName },
               { id: '-----', title: billingCycle.name },
             ]),
             title: billingCycle.name,
@@ -65,7 +69,9 @@ class BillingData extends React.Component<ExtProps & StateProps & DispatchProps 
         <CenterContent>
           <MaLoListHeader>
             <div className="name">
-              <div onClick={this.switchMaLoSort}>MaLo title</div>
+              <div onClick={this.switchMaLoSort}>
+                <FormattedMessage id={`${prefix}.maloListTitle`} />
+              </div>
             </div>
             <div className="labels">
               <div className="dates">
@@ -118,41 +124,75 @@ class BillingData extends React.Component<ExtProps & StateProps & DispatchProps 
                         status: b.status,
                         contractType: b.contractType,
                       }}
-                    />);
+                    >
+                      <div />
+                    </Brick>);
                   return bricks;
                 })}
               </div>
             </MaLoRow>
           ))}
           <Legend>
-            <div className="title">Legend</div>
+            <div className="title">
+              <FormattedMessage id={`${prefix}.bricksLegendTitle`} />
+            </div>
             <div className="rw">
               <div />
-              <div>ABG</div>
-              <div>REC</div>
-            </div>
-            <div className="rw">
-              <div>SN</div>
-              <div>
-                <Brick {...{ width: 80, status: 'closed' }} />
+              <div className="label">
+                <div>
+                  <FormattedMessage id={`${prefix}.bricksLegendClosed`} />
+                </div>
               </div>
-              <div>
-                <Brick {...{ width: 80, status: 'open' }} />
-              </div>
-            </div>
-            <div className="rw">
-              <div>LU</div>
-              <div>
-                <Brick {...{ width: 80, status: 'closed' }} />
-              </div>
-              <div>
-                <Brick {...{ width: 80, status: 'open' }} />
+              <div className="label">
+                <div>
+                  <FormattedMessage id={`${prefix}.bricksLegendOpen`} />
+                </div>
               </div>
             </div>
             <div className="rw">
-              <div>DR</div>
+              <div className="label">
+                <div>
+                  <FormattedMessage id={`${prefix}.bricksLegendPT`} />
+                </div>
+              </div>
               <div>
-                <Brick {...{ width: 80, status: 'closed', contractType: 'gap' }} />
+                <Brick {...{ width: 80, contractType: 'power_taker', status: 'closed' }}>
+                  <div />
+                </Brick>
+              </div>
+              <div>
+                <Brick {...{ width: 80, contractType: 'power_taker', status: 'open' }}>
+                  <div />
+                </Brick>
+              </div>
+            </div>
+            <div className="rw">
+              <div className="label">
+                <div>
+                  <FormattedMessage id={`${prefix}.bricksLegendGAP`} />
+                </div>
+              </div>
+              <div>
+                <Brick {...{ width: 80, contractType: 'gap', status: 'closed' }}>
+                  <div />
+                </Brick>
+              </div>
+              <div>
+                <Brick {...{ width: 80, contractType: 'gap', status: 'open' }}>
+                  <div />
+                </Brick>
+              </div>
+            </div>
+            <div className="rw">
+              <div className="label">
+                <div>
+                  <FormattedMessage id={`${prefix}.bricksLegendTP`} />
+                </div>
+              </div>
+              <div>
+                <Brick {...{ width: 80, status: 'closed', contractType: 'third_party' }}>
+                  <div />
+                </Brick>
               </div>
               <div>-</div>
             </div>
@@ -164,6 +204,7 @@ class BillingData extends React.Component<ExtProps & StateProps & DispatchProps 
 }
 
 interface StatePart {
+  groups: { group: any };
   billingCycles: {
     billingCycle: { _status: null | number; [key: string]: any };
     loadingBillingCycle: boolean;
@@ -182,6 +223,7 @@ interface ExtProps {
 }
 
 interface StateProps {
+  groupName: string;
   billingCycle: { _status: null | number; [key: string]: any };
   billingCycleBricks: { _status: null | number; array: Array<any> };
   loading: boolean;
@@ -190,10 +232,12 @@ interface StateProps {
 interface DispatchProps {
   loadBillingCycle: Function;
   setBillingCycle: Function;
+  loadGroup: Function;
 }
 
 function mapStateToProps(state: StatePart) {
   return {
+    groupName: state.groups.group.name,
     billingCycle: state.billingCycles.billingCycle,
     billingCycleBricks: state.billingCycles.billingCycleBricks,
     loading: state.billingCycles.loadingBillingCycle,
@@ -203,4 +247,5 @@ function mapStateToProps(state: StatePart) {
 export default connect<StateProps, DispatchProps, ExtProps>(mapStateToProps, {
   loadBillingCycle: BillingCycles.actions.loadBillingCycle,
   setBillingCycle: BillingCycles.actions.setBillingCycle,
+  loadGroup: Groups.actions.loadGroup,
 })(BillingData);

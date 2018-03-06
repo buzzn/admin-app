@@ -4,9 +4,12 @@ export const MaLoListHeader = styled.div`
   width: 100%;
   height: 57px;
   display: flex;
+  border-bottom: 1px solid #e0e0e0;
   .name {
     width: 20%;
     font-weight: bold;
+    font-size: 0.8rem;
+    text-transform: uppercase;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -19,7 +22,7 @@ export const MaLoListHeader = styled.div`
     .dates {
       display: flex;
       justify-content: space-between;
-      height: 50%;
+      height: 70%;
       border-left: 1px solid #e0e0e0;
       border-right: 1px solid #e0e0e0;
       .begin {
@@ -28,13 +31,21 @@ export const MaLoListHeader = styled.div`
       .end {
         padding-right: 4px;
       }
+      .fa {
+        color: #bdbdbd;
+      }
     }
     .months {
       display: flex;
-      height: 50%;
+      height: 30%;
+      color: #9e9e9e;
+      text-transform: uppercase;
+      font-size: 0.625rem;
       border-right: 1px solid #e0e0e0;
-      background-size: 8.333% 100%;
-      background-image: repeating-linear-gradient(to right, #e0e0e0, #e0e0e0 1px, transparent 1px, transparent 100%);
+      border-left: 1px solid #e0e0e0;
+      background-size: calc(25% + 1px) 100%;
+      background-image: repeating-linear-gradient(to right, #eeeeee, #eeeeee 1px, transparent 1px, transparent 33.3%),
+        repeating-linear-gradient(to left, #e0e0e0, #e0e0e0 1px, transparent 1px, transparent 100%);
       .month {
         width: 25%;
         padding-left: 4px;
@@ -60,12 +71,13 @@ export const MaLoRow = styled.div`
   }
   .bricks {
     display: flex;
-    padding-top: 10%;
     width: 80%;
     height: 100%;
     border-right: 1px solid #e0e0e0;
-    background-size: 8.333% 100%;
-    background-image: repeating-linear-gradient(to right, #e0e0e0, #e0e0e0 1px, transparent 1px, transparent 100%);
+    border-left: 1px solid #e0e0e0;
+    background-size: calc(25% + 1px) 100%;
+    background-image: repeating-linear-gradient(to right, #eeeeee, #eeeeee 1px, transparent 1px, transparent 33.3%),
+      repeating-linear-gradient(to left, #e0e0e0, #e0e0e0 1px, transparent 1px, transparent 100%);
   }
 `;
 
@@ -73,26 +85,70 @@ interface BrickStyleProps {
   width: number;
   transparent?: boolean;
   status?: 'open' | 'closed';
-  contractType?: 'power_taker' | 'gap';
+  contractType?: 'power_taker' | 'third_party' | 'gap';
 }
+
+const brickColors = {
+  default: {
+    open: { bg: 'transparent', border: 'none' },
+    closed: { bg: 'transparent', border: 'none' },
+    default: { bg: 'transparent', border: 'none' },
+  },
+  power_taker: {
+    open: {
+      bg: 'rgba(0,188,212,0.25)',
+      border: '#00BCD4',
+    },
+    closed: {
+      bg: 'rgba(175,175,175,0.25)',
+      border: '#8C8C8C',
+    },
+  },
+  gap: {
+    open: {
+      bg: 'rgba(0,188,212,0.5)',
+      border: '#00BCD4',
+    },
+    closed: {
+      bg: 'rgba(158,158,158,0.5)',
+      border: '#8C8C8C',
+    },
+  },
+  third_party: {
+    open: {
+      bg: 'rgba(175,175,175,0.5)',
+      border: '#9E9E9E',
+      stripes:
+        'repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.08) 16px, rgba(175,175,175,0.75) 4px, rgba(175,175,175,0.75) 18px)',
+    },
+    closed: {
+      bg: 'rgba(175,175,175,0.5)',
+      border: '#9E9E9E',
+      stripes:
+        'repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.08) 16px, rgba(175,175,175,0.75) 4px, rgba(175,175,175,0.75) 18px)',
+    },
+  },
+};
 
 export const Brick = styled.div`
   width: ${({ width }: BrickStyleProps) => width}%;
-  height: 90%;
-  background-color: ${({ transparent, status }: BrickStyleProps) =>
-    (transparent ? 'transparent' : status === 'open' ? 'rgba(0,188,212,0.25)' : 'rgba(175,175,175,0.5)')};
-  background-image: ${({ contractType, status }: BrickStyleProps) =>
-    (contractType !== 'gap'
-      ? 'none'
-      : status === 'open'
-        ? 'repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.08) 16px, rgba(0,188,212,0.75) 4px, rgba(0,188,212,0.75) 18px)'
-        : 'repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.08) 16px, rgba(175,175,175,0.75) 4px, rgba(175,175,175,0.75) 18px)')};
-  border-left: 1px solid
-    ${({ transparent, status }: BrickStyleProps) =>
-    (transparent ? 'none' : status === 'open' ? 'rgba(0,188,212,0.9)' : 'rgba(175,175,175,0.9)')};
-  border-right: 1px solid
-    ${({ transparent, status }: BrickStyleProps) =>
-    (transparent ? 'none' : status === 'open' ? 'rgba(0,188,212,0.9)' : 'rgba(175,175,175,0.9)')};
+  height: 100%;
+  padding-top: 9px;
+
+  > div {
+    width: 100%;
+    height: 80%;
+    background-color: ${({ status, contractType }: BrickStyleProps) =>
+    brickColors[contractType || 'default'][status || 'default'].bg};
+    background-image: ${({ contractType }: BrickStyleProps) =>
+    (contractType !== 'third_party' ? 'none' : brickColors.third_party.open.stripes)};
+    border-left: 1px solid
+      ${({ status, contractType }: BrickStyleProps) =>
+    brickColors[contractType || 'default'][status || 'default'].border};
+    border-right: 1px solid
+      ${({ status, contractType }: BrickStyleProps) =>
+    brickColors[contractType || 'default'][status || 'default'].border};
+  }
 `;
 
 export const Legend = styled.div`
@@ -101,15 +157,24 @@ export const Legend = styled.div`
   margin-bottom: 4rem;
   .title {
     font-weight: bold;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     width: 100%;
     border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
   }
   .rw {
     display: flex;
     height: 37px;
     > div {
       width: 33.333%;
+    }
+    .label {
+      text-transform: uppercase;
+      font-size: 0.625rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
   }
 `;
