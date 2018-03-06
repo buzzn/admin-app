@@ -64,6 +64,7 @@ class BillingData extends React.Component<ExtProps & StateProps & DispatchProps 
               { id: '-----', title: billingCycle.name },
             ]),
             title: billingCycle.name,
+            url,
           }}
         />
         <CenterContent>
