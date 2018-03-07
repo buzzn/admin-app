@@ -116,8 +116,9 @@ class BillingData extends React.Component<
                 {m.bricks.array.map((b, i) => {
                   const beginDate = new Date(b.beginDate);
                   const endDate = new Date(b.endDate);
-                  const fixedBeginDate = beginDate < cycleBegin ? cycleBegin : beginDate;
-                  const fixedEndDate = endDate < cycleEnd ? cycleEnd : endDate;
+                  const fixedBeginDate =
+                    beginDate < cycleBegin ? cycleBegin : beginDate > cycleEnd ? cycleEnd : beginDate;
+                  const fixedEndDate = endDate > cycleEnd ? cycleEnd : endDate;
                   const bricks: Array<JSX.Element> = [];
                   if (i === 0 && fixedBeginDate > cycleBegin) {
                     bricks.push(<Brick key={0} {...{ width: brickScale(fixedBeginDate), transparent: true }} />);
