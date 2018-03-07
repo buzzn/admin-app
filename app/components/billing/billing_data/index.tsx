@@ -42,7 +42,7 @@ class BillingData extends React.Component<
 
     const prefix = 'admin.billingCycles';
     const cycleBegin = new Date(billingCycle.beginDate);
-    const cycleEnd = new Date(billingCycle.lastDate);
+    const cycleEnd = moment(billingCycle.lastDate).add(1, 'day').toDate();
     // FIXME: proper moment-range typings will be in 3.2.0 or 4.0.0
     const cycleMonths: Array<any> = Array.from(moment.range(cycleBegin, cycleEnd).by('month'));
     const labelFormat = cycleMonths.length > 12 ? 'MMM YY' : 'MMM';
@@ -84,7 +84,7 @@ class BillingData extends React.Component<
                   {moment(cycleBegin).format('DD.MM.YYYY')} <i className="fa fa-calendar" />
                 </div>
                 <div className="end">
-                  <i className="fa fa-calendar" /> {moment(cycleEnd).format('DD.MM.YYYY')}
+                  <i className="fa fa-calendar" /> {moment(billingCycle.lastDate).format('DD.MM.YYYY')}
                 </div>
               </div>
               <div className="months">
