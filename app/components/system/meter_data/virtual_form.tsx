@@ -82,9 +82,15 @@ class MeterData extends React.Component<Props, State> {
             </div>
           </Col>
           <Col xs="3">
-            <div className="value">{meter.sequenceNumber}</div>
+            <div className="value">{String(meter.sequenceNumber)}</div>
             <div className="label">
               <FormattedMessage id={`${prefix}.sequenceNumber`} />
+            </div>
+          </Col>
+          <Col xs="2">
+            <div className="value">{meter.productSerialnumber}</div>
+            <div className="label">
+              <FormattedMessage id={`${prefix}.productSerialnumber`} />
             </div>
           </Col>
           <Col xs="2">
@@ -95,7 +101,6 @@ class MeterData extends React.Component<Props, State> {
               <FormattedMessage id={`${prefix}.type`} />
             </div>
           </Col>
-          <Col xs="2" />
           <Col xs="1" />
         </MeterHeader>
         <Row>
