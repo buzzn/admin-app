@@ -2,6 +2,7 @@ import * as React from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import orderBy from 'lodash/orderBy';
 import Groups from 'groups';
 import BillingCycles from 'billing_cycles';
 import ReactTableSorted from 'components/react_table_sorted';
@@ -25,7 +26,7 @@ class BillingList extends React.Component<
 
   switchAddBilling = () => {
     this.setState({ isOpen: !this.state.isOpen });
-  }
+  };
 
   addBillingCycle = (values) => {
     const { addBillingCycle, groupId } = this.props;
@@ -33,7 +34,7 @@ class BillingList extends React.Component<
     return new Promise((resolve, reject) => {
       addBillingCycle({ resolve, reject, params: values, groupId });
     }).then(() => this.switchAddBilling());
-  }
+  };
 
   render() {
     const {
@@ -49,9 +50,12 @@ class BillingList extends React.Component<
     } = this.props;
     const { isOpen } = this.state;
 
-    const data = billingCycles.array.map(b => ({
+    const data = orderBy(billingCycles.array, b => moment(b.beginDate).toDate(), 'desc').map(b => ({
       ...b,
-      dates: `${moment(b.beginDate).format('DD.MM.YYYY')} - ${moment(b.lastDate).format('DD.MM.YYYY')}`,
+      dates: {
+        Display: `${moment(b.beginDate).format('DD.MM.YYYY')} - ${moment(b.lastDate).format('DD.MM.YYYY')}`,
+        value: moment(b.beginDate).toDate(),
+      },
       billingCycleLink: `${url}/${b.id}`,
     }));
 
@@ -61,12 +65,19 @@ class BillingList extends React.Component<
           <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.billingCycles.tableName' })} />
         ),
         accessor: 'name',
+        style: {
+          cursor: 'pointer',
+          textDecoration: 'underline',
+        },
       },
       {
         Header: () => (
           <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.billingCycles.tableDates' })} />
         ),
         accessor: 'dates',
+        filterMethod: TableParts.filters.filterByValue,
+        sortMethod: TableParts.sort.sortByValue,
+        Cell: ({ value: { Display } }) => Display,
       },
     ];
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import Moment from 'moment';
 import orderBy from 'lodash/orderBy';
 import { extendMoment } from 'moment-range';
@@ -17,7 +17,10 @@ const d3 = require('d3');
 
 const moment = extendMoment(Moment);
 
-class BillingData extends React.Component<ExtProps & StateProps & DispatchProps & BreadcrumbsProps, BillingDataState> {
+class BillingData extends React.Component<
+  ExtProps & StateProps & DispatchProps & BreadcrumbsProps & InjectedIntlProps,
+  BillingDataState
+  > {
   state = { maLoSortAsc: true };
 
   componentDidMount() {
@@ -31,7 +34,7 @@ class BillingData extends React.Component<ExtProps & StateProps & DispatchProps 
   };
 
   render() {
-    const { billingCycle, billingCycleBricks, breadcrumbs, url, loading, groupId, groupName } = this.props;
+    const { billingCycle, billingCycleBricks, breadcrumbs, url, loading, groupId, groupName, intl } = this.props;
     const { maLoSortAsc } = this.state;
 
     if (loading || billingCycle._status === null) return <Loading minHeight={40} />;
@@ -61,6 +64,7 @@ class BillingData extends React.Component<ExtProps & StateProps & DispatchProps 
           {...{
             breadcrumbs: breadcrumbs.concat([
               { id: 1, link: `/groups/${groupId}`, title: groupName },
+              { id: 2, link: url, title: intl.formatMessage({ id: 'admin.breadcumbs.billingCycles' }) },
               { id: '-----', title: billingCycle.name },
             ]),
             title: billingCycle.name,
@@ -249,4 +253,4 @@ export default connect<StateProps, DispatchProps, ExtProps>(mapStateToProps, {
   loadBillingCycle: BillingCycles.actions.loadBillingCycle,
   setBillingCycle: BillingCycles.actions.setBillingCycle,
   loadGroup: Groups.actions.loadGroup,
-})(BillingData);
+})(injectIntl(BillingData));
