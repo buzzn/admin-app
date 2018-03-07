@@ -42,7 +42,9 @@ class BillingData extends React.Component<
 
     const prefix = 'admin.billingCycles';
     const cycleBegin = new Date(billingCycle.beginDate);
-    const cycleEnd = moment(billingCycle.lastDate).add(1, 'day').toDate();
+    const cycleEnd = moment(billingCycle.lastDate)
+      .add(1, 'day')
+      .toDate();
     // FIXME: proper moment-range typings will be in 3.2.0 or 4.0.0
     const cycleMonths: Array<any> = Array.from(moment.range(cycleBegin, cycleEnd).by('month'));
     const labelFormat = cycleMonths.length > 12 ? 'MMM YY' : 'MMM';
@@ -58,6 +60,12 @@ class BillingData extends React.Component<
       .domain([cycleBegin, cycleEnd])
       .range([0, 100]);
 
+    const ticks = [0].concat(d3
+      .scaleTime()
+      .domain([cycleBegin, cycleEnd])
+      .ticks(12)
+      .map(t => brickScale(t)));
+
     return (
       <React.Fragment>
         <PageTitle
@@ -72,7 +80,7 @@ class BillingData extends React.Component<
           }}
         />
         <CenterContent>
-          <MaLoListHeader>
+          <MaLoListHeader {...{ ticks }}>
             <div className="name">
               <div onClick={this.switchMaLoSort}>
                 <FormattedMessage id={`${prefix}.maloListTitle`} />
@@ -99,7 +107,7 @@ class BillingData extends React.Component<
             </div>
           </MaLoListHeader>
           {orderBy(billingCycleBricks.array, 'name', maLoSortAsc ? 'asc' : 'desc').map(m => (
-            <MaLoRow key={m.id}>
+            <MaLoRow key={m.id} {...{ ticks }}>
               <div className="name">
                 <div>
                   <Link

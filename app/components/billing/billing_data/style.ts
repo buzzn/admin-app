@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+interface GridStyleProps {
+  ticks: Array<number>;
+}
+
 export const MaLoListHeader = styled.div`
   width: 100%;
   height: 57px;
@@ -43,9 +47,22 @@ export const MaLoListHeader = styled.div`
       font-size: 0.625rem;
       border-right: 1px solid #e0e0e0;
       border-left: 1px solid #e0e0e0;
-      background-size: calc(25% + 1px) 100%;
-      background-image: repeating-linear-gradient(to right, #eeeeee, #eeeeee 1px, transparent 1px, transparent 33.3%),
-        repeating-linear-gradient(to left, #e0e0e0, #e0e0e0 1px, transparent 1px, transparent 100%);
+      background: linear-gradient(
+        to right,
+        ${({ ticks }: GridStyleProps) =>
+    ticks.map((t, i) =>
+      `${i !== 0 ? `white calc(${t}%),` : ''}#eeeeee calc(${t}% + 1px), white calc(${t}% + 2px)${
+        i < ticks.length - 1 ? ',' : ''
+      }`)}
+      );
+      background: -moz-linear-gradient(
+        to right,
+        ${({ ticks }: GridStyleProps) =>
+    ticks.map((t, i) =>
+      `${i !== 0 ? `white calc(${t}%),` : ''}#eeeeee calc(${t}% + 1px), white calc(${t}% + 4px)${
+        i < ticks.length - 1 ? ',' : ''
+      }`)}
+      );
       .month {
         width: 25%;
         padding-left: 4px;
@@ -75,9 +92,22 @@ export const MaLoRow = styled.div`
     height: 100%;
     border-right: 1px solid #e0e0e0;
     border-left: 1px solid #e0e0e0;
-    background-size: calc(25% + 1px) 100%;
-    background-image: repeating-linear-gradient(to right, #eeeeee, #eeeeee 1px, transparent 1px, transparent 33.3%),
-      repeating-linear-gradient(to left, #e0e0e0, #e0e0e0 1px, transparent 1px, transparent 100%);
+    background: linear-gradient(
+      to right,
+      ${({ ticks }: GridStyleProps) =>
+    ticks.map((t, i) =>
+      `${i !== 0 ? `white calc(${t}%),` : ''}#eeeeee calc(${t}% + 1px), white calc(${t}% + 2px)${
+        i < ticks.length - 1 ? ',' : ''
+      }`)}
+    );
+    background: -moz-linear-gradient(
+      to right,
+      ${({ ticks }: GridStyleProps) =>
+    ticks.map((t, i) =>
+      `${i !== 0 ? `white calc(${t}%),` : ''}#eeeeee calc(${t}% + 1px), white calc(${t}% + 4px)${
+        i < ticks.length - 1 ? ',' : ''
+      }`)}
+    );
   }
 `;
 
