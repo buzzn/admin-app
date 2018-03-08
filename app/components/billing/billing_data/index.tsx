@@ -2,8 +2,10 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import { UncontrolledTooltip } from 'reactstrap';
 import Moment from 'moment';
 import orderBy from 'lodash/orderBy';
+import reduce from 'lodash/reduce';
 import { extendMoment } from 'moment-range';
 import Groups from 'groups';
 import BillingCycles from 'billing_cycles';
@@ -141,7 +143,25 @@ class BillingData extends React.Component<
                         contractType: b.contractType,
                       }}
                     >
-                      <div />
+                      <div className="brick-bg">
+                        <div />
+                        <div className="info">
+                          <b>{!!b.priceCents && `${b.priceCents} €`}</b> {!!b.consumedEnergyKwh && b.consumedEnergyKwh}
+                        </div>
+                        <div className="error">
+                          {!!b.errors && (
+                            <React.Fragment>
+                              <i id={`err-tip-${m.id}-${i}`} className="fa fa-exclamation-triangle" />
+                              <UncontrolledTooltip placement="bottom" target={`err-tip-${m.id}-${i}`} delay={200}>
+                                {reduce(b.errors, (message, errArr) => `${message}${errArr.join(', ')}, `, '').slice(
+                                  0,
+                                  -2,
+                                )}
+                              </UncontrolledTooltip>
+                            </React.Fragment>
+                          )}
+                        </div>
+                      </div>
                     </Brick>);
                   return bricks;
                 })}
@@ -173,12 +193,12 @@ class BillingData extends React.Component<
               </div>
               <div>
                 <Brick {...{ width: 80, contractType: 'power_taker', status: 'closed' }}>
-                  <div />
+                  <div className="brick-bg" />
                 </Brick>
               </div>
               <div>
                 <Brick {...{ width: 80, contractType: 'power_taker', status: 'open' }}>
-                  <div />
+                  <div className="brick-bg" />
                 </Brick>
               </div>
             </div>
@@ -190,12 +210,12 @@ class BillingData extends React.Component<
               </div>
               <div>
                 <Brick {...{ width: 80, contractType: 'gap', status: 'closed' }}>
-                  <div />
+                  <div className="brick-bg" />
                 </Brick>
               </div>
               <div>
                 <Brick {...{ width: 80, contractType: 'gap', status: 'open' }}>
-                  <div />
+                  <div className="brick-bg" />
                 </Brick>
               </div>
             </div>
@@ -207,7 +227,7 @@ class BillingData extends React.Component<
               </div>
               <div>
                 <Brick {...{ width: 80, status: 'closed', contractType: 'third_party' }}>
-                  <div />
+                  <div className="brick-bg" />
                 </Brick>
               </div>
               <div>-</div>

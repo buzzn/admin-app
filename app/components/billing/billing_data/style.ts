@@ -137,7 +137,9 @@ export const Brick = styled.div`
   height: 100%;
   padding-top: 9px;
 
-  > div {
+  .brick-bg {
+    display: flex;
+    justify-content: space-between;
     width: 100%;
     height: 80%;
     background-color: ${({ status = 'default', contractType = 'default' }: BrickStyleProps) =>
@@ -150,6 +152,19 @@ export const Brick = styled.div`
     border-right: 1px solid
       ${({ status = 'default', contractType = 'default' }: BrickStyleProps) =>
     (contractType === 'third_party' ? brickColors[contractType].border : brickColors[contractType][status].border)};
+
+    .info {
+      color: ${({ status }: BrickStyleProps) => (status === 'open' ? '#00BCD4' : '#9E9E9E')};
+      font-size: 0.8rem;
+      padding-top: 0.9rem;
+      line-height: 0.8rem;
+    }
+    .error {
+      color: red;
+      font-size: 1rem;
+      padding-top: 6px;
+      padding-right: 6px;
+    }
   }
 `;
 
