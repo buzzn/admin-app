@@ -47,22 +47,26 @@ export const MaLoListHeader = styled.div`
       font-size: 0.625rem;
       border-right: 1px solid #e0e0e0;
       border-left: 1px solid #e0e0e0;
-    background: -moz-linear-gradient(
-      to right,
-      ${({ ticks }: GridStyleProps) =>
+      background: -moz-linear-gradient(
+        to right,
+        ${({ ticks }: GridStyleProps) =>
     ticks.map((t, i) =>
-      `${i !== 0 ? `white ${t}%,` : ''}#eeeeee ${t}%, #eeeeee calc(${t}% + 2px), white calc(${t}% + 2px)${
+      `${
+        i !== 0 ? `transparent ${t}%,` : ''
+      }#eeeeee ${t}%, #eeeeee calc(${t}% + 3px), transparent calc(${t}% + 2px)${
         i < ticks.length - 1 ? ',' : ''
       }`)}
-    );
-    background: linear-gradient(
-      to right,
-      ${({ ticks }: GridStyleProps) =>
+      );
+      background: linear-gradient(
+        to right,
+        ${({ ticks }: GridStyleProps) =>
     ticks.map((t, i) =>
-      `${i !== 0 ? `white ${t}%,` : ''}#eeeeee ${t}%, #eeeeee calc(${t}% + 2px), white calc(${t}% + 2px)${
+      `${
+        i !== 0 ? `transparent ${t}%,` : ''
+      }#eeeeee ${t}%, #eeeeee calc(${t}% + 3px), transparent calc(${t}% + 2px)${
         i < ticks.length - 1 ? ',' : ''
       }`)}
-    );
+      );
       .month {
         width: 25%;
         padding-left: 4px;
@@ -96,17 +100,17 @@ export const MaLoRow = styled.div`
       to right,
       ${({ ticks }: GridStyleProps) =>
     ticks.map((t, i) =>
-      `${i !== 0 ? `white ${t}%,` : ''}#eeeeee ${t}%, #eeeeee calc(${t}% + 2px), white calc(${t}% + 2px)${
-        i < ticks.length - 1 ? ',' : ''
-      }`)}
+      `${
+        i !== 0 ? `transparent ${t}%,` : ''
+      }#eeeeee ${t}%, #eeeeee calc(${t}% + 3px), transparent calc(${t}% + 2px)${i < ticks.length - 1 ? ',' : ''}`)}
     );
     background: linear-gradient(
       to right,
       ${({ ticks }: GridStyleProps) =>
     ticks.map((t, i) =>
-      `${i !== 0 ? `white ${t}%,` : ''}#eeeeee ${t}%, #eeeeee calc(${t}% + 2px), white calc(${t}% + 2px)${
-        i < ticks.length - 1 ? ',' : ''
-      }`)}
+      `${
+        i !== 0 ? `transparent ${t}%,` : ''
+      }#eeeeee ${t}%, #eeeeee calc(${t}% + 3px), transparent calc(${t}% + 2px)${i < ticks.length - 1 ? ',' : ''}`)}
     );
   }
 `;
