@@ -51,7 +51,7 @@ export const MaLoListHeader = styled.div`
         to right,
         ${({ ticks }: GridStyleProps) =>
       ticks.map((t, i) =>
-        `${i !== 0 ? `white calc(${t}%),` : ''}#eeeeee calc(${t}% + 1px), white calc(${t}% + 4px)${
+        `${i !== 0 ? `white calc(${t}%),` : ''}#eeeeee calc(${t}% + 2px), white calc(${t}% + 4px)${
           i < ticks.length - 1 ? ',' : ''
         }`)}
       );
@@ -60,7 +60,7 @@ export const MaLoListHeader = styled.div`
         to right,
         ${({ ticks }: GridStyleProps) =>
       ticks.map((t, i) =>
-        `${i !== 0 ? `white calc(${t}%),` : ''}#eeeeee calc(${t}% + 1px), white calc(${t}% + 2px)${
+        `${i !== 0 ? `white calc(${t}%),` : ''}#eeeeee calc(${t}% + 2px), white calc(${t}% + 3px)${
           i < ticks.length - 1 ? ',' : ''
         }`)}
       );
@@ -97,7 +97,7 @@ export const MaLoRow = styled.div`
       to right,
       ${({ ticks }: GridStyleProps) =>
     ticks.map((t, i) =>
-      `${i !== 0 ? `white calc(${t}%),` : ''}#eeeeee calc(${t}% + 1px), white calc(${t}% + 4px)${
+      `${i !== 0 ? `white calc(${t}%),` : ''}#eeeeee calc(${t}% + 2px), white calc(${t}% + 4px)${
         i < ticks.length - 1 ? ',' : ''
       }`)}
     );
@@ -105,7 +105,7 @@ export const MaLoRow = styled.div`
       to right,
       ${({ ticks }: GridStyleProps) =>
     ticks.map((t, i) =>
-      `${i !== 0 ? `white calc(${t}%),` : ''}#eeeeee calc(${t}% + 1px), white calc(${t}% + 2px)${
+      `${i !== 0 ? `white calc(${t}%),` : ''}#eeeeee calc(${t}% + 2px), white calc(${t}% + 3px)${
         i < ticks.length - 1 ? ',' : ''
       }`)}
     );
