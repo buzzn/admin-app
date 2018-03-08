@@ -125,12 +125,10 @@ const brickColors = {
     },
   },
   third_party: {
-    default: {
-      bg: 'rgba(175,175,175,0.5)',
-      border: '#9E9E9E',
-      stripes:
-        'repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.08) 16px, rgba(175,175,175,0.75) 4px, rgba(175,175,175,0.75) 18px)',
-    },
+    bg: 'rgba(175,175,175,0.5)',
+    border: '#9E9E9E',
+    stripes:
+      'repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.08) 16px, rgba(175,175,175,0.75) 4px, rgba(175,175,175,0.75) 18px)',
   },
 };
 
@@ -142,16 +140,16 @@ export const Brick = styled.div`
   > div {
     width: 100%;
     height: 80%;
-    background-color: ${({ status, contractType }: BrickStyleProps) =>
-    brickColors[contractType || 'default'][status || 'default'].bg};
+    background-color: ${({ status = 'default', contractType = 'default' }: BrickStyleProps) =>
+    (contractType === 'third_party' ? brickColors[contractType].bg : brickColors[contractType][status].bg)};
     background-image: ${({ contractType }: BrickStyleProps) =>
-    (contractType !== 'third_party' ? 'none' : brickColors.third_party.open.stripes)};
+    (contractType !== 'third_party' ? 'none' : brickColors.third_party.stripes)};
     border-left: 1px solid
-      ${({ status, contractType }: BrickStyleProps) =>
-    brickColors[contractType || 'default'][status || 'default'].border};
+      ${({ status = 'default', contractType = 'default' }: BrickStyleProps) =>
+    (contractType === 'third_party' ? brickColors[contractType].border : brickColors[contractType][status].border)};
     border-right: 1px solid
-      ${({ status, contractType }: BrickStyleProps) =>
-    brickColors[contractType || 'default'][status || 'default'].border};
+      ${({ status = 'default', contractType = 'default' }: BrickStyleProps) =>
+    (contractType === 'third_party' ? brickColors[contractType].border : brickColors[contractType][status].border)};
   }
 `;
 
