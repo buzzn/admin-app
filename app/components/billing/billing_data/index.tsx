@@ -160,8 +160,8 @@ class BillingData extends React.Component<
                       <div className="brick-bg">
                         <div />
                         <div className="info">
-                          <b>{!!b.priceCents && `${(b.priceCents / 100).toFixed(0)} €`}</b>&nbsp;&nbsp;{!!b.consumedEnergyKwh &&
-                            `${b.consumedEnergyKwh} kWh`}
+                          <div className="price">{!!b.priceCents && `${(b.priceCents / 100).toFixed(0)} €`}</div>
+                          <div className="energy">{!!b.consumedEnergyKwh && `${b.consumedEnergyKwh} kWh`}</div>
                         </div>
                         <div className="error">
                           {!!b.errors && (

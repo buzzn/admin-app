@@ -159,6 +159,11 @@ export const Brick = styled.div`
       font-size: 0.8rem;
       padding-top: 0.9rem;
       line-height: 0.8rem;
+      display: flex;
+      .price {
+        font-weight: bold;
+        margin-right: 6px;
+      }
     }
     .error {
       color: red;
