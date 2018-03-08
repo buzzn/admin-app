@@ -50,22 +50,22 @@ export const MaLoListHeader = styled.div`
       background: -moz-linear-gradient(
         to right,
         ${({ ticks }: GridStyleProps) =>
-    ticks.map((t, i) =>
-      `${
-        i !== 0 ? `transparent ${t}%,` : ''
-      }#eeeeee ${t}%, #eeeeee calc(${t}% + 3px), transparent calc(${t}% + 2px)${
-        i < ticks.length - 1 ? ',' : ''
-      }`)}
+      ticks.map((t, i) =>
+        `${
+          i !== 0 ? `transparent ${t}%,` : ''
+        }#eeeeee ${t}%, #eeeeee calc(${t}% + 3px), transparent calc(${t}% + 1px)${
+          i < ticks.length - 1 ? ',' : ''
+        }`)}
       );
       background: linear-gradient(
         to right,
         ${({ ticks }: GridStyleProps) =>
-    ticks.map((t, i) =>
-      `${
-        i !== 0 ? `transparent ${t}%,` : ''
-      }#eeeeee ${t}%, #eeeeee calc(${t}% + 3px), transparent calc(${t}% + 2px)${
-        i < ticks.length - 1 ? ',' : ''
-      }`)}
+      ticks.map((t, i) =>
+        `${
+          i !== 0 ? `transparent ${t}%,` : ''
+        }#eeeeee ${t}%, #eeeeee calc(${t}% + 3px), transparent calc(${t}% + 1px)${
+          i < ticks.length - 1 ? ',' : ''
+        }`)}
       );
       .month {
         width: 25%;
@@ -102,7 +102,7 @@ export const MaLoRow = styled.div`
     ticks.map((t, i) =>
       `${
         i !== 0 ? `transparent ${t}%,` : ''
-      }#eeeeee ${t}%, #eeeeee calc(${t}% + 3px), transparent calc(${t}% + 2px)${i < ticks.length - 1 ? ',' : ''}`)}
+      }#eeeeee ${t}%, #eeeeee calc(${t}% + 3px), transparent calc(${t}% + 1px)${i < ticks.length - 1 ? ',' : ''}`)}
     );
     background: linear-gradient(
       to right,
@@ -110,7 +110,7 @@ export const MaLoRow = styled.div`
     ticks.map((t, i) =>
       `${
         i !== 0 ? `transparent ${t}%,` : ''
-      }#eeeeee ${t}%, #eeeeee calc(${t}% + 3px), transparent calc(${t}% + 2px)${i < ticks.length - 1 ? ',' : ''}`)}
+      }#eeeeee ${t}%, #eeeeee calc(${t}% + 3px), transparent calc(${t}% + 1px)${i < ticks.length - 1 ? ',' : ''}`)}
     );
   }
 `;
