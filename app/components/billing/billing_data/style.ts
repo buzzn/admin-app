@@ -125,13 +125,7 @@ const brickColors = {
     },
   },
   third_party: {
-    open: {
-      bg: 'rgba(175,175,175,0.5)',
-      border: '#9E9E9E',
-      stripes:
-        'repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.08) 16px, rgba(175,175,175,0.75) 4px, rgba(175,175,175,0.75) 18px)',
-    },
-    closed: {
+    default: {
       bg: 'rgba(175,175,175,0.5)',
       border: '#9E9E9E',
       stripes:
