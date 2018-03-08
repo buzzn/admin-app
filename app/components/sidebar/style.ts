@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
 export const SidebarBlock = styled.div`
+  z-index: 1;
   position: fixed;
   overflow-y: scroll;
   top: 0rem;
