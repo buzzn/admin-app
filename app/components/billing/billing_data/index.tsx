@@ -96,6 +96,7 @@ class BillingData extends React.Component<
                 </div>
               </div>
               <div className="months">
+                {ticks.map(t => <div className="grid-line" style={{ left: `${t}%` }} />)}
                 <div className="month">{labels[0]}</div>
                 <div className="month">{labels[1]}</div>
                 <div className="month">{labels[2]}</div>
@@ -121,6 +122,7 @@ class BillingData extends React.Component<
                 </div>
               </div>
               <div className="bricks">
+                {ticks.map(t => <div className="grid-line" style={{ left: `${t}%` }} />)}
                 {m.bricks.array.map((b, i) => {
                   const beginDate = new Date(b.beginDate);
                   const endDate = new Date(b.endDate);

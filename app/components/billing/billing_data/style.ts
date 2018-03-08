@@ -1,9 +1,5 @@
 import styled from 'styled-components';
 
-interface GridStyleProps {
-  ticks: Array<number>;
-}
-
 export const MaLoListHeader = styled.div`
   width: 100%;
   height: 57px;
@@ -47,26 +43,14 @@ export const MaLoListHeader = styled.div`
       font-size: 0.625rem;
       border-right: 1px solid #e0e0e0;
       border-left: 1px solid #e0e0e0;
-      background: -moz-linear-gradient(
-        to right,
-        ${({ ticks }: GridStyleProps) =>
-      ticks.map((t, i) =>
-        `${
-          i !== 0 ? `transparent ${t}%,` : ''
-        }#eeeeee ${t}%, #eeeeee calc(${t}% + 3px), transparent calc(${t}% + 1px)${
-          i < ticks.length - 1 ? ',' : ''
-        }`)}
-      );
-      background: linear-gradient(
-        to right,
-        ${({ ticks }: GridStyleProps) =>
-      ticks.map((t, i) =>
-        `${
-          i !== 0 ? `transparent ${t}%,` : ''
-        }#eeeeee ${t}%, #eeeeee calc(${t}% + 3px), transparent calc(${t}% + 1px)${
-          i < ticks.length - 1 ? ',' : ''
-        }`)}
-      );
+      position: relative;
+      .grid-line {
+        position: absolute;
+        height: 100%;
+        width: 1px;
+        background: #eeeeee;
+        z-index: -1;
+      }
       .month {
         width: 25%;
         padding-left: 4px;
@@ -96,22 +80,14 @@ export const MaLoRow = styled.div`
     height: 100%;
     border-right: 1px solid #e0e0e0;
     border-left: 1px solid #e0e0e0;
-    background: -moz-linear-gradient(
-      to right,
-      ${({ ticks }: GridStyleProps) =>
-    ticks.map((t, i) =>
-      `${
-        i !== 0 ? `transparent ${t}%,` : ''
-      }#eeeeee ${t}%, #eeeeee calc(${t}% + 3px), transparent calc(${t}% + 1px)${i < ticks.length - 1 ? ',' : ''}`)}
-    );
-    background: linear-gradient(
-      to right,
-      ${({ ticks }: GridStyleProps) =>
-    ticks.map((t, i) =>
-      `${
-        i !== 0 ? `transparent ${t}%,` : ''
-      }#eeeeee ${t}%, #eeeeee calc(${t}% + 3px), transparent calc(${t}% + 1px)${i < ticks.length - 1 ? ',' : ''}`)}
-    );
+    position: relative;
+    .grid-line {
+      position: absolute;
+      height: 100%;
+      width: 1px;
+      background: #eeeeee;
+      z-index: -1;
+    }
   }
 `;
 
