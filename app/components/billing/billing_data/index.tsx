@@ -49,14 +49,20 @@ class BillingData extends React.Component<
       .toDate();
     // FIXME: proper moment-range typings will be in 3.2.0 or 4.0.0
     const cycleMonths: Array<any> = Array.from(moment.range(cycleBegin, cycleEnd).by('month'));
-    const labelFormat = cycleMonths.length > 12 ? 'MMM YY' : 'MMM';
-    const labels = [
-      cycleMonths[0].format(labelFormat),
-      cycleMonths[Math.floor(cycleMonths.length / 4)].format(labelFormat),
-      cycleMonths[Math.floor(cycleMonths.length / 4 * 2)].format(labelFormat),
-      cycleMonths[Math.floor(cycleMonths.length / 4 * 3)].format(labelFormat),
-      cycleMonths[cycleMonths.length - 1].format(labelFormat),
-    ];
+    const labelFormat = 'MMM';
+    let labels: Array<any> = [];
+    if (cycleMonths.length < 8) {
+      labels = cycleMonths.map(m => m.format(labelFormat));
+    } else {
+      labels = [
+        cycleMonths[0].format(labelFormat),
+        cycleMonths[Math.floor(cycleMonths.length / 4)].format(labelFormat),
+        cycleMonths[Math.floor(cycleMonths.length / 4 * 2)].format(labelFormat),
+        cycleMonths[Math.floor(cycleMonths.length / 4 * 3)].format(labelFormat),
+        cycleMonths[cycleMonths.length - 1].format(labelFormat),
+      ];
+    }
+
     const brickScale = d3
       .scaleTime()
       .domain([cycleBegin, cycleEnd])
@@ -65,7 +71,7 @@ class BillingData extends React.Component<
     const ticks = [0].concat(d3
       .scaleTime()
       .domain([cycleBegin, cycleEnd])
-      .ticks(12)
+      .ticks(d3.timeMonth)
       .map(t => brickScale(t)));
 
     return (
@@ -99,13 +105,21 @@ class BillingData extends React.Component<
               </div>
               <div className="months">
                 {ticks.map(t => <div key={t} className="grid-line" style={{ left: `${t}%` }} />)}
-                <div className="month">{labels[0]}</div>
-                <div className="month">{labels[1]}</div>
-                <div className="month">{labels[2]}</div>
-                <div className="month">
-                  <div>{labels[3]}</div>
-                  <div>{labels[4]}</div>
-                </div>
+                {cycleMonths.length < 8
+                  ? labels.map((l, i) => (
+                      <div key={i} className="month" style={{ left: `${ticks[i]}%` }}>
+                        {l}
+                      </div>
+                    ))
+                  : labels.map((l, i) => (
+                      <div
+                        key={i}
+                        className="month"
+                        style={{ left: `${i === labels.length - 1 ? 'calc(100% - 26px)' : `${i * 25}%`}` }}
+                      >
+                        {l}
+                      </div>
+                    ))}
               </div>
             </div>
           </MaLoListHeader>
@@ -146,7 +160,8 @@ class BillingData extends React.Component<
                       <div className="brick-bg">
                         <div />
                         <div className="info">
-                          <b>{!!b.priceCents && `${(b.priceCents / 100).toFixed(0) } €`}</b> {!!b.consumedEnergyKwh && `${b.consumedEnergyKwh} kWh`}
+                          <b>{!!b.priceCents && `${(b.priceCents / 100).toFixed(0)} €`}</b>&nbsp;&nbsp;{!!b.consumedEnergyKwh &&
+                            `${b.consumedEnergyKwh} kWh`}
                         </div>
                         <div className="error">
                           {!!b.errors && (

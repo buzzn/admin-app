@@ -52,7 +52,8 @@ export const MaLoListHeader = styled.div`
         z-index: -1;
       }
       .month {
-        width: 25%;
+        position: absolute;
+        /* width: 25%; */
         padding-left: 4px;
         padding-right: 4px;
         display: flex;
