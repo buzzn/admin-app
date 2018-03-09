@@ -9,7 +9,7 @@ import EditableDate from 'components/editable_date';
 class ContractData extends React.Component {
   state = { editMode: false };
 
-  handleEditSwitch(event) {
+  handleEditSwitch = (event) => {
     event.preventDefault();
 
     const { updateContract, reset, validationRules } = this.props;
@@ -105,13 +105,13 @@ class ContractData extends React.Component {
                         type="button"
                         className="btn btn-link"
                         disabled={submitting}
-                        onClick={this.handleEditSwitch.bind(this)}
+                        onClick={this.handleEditSwitch}
                       >
                         Cancel
                       </button>
                     </span>
                   ) : (
-                    <button className="btn btn-primary" onClick={this.handleEditSwitch.bind(this)}>
+                    <button className="btn btn-primary" onClick={this.handleEditSwitch}>
                       Edit
                     </button>
                   )}

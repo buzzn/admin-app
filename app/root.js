@@ -20,11 +20,13 @@ import TodoList from 'components/todo_list';
 import AnalyticsContainer from 'components/analytics';
 import PowertakersContainer from 'components/powertakers';
 import TariffsContainer from 'components/tariffs';
+import BillingContainer from 'components/billing';
 import ContractsContainer from 'components/contracts';
 import SystemContainer from 'components/system';
 import GroupSettingsContainer from 'components/group_settings';
 import BubblesContainer from 'components/bubbles';
 import HealthContainer from 'components/health';
+import Footer from 'components/footer';
 import './react_table_config';
 
 const NewRoot = ({ token, devMode, multiGroups }) => (
@@ -52,6 +54,7 @@ const NewRoot = ({ token, devMode, multiGroups }) => (
                           <Route path="/groups/:groupId/analytics" component={AnalyticsContainer} />
                           <Route path="/groups/:groupId/powertakers" component={PowertakersContainer} />
                           <Route path="/groups/:groupId/tariffs" component={TariffsContainer} />
+                          <Route path="/groups/:groupId/billing" component={BillingContainer} />
                           <Route path="/groups/:groupId/contracts" component={ContractsContainer} />
                           <Route path="/groups/:groupId/system" component={SystemContainer} />
                           <Route path="/groups/:groupId/bubbles" component={BubblesContainer} />
@@ -73,6 +76,11 @@ const NewRoot = ({ token, devMode, multiGroups }) => (
 
               <Col xs="3" className="pl-0 pr-0">
                 <TodoList devMode={devMode} />
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={12}>
+                <Footer />
               </Col>
             </Row>
           </Container>

@@ -39,11 +39,11 @@ export class TopNavBar extends React.Component {
     scrolled: false,
   };
 
-  toggle() {
+  toggle = () => {
     this.setState({ isOpen: !this.state.isOpen });
   }
 
-  toggleProfile() {
+  toggleProfile = () => {
     this.setState({ profileOpen: !this.state.profileOpen });
   }
 
@@ -71,7 +71,7 @@ export class TopNavBar extends React.Component {
           <Link className="navbar-brand" to="/">
             <img src={devMode ? DevLogoImg : LogoImg} />
           </Link>
-          <NavbarToggler onClick={this.toggle.bind(this)} />
+          <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={isOpen} navbar>
             <InputGroup className={`nav-search ${devMode ? '' : 'under-construction'}`}>
               {devMode && <Input placeholder="Search" />}
@@ -86,7 +86,7 @@ export class TopNavBar extends React.Component {
               <NavItem className={`icon-nav-item ${devMode ? '' : 'under-construction'}`}>
                 <i className="fa fa-cog" />
               </NavItem>
-              <Dropdown nav isOpen={profileOpen} toggle={this.toggleProfile.bind(this)}>
+              <Dropdown nav isOpen={profileOpen} toggle={this.toggleProfile}>
                 <DropdownToggle nav caret>
                   <img className="top-avatar" src={image || DefaultPerson} />
                   <span className="user-name">{myName}</span>

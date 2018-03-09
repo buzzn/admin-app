@@ -12,6 +12,7 @@ import Users from 'users';
 import Contracts from 'contracts';
 import Readings from 'readings';
 import MarketLocations from 'market_locations';
+import BillingCycles from 'billing_cycles';
 
 // in this case initialState includes apiUrl and apiPath, so it will just copy this params into app state.
 export function configReducer(state = config) {
@@ -95,4 +96,5 @@ export default combineReducers({
   contracts: Contracts.reducers,
   readings: Readings.reducers,
   marketLocations: MarketLocations.reducers,
+  billingCycles: BillingCycles.reducers,
 });

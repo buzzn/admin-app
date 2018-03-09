@@ -12,12 +12,6 @@ interface Props {
 class Sidebar extends React.Component<Props> {
   private sideCol;
 
-  constructor(props) {
-    super(props);
-
-    this.setSideColWidth = this.setSideColWidth.bind(this);
-  }
-
   state = { sideColWidth: 0 };
 
   componentDidMount() {
@@ -30,7 +24,7 @@ class Sidebar extends React.Component<Props> {
     window.removeEventListener('resize', this.setSideColWidth);
   }
 
-  setSideColWidth() {
+  setSideColWidth = () => {
     this.setState({ sideColWidth: this.sideCol ? this.sideCol.offsetWidth : 0 });
   }
 
@@ -64,7 +58,7 @@ class Sidebar extends React.Component<Props> {
           <SidebarItem to={`${url}/tariffs`} icon="eur">
             <FormattedMessage id={`${prefix}.tariffs`} />
           </SidebarItem>
-          <SidebarItem to={`${url}/billing`} icon="money" devMode={devMode}>
+          <SidebarItem to={`${url}/billing`} icon="money">
             <FormattedMessage id={`${prefix}.billing`} />
           </SidebarItem>
           <SidebarItem to={`${url}/contracts`} icon="file-text-o" devMode={devMode}>

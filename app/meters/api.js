@@ -4,7 +4,7 @@ import { prepareHeaders, parseResponse, camelizeResponseKeys, snakeReq } from '.
 export default {
   fetchMeter({ token, apiUrl, apiPath, meterId, groupId }) {
     return fetch(
-      `${apiUrl}${apiPath}/localpools/${groupId}/meters/${meterId}?include=registers:[readings,market_location:[contracts:[customer:[contact]]]],formula_parts:register`,
+      `${apiUrl}${apiPath}/localpools/${groupId}/meters/${meterId}?include=registers:[readings,market_location:[contracts:[customer:[contact]]]]`,
       { headers: prepareHeaders(token) },
     )
       .then(parseResponse)
