@@ -12,7 +12,6 @@ export const SignInWrapper = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: -2;
   }
   .bubbles-wrapper {
     position: absolute;
@@ -20,9 +19,9 @@ export const SignInWrapper = styled.div`
     height: 100%;
     left: 10%;
     top: 0;
-    z-index: -1;
   }
   .form-signin-wrapper {
+    position: relative;
     z-index: 100;
     background: white;
     border-radius: 2rem;
