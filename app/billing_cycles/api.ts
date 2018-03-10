@@ -7,6 +7,11 @@ export default {
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
+  fetchbillingCycleItems({ token, apiUrl, apiPath, billingCycleId, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/billing-cycles/${billingCycleId}/items`, { headers: prepareHeaders(token) })
+      .then(parseResponse)
+      .then(camelizeResponseKeys);
+  },
   fetchBillingCycles({ token, apiUrl, apiPath, groupId }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/billing-cycles`, { headers: prepareHeaders(token) })
       .then(parseResponse)

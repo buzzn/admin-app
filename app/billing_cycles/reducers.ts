@@ -5,6 +5,7 @@ export const initialState = {
   loadingBillingCycle: false,
   billingCycles: { _status: null, array: [] },
   billingCycle: { _status: null },
+  billingCycleItems: { _status: null, array: [] },
 };
 
 export default function (state = initialState, action) {
@@ -16,7 +17,7 @@ export default function (state = initialState, action) {
     case constants.LOADED_BILLING_CYCLE:
       return { ...state, loadingBillingCycle: false };
     case constants.SET_BILLING_CYCLE:
-      return { ...state, billingCycle: action.billingCycle };
+      return { ...state, billingCycle: action.billingCycle, billingCycleItems: action.billingCycleItems };
 
     case constants.LOAD_BILLING_CYCLES:
       return { ...state, groupId: action.groupId };

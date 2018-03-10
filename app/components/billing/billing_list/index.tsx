@@ -2,13 +2,14 @@ import * as React from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import orderBy from 'lodash/orderBy';
 import Groups from 'groups';
 import BillingCycles from 'billing_cycles';
 import ReactTableSorted from 'components/react_table_sorted';
 import { tableParts as TableParts } from 'react_table_config';
 import PageTitle from 'components/page_title';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
-import { CenterContent } from 'components/style';
+import { CenterContent, SpanClick } from 'components/style';
 import AddBilling from '../add_billing';
 
 class BillingList extends React.Component<
@@ -23,25 +24,39 @@ class BillingList extends React.Component<
     loadGroup(groupId);
   }
 
-  switchAddBilling() {
+  switchAddBilling = () => {
     this.setState({ isOpen: !this.state.isOpen });
-  }
+  };
 
-  addBillingCycle(values) {
+  addBillingCycle = (values) => {
     const { addBillingCycle, groupId } = this.props;
 
     return new Promise((resolve, reject) => {
       addBillingCycle({ resolve, reject, params: values, groupId });
     }).then(() => this.switchAddBilling());
-  }
+  };
 
   render() {
-    const { billingCycles, nextBillingCycleBeginDate, loading, intl, breadcrumbs, groupId } = this.props;
+    const {
+      billingCycles,
+      nextBillingCycleBeginDate,
+      loading,
+      intl,
+      breadcrumbs,
+      groupId,
+      groupName,
+      url,
+      history,
+    } = this.props;
     const { isOpen } = this.state;
 
-    const data = billingCycles.array.map(b => ({
+    const data = orderBy(billingCycles.array, b => moment(b.beginDate).toDate(), 'desc').map(b => ({
       ...b,
-      dates: `${moment(b.beginDate).format('DD.MM.YYYY')} - ${moment(b.lastDate).format('DD.MM.YYYY')}`,
+      dates: {
+        Display: `${moment(b.beginDate).format('DD.MM.YYYY')} - ${moment(b.lastDate).format('DD.MM.YYYY')}`,
+        value: moment(b.beginDate).toDate(),
+      },
+      billingCycleLink: `${url}/${b.id}`,
     }));
 
     const columns = [
@@ -50,12 +65,19 @@ class BillingList extends React.Component<
           <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.billingCycles.tableName' })} />
         ),
         accessor: 'name',
+        style: {
+          cursor: 'pointer',
+          textDecoration: 'underline',
+        },
       },
       {
         Header: () => (
           <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.billingCycles.tableDates' })} />
         ),
         accessor: 'dates',
+        filterMethod: TableParts.filters.filterByValue,
+        sortMethod: TableParts.sort.sortByValue,
+        Cell: ({ value: { Display } }) => Display,
       },
     ];
 
@@ -64,21 +86,22 @@ class BillingList extends React.Component<
         <PageTitle
           {...{
             breadcrumbs: breadcrumbs.concat([
+              { id: 1, link: `/groups/${groupId}`, title: groupName },
               { id: '-----', title: intl.formatMessage({ id: 'admin.breadcumbs.billingCycles' }) },
             ]),
             title: intl.formatMessage({ id: 'admin.billingCycles.backBillingCycles' }),
           }}
         />
         <CenterContent>
-          <span onClick={this.switchAddBilling.bind(this)} className="float-right">
+          <SpanClick onClick={this.switchAddBilling} className="float-right">
             <FormattedMessage id="admin.billingCycles.addNew" /> <i className="fa fa-plus-circle" />
-          </span>
+          </SpanClick>
           <AddBilling
             {...{
               isOpen,
-              toggle: this.switchAddBilling.bind(this),
+              toggle: this.switchAddBilling,
               loading,
-              onSubmit: this.addBillingCycle.bind(this),
+              onSubmit: this.addBillingCycle,
               nextBillingCycleBeginDate,
             }}
           />
@@ -88,6 +111,14 @@ class BillingList extends React.Component<
               {...{
                 data,
                 columns,
+                getTdProps: (_state, rowInfo, column) => ({
+                  onClick: (_e, handleOriginal) => {
+                    if (column.id === 'name') {
+                      history.push(rowInfo.original.billingCycleLink);
+                    }
+                    if (handleOriginal) handleOriginal();
+                  },
+                }),
                 uiSortPath: `groups.${groupId}.billingCycles`,
               }}
             />
@@ -100,7 +131,7 @@ class BillingList extends React.Component<
 
 interface StatePart {
   billingCycles: { billingCycles: { _status: null | number; array: Array<any> }; loadingBillingCycles: boolean };
-  groups: { group: { nextBillingCycleBeginDate: string }; loadingGroup: boolean };
+  groups: { group: { nextBillingCycleBeginDate: string; name: string }; loadingGroup: boolean };
 }
 
 interface BillingState {
@@ -109,6 +140,8 @@ interface BillingState {
 
 interface ExtProps {
   groupId: string;
+  url: string;
+  history: any;
 }
 
 interface StateProps {
@@ -127,6 +160,7 @@ interface DispatchProps {
 function mapStateToProps(state: StatePart) {
   return {
     billingCycles: state.billingCycles.billingCycles,
+    groupName: state.groups.group.name,
     nextBillingCycleBeginDate: state.groups.group.nextBillingCycleBeginDate,
     loading: state.groups.loadingGroup || state.billingCycles.loadingBillingCycles,
   };

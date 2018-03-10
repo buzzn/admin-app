@@ -27,7 +27,11 @@ export const actions = {
   loadBillingCycle: ({ groupId, billingCycleId }) => ({ type: constants.LOAD_BILLING_CYCLE, groupId, billingCycleId }),
   loadingBillingCycle: () => ({ type: constants.LOADING_BILLING_CYCLE }),
   loadedBillingCycle: () => ({ type: constants.LOADED_BILLING_CYCLE }),
-  setBillingCycle: billingCycle => ({ type: constants.SET_BILLING_CYCLE, billingCycle }),
+  setBillingCycle: ({ billingCycle, billingCycleItems }) => ({
+    type: constants.SET_BILLING_CYCLE,
+    billingCycle,
+    billingCycleItems,
+  }),
 
   addBillingCycle: ({ params, resolve, reject, groupId }) => ({
     type: constants.ADD_BILLING_CYCLE,
