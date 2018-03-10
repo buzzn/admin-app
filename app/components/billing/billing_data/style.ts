@@ -75,7 +75,7 @@ export const MaLoRow = styled.div`
     flex-direction: column;
     justify-content: center;
   }
-  .bricks {
+  .items {
     display: flex;
     width: 80%;
     height: 100%;
@@ -92,14 +92,14 @@ export const MaLoRow = styled.div`
   }
 `;
 
-interface BrickStyleProps {
+interface ItemStyleProps {
   width: number;
   transparent?: boolean;
   status?: 'open' | 'closed';
   contractType?: 'power_taker' | 'third_party' | 'gap';
 }
 
-const brickColors = {
+const itemColors = {
   default: {
     open: { bg: 'transparent', border: 'none' },
     closed: { bg: 'transparent', border: 'none' },
@@ -133,29 +133,29 @@ const brickColors = {
   },
 };
 
-export const Brick = styled.div`
-  width: ${({ width }: BrickStyleProps) => width}%;
+export const Item = styled.div`
+  width: ${({ width }: ItemStyleProps) => width}%;
   height: 100%;
   padding-top: 9px;
 
-  .brick-bg {
+  .item-bg {
     display: flex;
     justify-content: space-between;
     width: 100%;
     height: 80%;
-    background-color: ${({ status = 'default', contractType = 'default' }: BrickStyleProps) =>
-    (contractType === 'third_party' ? brickColors[contractType].bg : brickColors[contractType][status].bg)};
-    background-image: ${({ contractType }: BrickStyleProps) =>
-    (contractType !== 'third_party' ? 'none' : brickColors.third_party.stripes)};
+    background-color: ${({ status = 'default', contractType = 'default' }: ItemStyleProps) =>
+    (contractType === 'third_party' ? itemColors[contractType].bg : itemColors[contractType][status].bg)};
+    background-image: ${({ contractType }: ItemStyleProps) =>
+    (contractType !== 'third_party' ? 'none' : itemColors.third_party.stripes)};
     border-left: 1px solid
-      ${({ status = 'default', contractType = 'default' }: BrickStyleProps) =>
-    (contractType === 'third_party' ? brickColors[contractType].border : brickColors[contractType][status].border)};
+      ${({ status = 'default', contractType = 'default' }: ItemStyleProps) =>
+    (contractType === 'third_party' ? itemColors[contractType].border : itemColors[contractType][status].border)};
     border-right: 1px solid
-      ${({ status = 'default', contractType = 'default' }: BrickStyleProps) =>
-    (contractType === 'third_party' ? brickColors[contractType].border : brickColors[contractType][status].border)};
+      ${({ status = 'default', contractType = 'default' }: ItemStyleProps) =>
+    (contractType === 'third_party' ? itemColors[contractType].border : itemColors[contractType][status].border)};
 
     .info {
-      color: ${({ status }: BrickStyleProps) => (status === 'open' ? '#00BCD4' : '#9E9E9E')};
+      color: ${({ status }: ItemStyleProps) => (status === 'open' ? '#00BCD4' : '#9E9E9E')};
       font-size: 0.8rem;
       padding-top: 0.9rem;
       line-height: 0.8rem;
