@@ -13,7 +13,7 @@ import PageTitle from 'components/page_title';
 import { CenterContent } from 'components/style';
 import Loading from 'components/loading';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
-import { MaLoListHeader, MaLoRow, Brick, Legend } from './style';
+import { MaLoListHeader, MaLoRow, Item, Legend } from './style';
 
 const d3 = require('d3');
 
@@ -36,7 +36,7 @@ class BillingData extends React.Component<
   };
 
   render() {
-    const { billingCycle, billingCycleBricks, breadcrumbs, url, loading, groupId, groupName, intl } = this.props;
+    const { billingCycle, billingCycleItems, breadcrumbs, url, loading, groupId, groupName, intl } = this.props;
     const { maLoSortAsc } = this.state;
 
     if (loading || billingCycle._status === null) return <Loading minHeight={40} />;
@@ -63,7 +63,7 @@ class BillingData extends React.Component<
       ];
     }
 
-    const brickScale = d3
+    const itemScale = d3
       .scaleTime()
       .domain([cycleBegin, cycleEnd])
       .range([0, 100]);
@@ -72,7 +72,7 @@ class BillingData extends React.Component<
       .scaleTime()
       .domain([cycleBegin, cycleEnd])
       .ticks(d3.timeMonth)
-      .map(t => brickScale(t)));
+      .map(t => itemScale(t)));
 
     return (
       <React.Fragment>
@@ -123,7 +123,7 @@ class BillingData extends React.Component<
               </div>
             </div>
           </MaLoListHeader>
-          {orderBy(billingCycleBricks.array, 'name', maLoSortAsc ? 'asc' : 'desc').map(m => (
+          {orderBy(billingCycleItems.array, 'name', maLoSortAsc ? 'asc' : 'desc').map(m => (
             <MaLoRow key={m.id} {...{ ticks }}>
               <div className="name">
                 <div>
@@ -137,27 +137,27 @@ class BillingData extends React.Component<
                   </Link>
                 </div>
               </div>
-              <div className="bricks">
+              <div className="items">
                 {ticks.map(t => <div key={t} className="grid-line" style={{ left: `${t}%` }} />)}
-                {m.bricks.array.map((b, i) => {
+                {m.items.array.map((b, i) => {
                   const beginDate = new Date(b.beginDate);
                   const endDate = new Date(b.endDate);
                   const fixedBeginDate =
                     beginDate < cycleBegin ? cycleBegin : beginDate > cycleEnd ? cycleEnd : beginDate;
                   const fixedEndDate = endDate > cycleEnd ? cycleEnd : endDate;
-                  const bricks: Array<JSX.Element> = [];
+                  const items: Array<JSX.Element> = [];
                   if (i === 0 && fixedBeginDate > cycleBegin) {
-                    bricks.push(<Brick key={0} {...{ width: brickScale(fixedBeginDate), transparent: true }} />);
+                    items.push(<Item key={0} {...{ width: itemScale(fixedBeginDate), transparent: true }} />);
                   }
-                  bricks.push(<Brick
+                  items.push(<Item
                       key={b.beginDate}
                       {...{
-                        width: brickScale(fixedEndDate) - brickScale(fixedBeginDate),
+                        width: itemScale(fixedEndDate) - itemScale(fixedBeginDate),
                         status: b.status,
                         contractType: b.contractType,
                       }}
                     >
-                      <div className="brick-bg">
+                      <div className="item-bg">
                         <div />
                         <div className="info">
                           <div className="price">{!!b.priceCents && `${(b.priceCents / 100).toFixed(0)} €`}</div>
@@ -177,73 +177,73 @@ class BillingData extends React.Component<
                           )}
                         </div>
                       </div>
-                    </Brick>);
-                  return bricks;
+                    </Item>);
+                  return items;
                 })}
               </div>
             </MaLoRow>
           ))}
           <Legend>
             <div className="title">
-              <FormattedMessage id={`${prefix}.bricksLegendTitle`} />
+              <FormattedMessage id={`${prefix}.itemsLegendTitle`} />
             </div>
             <div className="rw">
               <div />
               <div className="label">
                 <div>
-                  <FormattedMessage id={`${prefix}.bricksLegendClosed`} />
+                  <FormattedMessage id={`${prefix}.itemsLegendClosed`} />
                 </div>
               </div>
               <div className="label">
                 <div>
-                  <FormattedMessage id={`${prefix}.bricksLegendOpen`} />
+                  <FormattedMessage id={`${prefix}.itemsLegendOpen`} />
                 </div>
               </div>
             </div>
             <div className="rw">
               <div className="label">
                 <div>
-                  <FormattedMessage id={`${prefix}.bricksLegendPT`} />
+                  <FormattedMessage id={`${prefix}.itemsLegendPT`} />
                 </div>
               </div>
               <div>
-                <Brick {...{ width: 80, contractType: 'power_taker', status: 'closed' }}>
-                  <div className="brick-bg" />
-                </Brick>
+                <Item {...{ width: 80, contractType: 'power_taker', status: 'closed' }}>
+                  <div className="item-bg" />
+                </Item>
               </div>
               <div>
-                <Brick {...{ width: 80, contractType: 'power_taker', status: 'open' }}>
-                  <div className="brick-bg" />
-                </Brick>
+                <Item {...{ width: 80, contractType: 'power_taker', status: 'open' }}>
+                  <div className="item-bg" />
+                </Item>
               </div>
             </div>
             <div className="rw">
               <div className="label">
                 <div>
-                  <FormattedMessage id={`${prefix}.bricksLegendGAP`} />
+                  <FormattedMessage id={`${prefix}.itemsLegendGAP`} />
                 </div>
               </div>
               <div>
-                <Brick {...{ width: 80, contractType: 'gap', status: 'closed' }}>
-                  <div className="brick-bg" />
-                </Brick>
+                <Item {...{ width: 80, contractType: 'gap', status: 'closed' }}>
+                  <div className="item-bg" />
+                </Item>
               </div>
               <div>
-                <Brick {...{ width: 80, contractType: 'gap', status: 'open' }}>
-                  <div className="brick-bg" />
-                </Brick>
+                <Item {...{ width: 80, contractType: 'gap', status: 'open' }}>
+                  <div className="item-bg" />
+                </Item>
               </div>
             </div>
             <div className="rw">
               <div className="label">
                 <div>
-                  <FormattedMessage id={`${prefix}.bricksLegendTP`} />
+                  <FormattedMessage id={`${prefix}.itemsLegendTP`} />
                 </div>
               </div>
               <div>
-                <Brick {...{ width: 80, status: 'closed', contractType: 'third_party' }}>
-                  <div className="brick-bg" />
-                </Brick>
+                <Item {...{ width: 80, status: 'closed', contractType: 'third_party' }}>
+                  <div className="item-bg" />
+                </Item>
               </div>
               <div>-</div>
             </div>
@@ -259,7 +259,7 @@ interface StatePart {
   billingCycles: {
     billingCycle: { _status: null | number; [key: string]: any };
     loadingBillingCycle: boolean;
-    billingCycleBricks: { _status: null | number; array: Array<any> };
+    billingCycleItems: { _status: null | number; array: Array<any> };
   };
 }
 
@@ -276,7 +276,7 @@ interface ExtProps {
 interface StateProps {
   groupName: string;
   billingCycle: { _status: null | number; [key: string]: any };
-  billingCycleBricks: { _status: null | number; array: Array<any> };
+  billingCycleItems: { _status: null | number; array: Array<any> };
   loading: boolean;
 }
 
@@ -290,7 +290,7 @@ function mapStateToProps(state: StatePart) {
   return {
     groupName: state.groups.group.name,
     billingCycle: state.billingCycles.billingCycle,
-    billingCycleBricks: state.billingCycles.billingCycleBricks,
+    billingCycleItems: state.billingCycles.billingCycleItems,
     loading: state.billingCycles.loadingBillingCycle,
   };
 }
