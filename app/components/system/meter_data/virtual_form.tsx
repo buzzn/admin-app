@@ -76,13 +76,13 @@ class MeterData extends React.Component<Props, State> {
       <div className="meter-data">
         <MeterHeader>
           <Col xs="3">
-            <div className="value">Discovergy</div>
+            <div className="value">{meter.datasource}</div>
             <div className="label">
               <FormattedMessage id={`${prefix}.dataSource`} />
             </div>
           </Col>
           <Col xs="3">
-            <div className="value">{String(meter.sequenceNumber)}</div>
+            <div className="value">{meter.sequenceNumber}</div>
             <div className="label">
               <FormattedMessage id={`${prefix}.sequenceNumber`} />
             </div>
