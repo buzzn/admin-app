@@ -99,12 +99,11 @@ class Bubbles extends React.Component {
 
     this.node = d3
       .select(this.svgDom)
-      .append('g')
-      .attr('class', 'bubbles')
       .selectAll('circle')
       .data(this.data)
       .enter()
       .append('circle')
+      .attr('class', 'bubbles')
       .style('fill', this.baseColor)
       .attr('r', d => d.r)
       .on('mouseover', function mouseShow(d, i) {
