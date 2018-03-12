@@ -75,7 +75,7 @@ export const MaLoRow = styled.div`
     flex-direction: column;
     justify-content: center;
   }
-  .items {
+  .bars {
     display: flex;
     width: 80%;
     height: 100%;
@@ -92,14 +92,14 @@ export const MaLoRow = styled.div`
   }
 `;
 
-interface ItemStyleProps {
+interface BarStyleProps {
   width: number;
   transparent?: boolean;
   status?: 'open' | 'closed';
   contractType?: 'power_taker' | 'third_party' | 'gap';
 }
 
-const itemColors = {
+const barColors = {
   default: {
     open: { bg: 'transparent', border: 'none' },
     closed: { bg: 'transparent', border: 'none' },
@@ -133,29 +133,29 @@ const itemColors = {
   },
 };
 
-export const Item = styled.div`
-  width: ${({ width }: ItemStyleProps) => width}%;
+export const Bar = styled.div`
+  width: ${({ width }: BarStyleProps) => width}%;
   height: 100%;
   padding-top: 9px;
 
-  .item-bg {
+  .bar-bg {
     display: flex;
     justify-content: space-between;
     width: 100%;
     height: 80%;
-    background-color: ${({ status = 'default', contractType = 'default' }: ItemStyleProps) =>
-    (contractType === 'third_party' ? itemColors[contractType].bg : itemColors[contractType][status].bg)};
-    background-image: ${({ contractType }: ItemStyleProps) =>
-    (contractType !== 'third_party' ? 'none' : itemColors.third_party.stripes)};
+    background-color: ${({ status = 'default', contractType = 'default' }: BarStyleProps) =>
+    (contractType === 'third_party' ? barColors[contractType].bg : barColors[contractType][status].bg)};
+    background-image: ${({ contractType }: BarStyleProps) =>
+    (contractType !== 'third_party' ? 'none' : barColors.third_party.stripes)};
     border-left: 1px solid
-      ${({ status = 'default', contractType = 'default' }: ItemStyleProps) =>
-    (contractType === 'third_party' ? itemColors[contractType].border : itemColors[contractType][status].border)};
+      ${({ status = 'default', contractType = 'default' }: BarStyleProps) =>
+    (contractType === 'third_party' ? barColors[contractType].border : barColors[contractType][status].border)};
     border-right: 1px solid
-      ${({ status = 'default', contractType = 'default' }: ItemStyleProps) =>
-    (contractType === 'third_party' ? itemColors[contractType].border : itemColors[contractType][status].border)};
+      ${({ status = 'default', contractType = 'default' }: BarStyleProps) =>
+    (contractType === 'third_party' ? barColors[contractType].border : barColors[contractType][status].border)};
 
     .info {
-      color: ${({ status }: ItemStyleProps) => (status === 'open' ? '#00BCD4' : '#9E9E9E')};
+      color: ${({ status }: BarStyleProps) => (status === 'open' ? '#00BCD4' : '#9E9E9E')};
       font-size: 0.8rem;
       padding-top: 0.9rem;
       line-height: 0.8rem;

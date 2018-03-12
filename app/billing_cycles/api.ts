@@ -7,8 +7,8 @@ export default {
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
-  fetchbillingCycleItems({ token, apiUrl, apiPath, billingCycleId, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/billing-cycles/${billingCycleId}/items`, { headers: prepareHeaders(token) })
+  fetchbillingCycleBars({ token, apiUrl, apiPath, billingCycleId, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/billing-cycles/${billingCycleId}/bars`, { headers: prepareHeaders(token) })
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },

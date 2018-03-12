@@ -12,14 +12,14 @@ export function* getBillingCycle({ apiUrl, apiPath, token }, { billingCycleId, g
   yield put(actions.loadingBillingCycle());
   try {
     const billingCycle = yield call(api.fetchBillingCycle, { apiUrl, apiPath, token, billingCycleId, groupId });
-    const billingCycleItems = yield call(api.fetchbillingCycleItems, {
+    const billingCycleBars = yield call(api.fetchbillingCycleBars, {
       apiUrl,
       apiPath,
       token,
       billingCycleId,
       groupId,
     });
-    yield put(actions.setBillingCycle({ billingCycle, billingCycleItems }));
+    yield put(actions.setBillingCycle({ billingCycle, billingCycleBars }));
   } catch (error) {
     logException(error);
   }

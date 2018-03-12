@@ -13,7 +13,7 @@ import PageTitle from 'components/page_title';
 import { CenterContent } from 'components/style';
 import Loading from 'components/loading';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
-import { MaLoListHeader, MaLoRow, Item, Legend } from './style';
+import { MaLoListHeader, MaLoRow, Bar, Legend } from './style';
 
 const d3 = require('d3');
 
@@ -36,7 +36,7 @@ class BillingData extends React.Component<
   };
 
   render() {
-    const { billingCycle, billingCycleItems, breadcrumbs, url, loading, groupId, groupName, intl } = this.props;
+    const { billingCycle, billingCycleBars, breadcrumbs, url, loading, groupId, groupName, intl } = this.props;
     const { maLoSortAsc } = this.state;
 
     if (loading || billingCycle._status === null) return <Loading minHeight={40} />;
@@ -63,7 +63,7 @@ class BillingData extends React.Component<
       ];
     }
 
-    const itemScale = d3
+    const barScale = d3
       .scaleTime()
       .domain([cycleBegin, cycleEnd])
       .range([0, 100]);
@@ -72,7 +72,7 @@ class BillingData extends React.Component<
       .scaleTime()
       .domain([cycleBegin, cycleEnd])
       .ticks(d3.timeMonth)
-      .map(t => itemScale(t)));
+      .map(t => barScale(t)));
 
     return (
       <React.Fragment>
@@ -123,7 +123,7 @@ class BillingData extends React.Component<
               </div>
             </div>
           </MaLoListHeader>
-          {orderBy(billingCycleItems.array, 'name', maLoSortAsc ? 'asc' : 'desc').map(m => (
+          {orderBy(billingCycleBars.array, 'name', maLoSortAsc ? 'asc' : 'desc').map(m => (
             <MaLoRow key={m.id} {...{ ticks }}>
               <div className="name">
                 <div>
@@ -137,7 +137,7 @@ class BillingData extends React.Component<
                   </Link>
                 </div>
               </div>
-              <div className="items">
+              <div className="bars">
                 {ticks.map(t => <div key={t} className="grid-line" style={{ left: `${t}%` }} />)}
                 {m.items.array.map((b, i) => {
                   const beginDate = new Date(b.beginDate);
@@ -145,19 +145,19 @@ class BillingData extends React.Component<
                   const fixedBeginDate =
                     beginDate < cycleBegin ? cycleBegin : beginDate > cycleEnd ? cycleEnd : beginDate;
                   const fixedEndDate = endDate > cycleEnd ? cycleEnd : endDate;
-                  const items: Array<JSX.Element> = [];
+                  const bars: Array<JSX.Element> = [];
                   if (i === 0 && fixedBeginDate > cycleBegin) {
-                    items.push(<Item key={0} {...{ width: itemScale(fixedBeginDate), transparent: true }} />);
+                    bars.push(<Bar key={0} {...{ width: barScale(fixedBeginDate), transparent: true }} />);
                   }
-                  items.push(<Item
+                  bars.push(<Bar
                       key={b.beginDate}
                       {...{
-                        width: itemScale(fixedEndDate) - itemScale(fixedBeginDate),
+                        width: barScale(fixedEndDate) - barScale(fixedBeginDate),
                         status: b.status,
                         contractType: b.contractType,
                       }}
                     >
-                      <div className="item-bg">
+                      <div className="bar-bg">
                         <div />
                         <div className="info">
                           <div className="price">{!!b.priceCents && `${(b.priceCents / 100).toFixed(0)} €`}</div>
@@ -177,73 +177,73 @@ class BillingData extends React.Component<
                           )}
                         </div>
                       </div>
-                    </Item>);
-                  return items;
+                    </Bar>);
+                  return bars;
                 })}
               </div>
             </MaLoRow>
           ))}
           <Legend>
             <div className="title">
-              <FormattedMessage id={`${prefix}.itemsLegendTitle`} />
+              <FormattedMessage id={`${prefix}.barsLegendTitle`} />
             </div>
             <div className="rw">
               <div />
               <div className="label">
                 <div>
-                  <FormattedMessage id={`${prefix}.itemsLegendClosed`} />
+                  <FormattedMessage id={`${prefix}.barsLegendClosed`} />
                 </div>
               </div>
               <div className="label">
                 <div>
-                  <FormattedMessage id={`${prefix}.itemsLegendOpen`} />
+                  <FormattedMessage id={`${prefix}.barsLegendOpen`} />
                 </div>
               </div>
             </div>
             <div className="rw">
               <div className="label">
                 <div>
-                  <FormattedMessage id={`${prefix}.itemsLegendPT`} />
+                  <FormattedMessage id={`${prefix}.barsLegendPT`} />
                 </div>
               </div>
               <div>
-                <Item {...{ width: 80, contractType: 'power_taker', status: 'closed' }}>
-                  <div className="item-bg" />
-                </Item>
+                <Bar {...{ width: 80, contractType: 'power_taker', status: 'closed' }}>
+                  <div className="bar-bg" />
+                </Bar>
               </div>
               <div>
-                <Item {...{ width: 80, contractType: 'power_taker', status: 'open' }}>
-                  <div className="item-bg" />
-                </Item>
+                <Bar {...{ width: 80, contractType: 'power_taker', status: 'open' }}>
+                  <div className="bar-bg" />
+                </Bar>
               </div>
             </div>
             <div className="rw">
               <div className="label">
                 <div>
-                  <FormattedMessage id={`${prefix}.itemsLegendGAP`} />
+                  <FormattedMessage id={`${prefix}.barsLegendGAP`} />
                 </div>
               </div>
               <div>
-                <Item {...{ width: 80, contractType: 'gap', status: 'closed' }}>
-                  <div className="item-bg" />
-                </Item>
+                <Bar {...{ width: 80, contractType: 'gap', status: 'closed' }}>
+                  <div className="bar-bg" />
+                </Bar>
               </div>
               <div>
-                <Item {...{ width: 80, contractType: 'gap', status: 'open' }}>
-                  <div className="item-bg" />
-                </Item>
+                <Bar {...{ width: 80, contractType: 'gap', status: 'open' }}>
+                  <div className="bar-bg" />
+                </Bar>
               </div>
             </div>
             <div className="rw">
               <div className="label">
                 <div>
-                  <FormattedMessage id={`${prefix}.itemsLegendTP`} />
+                  <FormattedMessage id={`${prefix}.barsLegendTP`} />
                 </div>
               </div>
               <div>
-                <Item {...{ width: 80, status: 'closed', contractType: 'third_party' }}>
-                  <div className="item-bg" />
-                </Item>
+                <Bar {...{ width: 80, status: 'closed', contractType: 'third_party' }}>
+                  <div className="bar-bg" />
+                </Bar>
               </div>
               <div>-</div>
             </div>
@@ -259,7 +259,7 @@ interface StatePart {
   billingCycles: {
     billingCycle: { _status: null | number; [key: string]: any };
     loadingBillingCycle: boolean;
-    billingCycleItems: { _status: null | number; array: Array<any> };
+    billingCycleBars: { _status: null | number; array: Array<any> };
   };
 }
 
@@ -276,7 +276,7 @@ interface ExtProps {
 interface StateProps {
   groupName: string;
   billingCycle: { _status: null | number; [key: string]: any };
-  billingCycleItems: { _status: null | number; array: Array<any> };
+  billingCycleBars: { _status: null | number; array: Array<any> };
   loading: boolean;
 }
 
@@ -290,7 +290,7 @@ function mapStateToProps(state: StatePart) {
   return {
     groupName: state.groups.group.name,
     billingCycle: state.billingCycles.billingCycle,
-    billingCycleItems: state.billingCycles.billingCycleItems,
+    billingCycleBars: state.billingCycles.billingCycleBars,
     loading: state.billingCycles.loadingBillingCycle,
   };
 }
