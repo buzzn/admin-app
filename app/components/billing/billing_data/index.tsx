@@ -139,7 +139,7 @@ class BillingData extends React.Component<
               </div>
               <div className="bars">
                 {ticks.map(t => <div key={t} className="grid-line" style={{ left: `${t}%` }} />)}
-                {m.items.array.map((b, i) => {
+                {m.bars.array.map((b, i) => {
                   const beginDate = new Date(b.beginDate);
                   const endDate = new Date(b.endDate);
                   const fixedBeginDate =
