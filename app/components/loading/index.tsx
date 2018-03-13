@@ -7,8 +7,8 @@ interface LoadingProps {
 }
 
 const Loading = ({ minHeight }: LoadingProps) => (
-  <div style={{ minHeight: `${minHeight / 2}rem`, width: '100%' }}>
-    <div className="la-ball-atom la-dark" style={{ margin: `${minHeight / 2}rem auto 0 auto` }}>
+  <div style={{ minHeight: `${minHeight}rem`, width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+    <div className="la-ball-atom la-dark" style={{ margin: '0 auto' }}>
       <div />
       <div />
       <div />
