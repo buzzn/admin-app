@@ -127,7 +127,7 @@ export function getAllUrlParams() {
   return {};
 }
 
-function formatNumber(value, extended) {
+function formatNumber(value, extended, noDecimal) {
   const decimalPoint = ',';
   let remainder = 0;
   let leadingNumber = 0;
@@ -161,7 +161,7 @@ function formatNumber(value, extended) {
     leadingNumber = value.toFixed(0);
   }
 
-  if (remainder !== 0) {
+  if (remainder !== 0 && !noDecimal) {
     if (remainder < 1) {
       formattedNumber = leadingNumber.toString();
     } else if (remainder < 10) {
@@ -178,10 +178,10 @@ function formatNumber(value, extended) {
   return formattedNumber;
 }
 
-export function formatLabel(value, type, extended) {
+export function formatLabel(value, type, extended, noDecimal) {
   if (typeof value !== 'number') return value;
   let result = '';
-  const number = formatNumber(value, extended);
+  const number = formatNumber(value, extended, noDecimal);
 
   if (extended) {
     if (value >= 1000000000000000) {
