@@ -65,6 +65,7 @@ export const MaLoRow = styled.div`
   width: 100%;
   height: 57px;
   display: flex;
+  flex-wrap: wrap;
   border-bottom: 1px solid #e0e0e0;
   .name {
     width: 20%;
@@ -90,7 +91,6 @@ export const MaLoRow = styled.div`
 
 export const DetailsWrapper = styled(UnmountClosed)`
   box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.1);
-  margin-top: -9px;
   background: white;
 `;
 
@@ -164,7 +164,7 @@ export const Bar = styled.div`
       :after {
         content: '';
         position: absolute;
-        top: calc(100% - 9px);
+        top: calc(100% - 8px);
         left: calc(50% - 11px);
         width: 0;
         height: 0;

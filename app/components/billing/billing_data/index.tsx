@@ -194,9 +194,12 @@ class BillingData extends React.Component<
                   })}
                 </div>
               </MaLoRow>
-              <DetailsWrapper isOpened={maLoSelected === m.id} forceInitialAnimation={true}>
-                <DetailsContainer {...{ close: () => this.selectBar(null, null) }} />
-              </DetailsWrapper>
+              {/* FIXME: temporary hack/fix: */}
+              <div style={{marginTop: '-9px', minHeight: '9px'}}>
+                <DetailsWrapper isOpened={maLoSelected === m.id} forceInitialAnimation={true}>
+                  <DetailsContainer {...{ close: () => this.selectBar(null, null) }} />
+                </DetailsWrapper>
+              </div>
             </React.Fragment>
           ))}
           <Legend>
