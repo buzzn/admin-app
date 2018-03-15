@@ -94,6 +94,22 @@ export const DetailsWrapper = styled(UnmountClosed)`
   background: white;
 `;
 
+export const BillingDetails = styled.div`
+  .wrapper {
+    padding: 1rem;
+    height: 100%;
+    .title {
+      border-bottom: 1px solid #e0e0e0;
+      width: 100%;
+      margin-top: 1rem;
+      padding-bottom: 1rem;
+      &.top {
+        margin-top: 3rem;
+      }
+    }
+  }
+`;
+
 interface BarStyleProps {
   width: number;
   transparent?: boolean;

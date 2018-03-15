@@ -3,9 +3,11 @@ import { constants } from './actions';
 export const initialState = {
   loadingBillingCycles: false,
   loadingBillingCycle: false,
+  loadingBilling: false,
   billingCycles: { _status: null, array: [] },
   billingCycle: { _status: null },
   billingCycleBars: { _status: null, array: [] },
+  billing: { _status: null },
 };
 
 export default function (state = initialState, action) {
@@ -27,6 +29,15 @@ export default function (state = initialState, action) {
       return { ...state, loadingBillingCycles: false };
     case constants.SET_BILLING_CYCLES:
       return { ...state, billingCycles: action.billingCycles };
+
+    case constants.LOAD_BILLING:
+      return { ...state, billingId: action.billingId, groupId: action.groupId, billingCycleId: action.billingCycleId };
+    case constants.LOADING_BILLING:
+      return { ...state, loadingBilling: true };
+    case constants.LOADED_BILLING:
+      return { ...state, loadingBilling: false };
+    case constants.SET_BILLING:
+      return { ...state, billing: action.billing };
 
     default:
       return state;

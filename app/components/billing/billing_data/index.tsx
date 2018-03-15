@@ -15,6 +15,7 @@ import Loading from 'components/loading';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
 import { MaLoListHeader, MaLoRow, Bar, Legend, DetailsWrapper } from './style';
 import DetailsContainer from './details';
+import { getAllUrlParams } from '_util';
 
 const d3 = require('d3');
 
@@ -30,6 +31,8 @@ class BillingData extends React.Component<
     const { billingCycleId, groupId, loadBillingCycle, loadGroup } = this.props;
     loadGroup(groupId);
     loadBillingCycle({ billingCycleId, groupId });
+    const { malo, bar }: any = getAllUrlParams();
+    if (malo && bar) this.setState({ maLoSelected: malo, barSelected: parseInt(bar) });
   }
 
   switchMaLoSort = () => {
@@ -37,16 +40,23 @@ class BillingData extends React.Component<
   };
 
   selectBar = (maLoId, barId) => {
+    const { history } = this.props;
     const { maLoSelected, barSelected } = this.state;
     if (maLoId === maLoSelected && barId === barSelected) {
       this.setState({ maLoSelected: null, barSelected: null });
+      history.replace({ pathname: history.location.pathname });
     } else {
       this.setState({ maLoSelected: maLoId, barSelected: barId });
+      if (maLoId && barId) {
+        history.replace({ pathname: history.location.pathname, search: `?malo=${maLoId}&bar=${barId}` });
+      } else {
+        history.replace({ pathname: history.location.pathname });
+      }
     }
   };
 
   render() {
-    const { billingCycle, billingCycleBars, breadcrumbs, url, loading, groupId, groupName, intl } = this.props;
+    const { billingCycle, billingCycleBars, breadcrumbs, url, loading, groupId, groupName, intl, history } = this.props;
     const { maLoSortAsc, maLoSelected, barSelected } = this.state;
 
     if (loading || billingCycle._status === null) return <Loading minHeight={40} />;
@@ -167,9 +177,13 @@ class BillingData extends React.Component<
                           status: b.status,
                           contractType: b.contractType,
                         }}
-                        onClick={() => this.selectBar(m.id, i)}
+                        onClick={() => {
+                          if (b.contractType !== 'third_party') this.selectBar(m.id, b.billingId);
+                        }}
                       >
-                        <div className={`bar-bg ${maLoSelected === m.id && barSelected === i ? 'selected' : ''}`}>
+                        <div
+                          className={`bar-bg ${maLoSelected === m.id && barSelected === b.billingId ? 'selected' : ''}`}
+                        >
                           <div />
                           <div className="info">
                             <div className="price">{!!b.priceCents && `${(b.priceCents / 100).toFixed(0)} €`}</div>
@@ -178,8 +192,12 @@ class BillingData extends React.Component<
                           <div className="error">
                             {!!b.errors && (
                               <React.Fragment>
-                                <i id={`err-tip-${m.id}-${i}`} className="fa fa-exclamation-triangle" />
-                                <UncontrolledTooltip placement="bottom" target={`err-tip-${m.id}-${i}`} delay={200}>
+                                <i id={`err-tip-${m.id}-${b.billingId}`} className="fa fa-exclamation-triangle" />
+                                <UncontrolledTooltip
+                                  placement="bottom"
+                                  target={`err-tip-${m.id}-${b.billingId}`}
+                                  delay={200}
+                                >
                                   {reduce(b.errors, (message, errArr) => `${message}${errArr.join(', ')}, `, '').slice(
                                     0,
                                     -2,
@@ -195,9 +213,19 @@ class BillingData extends React.Component<
                 </div>
               </MaLoRow>
               {/* FIXME: temporary hack/fix: */}
-              <div style={{marginTop: '-9px', minHeight: '9px'}}>
-                <DetailsWrapper isOpened={maLoSelected === m.id} forceInitialAnimation={true}>
-                  <DetailsContainer {...{ close: () => this.selectBar(null, null) }} />
+              <div style={{ marginTop: '-9px', minHeight: '9px' }}>
+                <DetailsWrapper isOpened={!!maLoSelected && maLoSelected === m.id} forceInitialAnimation={true}>
+                  <DetailsContainer
+                    {...{
+                      close: () => this.selectBar(null, null),
+                      billingId: barSelected,
+                      groupId,
+                      billingCycleId: billingCycle.id,
+                      marketLocation: m,
+                      history,
+                      url,
+                    }}
+                  />
                 </DetailsWrapper>
               </div>
             </React.Fragment>
@@ -284,14 +312,15 @@ interface StatePart {
 
 interface BillingDataState {
   maLoSortAsc: boolean;
-  maLoSelected: null | boolean;
-  barSelected: null | boolean;
+  maLoSelected: null | string;
+  barSelected: null | number;
 }
 
 interface ExtProps {
   url: string;
   billingCycleId: string;
   groupId: string;
+  history: any;
 }
 
 interface StateProps {
