@@ -100,9 +100,9 @@ class Details extends React.Component<ExtProps & StateProps & DispatchProps & In
       },
       {
         Header: () => (
-          <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableConsumedReadingKwh` })} />
+          <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableConsumedEnergyKwh` })} />
         ),
-        accessor: 'consumedReadingKwh',
+        accessor: 'consumedEnergyKwh',
         Cell: ({ value }) => formatLabel(value, 'h'),
       },
     ];
