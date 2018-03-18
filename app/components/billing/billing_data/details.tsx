@@ -38,7 +38,17 @@ class Details extends React.Component<ExtProps & StateProps & DispatchProps & In
   }
 
   render() {
-    const { close, loading, billing, marketLocation, billingId, url, intl, history, groupId } = this.props;
+    const {
+      close,
+      loading,
+      billing,
+      marketLocation,
+      billingId,
+      url,
+      intl,
+      history,
+      // groupId,
+    } = this.props;
     const { minHeight } = this.state;
 
     if (!billingId) return null;
@@ -99,9 +109,9 @@ class Details extends React.Component<ExtProps & StateProps & DispatchProps & In
       },
     ];
 
-    const invoiceData = orderBy(billing.items.array, i => moment(i.beginDate).toDate(), 'desc').map(i => ({
-      ...i,
-    }));
+    // const invoiceData = orderBy(billing.items.array, i => moment(i.beginDate).toDate(), 'desc').map(i => ({
+    //   ...i,
+    // }));
 
     return (
       <BillingDetails>
