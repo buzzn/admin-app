@@ -180,7 +180,8 @@ class BillingData extends React.Component<
                     const fixedBeginDate =
                       beginDate < cycleBegin ? cycleBegin : beginDate > cycleEnd ? cycleEnd : beginDate;
                     const fixedEndDate = endDate > cycleEnd ? cycleEnd : endDate;
-                    const narrow = this.barRefs[`${m.id}${b.billingId}`] && this.barRefs[`${m.id}${b.billingId}`].width < 80;
+                    const narrow =
+                      this.barRefs[`${m.id}${b.billingId}`] && this.barRefs[`${m.id}${b.billingId}`].width < 80;
                     // array is needed to have a transparent fake bar in some edge cases.
                     const bars: Array<JSX.Element> = [];
                     if (i === 0 && fixedBeginDate > cycleBegin) {
@@ -188,6 +189,7 @@ class BillingData extends React.Component<
                     }
                     bars.push(<Bar
                         key={b.billingId}
+                        ref={info => (this.barRefs[`${m.id}${b.billingId}`] = { node: info })}
                         {...{
                           width: barScale(fixedEndDate) - barScale(fixedBeginDate),
                           status: b.status,
@@ -202,9 +204,13 @@ class BillingData extends React.Component<
                           className={`bar-bg ${maLoSelected === m.id && barSelected === b.billingId ? 'selected' : ''}`}
                         >
                           <div />
-                          <div className="info" ref={info => (this.barRefs[`${m.id}${b.billingId}`] = { node: info })}>
-                            <div className="price">{!!b.priceCents && `${(b.priceCents / 100).toFixed(0)}${narrow ? '' : '€'}`}</div>
-                            <div className="energy">{!!b.consumedEnergyKwh && `${b.consumedEnergyKwh}${narrow ? '' : 'kWh'}`}</div>
+                          <div className="info">
+                            <div className="price">
+                              {!!b.priceCents && `${(b.priceCents / 100).toFixed(0)}${narrow ? '' : '€'}`}
+                            </div>
+                            <div className="energy">
+                              {!!b.consumedEnergyKwh && `${b.consumedEnergyKwh}${narrow ? '' : 'kWh'}`}
+                            </div>
                           </div>
                           <div className="error">
                             {!!b.errors && (
