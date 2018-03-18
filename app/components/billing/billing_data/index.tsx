@@ -180,8 +180,9 @@ class BillingData extends React.Component<
                     const fixedBeginDate =
                       beginDate < cycleBegin ? cycleBegin : beginDate > cycleEnd ? cycleEnd : beginDate;
                     const fixedEndDate = endDate > cycleEnd ? cycleEnd : endDate;
-                    const narrow =
-                      this.barRefs[`${m.id}${b.billingId}`] && this.barRefs[`${m.id}${b.billingId}`].width < 80;
+                    const width = barScale(fixedEndDate) - barScale(fixedBeginDate);
+                    const narrow = width < 16;
+                      // this.barRefs[`${m.id}${b.billingId}`] && this.barRefs[`${m.id}${b.billingId}`].width < 80;
                     // array is needed to have a transparent fake bar in some edge cases.
                     const bars: Array<JSX.Element> = [];
                     if (i === 0 && fixedBeginDate > cycleBegin) {
@@ -191,7 +192,7 @@ class BillingData extends React.Component<
                         key={b.billingId}
                         ref={info => (this.barRefs[`${m.id}${b.billingId}`] = { node: info })}
                         {...{
-                          width: barScale(fixedEndDate) - barScale(fixedBeginDate),
+                          width,
                           status: b.status,
                           contractType: b.contractType,
                           narrow,
