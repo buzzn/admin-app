@@ -25,7 +25,14 @@ class BillingData extends React.Component<
   ExtProps & StateProps & DispatchProps & BreadcrumbsProps & InjectedIntlProps,
   BillingDataState
   > {
+  barRefs: {} | { node: HTMLElement; width?: number };
   state = { maLoSortAsc: true, maLoSelected: null, barSelected: null };
+
+  constructor(props) {
+    super(props);
+
+    this.barRefs = {};
+  }
 
   componentDidMount() {
     const { billingCycleId, groupId, loadBillingCycle, loadGroup } = this.props;
@@ -33,6 +40,13 @@ class BillingData extends React.Component<
     loadBillingCycle({ billingCycleId, groupId });
     const { malo, bar }: any = getAllUrlParams();
     if (malo && bar) this.setState({ maLoSelected: malo, barSelected: parseInt(bar) });
+  }
+
+  componentDidUpdate() {
+    Object.keys(this.barRefs).forEach((k) => {
+      if (!this.barRefs[k].node) return;
+      this.barRefs[k].width = this.barRefs[k].node.clientWidth;
+    });
   }
 
   switchMaLoSort = () => {
@@ -166,16 +180,19 @@ class BillingData extends React.Component<
                     const fixedBeginDate =
                       beginDate < cycleBegin ? cycleBegin : beginDate > cycleEnd ? cycleEnd : beginDate;
                     const fixedEndDate = endDate > cycleEnd ? cycleEnd : endDate;
+                    const narrow = this.barRefs[`${m.id}${b.billingId}`] && this.barRefs[`${m.id}${b.billingId}`].width < 80;
+                    // array is needed to have a transparent fake bar in some edge cases.
                     const bars: Array<JSX.Element> = [];
                     if (i === 0 && fixedBeginDate > cycleBegin) {
                       bars.push(<Bar key={0} {...{ width: barScale(fixedBeginDate), transparent: true }} />);
                     }
                     bars.push(<Bar
-                        key={b.beginDate}
+                        key={b.billingId}
                         {...{
                           width: barScale(fixedEndDate) - barScale(fixedBeginDate),
                           status: b.status,
                           contractType: b.contractType,
+                          narrow,
                         }}
                         onClick={() => {
                           if (b.contractType !== 'third_party') this.selectBar(m.id, b.billingId);
@@ -185,9 +202,9 @@ class BillingData extends React.Component<
                           className={`bar-bg ${maLoSelected === m.id && barSelected === b.billingId ? 'selected' : ''}`}
                         >
                           <div />
-                          <div className="info">
-                            <div className="price">{!!b.priceCents && `${(b.priceCents / 100).toFixed(0)} €`}</div>
-                            <div className="energy">{!!b.consumedEnergyKwh && `${b.consumedEnergyKwh} kWh`}</div>
+                          <div className="info" ref={info => (this.barRefs[`${m.id}${b.billingId}`] = { node: info })}>
+                            <div className="price">{!!b.priceCents && `${(b.priceCents / 100).toFixed(0)}${narrow ? '' : '€'}`}</div>
+                            <div className="energy">{!!b.consumedEnergyKwh && `${b.consumedEnergyKwh}${narrow ? '' : 'kWh'}`}</div>
                           </div>
                           <div className="error">
                             {!!b.errors && (

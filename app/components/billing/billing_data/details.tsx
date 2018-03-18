@@ -9,7 +9,7 @@ import { Row, Col } from 'reactstrap';
 import BillingCycles from 'billing_cycles';
 import Loading from 'components/loading';
 import TwoColView from 'components/two_col_view';
-import ReactTableSorted from 'components/react_table_sorted';
+import ReactTable from 'react-table';
 import { tableParts as TableParts } from 'react_table_config';
 import { BillingDetails } from './style';
 import { formatLabel } from '_util';
@@ -68,9 +68,7 @@ class Details extends React.Component<ExtProps & StateProps & DispatchProps & In
 
     const referenceColumns = [
       {
-        Header: () => (
-          <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableMeterSerial` })} />
-        ),
+        Header: intl.formatMessage({ id: `${prefix}.tableMeterSerial` }),
         accessor: 'meterSerial',
         style: {
           cursor: 'pointer',
@@ -78,34 +76,32 @@ class Details extends React.Component<ExtProps & StateProps & DispatchProps & In
         },
       },
       {
-        Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableDates` })} />,
+        Header: intl.formatMessage({ id: `${prefix}.tableDates` }),
         accessor: 'dates',
         filterMethod: TableParts.filters.filterByValue,
         sortMethod: TableParts.sort.sortByValue,
         Cell: ({ value: { Display } }) => Display,
       },
       {
-        Header: () => (
-          <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableBeginReadingKwh` })} />
-        ),
+        Header: intl.formatMessage({ id: `${prefix}.tableBeginReadingKwh` }),
         accessor: 'beginReadingKwh',
         Cell: ({ value }) => formatLabel(value, 'h'),
       },
       {
-        Header: () => (
-          <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableEndReadingKwh` })} />
-        ),
+        Header: intl.formatMessage({ id: `${prefix}.tableEndReadingKwh` }),
         accessor: 'endReadingKwh',
         Cell: ({ value }) => formatLabel(value, 'h'),
       },
       {
-        Header: () => (
-          <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableConsumedEnergyKwh` })} />
-        ),
+        Header: intl.formatMessage({ id: `${prefix}.tableConsumedEnergyKwh` }),
         accessor: 'consumedEnergyKwh',
         Cell: ({ value }) => formatLabel(value, 'h'),
       },
     ];
+
+    const invoiceData = orderBy(billing.items.array, i => moment(i.beginDate).toDate(), 'desc').map(i => ({
+      ...i,
+    }));
 
     return (
       <BillingDetails>
@@ -160,7 +156,7 @@ class Details extends React.Component<ExtProps & StateProps & DispatchProps & In
           <div className="title h5">
             <FormattedMessage id={`${prefix}.titleReference`} />
           </div>
-          <ReactTableSorted
+          <ReactTable
             {...{
               data: referenceData,
               columns: referenceColumns,
@@ -172,7 +168,7 @@ class Details extends React.Component<ExtProps & StateProps & DispatchProps & In
                   if (handleOriginal) handleOriginal();
                 },
               }),
-              uiSortPath: `groups.${groupId}.billing.${marketLocation.id}.${billingId}`,
+              sortable: false,
             }}
           />
           <div className="title h5">

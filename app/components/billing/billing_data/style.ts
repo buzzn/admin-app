@@ -115,6 +115,7 @@ interface BarStyleProps {
   transparent?: boolean;
   status?: 'open' | 'closed';
   contractType?: 'power_taker' | 'third_party' | 'gap';
+  narrow?: boolean;
 }
 
 const barColors = {
@@ -196,6 +197,7 @@ export const Bar = styled.div`
       padding-top: 0.9rem;
       line-height: 0.8rem;
       display: flex;
+      flex-direction: ${({ narrow }: BarStyleProps) => (narrow ? 'column' : 'row')};
       .price {
         font-weight: bold;
         margin-right: 6px;
