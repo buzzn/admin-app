@@ -11,7 +11,7 @@ import Loading from 'components/loading';
 import TwoColView from 'components/two_col_view';
 import ReactTable from 'react-table';
 import { tableParts as TableParts } from 'react_table_config';
-import { BillingDetails } from './style';
+import { BillingDetails, DoubleCell } from './style';
 import { formatLabel } from '_util';
 
 class Details extends React.Component<ExtProps & StateProps & DispatchProps & InjectedIntlProps, DetailsState> {
@@ -38,17 +38,7 @@ class Details extends React.Component<ExtProps & StateProps & DispatchProps & In
   }
 
   render() {
-    const {
-      close,
-      loading,
-      billing,
-      marketLocation,
-      billingId,
-      url,
-      intl,
-      history,
-      // groupId,
-    } = this.props;
+    const { close, loading, billing, marketLocation, billingId, url, intl, history } = this.props;
     const { minHeight } = this.state;
 
     if (!billingId) return null;
@@ -61,7 +51,7 @@ class Details extends React.Component<ExtProps & StateProps & DispatchProps & In
     const prefix = 'admin.billings';
     const centered = 'true';
 
-    const referenceData = orderBy(billing.items.array, i => moment(i.beginDate).toDate(), 'desc').map(i => ({
+    const data = orderBy(billing.items.array, i => moment(i.beginDate).toDate(), 'desc').map(i => ({
       ...i,
       meterSerial: i.meter ? i.meter.productSerialnumber : '',
       linkMeter: i.meter
@@ -71,8 +61,24 @@ class Details extends React.Component<ExtProps & StateProps & DispatchProps & In
           .join('/')}/system/meters/${i.meter.id}`
         : '',
       dates: {
-        Display: `${moment(i.beginDate).format('DD.MM.YYYY')} - ${moment(i.endDate).format('DD.MM.YYYY')}`,
+        display: `${moment(i.beginDate).format('DD.MM.YYYY')} - ${moment(i.endDate).format('DD.MM.YYYY')}`,
         value: moment(i.beginDate).toDate(),
+      },
+      amount: {
+        days: i.lengthInDays,
+        kWh: i.consumedEnergyKwh,
+      },
+      price: {
+        // FIXME: correct formula
+        days: (i.lengthInDays * i.basePriceCents * 12 / 100).toFixed(0),
+        // FIXME: correct formula
+        kWh: i.energyPriceCents.toFixed(2),
+      },
+      netAmount: {
+        // FIXME: correct formula
+        days: (i.lengthInDays * i.basePriceCents / 100).toFixed(0),
+        // FIXME: correct formula
+        kWh: (i.energyPriceCents * i.consumedEnergyKwh).toFixed(2),
       },
     }));
 
@@ -90,7 +96,7 @@ class Details extends React.Component<ExtProps & StateProps & DispatchProps & In
         accessor: 'dates',
         filterMethod: TableParts.filters.filterByValue,
         sortMethod: TableParts.sort.sortByValue,
-        Cell: ({ value: { Display } }) => Display,
+        Cell: ({ value: { display } }) => display,
       },
       {
         Header: intl.formatMessage({ id: `${prefix}.tableBeginReadingKwh` }),
@@ -109,9 +115,86 @@ class Details extends React.Component<ExtProps & StateProps & DispatchProps & In
       },
     ];
 
-    // const invoiceData = orderBy(billing.items.array, i => moment(i.beginDate).toDate(), 'desc').map(i => ({
-    //   ...i,
-    // }));
+    const invoiceColumns = [
+      {
+        Header: intl.formatMessage({ id: `${prefix}.tableDesignation` }),
+        accessor: '',
+        Cell: () => (
+          <DoubleCell>
+            <div>
+              <FormattedMessage id={`${prefix}.basePrice`} />
+            </div>
+            <div>
+              <FormattedMessage id={`${prefix}.workingPrice`} />
+            </div>
+          </DoubleCell>
+        ),
+      },
+      {
+        Header: intl.formatMessage({ id: `${prefix}.tableDates` }),
+        accessor: 'dates',
+        filterMethod: TableParts.filters.filterByValue,
+        sortMethod: TableParts.sort.sortByValue,
+        Cell: ({ value: { display } }) => (
+          <DoubleCell>
+            <div>{display}</div>
+            <div>{display}</div>
+          </DoubleCell>
+        ),
+      },
+      {
+        Header: intl.formatMessage({ id: 'admin.tariffs.name' }),
+        accessor: 'tariff.name',
+        Cell: ({ value }) => (
+          <DoubleCell>
+            <div>{value}</div>
+            <div>{value}</div>
+          </DoubleCell>
+        ),
+      },
+      {
+        Header: intl.formatMessage({ id: `${prefix}.tableAmount` }),
+        accessor: 'amount',
+        width: 80,
+        Cell: ({ value: { days, kWh } }) => (
+          <DoubleCell>
+            <div>{days}</div>
+            <div>{kWh}</div>
+          </DoubleCell>
+        ),
+      },
+      {
+        Header: intl.formatMessage({ id: `${prefix}.tableUnit` }),
+        accessor: '',
+        width: 50,
+        Cell: () => (
+          <DoubleCell>
+            <div>Tage</div>
+            <div>kWh</div>
+          </DoubleCell>
+        ),
+      },
+      {
+        Header: intl.formatMessage({ id: `${prefix}.tablePriceForUnit` }),
+        accessor: 'price',
+        Cell: ({ value: { days, kWh } }) => (
+          <DoubleCell>
+            <div>{days}/Jahr</div>
+            <div>{kWh} ¢/kWh</div>
+          </DoubleCell>
+        ),
+      },
+      {
+        Header: intl.formatMessage({ id: `${prefix}.tableNetAmount` }),
+        accessor: 'netAmount',
+        Cell: ({ value: { days, kWh } }) => (
+          <DoubleCell>
+            <div>{days}€</div>
+            <div>{kWh}€</div>
+          </DoubleCell>
+        ),
+      },
+    ];
 
     return (
       <BillingDetails>
@@ -168,7 +251,7 @@ class Details extends React.Component<ExtProps & StateProps & DispatchProps & In
           </div>
           <ReactTable
             {...{
-              data: referenceData,
+              data,
               columns: referenceColumns,
               getTdProps: (_state, rowInfo, column) => ({
                 onClick: (_e, handleOriginal) => {
@@ -179,11 +262,20 @@ class Details extends React.Component<ExtProps & StateProps & DispatchProps & In
                 },
               }),
               sortable: false,
+              resizable: false,
             }}
           />
           <div className="title h5">
             <FormattedMessage id={`${prefix}.titleInvoices`} />
           </div>
+          <ReactTable
+            {...{
+              data,
+              columns: invoiceColumns,
+              sortable: false,
+              resizable: false,
+            }}
+          />
         </div>
       </BillingDetails>
     );

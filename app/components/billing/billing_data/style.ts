@@ -189,6 +189,9 @@ export const Bar = styled.div`
         border-left: solid 11px transparent;
         border-right: solid 11px transparent;
       }
+      .info {
+        padding-top: calc(${({ narrow }: BarStyleProps) => (narrow ? 0.35 : 0.9)}rem - 2px);
+      }
     }
 
     .info {
@@ -242,5 +245,11 @@ export const Legend = styled.div`
       flex-direction: column;
       justify-content: center;
     }
+  }
+`;
+
+export const DoubleCell = styled.div`
+  div {
+    height: 57px;
   }
 `;

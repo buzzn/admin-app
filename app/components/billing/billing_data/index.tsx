@@ -25,14 +25,7 @@ class BillingData extends React.Component<
   ExtProps & StateProps & DispatchProps & BreadcrumbsProps & InjectedIntlProps,
   BillingDataState
   > {
-  barRefs: {} | { node: HTMLElement; width?: number };
   state = { maLoSortAsc: true, maLoSelected: null, barSelected: null };
-
-  constructor(props) {
-    super(props);
-
-    this.barRefs = {};
-  }
 
   componentDidMount() {
     const { billingCycleId, groupId, loadBillingCycle, loadGroup } = this.props;
@@ -40,13 +33,6 @@ class BillingData extends React.Component<
     loadBillingCycle({ billingCycleId, groupId });
     const { malo, bar }: any = getAllUrlParams();
     if (malo && bar) this.setState({ maLoSelected: malo, barSelected: parseInt(bar) });
-  }
-
-  componentDidUpdate() {
-    Object.keys(this.barRefs).forEach((k) => {
-      if (!this.barRefs[k].node) return;
-      this.barRefs[k].width = this.barRefs[k].node.clientWidth;
-    });
   }
 
   switchMaLoSort = () => {
@@ -67,6 +53,14 @@ class BillingData extends React.Component<
         history.replace({ pathname: history.location.pathname });
       }
     }
+  };
+
+  scrollToRow = () => {
+    const { maLoSelected } = this.state;
+    const node = document.getElementById(`malo_row_${maLoSelected}`);
+    if (!node) return;
+    const { top } = node.getBoundingClientRect();
+    if (top < 0) window.scrollBy({ top: top - 57, left: 0, behavior: 'smooth' });
   };
 
   render() {
@@ -159,7 +153,7 @@ class BillingData extends React.Component<
           </MaLoListHeader>
           {orderBy(billingCycleBars.array, 'name', maLoSortAsc ? 'asc' : 'desc').map(m => (
             <React.Fragment key={m.id}>
-              <MaLoRow {...{ ticks }}>
+              <MaLoRow {...{ ticks }} id={`malo_row_${m.id}`}>
                 <div className="name">
                   <div>
                     <Link
@@ -182,7 +176,6 @@ class BillingData extends React.Component<
                     const fixedEndDate = endDate > cycleEnd ? cycleEnd : endDate;
                     const width = barScale(fixedEndDate) - barScale(fixedBeginDate);
                     const narrow = width < 16;
-                      // this.barRefs[`${m.id}${b.billingId}`] && this.barRefs[`${m.id}${b.billingId}`].width < 80;
                     // array is needed to have a transparent fake bar in some edge cases.
                     const bars: Array<JSX.Element> = [];
                     if (i === 0 && fixedBeginDate > cycleBegin) {
@@ -190,7 +183,6 @@ class BillingData extends React.Component<
                     }
                     bars.push(<Bar
                         key={b.billingId}
-                        ref={info => (this.barRefs[`${m.id}${b.billingId}`] = { node: info })}
                         {...{
                           width,
                           status: b.status,
@@ -238,7 +230,13 @@ class BillingData extends React.Component<
               </MaLoRow>
               {/* FIXME: temporary hack/fix: */}
               <div style={{ marginTop: '-9px', minHeight: '9px' }}>
-                <DetailsWrapper isOpened={!!maLoSelected && maLoSelected === m.id} forceInitialAnimation={true}>
+                <DetailsWrapper
+                  isOpened={!!maLoSelected && maLoSelected === m.id}
+                  forceInitialAnimation={true}
+                  onMeasure={({ height }) => {
+                    if (height > 0) this.scrollToRow();
+                  }}
+                >
                   <DetailsContainer
                     {...{
                       close: () => this.selectBar(null, null),
