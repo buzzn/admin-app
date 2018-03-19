@@ -194,7 +194,7 @@ export const Bar = styled.div`
     .info {
       color: ${({ status }: BarStyleProps) => (status === 'open' ? '#00BCD4' : '#9E9E9E')};
       font-size: 0.8rem;
-      padding-top: ${({ narrow }: BarStyleProps) => (narrow ? 0.2 : 0.9)}rem;
+      padding-top: ${({ narrow }: BarStyleProps) => (narrow ? 0.35 : 0.9)}rem;
       line-height: 0.8rem;
       display: flex;
       flex-direction: ${({ narrow }: BarStyleProps) => (narrow ? 'column' : 'row')};
@@ -202,6 +202,10 @@ export const Bar = styled.div`
       .price {
         font-weight: bold;
         margin-right: 6px;
+        width: 100%;
+      }
+      .energy {
+        width: 100%;
       }
     }
     .error {
