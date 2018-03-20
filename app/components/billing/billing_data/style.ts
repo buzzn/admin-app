@@ -101,10 +101,10 @@ export const BillingDetails = styled.div`
     .title {
       border-bottom: 1px solid #e0e0e0;
       width: 100%;
-      margin-top: 1rem;
+      margin-top: 3rem;
       padding-bottom: 1rem;
       &.top {
-        margin-top: 3rem;
+        margin-top: 3.5rem;
       }
     }
   }

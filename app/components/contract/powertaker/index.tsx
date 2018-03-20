@@ -121,7 +121,7 @@ const PowertakerContract = ({ url, contract, prefix, register, contractor, intl 
         <TwoColView {...{ prefix, field: 'contractor' }}>
           {contractor.name || `${contractor.firstName} ${contractor.lastName}`}
         </TwoColView>
-        <TwoColView {...{ prefix, field: 'forecastKwhPa' }}>{formatLabel(contract.forecastKwhPa, 'h')}</TwoColView>
+        <TwoColView {...{ prefix, field: 'forecastKwhPa' }}>{formatLabel(contract.forecastKwhPa * 1000, 'h')}</TwoColView>
         <TwoColView {...{ prefix, field: 'oldSupplierName' }}>{contract.oldSupplierName}</TwoColView>
         <TwoColView {...{ prefix, field: 'oldCustomerNumber' }}>{contract.oldCustomerNumber}</TwoColView>
         <TwoColView {...{ prefix, field: 'oldAccountNumber' }}>{contract.oldAccountNumber}</TwoColView>

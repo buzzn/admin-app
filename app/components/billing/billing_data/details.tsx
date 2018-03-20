@@ -12,7 +12,6 @@ import TwoColView from 'components/two_col_view';
 import ReactTable from 'react-table';
 import { tableParts as TableParts } from 'react_table_config';
 import { BillingDetails, DoubleCell } from './style';
-import { formatLabel } from '_util';
 
 class Details extends React.Component<ExtProps & StateProps & DispatchProps & InjectedIntlProps, DetailsState> {
   state = { minHeight: 290 };
@@ -69,16 +68,12 @@ class Details extends React.Component<ExtProps & StateProps & DispatchProps & In
         kWh: i.consumedEnergyKwh,
       },
       price: {
-        // FIXME: correct formula
-        days: (i.lengthInDays * i.basePriceCents * 12 / 100).toFixed(0),
-        // FIXME: correct formula
-        kWh: i.energyPriceCents.toFixed(2),
+        days: (i.tariff.basepriceCentsPerMonth * 12 / 100).toFixed(0),
+        kWh: i.tariff.energypriceCentsPerKwh.toFixed(2),
       },
       netAmount: {
-        // FIXME: correct formula
-        days: (i.lengthInDays * i.basePriceCents / 100).toFixed(0),
-        // FIXME: correct formula
-        kWh: (i.energyPriceCents * i.consumedEnergyKwh).toFixed(2),
+        days: (i.basePriceCents / 100).toFixed(2),
+        kWh: (i.energyPriceCents / 100).toFixed(2),
       },
     }));
 
@@ -101,17 +96,17 @@ class Details extends React.Component<ExtProps & StateProps & DispatchProps & In
       {
         Header: intl.formatMessage({ id: `${prefix}.tableBeginReadingKwh` }),
         accessor: 'beginReadingKwh',
-        Cell: ({ value }) => formatLabel(value, 'h'),
+        Cell: ({ value }) => `${value} kWh`,
       },
       {
         Header: intl.formatMessage({ id: `${prefix}.tableEndReadingKwh` }),
         accessor: 'endReadingKwh',
-        Cell: ({ value }) => formatLabel(value, 'h'),
+        Cell: ({ value }) => `${value} kWh`,
       },
       {
         Header: intl.formatMessage({ id: `${prefix}.tableConsumedEnergyKwh` }),
         accessor: 'consumedEnergyKwh',
-        Cell: ({ value }) => formatLabel(value, 'h'),
+        Cell: ({ value }) => `${value} kWh`,
       },
     ];
 
@@ -179,7 +174,7 @@ class Details extends React.Component<ExtProps & StateProps & DispatchProps & In
         accessor: 'price',
         Cell: ({ value: { days, kWh } }) => (
           <DoubleCell>
-            <div>{days}/Jahr</div>
+            <div>{days} €/Jahr</div>
             <div>{kWh} ¢/kWh</div>
           </DoubleCell>
         ),
@@ -189,8 +184,8 @@ class Details extends React.Component<ExtProps & StateProps & DispatchProps & In
         accessor: 'netAmount',
         Cell: ({ value: { days, kWh } }) => (
           <DoubleCell>
-            <div>{days}€</div>
-            <div>{kWh}€</div>
+            <div>{days} €</div>
+            <div>{kWh} €</div>
           </DoubleCell>
         ),
       },
@@ -199,7 +194,7 @@ class Details extends React.Component<ExtProps & StateProps & DispatchProps & In
     return (
       <BillingDetails>
         <div className="wrapper">
-          <i className="fa fa-2x fa-close close" onClick={close} />
+          <i className="buzzn-close close" onClick={close} />
           <div className="title top h5">
             <FormattedMessage id={`${prefix}.titleDetails`} />
           </div>
