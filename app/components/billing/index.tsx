@@ -12,8 +12,8 @@ class Billing extends React.Component<{} & RouteComponentProps<{ groupId: string
       <Switch>
         <Route
           path={`${url}/:billingCycleId`}
-          render={({ match: { params: { billingCycleId } } }) => (
-            <BillingData {...{ billingCycleId, groupId, breadcrumbs, url }} />
+          render={({ history, match: { params: { billingCycleId } } }) => (
+            <BillingData {...{ billingCycleId, groupId, breadcrumbs, url, history }} />
           )}
         />
         <Route path={url}>

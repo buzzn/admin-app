@@ -7,9 +7,14 @@ export const FieldGroup = styled(Row)`
   align-items: center;
 `;
 
+interface FieldNameProps {
+  centered?: string;
+}
+
 export const FieldName = styled(Col)`
   font-weight: bold;
   text-transform: uppercase;
+  text-align: ${({ centered }: FieldNameProps) => (centered === 'true' ? 'right' : 'left')};
 `;
 
 export const FieldValue = styled(Col)`

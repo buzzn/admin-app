@@ -6,11 +6,12 @@ interface Props {
   prefix?: string;
   field?: string;
   children: any;
+  centered?: string;
 }
 
-const TwoColView = ({ prefix, field, children }: Props) => (
+const TwoColView = ({ prefix, field, children, centered }: Props) => (
   <FieldGroup>
-    <FieldName xs="6">{prefix && field ? <FormattedMessage id={`${prefix}.${field}`} /> : ''}</FieldName>
+    <FieldName xs="6" {...{centered}}>{prefix && field ? <FormattedMessage id={`${prefix}.${field}`} /> : ''}</FieldName>
     <FieldValue xs="6">{children}</FieldValue>
   </FieldGroup>
 );

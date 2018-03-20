@@ -13,7 +13,9 @@ import PageTitle from 'components/page_title';
 import { CenterContent } from 'components/style';
 import Loading from 'components/loading';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
-import { MaLoListHeader, MaLoRow, Bar, Legend } from './style';
+import { MaLoListHeader, MaLoRow, Bar, Legend, DetailsWrapper } from './style';
+import DetailsContainer from './details';
+import { getAllUrlParams } from '_util';
 
 const d3 = require('d3');
 
@@ -23,21 +25,47 @@ class BillingData extends React.Component<
   ExtProps & StateProps & DispatchProps & BreadcrumbsProps & InjectedIntlProps,
   BillingDataState
   > {
-  state = { maLoSortAsc: true };
+  state = { maLoSortAsc: true, maLoSelected: null, barSelected: null };
 
   componentDidMount() {
     const { billingCycleId, groupId, loadBillingCycle, loadGroup } = this.props;
     loadGroup(groupId);
     loadBillingCycle({ billingCycleId, groupId });
+    const { malo, bar }: any = getAllUrlParams();
+    if (malo && bar) this.setState({ maLoSelected: malo, barSelected: parseInt(bar) });
   }
 
   switchMaLoSort = () => {
     this.setState({ maLoSortAsc: !this.state.maLoSortAsc });
   };
 
+  selectBar = (maLoId, barId) => {
+    const { history } = this.props;
+    const { maLoSelected, barSelected } = this.state;
+    if (maLoId === maLoSelected && barId === barSelected) {
+      this.setState({ maLoSelected: null, barSelected: null });
+      history.replace({ pathname: history.location.pathname });
+    } else {
+      this.setState({ maLoSelected: maLoId, barSelected: barId });
+      if (maLoId && barId) {
+        history.replace({ pathname: history.location.pathname, search: `?malo=${maLoId}&bar=${barId}` });
+      } else {
+        history.replace({ pathname: history.location.pathname });
+      }
+    }
+  };
+
+  scrollToRow = () => {
+    const { maLoSelected } = this.state;
+    const node = document.getElementById(`malo_row_${maLoSelected}`);
+    if (!node) return;
+    const { top } = node.getBoundingClientRect();
+    if (top < 0) window.scrollBy({ top: top - 57, left: 0, behavior: 'smooth' });
+  };
+
   render() {
-    const { billingCycle, billingCycleBars, breadcrumbs, url, loading, groupId, groupName, intl } = this.props;
-    const { maLoSortAsc } = this.state;
+    const { billingCycle, billingCycleBars, breadcrumbs, url, loading, groupId, groupName, intl, history } = this.props;
+    const { maLoSortAsc, maLoSelected, barSelected } = this.state;
 
     if (loading || billingCycle._status === null) return <Loading minHeight={40} />;
     if (billingCycle._status && billingCycle._status !== 200) return <Redirect to={url} />;
@@ -124,64 +152,105 @@ class BillingData extends React.Component<
             </div>
           </MaLoListHeader>
           {orderBy(billingCycleBars.array, 'name', maLoSortAsc ? 'asc' : 'desc').map(m => (
-            <MaLoRow key={m.id} {...{ ticks }}>
-              <div className="name">
-                <div>
-                  <Link
-                    to={`${url
-                      .split('/')
-                      .slice(0, -1)
-                      .join('/')}/system/market-locations/${m.id}`}
-                  >
-                    {m.name}
-                  </Link>
-                </div>
-              </div>
-              <div className="bars">
-                {ticks.map(t => <div key={t} className="grid-line" style={{ left: `${t}%` }} />)}
-                {m.bars.array.map((b, i) => {
-                  const beginDate = new Date(b.beginDate);
-                  const endDate = new Date(b.endDate);
-                  const fixedBeginDate =
-                    beginDate < cycleBegin ? cycleBegin : beginDate > cycleEnd ? cycleEnd : beginDate;
-                  const fixedEndDate = endDate > cycleEnd ? cycleEnd : endDate;
-                  const bars: Array<JSX.Element> = [];
-                  if (i === 0 && fixedBeginDate > cycleBegin) {
-                    bars.push(<Bar key={0} {...{ width: barScale(fixedBeginDate), transparent: true }} />);
-                  }
-                  bars.push(<Bar
-                      key={b.beginDate}
-                      {...{
-                        width: barScale(fixedEndDate) - barScale(fixedBeginDate),
-                        status: b.status,
-                        contractType: b.contractType,
-                      }}
+            <React.Fragment key={m.id}>
+              <MaLoRow {...{ ticks }} id={`malo_row_${m.id}`}>
+                <div className="name">
+                  <div>
+                    <Link
+                      to={`${url
+                        .split('/')
+                        .slice(0, -1)
+                        .join('/')}/system/market-locations/${m.id}`}
                     >
-                      <div className="bar-bg">
-                        <div />
-                        <div className="info">
-                          <div className="price">{!!b.priceCents && `${(b.priceCents / 100).toFixed(0)} €`}</div>
-                          <div className="energy">{!!b.consumedEnergyKwh && `${b.consumedEnergyKwh} kWh`}</div>
+                      {m.name}
+                    </Link>
+                  </div>
+                </div>
+                <div className="bars">
+                  {ticks.map(t => <div key={t} className="grid-line" style={{ left: `${t}%` }} />)}
+                  {m.bars.array.map((b, i) => {
+                    const beginDate = new Date(b.beginDate);
+                    const endDate = new Date(b.endDate);
+                    const fixedBeginDate =
+                      beginDate < cycleBegin ? cycleBegin : beginDate > cycleEnd ? cycleEnd : beginDate;
+                    const fixedEndDate = endDate > cycleEnd ? cycleEnd : endDate;
+                    const width = barScale(fixedEndDate) - barScale(fixedBeginDate);
+                    const narrow = width < 16;
+                    // array is needed to have a transparent fake bar in some edge cases.
+                    const bars: Array<JSX.Element> = [];
+                    if (i === 0 && fixedBeginDate > cycleBegin) {
+                      bars.push(<Bar key={0} {...{ width: barScale(fixedBeginDate), transparent: true }} />);
+                    }
+                    bars.push(<Bar
+                        key={b.billingId}
+                        {...{
+                          width,
+                          status: b.status,
+                          contractType: b.contractType,
+                          narrow,
+                        }}
+                        onClick={() => {
+                          if (b.contractType !== 'third_party') this.selectBar(m.id, b.billingId);
+                        }}
+                      >
+                        <div
+                          className={`bar-bg ${maLoSelected === m.id && barSelected === b.billingId ? 'selected' : ''}`}
+                        >
+                          <div />
+                          <div className="info">
+                            <div className="price">
+                              {!!b.priceCents && `${(b.priceCents / 100).toFixed(0)}${narrow ? '' : '€'}`}
+                            </div>
+                            <div className="energy">
+                              {!!b.consumedEnergyKwh && `${b.consumedEnergyKwh}${narrow ? '' : 'kWh'}`}
+                            </div>
+                          </div>
+                          <div className="error">
+                            {!!b.errors && (
+                              <React.Fragment>
+                                <i id={`err-tip-${m.id}-${b.billingId}`} className="fa fa-exclamation-triangle" />
+                                <UncontrolledTooltip
+                                  placement="bottom"
+                                  target={`err-tip-${m.id}-${b.billingId}`}
+                                  delay={200}
+                                >
+                                  {reduce(b.errors, (message, errArr) => `${message}${errArr.join(', ')}, `, '').slice(
+                                    0,
+                                    -2,
+                                  )}
+                                </UncontrolledTooltip>
+                              </React.Fragment>
+                            )}
+                          </div>
                         </div>
-                        <div className="error">
-                          {!!b.errors && (
-                            <React.Fragment>
-                              <i id={`err-tip-${m.id}-${i}`} className="fa fa-exclamation-triangle" />
-                              <UncontrolledTooltip placement="bottom" target={`err-tip-${m.id}-${i}`} delay={200}>
-                                {reduce(b.errors, (message, errArr) => `${message}${errArr.join(', ')}, `, '').slice(
-                                  0,
-                                  -2,
-                                )}
-                              </UncontrolledTooltip>
-                            </React.Fragment>
-                          )}
-                        </div>
-                      </div>
-                    </Bar>);
-                  return bars;
-                })}
+                      </Bar>);
+                    return bars;
+                  })}
+                </div>
+              </MaLoRow>
+              {/* FIXME: temporary hack/fix: */}
+              <div style={{ marginTop: '-9px', minHeight: '9px' }}>
+                <DetailsWrapper
+                  isOpened={!!maLoSelected && maLoSelected === m.id}
+                  forceInitialAnimation={true}
+                  onMeasure={({ height }) => {
+                    if (height > 0) this.scrollToRow();
+                  }}
+                >
+                  <DetailsContainer
+                    {...{
+                      close: () => this.selectBar(null, null),
+                      billingId: barSelected,
+                      groupId,
+                      billingCycleId: billingCycle.id,
+                      marketLocation: m,
+                      history,
+                      url,
+                    }}
+                  />
+                </DetailsWrapper>
               </div>
-            </MaLoRow>
+            </React.Fragment>
           ))}
           <Legend>
             <div className="title">
@@ -265,12 +334,15 @@ interface StatePart {
 
 interface BillingDataState {
   maLoSortAsc: boolean;
+  maLoSelected: null | string;
+  barSelected: null | number;
 }
 
 interface ExtProps {
   url: string;
   billingCycleId: string;
   groupId: string;
+  history: any;
 }
 
 interface StateProps {
