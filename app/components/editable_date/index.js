@@ -17,7 +17,11 @@ const EditableDate = ({ editMode, input, dateFormat, defaultDate, meta: { touche
           format={dateFormat}
           editFormat={dateFormat}
           value={input.value ? moment(input.value).toDate() : null}
-          onBlur={() => input.onBlur(moment(input.value || defaultDate).toDate())}
+          onBlur={() => {
+            input.onBlur(moment(input.value || defaultDate)
+                .endOf('day')
+                .toDate());
+          }}
         />
         {touched && error && <div className="form-control-feedback">{error}</div>}
       </div>
