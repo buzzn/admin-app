@@ -14,7 +14,11 @@ const DateField = ({ label, input, dateFormat = 'DD-MM-YYYY', defaultDate, meta:
       format={dateFormat}
       editFormat={dateFormat}
       value={input.value ? moment(input.value).toDate() : null}
-      onBlur={() => input.onBlur(moment(input.value || defaultDate).toDate())}
+      onBlur={() => {
+        input.onBlur(moment(input.value || defaultDate)
+            .endOf('day')
+            .toDate());
+      }}
     />
     <label className={`${!!input.value || active ? 'top' : 'center'}`}>{label}</label>
     {touched && error && <div className="form-control-feedback">{error}</div>}
