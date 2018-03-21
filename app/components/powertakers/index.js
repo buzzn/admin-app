@@ -8,8 +8,6 @@ import truncate from 'lodash/truncate';
 import get from 'lodash/get';
 import Contracts from 'contracts';
 import Groups from 'groups';
-import Breadcrumbs from 'components/breadcrumbs';
-import LinkBack from 'components/link_back';
 import Loading from 'components/loading';
 import PowertakersList from './powertakers_list';
 import PowertakerData from './powertaker_data';

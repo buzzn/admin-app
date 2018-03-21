@@ -37,7 +37,6 @@ class MeterData extends React.Component<ExtProps & DispatchProps & StateProps & 
                 link: undefined,
               },
             ]),
-            url,
             title: `Meter ${meter.productSerialnumber}`,
           }}
         />

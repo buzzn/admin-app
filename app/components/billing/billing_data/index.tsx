@@ -112,7 +112,6 @@ class BillingData extends React.Component<
               { id: '-----', title: billingCycle.name },
             ]),
             title: billingCycle.name,
-            url,
           }}
         />
         <CenterContent>

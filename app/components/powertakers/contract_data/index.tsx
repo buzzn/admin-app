@@ -13,7 +13,7 @@ interface Props {
 
 const ContractData = ({ breadcrumbs, title, groupId, contractId, url }: Props & BreadcrumbsProps) => (
   <React.Fragment>
-    <PageTitle {...{ breadcrumbs, url, title }} />
+    <PageTitle {...{ breadcrumbs, title }} />
     <CenterContent>
       <Contract {...{ groupId, contractId, url }} />
     </CenterContent>
