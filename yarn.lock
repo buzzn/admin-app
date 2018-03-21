@@ -3899,7 +3899,7 @@ builtin-status-codes@^3.0.0:
 
 "buzzn-style@git://github.com/buzzn/buzzn-style.git":
   version "1.0.0"
-  resolved "git://github.com/buzzn/buzzn-style.git#d790a3a499fe15157a6cdf7e5bde50de79ef0f01"
+  resolved "git://github.com/buzzn/buzzn-style.git#57e76b513a927324ca9373c02e5667d3c96418f9"
 
 bytes@3.0.0:
   version "3.0.0"
