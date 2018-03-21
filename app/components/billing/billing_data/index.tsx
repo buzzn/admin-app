@@ -197,29 +197,33 @@ class BillingData extends React.Component<
                         >
                           <div />
                           <div className="info">
-                            <div className="price">
-                              {!!b.priceCents && `${(b.priceCents / 100).toFixed(0)}${narrow ? '' : '€'}`}
-                            </div>
+                            {b.contractType !== 'third_party' && (
+                              <div className="price">
+                                {!!b.priceCents && `${(b.priceCents / 100).toFixed(0)}${narrow ? '' : '€'}`}
+                              </div>
+                            )}
                             <div className="energy">
                               {!!b.consumedEnergyKwh && `${b.consumedEnergyKwh}${narrow ? '' : 'kWh'}`}
                             </div>
                           </div>
                           <div className="error">
-                            {!!b.errors && (
-                              <React.Fragment>
-                                <i id={`err-tip-${m.id}-${b.billingId}`} className="fa fa-exclamation-triangle" />
-                                <UncontrolledTooltip
-                                  placement="bottom"
-                                  target={`err-tip-${m.id}-${b.billingId}`}
-                                  delay={200}
-                                >
-                                  {reduce(b.errors, (message, errArr) => `${message}${errArr.join(', ')}, `, '').slice(
-                                    0,
-                                    -2,
-                                  )}
-                                </UncontrolledTooltip>
-                              </React.Fragment>
-                            )}
+                            {b.contractType !== 'third_party' &&
+                              !!b.errors && (
+                                <React.Fragment>
+                                  <i id={`err-tip-${m.id}-${b.billingId}`} className="fa fa-exclamation-triangle" />
+                                  <UncontrolledTooltip
+                                    placement="bottom"
+                                    target={`err-tip-${m.id}-${b.billingId}`}
+                                    delay={200}
+                                  >
+                                    {reduce(
+                                      b.errors,
+                                      (message, errArr) => `${message}${errArr.join(', ')}, `,
+                                      '',
+                                    ).slice(0, -2)}
+                                  </UncontrolledTooltip>
+                                </React.Fragment>
+                              )}
                           </div>
                         </div>
                       </Bar>);
