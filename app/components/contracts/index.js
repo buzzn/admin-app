@@ -4,8 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import find from 'lodash/find';
 import ContractsModule from 'contracts';
 import Groups from 'groups';
-import Breadcrumbs from 'components/breadcrumbs';
-import LinkBack from 'components/link_back';
+import PageTitle from 'components/page_title';
 import ContractsList from './contracts_list';
 import ContractDataForm from './contract_data';
 
@@ -32,43 +31,32 @@ export class Contracts extends React.Component {
     return (
       <React.Fragment>
         {/* Breadcrumbs */}
-        <div className="row center-content-header">
-          <div className="col-7">
-            <Switch>
-              <Route
-                path={`${url}/:contractId`}
-                render={({ match: { url: contractUrl, params: { contractId } } }) => {
-                  const contract = find(contracts, c => c.id === contractId);
-                  if (!contract) return <Redirect to={url} />;
-                  breadcrumbs.push({ id: contract.id, type: 'contract', title: contract.fullContractNumber });
-                  return (
-                    <Switch>
-                      <Route
-                        path={contractUrl}
-                        render={() => (
-                          <React.Fragment>
-                            <Breadcrumbs breadcrumbs={breadcrumbs} />
-                            <LinkBack url={contractUrl} title={contract.fullContractNumber} />
-                          </React.Fragment>
-                        )}
-                      />
-                    </Switch>
-                  );
-                }}
-              />
-              <Route
-                path={url}
-                render={() => (
-                  <React.Fragment>
-                    <Breadcrumbs breadcrumbs={breadcrumbs.concat([{ id: '-----', title: 'Localpool contracts' }])} />
-                    <LinkBack title="Localpool contracts" />
-                  </React.Fragment>
-                )}
-              />
-            </Switch>
-          </div>
-          <div className="col-5" />
-        </div>
+        <Switch>
+          <Route
+            path={`${url}/:contractId`}
+            render={({ match: { url: contractUrl, params: { contractId } } }) => {
+              const contract = find(contracts, c => c.id === contractId);
+              if (!contract) return <Redirect to={url} />;
+              breadcrumbs.push({ id: contract.id, type: 'contract', title: contract.fullContractNumber });
+              return (
+                <Switch>
+                  <Route
+                    path={contractUrl}
+                    render={() => (
+                      <PageTitle {...{ breadcrumbs, title: contract.fullContractNumber }} />
+                    )}
+                  />
+                </Switch>
+              );
+            }}
+          />
+          <Route
+            path={url}
+            render={() => (
+              <PageTitle {...{ breadcrumbs: breadcrumbs.concat([{ id: '-----', title: 'Localpool contracts' }]), title: 'Localpool contracts' }} />
+            )}
+          />
+        </Switch>
         {/* End of Breadcrumbs */}
 
         <div className="center-content">

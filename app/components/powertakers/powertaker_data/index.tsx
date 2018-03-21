@@ -97,7 +97,7 @@ class PowertakerData extends React.Component<
 
     return (
       <React.Fragment>
-        <PageTitle {...{ breadcrumbs, url, title }} />
+        <PageTitle {...{ breadcrumbs, title }} />
         <CenterContent>
           <Row className="powertaker-data">
             <Col xs="3">

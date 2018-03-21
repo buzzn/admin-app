@@ -12,8 +12,7 @@ import map from 'lodash/map';
 import isEqual from 'lodash/isEqual';
 import Groups from 'groups';
 import { actions } from 'actions';
-import LinkBack from 'components/link_back';
-import Breadcrumbs from 'components/breadcrumbs';
+import PageTitle from 'components/page_title';
 import FieldToggle from 'components/field_toggle';
 import Owner from './owner';
 
@@ -112,12 +111,7 @@ class GroupSettings extends React.Component {
 
     return (
       <React.Fragment>
-        <div className="row center-content-header center-content-header-nomargin-bottom">
-          <Col xs="7">
-            <Breadcrumbs breadcrumbs={breadcrumbs} />
-            <LinkBack title={intl.formatMessage({ id: `${prefix}.headerSettings` })} />
-          </Col>
-        </div>
+        <PageTitle {...{ breadcrumbs, title: intl.formatMessage({ id: `${prefix}.headerSettings` }), thin: 'true' }} />
         <div className="center-content group-settings">
           <div className="group-image">
             <img src={DefaultImage} />

@@ -46,7 +46,6 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
                 link: undefined,
               },
             ]),
-            url,
             title: register.marketLocation.name,
           }}
         />
