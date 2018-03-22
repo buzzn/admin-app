@@ -47,6 +47,7 @@ class BillingList extends React.Component<
       groupName,
       url,
       history,
+      validationRules,
     } = this.props;
     const { isOpen } = this.state;
 
@@ -103,6 +104,7 @@ class BillingList extends React.Component<
               loading,
               onSubmit: this.addBillingCycle,
               nextBillingCycleBeginDate,
+              validationRules,
             }}
           />
           <div className="clearfix" />
@@ -130,7 +132,11 @@ class BillingList extends React.Component<
 }
 
 interface StatePart {
-  billingCycles: { billingCycles: { _status: null | number; array: Array<any> }; loadingBillingCycles: boolean };
+  billingCycles: {
+    billingCycles: { _status: null | number; array: Array<any> };
+    loadingBillingCycles: boolean;
+    validationRules: { _status: null | number; [key: string]: any };
+  };
   groups: { group: { nextBillingCycleBeginDate: string; name: string }; loadingGroup: boolean };
 }
 
@@ -146,6 +152,7 @@ interface ExtProps {
 
 interface StateProps {
   billingCycles: { _status: null | number; array: Array<any> };
+  validationRules: { _status: null | number; [key: string]: any };
   nextBillingCycleBeginDate: string;
   loading: boolean;
 }
@@ -160,6 +167,7 @@ interface DispatchProps {
 function mapStateToProps(state: StatePart) {
   return {
     billingCycles: state.billingCycles.billingCycles,
+    validationRules: state.billingCycles.validationRules,
     groupName: state.groups.group.name,
     nextBillingCycleBeginDate: state.groups.group.nextBillingCycleBeginDate,
     loading: state.groups.loadingGroup || state.billingCycles.loadingBillingCycles,

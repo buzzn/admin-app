@@ -2,6 +2,8 @@ export const constants = {
   SET_API_PARAMS: 'buzzn_billing_cycles/SET_API_PARAMS',
   SET_TOKEN: 'buzzn_billing_cycles/SET_TOKEN',
 
+  SET_VALIDATION_RULES: 'buzzn_billing_cycles/SET_VALIDATION_RULES',
+
   LOAD_BILLING_CYCLES: 'buzzn_billing_cycles/LOAD_BILLING_CYCLES',
   LOADING_BILLING_CYCLES: 'buzzn_billing_cycles/LOADING_BILLING_CYCLES',
   LOADED_BILLING_CYCLES: 'buzzn_billing_cycles/LOADED_BILLING_CYCLES',
@@ -23,6 +25,8 @@ export const constants = {
 export const actions = {
   setApiParams: ({ apiPath, apiUrl }) => ({ type: constants.SET_API_PARAMS, apiPath, apiUrl }),
   setToken: token => ({ type: constants.SET_TOKEN, token }),
+
+  setValidationRules: validationRules => ({ type: constants.SET_VALIDATION_RULES, validationRules }),
 
   loadBillingCycles: groupId => ({ type: constants.LOAD_BILLING_CYCLES, groupId }),
   loadingBillingCycles: () => ({ type: constants.LOADING_BILLING_CYCLES }),

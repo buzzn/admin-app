@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import moment from 'moment';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Row, Col } from 'reactstrap';
 import { reduxForm, Field } from 'redux-form';
+import { fieldValidator } from 'validation_functions';
 import Loading from 'components/loading';
 import FieldInput from 'components/field_input';
 import FieldDate from 'components/field_date';
@@ -14,11 +15,12 @@ interface Props {
   loading: boolean;
   nextBillingCycleBeginDate: string;
   handleSubmit: () => void;
+  validationRules: { _status: null | number; [key: string]: any };
 }
 
 class AddBilling extends React.Component<Props> {
   render() {
-    const { isOpen, toggle, loading, nextBillingCycleBeginDate, handleSubmit } = this.props;
+    const { isOpen, toggle, loading, nextBillingCycleBeginDate, handleSubmit, validationRules } = this.props;
     const prefix = 'admin.billingCycles';
 
     return (
@@ -48,7 +50,9 @@ class AddBilling extends React.Component<Props> {
                       type="text"
                       component={FieldDate}
                       dateFormat="DD.MM.YYYY"
+                      inputFormats={['D.M.YY']}
                       label="Last Date"
+                      validate={fieldValidator(validationRules.lastDate)}
                     />
                     <Field
                       name="endDate"
@@ -57,7 +61,13 @@ class AddBilling extends React.Component<Props> {
                     />
                   </Col>
                   <Col xs={12}>
-                    <Field name="name" type="text" component={FieldInput} label="Name" />
+                    <Field
+                      name="name"
+                      type="text"
+                      component={FieldInput}
+                      label="Name"
+                      validate={fieldValidator(validationRules.name)}
+                    />
                   </Col>
                 </Row>
               </React.Fragment>

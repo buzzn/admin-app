@@ -8,10 +8,14 @@ export const initialState = {
   billingCycle: { _status: null },
   billingCycleBars: { _status: null, array: [] },
   billing: { _status: null },
+  validationRules: { _status: null },
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case constants.SET_VALIDATION_RULES:
+      return { ...state, validationRules: action.validationRules };
+
     case constants.LOAD_BILLING_CYCLE:
       return { ...state, billingCycleId: action.billingCycleId, groupId: action.groupId };
     case constants.LOADING_BILLING_CYCLE:
