@@ -155,7 +155,7 @@ const barColors = {
 export const Bar = styled.div`
   width: ${({ width }: BarStyleProps) => width}%;
   height: 100%;
-  padding-top: 9px;
+  padding-top: 8px;
 
   .bar-bg {
     display: flex;
@@ -190,14 +190,14 @@ export const Bar = styled.div`
         border-right: solid 11px transparent;
       }
       .info {
-        padding-top: calc(${({ narrow }: BarStyleProps) => (narrow ? 0.35 : 0.9)}rem - 2px);
+        padding-top: calc(${({ narrow }: BarStyleProps) => (narrow ? 0.35 : 0.8)}rem - 2px);
       }
     }
 
     .info {
       color: ${({ status }: BarStyleProps) => (status === 'open' ? '#00BCD4' : '#9E9E9E')};
       font-size: 0.8rem;
-      padding-top: ${({ narrow }: BarStyleProps) => (narrow ? 0.35 : 0.9)}rem;
+      padding-top: ${({ narrow }: BarStyleProps) => (narrow ? 0.35 : 0.8)}rem;
       line-height: 0.8rem;
       display: flex;
       flex-direction: ${({ narrow }: BarStyleProps) => (narrow ? 'column' : 'row')};

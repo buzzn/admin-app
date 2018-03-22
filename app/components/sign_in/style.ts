@@ -61,7 +61,7 @@ export const SignInWrapper = styled.div`
           position: absolute;
           right: 1rem;
           top: 0.5rem;
-          font-size: 20px;
+          font-size: 1.25rem;
         }
       }
     }

@@ -9,12 +9,12 @@ export const MeterHeader = styled(Row)`
   text-transform: uppercase;
   .value {
     color: #000000;
-    font-size: 24px;
+    font-size: 1.5rem;
     line-height: 27px;
   }
   .label {
     color: #afafaf;
-    font-size: 10px;
+    font-size: 0.625rem;
     line-height: 11px;
   }
 `;

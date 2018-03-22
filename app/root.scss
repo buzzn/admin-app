@@ -1,5 +1,5 @@
 html {
-  font-size: 17px;
+  font-size: 1.0625rem;
 }
 
 * {
@@ -45,7 +45,7 @@ body {
       margin-right: -16px;
     }
     .fieldgroup {
-      font-size: 13px;
+      font-size: 0.8125rem;
       min-height: 57px;
       align-items: center;
       .fieldname {
@@ -60,7 +60,7 @@ body {
         justify-content: space-between;
       }
       i.fa-s {
-        font-size: 18px;
+        font-size: 1.125rem;
         vertical-align: middle;
       }
     }
@@ -106,7 +106,7 @@ body {
               text-align: left;
               border-right: none;
               text-transform: uppercase;
-              font-size: 10px;
+              font-size: 0.625rem;
               .sort-icon-group {
                 position: relative;
                 .fa {

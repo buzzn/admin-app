@@ -35,7 +35,7 @@ export const SidebarLink = styled(NavLink)`
 `;
 
 export const SidebarText = styled.div`
-  font-size: 12px;
+  font-size: 0.75rem;
   @media (max-width: 768px) {
     display: none;
   }

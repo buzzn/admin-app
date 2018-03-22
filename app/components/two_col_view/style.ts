@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Row, Col } from 'reactstrap';
 
 export const FieldGroup = styled(Row)`
-  font-size: 13px;
+  font-size: 0.8125rem;
   min-height: 57px;
   align-items: center;
 `;

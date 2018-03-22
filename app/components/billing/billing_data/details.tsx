@@ -14,7 +14,7 @@ import { tableParts as TableParts } from 'react_table_config';
 import { BillingDetails, DoubleCell } from './style';
 
 class Details extends React.Component<ExtProps & StateProps & DispatchProps & InjectedIntlProps, DetailsState> {
-  state = { minHeight: 290 };
+  state = { minHeight: 340 };
 
   componentDidMount() {
     const { loadBilling, billingId, groupId, billingCycleId } = this.props;

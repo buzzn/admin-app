@@ -232,7 +232,7 @@ class BillingData extends React.Component<
                 </div>
               </MaLoRow>
               {/* FIXME: temporary hack/fix: */}
-              <div style={{ marginTop: '-9px', minHeight: '9px' }}>
+              <div style={{ marginTop: '-10px', minHeight: '10px' }}>
                 <DetailsWrapper
                   isOpened={!!maLoSelected && maLoSelected === m.id}
                   forceInitialAnimation={true}

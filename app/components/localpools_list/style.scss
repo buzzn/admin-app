@@ -11,7 +11,7 @@
     border-radius: 32px;
     position: relative;
     .group-name {
-      font-size: 24px;
+      font-size: 1.5rem;
       font-weight: bold;
       position: absolute;
       left: 20px;
@@ -38,16 +38,16 @@
       margin-right: 20px;
       .value {
         color: #2F2F2F;
-        font-size: 24px;
+        font-size: 1.5rem;
         line-height: 28px;
       }
       .unit {
         color: #2F2F2F;
-        font-size: 10px;
+        font-size: 0.625rem;
       }
       .label {
         color: #9E9E9E;
-        font-size: 10px;
+        font-size: 0.625rem;
         text-transform: uppercase;
       }
     }
@@ -62,7 +62,7 @@
     box-shadow: 0 2px 16px 0 rgba(0,0,0,0.2);
     .view-details {
       color: #F5F5F5;
-      font-size: 13px;
+      font-size: 0.8125rem;
       font-weight: bold;
       text-align: center;
       text-transform: uppercase;
