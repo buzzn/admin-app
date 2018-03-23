@@ -124,10 +124,10 @@ class BillingData extends React.Component<
             <div className="labels">
               <div className="dates">
                 <div className="begin">
-                  {moment(cycleBegin).format('DD.MM.YYYY')} <i className="fa fa-calendar" />
+                  {moment(cycleBegin).format('DD.MM.YYYY')}
                 </div>
                 <div className="end">
-                  <i className="fa fa-calendar" /> {moment(billingCycle.lastDate).format('DD.MM.YYYY')}
+                  {moment(billingCycle.lastDate).format('DD.MM.YYYY')}
                 </div>
               </div>
               <div className="months">
@@ -199,7 +199,7 @@ class BillingData extends React.Component<
                           <div className="info">
                             {b.contractType !== 'third_party' && (
                               <div className="price">
-                                {!!b.priceCents && `${(b.priceCents / 100).toFixed(0)}${narrow ? '' : '€'}`}
+                                {!!b.priceCents && `${(b.priceCents / 100).toFixed(2)}${narrow ? '' : '€'}`}
                               </div>
                             )}
                             <div className="energy">

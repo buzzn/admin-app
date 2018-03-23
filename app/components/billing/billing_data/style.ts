@@ -163,6 +163,7 @@ export const Bar = styled.div`
     width: 100%;
     height: 80%;
     position: relative;
+    cursor: ${({ contractType }: BarStyleProps) => (contractType === 'third_party' ? 'auto' : 'pointer')};
     background-color: ${({ status = 'default', contractType = 'default' }: BarStyleProps) =>
     (contractType === 'third_party' ? barColors[contractType].bg : barColors[contractType][status].bg)};
     background-image: ${({ contractType }: BarStyleProps) =>
