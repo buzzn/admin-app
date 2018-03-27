@@ -51,7 +51,7 @@ const LocalpoolCard = ({ group, url, hover, hoverEvents }: Props) => (
       <div className="stats-right">
         <div className="group-stat">
           <div className="value">
-            <i className="buzzn-television" style={{ color: group.showDisplayApp ? 'black' : 'grey' }} />
+            <i className="buzzn-television" style={{ color: group.showDisplayApp ? 'black' : '#BDBDBD' }} />
           </div>
           <div className="unit">&nbsp;</div>
           <div className="label">

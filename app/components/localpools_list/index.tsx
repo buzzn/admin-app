@@ -75,7 +75,7 @@ class LocalpoolsList extends React.Component<
         resizable: false,
         filterable: false,
         width: 100,
-        Cell: ({ value }) => <i className="buzzn-television" style={{ color: value ? 'black' : 'grey' }} />,
+        Cell: ({ value }) => <i className="buzzn-television" style={{ color: value ? 'black' : '#BDBDBD' }} />,
       },
       {
         Header: '',
