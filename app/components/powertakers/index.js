@@ -35,7 +35,7 @@ export class Powertakers extends React.Component {
     if (powertakers._status === null || loading) return <Loading minHeight={40} />;
 
     const breadcrumbs = [
-      { id: 0, link: '/groups', title: 'My groups' },
+      { id: 0, link: '/groups', title: intl.formatMessage({ id: 'admin.groups.breadcrumbsMyLocalpools' }) },
       { id: group.id || 1, link: url, title: group.name },
     ];
 
