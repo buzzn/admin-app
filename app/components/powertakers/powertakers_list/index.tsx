@@ -45,7 +45,7 @@ const PowertakersList = ({
     o =>
       (o.type === 'contract_localpool_third_party'
         ? null
-        : o.customer.name || `${o.customer.firstName} ${o.customer.lastName}`),
+        : o.customer.name || `${o.customer.lastName} ${o.customer.firstName}`),
     'asc',
   ).map(p => ({
     ...p,
@@ -54,7 +54,7 @@ const PowertakersList = ({
         ? { value: 'drittbeliefert', image: DefaultThirdParty, type: 'avatar' }
         : p.customer.type === 'person'
           ? {
-            value: `${p.customer.firstName} ${p.customer.lastName}`,
+            value: `${p.customer.lastName} ${p.customer.firstName}`,
             image: p.customer.image || DefaultPerson,
             type: 'avatar',
             clickable: true,

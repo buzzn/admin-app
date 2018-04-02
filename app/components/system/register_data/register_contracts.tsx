@@ -25,7 +25,7 @@ const RegisterContracts = ({ contracts, url, intl, history, registerId }: Props 
         ? { value: 'drittbeliefert', image: DefaultThirdParty, type: 'avatar' }
         : c.customer.type === 'person'
           ? {
-            value: `${c.customer.firstName} ${c.customer.lastName}`,
+            value: `${c.customer.lastName} ${c.customer.firstName}`,
             image: c.customer.image || DefaultPerson,
             type: 'avatar',
           }
