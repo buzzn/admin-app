@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ReactTable from 'react-table';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import moment from 'moment';
 import get from 'lodash/get';
 import orderBy from 'lodash/orderBy';
@@ -15,7 +15,7 @@ interface State {
   expanded: { [key: number]: boolean };
 }
 
-class MeterData extends React.Component<Props, State> {
+class MeterData extends React.Component<Props & InjectedIntlProps, State> {
   state = { expanded: {} };
 
   handleRowClick(rowNum) {
@@ -23,7 +23,7 @@ class MeterData extends React.Component<Props, State> {
   }
 
   render() {
-    const { meter } = this.props;
+    const { meter, intl } = this.props;
 
     const data = get(meter.registers, 'array', []).map(r => ({
       ...r,
@@ -49,7 +49,7 @@ class MeterData extends React.Component<Props, State> {
         accessor: 'lastReading.value',
         filterable: false,
         sortable: false,
-        Cell: row => <span>{row.value ? `${row.value} ${row.original.lastReading.unit}` : ''}</span>,
+        Cell: row => <span>{row.value ? `${intl.formatNumber(row.value)} ${row.original.lastReading.unit}` : ''}</span>,
       },
       {
         Header: () => <FormattedMessage id="admin.readings.tableReason" />,
@@ -362,4 +362,4 @@ class MeterData extends React.Component<Props, State> {
   }
 }
 
-export default MeterData;
+export default injectIntl(MeterData);

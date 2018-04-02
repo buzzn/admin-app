@@ -63,17 +63,20 @@ class Details extends React.Component<ExtProps & StateProps & DispatchProps & In
         display: `${moment(i.beginDate).format('DD.MM.YYYY')} - ${moment(i.endDate).format('DD.MM.YYYY')}`,
         value: moment(i.beginDate).toDate(),
       },
+      beginReadingKwh: intl.formatNumber(i.beginReadingKwh),
+      endReadingKwh: intl.formatNumber(i.endReadingKwh),
+      consumedEnergyKwh: intl.formatNumber(i.consumedEnergyKwh),
       amount: {
         days: i.lengthInDays,
-        kWh: i.consumedEnergyKwh,
+        kWh: intl.formatNumber(i.consumedEnergyKwh),
       },
       price: {
-        days: (i.tariff.basepriceCentsPerMonth * 12 / 100).toFixed(0),
-        kWh: i.tariff.energypriceCentsPerKwh.toFixed(2),
+        days: intl.formatNumber((i.tariff.basepriceCentsPerMonth * 12 / 100).toFixed(0)),
+        kWh: intl.formatNumber(i.tariff.energypriceCentsPerKwh.toFixed(2)),
       },
       netAmount: {
-        days: (i.basePriceCents / 100).toFixed(2),
-        kWh: (i.energyPriceCents / 100).toFixed(2),
+        days: intl.formatNumber((i.basePriceCents / 100).toFixed(2)),
+        kWh: intl.formatNumber((i.energyPriceCents / 100).toFixed(2)),
       },
     }));
 

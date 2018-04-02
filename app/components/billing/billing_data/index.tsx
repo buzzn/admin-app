@@ -199,11 +199,11 @@ class BillingData extends React.Component<
                           <div className="info">
                             {b.contractType !== 'third_party' && (
                               <div className="price">
-                                {!!b.priceCents && `${(b.priceCents / 100).toFixed(2)}${narrow ? '' : '€'}`}
+                                {!!b.priceCents && `${intl.formatNumber((b.priceCents / 100).toFixed(2))}${narrow ? '' : '€'}`}
                               </div>
                             )}
                             <div className="energy">
-                              {!!b.consumedEnergyKwh && `${b.consumedEnergyKwh}${narrow ? '' : 'kWh'}`}
+                              {!!b.consumedEnergyKwh && `${intl.formatNumber(b.consumedEnergyKwh)}${narrow ? '' : 'kWh'}`}
                             </div>
                           </div>
                           <div className="error">

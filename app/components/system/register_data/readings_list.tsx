@@ -5,7 +5,6 @@ import orderBy from 'lodash/orderBy';
 import { injectIntl, FormattedMessage, InjectIntlProps } from 'react-intl';
 import { Row, Col } from 'reactstrap';
 import { tableParts as TableParts } from 'react_table_config';
-import { formatLabel } from '_util';
 
 interface Props {
   readings: Array<any>;
@@ -30,7 +29,7 @@ class ReadingsList extends React.Component<Props & InjectIntlProps, State> {
     const data = orderBy(readings, ['date', 'reason'], ['desc', 'asc']).map(r => ({
       ...r,
       date: moment(r.date).format('DD.MM.YYYY'),
-      value: formatLabel(r.value, 'h', false, true),
+      value: `${intl.formatNumber(r.value)} ${r.unit}`,
     }));
 
     const columns = [
