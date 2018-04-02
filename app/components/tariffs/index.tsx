@@ -10,7 +10,7 @@ import Loading from 'components/loading';
 import TariffsList from './tariffs_list';
 
 class Tariffs extends React.Component<StateProps & DispatchProps & ExtProps & InjectedIntlProps> {
-  componentWillMount() {
+  componentDidMount() {
     const { loadGroup, match: { params: { groupId } } } = this.props;
     loadGroup(groupId);
   }

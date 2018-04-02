@@ -9,7 +9,7 @@ import ContractsList from './contracts_list';
 import ContractDataForm from './contract_data';
 
 export class Contracts extends React.Component {
-  componentWillMount() {
+  componentDidMount() {
     const { loadGroupContracts, loadGroup, group, match: { params: { groupId } } } = this.props;
     if (group.id !== groupId) loadGroup(groupId);
     loadGroupContracts(groupId);

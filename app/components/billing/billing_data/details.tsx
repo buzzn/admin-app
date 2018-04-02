@@ -21,15 +21,15 @@ class Details extends React.Component<ExtProps & StateProps & DispatchProps & In
     loadBilling({ billingId, groupId, billingCycleId });
   }
 
-  componentWillReceiveProps(next) {
-    const { loadBilling, billingId, groupId, billingCycleId, billing, close, setBilling } = next;
+  componentDidUpdate(prev) {
+    const { loadBilling, billingId, groupId, billingCycleId, billing, close, setBilling } = this.props;
 
     if (billingId && billing._status && billing._status !== 200) {
       setBilling({ _status: null });
       close();
     }
 
-    if (billingId && billingId !== this.props.billingId) {
+    if (billingId && billingId !== prev.billingId) {
       const node = ReactDOM.findDOMNode(this);
       this.setState({ minHeight: node ? node.clientHeight : 290 });
       loadBilling({ billingId, groupId, billingCycleId });

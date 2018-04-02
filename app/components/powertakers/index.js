@@ -14,7 +14,7 @@ import PowertakerData from './powertaker_data';
 import ContractData from './contract_data';
 
 export class Powertakers extends React.Component {
-  componentWillMount() {
+  componentDidMount() {
     const { loadGroupPowertakers, loadGroup, group, match: { params: { groupId } } } = this.props;
     loadGroup(groupId);
     loadGroupPowertakers(groupId);

@@ -28,7 +28,7 @@ class GroupSettings extends React.Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { loadGroup, group, match: { params: { groupId } } } = this.props;
     loadGroup(groupId);
     this.setIncompletness(group);
@@ -39,9 +39,9 @@ class GroupSettings extends React.Component {
     this.props.setGroup({ _status: null });
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { group: newGroup } = nextProps;
-    const { group } = this.props;
+  componentDidUpdate(prevProps) {
+    const { group: newGroup } = this.props;
+    const { group } = prevProps;
     if (!isEqual(group.incompleteness, newGroup.incompleteness)) this.setIncompletness(newGroup);
   }
 

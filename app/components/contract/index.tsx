@@ -8,7 +8,7 @@ import PowertakerContract from './powertaker';
 import ThirdPartyContract from './third_party';
 
 class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
-  componentWillMount() {
+  componentDidMount() {
     const { loadContract, groupId, contractId } = this.props;
     loadContract({ groupId, contractId });
   }

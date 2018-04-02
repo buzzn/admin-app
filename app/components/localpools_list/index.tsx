@@ -30,7 +30,7 @@ class LocalpoolsList extends React.Component<
 
   state = { groupsListTiles: false };
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({ groupsListTiles: this.props.groupsListTiles });
     this.props.loadGroups();
   }

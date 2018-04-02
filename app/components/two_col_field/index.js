@@ -5,29 +5,27 @@ import isEqual from 'lodash/isEqual';
 import { fieldValidator } from 'validation_functions';
 
 class TwoColField extends Component {
-  state = {
-    validate: fieldValidator(this.props.validationRules[this.props.name]),
-  };
+  state = { validate: fieldValidator(this.props.validationRules[this.props.name]) };
 
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(nextProps) {
     if (!isEqual(this.props.validationRules[this.props.name], nextProps.validationRules[nextProps.name])) {
-      this.setState({
-        validate: fieldValidator(nextProps.validationRules[nextProps.name]),
-      });
+      return { validate: fieldValidator(nextProps.validationRules[nextProps.name]) };
     }
+
+    return null;
   }
 
   render() {
     return (
       <div className="row" style={{ minHeight: '40px' }}>
         <div className="col-6">
-          <FormattedMessage id={ `${this.props.prefix}.${this.props.name}` } />:
+          <FormattedMessage id={`${this.props.prefix}.${this.props.name}`} />:
         </div>
         <div className="col-6">
           <Field
-            { ...this.props }
-            field={ this.props.field || this.props.validationRules[this.props.name] }
-            validate={ this.state.validate }
+            {...this.props}
+            field={this.props.field || this.props.validationRules[this.props.name]}
+            validate={this.state.validate}
           />
         </div>
       </div>
