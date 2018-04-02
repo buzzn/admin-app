@@ -77,18 +77,24 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
                   />
                 )}
               </Route>
-              <Route path={`${registerUrl}/contracts`}>
-                {!!contracts.length && (
-                  <RegisterContracts
-                    {...{
-                      contracts,
-                      url,
-                      history,
-                      registerId,
-                    }}
-                  />
+              <Route
+                path={`${registerUrl}/contracts`}
+                render={({ history }) => (
+                  <React.Fragment>
+                    {' '}
+                    {!!contracts.length && (
+                      <RegisterContracts
+                        {...{
+                          contracts,
+                          url,
+                          history,
+                          registerId,
+                        }}
+                      />
+                    )}
+                  </React.Fragment>
                 )}
-              </Route>
+              />
               <Route path={`${registerUrl}/devices`}>
                 <div className={devMode ? '' : 'under-construction'} style={{ height: '8rem' }} />
               </Route>
