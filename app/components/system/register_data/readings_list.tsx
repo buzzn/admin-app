@@ -29,7 +29,7 @@ class ReadingsList extends React.Component<Props & InjectIntlProps, State> {
     const data = orderBy(readings, ['date', 'reason'], ['desc', 'asc']).map(r => ({
       ...r,
       date: moment(r.date).format('DD.MM.YYYY'),
-      value: `${intl.formatNumber(r.value)} ${r.unit}`,
+      value: `${intl.formatNumber(r.value / 1000)} kWh`,
     }));
 
     const columns = [
