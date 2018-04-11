@@ -123,12 +123,8 @@ class BillingData extends React.Component<
             </div>
             <div className="labels">
               <div className="dates">
-                <div className="begin">
-                  {moment(cycleBegin).format('DD.MM.YYYY')}
-                </div>
-                <div className="end">
-                  {moment(billingCycle.lastDate).format('DD.MM.YYYY')}
-                </div>
+                <div className="begin">{moment(cycleBegin).format('DD.MM.YYYY')}</div>
+                <div className="end">{moment(billingCycle.lastDate).format('DD.MM.YYYY')}</div>
               </div>
               <div className="months">
                 {ticks.map(t => <div key={t} className="grid-line" style={{ left: `${t}%` }} />)}
@@ -199,11 +195,15 @@ class BillingData extends React.Component<
                           <div className="info">
                             {b.contractType !== 'third_party' && (
                               <div className="price">
-                                {!!b.priceCents && `${intl.formatNumber((b.priceCents / 100).toFixed(2))}${narrow ? '' : '€'}`}
+                                {!!b.priceCents &&
+                                  `${intl.formatNumber((b.priceCents / 100).toFixed(2), { minimumFractionDigits: 2 })}${
+                                    narrow ? '' : '€'
+                                  }`}
                               </div>
                             )}
                             <div className="energy">
-                              {!!b.consumedEnergyKwh && `${intl.formatNumber(b.consumedEnergyKwh)}${narrow ? '' : 'kWh'}`}
+                              {!!b.consumedEnergyKwh &&
+                                `${intl.formatNumber(b.consumedEnergyKwh)}${narrow ? '' : 'kWh'}`}
                             </div>
                           </div>
                           <div className="error">
