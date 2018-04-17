@@ -5,7 +5,8 @@ import moment from 'moment';
 import get from 'lodash/get';
 import orderBy from 'lodash/orderBy';
 import { Row, Col } from 'reactstrap';
-import { MeterHeader, MeterTitle } from './style';
+import withEditOverlay from 'components/with_edit_overlay';
+import { MeterHeader, MeterTitle, MeterForm } from './style';
 
 interface Props {
   meter: any;
@@ -23,7 +24,7 @@ class MeterData extends React.Component<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { meter, intl } = this.props;
+    const { meter, intl, editMode, switchEditMode } = this.props;
 
     const data = get(meter.registers, 'array', []).map(r => ({
       ...r,
@@ -49,7 +50,7 @@ class MeterData extends React.Component<Props & InjectedIntlProps, State> {
         accessor: 'lastReading.value',
         filterable: false,
         sortable: false,
-        Cell: row => <span>{row.value ? `${intl.formatNumber(row.value)} ${row.original.lastReading.unit}` : ''}</span>,
+        Cell: row => <span>{row.value ? `${intl.formatNumber(row.value / 1000)} kWh` : ''}</span>,
       },
       {
         Header: () => <FormattedMessage id="admin.readings.tableReason" />,
@@ -163,203 +164,218 @@ class MeterData extends React.Component<Props & InjectedIntlProps, State> {
           </Col>
         </Row>
         <React.Fragment>
-          <MeterTitle>
-            <FormattedMessage id={`${prefix}.headerMeterDetails`} />
-          </MeterTitle>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.manufacturerName`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              <div>
-                {meter.manufacturerName} - <FormattedMessage id={`${prefix}.${meter.manufacturerName}`} />
+          <MeterForm {...{ editMode }}>
+            {editMode && (
+              <div className="side-buttons">
+                <button className="btn btn-link" onClick={switchEditMode}>
+                  Cancel
+                  <i className="fa fa-close" />
+                </button>
+                <button className="btn btn-primary" onClick={switchEditMode}>
+                  Save
+                  <i className="fa fa-check" />
+                </button>
               </div>
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.manufacturerDescription`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              {meter.manufacturerDescription}
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.productName`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              {meter.productName}
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.ownership`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              {meter.ownership}
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.buildYear`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              {meter.buildYear}
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.calibratedUntil`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              {moment(meter.calibratedUntil).format('DD.MM.YYYY')}
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.converterConstant`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              {meter.converterConstant}
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.locationDescription`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              {meter.locationDescription}
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.dataSource`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              <FormattedMessage id={`${prefix}.${meter.dataSource}`} />
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.directionNumber`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              <FormattedMessage id={`${prefix}.${meter.directionNumber}`} />
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.productSerialnumber`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              {meter.productSerialnumber}
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.sequenceNumber`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              {meter.sequenceNumber}
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.type`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              <FormattedMessage id={`${prefix}.${meter.type}`} />
-            </Col>
-          </Row>
-          <MeterTitle>
-            <FormattedMessage id={`${prefix}.headerEdifactInformation`} />
-          </MeterTitle>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.edifactCycleInterval`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              <div>
-                {meter.edifactCycleInterval} - <FormattedMessage id={`${prefix}.${meter.edifactCycleInterval}`} />
-              </div>
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.edifactDataLogging`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              <div>
-                {meter.edifactDataLogging} - <FormattedMessage id={`${prefix}.${meter.edifactDataLogging}`} />
-              </div>
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.edifactMeasurementMethod`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              <div>
-                {meter.edifactMeasurementMethod} -{' '}
-                <FormattedMessage id={`${prefix}.${meter.edifactMeasurementMethod}`} />
-              </div>
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.edifactMeterSize`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              <div>
-                {meter.edifactMeterSize} - <FormattedMessage id={`${prefix}.${meter.edifactMeterSize}`} />
-              </div>
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.edifactMeteringType`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              <div>
-                {meter.edifactMeteringType} - <FormattedMessage id={`${prefix}.${meter.edifactMeteringType}`} />
-              </div>
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.edifactMountingMethod`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              <div>
-                {meter.edifactMountingMethod} - <FormattedMessage id={`${prefix}.${meter.edifactMountingMethod}`} />
-              </div>
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.edifactTariff`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              <div>
-                {meter.edifactTariff} - <FormattedMessage id={`${prefix}.${meter.edifactTariff}`} />
-              </div>
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.edifactVoltageLevel`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              <div>
-                {meter.edifactVoltageLevel} - <FormattedMessage id={`${prefix}.${meter.edifactVoltageLevel}`} />
-              </div>
-            </Col>
-          </Row>
+            )}
+            <MeterTitle>
+              <FormattedMessage id={`${prefix}.headerMeterDetails`} />
+            </MeterTitle>
+            <button onClick={switchEditMode}>Edit</button>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname">
+                <FormattedMessage id={`${prefix}.manufacturerName`} />
+              </Col>
+              <Col xs="8" className="grey-underline fieldvalue">
+                <div>
+                  {meter.manufacturerName} - <FormattedMessage id={`${prefix}.${meter.manufacturerName}`} />
+                </div>
+              </Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname">
+                <FormattedMessage id={`${prefix}.manufacturerDescription`} />
+              </Col>
+              <Col xs="8" className="grey-underline fieldvalue">
+                {meter.manufacturerDescription}
+              </Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname">
+                <FormattedMessage id={`${prefix}.productName`} />
+              </Col>
+              <Col xs="8" className="grey-underline fieldvalue">
+                {meter.productName}
+              </Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname">
+                <FormattedMessage id={`${prefix}.ownership`} />
+              </Col>
+              <Col xs="8" className="grey-underline fieldvalue">
+                {meter.ownership}
+              </Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname">
+                <FormattedMessage id={`${prefix}.buildYear`} />
+              </Col>
+              <Col xs="8" className="grey-underline fieldvalue">
+                {meter.buildYear}
+              </Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname">
+                <FormattedMessage id={`${prefix}.calibratedUntil`} />
+              </Col>
+              <Col xs="8" className="grey-underline fieldvalue">
+                {moment(meter.calibratedUntil).format('DD.MM.YYYY')}
+              </Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname">
+                <FormattedMessage id={`${prefix}.converterConstant`} />
+              </Col>
+              <Col xs="8" className="grey-underline fieldvalue">
+                {meter.converterConstant}
+              </Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname">
+                <FormattedMessage id={`${prefix}.locationDescription`} />
+              </Col>
+              <Col xs="8" className="grey-underline fieldvalue">
+                {meter.locationDescription}
+              </Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname">
+                <FormattedMessage id={`${prefix}.dataSource`} />
+              </Col>
+              <Col xs="8" className="grey-underline fieldvalue">
+                <FormattedMessage id={`${prefix}.${meter.dataSource}`} />
+              </Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname">
+                <FormattedMessage id={`${prefix}.directionNumber`} />
+              </Col>
+              <Col xs="8" className="grey-underline fieldvalue">
+                <FormattedMessage id={`${prefix}.${meter.directionNumber}`} />
+              </Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname">
+                <FormattedMessage id={`${prefix}.productSerialnumber`} />
+              </Col>
+              <Col xs="8" className="grey-underline fieldvalue">
+                {meter.productSerialnumber}
+              </Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname">
+                <FormattedMessage id={`${prefix}.sequenceNumber`} />
+              </Col>
+              <Col xs="8" className="grey-underline fieldvalue">
+                {meter.sequenceNumber}
+              </Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname">
+                <FormattedMessage id={`${prefix}.type`} />
+              </Col>
+              <Col xs="8" className="grey-underline fieldvalue">
+                <FormattedMessage id={`${prefix}.${meter.type}`} />
+              </Col>
+            </Row>
+            <MeterTitle>
+              <FormattedMessage id={`${prefix}.headerEdifactInformation`} />
+            </MeterTitle>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname">
+                <FormattedMessage id={`${prefix}.edifactCycleInterval`} />
+              </Col>
+              <Col xs="8" className="grey-underline fieldvalue">
+                <div>
+                  {meter.edifactCycleInterval} - <FormattedMessage id={`${prefix}.${meter.edifactCycleInterval}`} />
+                </div>
+              </Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname">
+                <FormattedMessage id={`${prefix}.edifactDataLogging`} />
+              </Col>
+              <Col xs="8" className="grey-underline fieldvalue">
+                <div>
+                  {meter.edifactDataLogging} - <FormattedMessage id={`${prefix}.${meter.edifactDataLogging}`} />
+                </div>
+              </Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname">
+                <FormattedMessage id={`${prefix}.edifactMeasurementMethod`} />
+              </Col>
+              <Col xs="8" className="grey-underline fieldvalue">
+                <div>
+                  {meter.edifactMeasurementMethod} -{' '}
+                  <FormattedMessage id={`${prefix}.${meter.edifactMeasurementMethod}`} />
+                </div>
+              </Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname">
+                <FormattedMessage id={`${prefix}.edifactMeterSize`} />
+              </Col>
+              <Col xs="8" className="grey-underline fieldvalue">
+                <div>
+                  {meter.edifactMeterSize} - <FormattedMessage id={`${prefix}.${meter.edifactMeterSize}`} />
+                </div>
+              </Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname">
+                <FormattedMessage id={`${prefix}.edifactMeteringType`} />
+              </Col>
+              <Col xs="8" className="grey-underline fieldvalue">
+                <div>
+                  {meter.edifactMeteringType} - <FormattedMessage id={`${prefix}.${meter.edifactMeteringType}`} />
+                </div>
+              </Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname">
+                <FormattedMessage id={`${prefix}.edifactMountingMethod`} />
+              </Col>
+              <Col xs="8" className="grey-underline fieldvalue">
+                <div>
+                  {meter.edifactMountingMethod} - <FormattedMessage id={`${prefix}.${meter.edifactMountingMethod}`} />
+                </div>
+              </Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname">
+                <FormattedMessage id={`${prefix}.edifactTariff`} />
+              </Col>
+              <Col xs="8" className="grey-underline fieldvalue">
+                <div>
+                  {meter.edifactTariff} - <FormattedMessage id={`${prefix}.${meter.edifactTariff}`} />
+                </div>
+              </Col>
+            </Row>
+            <Row className="fieldgroup">
+              <Col xs="4" className="fieldname">
+                <FormattedMessage id={`${prefix}.edifactVoltageLevel`} />
+              </Col>
+              <Col xs="8" className="grey-underline fieldvalue">
+                <div>
+                  {meter.edifactVoltageLevel} - <FormattedMessage id={`${prefix}.${meter.edifactVoltageLevel}`} />
+                </div>
+              </Col>
+            </Row>
+          </MeterForm>
         </React.Fragment>
       </div>
     );
   }
 }
 
-export default injectIntl(MeterData);
+export default injectIntl(withEditOverlay(MeterData));

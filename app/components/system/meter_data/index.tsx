@@ -31,7 +31,7 @@ class MeterData extends React.Component<ExtProps & DispatchProps & StateProps & 
           {...{
             breadcrumbs: breadcrumbs.concat([
               {
-                id: meter.id,
+                id: `meter-${meter.id}`,
                 type: 'meter',
                 title: meter.productSerialnumber,
                 link: undefined,

@@ -41,7 +41,7 @@ export class System extends React.Component {
 
     const breadcrumbs = [
       { id: 0, link: '/groups', title: 'My groups' },
-      { id: group.id || 1, link: url, title: group.name },
+      { id: `group-${group.id}` || 'group-1', link: url, title: group.name },
     ];
 
     return (

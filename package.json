@@ -7,11 +7,13 @@
     "test-watch": "jest --coverage --watch",
     "dev-server": "webpack-dev-server --mode development --progress --inline --hot --port=2999",
     "storybook": "start-storybook -p 9001 -c .storybook",
-    "build":
-      "rimraf build && webpack --mode production --config ./webpack.production.config.js --progress --profile --colors",
+    "build": "rimraf build && webpack --mode production --config ./webpack.production.config.js --progress --profile --colors",
     "typecheck": "tsc"
   },
-  "pre-commit": ["test", "typecheck"],
+  "pre-commit": [
+    "test",
+    "typecheck"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -142,7 +144,9 @@
   },
   "eslintConfig": {
     "parser": "babel-eslint",
-    "extends": ["airbnb/base"],
+    "extends": [
+      "airbnb/base"
+    ],
     "env": {
       "browser": true,
       "node": true,
@@ -151,7 +155,10 @@
     "settings": {
       "import/resolver": "webpack"
     },
-    "plugins": ["react", "prettier"],
+    "plugins": [
+      "react",
+      "prettier"
+    ],
     "rules": {
       "max-len": [
         2,
@@ -203,11 +210,20 @@
     }
   },
   "jest": {
-    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
-    "moduleDirectories": ["node_modules", "app"],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "app"
+    ],
     "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
-        "<rootDir>/app/__mocks__/fileMock.js",
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/app/__mocks__/fileMock.js",
       "\\.(css|less)$": "<rootDir>/app/__mocks__/styleMock.js"
     },
     "transform": {
