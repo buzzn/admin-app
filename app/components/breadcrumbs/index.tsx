@@ -15,8 +15,8 @@ export interface BreadcrumbsProps {
 const Breadcrumbs = ({ breadcrumbs, intl }: BreadcrumbsProps & InjectIntlProps) => (
   <BreadcrumbsWrap>
     <ul>
-      {breadcrumbs.map(crumb => (
-        <li key={crumb.id}>
+      {breadcrumbs.map((crumb, idx) => (
+        <li key={`${idx}-${crumb.id}`}>
           {crumb.link ? (
             <span>
               <Link to={crumb.link}>

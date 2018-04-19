@@ -6,7 +6,8 @@ import get from 'lodash/get';
 import orderBy from 'lodash/orderBy';
 import { Row, Col } from 'reactstrap';
 import withEditOverlay from 'components/with_edit_overlay';
-import { MeterHeader, MeterTitle, MeterForm } from './style';
+import FormPanel from 'components/form_panel';
+import { MeterHeader, MeterTitle } from './style';
 
 interface Props {
   meter: any;
@@ -164,23 +165,11 @@ class MeterData extends React.Component<Props & InjectedIntlProps, State> {
           </Col>
         </Row>
         <React.Fragment>
-          <MeterForm {...{ editMode }}>
-            {editMode && (
-              <div className="side-buttons">
-                <button className="btn btn-link" onClick={switchEditMode}>
-                  Cancel
-                  <i className="fa fa-close" />
-                </button>
-                <button className="btn btn-primary" onClick={switchEditMode}>
-                  Save
-                  <i className="fa fa-check" />
-                </button>
-              </div>
-            )}
+          <FormPanel {...{ editMode, onCancel: switchEditMode, onSave: switchEditMode }}>
             <MeterTitle>
               <FormattedMessage id={`${prefix}.headerMeterDetails`} />
+              {!editMode && <i className="buzzn-pencil" onClick={switchEditMode} />}
             </MeterTitle>
-            <button onClick={switchEditMode}>Edit</button>
             <Row className="fieldgroup">
               <Col xs="4" className="fieldname">
                 <FormattedMessage id={`${prefix}.manufacturerName`} />
@@ -371,7 +360,7 @@ class MeterData extends React.Component<Props & InjectedIntlProps, State> {
                 </div>
               </Col>
             </Row>
-          </MeterForm>
+          </FormPanel>
         </React.Fragment>
       </div>
     );
