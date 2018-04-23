@@ -15,6 +15,7 @@ storiesOf('Atoms/EditableInput')
   .addDecorator(withKnobs)
   .add('view', () => <EditableInput {...props} />)
   .add('edit', () => <EditableInput {...props} editMode={true} />)
+  .add('changed', () => <EditableInput {...props} editMode={true} meta={{ dirty: true }} />)
   .add('error', () => <EditableInput {...props} editMode={true} meta={{ touched: true, error: 'some error' }} />)
   .add('dynamic', () => {
     const dynamicProps = {

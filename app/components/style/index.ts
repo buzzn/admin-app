@@ -45,7 +45,7 @@ export const FormGroup = styled.div`
   .rw-widget-picker {
     height: 3rem;
     input {
-      padding-top: 1rem;
+      padding-top: 0.2rem;
     }
     input:focus {
       border-right: none;
@@ -62,9 +62,9 @@ export const FormGroup = styled.div`
   .rw-select-bordered {
     border-left: none;
     border-bottom: solid 1px #e0e0e0;
-    background: #f5f5f5;
+    background-color: #f5f5f5;
     .rw-btn-select {
-      margin-top: -1rem;
+      margin-top: -0.4rem;
     }
   }
   .rw-widget-input,
@@ -81,23 +81,76 @@ export const FormGroup = styled.div`
     transition: all 200ms;
     opacity: 0.5;
   }
-  input {
-    background: #f5f5f5;
-    border: none;
-    border-bottom: solid 1px #e0e0e0;
-    border-radius: 0;
-    padding-top: 1.4rem;
-    height: 3rem;
-  }
-  input:focus {
-    padding-left: 0.8rem;
-    background: #f5f5f5;
-    border-left: solid 3px black;
-    border-right: solid 3px black;
-    border-bottom: solid 1px black;
-  }
   label.top {
     font-size: 75%;
     transform: translate3d(0, -36%, 0);
+  }
+  input,
+  select {
+    background-color: #f5f5f5;
+    border: none;
+    border-bottom: solid 1px #e0e0e0;
+    border-radius: 0;
+    padding-top: 0.8rem;
+    height: 3.36rem !important;
+    &.dirty {
+      background-color: rgba(33, 211, 67, 0.1);
+    }
+    &.form-control-danger {
+      background-color: rgba(255, 74, 0, 0.1);
+    }
+  }
+  input:focus,
+  select:focus {
+    padding-left: 0.8rem;
+    background-color: #f5f5f5;
+    border-left: solid 3px black;
+    border-right: solid 3px black;
+    border-bottom: solid 1px black;
+    &.dirty {
+      background-color: rgba(33, 211, 67, 0.1);
+    }
+    &.form-control-danger {
+      background-color: rgba(255, 74, 0, 0.1);
+    }
+  }
+  .inline-error {
+    color: #ff4a00;
+    text-transform: uppercase;
+    font-size: 0.6875rem;
+    position: absolute;
+    font-weight: normal;
+    bottom: 0;
+    right: 8px;
+  }
+  .error-icon {
+    color: #ff4a00;
+    position: absolute;
+    font-weight: normal;
+    font-size: 1.3rem;
+    top: 4px;
+    right: 8px;
+  }
+  .date-wrapper {
+    &.dirty {
+      .rw-widget-picker {
+        input {
+          background-color: rgba(33, 211, 67, 0.1);
+        }
+        .rw-select-bordered {
+          background-color: rgba(33, 211, 67, 0.1);
+        }
+      }
+    }
+    &.form-control-danger {
+      .rw-widget-picker {
+        input {
+          background-color: rgba(255, 74, 0, 0.1);
+        }
+        .rw-select-bordered {
+          background-color: rgba(255, 74, 0, 0.1);
+        }
+      }
+    }
   }
 `;

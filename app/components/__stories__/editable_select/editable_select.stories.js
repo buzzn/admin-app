@@ -14,4 +14,5 @@ const props = {
 storiesOf('Atoms/EditableSelect')
   .add('view', () => <EditableSelect {...props} />)
   .add('edit', () => <EditableSelect {...props} editMode={true} />)
+  .add('changed', () => <EditableSelect {...props} editMode={true} meta={{ dirty: true }} />)
   .add('error', () => <EditableSelect {...props} editMode={true} meta={{ touched: true, error: 'some error' }} />);

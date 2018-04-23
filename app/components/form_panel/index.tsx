@@ -5,6 +5,8 @@ interface Props {
   editMode: boolean;
   onCancel: () => void;
   onSave: () => void;
+  cancelDisabled: boolean;
+  saveDisabled: boolean;
 }
 
 interface State {
@@ -59,18 +61,18 @@ class FormPanel extends React.Component<Props, State> {
   };
 
   render() {
-    const { editMode, children, onCancel, onSave } = this.props;
+    const { editMode, children, onCancel, onSave, cancelDisabled, saveDisabled } = this.props;
     const { top } = this.state;
 
     return (
       <Wrapper {...{ editMode }} innerRef={this.wrapperRef}>
         {editMode && (
           <div className="side-buttons" ref={this.buttonsRef} style={{ top: `${top}px` }}>
-            <button className="btn btn-link" onClick={onCancel}>
+            <button className="btn btn-link" onClick={onCancel} disabled={cancelDisabled}>
               Cancel
               <i className="fa fa-close" />
             </button>
-            <button className="btn btn-primary" onClick={onSave}>
+            <button className="btn btn-primary" onClick={onSave} disabled={saveDisabled} type="submit">
               Save
               <i className="fa fa-check" />
             </button>

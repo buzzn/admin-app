@@ -1,14 +1,25 @@
 import * as React from 'react';
+import { FormGroup } from 'components/style';
 
 import './style.scss';
 
-const EditableInput = ({ editMode, input, meta: { touched, error } }) => {
+const EditableInput = ({ editMode, input, meta: { touched, error, dirty } }) => {
   if (editMode) {
     return (
-      <div className={`editable-input form-group ${touched && error && 'has-danger'}`}>
-        <input className={`form-control ${touched && error && 'form-control-danger'}`} {...input} type="text" />
-        {touched && error && <div className="form-control-feedback">{error}</div>}
-      </div>
+      <FormGroup className={`editable-input ${touched && error && 'has-danger'}`}>
+        <input
+          className={`form-control ${touched && error && 'form-control-danger'} ${dirty && 'dirty'}`}
+          {...input}
+          type="text"
+        />
+        {touched &&
+          !!error && (
+            <React.Fragment>
+              <div className="inline-error">{error}</div>
+              <i className="error-icon buzzn-attention" />
+            </React.Fragment>
+          )}
+      </FormGroup>
     );
   }
   return <span>{input.value}</span>;

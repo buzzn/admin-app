@@ -109,7 +109,7 @@ class NewRoot extends React.Component {
         <ScrollToTop>
           <div className={`new-ui ${!token ? 'no-token' : ''}`}>
             <HealthContainer />
-            <Transition in={editMode} timeout={{ enter: 0, exit: 300 }} mountOnEnter unmountOnExit>
+            <Transition in={(editMode && !!token)} timeout={{ enter: 0, exit: 300 }} mountOnEnter unmountOnExit>
               {(state) => {
                 const defaultStyle = { transition: 'opacity 300ms ease-in-out', opacity: 0 };
                 const transitions = { entering: { opacity: 0 }, entered: { opacity: 0.8 }, exiting: { cursor: 'auto' }, exited: { opacity: 0 } };

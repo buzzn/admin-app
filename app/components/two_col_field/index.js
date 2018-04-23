@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
 import isEqual from 'lodash/isEqual';
+import { Row, Col } from 'reactstrap';
 import { fieldValidator } from 'validation_functions';
 
 class TwoColField extends Component {
   state = { validate: fieldValidator(this.props.validationRules[this.props.name]) };
 
-  static getDerivedStateFromProps(nextProps) {
-    if (!isEqual(this.props.validationRules[this.props.name], nextProps.validationRules[nextProps.name])) {
-      return { validate: fieldValidator(nextProps.validationRules[nextProps.name]) };
+  componentDidUpdate(prevProps) {
+    if (!isEqual(prevProps.validationRules[prevProps.name], this.props.validationRules[this.props.name])) {
+      return { validate: fieldValidator(this.props.validationRules[this.props.name]) };
     }
 
     return null;
@@ -17,18 +18,18 @@ class TwoColField extends Component {
 
   render() {
     return (
-      <div className="row" style={{ minHeight: '40px' }}>
-        <div className="col-6">
+      <Row className="fieldgroup">
+        <Col xs="4" className="fieldname">
           <FormattedMessage id={`${this.props.prefix}.${this.props.name}`} />:
-        </div>
-        <div className="col-6">
+        </Col>
+        <Col xs="8" className={`${this.props.editMode ? 'editValue' : 'fieldvalue grey-underline'}`}>
           <Field
             {...this.props}
             field={this.props.field || this.props.validationRules[this.props.name]}
             validate={this.state.validate}
           />
-        </div>
-      </div>
+        </Col>
+      </Row>
     );
   }
 }

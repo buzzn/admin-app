@@ -28,6 +28,5 @@ export const Wrapper = styled.div`
     padding-top: 14px;
     padding-left: 20px;
     transition: all 0.7s ease 0s;
-    /* box-shadow: 0 2px 32px 0 rgba(0, 0, 0, 0.62); */
   }
 `;
