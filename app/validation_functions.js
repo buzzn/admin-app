@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export const required = value => (value ? undefined : 'Required');
 
 export const isString = value => (value === undefined || typeof value === 'string' ? undefined : 'Must be a string');
@@ -32,7 +34,7 @@ export const isPhoneNumber = value =>
 export const isIncluded = list => value => (list.includes(value) ? undefined : 'Must be the one of the values');
 
 export const isDate = value =>
-  (value === undefined || (Object.prototype.toString.call(value) === '[object Date]' && value.valueOf())
+  (value === undefined || moment(value).isValid()
     ? undefined
     : 'Must be a valid date');
 

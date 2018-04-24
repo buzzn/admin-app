@@ -20,5 +20,9 @@ export const MeterHeader = styled(Row)`
 `;
 
 export const MeterTitle = styled.h5`
-  margin-top: 3rem;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  i {
+    float: right;
+  }
 `;

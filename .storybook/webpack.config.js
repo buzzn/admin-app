@@ -45,8 +45,8 @@ module.exports = (baseConfig, env) => {
   config.resolve.extensions = config.resolve.extensions.concat(['.ts', '.tsx', '.js', '.json']);
   config.resolve.alias.moment$ = 'moment/moment.js';
 
-  config.entry.manager = ['babel-polyfill', 'bootstrap-loader'].concat(config.entry.manager);
-  config.entry.preview = ['babel-polyfill', 'bootstrap-loader'].concat(config.entry.preview);
+  config.entry.manager = ['@babel/polyfill', 'bootstrap-loader'].concat(config.entry.manager);
+  config.entry.preview = ['@babel/polyfill', 'bootstrap-loader'].concat(config.entry.preview);
 
   return config;
 };
