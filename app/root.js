@@ -121,7 +121,7 @@ class NewRoot extends React.Component {
 
 
             <RouterHack {...{ token, devMode, multiGroups, editMode, switchEditMode: this.switchEditMode }} />
-            <Alert stack={{ limit: 3 }} effect="genie" html={true} />
+            <Alert stack={{ limit: 3 }} effect="genie" html={true} offset={72} />
           </div>
         </ScrollToTop>
       </BrowserRouter>
