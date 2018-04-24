@@ -6,6 +6,7 @@ import moment from 'moment';
 import get from 'lodash/get';
 import orderBy from 'lodash/orderBy';
 import { Row, Col } from 'reactstrap';
+import Alert from 'react-s-alert';
 import withEditOverlay from 'components/with_edit_overlay';
 import FormPanel from 'components/form_panel';
 import { MeterHeader, MeterTitle } from './style';
@@ -100,7 +101,10 @@ class MeterData extends React.Component<Props & InjectedIntlProps, State> {
           reject,
           groupId,
         });
-      }).then(() => switchEditMode());
+      }).then(() => {
+        Alert.success('Saved!');
+        switchEditMode();
+      });
 
     return (
       <div className="meter-data">
@@ -225,10 +229,35 @@ class MeterData extends React.Component<Props & InjectedIntlProps, State> {
               />
               <TwoColField {...{ prefix, name: 'productName', editMode, validationRules, component: EditableInput }} />
               <TwoColField {...{ prefix, name: 'ownership', editMode, validationRules, component: EditableSelect }} />
-              <TwoColField {...{ prefix, name: 'buildYear', editMode, validationRules, component: EditableInput }} />
-              <TwoColField {...{ prefix, name: 'calibratedUntil', editMode, validationRules, component: EditableDate }} />
               <TwoColField
-                {...{ prefix, name: 'converterConstant', editMode, validationRules, component: EditableInput }}
+                {...{
+                  prefix,
+                  name: 'buildYear',
+                  editMode,
+                  validationRules,
+                  component: EditableInput,
+                  normalize: value => parseFloat(value),
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'calibratedUntil',
+                  editMode,
+                  validationRules,
+                  component: EditableDate,
+                  normalize: value => moment(value).format('YYYY-MM-DD'),
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'converterConstant',
+                  editMode,
+                  validationRules,
+                  component: EditableInput,
+                  normalize: value => parseFloat(value),
+                }}
               />
               <TwoColField
                 {...{ prefix, name: 'locationDescription', editMode, validationRules, component: EditableInput }}

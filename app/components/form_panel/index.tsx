@@ -35,10 +35,17 @@ class FormPanel extends React.Component<Props, State> {
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll, true);
+    window.onbeforeunload = null;
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.editMode && !prevProps.editMode) this.handleScroll();
+    if (this.props.editMode && !prevProps.editMode) {
+      this.handleScroll();
+      window.onbeforeunload = () => true;
+    }
+    if (!this.props.editMode && prevProps.editMode) {
+      window.onbeforeunload = null;
+    }
   }
 
   handleScroll = () => {
