@@ -3,6 +3,7 @@ import { Wrapper } from './style';
 
 interface Props {
   editMode: boolean;
+  dirty: boolean;
   onCancel: () => void;
   onSave: () => void;
   cancelDisabled: boolean;
@@ -41,9 +42,12 @@ class FormPanel extends React.Component<Props, State> {
   componentDidUpdate(prevProps) {
     if (this.props.editMode && !prevProps.editMode) {
       this.handleScroll();
+      window.scrollBy(0, this.wrapperRef.current.getBoundingClientRect().top - 72);
+    }
+    if (this.props.dirty && !prevProps.dirty) {
       window.onbeforeunload = () => true;
     }
-    if (!this.props.editMode && prevProps.editMode) {
+    if ((!this.props.editMode && prevProps.editMode) || (!this.props.dirty && prevProps.dirty)) {
       window.onbeforeunload = null;
     }
   }
@@ -68,14 +72,27 @@ class FormPanel extends React.Component<Props, State> {
   };
 
   render() {
-    const { editMode, children, onCancel, onSave, cancelDisabled, saveDisabled } = this.props;
+    const { editMode, children, onCancel, onSave, cancelDisabled, saveDisabled, dirty } = this.props;
     const { top } = this.state;
 
     return (
       <Wrapper {...{ editMode }} innerRef={this.wrapperRef}>
         {editMode && (
           <div className="side-buttons" ref={this.buttonsRef} style={{ top: `${top}px` }}>
-            <button className="btn btn-link" onClick={onCancel} disabled={cancelDisabled}>
+            <button
+              className="btn btn-link"
+              onClick={(event) => {
+                if (dirty && confirm('You have unsaved changes in form, leave anyways?')) {
+                  onCancel();
+                } else if (!dirty) {
+                  onCancel();
+                } else {
+                  event.currentTarget.blur();
+                  event.preventDefault();
+                }
+              }}
+              disabled={cancelDisabled}
+            >
               Cancel
               <i className="fa fa-close" />
             </button>

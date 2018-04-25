@@ -202,6 +202,7 @@ class MeterData extends React.Component<Props & InjectedIntlProps, State> {
             <FormPanel
               {...{
                 editMode,
+                dirty: !pristine,
                 onCancel: () => {
                   reset();
                   switchEditMode();
