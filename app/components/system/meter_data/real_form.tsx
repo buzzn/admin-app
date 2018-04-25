@@ -14,6 +14,7 @@ import EditableInput from 'components/editable_input';
 import EditableSelect from 'components/editable_select';
 import TwoColField from 'components/two_col_field';
 import EditableDate from 'components/editable_date';
+import { dateNormalizer, numberNormalizer } from 'validation_normalizers';
 
 interface Props {
   meter: any;
@@ -236,7 +237,7 @@ class MeterData extends React.Component<Props & InjectedIntlProps, State> {
                   editMode,
                   validationRules,
                   component: EditableInput,
-                  normalize: value => parseFloat(value),
+                  normalize: numberNormalizer,
                 }}
               />
               <TwoColField
@@ -246,7 +247,7 @@ class MeterData extends React.Component<Props & InjectedIntlProps, State> {
                   editMode,
                   validationRules,
                   component: EditableDate,
-                  normalize: value => moment(value).format('YYYY-MM-DD'),
+                  normalize: dateNormalizer('YYYY-MM-DD'),
                 }}
               />
               <TwoColField
@@ -256,7 +257,7 @@ class MeterData extends React.Component<Props & InjectedIntlProps, State> {
                   editMode,
                   validationRules,
                   component: EditableInput,
-                  normalize: value => parseFloat(value),
+                  normalize: numberNormalizer,
                 }}
               />
               <TwoColField
