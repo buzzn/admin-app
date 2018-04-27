@@ -3,7 +3,11 @@ import sample from 'lodash/sample';
 
 const d3 = require('d3');
 
-class Bubbles extends React.Component {
+interface Props {
+  type: 'signIn' | 'maintenance';
+}
+
+class BgBubbles extends React.Component<Props> {
   data: Array<{ id: number; r: number }>;
   svgDom: SVGSVGElement | null;
   redrawTimer: number;
@@ -13,12 +17,16 @@ class Bubbles extends React.Component {
   node: any;
   colors: Array<string>;
   baseColor: string;
+  radiusMargin: number;
+  hoverable: boolean;
 
   constructor(props) {
     super(props);
 
     this.svgDom = null;
-    this.baseColor = '#d8d8d8';
+    this.baseColor = props.type === 'signIn' ? '#d8d8d8' : '#00BCD4';
+    this.radiusMargin = props.type === 'signIn' ? 1 : 10;
+    this.hoverable = props.type === 'signIn';
     this.colors = [
       '#d4e157',
       '#afb42b',
@@ -63,7 +71,9 @@ class Bubbles extends React.Component {
   draw = () => {
     const colors = this.colors;
     const baseColor = this.baseColor;
+    const hoverable = this.hoverable;
     const showDetails = (_data, _i, element) => {
+      if (!hoverable) return;
       d3
         .select(element)
         .transition()
@@ -73,6 +83,7 @@ class Bubbles extends React.Component {
         });
     };
     const hideDetails = (_data, _i, element) => {
+      if (!hoverable) return;
       d3
         .select(element)
         .transition()
@@ -88,8 +99,8 @@ class Bubbles extends React.Component {
       .force(
         'collide',
         d3
-          .forceCollide(d => d.r - 1)
-          .radius(d => d.r - 1)
+          .forceCollide(d => d.r - this.radiusMargin)
+          .radius(d => d.r - this.radiusMargin)
           .strength(1)
           .iterations(1),
       )
@@ -142,8 +153,8 @@ class Bubbles extends React.Component {
       .force(
         'collide',
         d3
-          .forceCollide(d => d.r - 1)
-          .radius(d => d.r - 1)
+          .forceCollide(d => d.r - this.radiusMargin)
+          .radius(d => d.r - this.radiusMargin)
           .strength(1)
           .iterations(1),
       )
@@ -158,4 +169,4 @@ class Bubbles extends React.Component {
   }
 }
 
-export default Bubbles;
+export default BgBubbles;

@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import Auth from '@buzzn/module_auth';
 import { FormGroup } from 'components/style';
 import { SignInWrapper } from './style';
-import Bubbles from './bubbles';
+import BgBubbles from 'components/bg_bubbles';
 
 const BuzznLogo = require('images/logo_black.png');
 
@@ -21,7 +21,7 @@ class SignIn extends React.Component<ExtProps & DispatchProps & StateProps> {
       <SignInWrapper>
         <div className="background" />
         <div className="bubbles-wrapper">
-          <Bubbles />
+          <BgBubbles type="signIn" />
         </div>
         <div className="form-signin-wrapper">
           <form className="form-signin" onSubmit={this.signIn}>
