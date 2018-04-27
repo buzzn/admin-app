@@ -25,6 +25,7 @@ export const initialState = {
   userMeValidationRules: {},
   uiVer: '',
   health: {},
+  appLoading: true,
   ui: {
     devMode: false,
     groupsListTiles: false,
@@ -68,6 +69,9 @@ export function appReducer(state = initialState, action) {
 
     case constants.SET_HEALTH:
       return { ...state, health: action.health };
+
+    case constants.SET_APP_LOADING:
+      return { ...state, appLoading: action.appLoading };
 
     case constants.SET_UI:
     case constants.SET_TABLE_SORT:

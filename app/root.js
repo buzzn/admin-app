@@ -28,11 +28,12 @@ import GroupSettingsContainer from 'components/group_settings';
 import BubblesContainer from 'components/bubbles';
 import HealthContainer from 'components/health';
 import Footer from 'components/footer';
+import AppLoading from 'components/app_loading';
+import AppMaintenance from 'components/app_maintenance';
 import { EditOverlay } from 'style';
 import './react_table_config';
 
 export const EditOverlayContext = React.createContext();
-
 
 // FIXME: react router old context api hack. See react-router#5901, react-router#6072, react#12551, react#12586
 const RouterHack = ({ token, devMode, multiGroups, editMode, switchEditMode }) => (
@@ -64,9 +65,7 @@ const RouterHack = ({ token, devMode, multiGroups, editMode, switchEditMode }) =
                       <Route path="/groups/:groupId/settings" component={GroupSettingsContainer} />
                       <Route
                         path="/groups/:groupId"
-                        render={({ match: { params: { groupId } } }) => (
-                          <Redirect to={`/groups/${groupId || ''}/settings`} />
-                        )}
+                        render={({ match: { params: { groupId } } }) => <Redirect to={`/groups/${groupId || ''}/settings`} />}
                       />
                       <Route path="/groups" component={LocalpoolsListContainer} />
                       <Route render={() => <div>404</div>} />
@@ -101,30 +100,43 @@ class NewRoot extends React.Component {
   };
 
   render() {
-    const { token, devMode, multiGroups } = this.props;
+    const { token, devMode, multiGroups, appLoading, health } = this.props;
     const { editMode } = this.state;
 
     return (
-      <BrowserRouter>
-        <ScrollToTop>
-          <div className={`new-ui ${!token ? 'no-token' : ''}`}>
-            <HealthContainer />
-            <Transition in={(editMode && !!token)} timeout={{ enter: 0, exit: 300 }} mountOnEnter unmountOnExit>
-              {(state) => {
-                const defaultStyle = { transition: 'opacity 300ms ease-in-out', opacity: 0 };
-                const transitions = { entering: { opacity: 0 }, entered: { opacity: 0.8 }, exiting: { cursor: 'auto' }, exited: { opacity: 0 } };
-                return (
-                  <EditOverlay style={{ ...defaultStyle, ...transitions[state] }} />
-                );
-              }}
-            </Transition>
+      <React.Fragment>
+        {appLoading ? (
+          <AppLoading />
+        ) : (
+          <BrowserRouter>
+            <ScrollToTop>
+              <div className={`new-ui ${!token ? 'no-token' : ''}`}>
+                <HealthContainer />
+                <Transition in={editMode && !!token} timeout={{ enter: 0, exit: 300 }} mountOnEnter unmountOnExit>
+                  {(state) => {
+                    const defaultStyle = { transition: 'opacity 300ms ease-in-out', opacity: 0 };
+                    const transitions = {
+                      entering: { opacity: 0 },
+                      entered: { opacity: 0.8 },
+                      exiting: { cursor: 'auto' },
+                      exited: { opacity: 0 },
+                    };
+                    return <EditOverlay style={{ ...defaultStyle, ...transitions[state] }} />;
+                  }}
+                </Transition>
 
+                {health.healthy ? (
+                  <RouterHack {...{ token, devMode, multiGroups, editMode, switchEditMode: this.switchEditMode }} />
+                ) : (
+                  <AppMaintenance />
+                )}
 
-            <RouterHack {...{ token, devMode, multiGroups, editMode, switchEditMode: this.switchEditMode }} />
-            <Alert stack={{ limit: 3 }} effect="genie" html={true} offset={72} />
-          </div>
-        </ScrollToTop>
-      </BrowserRouter>
+                <Alert stack={{ limit: 3 }} effect="genie" html={true} offset={72} />
+              </div>
+            </ScrollToTop>
+          </BrowserRouter>
+        )}
+      </React.Fragment>
     );
   }
 }
@@ -133,6 +145,8 @@ const mapStateToProps = state => ({
   token: state.auth.token,
   devMode: state.app.ui.devMode,
   multiGroups: !!state.groups.groups.array.length,
+  appLoading: state.app.appLoading,
+  health: state.app.health,
 });
 
 export default connect(mapStateToProps)(NewRoot);
