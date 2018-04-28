@@ -14,6 +14,9 @@ body {
     &.no-token {
       padding-top: 0;
     }
+    .s-alert-box {
+      z-index: 3000;
+    }
     .under-construction {
         position: relative;
         opacity: 0.6;

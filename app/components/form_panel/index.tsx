@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import { Wrapper } from './style';
 
 interface Props {
@@ -14,7 +15,7 @@ interface State {
   top: number;
 }
 
-class FormPanel extends React.Component<Props, State> {
+class FormPanel extends React.Component<Props & InjectedIntlProps, State> {
   wrapperRef: any;
   buttonsRef: any;
   ticking: boolean;
@@ -72,7 +73,7 @@ class FormPanel extends React.Component<Props, State> {
   };
 
   render() {
-    const { editMode, children, onCancel, onSave, cancelDisabled, saveDisabled, dirty } = this.props;
+    const { editMode, children, onCancel, onSave, cancelDisabled, saveDisabled, dirty, intl } = this.props;
     const { top } = this.state;
 
     return (
@@ -82,7 +83,7 @@ class FormPanel extends React.Component<Props, State> {
             <button
               className="btn btn-link"
               onClick={(event) => {
-                if (dirty && confirm('You have unsaved changes in form, leave anyways?')) {
+                if (dirty && confirm(intl.formatMessage({ id: 'admin.messages.cancelDirtyForm' }))) {
                   onCancel();
                 } else if (!dirty) {
                   onCancel();
@@ -93,11 +94,11 @@ class FormPanel extends React.Component<Props, State> {
               }}
               disabled={cancelDisabled}
             >
-              Cancel
+              <FormattedMessage id="admin.buttons.cancel" />
               <i className="fa fa-close" />
             </button>
             <button className="btn btn-primary" onClick={onSave} disabled={saveDisabled} type="submit">
-              Save
+              <FormattedMessage id="admin.buttons.save" />
               <i className="fa fa-check" />
             </button>
           </div>
@@ -108,4 +109,4 @@ class FormPanel extends React.Component<Props, State> {
   }
 }
 
-export default FormPanel;
+export default injectIntl(FormPanel);

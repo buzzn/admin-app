@@ -131,7 +131,7 @@ class NewRoot extends React.Component {
                   <AppMaintenance />
                 )}
 
-                <Alert stack={{ limit: 3 }} effect="genie" html={true} offset={72} />
+                <Alert stack={{ limit: 3 }} effect="slide" html={true} offset={72} timeout={5000} />
               </div>
             </ScrollToTop>
           </BrowserRouter>

@@ -39,7 +39,6 @@ export function parseResponse(response) {
     Alert.error('<h4>403</h4>All your base are belong to us.');
     return Promise.resolve({ _status: 403 });
   } else if (response.status === 422) {
-    Alert.error('<h4>422</h4>Can`t fit it in.');
     return json.then(error => Promise.resolve(wrapErrors(error.errors)));
   } else if (response.status === 401) {
     return json.then((error) => {
