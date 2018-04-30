@@ -8,7 +8,7 @@ import PageTitle from 'components/page_title';
 import ContractsList from './contracts_list';
 import ContractDataForm from './contract_data';
 
-export class Contracts extends React.Component {
+export class Documents extends React.Component {
   componentDidMount() {
     const { loadGroupContracts, loadGroup, group, match: { params: { groupId } } } = this.props;
     if (group.id !== groupId) loadGroup(groupId);
@@ -122,4 +122,4 @@ export default connect(mapStateToProps, {
   loadGroupContracts: ContractsModule.actions.loadGroupContracts,
   loadGroup: Groups.actions.loadGroup,
   setGroup: Groups.actions.setGroup,
-})(Contracts);
+})(Documents);
