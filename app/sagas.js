@@ -98,7 +98,7 @@ export function* setUI() {
 export function* initialLoadPause() {
   yield all([
     take(constants.SET_HEALTH),
-    delay(1000),
+    delay(2000),
   ]);
 
   yield put(actions.setAppLoading(false));
