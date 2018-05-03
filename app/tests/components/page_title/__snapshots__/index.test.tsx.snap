@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`page title tests regular 1`] = `
+<div
+  className="sc-bwzfXH cQsxgW row"
+  thin={undefined}
+>
+  <div
+    className="col-12"
+  >
+    <div
+      className="sc-bdVaJa RchYe"
+    >
+      <ul>
+        <li>
+          <span>
+            Title
+          </span>
+        </li>
+      </ul>
+    </div>
+    <span
+      className="sc-htpNat dpSnWL"
+    >
+      Page title
+    </span>
+  </div>
+</div>
+`;
+
+exports[`page title tests thin 1`] = `
+<div
+  className="sc-bwzfXH cZZlKf row"
+  thin="true"
+>
+  <div
+    className="col-12"
+  >
+    <div
+      className="sc-bdVaJa RchYe"
+    >
+      <ul>
+        <li>
+          <span>
+            Title
+          </span>
+        </li>
+      </ul>
+    </div>
+    <span
+      className="sc-htpNat dpSnWL"
+    >
+      Page title
+    </span>
+  </div>
+</div>
+`;
