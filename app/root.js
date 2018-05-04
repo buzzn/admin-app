@@ -125,7 +125,7 @@ class NewRoot extends React.Component {
                   }}
                 </Transition>
 
-                {health.healthy ? (
+                {(health.healthy && health.maintenance === 'off') ? (
                   <RouterHack {...{ token, devMode, multiGroups, editMode, switchEditMode: this.switchEditMode }} />
                 ) : (
                   <AppMaintenance />
