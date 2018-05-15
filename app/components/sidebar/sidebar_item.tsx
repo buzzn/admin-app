@@ -25,7 +25,7 @@ const SidebarItem = ({ to, children, exact, icon, devMode }: ItemProps & Content
 
 const SidebarItemContent = ({ children, icon }: ContentProps) => (
   <React.Fragment>
-    <SidebarIcon className={`fa fa-lg fa-${icon}`} />
+    <SidebarIcon className={icon.startsWith('fa') ? `fa fa-lg ${icon}`: `buzzn-icon ${icon}`} />
     <SidebarText>{children}</SidebarText>
   </React.Fragment>
 );

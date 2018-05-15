@@ -64,7 +64,12 @@ const MarketLocationsList = ({
   return (
     <React.Fragment>
       <PageTitle
-        {...{ breadcrumbs: breadcrumbs.concat([{ id: '-----', title: 'System' }]), title: 'System' }}
+        {...{
+          breadcrumbs: breadcrumbs.concat([
+            { id: '-----', title: intl.formatMessage({ id: 'admin.breadcrumbs.devices' }) },
+          ]),
+          title: intl.formatMessage({ id: 'admin.breadcrumbs.devices' }),
+        }}
       />
       <CenterContent>
         <SubNav>
