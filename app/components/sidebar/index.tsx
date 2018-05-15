@@ -67,7 +67,7 @@ class Sidebar extends React.Component<Props> {
           <SidebarItem to={`${url}/settings`} icon="fa-cogs">
             <FormattedMessage id={`${prefix}.settings`} />
           </SidebarItem>
-          <SidebarItem to={`${url}/devices`} icon="buzzn-superadmin" devMode={devMode}>
+          <SidebarItem to={`${url}/devices`} icon="buzzn-devices" devMode={devMode}>
             <FormattedMessage id={`${prefix}.devices`} />
           </SidebarItem>
           <SidebarItem to={`${url}/bubbles`} icon="fa-pie-chart" devMode={devMode}>
