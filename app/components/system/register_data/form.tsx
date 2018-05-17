@@ -49,7 +49,7 @@ class RegisterData extends React.Component<Props> {
             <FormattedMessage id="admin.marketLocations.name" />
           </Col>
           <Col xs="8" className="grey-underline fieldvalue">
-            <Link to={`${url}/market-locations/${register.marketLocation.id}`}>
+            <Link to={`${url}/${register.marketLocation.id}`}>
               {register.marketLocation.name}
             </Link>
           </Col>

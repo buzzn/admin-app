@@ -155,7 +155,7 @@ class BillingData extends React.Component<
                       to={`${url
                         .split('/')
                         .slice(0, -1)
-                        .join('/')}/system/market-locations/${m.id}`}
+                        .join('/')}/market-locations/${m.id}`}
                     >
                       {m.name}
                     </Link>

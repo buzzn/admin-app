@@ -59,7 +59,7 @@ const RouterHack = ({ token, devMode, multiGroups, editMode, switchEditMode }) =
                       <Route path="/groups/:groupId/powertakers" component={PowertakersContainer} />
                       <Route path="/groups/:groupId/tariffs" component={TariffsContainer} />
                       <Route path="/groups/:groupId/billing" component={BillingContainer} />
-                      <Route path="/groups/:groupId/system" component={SystemContainer} />
+                      <Route path="/groups/:groupId/market-locations" component={SystemContainer} />
                       <Route path="/groups/:groupId/documents" component={DocumentsContainer} />
                       <Route path="/groups/:groupId/bubbles" component={BubblesContainer} />
                       <Route path="/groups/:groupId/settings" component={GroupSettingsContainer} />

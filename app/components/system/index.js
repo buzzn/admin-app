@@ -62,14 +62,6 @@ export class System extends React.Component {
           )}
         />
         <Route
-          path={`${url}/market-locations/:locationId`}
-          render={({ match: { url: locationUrl, params: { locationId } } }) => {
-            const marketLocation = marketLocations.array.find(m => m.id === locationId);
-            if (!marketLocation) return <Redirect to={url} />;
-            return <MarketLocationData {...{ breadcrumbs, url, groupId, locationUrl, marketLocation }} />;
-          }}
-        />
-        <Route
           path={`${url}/meters/:meterId`}
           render={({ match: { params: { meterId } } }) => {
             const meter = meters.find(m => m.id === meterId);
@@ -95,6 +87,14 @@ export class System extends React.Component {
                 }}
               />
             );
+          }}
+        />
+        <Route
+          path={`${url}/:locationId`}
+          render={({ match: { url: locationUrl, params: { locationId } } }) => {
+            const marketLocation = marketLocations.array.find(m => m.id === locationId);
+            if (!marketLocation) return <Redirect to={url} />;
+            return <MarketLocationData {...{ breadcrumbs, url, groupId, locationUrl, marketLocation }} />;
           }}
         />
         <Route path={url}>

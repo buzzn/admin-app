@@ -50,7 +50,7 @@ class PowertakerData extends React.Component<
         ? `${url
           .split('/')
           .slice(0, -1)
-          .join('/')}/system/market-locations/${c.marketLocation.id}`
+          .join('/')}/market-locations/${c.marketLocation.id}`
         : '',
     }));
 

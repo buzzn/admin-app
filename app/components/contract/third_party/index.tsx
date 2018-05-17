@@ -33,7 +33,7 @@ const ThirdPartyContract = ({ url, contract, prefix, register }: Props) => (
               to={`${url
                 .split('/')
                 .slice(0, -1)
-                .join('/')}/system/market-locations/${register.locationId}`}
+                .join('/')}/market-locations/${register.locationId}`}
             >
               {truncate(register.name, { length: 25 })} >
             </BigLink>
@@ -61,7 +61,7 @@ const ThirdPartyContract = ({ url, contract, prefix, register }: Props) => (
             to={`${url
               .split('/')
               .slice(0, -1)
-              .join('/')}/system/market-locations/${register.locationId}`}
+              .join('/')}/market-locations/${register.locationId}`}
           >
             {register.name}
           </Link>
@@ -71,7 +71,7 @@ const ThirdPartyContract = ({ url, contract, prefix, register }: Props) => (
             to={`${url
               .split('/')
               .slice(0, -1)
-              .join('/')}/system/meters/${register.meterId}`}
+              .join('/')}/market-locations/meters/${register.meterId}`}
           >
             {register.meter.productSerialnumber}
           </Link>

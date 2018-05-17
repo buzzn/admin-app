@@ -57,7 +57,7 @@ class Details extends React.Component<ExtProps & StateProps & DispatchProps & In
         ? `${url
           .split('/')
           .slice(0, -1)
-          .join('/')}/system/meters/${i.meter.id}`
+          .join('/')}/market-locations/meters/${i.meter.id}`
         : '',
       dates: {
         display: `${moment(i.beginDate).format('DD.MM.YYYY')} - ${moment(i.endDate).format('DD.MM.YYYY')}`,
@@ -218,7 +218,7 @@ class Details extends React.Component<ExtProps & StateProps & DispatchProps & In
                   to={`${url
                     .split('/')
                     .slice(0, -1)
-                    .join('/')}/system/market-locations/${marketLocation.id}`}
+                    .join('/')}/market-locations/${marketLocation.id}`}
                 >
                   {marketLocation.name}
                 </Link>

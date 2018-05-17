@@ -67,7 +67,7 @@ const PowertakersList = ({
     linkMarketLocation: `${url
       .split('/')
       .slice(0, -1)
-      .join('/')}/system/market-locations/${p.marketLocation.id}`,
+      .join('/')}/market-locations/${p.marketLocation.id}`,
     beginDate: moment(p.beginDate).toDate(),
     lastDate: p.lastDate ? moment(p.lastDate).toDate() : p.lastDate,
     status: {
