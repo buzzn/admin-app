@@ -8,7 +8,7 @@ import ChartLayout from './charts_layout';
 import './style.scss';
 
 export class Analytics extends React.Component {
-  componentWillMount() {
+  componentDidMount() {
     const { group, loadGroup, match: { params: { groupId } }, setGroupId } = this.props;
     if (group.id !== groupId) loadGroup(groupId);
     setGroupId({ groupId });

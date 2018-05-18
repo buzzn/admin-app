@@ -3,6 +3,9 @@ import camelCase from 'lodash/camelCase';
 import snakeCase from 'lodash/snakeCase';
 import reduce from 'lodash/reduce';
 import last from 'lodash/last';
+import transform from 'lodash/transform';
+import isEqual from 'lodash/isEqual';
+import isObject from 'lodash/isObject';
 import Alert from 'react-s-alert';
 import Auth from '@buzzn/module_auth';
 import store from './configure_store';
@@ -46,9 +49,8 @@ export function parseResponse(response) {
       }
       return Promise.reject(error);
     });
-  } else {
-    return json.then(error => Promise.reject(error));
   }
+  return json.then(error => Promise.reject(error));
 }
 
 export function camelizeResponseArray(data) {
@@ -90,9 +92,7 @@ export function snakeReq(data) {
 
 export function logException(ex, context) {
   if (Raven.isSetup()) {
-    Raven.captureException(ex, {
-      extra: context,
-    });
+    Raven.captureException(ex, { extra: context });
   }
   console.error(ex);
 }
@@ -103,12 +103,12 @@ export function getAllUrlParams() {
   if (queryString) {
     return queryString.split('&').reduce((sum, part) => {
       const partSplit = part.split('=');
-      let paramNum = undefined;
+      let paramNum;
       let paramName = partSplit[0].replace(/\[\d*\]/, (v) => {
         paramNum = v.slice(1, -1);
         return '';
       });
-      let paramValue = typeof(partSplit[1]) === 'undefined' ? true : partSplit[1];
+      let paramValue = typeof partSplit[1] === 'undefined' ? true : partSplit[1];
 
       paramName = paramName.toLowerCase();
       paramValue = paramValue.toLowerCase();
@@ -123,33 +123,39 @@ export function getAllUrlParams() {
           sum[paramName][paramNum] = paramValue;
         }
         return sum;
-      } else {
-        return { ...sum, [paramName]: paramValue };
       }
+      return { ...sum, [paramName]: paramValue };
     }, {});
-  } else {
-    return {};
   }
+  return {};
 }
 
-function formatNumber(value) {
+function formatNumber(value, extended, noDecimal) {
   const decimalPoint = ',';
   let remainder = 0;
   let leadingNumber = 0;
   let formattedNumber = '';
 
-  if (value >= 1000000000000000) {
-    remainder = Number(((value % 1000000000000000) / 1000000000000).toFixed(0));
-    leadingNumber = Math.floor(value / 1000000000000000);
-  } else if (value >= 1000000000000) {
-    remainder = Number(((value % 1000000000000) / 1000000000).toFixed(0));
-    leadingNumber = Math.floor(value / 1000000000000);
-  } else if (value >= 1000000000) {
-    remainder = Number(((value % 1000000000) / 1000000).toFixed(0));
-    leadingNumber = Math.floor(value / 1000000000);
-  } else if (value >= 1000000) {
-    remainder = Number(((value % 1000000) / 1000).toFixed(0));
-    leadingNumber = Math.floor(value / 1000000);
+  if (extended) {
+    if (value >= 1000000000000000) {
+      remainder = Number(((value % 1000000000000000) / 1000000000000).toFixed(0));
+      leadingNumber = Math.floor(value / 1000000000000000);
+    } else if (value >= 1000000000000) {
+      remainder = Number(((value % 1000000000000) / 1000000000).toFixed(0));
+      leadingNumber = Math.floor(value / 1000000000000);
+    } else if (value >= 1000000000) {
+      remainder = Number(((value % 1000000000) / 1000000).toFixed(0));
+      leadingNumber = Math.floor(value / 1000000000);
+    } else if (value >= 1000000) {
+      remainder = Number(((value % 1000000) / 1000).toFixed(0));
+      leadingNumber = Math.floor(value / 1000000);
+    } else if (value >= 1000) {
+      remainder = Number((value % 1000).toFixed(0));
+      leadingNumber = Math.floor(value / 1000);
+    } else {
+      remainder = 0;
+      leadingNumber = value.toFixed(0);
+    }
   } else if (value >= 1000) {
     remainder = Number((value % 1000).toFixed(0));
     leadingNumber = Math.floor(value / 1000);
@@ -157,15 +163,16 @@ function formatNumber(value) {
     remainder = 0;
     leadingNumber = value.toFixed(0);
   }
-  if (remainder !== 0) {
+
+  if (remainder !== 0 && !noDecimal) {
     if (remainder < 1) {
       formattedNumber = leadingNumber.toString();
     } else if (remainder < 10) {
       formattedNumber = `${leadingNumber}${decimalPoint}00`;
     } else if (remainder < 100) {
-      formattedNumber = `${leadingNumber}${decimalPoint}0${((remainder / 10).toFixed(0))}`;
+      formattedNumber = `${leadingNumber}${decimalPoint}0${(remainder / 10).toFixed(0)}`;
     } else if (remainder < 1000) {
-      formattedNumber = `${leadingNumber}${decimalPoint}${((remainder / 10).toFixed(0))}`;
+      formattedNumber = `${leadingNumber}${decimalPoint}${(remainder / 10).toFixed(0)}`;
     }
   } else {
     formattedNumber = leadingNumber.toString();
@@ -174,23 +181,30 @@ function formatNumber(value) {
   return formattedNumber;
 }
 
-export function formatLabel(value, type) {
+export function formatLabel(value, type, extended, noDecimal) {
   if (typeof value !== 'number') return value;
   let result = '';
+  const number = formatNumber(value, extended, noDecimal);
 
-  const number = formatNumber(value);
-  if (value >= 1000000000000000) {
-    result = `${number} PW`;
-  } else if (value >= 1000000000000) {
-    result = `${number} TW`;
-  } else if (value >= 1000000000) {
-    result = `${number} GW`;
-  } else if (value >= 1000000) {
-    result = `${number} MW`;
+  if (extended) {
+    if (value >= 1000000000000000) {
+      result = `${number} PW`;
+    } else if (value >= 1000000000000) {
+      result = `${number} TW`;
+    } else if (value >= 1000000000) {
+      result = `${number} GW`;
+    } else if (value >= 1000000) {
+      result = `${number} MW`;
+    } else if (value >= 1000) {
+      result = `${number} kW`;
+    } else {
+      result = `${number} W`;
+    }
   } else if (value >= 1000) {
     result = `${number} kW`;
   } else {
     result = `${number} W`;
   }
+
   return type === 'h' ? `${result}h` : result;
 }

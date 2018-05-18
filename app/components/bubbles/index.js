@@ -4,14 +4,14 @@ import Bubbles from '@buzzn/module_bubbles';
 import BubblesLayout from './bubbles_layout';
 
 export class LocalpoolOverview extends React.Component {
-  componentWillMount() {
+  componentDidMount() {
     const { loadBubbles, match: { params: { groupId } } } = this.props;
     loadBubbles(groupId);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { loadBubbles, match: { params: { groupId } } } = this.props;
-    const { match: { params: { groupId: newGroupId } } } = nextProps;
+  componentDidUpdate(prevProps) {
+    const { loadBubbles, match: { params: { groupId } } } = prevProps;
+    const { match: { params: { groupId: newGroupId } } } = this.props;
     if (groupId !== newGroupId) {
       loadBubbles(newGroupId);
     }

@@ -7,8 +7,8 @@ export default {
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
-  fetchBillingCycleBricks({ token, apiUrl, apiPath, billingCycleId, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/billing-cycles/${billingCycleId}/bricks`, { headers: prepareHeaders(token) })
+  fetchbillingCycleBars({ token, apiUrl, apiPath, billingCycleId, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/billing-cycles/${billingCycleId}/bars`, { headers: prepareHeaders(token) })
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
@@ -23,5 +23,10 @@ export default {
       method: 'POST',
       body: JSON.stringify(snakeReq(params)),
     }).then(parseResponse);
+  },
+  fetchBilling({ token, apiUrl, apiPath, billingId, groupId, billingCycleId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/billing-cycles/${billingCycleId}/billings/${billingId}?include=contract:[customer],items:[meter,tariff]`, { headers: prepareHeaders(token) })
+      .then(parseResponse)
+      .then(camelizeResponseKeys);
   },
 };

@@ -36,7 +36,6 @@ const MarketLocationData = ({
             link: undefined,
           },
         ]),
-        url,
         title: marketLocation.name,
       }}
     />

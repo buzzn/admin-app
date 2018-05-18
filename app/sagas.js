@@ -1,4 +1,4 @@
-import { put, take, select, call, takeLatest, fork, race } from 'redux-saga/effects';
+import { put, take, select, call, takeLatest, fork, race, all } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { SubmissionError } from 'redux-form';
 import Auth from '@buzzn/module_auth';
@@ -70,6 +70,7 @@ export function* setHealth({ apiUrl }) {
       yield put(actions.setHealth(health));
     } catch (error) {
       logException(error);
+      yield put(actions.setHealth({}));
     }
     yield call(delay, 60 * 1000);
   }
@@ -94,12 +95,23 @@ export function* setUI() {
   }
 }
 
+export function* initialLoadPause() {
+  yield all([
+    take(constants.SET_HEALTH),
+    delay(2000),
+  ]);
+
+  yield put(actions.setAppLoading(false));
+}
+
 export default function* () {
   const { apiUrl, apiPath, authPath, secure } = yield select(getConfig);
 
   if (secure && window.location.protocol !== 'https:') {
     window.location.href = `https:${window.location.href.substring(window.location.protocol.length)}`;
   }
+
+  yield fork(initialLoadPause);
 
   yield put(Auth.actions.setApiParams({ apiUrl, apiPath: authPath }));
   yield put(Bubbles.actions.setApiParams({ apiUrl, apiPath: `${apiPath}/localpools` }));

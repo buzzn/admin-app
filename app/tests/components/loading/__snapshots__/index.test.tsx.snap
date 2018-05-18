@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`loading tests default unit (rem) 1`] = `
+<div
+  style={
+    Object {
+      "display": "flex",
+      "flexDirection": "column",
+      "justifyContent": "center",
+      "minHeight": "20rem",
+      "width": "100%",
+    }
+  }
+>
+  <div
+    className="la-ball-atom la-dark"
+    style={
+      Object {
+        "margin": "0 auto",
+      }
+    }
+  >
+    <div />
+    <div />
+    <div />
+    <div />
+  </div>
+</div>
+`;
+
+exports[`loading tests px 1`] = `
+<div
+  style={
+    Object {
+      "display": "flex",
+      "flexDirection": "column",
+      "justifyContent": "center",
+      "minHeight": "20px",
+      "width": "100%",
+    }
+  }
+>
+  <div
+    className="la-ball-atom la-dark"
+    style={
+      Object {
+        "margin": "0 auto",
+      }
+    }
+  >
+    <div />
+    <div />
+    <div />
+    <div />
+  </div>
+</div>
+`;

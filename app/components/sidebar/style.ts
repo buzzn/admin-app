@@ -35,7 +35,7 @@ export const SidebarLink = styled(NavLink)`
 `;
 
 export const SidebarText = styled.div`
-  font-size: 12px;
+  font-size: 0.75rem;
   @media (max-width: 768px) {
     display: none;
   }
@@ -43,4 +43,10 @@ export const SidebarText = styled.div`
 
 export const SidebarIcon = styled.div`
   margin: 17px auto;
+  &.buzzn-icon {
+    margin: 12px auto;
+    display: inline-block;
+    font-size: 1.5rem;
+    line-height: 0.75rem;
+  }
 `;

@@ -20,7 +20,7 @@ class MeterData extends React.Component<ExtProps & DispatchProps & StateProps & 
   }
 
   render() {
-    const { url, breadcrumbs, meter, realValidationRules, virtualValidationRules, loading } = this.props;
+    const { url, breadcrumbs, meter, realValidationRules, virtualValidationRules, loading, updateMeter, groupId } = this.props;
 
     if (loading || meter._status === null) return <Loading minHeight={40} />;
     if (meter._status && meter._status !== 200) return <Redirect to={url} />;
@@ -37,15 +37,14 @@ class MeterData extends React.Component<ExtProps & DispatchProps & StateProps & 
                 link: undefined,
               },
             ]),
-            url,
             title: `Meter ${meter.productSerialnumber}`,
           }}
         />
         <CenterContent>
           {meter.type === 'meter_real' ? (
-            <RealMeterDataForm {...{ meter, realValidationRules, initialValues: meter }} />
+            <RealMeterDataForm {...{ meter, validationRules: realValidationRules, initialValues: meter, updateMeter, groupId }} />
           ) : (
-            <VirtualMeterDataForm {...{ meter, virtualValidationRules, initialValues: meter }} />
+            <VirtualMeterDataForm {...{ meter, validationRules: virtualValidationRules, initialValues: meter }} />
           )}
         </CenterContent>
       </React.Fragment>
@@ -78,6 +77,7 @@ interface StateProps {
 interface DispatchProps {
   loadMeter: Function;
   setMeter: Function;
+  updateMeter: Function;
 }
 
 function mapStateToProps(state: StatePart) {
@@ -92,4 +92,5 @@ function mapStateToProps(state: StatePart) {
 export default connect<StateProps, DispatchProps, ExtProps>(mapStateToProps, {
   loadMeter: Meters.actions.loadMeter,
   setMeter: Meters.actions.setMeter,
+  updateMeter: Meters.actions.updateMeter,
 })(MeterData);

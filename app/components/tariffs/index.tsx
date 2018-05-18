@@ -3,16 +3,14 @@ import { connect } from 'react-redux';
 import { Switch, Route, Redirect, NavLink, RouteComponentProps } from 'react-router-dom';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import { Nav } from 'reactstrap';
-import { Col } from 'reactstrap';
 import get from 'lodash/get';
 import Groups from 'groups';
-import Breadcrumbs from 'components/breadcrumbs';
-import LinkBack from 'components/link_back';
+import PageTitle from 'components/page_title';
 import Loading from 'components/loading';
 import TariffsList from './tariffs_list';
 
 class Tariffs extends React.Component<StateProps & DispatchProps & ExtProps & InjectedIntlProps> {
-  componentWillMount() {
+  componentDidMount() {
     const { loadGroup, match: { params: { groupId } } } = this.props;
     loadGroup(groupId);
   }
@@ -41,26 +39,21 @@ class Tariffs extends React.Component<StateProps & DispatchProps & ExtProps & In
     return (
       <React.Fragment>
         {/* Breadcrumbs */}
-        <div className="row center-content-header">
-          <Col sm="7">
-            <Switch>
-              <Route
-                path={`${url}/:pType(active|past)`}
-                render={() => (
-                  <React.Fragment>
-                    <Breadcrumbs
-                      breadcrumbs={breadcrumbs.concat([
-                        { id: '-----', title: intl.formatMessage({ id: 'admin.breadcumbs.tariffs' }), link: null },
-                      ])}
-                    />
-                    <LinkBack title={intl.formatMessage({ id: `${prefix}.backTariffs` })} />
-                  </React.Fragment>
-                )}
+        <Switch>
+          <Route
+            path={`${url}/:pType(active|past)`}
+            render={() => (
+              <PageTitle
+                {...{
+                  breadcrumbs: breadcrumbs.concat([
+                    { id: '-----', title: intl.formatMessage({ id: 'admin.breadcumbs.tariffs' }), link: null },
+                  ]),
+                  title: intl.formatMessage({ id: `${prefix}.backTariffs` }),
+                }}
               />
-            </Switch>
-          </Col>
-          <Col sm="5" />
-        </div>
+            )}
+          />
+        </Switch>
         {/* End of Breadcrumbs */}
 
         <div className="center-content">

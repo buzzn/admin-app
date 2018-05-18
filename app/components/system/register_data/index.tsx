@@ -11,7 +11,6 @@ import PageTitle from 'components/page_title';
 import RegisterPowerContainer from './register_power';
 import RegisterDataForm from './form';
 import ReadingsList from './readings_list';
-import RegisterContracts from './register_contracts';
 
 class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps & BreadcrumbsProps> {
   componentDidMount() {
@@ -32,8 +31,6 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
     const register = get(meter, 'registers.array', []).find(r => r.id === registerId);
     if (!register) return <Redirect to={url} />;
 
-    const contracts = get(register.marketLocation, 'contracts.array', []);
-
     return (
       <React.Fragment>
         <PageTitle
@@ -46,7 +43,6 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
                 link: undefined,
               },
             ]),
-            url,
             title: register.marketLocation.name,
           }}
         />
@@ -55,9 +51,6 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
           <SubNav>
             <NavLink to={`${registerUrl}/readings`} exact className="nav-link">
               <FormattedMessage id="admin.registers.navReadings" />
-            </NavLink>
-            <NavLink to={`${registerUrl}/contracts`} exact className="nav-link">
-              <FormattedMessage id="admin.registers.navContracts" />
             </NavLink>
             <NavLink to={`${registerUrl}/devices`} exact className="nav-link">
               <FormattedMessage id="admin.registers.navDevices" />
@@ -73,18 +66,6 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
                   <ReadingsList
                     {...{
                       readings: register.readings.array,
-                      registerId,
-                    }}
-                  />
-                )}
-              </Route>
-              <Route path={`${registerUrl}/contracts`}>
-                {!!contracts.length && (
-                  <RegisterContracts
-                    {...{
-                      contracts,
-                      url,
-                      history,
                       registerId,
                     }}
                   />

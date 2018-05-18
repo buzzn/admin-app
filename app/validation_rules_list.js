@@ -3,6 +3,7 @@ import Meters from 'meters';
 import Registers from 'registers';
 import Readings from 'readings';
 import Groups from 'groups';
+import BillingCycles from 'billing_cycles';
 
 export const authList = [
   {
@@ -31,5 +32,9 @@ export default [
   {
     swaggerPath: '/localpools/{localpool_id}/meters/{meter_id}/registers/{register_id}/readings.post.parameters',
     setAction: Readings.actions.setValidationRules,
+  },
+  {
+    swaggerPath: '/localpools/{localpool_id}/billing-cycles.post.parameters',
+    setAction: BillingCycles.actions.setValidationRules,
   },
 ];

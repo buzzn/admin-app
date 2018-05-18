@@ -1,3 +1,7 @@
+html {
+  font-size: 1.0625rem;
+}
+
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -9,6 +13,9 @@ body {
     padding-top: 72px;
     &.no-token {
       padding-top: 0;
+    }
+    .s-alert-box {
+      z-index: 3000;
     }
     .under-construction {
         position: relative;
@@ -41,7 +48,7 @@ body {
       margin-right: -16px;
     }
     .fieldgroup {
-      font-size: 13px;
+      font-size: 0.8125rem;
       min-height: 57px;
       align-items: center;
       .fieldname {
@@ -55,8 +62,11 @@ body {
         align-items: center;
         justify-content: space-between;
       }
+      .editValue {
+        padding: 0;
+      }
       i.fa-s {
-        font-size: 18px;
+        font-size: 1.125rem;
         vertical-align: middle;
       }
     }
@@ -102,7 +112,7 @@ body {
               text-align: left;
               border-right: none;
               text-transform: uppercase;
-              font-size: 10px;
+              font-size: 0.625rem;
               .sort-icon-group {
                 position: relative;
                 .fa {

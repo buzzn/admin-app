@@ -2,14 +2,19 @@ import styled from 'styled-components';
 import { Row, Col } from 'reactstrap';
 
 export const FieldGroup = styled(Row)`
-  font-size: 13px;
+  font-size: 0.8125rem;
   min-height: 57px;
   align-items: center;
 `;
 
+interface FieldNameProps {
+  centered?: string;
+}
+
 export const FieldName = styled(Col)`
   font-weight: bold;
   text-transform: uppercase;
+  text-align: ${({ centered }: FieldNameProps) => (centered === 'true' ? 'right' : 'left')};
 `;
 
 export const FieldValue = styled(Col)`

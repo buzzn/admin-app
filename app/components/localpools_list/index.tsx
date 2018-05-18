@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router-dom';
 import ReactTableSorted from 'components/react_table_sorted';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage, InjectedIntlProps } from 'react-intl';
 import filter from 'lodash/filter';
 import sortBy from 'lodash/sortBy';
 import chunk from 'lodash/chunk';
@@ -16,17 +17,20 @@ import Loading from 'components/loading';
 
 const HoverCard = withHover(LocalpoolCard);
 
-import DefaultImage1 from 'images/energygroup_noimage_01.jpg';
-import DefaultImage2 from 'images/energygroup_noimage_03.jpg';
-import DefaultImage3 from 'images/energygroup_noimage_06.jpg';
-import DefaultImage4 from 'images/energygroup_noimage_09.jpg';
+const DefaultImage1 = require('images/energygroup_noimage_01.jpg');
+const DefaultImage2 = require('images/energygroup_noimage_03.jpg');
+const DefaultImage3 = require('images/energygroup_noimage_06.jpg');
+const DefaultImage4 = require('images/energygroup_noimage_09.jpg');
 
-class LocalpoolsList extends React.Component {
+class LocalpoolsList extends React.Component<
+  ExtProps & StateProps & DispatchProps & InjectedIntlProps & RouteComponentProps<{}>,
+  LocalpoolsListState
+  > {
   static defaultProps = { groups: [] };
 
   state = { groupsListTiles: false };
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({ groupsListTiles: this.props.groupsListTiles });
     this.props.loadGroups();
   }
@@ -66,11 +70,20 @@ class LocalpoolsList extends React.Component {
         resizable: true,
       },
       {
+        Header: () => <FormattedMessage id="admin.groups.tableDisplayView" />,
+        accessor: 'showDisplayApp',
+        resizable: false,
+        filterable: false,
+        width: 100,
+        Cell: ({ value }) => <i className="buzzn-television" style={{ color: value ? 'black' : '#BDBDBD' }} />,
+      },
+      {
         Header: '',
         accessor: 'incomplete',
+        width: 50,
         sortable: false,
         filterable: false,
-        resizable: true,
+        resizable: false,
         Cell: TableParts.components.incompleteCell,
       },
     ];
@@ -106,7 +119,7 @@ class LocalpoolsList extends React.Component {
               data,
               columns,
               filterable: true,
-              getTrProps: (state, rowinfo) => ({
+              getTrProps: (_state, rowinfo) => ({
                 onClick: () => {
                   history.push(`${url}/${rowinfo.original.id}`);
                 },
@@ -121,9 +134,31 @@ class LocalpoolsList extends React.Component {
   }
 }
 
+interface StatePart {
+  groups: { loadingGroups: boolean; groups: { _status: null | number; array: Array<any> } };
+  app: { ui: { groupsListTiles: void | boolean } };
+}
+
+interface LocalpoolsListState {
+  groupsListTiles: void | boolean;
+}
+
+interface ExtProps {}
+
+interface StateProps {
+  groups: Array<any>;
+  loading: boolean;
+  groupsListTiles: void | boolean;
+}
+
+interface DispatchProps {
+  loadGroups: Function;
+  setUI: Function;
+}
+
 export const LocalpoolsListIntl = injectIntl(LocalpoolsList);
 
-function mapStateToProps(state) {
+function mapStateToProps(state: StatePart) {
   const groups = filter(state.groups.groups.array, group => group.type === 'group_localpool').map(g => ({
     ...g,
     image: sample([DefaultImage1, DefaultImage2, DefaultImage3, DefaultImage4]),
@@ -136,7 +171,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, {
+export default connect<StateProps, DispatchProps, ExtProps>(mapStateToProps, {
   loadGroups: Groups.actions.loadGroups,
   setUI: actions.setUI,
 })(LocalpoolsListIntl);

@@ -34,19 +34,19 @@ export const TypeCol = styled(Col)`
 `;
 
 export const BigSpan = styled.span`
-  font-size: 24px;
+  font-size: 1.5rem;
   color: #2f2f2f;
   display: block;
 `;
 
 export const BigLink = styled(Link)`
-  font-size: 24px;
+  font-size: 1.5rem;
   color: #2f2f2f;
   display: block;
 `;
 
 export const LinkType = styled.span`
-  font-size: 10px;
+  font-size: 0.625rem;
   color: #9e9e9e;
   display: block;
   line-height: 10px;

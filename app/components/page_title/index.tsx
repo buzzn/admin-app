@@ -1,14 +1,18 @@
 import * as React from 'react';
 import { Col } from 'reactstrap';
 import Breadcrumbs, { BreadcrumbsProps } from 'components/breadcrumbs';
-import LinkBack, { LinkBackProps } from 'components/link_back';
-import { CenterContentHeader } from './style';
+import { CenterContentHeader, Title } from './style';
 
-const PageTitle = ({ breadcrumbs, url, title }: BreadcrumbsProps & LinkBackProps) => (
-  <CenterContentHeader>
+interface Props {
+  title: string;
+  thin?: string;
+}
+
+const PageTitle = ({ breadcrumbs, title, thin }: Props & BreadcrumbsProps) => (
+  <CenterContentHeader {...{ thin }}>
     <Col xs={12}>
       <Breadcrumbs {...{ breadcrumbs }} />
-      <LinkBack {...{ url, title }} />
+      <Title>{title}</Title>
     </Col>
   </CenterContentHeader>
 );

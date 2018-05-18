@@ -26,7 +26,7 @@ class Sidebar extends React.Component<Props> {
 
   setSideColWidth = () => {
     this.setState({ sideColWidth: this.sideCol ? this.sideCol.offsetWidth : 0 });
-  }
+  };
 
   render() {
     const { url, devMode, multiGroups } = this.props;
@@ -42,38 +42,35 @@ class Sidebar extends React.Component<Props> {
         <SidebarBlock style={{ width: `${this.state.sideColWidth}px` }}>
           <Dummy />
           {multiGroups && (
-            <SidebarItem to="/groups" exact={true} icon="th-large">
+            <SidebarItem to="/groups" exact={true} icon="fa-th-large">
               <FormattedMessage id={`${prefix}.groups`} />
             </SidebarItem>
           )}
-          <SidebarItem to={`${url}/dashboard`} icon="tachometer" devMode={devMode}>
-            <FormattedMessage id={`${prefix}.dashboard`} />
-          </SidebarItem>
-          <SidebarItem to={`${url}/analytics`} icon="line-chart" devMode={devMode}>
+          <SidebarItem to={`${url}/analytics`} icon="fa-line-chart" devMode={devMode}>
             <FormattedMessage id={`${prefix}.analytics`} />
           </SidebarItem>
-          <SidebarItem to={`${url}/powertakers`} icon="users">
+          <SidebarItem to={`${url}/powertakers`} icon="fa-users">
             <FormattedMessage id={`${prefix}.powertakers`} />
           </SidebarItem>
-          <SidebarItem to={`${url}/tariffs`} icon="eur">
+          <SidebarItem to={`${url}/tariffs`} icon="fa-eur">
             <FormattedMessage id={`${prefix}.tariffs`} />
           </SidebarItem>
-          <SidebarItem to={`${url}/billing`} icon="money">
+          <SidebarItem to={`${url}/billing`} icon="fa-money">
             <FormattedMessage id={`${prefix}.billing`} />
           </SidebarItem>
-          <SidebarItem to={`${url}/contracts`} icon="file-text-o" devMode={devMode}>
-            <FormattedMessage id={`${prefix}.contracts`} />
-          </SidebarItem>
-          <SidebarItem to={`${url}/system`} icon="cogs">
+          <SidebarItem to={`${url}/market-locations`} icon="buzzn-meters">
             <FormattedMessage id={`${prefix}.system`} />
           </SidebarItem>
-          <SidebarItem to={`${url}/documents`} icon="folder-open-o" devMode={devMode}>
+          <SidebarItem to={`${url}/documents`} icon="fa-folder-open-o" devMode={devMode}>
             <FormattedMessage id={`${prefix}.documents`} />
           </SidebarItem>
-          <SidebarItem to={`${url}/settings`} icon="tachometer">
+          <SidebarItem to={`${url}/settings`} icon="fa-cogs">
             <FormattedMessage id={`${prefix}.settings`} />
           </SidebarItem>
-          <SidebarItem to={`${url}/bubbles`} icon="pie-chart" devMode={devMode}>
+          <SidebarItem to={`${url}/devices`} icon="buzzn-devices" devMode={devMode}>
+            <FormattedMessage id={`${prefix}.devices`} />
+          </SidebarItem>
+          <SidebarItem to={`${url}/bubbles`} icon="fa-pie-chart" devMode={devMode}>
             Bubbles
           </SidebarItem>
         </SidebarBlock>

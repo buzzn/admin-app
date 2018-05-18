@@ -50,7 +50,7 @@ class PowertakerData extends React.Component<
         ? `${url
           .split('/')
           .slice(0, -1)
-          .join('/')}/system/market-locations/${c.marketLocation.id}`
+          .join('/')}/market-locations/${c.marketLocation.id}`
         : '',
     }));
 
@@ -97,7 +97,7 @@ class PowertakerData extends React.Component<
 
     return (
       <React.Fragment>
-        <PageTitle {...{ breadcrumbs, url, title }} />
+        <PageTitle {...{ breadcrumbs, title }} />
         <CenterContent>
           <Row className="powertaker-data">
             <Col xs="3">

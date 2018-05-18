@@ -8,15 +8,13 @@ import truncate from 'lodash/truncate';
 import get from 'lodash/get';
 import Contracts from 'contracts';
 import Groups from 'groups';
-import Breadcrumbs from 'components/breadcrumbs';
-import LinkBack from 'components/link_back';
 import Loading from 'components/loading';
 import PowertakersList from './powertakers_list';
 import PowertakerData from './powertaker_data';
 import ContractData from './contract_data';
 
 export class Powertakers extends React.Component {
-  componentWillMount() {
+  componentDidMount() {
     const { loadGroupPowertakers, loadGroup, group, match: { params: { groupId } } } = this.props;
     loadGroup(groupId);
     loadGroupPowertakers(groupId);
@@ -37,7 +35,7 @@ export class Powertakers extends React.Component {
     if (powertakers._status === null || loading) return <Loading minHeight={40} />;
 
     const breadcrumbs = [
-      { id: 0, link: '/groups', title: 'My groups' },
+      { id: 0, link: '/groups', title: intl.formatMessage({ id: 'admin.groups.breadcrumbsMyLocalpools' }) },
       { id: group.id || 1, link: url, title: group.name },
     ];
 

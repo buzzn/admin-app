@@ -48,7 +48,7 @@ const PowertakerContract = ({ url, contract, prefix, register, contractor, intl 
               to={`${url
                 .split('/')
                 .slice(0, -1)
-                .join('/')}/system/market-locations/${register.locationId}`}
+                .join('/')}/market-locations/${register.locationId}`}
             >
               {truncate(register.name, { length: 25 })} >
             </BigLink>
@@ -92,7 +92,7 @@ const PowertakerContract = ({ url, contract, prefix, register, contractor, intl 
             to={`${url
               .split('/')
               .slice(0, -1)
-              .join('/')}/system/market-locations/${register.locationId}`}
+              .join('/')}/market-locations/${register.locationId}`}
           >
             {register.name}
           </Link>
@@ -102,7 +102,7 @@ const PowertakerContract = ({ url, contract, prefix, register, contractor, intl 
             to={`${url
               .split('/')
               .slice(0, -1)
-              .join('/')}/system/meters/${register.meterId}`}
+              .join('/')}/market-locations/meters/${register.meterId}`}
           >
             {register.meter.productSerialnumber}
           </Link>
@@ -121,7 +121,7 @@ const PowertakerContract = ({ url, contract, prefix, register, contractor, intl 
         <TwoColView {...{ prefix, field: 'contractor' }}>
           {contractor.name || `${contractor.firstName} ${contractor.lastName}`}
         </TwoColView>
-        <TwoColView {...{ prefix, field: 'forecastKwhPa' }}>{formatLabel(contract.forecastKwhPa, 'h')}</TwoColView>
+        <TwoColView {...{ prefix, field: 'forecastKwhPa' }}>{formatLabel(contract.forecastKwhPa * 1000, 'h')}</TwoColView>
         <TwoColView {...{ prefix, field: 'oldSupplierName' }}>{contract.oldSupplierName}</TwoColView>
         <TwoColView {...{ prefix, field: 'oldCustomerNumber' }}>{contract.oldCustomerNumber}</TwoColView>
         <TwoColView {...{ prefix, field: 'oldAccountNumber' }}>{contract.oldAccountNumber}</TwoColView>

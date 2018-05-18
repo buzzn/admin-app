@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`breadcrumbs tests renders different crumb types 1`] = `
+<div
+  className="sc-bdVaJa RchYe"
+>
+  <ul>
+    <li>
+      <span>
+        Title
+      </span>
+    </li>
+    <li>
+      <span>
+        <span>
+          <span
+            className="breadcrumb-type"
+          >
+            :
+          </span>
+           
+          Title
+        </span>
+      </span>
+    </li>
+    <li>
+      <span>
+        <a
+          href="localhost"
+          onClick={[Function]}
+        >
+          Title
+        </a>
+         / 
+      </span>
+    </li>
+    <li>
+      <span>
+        <a
+          href="localhost"
+          onClick={[Function]}
+        >
+          <span>
+            <span
+              className="breadcrumb-type"
+            >
+              :
+            </span>
+             
+            Title
+          </span>
+        </a>
+         / 
+      </span>
+    </li>
+  </ul>
+</div>
+`;

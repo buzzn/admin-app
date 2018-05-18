@@ -6,15 +6,28 @@ import { FormGroup } from 'components/style';
 
 momentLocalizer(moment);
 
-const DateField = ({ label, input, dateFormat = 'DD-MM-YYYY', defaultDate, meta: { active, touched, error } }) => (
+const DateField = ({
+  label,
+  input,
+  dateFormat = 'DD.MM.YYYY',
+  inputFormats = [],
+  meta: { active, touched, error },
+}) => (
   <FormGroup className={`form-group ${touched && error && 'has-danger'}`}>
     <DateTimePicker
       {...input}
       time={false}
       format={dateFormat}
-      editFormat={dateFormat}
+      parse={[dateFormat].concat(inputFormats)}
       value={input.value ? moment(input.value).toDate() : null}
-      onBlur={() => input.onBlur(moment(input.value || defaultDate).toDate())}
+      onBlur={() => {
+        const value = moment(input.value).endOf('day');
+        if (value.isValid()) {
+          input.onBlur(value.toDate());
+        } else {
+          input.onBlur(null);
+        }
+      }}
     />
     <label className={`${!!input.value || active ? 'top' : 'center'}`}>{label}</label>
     {touched && error && <div className="form-control-feedback">{error}</div>}

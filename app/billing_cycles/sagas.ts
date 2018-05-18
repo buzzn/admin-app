@@ -7,23 +7,35 @@ import api from './api';
 
 export const selectBillingCycleId = state => state.billingCycles.billingCycleId;
 export const selectGroupId = state => state.billingCycles.groupId;
+export const selectBillingId = state => state.billingCycles.billingId;
 
 export function* getBillingCycle({ apiUrl, apiPath, token }, { billingCycleId, groupId }) {
   yield put(actions.loadingBillingCycle());
   try {
     const billingCycle = yield call(api.fetchBillingCycle, { apiUrl, apiPath, token, billingCycleId, groupId });
-    const billingCycleBricks = yield call(api.fetchBillingCycleBricks, {
+    const billingCycleBars = yield call(api.fetchbillingCycleBars, {
       apiUrl,
       apiPath,
       token,
       billingCycleId,
       groupId,
     });
-    yield put(actions.setBillingCycle({ billingCycle, billingCycleBricks }));
+    yield put(actions.setBillingCycle({ billingCycle, billingCycleBars }));
   } catch (error) {
     logException(error);
   }
   yield put(actions.loadedBillingCycle());
+}
+
+export function* getBilling({ apiUrl, apiPath, token }, { billingId, groupId, billingCycleId }) {
+  yield put(actions.loadingBilling());
+  try {
+    const billing = yield call(api.fetchBilling, { apiUrl, apiPath, token, billingId, groupId, billingCycleId });
+    yield put(actions.setBilling(billing));
+  } catch (error) {
+    logException(error);
+  }
+  yield put(actions.loadedBilling());
 }
 
 export function* getBillingCycles({ apiUrl, apiPath, token }, { groupId }) {
@@ -56,10 +68,15 @@ export function* billingCyclesSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_BILLING_CYCLES, getBillingCycles, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_BILLING_CYCLE, getBillingCycle, { apiUrl, apiPath, token });
   yield takeLatest(constants.ADD_BILLING_CYCLE, addBillingCycle, { apiUrl, apiPath, token });
+  yield takeLatest(constants.LOAD_BILLING, getBilling, { apiUrl, apiPath, token });
 
   const billingCycleId = yield select(selectBillingCycleId);
   const groupId = yield select(selectGroupId);
+  const billingId = yield select(selectBillingId);
   if (billingCycleId) yield call(getBillingCycle, { apiUrl, apiPath, token }, { billingCycleId, groupId });
+  if (billingId && billingCycleId) {
+    yield call(getBilling, { apiUrl, apiPath, token }, { billingId, groupId, billingCycleId });
+  }
   if (groupId) yield call(getBillingCycles, { apiUrl, apiPath, token }, { groupId });
 }
 

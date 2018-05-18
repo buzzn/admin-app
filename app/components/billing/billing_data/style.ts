@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { UnmountClosed } from 'react-collapse';
 
 export const MaLoListHeader = styled.div`
   width: 100%;
@@ -24,7 +25,7 @@ export const MaLoListHeader = styled.div`
       justify-content: space-between;
       height: 70%;
       border-left: 1px solid #e0e0e0;
-      border-right: 1px solid #e0e0e0;
+      box-shadow: 0px 0px 0px 0px #e0e0e0, 1px 0px 0px 0px #e0e0e0;
       .begin {
         padding-left: 4px;
       }
@@ -41,8 +42,6 @@ export const MaLoListHeader = styled.div`
       color: #9e9e9e;
       text-transform: uppercase;
       font-size: 0.625rem;
-      border-right: 1px solid #e0e0e0;
-      border-left: 1px solid #e0e0e0;
       position: relative;
       .grid-line {
         position: absolute;
@@ -53,7 +52,6 @@ export const MaLoListHeader = styled.div`
       }
       .month {
         position: absolute;
-        /* width: 25%; */
         padding-left: 4px;
         padding-right: 4px;
         display: flex;
@@ -67,6 +65,7 @@ export const MaLoRow = styled.div`
   width: 100%;
   height: 57px;
   display: flex;
+  flex-wrap: wrap;
   border-bottom: 1px solid #e0e0e0;
   .name {
     width: 20%;
@@ -75,12 +74,10 @@ export const MaLoRow = styled.div`
     flex-direction: column;
     justify-content: center;
   }
-  .bricks {
+  .bars {
     display: flex;
     width: 80%;
     height: 100%;
-    border-right: 1px solid #e0e0e0;
-    border-left: 1px solid #e0e0e0;
     position: relative;
     .grid-line {
       position: absolute;
@@ -92,14 +89,36 @@ export const MaLoRow = styled.div`
   }
 `;
 
-interface BrickStyleProps {
+export const DetailsWrapper = styled(UnmountClosed)`
+  box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.1);
+  background: white;
+`;
+
+export const BillingDetails = styled.div`
+  .wrapper {
+    padding: 1rem;
+    height: 100%;
+    .title {
+      border-bottom: 1px solid #e0e0e0;
+      width: 100%;
+      margin-top: 3rem;
+      padding-bottom: 1rem;
+      &.top {
+        margin-top: 3.5rem;
+      }
+    }
+  }
+`;
+
+interface BarStyleProps {
   width: number;
   transparent?: boolean;
   status?: 'open' | 'closed';
   contractType?: 'power_taker' | 'third_party' | 'gap';
+  narrow?: boolean;
 }
 
-const brickColors = {
+const barColors = {
   default: {
     open: { bg: 'transparent', border: 'none' },
     closed: { bg: 'transparent', border: 'none' },
@@ -133,36 +152,64 @@ const brickColors = {
   },
 };
 
-export const Brick = styled.div`
-  width: ${({ width }: BrickStyleProps) => width}%;
+export const Bar = styled.div`
+  width: ${({ width }: BarStyleProps) => width}%;
   height: 100%;
-  padding-top: 9px;
+  padding-top: 8px;
 
-  .brick-bg {
+  .bar-bg {
     display: flex;
     justify-content: space-between;
     width: 100%;
     height: 80%;
-    background-color: ${({ status = 'default', contractType = 'default' }: BrickStyleProps) =>
-    (contractType === 'third_party' ? brickColors[contractType].bg : brickColors[contractType][status].bg)};
-    background-image: ${({ contractType }: BrickStyleProps) =>
-    (contractType !== 'third_party' ? 'none' : brickColors.third_party.stripes)};
+    position: relative;
+    cursor: ${({ contractType }: BarStyleProps) => (contractType === 'third_party' ? 'auto' : 'pointer')};
+    background-color: ${({ status = 'default', contractType = 'default' }: BarStyleProps) =>
+    (contractType === 'third_party' ? barColors[contractType].bg : barColors[contractType][status].bg)};
+    background-image: ${({ contractType }: BarStyleProps) =>
+    (contractType !== 'third_party' ? 'none' : barColors.third_party.stripes)};
     border-left: 1px solid
-      ${({ status = 'default', contractType = 'default' }: BrickStyleProps) =>
-    (contractType === 'third_party' ? brickColors[contractType].border : brickColors[contractType][status].border)};
+      ${({ status = 'default', contractType = 'default' }: BarStyleProps) =>
+    (contractType === 'third_party' ? barColors[contractType].border : barColors[contractType][status].border)};
     border-right: 1px solid
-      ${({ status = 'default', contractType = 'default' }: BrickStyleProps) =>
-    (contractType === 'third_party' ? brickColors[contractType].border : brickColors[contractType][status].border)};
+      ${({ status = 'default', contractType = 'default' }: BarStyleProps) =>
+    (contractType === 'third_party' ? barColors[contractType].border : barColors[contractType][status].border)};
+
+    &.selected {
+      border: 2px solid
+        ${({ status = 'default', contractType = 'default' }: BarStyleProps) =>
+    (contractType === 'third_party' ? barColors[contractType].border : barColors[contractType][status].border)};
+      :after {
+        content: '';
+        position: absolute;
+        top: calc(100% - 8px);
+        left: calc(50% - 11px);
+        width: 0;
+        height: 0;
+        border-bottom: solid 11px white;
+        border-left: solid 11px transparent;
+        border-right: solid 11px transparent;
+      }
+      .info {
+        padding-top: calc(${({ narrow }: BarStyleProps) => (narrow ? 0.35 : 0.8)}rem - 2px);
+      }
+    }
 
     .info {
-      color: ${({ status }: BrickStyleProps) => (status === 'open' ? '#00BCD4' : '#9E9E9E')};
+      color: ${({ status }: BarStyleProps) => (status === 'open' ? '#00BCD4' : '#9E9E9E')};
       font-size: 0.8rem;
-      padding-top: 0.9rem;
+      padding-top: ${({ narrow }: BarStyleProps) => (narrow ? 0.35 : 0.8)}rem;
       line-height: 0.8rem;
       display: flex;
+      flex-direction: ${({ narrow }: BarStyleProps) => (narrow ? 'column' : 'row')};
+      text-align: ${({ narrow }: BarStyleProps) => (narrow ? 'center' : 'left')};
       .price {
         font-weight: bold;
         margin-right: 6px;
+        width: 100%;
+      }
+      .energy {
+        width: 100%;
       }
     }
     .error {
@@ -199,5 +246,11 @@ export const Legend = styled.div`
       flex-direction: column;
       justify-content: center;
     }
+  }
+`;
+
+export const DoubleCell = styled.div`
+  div {
+    height: 57px;
   }
 `;

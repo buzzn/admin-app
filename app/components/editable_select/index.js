@@ -1,6 +1,7 @@
 import * as React from 'react';
 import find from 'lodash/find';
 import { injectIntl } from 'react-intl';
+import { FormGroup } from 'components/style';
 
 import './style.scss';
 
@@ -14,7 +15,8 @@ const EditableSelect = ({
   listOverride,
   noValTranslations,
   noDefault,
-  meta: { touched, error },
+  withValue,
+  meta: { touched, error, dirty },
 }) => {
   let list = [input.value];
   let options = [];
@@ -33,22 +35,31 @@ const EditableSelect = ({
 
   if (editMode) {
     return (
-      <div className={`editable-select form-group ${touched && error && 'has-danger'}`}>
-        <select className={`custom-select form-control ${touched && error && 'form-control-danger'}`} {...input}>
+      <FormGroup className={`editable-select ${touched && error && 'has-danger'}`}>
+        <select
+          className={`custom-select form-control ${touched && error && 'form-control-danger'} ${dirty && 'dirty'}`}
+          {...input}
+        >
           {!noDefault && <option value={defaultValue.value}>{defaultValue.label}</option>}
           {options.map(o => (
             <option key={o.value} value={o.value}>
-              {o.label}
+              {withValue ? `${o.value} - ${o.label}` : o.label}
             </option>
           ))}
         </select>
-        {touched && error && <div className="form-control-feedback">{error}</div>}
-      </div>
+        {touched &&
+          !!error && (
+            <React.Fragment>
+              <div className="inline-error">{error}</div>
+              <i className="error-icon buzzn-attention" />
+            </React.Fragment>
+          )}
+      </FormGroup>
     );
   }
 
-  const label = find(options, o => o.value === input.value);
-  return <span>{(label || {}).label}</span>;
+  const label = (find(options, o => o.value === input.value) || {}).label;
+  return <span>{withValue ? `${input.value} - ${label}` : label}</span>;
 };
 
 EditableSelect.defaultProps = { defaultValue: { value: '', label: '-----' } };

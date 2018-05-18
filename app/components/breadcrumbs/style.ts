@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const BreadcrumbsWrap = styled.div`
   height: 16px;
   color: #9e9e9e;
-  font-size: 13px;
+  font-size: 0.8125rem;
   line-height: 16px;
   background-color: white;
   ul {

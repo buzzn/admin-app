@@ -31,7 +31,7 @@ const MarketLocationsList = ({
     label: intl.formatMessage({ id: `admin.registers.${m.register.label}` }),
     meterProductSerialnumber: m.register.meter.productSerialnumber,
     linkMeter: `${url}/meters/${m.register.meter.id}`,
-    linkMarketLocation: `${url}/market-locations/${m.id}`,
+    linkMarketLocation: `${url}/${m.id}`,
   }));
 
   const columns = [
@@ -64,7 +64,12 @@ const MarketLocationsList = ({
   return (
     <React.Fragment>
       <PageTitle
-        {...{ breadcrumbs: breadcrumbs.concat([{ id: '-----', title: 'System' }]), title: 'System' }}
+        {...{
+          breadcrumbs: breadcrumbs.concat([
+            { id: '-----', title: intl.formatMessage({ id: 'admin.breadcrumbs.devices' }) },
+          ]),
+          title: intl.formatMessage({ id: 'admin.breadcrumbs.devices' }),
+        }}
       />
       <CenterContent>
         <SubNav>

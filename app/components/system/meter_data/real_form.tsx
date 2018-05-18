@@ -1,11 +1,20 @@
 import * as React from 'react';
 import ReactTable from 'react-table';
-import { FormattedMessage } from 'react-intl';
+import { reduxForm } from 'redux-form';
+import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import moment from 'moment';
 import get from 'lodash/get';
 import orderBy from 'lodash/orderBy';
 import { Row, Col } from 'reactstrap';
+import Alert from 'react-s-alert';
+import withEditOverlay from 'components/with_edit_overlay';
+import FormPanel from 'components/form_panel';
 import { MeterHeader, MeterTitle } from './style';
+import EditableInput from 'components/editable_input';
+import EditableSelect from 'components/editable_select';
+import TwoColField from 'components/two_col_field';
+import EditableDate from 'components/editable_date';
+import { dateNormalizer, numberNormalizer } from 'validation_normalizers';
 
 interface Props {
   meter: any;
@@ -15,7 +24,7 @@ interface State {
   expanded: { [key: number]: boolean };
 }
 
-class MeterData extends React.Component<Props, State> {
+class MeterData extends React.Component<Props & InjectedIntlProps, State> {
   state = { expanded: {} };
 
   handleRowClick(rowNum) {
@@ -23,7 +32,19 @@ class MeterData extends React.Component<Props, State> {
   }
 
   render() {
-    const { meter } = this.props;
+    const {
+      meter,
+      intl,
+      editMode,
+      switchEditMode,
+      updateMeter,
+      handleSubmit,
+      pristine,
+      reset,
+      submitting,
+      validationRules,
+      groupId,
+    } = this.props;
 
     const data = get(meter.registers, 'array', []).map(r => ({
       ...r,
@@ -49,7 +70,7 @@ class MeterData extends React.Component<Props, State> {
         accessor: 'lastReading.value',
         filterable: false,
         sortable: false,
-        Cell: row => <span>{row.value ? `${row.value} ${row.original.lastReading.unit}` : ''}</span>,
+        Cell: row => <span>{row.value ? `${intl.formatNumber(row.value / 1000)} kWh` : ''}</span>,
       },
       {
         Header: () => <FormattedMessage id="admin.readings.tableReason" />,
@@ -71,6 +92,20 @@ class MeterData extends React.Component<Props, State> {
     ];
 
     const prefix = 'admin.meters';
+
+    const submit = values =>
+      new Promise((resolve, reject) => {
+        updateMeter({
+          meterId: meter.id,
+          params: values,
+          resolve,
+          reject,
+          groupId,
+        });
+      }).then(() => {
+        Alert.success('Saved!');
+        switchEditMode();
+      });
 
     return (
       <div className="meter-data">
@@ -163,203 +198,191 @@ class MeterData extends React.Component<Props, State> {
           </Col>
         </Row>
         <React.Fragment>
-          <MeterTitle>
-            <FormattedMessage id={`${prefix}.headerMeterDetails`} />
-          </MeterTitle>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.manufacturerName`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              <div>
-                {meter.manufacturerName} - <FormattedMessage id={`${prefix}.${meter.manufacturerName}`} />
-              </div>
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.manufacturerDescription`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              {meter.manufacturerDescription}
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.productName`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              {meter.productName}
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.ownership`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              {meter.ownership}
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.buildYear`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              {meter.buildYear}
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.calibratedUntil`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              {moment(meter.calibratedUntil).format('DD.MM.YYYY')}
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.converterConstant`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              {meter.converterConstant}
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.locationDescription`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              {meter.locationDescription}
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.dataSource`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              <FormattedMessage id={`${prefix}.${meter.dataSource}`} />
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.directionNumber`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              <FormattedMessage id={`${prefix}.${meter.directionNumber}`} />
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.productSerialnumber`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              {meter.productSerialnumber}
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.sequenceNumber`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              {meter.sequenceNumber}
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.type`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              <FormattedMessage id={`${prefix}.${meter.type}`} />
-            </Col>
-          </Row>
-          <MeterTitle>
-            <FormattedMessage id={`${prefix}.headerEdifactInformation`} />
-          </MeterTitle>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.edifactCycleInterval`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              <div>
-                {meter.edifactCycleInterval} - <FormattedMessage id={`${prefix}.${meter.edifactCycleInterval}`} />
-              </div>
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.edifactDataLogging`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              <div>
-                {meter.edifactDataLogging} - <FormattedMessage id={`${prefix}.${meter.edifactDataLogging}`} />
-              </div>
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.edifactMeasurementMethod`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              <div>
-                {meter.edifactMeasurementMethod} -{' '}
-                <FormattedMessage id={`${prefix}.${meter.edifactMeasurementMethod}`} />
-              </div>
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.edifactMeterSize`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              <div>
-                {meter.edifactMeterSize} - <FormattedMessage id={`${prefix}.${meter.edifactMeterSize}`} />
-              </div>
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.edifactMeteringType`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              <div>
-                {meter.edifactMeteringType} - <FormattedMessage id={`${prefix}.${meter.edifactMeteringType}`} />
-              </div>
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.edifactMountingMethod`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              <div>
-                {meter.edifactMountingMethod} - <FormattedMessage id={`${prefix}.${meter.edifactMountingMethod}`} />
-              </div>
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.edifactTariff`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              <div>
-                {meter.edifactTariff} - <FormattedMessage id={`${prefix}.${meter.edifactTariff}`} />
-              </div>
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.edifactVoltageLevel`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              <div>
-                {meter.edifactVoltageLevel} - <FormattedMessage id={`${prefix}.${meter.edifactVoltageLevel}`} />
-              </div>
-            </Col>
-          </Row>
+          <form onSubmit={handleSubmit(submit)}>
+            <FormPanel
+              {...{
+                editMode,
+                dirty: !pristine,
+                onCancel: () => {
+                  reset();
+                  switchEditMode();
+                },
+                cancelDisabled: submitting,
+                onSave: handleSubmit(submit),
+                saveDisabled: pristine || submitting,
+              }}
+            >
+              <MeterTitle>
+                <FormattedMessage id={`${prefix}.headerMeterDetails`} />
+                {!editMode && meter.updatable && <i className="buzzn-pencil" onClick={switchEditMode} />}
+              </MeterTitle>
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'manufacturerName',
+                  editMode,
+                  validationRules,
+                  component: EditableSelect,
+                  withValue: true,
+                }}
+              />
+              <TwoColField
+                {...{ prefix, name: 'manufacturerDescription', editMode, validationRules, component: EditableInput }}
+              />
+              <TwoColField {...{ prefix, name: 'productName', editMode, validationRules, component: EditableInput }} />
+              <TwoColField {...{ prefix, name: 'ownership', editMode, validationRules, component: EditableSelect }} />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'buildYear',
+                  editMode,
+                  validationRules,
+                  component: EditableInput,
+                  normalize: numberNormalizer,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'calibratedUntil',
+                  editMode,
+                  validationRules,
+                  component: EditableDate,
+                  normalize: dateNormalizer('YYYY-MM-DD'),
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'converterConstant',
+                  editMode,
+                  validationRules,
+                  component: EditableInput,
+                  normalize: numberNormalizer,
+                }}
+              />
+              <TwoColField
+                {...{ prefix, name: 'locationDescription', editMode, validationRules, component: EditableInput }}
+              />
+              <Row className="fieldgroup">
+                <Col xs="4" className="fieldname">
+                  <FormattedMessage id={`${prefix}.dataSource`} />
+                </Col>
+                <Col xs="8" className="grey-underline fieldvalue">
+                  <FormattedMessage id={`${prefix}.${meter.dataSource}`} />
+                </Col>
+              </Row>
+              <TwoColField
+                {...{ prefix, name: 'directionNumber', editMode, validationRules, component: EditableSelect }}
+              />
+              <TwoColField
+                {...{ prefix, name: 'productSerialnumber', editMode, validationRules, component: EditableInput }}
+              />
+              <Row className="fieldgroup">
+                <Col xs="4" className="fieldname">
+                  <FormattedMessage id={`${prefix}.sequenceNumber`} />
+                </Col>
+                <Col xs="8" className="grey-underline fieldvalue">
+                  {meter.sequenceNumber}
+                </Col>
+              </Row>
+              <Row className="fieldgroup">
+                <Col xs="4" className="fieldname">
+                  <FormattedMessage id={`${prefix}.type`} />
+                </Col>
+                <Col xs="8" className="grey-underline fieldvalue">
+                  <FormattedMessage id={`${prefix}.${meter.type}`} />
+                </Col>
+              </Row>
+              <MeterTitle>
+                <FormattedMessage id={`${prefix}.headerEdifactInformation`} />
+              </MeterTitle>
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'edifactCycleInterval',
+                  editMode,
+                  validationRules,
+                  component: EditableSelect,
+                  withValue: true,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'edifactDataLogging',
+                  editMode,
+                  validationRules,
+                  component: EditableSelect,
+                  withValue: true,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'edifactMeasurementMethod',
+                  editMode,
+                  validationRules,
+                  component: EditableSelect,
+                  withValue: true,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'edifactMeterSize',
+                  editMode,
+                  validationRules,
+                  component: EditableSelect,
+                  withValue: true,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'edifactMeteringType',
+                  editMode,
+                  validationRules,
+                  component: EditableSelect,
+                  withValue: true,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'edifactMountingMethod',
+                  editMode,
+                  validationRules,
+                  component: EditableSelect,
+                  withValue: true,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'edifactTariff',
+                  editMode,
+                  validationRules,
+                  component: EditableSelect,
+                  withValue: true,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'edifactVoltageLevel',
+                  editMode,
+                  validationRules,
+                  component: EditableSelect,
+                  withValue: true,
+                }}
+              />
+            </FormPanel>
+          </form>
         </React.Fragment>
       </div>
     );
   }
 }
 
-export default MeterData;
+export default injectIntl(withEditOverlay(reduxForm({ form: 'meterUpdateForm', enableReinitialize: true })(MeterData)));
