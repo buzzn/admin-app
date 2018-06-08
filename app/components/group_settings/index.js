@@ -9,6 +9,7 @@ import moment from 'moment';
 import pick from 'lodash/pick';
 import get from 'lodash/get';
 import map from 'lodash/map';
+import flattenDeep from 'lodash/flattenDeep';
 import isEqual from 'lodash/isEqual';
 import Groups from 'groups';
 import { actions } from 'actions';
@@ -23,13 +24,23 @@ import DefaultImage from 'images/energygroup_noimage_01.jpg';
 class GroupSettings extends React.Component {
   setIncompletness(group) {
     const { setIncompleteScreen } = this.props;
+    const flattenErrors = ({ prefix = 'admin.groups', errObj }) =>
+      flattenDeep(map(errObj, (v, k) => {
+        if (Array.isArray(v)) return { title: `${prefix}.${k}`, errors: v };
+        return flattenErrors({ prefix: `${prefix}.${k}`, errObj: v });
+      }));
+
     if (group.incompleteness && Object.keys(group.incompleteness).length) {
-      setIncompleteScreen(map(group.incompleteness, (v, k) => ({ title: `admin.groups.${k}`, errors: v })));
+      setIncompleteScreen(flattenErrors({ errObj: group.incompleteness }));
     }
   }
 
   componentDidMount() {
-    const { loadGroup, group, match: { params: { groupId } } } = this.props;
+    const {
+      loadGroup,
+      group,
+      match: { params: { groupId } },
+    } = this.props;
     loadGroup(groupId);
     this.setIncompletness(group);
   }
