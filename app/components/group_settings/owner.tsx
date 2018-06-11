@@ -2,7 +2,13 @@ import * as React from 'react';
 import { Row, Col } from 'reactstrap';
 import { FormattedMessage } from 'react-intl';
 
-const Owner = ({ owner, address, contact }) => {
+interface Props {
+  owner: any;
+  address: any;
+  contact?: any;
+}
+
+const Owner = ({ owner, address, contact }: Props) => {
   const prefix = owner.type === 'person' ? 'admin.persons' : 'admin.organizations';
   const name = owner.type === 'person' ? `${owner.firstName} ${owner.lastName}` : owner.name;
   let ownerType = 'headerContact';
