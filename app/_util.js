@@ -3,9 +3,6 @@ import camelCase from 'lodash/camelCase';
 import snakeCase from 'lodash/snakeCase';
 import reduce from 'lodash/reduce';
 import last from 'lodash/last';
-import transform from 'lodash/transform';
-import isEqual from 'lodash/isEqual';
-import isObject from 'lodash/isObject';
 import Alert from 'react-s-alert';
 import Auth from '@buzzn/module_auth';
 import store from './configure_store';
@@ -18,13 +15,12 @@ export function prepareHeaders(token) {
   };
 }
 
-export function wrapErrors(errors) {
-  const formErrors = { status: 422, _error: 'Form save failed' };
-  forEach(errors, (error) => {
-    formErrors[camelCase(error.parameter)] = error.detail;
-  });
-  return formErrors;
-}
+const flattenErrors = ({ errors }) => reduce(errors, (res, v, k) => {
+  if (Array.isArray(v)) return { ...res, [k]: v.join(', ') };
+  return { ...res, [k]: flattenErrors({ errors: v }) };
+}, {});
+
+export const wrapErrors = errors => ({ ...flattenErrors({ errors }), status: 422, _error: 'Form save failed' });
 
 export function parseResponse(response) {
   const json = response.json();
@@ -39,7 +35,7 @@ export function parseResponse(response) {
     Alert.error('<h4>403</h4>All your base are belong to us.');
     return Promise.resolve({ _status: 403 });
   } else if (response.status === 422) {
-    return json.then(error => Promise.resolve(wrapErrors(error.errors)));
+    return json.then(errors => Promise.resolve(wrapErrors(errors)));
   } else if (response.status === 401) {
     return json.then((error) => {
       if (error.error === 'This session has expired, please login again.') {

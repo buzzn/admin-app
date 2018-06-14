@@ -3496,7 +3496,7 @@ builtin-status-codes@^3.0.0:
 
 "buzzn-style@git://github.com/buzzn/buzzn-style.git":
   version "1.0.0"
-  resolved "git://github.com/buzzn/buzzn-style.git#92eb01b6b6841b8a28d42f07c992287a513a8831"
+  resolved "git://github.com/buzzn/buzzn-style.git#f8101bce5ab42f54825678cc4704d14cfc8236b8"
 
 bytes@3.0.0:
   version "3.0.0"
@@ -10137,6 +10137,10 @@ react-component-managers@^3.1.0, react-component-managers@^3.2.1:
   dependencies:
     prop-types "^15.6.1"
     spy-on-component "^1.1.0"
+
+react-confirm-alert@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/react-confirm-alert/-/react-confirm-alert-2.0.2.tgz#8691d4f1b109e0b74022fe4d42ce0b7f985d19a5"
 
 react-datetime@^2.14.0:
   version "2.14.0"
