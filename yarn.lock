@@ -1275,9 +1275,9 @@
   version "1.0.0"
   resolved "git+https://github.com/buzzn/module-bubbles.git#08399f3ede8f3be7a23bf8dd6db488faed833073"
 
-"@buzzn/module_charts@git+https://github.com/buzzn/module-charts.git#new_api_labels_fix":
+"@buzzn/module_charts@git+https://github.com/buzzn/module-charts.git#master":
   version "1.0.0"
-  resolved "git+https://github.com/buzzn/module-charts.git#2f8fb19c05684bf37471df879c32d0d5e77868ba"
+  resolved "git+https://github.com/buzzn/module-charts.git#c80eacca0e3195e4a4fdf9a6c3f4adce5844e3b1"
   dependencies:
     "@babel/cli" "^7.0.0-beta.34"
     "@babel/core" "^7.0.0-beta.34"
