@@ -10,12 +10,25 @@ export default {
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
+  addGroup({ token, apiUrl, apiPath, params }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/`, {
+      headers: prepareHeaders(token),
+      method: 'POST',
+      body: JSON.stringify(snakeReq(params)),
+    }).then(parseResponse);
+  },
   updateGroup({ token, apiUrl, apiPath, params, groupId }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}`, {
       headers: prepareHeaders(token),
       method: 'PATCH',
       body: JSON.stringify(snakeReq(params)),
     }).then(parseResponse);
+  },
+  deleteGroup({ token, apiUrl, apiPath, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}`, {
+      headers: prepareHeaders(token),
+      method: 'DELETE',
+    });
   },
   fetchGroups({ token, apiUrl, apiPath }) {
     return fetch(`${apiUrl}${apiPath}/localpools`, { headers: prepareHeaders(token) })

@@ -28,11 +28,11 @@ class BillingList extends React.Component<
     this.setState({ isOpen: !this.state.isOpen });
   };
 
-  addBillingCycle = (values) => {
+  addBillingCycle = (params) => {
     const { addBillingCycle, groupId } = this.props;
 
     return new Promise((resolve, reject) => {
-      addBillingCycle({ resolve, reject, params: values, groupId });
+      addBillingCycle({ resolve, reject, params, groupId });
     }).then(() => this.switchAddBilling());
   };
 

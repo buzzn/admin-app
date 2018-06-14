@@ -9,7 +9,9 @@ export const constants = {
   LOADED_GROUP: 'buzzn_groups/LOADED_GROUP',
   SET_GROUP: 'buzzn_groups/SET_GROUP',
 
+  ADD_GROUP: 'buzzn_groups/ADD_GROUP',
   UPDATE_GROUP: 'buzzn_groups/UPDATE_GROUP',
+  DELETE_GROUP: 'buzzn_groups/DELETE_GROUP',
 
   LOAD_GROUPS: 'buzzn_groups/LOAD_GROUPS',
   LOADING_GROUPS: 'buzzn_groups/LOADING_GROUPS',
@@ -28,11 +30,23 @@ export const actions = {
   loadedGroup: () => ({ type: constants.LOADED_GROUP }),
   setGroup: group => ({ type: constants.SET_GROUP, group }),
 
+  addGroup: ({ params, resolve, reject }) => ({
+    type: constants.ADD_GROUP,
+    params,
+    resolve,
+    reject,
+  }),
+
   updateGroup: ({ params, resolve, reject, groupId }) => ({
     type: constants.UPDATE_GROUP,
     params,
     resolve,
     reject,
+    groupId,
+  }),
+
+  deleteGroup: ({ groupId }) => ({
+    type: constants.DELETE_GROUP,
     groupId,
   }),
 

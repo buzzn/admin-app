@@ -3,6 +3,7 @@ import 'react-table/react-table.css';
 import 'react-widgets/dist/css/react-widgets.css';
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/genie.css';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import './root.scss';
 
 import * as React from 'react';
@@ -11,6 +12,7 @@ import { connect } from 'react-redux';
 import { Container, Row, Col } from 'reactstrap';
 import Alert from 'react-s-alert';
 import Transition from 'react-transition-group/Transition';
+import Groups from 'groups';
 import PartErrorBoundary from 'components/part_error_boundary';
 import ScrollToTop from 'components/scroll_to_top';
 import TopNavBarContainer from 'components/top_nav_bar';
@@ -30,15 +32,16 @@ import HealthContainer from 'components/health';
 import Footer from 'components/footer';
 import AppLoading from 'components/app_loading';
 import AppMaintenance from 'components/app_maintenance';
+import AddGroup from 'components/add_group';
 import { EditOverlay } from 'style';
 import './react_table_config';
 
 export const EditOverlayContext = React.createContext();
 
 // FIXME: react router old context api hack. See react-router#5901, react-router#6072, react#12551, react#12586
-const RouterHack = ({ token, devMode, multiGroups, editMode, switchEditMode }) => (
+const RouterHack = ({ token, devMode, multiGroups, editMode, switchEditMode, addGroupOpen, switchAddGroup, addGroup }) => (
   <EditOverlayContext.Provider value={{ editMode, switchEditMode }}>
-    {token && <TopNavBarContainer devMode={devMode} />}
+    {token && <TopNavBarContainer {...{ devMode, switchAddGroup }} />}
     {token ? (
       <Container style={{ maxWidth: '1440px' }}>
         <Route exact path="/" render={() => <Redirect to="/groups" />} />
@@ -82,6 +85,13 @@ const RouterHack = ({ token, devMode, multiGroups, editMode, switchEditMode }) =
         </Row>
         <Row>
           <Col xs={12}>
+            <AddGroup
+              {...{
+                isOpen: addGroupOpen,
+                toggle: switchAddGroup,
+                onSubmit: addGroup,
+              }}
+            />
             <Footer />
           </Col>
         </Row>
@@ -93,15 +103,34 @@ const RouterHack = ({ token, devMode, multiGroups, editMode, switchEditMode }) =
 );
 
 class NewRoot extends React.Component {
-  state = { editMode: false };
+  state = { editMode: false, addGroupOpen: false };
 
   switchEditMode = () => {
     this.setState({ editMode: !this.state.editMode });
   };
 
+  switchAddGroup = () => {
+    this.setState({ addGroupOpen: !this.state.addGroupOpen });
+  };
+
+  addGroup = (params) => {
+    const { addGroup } = this.props;
+
+    return new Promise((resolve, reject) => {
+      addGroup({ resolve, reject, params });
+    }).then(() => this.switchAddGroup());
+  };
+
   render() {
-    const { token, devMode, multiGroups, appLoading, health } = this.props;
-    const { editMode } = this.state;
+    const {
+      token,
+      devMode,
+      multiGroups,
+      appLoading,
+      health,
+      groupValidationRules,
+    } = this.props;
+    const { editMode, addGroupOpen } = this.state;
 
     return (
       <React.Fragment>
@@ -126,7 +155,17 @@ class NewRoot extends React.Component {
                 </Transition>
 
                 {(health.healthy && health.maintenance === 'off') ? (
-                  <RouterHack {...{ token, devMode, multiGroups, editMode, switchEditMode: this.switchEditMode }} />
+                  <RouterHack {...{
+                    token,
+                    devMode,
+                    multiGroups,
+                    editMode,
+                    switchEditMode: this.switchEditMode,
+                    addGroupOpen,
+                    groupValidationRules,
+                    switchAddGroup: this.switchAddGroup,
+                    addGroup: this.addGroup,
+                  }} />
                 ) : (
                   <AppMaintenance />
                 )}
@@ -149,4 +188,6 @@ const mapStateToProps = state => ({
   health: state.app.health,
 });
 
-export default connect(mapStateToProps)(NewRoot);
+export default connect(mapStateToProps, {
+  addGroup: Groups.actions.addGroup,
+})(NewRoot);

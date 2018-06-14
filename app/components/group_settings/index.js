@@ -4,6 +4,7 @@ import { Redirect, NavLink, Switch, Route } from 'react-router-dom';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { intlShape } from 'react-intl';
 import { Col, Row } from 'reactstrap';
+import { confirmAlert } from 'react-confirm-alert';
 import pick from 'lodash/pick';
 import get from 'lodash/get';
 import map from 'lodash/map';
@@ -55,6 +56,27 @@ class GroupSettings extends React.Component {
     const { group: newGroup } = this.props;
     const { group } = prevProps;
     if (!isEqual(group.incompleteness, newGroup.incompleteness)) this.setIncompletness(newGroup);
+  }
+
+  deleteGroup = () => {
+    const { group: { id: groupId, name }, deleteGroup, history: { push }, intl } = this.props;
+
+    confirmAlert({
+      message: `${intl.formatMessage({ id: 'admin.messages.confirmDeleteGroup' })} ${name}?`,
+      buttons: [
+        {
+          label: intl.formatMessage({ id: 'admin.buttons.submit' }),
+          onClick: () => {
+            deleteGroup({ groupId });
+            push('/');
+          },
+        },
+        {
+          label: intl.formatMessage({ id: 'admin.buttons.cancel' }),
+          onClick: () => false,
+        },
+      ],
+    });
   }
 
   render() {
@@ -121,6 +143,9 @@ class GroupSettings extends React.Component {
 
     return (
       <React.Fragment>
+        {
+          group.deletable && <i className="fa fa-2x fa-remove delete-group-icon" onClick={this.deleteGroup}/>
+        }
         <PageTitle {...{ breadcrumbs, title: intl.formatMessage({ id: `${prefix}.headerSettings` }), thin: 'true' }} />
         <div className="center-content group-settings">
           <div className="group-image">
@@ -207,5 +232,6 @@ export default connect(mapStateToProps, {
   loadGroup: Groups.actions.loadGroup,
   setGroup: Groups.actions.setGroup,
   updateGroup: Groups.actions.updateGroup,
+  deleteGroup: Groups.actions.deleteGroup,
   setIncompleteScreen: actions.setIncompleteScreen,
 })(GroupSettingsIntl);
