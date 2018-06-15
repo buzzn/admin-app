@@ -27,6 +27,15 @@ export const SpanClick = styled.span`
   cursor: pointer;
 `;
 
+export const DeleteButton = styled.div`
+  background-color: #d84315;
+  border-color: #d84315;
+  float: right;
+  &:hover {
+    background-color: #d84315;
+  }
+`;
+
 export const FormGroup = styled.div`
   position: relative;
   margin-bottom: 1.5rem;
