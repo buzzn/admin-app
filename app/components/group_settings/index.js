@@ -143,9 +143,6 @@ class GroupSettings extends React.Component {
 
     return (
       <React.Fragment>
-        {
-          group.deletable && <i className="fa fa-2x fa-remove delete-group-icon" onClick={this.deleteGroup}/>
-        }
         <PageTitle {...{ breadcrumbs, title: intl.formatMessage({ id: `${prefix}.headerSettings` }), thin: 'true' }} />
         <div className="center-content group-settings">
           <div className="group-image">
@@ -174,6 +171,7 @@ class GroupSettings extends React.Component {
               <Route path={`${url}/group`} render={() => <Group {...{
                 submitGroup,
                 group,
+                deleteGroup: this.deleteGroup,
                 address,
                 transmissionSystemOperator,
                 distributionSystemOperator,

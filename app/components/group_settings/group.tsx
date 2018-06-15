@@ -3,12 +3,18 @@ import moment from 'moment';
 import { reduxForm, Field } from 'redux-form';
 import { FormattedMessage } from 'react-intl';
 import { Col, Row } from 'reactstrap';
+import withEditOverlay from 'components/with_edit_overlay';
+import FormPanel from 'components/form_panel';
 import FieldToggle from 'components/field_toggle';
+import { DeleteButton } from 'components/style';
 
 interface Props {
+  editMode: boolean;
+  switchEditMode: () => void;
   handleSubmit: (Function) => void;
   submitGroup: () => void;
   group: { [key: string]: any };
+  deleteGroup: () => void;
   address: { [key: string]: any };
   transmissionSystemOperator: { [key: string]: any };
   distributionSystemOperator: { [key: string]: any };
@@ -19,10 +25,13 @@ const Group = ({
   handleSubmit,
   submitGroup,
   group,
+  deleteGroup,
   address,
   transmissionSystemOperator,
   distributionSystemOperator,
   electricitySupplier,
+  editMode,
+  switchEditMode,
 }: Props) => {
   const submitForm = handleSubmit(submitGroup);
   const prefix = 'admin.groups';
@@ -42,64 +51,96 @@ const Group = ({
       >
         <p className="h5 grey-underline header text-uppercase">
           <FormattedMessage id={`${prefix}.headerGroup`} />
+          {!editMode &&
+            group.updatable && <i className="buzzn-pencil" style={{ float: 'right' }} onClick={switchEditMode} />}
         </p>
-        <Row className="fieldgroup">
-          <Col xs="4" className="fieldname">
-            <FormattedMessage id={`${prefix}.name`} />
-          </Col>
-          <Col xs="8" className="grey-underline fieldvalue">
-            {group.name}
-          </Col>
-        </Row>
-        <Row className="fieldgroup">
-          <Col xs="4" className="fieldname">
-            <FormattedMessage id={`${addressPrefix}.address`} />
-          </Col>
-          <Col xs="8" className="grey-underline fieldvalue">
-            {address.street}
-          </Col>
-        </Row>
-        <Row className="fieldgroup">
-          <Col xs="4" className="fieldname" />
-          <Col xs="2" className="grey-underline fieldvalue">
-            {address.zip}
-          </Col>
-          <Col xs="6" className="grey-underline fieldvalue">
-            {address.city}
-          </Col>
-        </Row>
-        <Row className="fieldgroup">
-          <Col xs="4" className="fieldname">
-            <FormattedMessage id={`${prefix}.startDate`} />
-          </Col>
-          <Col xs="8" className="grey-underline fieldvalue">
-            {group.startDate ? moment(group.startDate).format('DD.MM.YYYY') : ''}
-          </Col>
-        </Row>
-        <Row className="fieldgroup">
-          <Col xs="4" className="fieldname">
-            <FormattedMessage id={`${prefix}.transmissionSystemOperator`} />
-          </Col>
-          <Col xs="8" className="grey-underline fieldvalue">
-            {transmissionSystemOperator.name}
-          </Col>
-        </Row>
-        <Row className="fieldgroup">
-          <Col xs="4" className="fieldname">
-            <FormattedMessage id={`${prefix}.distributionSystemOperator`} />
-          </Col>
-          <Col xs="8" className="grey-underline fieldvalue">
-            {distributionSystemOperator.name}
-          </Col>
-        </Row>
-        <Row className="fieldgroup">
-          <Col xs="4" className="fieldname">
-            <FormattedMessage id={`${prefix}.electricitySupplier`} />
-          </Col>
-          <Col xs="8" className="grey-underline fieldvalue">
-            {electricitySupplier.name}
-          </Col>
-        </Row>
+        <FormPanel
+          {...{
+            editMode,
+            dirty: false,
+            onCancel: () => {
+              switchEditMode();
+            },
+            cancelDisabled: false,
+            onSave: () => null,
+            saveDisabled: true,
+          }}
+        >
+          <Row className="fieldgroup">
+            <Col xs="4" className="fieldname">
+              <FormattedMessage id={`${prefix}.name`} />
+            </Col>
+            <Col xs="8" className="grey-underline fieldvalue">
+              {group.name}
+            </Col>
+          </Row>
+          <Row className="fieldgroup">
+            <Col xs="4" className="fieldname">
+              <FormattedMessage id={`${addressPrefix}.address`} />
+            </Col>
+            <Col xs="8" className="grey-underline fieldvalue">
+              {address.street}
+            </Col>
+          </Row>
+          <Row className="fieldgroup">
+            <Col xs="4" className="fieldname" />
+            <Col xs="2" className="grey-underline fieldvalue">
+              {address.zip}
+            </Col>
+            <Col xs="6" className="grey-underline fieldvalue">
+              {address.city}
+            </Col>
+          </Row>
+          <Row className="fieldgroup">
+            <Col xs="4" className="fieldname">
+              <FormattedMessage id={`${prefix}.startDate`} />
+            </Col>
+            <Col xs="8" className="grey-underline fieldvalue">
+              {group.startDate ? moment(group.startDate).format('DD.MM.YYYY') : ''}
+            </Col>
+          </Row>
+          <Row className="fieldgroup">
+            <Col xs="4" className="fieldname">
+              <FormattedMessage id={`${prefix}.transmissionSystemOperator`} />
+            </Col>
+            <Col xs="8" className="grey-underline fieldvalue">
+              {transmissionSystemOperator.name}
+            </Col>
+          </Row>
+          <Row className="fieldgroup">
+            <Col xs="4" className="fieldname">
+              <FormattedMessage id={`${prefix}.distributionSystemOperator`} />
+            </Col>
+            <Col xs="8" className="grey-underline fieldvalue">
+              {distributionSystemOperator.name}
+            </Col>
+          </Row>
+          <Row className="fieldgroup">
+            <Col xs="4" className="fieldname">
+              <FormattedMessage id={`${prefix}.electricitySupplier`} />
+            </Col>
+            <Col xs="8" className="grey-underline fieldvalue">
+              {electricitySupplier.name}
+            </Col>
+          </Row>
+          {editMode &&
+            group.deletable && (
+              <Row>
+                <Col xs="12">
+                  <br />
+                  <DeleteButton
+                    className="btn btn-primary"
+                    onClick={() => {
+                      switchEditMode();
+                      deleteGroup();
+                    }}
+                  >
+                    <FormattedMessage id="admin.buttons.delete" />
+                  </DeleteButton>
+                </Col>
+              </Row>
+            )}
+        </FormPanel>
         <Row className="fieldgroup">
           <Col xs="4" className="fieldname">
             <FormattedMessage id={`${prefix}.visibility`} />
@@ -155,4 +196,4 @@ const Group = ({
 export default reduxForm({
   form: 'groupUpdateForm',
   enableReinitialize: true,
-})(Group);
+})(withEditOverlay(Group));

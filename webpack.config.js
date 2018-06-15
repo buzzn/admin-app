@@ -31,8 +31,6 @@ module.exports = {
             ['@babel/env', {
               targets: {
                 browsers: ['last 2 versions', 'safari >= 7'],
-                modules: false,
-                debug: true,
               },
             }],
             '@babel/stage-3',
