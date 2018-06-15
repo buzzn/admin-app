@@ -118,7 +118,10 @@ class NewRoot extends React.Component {
 
     return new Promise((resolve, reject) => {
       addGroup({ resolve, reject, params });
-    }).then(() => this.switchAddGroup());
+    }).then(() => {
+      Alert.success('Saved!');
+      this.switchAddGroup();
+    });
   };
 
   render() {
