@@ -113,8 +113,13 @@ class NewRoot extends React.Component {
     this.setState({ addGroupOpen: !this.state.addGroupOpen });
   };
 
-  addGroup = (params) => {
+  addGroup = (values) => {
     const { addGroup } = this.props;
+    const params = { ...values };
+
+    // Country is always predefined, so if there is only one address field,
+    // user did not entered anything in address fields
+    if (Object.keys(values.address).length === 1) delete params.address;
 
     return new Promise((resolve, reject) => {
       addGroup({ resolve, reject, params });
