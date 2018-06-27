@@ -2,7 +2,7 @@ import 'buzzn-style';
 import 'react-table/react-table.css';
 import 'react-widgets/dist/css/react-widgets.css';
 import 'react-s-alert/dist/s-alert-default.css';
-import 'react-s-alert/dist/s-alert-css-effects/genie.css';
+import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import './root.scss';
 

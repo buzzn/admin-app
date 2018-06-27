@@ -65,7 +65,7 @@ class GroupSettings extends React.Component {
       message: `${intl.formatMessage({ id: 'admin.messages.confirmDeleteGroup' })} ${name}?`,
       buttons: [
         {
-          label: intl.formatMessage({ id: 'admin.buttons.submit' }),
+          label: intl.formatMessage({ id: 'admin.buttons.delete' }),
           onClick: () => {
             deleteGroup({ groupId });
             push('/');
