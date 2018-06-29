@@ -6,6 +6,17 @@ import api from './api';
 
 export const selectGroupId = state => state.groups.groupId;
 
+export function* getGroups({ apiUrl, apiPath, token }) {
+  yield put(actions.loadingGroups());
+  try {
+    const groups = yield call(api.fetchGroups, { apiUrl, apiPath, token });
+    yield put(actions.setGroups(groups));
+  } catch (error) {
+    logException(error);
+  }
+  yield put(actions.loadedGroups());
+}
+
 export function* getGroup({ apiUrl, apiPath, token }, { groupId }) {
   yield put(actions.loadingGroup());
   try {
@@ -15,6 +26,20 @@ export function* getGroup({ apiUrl, apiPath, token }, { groupId }) {
     logException(error);
   }
   yield put(actions.loadedGroup());
+}
+
+export function* addGroup({ apiUrl, apiPath, token }, { params, resolve, reject }) {
+  try {
+    const res = yield call(api.addGroup, { apiUrl, apiPath, token, params });
+    if (res._error) {
+      yield call(reject, new SubmissionError(res));
+    } else {
+      yield call(resolve, res);
+      yield call(getGroups, { apiUrl, apiPath, token });
+    }
+  } catch (error) {
+    logException(error);
+  }
 }
 
 export function* updateGroup({ apiUrl, apiPath, token }, { params, resolve, reject, groupId }) {
@@ -31,21 +56,21 @@ export function* updateGroup({ apiUrl, apiPath, token }, { params, resolve, reje
   }
 }
 
-export function* getGroups({ apiUrl, apiPath, token }) {
-  yield put(actions.loadingGroups());
+export function* deleteGroup({ apiUrl, apiPath, token }, { groupId }) {
   try {
-    const groups = yield call(api.fetchGroups, { apiUrl, apiPath, token });
-    yield put(actions.setGroups(groups));
+    yield call(api.deleteGroup, { apiUrl, apiPath, token, groupId });
+    yield call(getGroups, { apiUrl, apiPath, token });
   } catch (error) {
     logException(error);
   }
-  yield put(actions.loadedGroups());
 }
 
 export function* groupsSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_GROUPS, getGroups, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUP, getGroup, { apiUrl, apiPath, token });
+  yield takeLatest(constants.ADD_GROUP, addGroup, { apiUrl, apiPath, token });
   yield takeLatest(constants.UPDATE_GROUP, updateGroup, { apiUrl, apiPath, token });
+  yield takeLatest(constants.DELETE_GROUP, deleteGroup, { apiUrl, apiPath, token });
   yield call(getGroups, { apiUrl, apiPath, token });
   const groupId = yield select(selectGroupId);
   if (groupId) yield call(getGroup, { apiUrl, apiPath, token }, { groupId });

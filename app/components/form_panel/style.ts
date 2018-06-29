@@ -15,6 +15,8 @@ export const Wrapper = styled.div`
   padding-left: 32px;
   margin-right: -32px;
   padding-right: 32px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   box-shadow: 0 2px 32px 0 rgba(0,0,0,0.62);
   `
       : '')}

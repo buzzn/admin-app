@@ -7,26 +7,28 @@
     "test-watch": "jest --coverage --watch",
     "dev-server": "webpack-dev-server --mode development --progress --inline --hot --port=2999",
     "storybook": "start-storybook -p 9001 -c .storybook",
-    "build":
-      "rimraf build && webpack --mode production --config ./webpack.production.config.js --progress --profile --colors",
+    "build": "rimraf build && webpack --mode production --config ./webpack.production.config.js --progress --profile --colors",
     "typecheck": "tsc"
   },
-  "pre-commit": ["test", "typecheck"],
+  "pre-commit": [
+    "test",
+    "typecheck"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@babel/cli": "^7.0.0-beta.46",
-    "@babel/core": "^7.0.0-beta.46",
-    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.46",
-    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.46",
-    "@babel/plugin-syntax-class-properties": "^7.0.0-beta.46",
-    "@babel/plugin-syntax-object-rest-spread": "^7.0.0-beta.46",
-    "@babel/preset-env": "^7.0.0-beta.46",
-    "@babel/preset-react": "^7.0.0-beta.46",
-    "@babel/preset-stage-3": "^7.0.0-beta.46",
-    "@babel/preset-typescript": "^7.0.0-beta.46",
-    "@babel/register": "^7.0.0-beta.46",
+    "@babel/cli": "^7.0.0-beta.51",
+    "@babel/core": "^7.0.0-beta.51",
+    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.51",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.51",
+    "@babel/plugin-syntax-class-properties": "^7.0.0-beta.51",
+    "@babel/plugin-syntax-object-rest-spread": "^7.0.0-beta.51",
+    "@babel/preset-env": "^7.0.0-beta.51",
+    "@babel/preset-react": "^7.0.0-beta.51",
+    "@babel/preset-stage-3": "^7.0.0-beta.51",
+    "@babel/preset-typescript": "^7.0.0-beta.51",
+    "@babel/register": "^7.0.0-beta.51",
     "@storybook/addon-actions": "^3.4.2",
     "@storybook/addon-backgrounds": "^3.4.2",
     "@storybook/addon-knobs": "^3.4.2",
@@ -90,11 +92,11 @@
     "webpack-hot-middleware": "^2.22.1"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.0.0-beta.46",
+    "@babel/polyfill": "^7.0.0-beta.51",
     "@buzzn/i18n": "git+https://github.com/buzzn/i18n.git#master",
-    "@buzzn/module_auth": "git+https://github.com/buzzn/module-auth.git#master",
+    "@buzzn/module_auth": "git+https://github.com/buzzn/module-auth.git#c77cb07ca99a71a7f5f915010b4a1d563b368145",
     "@buzzn/module_bubbles": "git+https://github.com/buzzn/module-bubbles.git#master",
-    "@buzzn/module_charts": "git+https://github.com/buzzn/module-charts.git#new_api_labels_fix",
+    "@buzzn/module_charts": "git+https://github.com/buzzn/module-charts.git#master",
     "bootstrap": "4.1.0",
     "buzzn-style": "git://github.com/buzzn/buzzn-style.git",
     "d3": "^5.1.0",
@@ -110,6 +112,7 @@
     "react": "^16.3.2",
     "react-collapse": "^4.0.3",
     "react-component-managers": "^3.2.1",
+    "react-confirm-alert": "^2.0.2",
     "react-dom": "^16.3.2",
     "react-helmet": "^5.2.0",
     "react-highcharts": "^16.0.2",
@@ -142,7 +145,9 @@
   },
   "eslintConfig": {
     "parser": "babel-eslint",
-    "extends": ["airbnb/base"],
+    "extends": [
+      "airbnb/base"
+    ],
     "env": {
       "browser": true,
       "node": true,
@@ -151,7 +156,10 @@
     "settings": {
       "import/resolver": "webpack"
     },
-    "plugins": ["react", "prettier"],
+    "plugins": [
+      "react",
+      "prettier"
+    ],
     "rules": {
       "max-len": [
         2,
@@ -203,12 +211,21 @@
     }
   },
   "jest": {
-    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
-    "moduleDirectories": ["node_modules", "app"],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "app"
+    ],
     "testRegex": "(/tests/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
-        "<rootDir>/app/__mocks__/fileMock.js",
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/app/__mocks__/fileMock.js",
       "\\.(css|scss)$": "<rootDir>/app/__mocks__/styleMock.js"
     },
     "transform": {

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
 import {
   Container,
   Collapse,
@@ -35,12 +36,17 @@ export class TopNavBar extends React.Component {
 
   state = {
     isOpen: false,
+    actionOpen: false,
     profileOpen: false,
     scrolled: false,
   };
 
   toggle = () => {
     this.setState({ isOpen: !this.state.isOpen });
+  }
+
+  toggleAction = () => {
+    this.setState({ actionOpen: !this.state.actionOpen });
   }
 
   toggleProfile = () => {
@@ -60,8 +66,8 @@ export class TopNavBar extends React.Component {
   }
 
   render() {
-    const { signOut, devMode, myProfile: { firstName, lastName, image }, hoverEvents, hover } = this.props;
-    const { isOpen, profileOpen, scrolled } = this.state;
+    const { signOut, devMode, myProfile: { firstName, lastName, image }, hoverEvents, hover, switchAddGroup } = this.props;
+    const { isOpen, actionOpen, profileOpen, scrolled } = this.state;
     const myName = firstName ? `${firstName} ${lastName}` : 'My profile';
     const shrinked = !hover && scrolled;
 
@@ -80,6 +86,16 @@ export class TopNavBar extends React.Component {
               </InputGroupAddon>
             </InputGroup>
             <Nav className="ml-auto" navbar>
+              <Dropdown nav isOpen={actionOpen} toggle={this.toggleAction} className="icon-drop">
+                <DropdownToggle nav>
+                  <span className="icon-nav-item">
+                    <i className="fa fa-plus" />
+                  </span>
+                </DropdownToggle>
+                <DropdownMenu className="icon-dropdown" modifiers={{ offset: { enabled: true, offset: '20px, 40px' } }}>
+                  <DropdownItem onClick={switchAddGroup}><FormattedMessage id="admin.groups.menuAddGroup" /></DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
               <NavItem className={`icon-nav-item ${devMode ? '' : 'under-construction'}`}>
                 <i className="fa fa-bell" />
               </NavItem>
