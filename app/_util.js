@@ -15,12 +15,21 @@ export function prepareHeaders(token) {
   };
 }
 
-const flattenErrors = ({ errors }) => reduce(errors, (res, v, k) => {
-  if (Array.isArray(v)) return { ...res, [k]: v.join(', ') };
-  return { ...res, [k]: flattenErrors({ errors: v }) };
-}, {});
+const flattenErrors = ({ errors }) =>
+  reduce(
+    errors,
+    (res, v, k) => {
+      if (Array.isArray(v)) return { ...res, [k]: v.join(', ') };
+      return { ...res, [k]: flattenErrors({ errors: v }) };
+    },
+    {},
+  );
 
-export const wrapErrors = errors => ({ ...flattenErrors({ errors }), status: 422, _error: 'Form save failed' });
+export const wrapErrors = errors => ({
+  ...camelizeResponseKeys(flattenErrors({ errors })),
+  status: 422,
+  _error: 'Form save failed',
+});
 
 export function parseResponse(response) {
   const json = response.json();
@@ -83,7 +92,7 @@ export function camelizeResponseKeys(data) {
 }
 
 export function snakeReq(data) {
-  return reduce(data, (res, v, k) => ({ ...res, [snakeCase(k)]: v }), {});
+  return reduce(data, (res, v, k) => ({ ...res, [snakeCase(k)]: typeof v === 'object' ? snakeReq(v) : v }), {});
 }
 
 export function logException(ex, context) {

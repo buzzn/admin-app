@@ -11,6 +11,8 @@ import map from 'lodash/map';
 import flattenDeep from 'lodash/flattenDeep';
 import isEqual from 'lodash/isEqual';
 import Groups from 'groups';
+import Users from 'users';
+import Organizations from 'organizations';
 import { actions } from 'actions';
 import { SubNav } from 'components/style';
 import PageTitle from 'components/page_title';
@@ -59,7 +61,12 @@ class GroupSettings extends React.Component {
   }
 
   deleteGroup = () => {
-    const { group: { id: groupId, name }, deleteGroup, history: { push }, intl } = this.props;
+    const {
+      group: { id: groupId, name },
+      deleteGroup,
+      history: { push },
+      intl,
+    } = this.props;
 
     confirmAlert({
       message: `${intl.formatMessage({ id: 'admin.messages.confirmDeleteGroup' })} ${name}?`,
@@ -77,7 +84,7 @@ class GroupSettings extends React.Component {
         },
       ],
     });
-  }
+  };
 
   render() {
     const {
@@ -94,6 +101,11 @@ class GroupSettings extends React.Component {
       ownerContact,
       ownerContactAddress,
       ownerContactBankAccounts,
+      availableUsers,
+      loadAvailableUsers,
+      availableOrganizations,
+      loadAvailableOrganizations,
+      updateOwner,
 
       gap,
       gapAddress,
@@ -156,11 +168,11 @@ class GroupSettings extends React.Component {
               <NavLink to={`${url}/powergiver`} exact className="nav-link">
                 <FormattedMessage id="admin.groups.navPowergiver" />
               </NavLink>
-              { !!owner.id &&
+              {!!owner.id && (
                 <NavLink to={`${url}/bank`} exact className="nav-link">
                   <FormattedMessage id="admin.groups.navBank" />
                 </NavLink>
-              }
+              )}
               <NavLink to={`${url}/gapcontact`} exact className="nav-link">
                 <FormattedMessage id="admin.groups.navGapContact" />
               </NavLink>
@@ -168,26 +180,59 @@ class GroupSettings extends React.Component {
           </Row>
           <Row>
             <Switch>
-              <Route path={`${url}/group`} render={() => <Group {...{
-                submitGroup,
-                group,
-                deleteGroup: this.deleteGroup,
-                address,
-                transmissionSystemOperator,
-                distributionSystemOperator,
-                initialValues: pick(group, [
-                  'showObject',
-                  'showProduction',
-                  'showEnergy',
-                  'showContact',
-                  'showDisplayApp',
-                  'updatedAt',
-                ]),
-                electricitySupplier,
-              }} />} />
-              <Route path={`${url}/powergiver`} render={() => <Powergiver {...{ owner, ownerAddress, ownerContact, ownerContactAddress }} />} />
+              <Route
+                path={`${url}/group`}
+                render={() => (
+                  <Group
+                    {...{
+                      submitGroup,
+                      group,
+                      deleteGroup: this.deleteGroup,
+                      address,
+                      transmissionSystemOperator,
+                      distributionSystemOperator,
+                      initialValues: pick(group, [
+                        'showObject',
+                        'showProduction',
+                        'showEnergy',
+                        'showContact',
+                        'showDisplayApp',
+                        'updatedAt',
+                      ]),
+                      electricitySupplier,
+                    }}
+                  />
+                )}
+              />
+              <Route
+                path={`${url}/powergiver`}
+                render={() => (
+                  <Powergiver
+                    {...{
+                      updatable: group.updatable,
+                      owner,
+                      ownerAddress,
+                      ownerContact,
+                      ownerContactAddress,
+                      loadAvailableUsers,
+                      availableUsers,
+                      availableOrganizations,
+                      loadAvailableOrganizations,
+                      updateOwner: params => updateOwner({ groupId: group.id, ...params }),
+                      initialValues: {
+                        ...owner,
+                        address: { ...ownerAddress },
+                        contact: { ...ownerContact, address: { ...ownerContactAddress } },
+                      },
+                    }}
+                  />
+                )}
+              />
               {!!owner.id && <Route path={`${url}/bank`} render={() => <Bank {...{ bankAccount }} />} />}
-              <Route path={`${url}/gapcontact`} render={() => <GapContact {...{ gap, gapAddress, gapContact, gapContactAddress }} />} />
+              <Route
+                path={`${url}/gapcontact`}
+                render={() => <GapContact {...{ gap, gapAddress, gapContact, gapContactAddress }} />}
+              />
               <Route path={url}>
                 <Redirect to={`${url}/group`} />
               </Route>
@@ -215,6 +260,8 @@ const mapStateToProps = state => ({
   ownerContact: get(state.groups.group, 'owner.contact') || {},
   ownerContactAddress: get(state.groups.group, 'owner.contact.address') || {},
   ownerContactBankAccounts: get(state.groups.group, 'owner.contact.bankAccounts.array') || [],
+  availableUsers: state.users.availableUsers,
+  availableOrganizations: state.organizations.availableOrganizations,
 
   gap: state.groups.group.gapContractCustomer || {},
   gapAddress: get(state.groups.group, 'gapContractCustomer.address') || {},
@@ -231,5 +278,8 @@ export default connect(mapStateToProps, {
   setGroup: Groups.actions.setGroup,
   updateGroup: Groups.actions.updateGroup,
   deleteGroup: Groups.actions.deleteGroup,
+  updateOwner: Groups.actions.updateOwner,
   setIncompleteScreen: actions.setIncompleteScreen,
+  loadAvailableUsers: Users.actions.loadAvailableUsers,
+  loadAvailableOrganizations: Organizations.actions.loadAvailableOrganizations,
 })(GroupSettingsIntl);

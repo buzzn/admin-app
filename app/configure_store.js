@@ -10,6 +10,7 @@ import Groups from 'groups';
 import Meters from 'meters';
 import Registers from 'registers';
 import Users from 'users';
+import Organizations from 'organizations';
 import Contracts from 'contracts';
 import Readings from 'readings';
 import MarketLocations from 'market_locations';
@@ -27,6 +28,7 @@ function* rootSaga() {
     call(Meters.sagas),
     call(Registers.sagas),
     call(Users.sagas),
+    call(Organizations.sagas),
     call(Contracts.sagas),
     call(Readings.sagas),
     call(MarketLocations.sagas),

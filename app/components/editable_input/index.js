@@ -1,9 +1,18 @@
 import * as React from 'react';
+import { FormattedMessage } from 'react-intl';
 import { FormGroup } from 'components/style';
 
 import './style.scss';
 
-const EditableInput = ({ field, editMode, input, meta: { touched, error, dirty } }) => {
+const EditableInput = ({
+  withLabel,
+  prefix,
+  name,
+  field,
+  editMode,
+  input,
+  meta: { active, touched, error, dirty },
+}) => {
   let type = 'text';
   if (field.type === 'integer') type = 'number';
 
@@ -15,6 +24,11 @@ const EditableInput = ({ field, editMode, input, meta: { touched, error, dirty }
           {...input}
           type={type}
         />
+        {withLabel && (
+          <label className={`${!!input.value || active ? 'top' : 'center'}`}>
+            <FormattedMessage id={`${prefix}.${name}`} />
+          </label>
+        )}
         {touched &&
           !!error && (
             <React.Fragment>

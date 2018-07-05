@@ -16,6 +16,12 @@ export const getUsersFunctions = {
     fetch: api.fetchGroupManagers,
     loaded: actions.loadedGroupManagers,
   },
+  availableUsers: {
+    loading: actions.loadingAvailableUsers,
+    set: actions.setAvailableUsers,
+    fetch: api.fetchAvailableUsers,
+    loaded: actions.loadedAvailableUsers,
+  },
 };
 
 export const selectUserId = state => state.users.userId;
@@ -58,6 +64,7 @@ export function* getUsers({ apiUrl, apiPath, token, type }, params) {
 export function* usersSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_GROUP_USERS, getUsers, { apiUrl, apiPath, token, type: 'users' });
   yield takeLatest(constants.LOAD_GROUP_MANAGERS, getUsers, { apiUrl, apiPath, token, type: 'groupManagers' });
+  yield takeLatest(constants.LOAD_AVAILABLE_USERS, getUsers, { apiUrl, apiPath, token, type: 'availableUsers' });
   yield takeLatest(constants.LOAD_USER, getUser, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUP_USER, getGroupUser, { apiUrl, apiPath, token });
   yield takeLatest(constants.SET_USER_ID, getUser, { apiUrl, apiPath, token });

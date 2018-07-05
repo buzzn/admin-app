@@ -2,11 +2,13 @@ import { constants } from './actions';
 
 export const initialState = {
   loadingUser: false,
+  loadingAvailableUsers: false,
   loadingGroupUser: false,
   loadingGroupUsers: false,
   loadingGroupManagers: false,
   me: { _status: null },
   user: { _status: null },
+  availableUsers: { _status: null, array: [] },
   groupUser: { _status: null },
   groupUsers: { _status: null, array: [] },
   groupManagers: { _status: null, array: [] },
@@ -49,6 +51,15 @@ export default function (state = initialState, action) {
       return { ...state, loadingGroupManagers: false };
     case constants.SET_GROUP_MANAGERS:
       return { ...state, groupManagers: action.managers };
+
+    case constants.LOAD_AVAILABLE_USERS:
+      return { ...state };
+    case constants.LOADING_AVAILABLE_USERS:
+      return { ...state, loadingAvailableUsers: true };
+    case constants.LOADED_AVAILABLE_USERS:
+      return { ...state, loadingAvailableUsers: false };
+    case constants.SET_AVAILABLE_USERS:
+      return { ...state, availableUsers: action.availableUsers };
 
     case constants.SET_USER_ID:
       return { ...state, userId: action.userId };

@@ -30,6 +30,35 @@ export default {
       method: 'DELETE',
     });
   },
+  updateOwner({ token, apiUrl, apiPath, groupId, params, update, ownerId, ownerType }) {
+    let url = `${apiUrl}${apiPath}/localpools/${groupId}/`;
+    let method = 'POST';
+    let body = JSON.stringify(snakeReq(params));
+    if (update) {
+      method = 'PATCH';
+      if (ownerType === 'person') {
+        url += 'person-owner';
+      } else {
+        url += 'organization-owner';
+      }
+    } else if (ownerId) {
+      body = null;
+      if (ownerType === 'person') {
+        url += `person-owner/${ownerId}`;
+      } else {
+        url += `organization-owner/${ownerId}`;
+      }
+    } else if (ownerType === 'person') {
+      url += 'person-owner';
+    } else {
+      url += 'organization-owner';
+    }
+    return fetch(url, {
+      headers: prepareHeaders(token),
+      method,
+      body,
+    }).then(parseResponse);
+  },
   fetchGroups({ token, apiUrl, apiPath }) {
     return fetch(`${apiUrl}${apiPath}/localpools`, { headers: prepareHeaders(token) })
       .then(parseResponse)

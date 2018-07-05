@@ -13,6 +13,8 @@ export const constants = {
   UPDATE_GROUP: 'buzzn_groups/UPDATE_GROUP',
   DELETE_GROUP: 'buzzn_groups/DELETE_GROUP',
 
+  UPDATE_OWNER: 'buzzn_groups/UPDATE_OWNER',
+
   LOAD_GROUPS: 'buzzn_groups/LOAD_GROUPS',
   LOADING_GROUPS: 'buzzn_groups/LOADING_GROUPS',
   LOADED_GROUPS: 'buzzn_groups/LOADED_GROUPS',
@@ -48,6 +50,17 @@ export const actions = {
   deleteGroup: ({ groupId }) => ({
     type: constants.DELETE_GROUP,
     groupId,
+  }),
+
+  updateOwner: ({ groupId, params, resolve, reject, update, ownerId, ownerType }) => ({
+    type: constants.UPDATE_OWNER,
+    groupId,
+    params,
+    resolve,
+    reject,
+    update,
+    ownerId,
+    ownerType,
   }),
 
   loadGroups: () => ({ type: constants.LOAD_GROUPS }),

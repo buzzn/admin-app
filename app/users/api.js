@@ -25,4 +25,9 @@ export default {
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
+  fetchAvailableUsers({ token, apiUrl, apiPath }) {
+    return fetch(`${apiUrl}${apiPath}/persons`, { headers: prepareHeaders(token) })
+      .then(parseResponse)
+      .then(camelizeResponseKeys);
+  },
 };

@@ -9,6 +9,7 @@ import Groups from 'groups';
 import Meters from 'meters';
 import Registers from 'registers';
 import Users from 'users';
+import Organizations from 'organizations';
 import Contracts from 'contracts';
 import Readings from 'readings';
 import MarketLocations from 'market_locations';
@@ -97,6 +98,7 @@ export default combineReducers({
   groups: Groups.reducers,
   registers: Registers.reducers,
   users: Users.reducers,
+  organizations: Organizations.reducers,
   contracts: Contracts.reducers,
   readings: Readings.reducers,
   marketLocations: MarketLocations.reducers,

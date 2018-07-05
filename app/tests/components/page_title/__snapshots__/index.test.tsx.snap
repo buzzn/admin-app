@@ -3,7 +3,6 @@
 exports[`page title tests regular 1`] = `
 <div
   className="sc-bwzfXH cQsxgW row"
-  thin={undefined}
 >
   <div
     className="col-12"
