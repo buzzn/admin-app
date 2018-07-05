@@ -17,7 +17,7 @@ interface Props {
   editMode: boolean;
   loadAvailableUsers: () => void;
   loadAvailableOrganizations: () => void;
-  updateOwner: ({}) => void;
+  updateOwner: (any) => void;
   updatable: boolean;
   availableUsers: { _status: null | number; array: Array<any> };
   availableOrganizations: { _status: null | number; array: Array<any> };
