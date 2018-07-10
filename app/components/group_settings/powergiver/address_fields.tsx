@@ -1,28 +1,33 @@
 import * as React from 'react';
-import { Field } from 'redux-form';
 import { Row, Col } from 'reactstrap';
+import FieldValidationWrapper from 'components/field_validation_wrapper';
 import EditableInput from 'components/editable_input';
 
 interface Props {
-  prefix: string;
+  path: string;
   editMode: boolean;
+  overrideData: null | { [key: string]: any };
+  validationRules: { [key: string]: any };
 }
 
-const AddressFields = ({ prefix, editMode }: Props) => {
+const AddressFields = ({ path, editMode, overrideData, validationRules }: Props) => {
   const fieldClassName = editMode ? 'editValue' : 'fieldvalue grey-underline';
+  const prefix = 'admin.addresses';
 
   return (
     <React.Fragment>
       <Row className="fieldgroup">
         <Col xs="4" className="fieldname" />
         <Col xs="8" className={fieldClassName}>
-          <Field
+          <FieldValidationWrapper
             {...{
+              prefix,
               withLabel: true,
-              field: { type: 'text' },
-              name: `${prefix}street`,
+              name: `${path}street`,
               component: EditableInput,
               editMode,
+              overrideData,
+              validationRules,
             }}
           />
         </Col>
@@ -32,24 +37,28 @@ const AddressFields = ({ prefix, editMode }: Props) => {
         <Col xs="8">
           <Row>
             <Col xs="4" className={fieldClassName}>
-              <Field
+              <FieldValidationWrapper
                 {...{
+                  prefix,
                   withLabel: true,
-                  field: { type: 'integer' },
-                  name: `${prefix}zip`,
+                  name: `${path}zip`,
                   component: EditableInput,
                   editMode,
+                  overrideData,
+                  validationRules,
                 }}
               />
             </Col>
             <Col xs="8" className={fieldClassName}>
-              <Field
+              <FieldValidationWrapper
                 {...{
+                  prefix,
                   withLabel: true,
-                  field: { type: 'text' },
-                  name: `${prefix}city`,
+                  name: `${path}city`,
                   component: EditableInput,
                   editMode,
+                  overrideData,
+                  validationRules,
                 }}
               />
             </Col>

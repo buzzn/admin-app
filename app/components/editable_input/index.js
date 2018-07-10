@@ -10,6 +10,7 @@ const EditableInput = ({
   name,
   field,
   editMode,
+  overrideData,
   input,
   meta: { active, touched, error, dirty },
 }) => {
@@ -19,14 +20,18 @@ const EditableInput = ({
   if (editMode) {
     return (
       <FormGroup className={`editable-input ${touched && error && 'has-danger'}`}>
-        <input
-          className={`form-control ${touched && error && 'form-control-danger'} ${dirty && 'dirty'}`}
-          {...input}
-          type={type}
-        />
+        {!overrideData ? (
+          <input
+            className={`form-control ${touched && error && 'form-control-danger'} ${dirty && 'dirty'}`}
+            {...input}
+            type={type}
+          />
+        ) : (
+          <input className="form-control" value={overrideData[input.name] || ''} type={type} disabled />
+        )}
         {withLabel && (
           <label className={`${!!input.value || active ? 'top' : 'center'}`}>
-            <FormattedMessage id={`${prefix}.${name}`} />
+            <FormattedMessage id={`${prefix}.${name || input.name.split('.').pop()}`} />
           </label>
         )}
         {touched &&

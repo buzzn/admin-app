@@ -1,17 +1,21 @@
 import * as React from 'react';
-import { Field } from 'redux-form';
 import { Row, Col } from 'reactstrap';
 import { FormattedMessage } from 'react-intl';
+import FieldValidationWrapper from 'components/field_validation_wrapper';
 import EditableInput from 'components/editable_input';
+import EditableSelect from 'components/editable_select';
 import AddressFields from './address_fields';
 
 interface Props {
-  prefix: string;
+  path: string;
   editMode: boolean;
+  overrideData: null | { [key: string]: any };
+  validationRules: { [key: string]: any };
 }
 
-const PersonFields = ({ prefix, editMode }: Props) => {
+const PersonFields = ({ path, editMode, overrideData, validationRules }: Props) => {
   const fieldClassName = editMode ? 'editValue' : 'fieldvalue grey-underline';
+  const prefix = 'admin.persons';
 
   return (
     <React.Fragment>
@@ -22,63 +26,73 @@ const PersonFields = ({ prefix, editMode }: Props) => {
         <Col xs="8">
           <Row>
             <Col xs="2" className={fieldClassName}>
-              <Field
+              <FieldValidationWrapper
                 {...{
+                  prefix,
                   withLabel: true,
-                  field: { type: 'text' },
-                  name: `${prefix}prefix`,
-                  component: EditableInput,
+                  name: `${path}prefix`,
+                  component: EditableSelect,
                   editMode,
+                  overrideData,
+                  validationRules,
                 }}
               />
             </Col>
             <Col xs="2" className={fieldClassName}>
-              <Field
+              <FieldValidationWrapper
                 {...{
+                  prefix,
                   withLabel: true,
-                  field: { type: 'text' },
-                  name: `${prefix}title`,
-                  component: EditableInput,
+                  name: `${path}title`,
+                  component: EditableSelect,
                   editMode,
+                  overrideData,
+                  validationRules,
                 }}
               />
             </Col>
             <Col xs="4" className={fieldClassName}>
-              <Field
+              <FieldValidationWrapper
                 {...{
+                  prefix,
                   withLabel: true,
-                  field: { type: 'text' },
-                  name: `${prefix}firstName`,
+                  name: `${path}firstName`,
                   component: EditableInput,
                   editMode,
+                  overrideData,
+                  validationRules,
                 }}
               />
             </Col>
             <Col xs="4" className={fieldClassName}>
-              <Field
+              <FieldValidationWrapper
                 {...{
+                  prefix,
                   withLabel: true,
-                  field: { type: 'text' },
-                  name: `${prefix}lastName`,
+                  name: `${path}lastName`,
                   component: EditableInput,
                   editMode,
+                  overrideData,
+                  validationRules,
                 }}
               />
             </Col>
           </Row>
         </Col>
       </Row>
-      <AddressFields {...{ editMode, prefix: `${prefix ? `${prefix}` : ''}address.` }} />
+      <AddressFields {...{ editMode, path: `${path ? `${path}` : ''}address.`, overrideData, validationRules }} />
       <Row className="fieldgroup">
         <Col xs="4" className="fieldname" />
         <Col xs="8" className={fieldClassName}>
-          <Field
+          <FieldValidationWrapper
             {...{
+              prefix,
               withLabel: true,
-              field: { type: 'text' },
-              name: `${prefix}phone`,
+              name: `${path}phone`,
               component: EditableInput,
               editMode,
+              overrideData,
+              validationRules,
             }}
           />
         </Col>
@@ -86,13 +100,15 @@ const PersonFields = ({ prefix, editMode }: Props) => {
       <Row className="fieldgroup">
         <Col xs="4" className="fieldname" />
         <Col xs="8" className={fieldClassName}>
-          <Field
+          <FieldValidationWrapper
             {...{
+              prefix,
               withLabel: true,
-              field: { type: 'text' },
-              name: `${prefix}fax`,
+              name: `${path}fax`,
               component: EditableInput,
               editMode,
+              overrideData,
+              validationRules,
             }}
           />
         </Col>
@@ -100,13 +116,15 @@ const PersonFields = ({ prefix, editMode }: Props) => {
       <Row className="fieldgroup">
         <Col xs="4" className="fieldname" />
         <Col xs="8" className={fieldClassName}>
-          <Field
+          <FieldValidationWrapper
             {...{
+              prefix,
               withLabel: true,
-              field: { type: 'text' },
-              name: `${prefix}email`,
+              name: `${path}email`,
               component: EditableInput,
               editMode,
+              overrideData,
+              validationRules,
             }}
           />
         </Col>

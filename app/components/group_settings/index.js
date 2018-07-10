@@ -118,6 +118,8 @@ class GroupSettings extends React.Component {
       updateGroup,
       intl,
 
+      validationRules,
+
       match: { url },
     } = this.props;
 
@@ -218,6 +220,7 @@ class GroupSettings extends React.Component {
                       availableUsers,
                       availableOrganizations,
                       loadAvailableOrganizations,
+                      validationRules,
                       updateOwner: params => updateOwner({ groupId: group.id, ...params }),
                       initialValues: {
                         ...owner,
@@ -271,6 +274,8 @@ const mapStateToProps = state => ({
   gapContactBankAccounts: get(state.groups.group, 'gapContractCustomer.contact.bankAccounts.array') || [],
 
   loading: state.groups.loadingGroup,
+
+  validationRules: state.groups.validationRules,
 });
 
 export default connect(mapStateToProps, {

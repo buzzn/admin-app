@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { reduxForm } from 'redux-form';
 import { FormattedMessage } from 'react-intl';
-import { Col, FormGroup, Label, Input } from 'reactstrap';
+import { Col, FormGroup, CustomInput } from 'reactstrap';
 import Select from 'react-select';
 import withEditOverlay from 'components/with_edit_overlay';
 import FormPanel from 'components/form_panel';
 import PersonFields from './person_fields';
 import OrganizationFields from './organization_fields';
+
+import { mainStyle } from 'components/react_select_styles';
 
 interface Props {
   owner: any;
@@ -25,6 +27,12 @@ interface Props {
   reset: () => void;
   submitting: boolean;
   handleSubmit: Function;
+  validationRules: {
+    createPersonOwner: { [key: string]: { any } };
+    updatePersonOwner: { [key: string]: { any } };
+    createOrganizationOwner: { [key: string]: { any } };
+    updateOrganizationOwner: { [key: string]: { any } };
+  };
 }
 
 interface State {
@@ -63,7 +71,6 @@ class Powergiver extends React.Component<Props, State> {
   submitForm = (params) => {
     const { updateOwner, owner } = this.props;
     const { ownerType, selectedOwner } = this.state;
-    console.log(params);
     // HACK
     if (ownerType === 'person' || owner.type === 'person') {
       params.preferredLanguage = 'de';
@@ -99,9 +106,14 @@ class Powergiver extends React.Component<Props, State> {
       reset,
       submitting,
       handleSubmit,
+      validationRules: { createPersonOwner, updatePersonOwner, createOrganizationOwner, updateOrganizationOwner },
     } = this.props;
 
     const { ownerType, selectedOwner } = this.state;
+
+    const personValidationRules = !ownerType && !selectedOwner ? updatePersonOwner : createPersonOwner;
+    const organizationValidationRules =
+      !ownerType && !selectedOwner ? updateOrganizationOwner : createOrganizationOwner;
 
     const prefix = 'admin.groups';
 
@@ -134,38 +146,60 @@ class Powergiver extends React.Component<Props, State> {
               !owner.id && (
                 <React.Fragment>
                   <FormGroup>
-                    <Label>
-                      <Input
-                        checked={ownerType === 'person'}
-                        type="radio"
-                        name="ownerType"
-                        onChange={() => this.handleOwnerType('person')}
-                      />
-                      Person
-                    </Label>
+                    <CustomInput
+                      checked={ownerType === 'person'}
+                      type="radio"
+                      name="ownerType"
+                      onChange={() => this.handleOwnerType('person')}
+                      label="Person"
+                      id="person-radio"
+                    />
                   </FormGroup>
                   <FormGroup>
-                    <Label>
-                      <Input
-                        checked={ownerType === 'organization'}
-                        type="radio"
-                        name="ownerType"
-                        onChange={() => this.handleOwnerType('organization')}
-                      />
-                      Organization
-                    </Label>
+                    <CustomInput
+                      checked={ownerType === 'organization'}
+                      type="radio"
+                      name="ownerType"
+                      onChange={() => this.handleOwnerType('organization')}
+                      label="Organization"
+                      id="organization-radio"
+                    />
                   </FormGroup>
                 </React.Fragment>
               )}
             {!owner.id && !ownerType ? null : owner.type === 'person' || ownerType === 'person' ? (
               <React.Fragment>
-                {editMode && <Select options={personOptions} onChange={this.handleExistingSelect} />}
-                {(!editMode || (editMode && !selectedOwner)) && <PersonFields {...{ editMode, prefix: '' }} />}
+                {editMode && (
+                  <React.Fragment>
+                    <Select options={personOptions} onChange={this.handleExistingSelect} styles={mainStyle} />
+                    <br />
+                  </React.Fragment>
+                )}
+                <PersonFields
+                  {...{
+                    editMode,
+                    path: '',
+                    overrideData: selectedOwner ? availableUsers.array.find(o => o.id === selectedOwner) : null,
+                    validationRules: personValidationRules,
+                  }}
+                />
               </React.Fragment>
             ) : (
               <React.Fragment>
-                {editMode && <Select options={organizationOptions} onChange={this.handleExistingSelect} />}
-                {(!editMode || (editMode && !selectedOwner)) && <OrganizationFields {...{ editMode, prefix: '' }} />}
+                {editMode && (
+                  <React.Fragment>
+                    <Select options={organizationOptions} onChange={this.handleExistingSelect} styles={mainStyle} />
+                    <br />
+                  </React.Fragment>
+                )}
+                <OrganizationFields
+                  {...{
+                    editMode,
+                    path: '',
+                    overrideData: selectedOwner ? availableOrganizations.array.find(o => o.id === selectedOwner) : null,
+                    validationRules: organizationValidationRules,
+                  }}
+                />
               </React.Fragment>
             )}
           </FormPanel>

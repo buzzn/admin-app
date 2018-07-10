@@ -13,6 +13,7 @@ const EditableSelect = ({
   intl,
   defaultValue,
   listOverride,
+  overrideData,
   noValTranslations,
   noDefault,
   withValue,
@@ -36,17 +37,22 @@ const EditableSelect = ({
   if (editMode) {
     return (
       <FormGroup className={`editable-select ${touched && error && 'has-danger'}`}>
-        <select
-          className={`custom-select form-control ${touched && error && 'form-control-danger'} ${dirty && 'dirty'}`}
-          {...input}
-        >
-          {!noDefault && <option value={defaultValue.value}>{defaultValue.label}</option>}
-          {options.map(o => (
-            <option key={o.value} value={o.value}>
-              {withValue ? `${o.value} - ${o.label}` : o.label}
-            </option>
-          ))}
-        </select>
+        {!overrideData ? (
+          <select
+            className={`custom-select form-control ${touched && error && 'form-control-danger'} ${dirty && 'dirty'}`}
+            {...input}
+          >
+            {!noDefault && <option value={defaultValue.value}>{defaultValue.label}</option>}
+            {options.map(o => (
+              <option key={o.value} value={o.value}>
+                {withValue ? `${o.value} - ${o.label}` : o.label}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <input className="form-control" value={overrideData[input.name] || ''} type="text" disabled />
+        )}
+
         {touched &&
           !!error && (
             <React.Fragment>

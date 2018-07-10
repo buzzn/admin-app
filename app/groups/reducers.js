@@ -6,7 +6,13 @@ export const initialState = {
   loadingGroup: false,
   groups: { _status: null, array: [] },
   group: { _status: null },
-  validationRules: { _status: null },
+  validationRules: {
+    updateGroup: { _status: null },
+    createOrganizationOwner: { _status: null },
+    updateOrganizationOwner: { _status: null },
+    createPersonOwner: { _status: null },
+    updatePersonOwner: { _status: null },
+  },
 };
 
 export default function (state = initialState, action) {
@@ -21,7 +27,7 @@ export default function (state = initialState, action) {
       return { ...state, group: action.group };
 
     case constants.SET_VALIDATION_RULES:
-      return { ...state, validationRules: action.validationRules };
+      return { ...state, validationRules: { ...state.validationRules, [action.ruleType]: action.validationRules } };
 
     case constants.LOADING_GROUPS:
       return { ...state, loadingGroups: true };
