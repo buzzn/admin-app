@@ -62,7 +62,7 @@ class GroupSettings extends React.Component {
     const { group: { id: groupId, name }, deleteGroup, history: { push }, intl } = this.props;
 
     confirmAlert({
-      message: `${intl.formatMessage({ id: 'admin.messages.confirmDeleteGroup' })} ${name}?`,
+      message: intl.formatMessage({ id: 'admin.groups.confirmDeleteGroup' }, { name }),
       buttons: [
         {
           label: intl.formatMessage({ id: 'admin.buttons.delete' }),

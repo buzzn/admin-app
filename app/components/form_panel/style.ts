@@ -22,13 +22,12 @@ export const Wrapper = styled.div`
       : '')}
   .side-buttons {
     position: absolute;
-    right: -248px;
+    right: -278px;
     height: 72px;
-    width: 248px;
+    minWidth: 278px;
     border-radius: 0 100px 100px 0;
     background-color: #ffffff;
-    padding-top: 14px;
-    padding-left: 20px;
+    padding: 14px 20px 0px 60px;
     transition: all 0.7s ease 0s;
   }
 `;
