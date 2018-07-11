@@ -1502,13 +1502,6 @@
   dependencies:
     csstype "^2.2.0"
 
-"@types/reactstrap@^6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@types/reactstrap/-/reactstrap-6.0.0.tgz#76224f7de991767414e9edd68101ac64967938cb"
-  dependencies:
-    "@types/react" "*"
-    popper.js "^1.14.1"
-
 abab@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/abab/-/abab-1.0.4.tgz#5faad9c2c07f60dd76770f71cf025b62a63cfd4e"
