@@ -9,6 +9,7 @@ import PersonFields from './person_fields';
 import OrganizationFields from './organization_fields';
 
 import { mainStyle } from 'components/react_select_styles';
+import { OwnerOptions } from './style';
 
 interface Props {
   owner: any;
@@ -144,8 +145,8 @@ class Powergiver extends React.Component<Props, State> {
           >
             {updatable &&
               !owner.id && (
-                <React.Fragment>
-                  <FormGroup>
+                <OwnerOptions>
+                  <FormGroup check inline>
                     <CustomInput
                       checked={ownerType === 'person'}
                       type="radio"
@@ -155,7 +156,7 @@ class Powergiver extends React.Component<Props, State> {
                       id="person-radio"
                     />
                   </FormGroup>
-                  <FormGroup>
+                  <FormGroup check inline>
                     <CustomInput
                       checked={ownerType === 'organization'}
                       type="radio"
@@ -165,7 +166,7 @@ class Powergiver extends React.Component<Props, State> {
                       id="organization-radio"
                     />
                   </FormGroup>
-                </React.Fragment>
+                </OwnerOptions>
               )}
             {!owner.id && !ownerType ? null : owner.type === 'person' || ownerType === 'person' ? (
               <React.Fragment>
