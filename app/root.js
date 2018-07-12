@@ -119,7 +119,8 @@ class NewRoot extends React.Component {
 
     // Country is always predefined, so if there is only one address field,
     // user did not entered anything in address fields
-    if (Object.keys(values.address).length === 1) delete params.address;
+    // uncomment if address fields must be optional
+    // if (Object.keys(values.address).length === 1) delete params.address;
 
     return new Promise((resolve, reject) => {
       addGroup({ resolve, reject, params });
