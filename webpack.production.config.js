@@ -21,11 +21,12 @@ module.exports = {
         query: {
           presets: [
             [
-              '@babel/env',
+              '@babel/preset-env',
               {
                 targets: {
                   browsers: ['last 2 versions', 'safari >= 7'],
                 },
+                modules: false,
               },
             ],
             '@babel/stage-3',
