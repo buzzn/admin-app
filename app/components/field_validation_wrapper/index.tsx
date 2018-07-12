@@ -8,6 +8,7 @@ interface Props {
   name: string;
   validationRules: { [key: string]: any };
   field?: { [key: string]: any };
+  overrideData: null | { [key: string]: any };
 }
 
 // HACK: hack for redux form field rerender
@@ -25,9 +26,9 @@ class FieldValidationWrapper extends React.Component<Props> {
   render() {
     return (
       <Field
-        {...{ ...this.props, validationRules: null}}
+        {...{ ...this.props, validationRules: null }}
         field={this.props.field || this.props.validationRules[this.props.name] || { type: 'text' }}
-        validate={this.state.validate}
+        validate={this.props.overrideData ? null : this.state.validate}
       />
     );
   }

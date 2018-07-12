@@ -1,4 +1,8 @@
 export const mainStyle = {
+  container: (base, state) => ({
+    ...base,
+    marginRight: '-16px',
+  }),
   control: (base, state) => ({
     ...base,
     borderRadius: 0,

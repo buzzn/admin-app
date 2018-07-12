@@ -38,11 +38,12 @@ interface Props {
 
 interface State {
   ownerType: null | string;
-  selectedOwner: null | string;
+  selectedOwner: null | { value: null | string; label: string };
+  selectedContact: null | { value: null | string; label: string };
 }
 
 class Powergiver extends React.Component<Props, State> {
-  state = { ownerType: null, selectedOwner: null };
+  state = { ownerType: null, selectedOwner: null, selectedContact: null };
 
   switchEditMode = () => {
     const { switchEditMode, editMode, loadAvailableUsers, loadAvailableOrganizations } = this.props;
@@ -66,12 +67,16 @@ class Powergiver extends React.Component<Props, State> {
   };
 
   handleExistingSelect = (param) => {
-    this.setState({ selectedOwner: param.value });
+    this.setState({ selectedOwner: param, selectedContact: null });
+  };
+
+  handleContactChange = (param) => {
+    this.setState({ selectedContact: param });
   };
 
   submitForm = (params) => {
-    const { updateOwner, owner } = this.props;
-    const { ownerType, selectedOwner } = this.state;
+    const { updateOwner, owner, availableUsers } = this.props;
+    const { ownerType, selectedOwner, selectedContact } = this.state;
     // HACK
     if (ownerType === 'person' || owner.type === 'person') {
       params.preferredLanguage = 'de';
@@ -81,17 +86,27 @@ class Powergiver extends React.Component<Props, State> {
       params.contact.preferredLanguage = 'de';
       params.contact.address.country = 'DE';
     }
+    // HACK
+    if (selectedContact) {
+      delete params.contact;
+      params.contact = {
+        id: (selectedContact || { id: null }).id,
+        updatedAt: (
+          availableUsers.array.find(u => u.id === (selectedContact || { id: null }).id) || { updatedAt: null }
+        ).updatedAt,
+      };
+    }
     return new Promise((resolve, reject) => {
       updateOwner({
         params,
         resolve,
         reject,
         update: !ownerType && !selectedOwner,
-        ownerId: selectedOwner,
+        ownerId: (selectedOwner || { value: null }).value,
         ownerType: owner.type || ownerType,
       });
     }).then(() => {
-      this.setState({ ownerType: null, selectedOwner: null });
+      this.setState({ ownerType: null, selectedOwner: null, selectedContact: null });
       this.switchEditMode();
     });
   };
@@ -110,7 +125,7 @@ class Powergiver extends React.Component<Props, State> {
       validationRules: { createPersonOwner, updatePersonOwner, createOrganizationOwner, updateOrganizationOwner },
     } = this.props;
 
-    const { ownerType, selectedOwner } = this.state;
+    const { ownerType, selectedOwner, selectedContact } = this.state;
 
     const personValidationRules = !ownerType && !selectedOwner ? updatePersonOwner : createPersonOwner;
     const organizationValidationRules =
@@ -172,7 +187,12 @@ class Powergiver extends React.Component<Props, State> {
               <React.Fragment>
                 {editMode && (
                   <React.Fragment>
-                    <Select options={personOptions} onChange={this.handleExistingSelect} styles={mainStyle} />
+                    <Select
+                      options={personOptions}
+                      onChange={this.handleExistingSelect}
+                      styles={mainStyle}
+                      value={selectedOwner}
+                    />
                     <br />
                   </React.Fragment>
                 )}
@@ -180,7 +200,9 @@ class Powergiver extends React.Component<Props, State> {
                   {...{
                     editMode,
                     path: '',
-                    overrideData: selectedOwner ? availableUsers.array.find(o => o.id === selectedOwner) : null,
+                    overrideData: selectedOwner
+                      ? availableUsers.array.find(o => o.id === (selectedOwner || { value: null }).value)
+                      : null,
                     validationRules: personValidationRules,
                   }}
                 />
@@ -189,7 +211,12 @@ class Powergiver extends React.Component<Props, State> {
               <React.Fragment>
                 {editMode && (
                   <React.Fragment>
-                    <Select options={organizationOptions} onChange={this.handleExistingSelect} styles={mainStyle} />
+                    <Select
+                      options={organizationOptions}
+                      onChange={this.handleExistingSelect}
+                      styles={mainStyle}
+                      value={selectedOwner}
+                    />
                     <br />
                   </React.Fragment>
                 )}
@@ -197,8 +224,14 @@ class Powergiver extends React.Component<Props, State> {
                   {...{
                     editMode,
                     path: '',
-                    overrideData: selectedOwner ? availableOrganizations.array.find(o => o.id === selectedOwner) : null,
+                    overrideData: selectedOwner
+                      ? availableOrganizations.array.find(o => o.id === (selectedOwner || { value: null }).value)
+                      : null,
+                    overrideContact: selectedContact ? availableUsers.array.find(o => o.id === (selectedContact || { value: null }).value) : null,
                     validationRules: organizationValidationRules,
+                    personOptions,
+                    handleContactChange: this.handleContactChange,
+                    selectedContact,
                   }}
                 />
               </React.Fragment>

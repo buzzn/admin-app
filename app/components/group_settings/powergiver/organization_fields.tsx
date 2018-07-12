@@ -1,21 +1,41 @@
 import * as React from 'react';
 import { Row, Col } from 'reactstrap';
+import Select from 'react-select';
+import reduce from 'lodash/reduce';
 import { FormattedMessage } from 'react-intl';
 import FieldValidationWrapper from 'components/field_validation_wrapper';
 import EditableInput from 'components/editable_input';
 import AddressFields from './address_fields';
 import PersonFields from './person_fields';
 
+import { mainStyle } from 'components/react_select_styles';
+
 interface Props {
   path: string;
   editMode: boolean;
   overrideData: null | { [key: string]: any };
+  overrideContact: null | { [key: string]: any };
   validationRules: { [key: string]: any };
+  personOptions: Array<{ value: null | string; label: string }>;
+  handleContactChange: Function;
+  selectedContact: null | { value: null | string; label: string };
 }
 
-const OrganizationFields = ({ path, editMode, overrideData, validationRules }: Props) => {
+const OrganizationFields = ({
+  path,
+  editMode,
+  overrideData,
+  overrideContact,
+  validationRules,
+  personOptions,
+  handleContactChange,
+  selectedContact,
+}: Props) => {
   const fieldClassName = editMode ? 'editValue' : 'fieldvalue grey-underline';
   const prefix = 'admin.organizations';
+  const overridePerson = overrideContact
+    ? reduce(overrideContact, (res, v, k) => ({ ...res, [`contact.${k}`]: v }), {})
+    : overrideData;
 
   return (
     <React.Fragment>
@@ -86,7 +106,16 @@ const OrganizationFields = ({ path, editMode, overrideData, validationRules }: P
           />
         </Col>
       </Row>
-      <PersonFields {...{ editMode, path: 'contact.', overrideData, validationRules }} />
+      <br />
+      <Select
+        options={personOptions}
+        onChange={handleContactChange}
+        styles={mainStyle}
+        value={selectedContact}
+        isDisabled={!!overrideData}
+      />
+      <br />
+      <PersonFields {...{ editMode, path: 'contact.', overrideData: overridePerson, validationRules }} />
     </React.Fragment>
   );
 };
