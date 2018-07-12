@@ -30,7 +30,7 @@ const EditableInput = ({
           <input className="form-control" value={overrideData[input.name] || ''} type={type} disabled />
         )}
         {withLabel && (
-          <label className={`${!!input.value || active ? 'top' : 'center'}`}>
+          <label className={`${input.value || active || overrideData ? 'top' : 'center'}`}>
             <FormattedMessage id={`${prefix}.${name || input.name.split('.').pop()}`} />
           </label>
         )}
