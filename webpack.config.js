@@ -1,12 +1,11 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 module.exports = {
   devtool: 'sourcemap',
-  devServer: {
-    historyApiFallback: true,
-  },
+  devServer: { historyApiFallback: true },
   entry: [
     '@babel/polyfill',
     'bootstrap-loader',
@@ -28,12 +27,13 @@ module.exports = {
         loader: 'babel-loader',
         query: {
           presets: [
-            ['@babel/preset-env', {
-              targets: {
-                browsers: ['last 2 versions', 'safari >= 7'],
+            [
+              '@babel/preset-env',
+              {
+                targets: { browsers: ['last 2 versions', 'safari >= 7'] },
+                modules: false,
               },
-              modules: false,
-            }],
+            ],
             '@babel/stage-3',
             '@babel/react',
             '@babel/typescript',
@@ -81,17 +81,14 @@ module.exports = {
   resolve: {
     modules: [path.resolve(__dirname, 'node_modules'), path.resolve(__dirname, 'app'), 'node_modules'],
     extensions: ['.ts', '.tsx', '.js', '.json'],
-    alias: {
-      moment$: 'moment/moment.js',
-    },
+    alias: { moment$: 'moment/moment.js' },
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: 'app/index.html',
       filename: 'index.html',
     }),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development'),
-    }),
+    new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify('development') }),
+    new FaviconsWebpackPlugin('./favicon.png'),
   ],
 };

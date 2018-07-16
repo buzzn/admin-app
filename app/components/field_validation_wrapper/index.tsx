@@ -28,7 +28,7 @@ class FieldValidationWrapper extends React.Component<Props> {
       <Field
         {...{ ...this.props, validationRules: null }}
         field={this.props.field || this.props.validationRules[this.props.name] || { type: 'text' }}
-        validate={this.props.overrideData ? null : this.state.validate}
+        validate={this.props.overrideData ? undefined : this.state.validate}
       />
     );
   }

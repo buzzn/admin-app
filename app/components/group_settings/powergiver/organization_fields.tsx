@@ -106,14 +106,32 @@ const OrganizationFields = ({
           />
         </Col>
       </Row>
+      <Row className="fieldgroup">
+        <Col xs="4" className="fieldname" />
+        <Col xs="8" className={fieldClassName}>
+          <FieldValidationWrapper
+            {...{
+              prefix,
+              withLabel: true,
+              name: `${path}website`,
+              component: EditableInput,
+              editMode,
+              overrideData,
+              validationRules,
+            }}
+          />
+        </Col>
+      </Row>
       <br />
-      <Select
-        options={personOptions}
-        onChange={handleContactChange}
-        styles={mainStyle}
-        value={selectedContact}
-        isDisabled={!!overrideData}
-      />
+      {editMode && (
+        <Select
+          options={personOptions}
+          onChange={handleContactChange}
+          styles={mainStyle}
+          value={selectedContact}
+          isDisabled={!!overrideData}
+        />
+      )}
       <br />
       <PersonFields {...{ editMode, path: 'contact.', overrideData: overridePerson, validationRules }} />
     </React.Fragment>

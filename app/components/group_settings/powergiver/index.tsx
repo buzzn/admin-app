@@ -75,7 +75,7 @@ class Powergiver extends React.Component<Props, State> {
   };
 
   submitForm = (params) => {
-    const { updateOwner, owner, availableUsers } = this.props;
+    const { updateOwner, owner } = this.props;
     const { ownerType, selectedOwner, selectedContact } = this.state;
     // HACK
     if (ownerType === 'person' || owner.type === 'person') {
@@ -90,10 +90,10 @@ class Powergiver extends React.Component<Props, State> {
     if (selectedContact) {
       delete params.contact;
       params.contact = {
-        id: (selectedContact || { id: null }).id,
-        updatedAt: (
-          availableUsers.array.find(u => u.id === (selectedContact || { id: null }).id) || { updatedAt: null }
-        ).updatedAt,
+        id: (selectedContact || { value: null }).value,
+        // updatedAt: (
+        //   availableUsers.array.find(u => u.id === (selectedContact || { value: null }).value) || { updatedAt: null }
+        // ).updatedAt,
       };
     }
     return new Promise((resolve, reject) => {
@@ -227,7 +227,9 @@ class Powergiver extends React.Component<Props, State> {
                     overrideData: selectedOwner
                       ? availableOrganizations.array.find(o => o.id === (selectedOwner || { value: null }).value)
                       : null,
-                    overrideContact: selectedContact ? availableUsers.array.find(o => o.id === (selectedContact || { value: null }).value) : null,
+                    overrideContact: selectedContact
+                      ? availableUsers.array.find(o => o.id === (selectedContact || { value: null }).value)
+                      : null,
                     validationRules: organizationValidationRules,
                     personOptions,
                     handleContactChange: this.handleContactChange,
