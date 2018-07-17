@@ -28,6 +28,7 @@ interface Props {
   reset: () => void;
   submitting: boolean;
   handleSubmit: Function;
+  change: Function;
   validationRules: {
     createPersonOwner: { [key: string]: { any } };
     updatePersonOwner: { [key: string]: { any } };
@@ -71,6 +72,8 @@ class Powergiver extends React.Component<Props, State> {
   };
 
   handleContactChange = (param) => {
+    const { change } = this.props;
+    change('contact.id', param);
     this.setState({ selectedContact: param });
   };
 

@@ -16,6 +16,7 @@ interface Props {
 const PersonFields = ({ path, editMode, overrideData, validationRules }: Props) => {
   const fieldClassName = editMode ? 'editValue' : 'fieldvalue grey-underline';
   const prefix = 'admin.persons';
+  const overrideAddress = (overrideData || {}).address;
 
   return (
     <React.Fragment>
@@ -80,7 +81,7 @@ const PersonFields = ({ path, editMode, overrideData, validationRules }: Props) 
           </Row>
         </Col>
       </Row>
-      <AddressFields {...{ editMode, path: `${path ? `${path}` : ''}address.`, overrideData, validationRules }} />
+      <AddressFields {...{ editMode, path: `${path ? `${path}` : ''}address.`, overrideData: overrideAddress, validationRules }} />
       <Row className="fieldgroup">
         <Col xs="4" className="fieldname" />
         <Col xs="8" className={fieldClassName}>

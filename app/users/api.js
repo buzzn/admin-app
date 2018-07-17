@@ -26,7 +26,7 @@ export default {
       .then(camelizeResponseKeys);
   },
   fetchAvailableUsers({ token, apiUrl, apiPath }) {
-    return fetch(`${apiUrl}${apiPath}/persons`, { headers: prepareHeaders(token) })
+    return fetch(`${apiUrl}${apiPath}/persons?include=address`, { headers: prepareHeaders(token) })
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },

@@ -27,7 +27,12 @@ const EditableInput = ({
             type={type}
           />
         ) : (
-          <input className="form-control" value={overrideData[input.name] || ''} type={type} disabled />
+          <input
+            className="form-control"
+            value={overrideData[input.name.split('.').pop()] || ''}
+            type={type}
+            disabled
+          />
         )}
         {withLabel && (
           <label className={`${input.value || active || overrideData ? 'top' : 'center'}`}>

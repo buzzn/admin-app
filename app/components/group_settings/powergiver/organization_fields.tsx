@@ -35,7 +35,8 @@ const OrganizationFields = ({
   const prefix = 'admin.organizations';
   const overridePerson = overrideContact
     ? reduce(overrideContact, (res, v, k) => ({ ...res, [`contact.${k}`]: v }), {})
-    : overrideData;
+    : (overrideData || {}).contact;
+  const overrideAddress = (overrideData || {}).address;
 
   return (
     <React.Fragment>
@@ -73,7 +74,7 @@ const OrganizationFields = ({
           />
         </Col>
       </Row>
-      <AddressFields {...{ editMode, path: `${path ? `${path}` : ''}address.`, overrideData, validationRules }} />
+      <AddressFields {...{ editMode, path: `${path ? `${path}` : ''}address.`, overrideData: overrideAddress, validationRules }} />
       <Row className="fieldgroup">
         <Col xs="4" className="fieldname" />
         <Col xs="8" className={fieldClassName}>

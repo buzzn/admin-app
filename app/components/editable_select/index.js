@@ -50,7 +50,12 @@ const EditableSelect = ({
             ))}
           </select>
         ) : (
-          <input className="form-control" value={overrideData[input.name] || ''} type="text" disabled />
+          <input
+            className="form-control"
+            value={overrideData[input.name.split('.').pop()] || ''}
+            type="text"
+            disabled
+          />
         )}
 
         {touched &&
