@@ -92,7 +92,7 @@ export class TopNavBar extends React.Component {
                     <i className="fa fa-plus" />
                   </span>
                 </DropdownToggle>
-                <DropdownMenu className="icon-dropdown" modifiers={{ offset: { enabled: true, offset: '20px, 40px' } }}>
+                <DropdownMenu className="icon-dropdown" modifiers={{ offset: { enabled: true, offset: '0px, 0px' } }}>
                   <DropdownItem onClick={switchAddGroup}><FormattedMessage id="admin.groups.menuAddGroup" /></DropdownItem>
                 </DropdownMenu>
               </Dropdown>

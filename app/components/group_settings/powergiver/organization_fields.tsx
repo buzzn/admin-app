@@ -57,6 +57,22 @@ const OrganizationFields = ({
           />
         </Col>
       </Row>
+      <Row className="fieldgroup">
+        <Col xs="4" className="fieldname" />
+        <Col xs="8" className={fieldClassName}>
+          <FieldValidationWrapper
+            {...{
+              prefix,
+              withLabel: true,
+              name: `${path}description`,
+              component: EditableInput,
+              editMode,
+              overrideData,
+              validationRules,
+            }}
+          />
+        </Col>
+      </Row>
       <AddressFields {...{ editMode, path: `${path ? `${path}` : ''}address.`, overrideData, validationRules }} />
       <Row className="fieldgroup">
         <Col xs="4" className="fieldname" />
