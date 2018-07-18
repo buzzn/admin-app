@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const StatsPlugin = require('stats-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 module.exports = {
   entry: { app: ['@babel/polyfill', 'bootstrap-loader', 'whatwg-fetch', './app/index.production.js'] },
@@ -23,9 +24,7 @@ module.exports = {
             [
               '@babel/preset-env',
               {
-                targets: {
-                  browsers: ['last 2 versions', 'safari >= 7'],
-                },
+                targets: { browsers: ['last 2 versions', 'safari >= 7'] },
                 modules: false,
               },
             ],
@@ -90,5 +89,6 @@ module.exports = {
       source: false,
       modules: true,
     }),
+    new FaviconsWebpackPlugin('./favicon.png'),
   ],
 };
