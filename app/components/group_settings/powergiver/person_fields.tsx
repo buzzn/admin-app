@@ -11,9 +11,10 @@ interface Props {
   editMode: boolean;
   overrideData: null | { [key: string]: any };
   validationRules: { [key: string]: any };
+  legalRepresentation?: boolean;
 }
 
-const PersonFields = ({ path, editMode, overrideData, validationRules }: Props) => {
+const PersonFields = ({ path, editMode, overrideData, validationRules, legalRepresentation }: Props) => {
   const fieldClassName = editMode ? 'editValue' : 'fieldvalue grey-underline';
   const prefix = 'admin.persons';
   const overrideAddress = (overrideData || {}).address;
@@ -22,7 +23,7 @@ const PersonFields = ({ path, editMode, overrideData, validationRules }: Props) 
     <React.Fragment>
       <Row className="fieldgroup">
         <Col xs="4" className="fieldname">
-          <FormattedMessage id="admin.persons.headerContact" />
+          <FormattedMessage id={ `admin.persons.${legalRepresentation ? 'headerLegalRepresentation' : 'headerContact'}` } />
         </Col>
         <Col xs="8">
           <Row>
@@ -81,7 +82,7 @@ const PersonFields = ({ path, editMode, overrideData, validationRules }: Props) 
           </Row>
         </Col>
       </Row>
-      <AddressFields {...{ editMode, path: `${path ? `${path}` : ''}address.`, overrideData: overrideAddress, validationRules }} />
+      {!legalRepresentation && <AddressFields {...{ editMode, path: `${path ? `${path}` : ''}address.`, overrideData: overrideAddress, validationRules }} />}
       <Row className="fieldgroup">
         <Col xs="4" className="fieldname" />
         <Col xs="8" className={fieldClassName}>

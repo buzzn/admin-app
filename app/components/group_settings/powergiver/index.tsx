@@ -41,10 +41,11 @@ interface State {
   ownerType: null | string;
   selectedOwner: null | { value: null | string; label: string };
   selectedContact: null | { value: null | string; label: string };
+  selectedLR: null | { value: null | string; label: string };
 }
 
 class Powergiver extends React.Component<Props, State> {
-  state = { ownerType: null, selectedOwner: null, selectedContact: null };
+  state = { ownerType: null, selectedOwner: null, selectedContact: null, selectedLR: null };
 
   switchEditMode = () => {
     const { switchEditMode, editMode, loadAvailableUsers, loadAvailableOrganizations } = this.props;
@@ -73,13 +74,19 @@ class Powergiver extends React.Component<Props, State> {
 
   handleContactChange = (param) => {
     const { change } = this.props;
-    change('contact.id', param);
+    change('contact.id', param ? param.value : param);
     this.setState({ selectedContact: param });
+  };
+
+  handleLRChange = (param) => {
+    const { change } = this.props;
+    change('legal_representation.id', param ? param.value : param);
+    this.setState({ selectedLR: param });
   };
 
   submitForm = (params) => {
     const { updateOwner, owner } = this.props;
-    const { ownerType, selectedOwner, selectedContact } = this.state;
+    const { ownerType, selectedOwner, selectedContact, selectedLR } = this.state;
     // HACK
     if (ownerType === 'person' || owner.type === 'person') {
       params.preferredLanguage = 'de';
@@ -88,6 +95,7 @@ class Powergiver extends React.Component<Props, State> {
       params.address.country = 'DE';
       params.contact.preferredLanguage = 'de';
       params.contact.address.country = 'DE';
+      params.legalRepresentation.preferredLanguage = 'de';
     }
     // HACK
     if (selectedContact) {
@@ -96,6 +104,16 @@ class Powergiver extends React.Component<Props, State> {
         id: (selectedContact || { value: null }).value,
         // updatedAt: (
         //   availableUsers.array.find(u => u.id === (selectedContact || { value: null }).value) || { updatedAt: null }
+        // ).updatedAt,
+      };
+    }
+    // HACK
+    if (selectedLR) {
+      delete params.legalRepresentation;
+      params.contact = {
+        id: (selectedLR || { value: null }).value,
+        // updatedAt: (
+        //   availableUsers.array.find(u => u.id === (selectedLR || { value: null }).value) || { updatedAt: null }
         // ).updatedAt,
       };
     }
@@ -128,7 +146,7 @@ class Powergiver extends React.Component<Props, State> {
       validationRules: { createPersonOwner, updatePersonOwner, createOrganizationOwner, updateOrganizationOwner },
     } = this.props;
 
-    const { ownerType, selectedOwner, selectedContact } = this.state;
+    const { ownerType, selectedOwner, selectedContact, selectedLR } = this.state;
 
     const personValidationRules = !ownerType && !selectedOwner ? updatePersonOwner : createPersonOwner;
     const organizationValidationRules =
@@ -233,10 +251,15 @@ class Powergiver extends React.Component<Props, State> {
                     overrideContact: selectedContact
                       ? availableUsers.array.find(o => o.id === (selectedContact || { value: null }).value)
                       : null,
+                    overrideLR: selectedLR
+                      ? availableUsers.array.find(o => o.id === (selectedLR || { value: null }).value)
+                      : null,
                     validationRules: organizationValidationRules,
                     personOptions,
                     handleContactChange: this.handleContactChange,
+                    handleLRChange: this.handleLRChange,
                     selectedContact,
+                    selectedLR,
                   }}
                 />
               </React.Fragment>

@@ -15,10 +15,13 @@ interface Props {
   editMode: boolean;
   overrideData: null | { [key: string]: any };
   overrideContact: null | { [key: string]: any };
+  overrideLR: null | { [key: string]: any };
   validationRules: { [key: string]: any };
   personOptions: Array<{ value: null | string; label: string }>;
   handleContactChange: Function;
+  handleLRChange: Function;
   selectedContact: null | { value: null | string; label: string };
+  selectedLR: null | { value: null | string; label: string };
 }
 
 const OrganizationFields = ({
@@ -26,10 +29,13 @@ const OrganizationFields = ({
   editMode,
   overrideData,
   overrideContact,
+  overrideLR,
   validationRules,
   personOptions,
   handleContactChange,
+  handleLRChange,
   selectedContact,
+  selectedLR,
 }: Props) => {
   const fieldClassName = editMode ? 'editValue' : 'fieldvalue grey-underline';
   const prefix = 'admin.organizations';
@@ -74,7 +80,9 @@ const OrganizationFields = ({
           />
         </Col>
       </Row>
-      <AddressFields {...{ editMode, path: `${path ? `${path}` : ''}address.`, overrideData: overrideAddress, validationRules }} />
+      <AddressFields
+        {...{ editMode, path: `${path ? `${path}` : ''}address.`, overrideData: overrideAddress, validationRules }}
+      />
       <Row className="fieldgroup">
         <Col xs="4" className="fieldname" />
         <Col xs="8" className={fieldClassName}>
@@ -151,6 +159,26 @@ const OrganizationFields = ({
       )}
       <br />
       <PersonFields {...{ editMode, path: 'contact.', overrideData: overridePerson, validationRules }} />
+      <br />
+      {editMode && (
+        <Select
+          options={personOptions}
+          onChange={handleLRChange}
+          styles={mainStyle}
+          value={selectedLR}
+          isDisabled={!!overrideData}
+        />
+      )}
+      <br />
+      <PersonFields
+        {...{
+          legalRepresentation: true,
+          editMode,
+          path: 'legalRepresentation.',
+          overrideData: overrideLR,
+          validationRules,
+        }}
+      />
     </React.Fragment>
   );
 };
