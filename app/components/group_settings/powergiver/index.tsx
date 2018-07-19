@@ -106,16 +106,20 @@ class Powergiver extends React.Component<Props, State> {
         //   availableUsers.array.find(u => u.id === (selectedContact || { value: null }).value) || { updatedAt: null }
         // ).updatedAt,
       };
+    } else {
+      delete params.contact.id;
     }
     // HACK
     if (selectedLR) {
       delete params.legalRepresentation;
-      params.contact = {
+      params.legalRepresentation = {
         id: (selectedLR || { value: null }).value,
         // updatedAt: (
         //   availableUsers.array.find(u => u.id === (selectedLR || { value: null }).value) || { updatedAt: null }
         // ).updatedAt,
       };
+    } else {
+      delete params.legalRepresentation.id
     }
     return new Promise((resolve, reject) => {
       updateOwner({
