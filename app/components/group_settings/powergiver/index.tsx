@@ -53,7 +53,7 @@ class Powergiver extends React.Component<Props, State> {
       loadAvailableUsers();
       loadAvailableOrganizations();
     } else {
-      this.setState({ ownerType: null, selectedOwner: null });
+      this.setState({ ownerType: null, selectedOwner: null, selectedContact: null, selectedLR: null });
     }
     switchEditMode();
   };
@@ -69,7 +69,7 @@ class Powergiver extends React.Component<Props, State> {
   };
 
   handleExistingSelect = (param) => {
-    this.setState({ selectedOwner: param, selectedContact: null });
+    this.setState({ selectedOwner: param, selectedContact: null, selectedLR: null });
   };
 
   handleContactChange = (param) => {
@@ -87,51 +87,55 @@ class Powergiver extends React.Component<Props, State> {
   submitForm = (params) => {
     const { updateOwner, owner } = this.props;
     const { ownerType, selectedOwner, selectedContact, selectedLR } = this.state;
+    const update = !ownerType && !selectedOwner;
+    const isPerson = ownerType === 'person' || owner.type === 'person';
     // HACK
-    if (ownerType === 'person' || owner.type === 'person') {
-      params.preferredLanguage = 'de';
-      params.address.country = 'DE';
-    } else {
-      params.address.country = 'DE';
-      params.contact.preferredLanguage = 'de';
-      params.contact.address.country = 'DE';
-      params.legalRepresentation.preferredLanguage = 'de';
+    if (!update) {
+      if (isPerson) {
+        params.preferredLanguage = 'de';
+        params.address.country = 'DE';
+      } else {
+        params.address.country = 'DE';
+        if (!selectedContact) {
+          params.contact.preferredLanguage = 'de';
+          params.contact.address.country = 'DE';
+        }
+        if (!selectedLR) {
+          params.legalRepresentation.preferredLanguage = 'de';
+        }
+      }
     }
-    // HACK
-    if (selectedContact) {
-      delete params.contact;
-      params.contact = {
-        id: (selectedContact || { value: null }).value,
-        // updatedAt: (
-        //   availableUsers.array.find(u => u.id === (selectedContact || { value: null }).value) || { updatedAt: null }
-        // ).updatedAt,
-      };
-    } else {
-      delete params.contact.id;
-    }
-    // HACK
-    if (selectedLR) {
-      delete params.legalRepresentation;
-      params.legalRepresentation = {
-        id: (selectedLR || { value: null }).value,
-        // updatedAt: (
-        //   availableUsers.array.find(u => u.id === (selectedLR || { value: null }).value) || { updatedAt: null }
-        // ).updatedAt,
-      };
-    } else {
-      delete params.legalRepresentation.id
+    if (!isPerson) {
+      // HACK
+      if (selectedContact) {
+        delete params.contact;
+        params.contact = {
+          id: (selectedContact || { value: null }).value,
+        };
+      } else {
+        delete params.contact.id;
+      }
+      // HACK
+      if (selectedLR) {
+        delete params.legalRepresentation;
+        params.legalRepresentation = {
+          id: (selectedLR || { value: null }).value,
+        };
+      } else {
+        delete params.legalRepresentation.id;
+      }
     }
     return new Promise((resolve, reject) => {
       updateOwner({
         params,
         resolve,
         reject,
-        update: !ownerType && !selectedOwner,
+        update,
         ownerId: (selectedOwner || { value: null }).value,
         ownerType: owner.type || ownerType,
       });
     }).then(() => {
-      this.setState({ ownerType: null, selectedOwner: null, selectedContact: null });
+      this.setState({ ownerType: null, selectedOwner: null, selectedContact: null, selectedLR: null });
       this.switchEditMode();
     });
   };
