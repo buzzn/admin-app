@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Row, Col } from 'reactstrap';
 import { FormattedMessage } from 'react-intl';
+import get from 'lodash/get';
 import FieldValidationWrapper from 'components/field_validation_wrapper';
 import EditableInput from 'components/editable_input';
 import EditableSelect from 'components/editable_select';
@@ -17,13 +18,15 @@ interface Props {
 const PersonFields = ({ path, editMode, overrideData, validationRules, legalRepresentation }: Props) => {
   const fieldClassName = editMode ? 'editValue' : 'fieldvalue grey-underline';
   const prefix = 'admin.persons';
-  const overrideAddress = (overrideData || {}).address;
+  const overrideAddress = get(overrideData, `${path}address`) || get(overrideData, 'address');
 
   return (
     <React.Fragment>
       <Row className="fieldgroup">
         <Col xs="4" className="fieldname">
-          <FormattedMessage id={ `admin.persons.${legalRepresentation ? 'headerLegalRepresentation' : 'headerContact'}` } />
+          <FormattedMessage
+            id={`admin.persons.${legalRepresentation ? 'headerLegalRepresentation' : 'headerContact'}`}
+          />
         </Col>
         <Col xs="8">
           <Row>
@@ -82,7 +85,11 @@ const PersonFields = ({ path, editMode, overrideData, validationRules, legalRepr
           </Row>
         </Col>
       </Row>
-      {!legalRepresentation && <AddressFields {...{ editMode, path: `${path ? `${path}` : ''}address.`, overrideData: overrideAddress, validationRules }} />}
+      {!legalRepresentation && (
+        <AddressFields
+          {...{ editMode, path: `${path ? `${path}` : ''}address.`, overrideData: overrideAddress, validationRules }}
+        />
+      )}
       <Row className="fieldgroup">
         <Col xs="4" className="fieldname" />
         <Col xs="8" className={fieldClassName}>

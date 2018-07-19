@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Row, Col } from 'reactstrap';
 import Select from 'react-select';
-import reduce from 'lodash/reduce';
 import { FormattedMessage } from 'react-intl';
 import FieldValidationWrapper from 'components/field_validation_wrapper';
 import EditableInput from 'components/editable_input';
@@ -39,10 +38,9 @@ const OrganizationFields = ({
 }: Props) => {
   const fieldClassName = editMode ? 'editValue' : 'fieldvalue grey-underline';
   const prefix = 'admin.organizations';
-  const overridePerson = overrideContact
-    ? reduce(overrideContact, (res, v, k) => ({ ...res, [`contact.${k}`]: v }), {})
-    : (overrideData || {}).contact;
+  const overridePerson = overrideContact || (overrideData || {}).contact;
   const overrideAddress = (overrideData || {}).address;
+  const overrideLegal = overrideLR || (overrideData || {}).legalRepresentation;
 
   return (
     <React.Fragment>
@@ -175,7 +173,7 @@ const OrganizationFields = ({
           legalRepresentation: true,
           editMode,
           path: 'legalRepresentation.',
-          overrideData: overrideLR,
+          overrideData: overrideLegal,
           validationRules,
         }}
       />
