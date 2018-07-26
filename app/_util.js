@@ -7,11 +7,13 @@ import Alert from 'react-s-alert';
 import Auth from '@buzzn/module_auth';
 import store from './configure_store';
 
-export function prepareHeaders(token) {
-  return {
+export function prepareHeaders(token, noType) {
+  const headers = {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   };
+  if (!noType) headers['Content-Type'] = 'application/json';
+  return headers;
 }
 
 const flattenErrors = ({ errors }) =>

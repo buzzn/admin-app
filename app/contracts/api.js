@@ -49,7 +49,7 @@ export default {
   },
   attachContractPDF({ token, apiUrl, apiPath, groupId, contractId, params }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/documents`, {
-      headers: prepareHeaders(token),
+      headers: prepareHeaders(token, true),
       method: 'POST',
       body: params,
     }).then(parseResponse);
