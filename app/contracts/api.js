@@ -4,7 +4,7 @@ import { prepareHeaders, parseResponse, camelizeResponseKeys, camelizeResponseAr
 export default {
   fetchContract({ token, apiUrl, apiPath, contractId, groupId }) {
     return fetch(
-      `${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}?include=market_location:[register:[meter]],contrator_bank_account,contractor:[address],customer_bank_account,customer:[address,contact:address],tariffs,payments`,
+      `${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}?include=market_location:[register:[meter]],contrator_bank_account,contractor:[address],customer_bank_account,customer:[address,contact:address],tariffs,payments,documents`,
       { headers: prepareHeaders(token) },
     )
       .then(parseResponse)
@@ -27,15 +27,43 @@ export default {
   },
   fetchOperatorContract({ token, apiUrl, apiPath, groupId }) {
     return fetch(
-      `${apiUrl}${apiPath}/localpools/${groupId}/metering-point-operator-contract?include=customer:[address,contact:address]`,
+      `${apiUrl}${apiPath}/localpools/${groupId}/metering-point-operator-contract?include=documents,customer:[address,contact:address]`,
       { headers: prepareHeaders(token) },
     )
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
   fetchProcessingContract({ token, apiUrl, apiPath, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/localpool-processing-contract`, { headers: prepareHeaders(token) })
+    return fetch(
+      `${apiUrl}${apiPath}/localpools/${groupId}/localpool-processing-contract?include=documents,customer:[address,contact:address]`,
+      { headers: prepareHeaders(token) },
+    )
       .then(parseResponse)
       .then(camelizeResponseKeys);
+  },
+  generateContractPDF({ token, apiUrl, apiPath, groupId, contractId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/documents/generate`, {
+      headers: prepareHeaders(token),
+      method: 'POST',
+    }).then(parseResponse);
+  },
+  attachContractPDF({ token, apiUrl, apiPath, groupId, contractId, params }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/documents`, {
+      headers: prepareHeaders(token),
+      method: 'POST',
+      body: params,
+    }).then(parseResponse);
+  },
+  deleteContractPDF({ token, apiUrl, apiPath, groupId, contractId, documentId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/documents/${documentId}`, {
+      headers: prepareHeaders(token),
+      method: 'DELETE',
+    });
+  },
+  fetchContractPDFMeta({ token, apiUrl, apiPath, groupId, contractId, documentId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/documents/${documentId}`, { headers: prepareHeaders(token) }).then(parseResponse);
+  },
+  fetchContractPDFData({ token, apiUrl, apiPath, groupId, contractId, documentId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/documents/${documentId}/fetch`, { headers: prepareHeaders(token) }).then(parseResponse);
   },
 };

@@ -10,7 +10,6 @@ import store from './configure_store';
 export function prepareHeaders(token) {
   return {
     Accept: 'application/json',
-    'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,
   };
 }
@@ -32,10 +31,18 @@ export const wrapErrors = errors => ({
 });
 
 export function parseResponse(response) {
+  if (response.ok) {
+    const type = response.headers.get('content-type');
+    if (type === 'application/json') {
+      const json = response.json();
+      return json.then(res => ({ ...res, _status: 200 }));
+    } else if (type === 'application/pdf') {
+      return response.blob();
+    }
+    return Promise.reject(Error('unknown response content-type'));
+  }
   const json = response.json();
-  if (response.status >= 200 && response.status < 300) {
-    return json.then(res => ({ ...res, _status: 200 }));
-  } else if (response.status === 503 && last(response.url.split('/')) === 'health') {
+  if (response.status === 503 && last(response.url.split('/')) === 'health') {
     return json;
   } else if (response.status === 404) {
     Alert.error("<h4>404</h4>I can't remember what you requested.");
@@ -55,6 +62,7 @@ export function parseResponse(response) {
       return Promise.reject(error);
     });
   }
+
   return json.then(error => Promise.reject(error));
 }
 
