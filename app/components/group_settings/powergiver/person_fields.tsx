@@ -18,7 +18,7 @@ interface Props {
 const PersonFields = ({ path, editMode, overrideData, validationRules, legalRepresentation }: Props) => {
   const fieldClassName = editMode ? 'editValue' : 'fieldvalue grey-underline';
   const prefix = 'admin.persons';
-  const overrideAddress = get(overrideData, `${path}address`) || get(overrideData, 'address');
+  const overrideAddress = overrideData ? (get(overrideData, `${path}address`) || get(overrideData, 'address') || {}) : null;
 
   return (
     <React.Fragment>

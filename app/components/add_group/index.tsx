@@ -32,7 +32,7 @@ class AddGroup extends React.Component<Props & InjectedIntlProps> {
     const prefix = 'admin.groups';
 
     return (
-      <Modal {...{ isOpen, toggle: this.handleToggle }}>
+      <Modal {...{ isOpen, toggle: this.handleToggle }} data-cy="create group modal">
         <ModalHeader toggle={this.handleToggle}>
           <FormattedMessage id={`${prefix}.modalHeaderAdd`} />
         </ModalHeader>

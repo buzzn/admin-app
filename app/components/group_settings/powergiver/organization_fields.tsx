@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Row, Col } from 'reactstrap';
 import Select from 'react-select';
 import { FormattedMessage } from 'react-intl';
+import get from 'lodash/get';
 import FieldValidationWrapper from 'components/field_validation_wrapper';
 import EditableInput from 'components/editable_input';
 import AddressFields from './address_fields';
@@ -38,9 +39,9 @@ const OrganizationFields = ({
 }: Props) => {
   const fieldClassName = editMode ? 'editValue' : 'fieldvalue grey-underline';
   const prefix = 'admin.organizations';
-  const overridePerson = overrideContact || (overrideData || {}).contact;
-  const overrideAddress = (overrideData || {}).address;
-  const overrideLegal = overrideLR || (overrideData || {}).legalRepresentation;
+  const overridePerson = overrideContact || (overrideData ? get(overrideData, 'contact') || {} : null);
+  const overrideAddress = overrideData ? get(overrideData, 'address') || {} : null;
+  const overrideLegal = overrideLR || (overrideData ? get(overrideData, 'legalRepresentation') || {} : null);
 
   return (
     <React.Fragment>

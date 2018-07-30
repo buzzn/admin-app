@@ -52,7 +52,7 @@ const Group = ({
         <p className="h5 grey-underline header text-uppercase">
           <FormattedMessage id={`${prefix}.headerGroup`} />
           {!editMode &&
-            group.updatable && <i className="buzzn-pencil" style={{ float: 'right' }} onClick={switchEditMode} />}
+            group.updatable && <i data-cy="group edit switch" className="buzzn-pencil" style={{ float: 'right' }} onClick={switchEditMode} />}
         </p>
         <FormPanel
           {...{
@@ -129,6 +129,7 @@ const Group = ({
                 <Col xs="12">
                   <br />
                   <DeleteButton
+                    data-cy="group delete button"
                     className="btn btn-primary"
                     onClick={() => {
                       switchEditMode();

@@ -2,13 +2,14 @@ import moment from 'moment';
 
 export const required = value => (value ? undefined : 'Required');
 
-export const isString = value => (value === undefined || typeof value === 'string' ? undefined : 'Must be a string');
+export const isString = value =>
+  (value === undefined || value === null || typeof value === 'string' ? undefined : 'Must be a string');
 
 export const maxLength = max => value =>
-  (value === undefined || value.length < max ? undefined : `Must be ${max} characters or less`);
+  (value === undefined || value === null || value.length < max ? undefined : `Must be ${max} characters or less`);
 
 export const minLength = min => value =>
-  (value === undefined || value.length > min ? undefined : `Must be ${min} characters or more`);
+  (value === undefined || value === null || value.length > min ? undefined : `Must be ${min} characters or more`);
 
 export const isNumber = value => (value === undefined || !isNaN(Number(value)) ? undefined : 'Must be a number');
 
@@ -31,12 +32,10 @@ export const isAlphaNumeric = value =>
 export const isPhoneNumber = value =>
   (value && !/^(0|[1-9][0-9]{9})$/i.test(value) ? 'Invalid phone number, must be 10 digits' : undefined);
 
-export const isIncluded = list => value => (list.includes(value) ? undefined : 'Must be the one of the values');
+export const isIncluded = list => value =>
+  (value === undefined || value === null || list.includes(value) ? undefined : 'Must be the one of the values');
 
-export const isDate = value =>
-  (value === undefined || moment(value).isValid()
-    ? undefined
-    : 'Must be a valid date');
+export const isDate = value => (value === undefined || moment(value).isValid() ? undefined : 'Must be a valid date');
 
 export const fieldValidator = (field) => {
   const validators = [];

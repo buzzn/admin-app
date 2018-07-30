@@ -96,11 +96,11 @@ class Powergiver extends React.Component<Props, State> {
         params.address.country = 'DE';
       } else {
         params.address.country = 'DE';
-        if (!selectedContact) {
+        if (!selectedContact && params.contact) {
           params.contact.preferredLanguage = 'de';
           params.contact.address.country = 'DE';
         }
-        if (!selectedLR) {
+        if (!selectedLR && params.legalRepresentation) {
           params.legalRepresentation.preferredLanguage = 'de';
         }
       }
@@ -109,19 +109,15 @@ class Powergiver extends React.Component<Props, State> {
       // HACK
       if (selectedContact) {
         delete params.contact;
-        params.contact = {
-          id: (selectedContact || { value: null }).value,
-        };
+        params.contact = { id: (selectedContact || { value: null }).value };
       } else {
         delete params.contact.id;
       }
       // HACK
       if (selectedLR) {
         delete params.legalRepresentation;
-        params.legalRepresentation = {
-          id: (selectedLR || { value: null }).value,
-        };
-      } else {
+        params.legalRepresentation = { id: (selectedLR || { value: null }).value };
+      } else if (params.legalRepresentation) {
         delete params.legalRepresentation.id;
       }
     }

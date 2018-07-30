@@ -43,15 +43,15 @@ export class TopNavBar extends React.Component {
 
   toggle = () => {
     this.setState({ isOpen: !this.state.isOpen });
-  }
+  };
 
   toggleAction = () => {
     this.setState({ actionOpen: !this.state.actionOpen });
-  }
+  };
 
   toggleProfile = () => {
     this.setState({ profileOpen: !this.state.profileOpen });
-  }
+  };
 
   handleScroll() {
     if (window.pageYOffset > 100) {
@@ -66,7 +66,14 @@ export class TopNavBar extends React.Component {
   }
 
   render() {
-    const { signOut, devMode, myProfile: { firstName, lastName, image }, hoverEvents, hover, switchAddGroup } = this.props;
+    const {
+      signOut,
+      devMode,
+      myProfile: { firstName, lastName, image },
+      hoverEvents,
+      hover,
+      switchAddGroup,
+    } = this.props;
     const { isOpen, actionOpen, profileOpen, scrolled } = this.state;
     const myName = firstName ? `${firstName} ${lastName}` : 'My profile';
     const shrinked = !hover && scrolled;
@@ -88,12 +95,14 @@ export class TopNavBar extends React.Component {
             <Nav className="ml-auto" navbar>
               <Dropdown nav isOpen={actionOpen} toggle={this.toggleAction} className="icon-drop">
                 <DropdownToggle nav>
-                  <span className="icon-nav-item">
+                  <span className="icon-nav-item" data-cy="global CTA">
                     <i className="fa fa-plus" />
                   </span>
                 </DropdownToggle>
                 <DropdownMenu className="icon-dropdown" modifiers={{ offset: { enabled: true, offset: '0px, 0px' } }}>
-                  <DropdownItem onClick={switchAddGroup}><FormattedMessage id="admin.groups.menuAddGroup" /></DropdownItem>
+                  <DropdownItem data-cy="create group link" onClick={switchAddGroup}>
+                    <FormattedMessage id="admin.groups.menuAddGroup" />
+                  </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
               <NavItem className={`icon-nav-item ${devMode ? '' : 'under-construction'}`}>

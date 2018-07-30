@@ -55,6 +55,7 @@ class LocalpoolsList extends React.Component<
     const columns = [
       {
         Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.groups.tableName' })} />,
+        className: 'cy-group-name',
         accessor: 'nameWithImage',
         resizable: true,
         filterMethod: TableParts.filters.filterByValue,

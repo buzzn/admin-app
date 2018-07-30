@@ -35,10 +35,10 @@ export const wrapErrors = errors => ({
 export function parseResponse(response) {
   if (response.ok) {
     const type = response.headers.get('content-type');
-    if (type === 'application/json') {
+    if (type.startsWith('application/json')) {
       const json = response.json();
       return json.then(res => ({ ...res, _status: 200 }));
-    } else if (type === 'application/pdf') {
+    } else if (type.startsWith('application/pdf')) {
       return response.blob();
     }
     return Promise.reject(Error('unknown response content-type'));
@@ -102,7 +102,14 @@ export function camelizeResponseKeys(data) {
 }
 
 export function snakeReq(data) {
-  return reduce(data, (res, v, k) => ({ ...res, [snakeCase(k)]: typeof v === 'object' ? snakeReq(v) : v }), {});
+  return reduce(
+    data,
+    (res, v, k) => ({
+      ...res,
+      [snakeCase(k)]: typeof v === 'object' && v !== null ? snakeReq(v) : v === null ? '' : v,
+    }),
+    {},
+  );
 }
 
 export function logException(ex, context) {
