@@ -90,19 +90,17 @@ class Powergiver extends React.Component<Props, State> {
     const update = !ownerType && !selectedOwner;
     const isPerson = ownerType === 'person' || owner.type === 'person';
     // HACK
-    if (!update) {
-      if (isPerson) {
-        params.preferredLanguage = 'de';
-        params.address.country = 'DE';
-      } else {
-        params.address.country = 'DE';
-        if (!selectedContact && params.contact) {
-          params.contact.preferredLanguage = 'de';
-          params.contact.address.country = 'DE';
-        }
-        if (!selectedLR && params.legalRepresentation) {
-          params.legalRepresentation.preferredLanguage = 'de';
-        }
+    if (isPerson) {
+      if (!params.preferredLanguage) params.preferredLanguage = 'de';
+      if (params.address && !params.address.country) params.address.country = 'DE';
+    } else {
+      if (params.address && !params.address.country) params.address.country = 'DE';
+      if (!selectedContact && params.contact) {
+        if (!params.contact.preferredLanguage) params.contact.preferredLanguage = 'de';
+        if (params.contact.address && !params.contact.address.country) params.contact.address.country = 'DE';
+      }
+      if (!selectedLR && params.legalRepresentation) {
+        if (!params.legalRepresentation.preferredLanguage) params.legalRepresentation.preferredLanguage = 'de';
       }
     }
     if (!isPerson) {
@@ -278,4 +276,7 @@ class Powergiver extends React.Component<Props, State> {
 export default reduxForm({
   form: 'groupOwnerForm',
   enableReinitialize: true,
+  // HACK: see #3729, #3362 in redux-form
+  keepDirtyOnReinitialize: true,
+  onSubmitSuccess: (_result, _dispatch, { reset }) => { reset(); },
 })(withEditOverlay(Powergiver));

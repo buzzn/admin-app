@@ -106,7 +106,7 @@ export function snakeReq(data) {
     data,
     (res, v, k) => ({
       ...res,
-      [snakeCase(k)]: typeof v === 'object' && v !== null ? snakeReq(v) : v === null ? '' : v,
+      [snakeCase(k)]: typeof v === 'object' && v !== null ? snakeReq(v) : v === '' ? null : v,
     }),
     {},
   );
