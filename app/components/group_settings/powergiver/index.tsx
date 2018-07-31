@@ -1,5 +1,6 @@
 import * as React from 'react';
 import omit from 'lodash/omit';
+import reduce from 'lodash/reduce';
 import { reduxForm } from 'redux-form';
 import { FormattedMessage } from 'react-intl';
 import { Col, FormGroup, CustomInput } from 'reactstrap';
@@ -81,7 +82,7 @@ class Powergiver extends React.Component<Props, State> {
 
   handleLRChange = (param) => {
     const { change } = this.props;
-    change('legal_representation.id', param ? param.value : param);
+    change('legalRepresentation.id', param ? param.value : param);
     this.setState({ selectedLR: param });
   };
 
@@ -92,8 +93,18 @@ class Powergiver extends React.Component<Props, State> {
     const ownerValue = (selectedOwner || { value: null }).value;
     const contactValue = (selectedContact || { value: null }).value;
     const lrValue = (selectedLR || { value: null }).value;
-    const update = (!ownerType && !ownerValue) || ownerValue === 'new';
+    const update = !ownerType && !ownerValue;
     const isPerson = ownerType === 'person' || owner.type === 'person';
+    // HACK: for create from update
+    const omitNulls = obj =>
+      reduce(
+        obj,
+        (res, v, k) => ({
+          ...res,
+          ...(typeof v === 'object' && v !== null ? { [k]: omitNulls(v) } : !v ? {} : { [k]: v }),
+        }),
+        {},
+      );
     // HACK
     if (isPerson) {
       if (!params.preferredLanguage) params.preferredLanguage = 'de';
@@ -109,8 +120,20 @@ class Powergiver extends React.Component<Props, State> {
       }
     }
 
+    // HACK
     if (ownerValue === 'new') {
       params = omit(params, ['id', 'updatedAt', 'address.id', 'address.updatedAt']);
+      params = omitNulls(params);
+    }
+
+    // HACK
+    if (contactValue === 'new' && params.contact) {
+      params.contact = omitNulls(params.contact);
+    }
+
+    // HACK
+    if (lrValue === 'new' && params.legalRepresentation) {
+      params.legalRepresentation = omitNulls(params.legalRepresentation);
     }
 
     if (!isPerson) {
@@ -128,7 +151,7 @@ class Powergiver extends React.Component<Props, State> {
         params = omit(params, 'legalRepresentation');
         params.legalRepresentation = { id: lrValue };
       } else if (lrValue === 'new') {
-        params = omit(params, ['legalRepresentation.updatedAt', 'legalRepresentation.id'])
+        params = omit(params, ['legalRepresentation.updatedAt', 'legalRepresentation.id']);
       } else {
         params = omit(params, 'legalRepresentation.id');
       }
@@ -140,7 +163,7 @@ class Powergiver extends React.Component<Props, State> {
         resolve,
         reject,
         update,
-        ownerId: ownerValue,
+        ownerId: ownerValue === 'new' ? null : ownerValue,
         ownerType: owner.type || ownerType,
       });
     }).then(() => {
@@ -177,11 +200,10 @@ class Powergiver extends React.Component<Props, State> {
     const organizationOptions: Array<{ value: null | string; label: string }> = [
       { value: null, label: owner.id ? 'Update existing' : 'Create new' },
     ].concat(availableOrganizations.array.map(u => ({ value: u.id, label: `${u.name} ${u.email}` })));
-    // FIXME: uncomment after "create new fix"
-    // if (owner.id) {
-    //   personOptions.unshift({ value: 'new', label: 'Create new' });
-    //   organizationOptions.unshift({ value: 'new', label: 'Create new' });
-    // }
+    if (owner.id) {
+      personOptions.unshift({ value: 'new', label: 'Create new' });
+      organizationOptions.unshift({ value: 'new', label: 'Create new' });
+    }
 
     return (
       <Col xs="12">
