@@ -1,4 +1,5 @@
 import * as React from 'react';
+import omit from 'lodash/omit';
 import { reduxForm } from 'redux-form';
 import { FormattedMessage } from 'react-intl';
 import { Col, FormGroup, CustomInput } from 'reactstrap';
@@ -84,10 +85,14 @@ class Powergiver extends React.Component<Props, State> {
     this.setState({ selectedLR: param });
   };
 
-  submitForm = (params) => {
+  submitForm = (values) => {
+    let params = { ...values };
     const { updateOwner, owner } = this.props;
     const { ownerType, selectedOwner, selectedContact, selectedLR } = this.state;
-    const update = !ownerType && !selectedOwner;
+    const ownerValue = (selectedOwner || { value: null }).value;
+    const contactValue = (selectedContact || { value: null }).value;
+    const lrValue = (selectedLR || { value: null }).value;
+    const update = (!ownerType && !ownerValue) || ownerValue === 'new';
     const isPerson = ownerType === 'person' || owner.type === 'person';
     // HACK
     if (isPerson) {
@@ -95,37 +100,47 @@ class Powergiver extends React.Component<Props, State> {
       if (params.address && !params.address.country) params.address.country = 'DE';
     } else {
       if (params.address && !params.address.country) params.address.country = 'DE';
-      if (!selectedContact && params.contact) {
+      if (!contactValue && params.contact) {
         if (!params.contact.preferredLanguage) params.contact.preferredLanguage = 'de';
         if (params.contact.address && !params.contact.address.country) params.contact.address.country = 'DE';
       }
-      if (!selectedLR && params.legalRepresentation) {
+      if (!lrValue && params.legalRepresentation) {
         if (!params.legalRepresentation.preferredLanguage) params.legalRepresentation.preferredLanguage = 'de';
       }
     }
+
+    if (ownerValue === 'new') {
+      params = omit(params, ['id', 'updatedAt', 'address.id', 'address.updatedAt']);
+    }
+
     if (!isPerson) {
       // HACK
-      if (selectedContact) {
-        delete params.contact;
-        params.contact = { id: (selectedContact || { value: null }).value };
+      if (contactValue && contactValue !== 'new') {
+        params = omit(params, 'contact');
+        params.contact = { id: contactValue };
+      } else if (contactValue === 'new') {
+        params = omit(params, ['contact.updatedAt', 'contact.id']);
       } else {
-        delete params.contact.id;
+        params = omit(params, 'contact.id');
       }
       // HACK
-      if (selectedLR) {
-        delete params.legalRepresentation;
-        params.legalRepresentation = { id: (selectedLR || { value: null }).value };
-      } else if (params.legalRepresentation) {
-        delete params.legalRepresentation.id;
+      if (lrValue && lrValue !== 'new') {
+        params = omit(params, 'legalRepresentation');
+        params.legalRepresentation = { id: lrValue };
+      } else if (lrValue === 'new') {
+        params = omit(params, ['legalRepresentation.updatedAt', 'legalRepresentation.id'])
+      } else {
+        params = omit(params, 'legalRepresentation.id');
       }
     }
+
     return new Promise((resolve, reject) => {
       updateOwner({
         params,
         resolve,
         reject,
         update,
-        ownerId: (selectedOwner || { value: null }).value,
+        ownerId: ownerValue,
         ownerType: owner.type || ownerType,
       });
     }).then(() => {
@@ -156,8 +171,17 @@ class Powergiver extends React.Component<Props, State> {
 
     const prefix = 'admin.groups';
 
-    const personOptions = [{ value: null, label: owner.id ? 'Update existing' : 'Create new' }].concat(availableUsers.array.map(u => ({ value: u.id, label: `${u.firstName} ${u.lastName} ${u.email}` })));
-    const organizationOptions = [{ value: null, label: owner.id ? 'Update existing' : 'Create new' }].concat(availableOrganizations.array.map(u => ({ value: u.id, label: `${u.name} ${u.email}` })));
+    const personOptions: Array<{ value: null | string; label: string }> = [
+      { value: null, label: owner.id ? 'Update existing' : 'Create new' },
+    ].concat(availableUsers.array.map(u => ({ value: u.id, label: `${u.firstName} ${u.lastName} ${u.email}` })));
+    const organizationOptions: Array<{ value: null | string; label: string }> = [
+      { value: null, label: owner.id ? 'Update existing' : 'Create new' },
+    ].concat(availableOrganizations.array.map(u => ({ value: u.id, label: `${u.name} ${u.email}` })));
+    // FIXME: uncomment after "create new fix"
+    // if (owner.id) {
+    //   personOptions.unshift({ value: 'new', label: 'Create new' });
+    //   organizationOptions.unshift({ value: 'new', label: 'Create new' });
+    // }
 
     return (
       <Col xs="12">
@@ -278,5 +302,7 @@ export default reduxForm({
   enableReinitialize: true,
   // HACK: see #3729, #3362 in redux-form
   keepDirtyOnReinitialize: true,
-  onSubmitSuccess: (_result, _dispatch, { reset }) => { reset(); },
+  onSubmitSuccess: (_result, _dispatch, { initialize }) => {
+    initialize({});
+  },
 })(withEditOverlay(Powergiver));
