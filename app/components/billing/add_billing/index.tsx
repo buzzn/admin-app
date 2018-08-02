@@ -3,8 +3,8 @@ import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import moment from 'moment';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Row, Col } from 'reactstrap';
 import { reduxForm, Field } from 'redux-form';
-import { fieldValidator } from 'validation_functions';
 import Loading from 'components/loading';
+import FieldValidationWrapper from 'components/field_validation_wrapper';
 import FieldInput from 'components/field_input';
 import FieldDate from 'components/field_date';
 
@@ -59,14 +59,16 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
                     />
                   </Col>
                   <Col xs={6}>
-                    <Field
-                      name="lastDate"
-                      type="text"
-                      component={FieldDate}
-                      dateFormat="DD.MM.YYYY"
-                      inputFormats={['D.M.YY']}
-                      label="Last Date"
-                      validate={fieldValidator(validationRules.lastDate)}
+                    <FieldValidationWrapper
+                      {...{
+                        name: 'lastDate',
+                        type: 'text',
+                        component: FieldDate,
+                        dateFormat: 'DD.MM.YYYY',
+                        inputFormats: ['D.M.YY'],
+                        label: 'Last Date',
+                        validationRules,
+                      }}
                     />
                     <Field
                       name="endDate"
@@ -75,12 +77,14 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
                     />
                   </Col>
                   <Col xs={12}>
-                    <Field
-                      name="name"
-                      type="text"
-                      component={FieldInput}
-                      label="Name"
-                      validate={fieldValidator(validationRules.name)}
+                    <FieldValidationWrapper
+                      {...{
+                        name: 'name',
+                        type: 'text',
+                        component: FieldInput,
+                        label: 'Name',
+                        validationRules,
+                      }}
                     />
                   </Col>
                 </Row>

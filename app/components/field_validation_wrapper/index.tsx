@@ -8,7 +8,7 @@ interface Props {
   name: string;
   validationRules: { [key: string]: any };
   field?: { [key: string]: any };
-  overrideData: null | { [key: string]: any };
+  overrideData?: null | { [key: string]: any };
 }
 
 // HACK: hack for redux form field rerender

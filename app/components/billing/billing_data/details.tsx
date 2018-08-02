@@ -30,7 +30,7 @@ class Details extends React.Component<ExtProps & StateProps & DispatchProps & In
     }
 
     if (billingId && billingId !== prev.billingId) {
-      const node = ReactDOM.findDOMNode(this);
+      const node = ReactDOM.findDOMNode(this) as HTMLElement;
       this.setState({ minHeight: node ? node.clientHeight : 290 });
       loadBilling({ billingId, groupId, billingCycleId });
     }
