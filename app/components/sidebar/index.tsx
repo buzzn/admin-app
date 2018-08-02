@@ -55,7 +55,7 @@ class Sidebar extends React.Component<Props> {
           <SidebarItem to={`${url}/tariffs`} icon="fa-eur">
             <FormattedMessage id={`${prefix}.tariffs`} />
           </SidebarItem>
-          <SidebarItem to={`${url}/billing`} icon="fa-money">
+          <SidebarItem to={`${url}/billing`} icon="fa-money" devMode={devMode}>
             <FormattedMessage id={`${prefix}.billing`} />
           </SidebarItem>
           <SidebarItem to={`${url}/market-locations`} icon="buzzn-meters">

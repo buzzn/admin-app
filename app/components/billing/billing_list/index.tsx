@@ -45,6 +45,7 @@ class BillingList extends React.Component<
       breadcrumbs,
       groupId,
       groupName,
+      groupStartDate,
       url,
       history,
       validationRules,
@@ -94,9 +95,13 @@ class BillingList extends React.Component<
           }}
         />
         <CenterContent>
-          <SpanClick onClick={this.switchAddBilling} className="float-right">
-            <FormattedMessage id="admin.billingCycles.addNew" /> <i className="fa fa-plus-circle" />
-          </SpanClick>
+          {groupStartDate ? (
+            <SpanClick onClick={this.switchAddBilling} className="float-right">
+              <FormattedMessage id="admin.billingCycles.addNew" /> <i className="fa fa-plus-circle" />
+            </SpanClick>
+          ) : (
+            <span style={{ float: 'right' }}>?? Message about unfinished group.</span>
+          )}
           <AddBilling
             {...{
               isOpen,
@@ -137,7 +142,10 @@ interface StatePart {
     loadingBillingCycles: boolean;
     validationRules: { _status: null | number; [key: string]: any };
   };
-  groups: { group: { nextBillingCycleBeginDate: string; name: string }; loadingGroup: boolean };
+  groups: {
+    group: { nextBillingCycleBeginDate: string; name: string; startDate: null | string };
+    loadingGroup: boolean;
+  };
 }
 
 interface BillingState {
@@ -169,14 +177,18 @@ function mapStateToProps(state: StatePart) {
     billingCycles: state.billingCycles.billingCycles,
     validationRules: state.billingCycles.validationRules,
     groupName: state.groups.group.name,
+    groupStartDate: state.groups.group.startDate,
     nextBillingCycleBeginDate: state.groups.group.nextBillingCycleBeginDate,
     loading: state.groups.loadingGroup || state.billingCycles.loadingBillingCycles,
   };
 }
 
-export default connect<StateProps, DispatchProps, ExtProps>(mapStateToProps, {
-  loadBillingCycles: BillingCycles.actions.loadBillingCycles,
-  setBillingCycles: BillingCycles.actions.setBillingCycles,
-  loadGroup: Groups.actions.loadGroup,
-  addBillingCycle: BillingCycles.actions.addBillingCycle,
-})(injectIntl(BillingList));
+export default connect<StateProps, DispatchProps, ExtProps>(
+  mapStateToProps,
+  {
+    loadBillingCycles: BillingCycles.actions.loadBillingCycles,
+    setBillingCycles: BillingCycles.actions.setBillingCycles,
+    loadGroup: Groups.actions.loadGroup,
+    addBillingCycle: BillingCycles.actions.addBillingCycle,
+  },
+)(injectIntl(BillingList));
