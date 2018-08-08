@@ -2,7 +2,9 @@ import { saveAs } from 'file-saver/FileSaver';
 import { put, call, takeLatest, take, cancel, select, fork } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import uniqBy from 'lodash/uniqBy';
+import compact from 'lodash/compact';
 import { logException } from '_util';
+import Groups from 'groups';
 import { constants, actions } from './actions';
 import api from './api';
 
@@ -52,9 +54,11 @@ export function* updateBankAccount(
 export function* getGroupContracts({ apiUrl, apiPath, token }, { groupId }) {
   yield put(actions.loadingGroupContracts());
   try {
+    // FIXME
     const operatorContract = yield call(api.fetchOperatorContract, { apiUrl, apiPath, token, groupId });
     const processingContract = yield call(api.fetchProcessingContract, { apiUrl, apiPath, token, groupId });
-    yield put(actions.setGroupContracts(uniqBy([operatorContract, processingContract], 'id')));
+    const groupContracts = uniqBy(compact([operatorContract, processingContract]), 'id') || [];
+    yield put(actions.setGroupContracts(groupContracts));
   } catch (error) {
     logException(error);
   }
@@ -70,6 +74,21 @@ export function* getPowertakers({ apiUrl, apiPath, token }, { groupId }) {
     logException(error);
   }
   yield put(actions.loadedGroupPowertakers());
+}
+
+export function* addContract({ apiUrl, apiPath, token }, { params, resolve, reject, groupId }) {
+  try {
+    const res = yield call(api.addContract, { apiUrl, apiPath, token, params, groupId });
+    if (res._error) {
+      yield call(reject, new SubmissionError(res));
+    } else {
+      yield call(resolve, res);
+      yield put(Groups.actions.loadGroup(groupId));
+      yield call(getGroupContracts, { apiUrl, apiPath, token }, { groupId });
+    }
+  } catch (error) {
+    logException(error);
+  }
 }
 
 export function* getContractPDFData({ apiUrl, apiPath, token }, { groupId, contractId, documentId, fileName }) {
@@ -124,6 +143,7 @@ export function* contractSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_CONTRACT, getContract, { apiUrl, apiPath, token });
   yield takeLatest(constants.UPDATE_BANK_ACCOUNT, updateBankAccount, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUP_POWERTAKERS, getPowertakers, { apiUrl, apiPath, token });
+  yield takeLatest(constants.ADD_CONTRACT, addContract, { apiUrl, apiPath, token });
   yield takeLatest(constants.GET_CONTRACT_PDF_DATA, getContractPDFData, { apiUrl, apiPath, token });
   yield takeLatest(constants.ATTACH_CONTRACT_PDF, attachContractPDF, { apiUrl, apiPath, token });
   yield takeLatest(constants.GENERATE_CONTRACT_PDF, generateContractPDF, { apiUrl, apiPath, token });

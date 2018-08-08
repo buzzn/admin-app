@@ -1,164 +1,176 @@
 import * as React from 'react';
+import get from 'lodash/get';
 import ReactTable from 'react-table';
-import Dropzone from 'react-dropzone';
-import Alert from 'react-s-alert';
-import { injectIntl } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
+import { UncontrolledTooltip } from 'reactstrap';
 import { tableParts as TableParts } from 'react_table_config';
-import PageTitle from 'components/page_title';
-import { CenterContent } from 'components/style';
+import { SpanClick } from 'components/style';
+import AddContract from '../add_contract';
+import NestedDetails from './nested_details';
 
-const ContractsList = ({
-  breadcrumbs,
-  contracts,
-  loading,
-  url,
-  intl,
-  getContractPDFData,
-  attachContractPDF,
-  generateContractPDF,
-  deleteContractPDF,
-  loadGroupContracts,
-  groupId,
-}) => {
-  const data = contracts.filter(c => !!c.id).map(c => ({
-    ...c,
-    type: intl.formatMessage({ id: `admin.contracts.${c.type}` }),
-    status: c.status,
-    documents: c.documents.array,
-    since: c.signingDate,
-    number: c.fullContractNumber,
-    link: `${url}/${c.id}`,
-  }));
+class ContractsList extends React.Component {
+  state = { isOpen: false, expanded: {} };
 
-  const columns = [
-    {
-      Header: () => (
-        <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.contracts.tableType' })} />
-      ),
-      accessor: 'type',
-      minWidth: 200,
-    },
-    {
-      Header: () => (
-        <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.contracts.tableStatus' })} />
-      ),
-      accessor: 'status',
-      minWidth: 40,
-    },
-    {
-      Header: 'Documents',
-      accessor: 'documents',
-      minWidth: 200,
-      Cell: ({ original, value }) => (
-        <React.Fragment>
-          {!!original.allowedActions &&
-            original.allowedActions.documentLocalpoolProcessingContract && (
-              <button
-                onClick={async () => {
-                  const res = await new Promise((resolve, reject) =>
-                    generateContractPDF({ groupId, contractId: original.id, resolve, reject }));
-                  if (res) {
-                    Alert.error(res);
-                  } else {
-                    Alert.success('Document generated');
-                    loadGroupContracts(groupId);
-                  }
-                }}
-              >
-                Generate PDF
-              </button>
-            )}
-          <ul>
-            {value.map(d => (
-              <li style={{ cursor: 'pointer' }} key={d.id}>
-                <i
-                  className="fa fa-remove"
-                  onClick={async () => {
-                    if (!confirm('Delete?')) return;
-                    const res = await new Promise((resolve, reject) =>
-                      deleteContractPDF({ groupId, contractId: original.id, documentId: d.id, resolve, reject }));
-                    if (res) {
-                      Alert.error(res);
-                    } else {
-                      Alert.success('Document deleted');
-                      loadGroupContracts(groupId);
-                    }
-                  }}
-                />
-                &nbsp;
-                <span
-                  onClick={() =>
-                    getContractPDFData({ groupId, contractId: original.id, documentId: d.id, fileName: d.filename })
-                  }
-                >
-                  {d.filename}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </React.Fragment>
-      ),
-    },
-    {
-      Header: () => (
-        <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.contracts.tableSince' })} />
-      ),
-      accessor: 'since',
-      minWidth: 100,
-    },
-    {
-      Header: () => (
-        <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.contracts.tableNumber' })} />
-      ),
-      accessor: 'number',
-      minWidth: 60,
-    },
-    {
-      Header: 'Dropzone',
-      accessor: '',
-      width: 200,
-      Cell: ({ original }) => (
-        <Dropzone
+  handleRowClick = (rowNum) => {
+    this.setState(state => ({ expanded: { ...state.expanded, [rowNum]: !state.expanded[rowNum] } }));
+  };
+
+  switchAddContract = () => {
+    this.setState({ isOpen: !this.state.isOpen });
+  };
+
+  addContract = async (params) => {
+    const { addContract, groupId, generateContractPDF, loadGroupContracts } = this.props;
+
+    return new Promise((resolve, reject) => {
+      addContract({ resolve, reject, params, groupId });
+    })
+      .then((res) => {
+        if (params.generatePDF) {
+          return new Promise((resolve, reject) => generateContractPDF({ groupId, contractId: res.id, resolve, reject })).then(loadGroupContracts(groupId));
+        }
+        return res;
+      })
+      .then(() => this.switchAddContract());
+  };
+
+  render() {
+    const {
+      contracts,
+      url,
+      intl,
+      getContractPDFData,
+      attachContractPDF,
+      generateContractPDF,
+      deleteContractPDF,
+      loadGroupContracts,
+      groupId,
+      group,
+      loading,
+    } = this.props;
+    const { isOpen } = this.state;
+
+    const contractTypes = [];
+    if (
+      !get(group.allowedActions, 'createLocalpoolProcessingContract.localpoolProcessingContract', []).find(
+        e => e === 'cannot be defined',
+      )
+    ) {
+      contractTypes.push({
+        value: 'contract_localpool_processing',
+        label: 'LPC',
+        disabled: get(group.allowedActions, 'createLocalpoolProcessingContract') !== true,
+        incompleteness: get(group.allowedActions, 'createLocalpoolProcessingContract'),
+      });
+    }
+
+    const data = contracts.filter(c => !!c.id).map(c => ({
+      ...c,
+      type: intl.formatMessage({ id: `admin.contracts.${c.type}` }),
+      ownerChanged: c.customer.id !== get(group.owner, 'id'),
+      since: c.signingDate,
+      number: c.fullContractNumber,
+      link: `${url}/${c.id}`,
+    }));
+
+    const columns = [
+      {
+        Header: () => (
+          <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.contracts.tableType' })} />
+        ),
+        accessor: 'type',
+        minWidth: 200,
+      },
+      {
+        Header: () => <i className="fa fa-warning" />,
+        accessor: 'ownerChanged',
+        width: 40,
+        Cell: ({ value, original }) => (value ? (
+            <React.Fragment>
+              <i id={`owner-changed-${original.id}`} className="fa fa-warning" style={{ color: 'red' }} />
+              <UncontrolledTooltip target={`owner-changed-${original.id}`}>The group owner was changed</UncontrolledTooltip>
+            </React.Fragment>
+        ) : (
+          ''
+        )),
+      },
+      {
+        Header: () => (
+          <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.contracts.tableSince' })} />
+        ),
+        accessor: 'since',
+        minWidth: 100,
+      },
+      {
+        Header: () => (
+          <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.contracts.tableNumber' })} />
+        ),
+        accessor: 'number',
+        minWidth: 60,
+      },
+      {
+        expander: true,
+        Expander: row => (
+          <div>{row.isExpanded ? <i className="fa fa-chevron-up" /> : <i className="fa fa-chevron-down" />}</div>
+        ),
+        style: { color: '#bdbdbd' },
+      },
+    ];
+
+    return (
+      <div className="p-0">
+        {!!contractTypes.length && (
+          <SpanClick onClick={this.switchAddContract} className="float-right">
+            <FormattedMessage id="admin.contracts.addNew" /> <i className="fa fa-plus-circle" />
+          </SpanClick>
+        )}
+        <AddContract
           {...{
-            multiple: false,
-            accept: 'application/pdf',
-            name: 'file',
-            onDropRejected: () => {
-              Alert.error('Only PDFs');
-            },
-            onDropAccepted: async (files) => {
-              const params = new FormData();
-              params.append('file', files[0]);
-              const res = await new Promise((resolve, reject) =>
-                attachContractPDF({ groupId, contractId: original.id, params, resolve, reject }));
-              if (res) {
-                Alert.error(res);
-              } else {
-                Alert.success('Document attached');
-                loadGroupContracts(groupId);
-              }
-            },
+            loading,
+            toggle: this.switchAddContract,
+            isOpen,
+            // TODO: replace with real validationRules
+            validationRules: {},
+            onSubmit: this.addContract,
+            contractTypes,
+            groupName: group.name,
+            groupOwner: group.owner,
+            groupOwnerErrors: get(group.incompleteness, 'owner'),
+            url,
           }}
-        >
-          <p>drop documents here</p>
-        </Dropzone>
-      ),
-    },
-  ];
-
-  return (
-    <React.Fragment>
-      <PageTitle
-        {...{
-          breadcrumbs: breadcrumbs.concat([{ id: '-----', title: 'Localpool contracts' }]),
-          title: 'Localpool contracts',
-        }}
-      />
-      <CenterContent>
-        <ReactTable {...{ data, columns }} />
-      </CenterContent>
-    </React.Fragment>
-  );
-};
+        />
+        <br />
+        <ReactTable
+          {...{
+            data,
+            columns,
+            expanded: this.state.expanded,
+            getTrProps: (_state, rowInfo) => ({
+              onClick: (_event, handleOriginal) => {
+                this.handleRowClick(rowInfo.viewIndex);
+                handleOriginal && handleOriginal();
+              },
+            }),
+            SubComponent: row => (
+              <NestedDetails
+                {...{
+                  contract: row.original,
+                  groupName: group.name,
+                  groupId,
+                  groupOwner: group.owner.name || `${group.owner.forstName} ${group.owner.lastName}`,
+                  generateContractPDF,
+                  loadGroupContracts,
+                  deleteContractPDF,
+                  getContractPDFData,
+                  attachContractPDF,
+                }}
+              />
+            ),
+          }}
+        />
+      </div>
+    );
+  }
+}
 
 export default injectIntl(ContractsList);

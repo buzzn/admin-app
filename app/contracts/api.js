@@ -26,20 +26,35 @@ export default {
     }).then(parseResponse);
   },
   fetchOperatorContract({ token, apiUrl, apiPath, groupId }) {
-    return fetch(
-      `${apiUrl}${apiPath}/localpools/${groupId}/metering-point-operator-contract?include=documents,customer:[address,contact:address]`,
-      { headers: prepareHeaders(token) },
-    )
-      .then(parseResponse)
-      .then(camelizeResponseKeys);
+    return (
+      fetch(
+        `${apiUrl}${apiPath}/localpools/${groupId}/contracts?type=contract_metering_point_operator&include=documents,customer:[address,contact:address]`,
+        { headers: prepareHeaders(token) },
+      )
+        .then(parseResponse)
+        .then(camelizeResponseKeys)
+        // FIXME
+        .then(json => json.array[0])
+    );
   },
   fetchProcessingContract({ token, apiUrl, apiPath, groupId }) {
-    return fetch(
-      `${apiUrl}${apiPath}/localpools/${groupId}/localpool-processing-contract?include=documents,customer:[address,contact:address]`,
-      { headers: prepareHeaders(token) },
-    )
-      .then(parseResponse)
-      .then(camelizeResponseKeys);
+    return (
+      fetch(
+        `${apiUrl}${apiPath}/localpools/${groupId}/contracts?type=contract_localpool_processing&include=documents,customer:[address,contact:address]`,
+        { headers: prepareHeaders(token) },
+      )
+        .then(parseResponse)
+        .then(camelizeResponseKeys)
+        // FIXME
+        .then(json => json.array[0])
+    );
+  },
+  addContract({ token, apiUrl, apiPath, groupId, params }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts`, {
+      headers: prepareHeaders(token),
+      method: 'POST',
+      body: JSON.stringify(snakeReq(params)),
+    }).then(parseResponse);
   },
   generateContractPDF({ token, apiUrl, apiPath, groupId, contractId }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/documents/generate`, {

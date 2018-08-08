@@ -19,6 +19,8 @@ export const constants = {
 
   UPDATE_BANK_ACCOUNT: 'buzzn_contracts/UPDATE_BANK_ACCOUNT',
 
+  ADD_CONTRACT: 'buzzn_contracts/ADD_CONTRACT',
+
   GENERATE_CONTRACT_PDF: 'buzzn_contracts/GENERATE_CONTRACT_PDF',
   ATTACH_CONTRACT_PDF: 'buzzn_contracts/ATTACH_CONTRACT_PDF',
   DELETE_CONTRACT_PDF: 'buzzn_contracts/DELETE_CONTRACT_PDF',
@@ -59,6 +61,14 @@ export const actions = {
     groupId,
     partyId,
     partyType,
+  }),
+
+  addContract: ({ groupId, resolve, reject, params }) => ({
+    type: constants.ADD_CONTRACT,
+    groupId,
+    resolve,
+    reject,
+    params,
   }),
 
   generateContractPDF: ({ groupId, contractId, resolve, reject }) => ({
