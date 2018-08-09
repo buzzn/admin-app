@@ -62,10 +62,10 @@ export class Documents extends React.Component {
               <FormattedMessage id="admin.contracts.navBills" />
             </NavLink>
             <NavLink to={`${url}/contracts`} exact className="nav-link">
-              <FormattedMessage id="admin.marketLocations.navContracts" />
+              <FormattedMessage id="admin.contracts.navContracts" />
             </NavLink>
             <NavLink to={`${url}/bureaucracy`} exact className="nav-link">
-              <FormattedMessage id="admin.marketLocations.navBureaucracy" />
+              <FormattedMessage id="admin.contracts.navBureaucracy" />
             </NavLink>
           </SubNav>
           <Switch>

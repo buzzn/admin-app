@@ -86,8 +86,12 @@ class NestedDetails extends React.Component<Props, State> {
           <Col xs={12}>
             <FormattedMessage id={`${prefix}.signingDate`} />: {contract.signingDate}
           </Col>
-          <Col xs={8}>No created at?</Col>
-          <Col xs={4}>{contract.updatedAt}</Col>
+          <Col xs={8}>
+            <FormattedMessage id={`${prefix}.createdAt`} />: No created at?
+          </Col>
+          <Col xs={4}>
+            <FormattedMessage id={`${prefix}.updatedAt`} />: {moment(contract.updatedAt).format('DD.MM.YYYY')}
+          </Col>
         </Row>
         <Row>
           <Col xs={12}>
@@ -95,7 +99,7 @@ class NestedDetails extends React.Component<Props, State> {
             {!!contract.allowedActions
               && contract.allowedActions.documentLocalpoolProcessingContract === true && (
                 <button className="btn btn-dark btn-sm" onClick={() => this.handleGeneratePDF(contract.id)}>
-                  <FormattedMessage id={`${prefix}.generatePDF`} />
+                  <FormattedMessage id="admin.buttons.generatePDF" />
                 </button>
             )}
           </Col>
@@ -105,7 +109,7 @@ class NestedDetails extends React.Component<Props, State> {
             <DocumentsListHeader>
               Documents:
               <span style={{ cursor: 'pointer' }} className="upload-button" onClick={this.switchUpload}>
-                <FormattedMessage id={`${prefix}.buttonUploadDocument`} /> <i className="fa fa-plus-circle" />
+                <FormattedMessage id="admin.buttons.buttonUploadDocument" /> <i className="fa fa-plus-circle" />
               </span>
             </DocumentsListHeader>
             {contract.documents.array.map(d => (
