@@ -150,6 +150,13 @@ class GroupSettings extends React.Component {
       });
     };
 
+    const ownerValues = { ...owner };
+    if (!ownerValues.address) ownerValues.address = {};
+    if (!ownerValues.contact) ownerValues.contact = { address: {} };
+    if (ownerValues.contact && !ownerValues.contact.address) ownerValues.contact.address = {};
+    if (!ownerValues.legalRepresentation) ownerValues.legalRepresentation = { address: {} };
+    if (ownerValues.legalRepresentation && !ownerValues.legalRepresentation.address) ownerValues.legalRepresentation.address = {};
+
     return (
       <React.Fragment>
         <PageTitle {...{ breadcrumbs, title: intl.formatMessage({ id: `${prefix}.headerSettings` }), thin: 'true' }} />
@@ -215,15 +222,7 @@ class GroupSettings extends React.Component {
                       validationRules,
                       updateOwner: params => updateOwner({ groupId: group.id, ...params }),
                       // HACK: nested objects can be null on server after beekeeper import in some cases
-                      initialValues: () => {
-                        const values = { ...owner };
-                        if (!values.address) values.address = {};
-                        if (!values.contact) values.contact = { address: {} };
-                        if (values.contact && !values.contact.address) values.contact.address = {};
-                        if (!values.legalRepresentation) values.legalRepresentation = { address: {} };
-                        if (values.legalRepresentation && !values.legalRepresentation.address) values.legalRepresentation.address = {};
-                        return values;
-                      },
+                      initialValues: ownerValues,
                     }}
                   />
                 )}
