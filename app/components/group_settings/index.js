@@ -4,7 +4,6 @@ import { Redirect, NavLink, Switch, Route } from 'react-router-dom';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Row } from 'reactstrap';
 import { confirmAlert } from 'react-confirm-alert';
-import defaultsDeep from 'lodash/defaultsDeep';
 import pick from 'lodash/pick';
 import get from 'lodash/get';
 import map from 'lodash/map';
@@ -215,11 +214,15 @@ class GroupSettings extends React.Component {
                       loadAvailableOrganizations,
                       validationRules,
                       updateOwner: params => updateOwner({ groupId: group.id, ...params }),
-                      initialValues: defaultsDeep(owner, {
-                        address: {},
-                        contact: { address: {} },
-                        legalRepresentation: { address: {} },
-                      }),
+                      // HACK: nested objects can be null on server after beekeeper import in some cases
+                      initialValues: () => {
+                        const values = { ...owner };
+                        if (!values.address) values.address = {};
+                        if (!values.contact) values.contact = { address: {} };
+                        if (values.contact && !values.contact.address) values.contact.address = {};
+                        if (!values.legalRepresentation) values.legalRepresentation = { address: {} };
+                        if (values.legalRepresentation && !values.legalRepresentation.address) values.legalRepresentation.address = {};
+                      },
                     }}
                   />
                 )}
