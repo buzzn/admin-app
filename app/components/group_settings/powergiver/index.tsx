@@ -15,9 +15,6 @@ import { OwnerOptions } from './style';
 
 interface Props {
   owner: any;
-  ownerAddress: any;
-  ownerContact: any;
-  ownerContactAddress: any;
   switchEditMode: () => void;
   editMode: boolean;
   loadAvailableUsers: () => void;

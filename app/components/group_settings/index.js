@@ -2,9 +2,9 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, NavLink, Switch, Route } from 'react-router-dom';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { intlShape } from 'react-intl';
-import { Col, Row } from 'reactstrap';
+import { Row } from 'reactstrap';
 import { confirmAlert } from 'react-confirm-alert';
+import defaultsDeep from 'lodash/defaultsDeep';
 import pick from 'lodash/pick';
 import get from 'lodash/get';
 import map from 'lodash/map';
@@ -28,11 +28,12 @@ import DefaultImage from 'images/energygroup_noimage_01.jpg';
 class GroupSettings extends React.Component {
   setIncompletness(group) {
     const { setIncompleteScreen } = this.props;
-    const flattenErrors = ({ prefix = 'admin.groups', errObj }) =>
-      flattenDeep(map(errObj, (v, k) => {
+    const flattenErrors = ({ prefix = 'admin.groups', errObj }) => flattenDeep(
+      map(errObj, (v, k) => {
         if (Array.isArray(v)) return { title: `${prefix}.${k}`, errors: v };
         return flattenErrors({ prefix: `${prefix}.${k}`, errObj: v });
-      }));
+      }),
+    );
 
     if (group.incompleteness && Object.keys(group.incompleteness).length) {
       setIncompleteScreen(flattenErrors({ errObj: group.incompleteness }));
@@ -96,11 +97,6 @@ class GroupSettings extends React.Component {
       bankAccount,
 
       owner,
-      ownerAddress,
-      ownerBankAccounts,
-      ownerContact,
-      ownerContactAddress,
-      ownerContactBankAccounts,
       availableUsers,
       loadAvailableUsers,
       availableOrganizations,
@@ -213,20 +209,17 @@ class GroupSettings extends React.Component {
                     {...{
                       updatable: group.updatable,
                       owner,
-                      ownerAddress,
-                      ownerContact,
-                      ownerContactAddress,
                       loadAvailableUsers,
                       availableUsers,
                       availableOrganizations,
                       loadAvailableOrganizations,
                       validationRules,
                       updateOwner: params => updateOwner({ groupId: group.id, ...params }),
-                      initialValues: {
-                        ...owner,
-                        address: { ...ownerAddress },
-                        contact: { ...ownerContact, address: { ...ownerContactAddress } },
-                      },
+                      initialValues: defaultsDeep(owner, {
+                        address: {},
+                        contact: { address: {} },
+                        legalRepresentation: { address: {} },
+                      }),
                     }}
                   />
                 )}
@@ -258,11 +251,6 @@ const mapStateToProps = state => ({
   bankAccount: state.groups.group.bankAccount || {},
 
   owner: state.groups.group.owner || {},
-  ownerAddress: get(state.groups.group, 'owner.address') || {},
-  ownerBankAccounts: get(state.groups.group, 'owner.bankAccounts.array') || [],
-  ownerContact: get(state.groups.group, 'owner.contact') || {},
-  ownerContactAddress: get(state.groups.group, 'owner.contact.address') || {},
-  ownerContactBankAccounts: get(state.groups.group, 'owner.contact.bankAccounts.array') || [],
   availableUsers: state.users.availableUsers,
   availableOrganizations: state.organizations.availableOrganizations,
 
@@ -278,13 +266,16 @@ const mapStateToProps = state => ({
   validationRules: state.groups.validationRules,
 });
 
-export default connect(mapStateToProps, {
-  loadGroup: Groups.actions.loadGroup,
-  setGroup: Groups.actions.setGroup,
-  updateGroup: Groups.actions.updateGroup,
-  deleteGroup: Groups.actions.deleteGroup,
-  updateOwner: Groups.actions.updateOwner,
-  setIncompleteScreen: actions.setIncompleteScreen,
-  loadAvailableUsers: Users.actions.loadAvailableUsers,
-  loadAvailableOrganizations: Organizations.actions.loadAvailableOrganizations,
-})(GroupSettingsIntl);
+export default connect(
+  mapStateToProps,
+  {
+    loadGroup: Groups.actions.loadGroup,
+    setGroup: Groups.actions.setGroup,
+    updateGroup: Groups.actions.updateGroup,
+    deleteGroup: Groups.actions.deleteGroup,
+    updateOwner: Groups.actions.updateOwner,
+    setIncompleteScreen: actions.setIncompleteScreen,
+    loadAvailableUsers: Users.actions.loadAvailableUsers,
+    loadAvailableOrganizations: Organizations.actions.loadAvailableOrganizations,
+  },
+)(GroupSettingsIntl);
