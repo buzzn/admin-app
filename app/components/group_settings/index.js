@@ -222,6 +222,7 @@ class GroupSettings extends React.Component {
                         if (values.contact && !values.contact.address) values.contact.address = {};
                         if (!values.legalRepresentation) values.legalRepresentation = { address: {} };
                         if (values.legalRepresentation && !values.legalRepresentation.address) values.legalRepresentation.address = {};
+                        return values;
                       },
                     }}
                   />
