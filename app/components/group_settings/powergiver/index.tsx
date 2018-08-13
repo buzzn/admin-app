@@ -193,10 +193,10 @@ class Powergiver extends React.Component<Props, State> {
 
     const personOptions: Array<{ value: null | string; label: string }> = [
       { value: null, label: owner.id ? 'Update existing' : 'Create new' },
-    ].concat(availableUsers.array.map(u => ({ value: u.id, label: `${u.firstName} ${u.lastName} ${u.email}` })));
+    ].concat(availableUsers.array.filter(u => owner.id !== u.id).map(u => ({ value: u.id, label: `${u.firstName} ${u.lastName} ${u.email}` })));
     const organizationOptions: Array<{ value: null | string; label: string }> = [
       { value: null, label: owner.id ? 'Update existing' : 'Create new' },
-    ].concat(availableOrganizations.array.map(u => ({ value: u.id, label: `${u.name} ${u.email}` })));
+    ].concat(availableOrganizations.array.filter(o => owner.id !== o.id).map(u => ({ value: u.id, label: `${u.name} ${u.email}` })));
     if (owner.id) {
       personOptions.unshift({ value: 'new', label: 'Create new' });
       organizationOptions.unshift({ value: 'new', label: 'Create new' });
