@@ -11,12 +11,19 @@ export default {
       .then(camelizeResponseKeys);
   },
   fetchGroupPowertakers({ token, apiUrl, apiPath, groupId }) {
-    return fetch(
-      `${apiUrl}${apiPath}/localpools/${groupId}/power-taker-contracts?include=market_location:[register],customer:[address,contact:address]`,
-      { headers: prepareHeaders(token) },
-    )
-      .then(parseResponse)
-      .then(camelizeResponseKeys);
+    return (
+      fetch(
+        `${apiUrl}${apiPath}/localpools/${groupId}/contracts?include=market_location:[register],customer:[address,contact:address]`,
+        { headers: prepareHeaders(token) },
+      )
+        .then(parseResponse)
+        .then(camelizeResponseKeys)
+        // FIXME
+        .then(json => ({
+          ...json,
+          array: json.array.filter(c => ['contract_localpool_power_taker', 'contract_localpool_third_party'].includes(c.type)),
+        }))
+    );
   },
   updateBankAccount({ token, apiUrl, apiPath, bankAccountId, params, groupId, partyId, partyType }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/${partyType}s/${partyId}/bank-accounts/${bankAccountId}`, {
