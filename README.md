@@ -9,7 +9,7 @@ To run local dev server:
 
 - clone this repository
 - install node.js 10.8.0
-- install yarn (`sudo npm i -g yarn` or `brew install yarn` if you're using mac)
+- install yarn (https://yarnpkg.com/lang/en/docs/install or `brew install yarn --without-node` if you're using mac)
 - run `yarn`
 - run `npm rebuild node-sass`
 - run `yarn run dev-server`
