@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import Loading from 'components/loading';
 import FieldValidationWrapper from 'components/field_validation_wrapper';
 import FieldInput from 'components/field_input';
-import FieldDate from 'components/field_date';
 import EditableSelect from 'components/editable_select';
 
 interface Props {
@@ -104,24 +103,8 @@ class AddContract extends React.Component<Props & InjectedIntlProps> {
                       {...{
                         name: 'taxNumber',
                         type: 'text',
-                        editMode: true,
+                        label: <FormattedMessage id={`${prefix}.taxNumber`} />,
                         component: FieldInput,
-                        validationRules,
-                      }}
-                    />
-                  </Col>
-                  <Col xs={6}>
-                    <FormattedMessage id={`${prefix}.signingDate`} />
-                  </Col>
-                  <Col xs={6}>
-                    <FieldValidationWrapper
-                      {...{
-                        name: 'signingDate',
-                        type: 'text',
-                        editMode: true,
-                        component: FieldDate,
-                        dateFormat: 'DD.MM.YYYY',
-                        inputFormats: ['D.M.YY'],
                         validationRules,
                       }}
                     />

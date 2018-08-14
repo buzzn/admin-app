@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { Row, Col } from 'reactstrap';
 import Alert from 'react-s-alert';
 import UploadModal from './upload_modal';
+import LabeledValue from 'components/labeled_value';
 
 import { DocumentsListHeader, NestedDetailsWrapper } from './style';
 
@@ -70,27 +71,24 @@ class NestedDetails extends React.Component<Props, State> {
       <NestedDetailsWrapper>
         <Row>
           <Col xs={12}>
-            <b>
+            <h6>
               <FormattedMessage id="admin.groups.name" />: {groupName}
-            </b>
+            </h6>
           </Col>
           <Col xs={12}>
-            <FormattedMessage id="admin.groups.owner" />: {groupOwner}
+            <LabeledValue {...{ label: <FormattedMessage id="admin.groups.owner" />, value: groupOwner }} />
           </Col>
           <Col xs={8}>
-            <FormattedMessage id={`${prefix}.contractNumber`} />: {contract.fullContractNumber}
+            <LabeledValue {...{ label: <FormattedMessage id={`${prefix}.contractNumber`} />, value: contract.fullContractNumber }} />
           </Col>
           <Col xs={4}>
-            <FormattedMessage id={`${prefix}.status`} />: {contract.status}
-          </Col>
-          <Col xs={12}>
-            <FormattedMessage id={`${prefix}.signingDate`} />: {contract.signingDate}
+            <LabeledValue {...{ label: <FormattedMessage id={`${prefix}.status`} />, value: contract.status }} />
           </Col>
           <Col xs={8}>
-            <FormattedMessage id={`${prefix}.createdAt`} />: No created at?
+            <LabeledValue {...{ label: <FormattedMessage id={`${prefix}.createdAt`} />, value: moment(contract.createdAt).format('DD.MM.YYYY') }} />
           </Col>
           <Col xs={4}>
-            <FormattedMessage id={`${prefix}.updatedAt`} />: {moment(contract.updatedAt).format('DD.MM.YYYY')}
+            <LabeledValue {...{ label: <FormattedMessage id={`${prefix}.updatedAt`} />, value: moment(contract.updatedAt).format('DD.MM.YYYY') }} />
           </Col>
         </Row>
         <Row>

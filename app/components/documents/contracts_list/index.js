@@ -157,7 +157,7 @@ class ContractsList extends React.Component {
                   contract: row.original,
                   groupName: group.name,
                   groupId,
-                  groupOwner: group.owner.name || `${group.owner.forstName} ${group.owner.lastName}`,
+                  groupOwner: group.owner.name || `${group.owner.firstName} ${group.owner.lastName}`,
                   generateContractPDF,
                   loadGroupContracts,
                   deleteContractPDF,
