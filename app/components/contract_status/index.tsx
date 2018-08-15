@@ -15,6 +15,10 @@ const ContractStatus = ({ status, size }: Props) => {
       icon: 'fa-check',
       color: '#21D343',
     },
+    signed: {
+      icon: 'fa-pencil',
+      color: '#1E88E5',
+    },
     terminated: {
       icon: 'fa-minus',
       color: '#FF4A00',
