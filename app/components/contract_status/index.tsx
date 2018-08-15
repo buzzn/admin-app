@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 interface Props {
-  status: 'onboarding' | 'active' | 'terminated' | 'ended';
+  status: 'onboarding' | 'active' | 'terminated' | 'ended' | 'signed';
   size: 'small' | 'large';
 }
 
