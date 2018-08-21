@@ -135,6 +135,8 @@ class Powergiver extends React.Component<Props, State> {
 
     if (!isPerson) {
       // HACK
+      params = omit(params, 'legalRepresentation.address');
+      // HACK
       if (contactValue && contactValue !== 'new') {
         params = omit(params, 'contact');
         params.contact = { id: contactValue };
