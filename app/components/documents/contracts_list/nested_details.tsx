@@ -2,6 +2,7 @@ import * as React from 'react';
 import moment from 'moment';
 import { FormattedMessage } from 'react-intl';
 import { Row, Col } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import Alert from 'react-s-alert';
 import UploadModal from './upload_modal';
 import LabeledValue from 'components/labeled_value';
@@ -18,6 +19,7 @@ interface Props {
   deleteContractPDF: (any) => void;
   getContractPDFData: (any) => void;
   attachContractPDF: (any) => void;
+  url: string;
 }
 
 interface State {
@@ -63,6 +65,7 @@ class NestedDetails extends React.Component<Props, State> {
       getContractPDFData,
       attachContractPDF,
       loadGroupContracts,
+      url,
     } = this.props;
 
     const prefix = 'admin.contracts';
@@ -79,7 +82,11 @@ class NestedDetails extends React.Component<Props, State> {
             <LabeledValue {...{ label: <FormattedMessage id="admin.groups.owner" />, value: groupOwner }} />
           </Col>
           <Col xs={8}>
-            <LabeledValue {...{ label: <FormattedMessage id={`${prefix}.contractNumber`} />, value: contract.fullContractNumber }} />
+            <LabeledValue {...{
+              label: <FormattedMessage id={`${prefix}.contractNumber`} />, value: <Link to={`${url
+                .split('/')
+                .slice(0, -1)
+                .join('/')}/contracts/${contract.id}`}>contract.fullContractNumber</Link> }} />
           </Col>
           <Col xs={4}>
             <LabeledValue {...{ label: <FormattedMessage id={`${prefix}.status`} />, value: contract.status }} />

@@ -163,6 +163,7 @@ class ContractsList extends React.Component {
                   deleteContractPDF,
                   getContractPDFData,
                   attachContractPDF,
+                  url,
                 }}
               />
             ),

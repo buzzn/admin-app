@@ -6,6 +6,7 @@ import Contracts from 'contracts';
 import Loading from 'components/loading';
 import PowertakerContract from './powertaker';
 import ThirdPartyContract from './third_party';
+import LCPContract from './localpool_processing';
 
 class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
   componentDidMount() {
@@ -33,6 +34,9 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
     }
     if (contract.type === 'contract_localpool_power_taker') {
       return <PowertakerContract {...{ contract, register, contractor, prefix, url }} />;
+    }
+    if (contract.type === 'contract_localpool_processing') {
+      return <LCPContract {...{ contract, contractor, prefix, url, initialValues: contract }} />;
     }
     return 'Unknown contract type';
   }
