@@ -86,7 +86,7 @@ class NestedDetails extends React.Component<Props, State> {
               label: <FormattedMessage id={`${prefix}.contractNumber`} />, value: <Link to={`${url
                 .split('/')
                 .slice(0, -1)
-                .join('/')}/contracts/${contract.id}`}>contract.fullContractNumber</Link> }} />
+                .join('/')}/contracts/${contract.id}`}>{contract.fullContractNumber}</Link> }} />
           </Col>
           <Col xs={4}>
             <LabeledValue {...{ label: <FormattedMessage id={`${prefix}.status`} />, value: contract.status }} />
