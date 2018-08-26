@@ -91,6 +91,20 @@ export function* addContract({ apiUrl, apiPath, token }, { params, resolve, reje
   }
 }
 
+export function* updateContract({ apiUrl, apiPath, token }, { params, resolve, reject, groupId, contractId }) {
+  try {
+    const res = yield call(api.updateContract, { apiUrl, apiPath, token, params, groupId, contractId });
+    if (res._error) {
+      yield call(reject, new SubmissionError(res));
+    } else {
+      yield call(resolve, res);
+      yield call(getContract, { apiUrl, apiPath, token }, { groupId, contractId });
+    }
+  } catch (error) {
+    logException(error);
+  }
+}
+
 export function* getContractPDFData({ apiUrl, apiPath, token }, { groupId, contractId, documentId, fileName }) {
   try {
     const data = yield call(api.fetchContractPDFData, { apiUrl, apiPath, token, groupId, contractId, documentId });
@@ -144,6 +158,7 @@ export function* contractSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.UPDATE_BANK_ACCOUNT, updateBankAccount, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUP_POWERTAKERS, getPowertakers, { apiUrl, apiPath, token });
   yield takeLatest(constants.ADD_CONTRACT, addContract, { apiUrl, apiPath, token });
+  yield takeLatest(constants.UPDATE_CONTRACT, updateContract, { apiUrl, apiPath, token });
   yield takeLatest(constants.GET_CONTRACT_PDF_DATA, getContractPDFData, { apiUrl, apiPath, token });
   yield takeLatest(constants.ATTACH_CONTRACT_PDF, attachContractPDF, { apiUrl, apiPath, token });
   yield takeLatest(constants.GENERATE_CONTRACT_PDF, generateContractPDF, { apiUrl, apiPath, token });

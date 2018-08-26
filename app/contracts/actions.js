@@ -2,6 +2,8 @@ export const constants = {
   SET_API_PARAMS: 'buzzn_contracts/SET_API_PARAMS',
   SET_TOKEN: 'buzzn_contracts/SET_TOKEN',
 
+  SET_VALIDATION_RULES: 'buzzn_contracts/SET_VALIDATION_RULES',
+
   LOAD_CONTRACT: 'buzzn_contracts/LOAD_CONTRACT',
   LOADING_CONTRACT: 'buzzn_contracts/LOADING_CONTRACT',
   LOADED_CONTRACT: 'buzzn_contracts/LOADED_CONTRACT',
@@ -20,6 +22,7 @@ export const constants = {
   UPDATE_BANK_ACCOUNT: 'buzzn_contracts/UPDATE_BANK_ACCOUNT',
 
   ADD_CONTRACT: 'buzzn_contracts/ADD_CONTRACT',
+  UPDATE_CONTRACT: 'buzzn_contracts/UPDATE_CONTRACT',
 
   GENERATE_CONTRACT_PDF: 'buzzn_contracts/GENERATE_CONTRACT_PDF',
   ATTACH_CONTRACT_PDF: 'buzzn_contracts/ATTACH_CONTRACT_PDF',
@@ -31,6 +34,12 @@ export const constants = {
 export const actions = {
   setApiParams: ({ apiPath, apiUrl }) => ({ type: constants.SET_API_PARAMS, apiPath, apiUrl }),
   setToken: token => ({ type: constants.SET_TOKEN, token }),
+
+  setValidationRules: (ruleType, validationRules) => ({
+    type: constants.SET_VALIDATION_RULES,
+    ruleType,
+    validationRules,
+  }),
 
   loadContract: ({ contractId, groupId }) => ({ type: constants.LOAD_CONTRACT, contractId, groupId }),
   loadingContract: () => ({ type: constants.LOADING_CONTRACT }),
@@ -66,6 +75,14 @@ export const actions = {
   addContract: ({ groupId, resolve, reject, params }) => ({
     type: constants.ADD_CONTRACT,
     groupId,
+    resolve,
+    reject,
+    params,
+  }),
+  updateContract: ({ groupId, contractId, resolve, reject, params }) => ({
+    type: constants.UPDATE_CONTRACT,
+    groupId,
+    contractId,
     resolve,
     reject,
     params,

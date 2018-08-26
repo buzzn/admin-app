@@ -63,6 +63,13 @@ export default {
       body: JSON.stringify(snakeReq(params)),
     }).then(parseResponse);
   },
+  updateContract({ token, apiUrl, apiPath, groupId, contractId, params }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}`, {
+      headers: prepareHeaders(token),
+      method: 'PATCH',
+      body: JSON.stringify(snakeReq(params)),
+    }).then(parseResponse);
+  },
   generateContractPDF({ token, apiUrl, apiPath, groupId, contractId }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/documents/generate`, {
       headers: prepareHeaders(token),

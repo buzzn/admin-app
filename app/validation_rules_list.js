@@ -3,6 +3,7 @@ import Meters from 'meters';
 import Registers from 'registers';
 import Readings from 'readings';
 import Groups from 'groups';
+import Contracts from 'contracts';
 import BillingCycles from 'billing_cycles';
 
 export const authList = [
@@ -33,6 +34,11 @@ export default [
   {
     swaggerPath: '/localpools/{localpool_id}/person-owner.patch.parameters',
     setAction: rules => Groups.actions.setValidationRules('updatePersonOwner', rules),
+  },
+  // Contract rules
+  {
+    swaggerPath: '/localpools/{localpool_id}/contracts/{localpool_processing_contract_id}.patch.parameters',
+    setAction: rules => Contracts.actions.setValidationRules('lpc', rules),
   },
   // Meter rules
   {
