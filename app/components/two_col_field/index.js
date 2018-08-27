@@ -19,10 +19,10 @@ class TwoColField extends Component {
   render() {
     return (
       <Row className="fieldgroup">
-        <Col xs="4" className="fieldname">
+        <Col xs="6" className="fieldname">
           <FormattedMessage id={`${this.props.prefix}.${this.props.name}`} />:
         </Col>
-        <Col xs="8" className={`${this.props.editMode ? 'editValue' : 'fieldvalue grey-underline'}`}>
+        <Col xs="6" className={`${this.props.editMode ? 'editValue' : 'fieldvalue grey-underline'}`}>
           <Field
             {...this.props}
             field={this.props.field || this.props.validationRules[this.props.name]}
