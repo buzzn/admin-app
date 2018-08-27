@@ -21,6 +21,7 @@ export const DropzoneWrapper = styled.div`
     height: 10rem;
     border: none;
     background: #e5e5e5;
+    cursor: pointer;
     .dropzone-text {
       position: absolute;
       top: 45%;
