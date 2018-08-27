@@ -7,6 +7,7 @@ import Loading from 'components/loading';
 import FieldValidationWrapper from 'components/field_validation_wrapper';
 import FieldInput from 'components/field_input';
 import EditableSelect from 'components/editable_select';
+import LabeledValue from 'components/labeled_value';
 
 interface Props {
   isOpen: boolean;
@@ -80,11 +81,18 @@ class AddContract extends React.Component<Props & InjectedIntlProps> {
                     />
                   </Col>
                 </Row>
-                <Row>
-                  <Col xs={6}>{groupName}</Col>
+                <Row style={{ padding: '1rem 0 1rem 0' }}>
+                  <Col xs={6}>
+                    <LabeledValue {...{ label: <FormattedMessage id="admin.groups.tableName" />, value: groupName }} />
+                  </Col>
                   <Col xs={6}>
                     {groupOwner ? (
-                      groupOwner.name || `${groupOwner.firstName} ${groupOwner.lastName}`
+                      <LabeledValue
+                        {...{
+                          label: <FormattedMessage id="admin.groups.owner" />,
+                          value: groupOwner.name || `${groupOwner.firstName} ${groupOwner.lastName}`,
+                        }}
+                      />
                     ) : (
                       <Link
                         to={`${url
@@ -119,7 +127,7 @@ class AddContract extends React.Component<Props & InjectedIntlProps> {
             </button>
             <span id="submit-add-contract">
               <button type="submit" className="btn btn-dark" disabled={disabled}>
-                <FormattedMessage id="admin.buttons.submit" />
+                <FormattedMessage id="admin.buttons.save" />
               </button>
             </span>
             {disabled && (
@@ -135,7 +143,9 @@ class AddContract extends React.Component<Props & InjectedIntlProps> {
               </button>
             </span>
             {pdfDisabled && (
-              <UncontrolledTooltip target="submit-add-contract-pdf">Please, add missing group owner data</UncontrolledTooltip>
+              <UncontrolledTooltip target="submit-add-contract-pdf">
+                Please, add missing group owner data
+              </UncontrolledTooltip>
             )}
           </ModalFooter>
         </form>
