@@ -76,12 +76,13 @@ class Powergiver extends React.Component<Props, State> {
   };
 
   handleOwnerType = (ownerType) => {
-    const { switchEditMode, editMode, loadAvailableUsers, loadAvailableOrganizations } = this.props;
+    const { switchEditMode, editMode, loadAvailableUsers, loadAvailableOrganizations, reset } = this.props;
     if (!editMode) {
       loadAvailableUsers();
       loadAvailableOrganizations();
       switchEditMode();
     }
+    reset();
     this.preselect();
     this.setState({ ownerType });
   };
