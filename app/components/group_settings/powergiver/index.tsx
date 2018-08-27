@@ -7,10 +7,10 @@ import { Col, FormGroup, CustomInput } from 'reactstrap';
 import Select from 'react-select';
 import withEditOverlay from 'components/with_edit_overlay';
 import FormPanel from 'components/form_panel';
+import { mainStyle } from 'components/react_select_styles';
 import PersonFields from './person_fields';
 import OrganizationFields from './organization_fields';
 
-import { mainStyle } from 'components/react_select_styles';
 import { OwnerOptions } from './style';
 
 interface Props {
@@ -46,11 +46,29 @@ interface State {
 class Powergiver extends React.Component<Props, State> {
   state = { ownerType: null, selectedOwner: null, selectedContact: null, selectedLR: null };
 
+  preselect = () => {
+    const { owner } = this.props;
+    if (!owner.id) {
+      this.setState({
+        selectedOwner: { value: null, label: 'Create new' },
+        selectedContact: { value: null, label: 'Create new' },
+        selectedLR: { value: null, label: 'Create new' },
+      });
+    } else {
+      this.setState({
+        selectedOwner: { value: null, label: 'Update existing' },
+        selectedContact: { value: null, label: 'Update existing' },
+        selectedLR: { value: null, label: 'Update existing' },
+      });
+    }
+  };
+
   switchEditMode = () => {
     const { switchEditMode, editMode, loadAvailableUsers, loadAvailableOrganizations } = this.props;
     if (!editMode) {
       loadAvailableUsers();
       loadAvailableOrganizations();
+      this.preselect();
     } else {
       this.setState({ ownerType: null, selectedOwner: null, selectedContact: null, selectedLR: null });
     }
@@ -64,11 +82,21 @@ class Powergiver extends React.Component<Props, State> {
       loadAvailableOrganizations();
       switchEditMode();
     }
+    this.preselect();
     this.setState({ ownerType });
   };
 
   handleExistingSelect = (param) => {
     this.setState({ selectedOwner: param, selectedContact: null, selectedLR: null });
+    if (param.value === null && param.label === 'Update existing') {
+      this.preselect();
+    }
+    if (param.value === 'new' && param.label === 'Create new') {
+      this.setState({
+        selectedContact: { value: 'new', label: 'Create new' },
+        selectedLR: { value: 'new', label: 'Create new' },
+      });
+    }
   };
 
   handleContactChange = (param) => {
@@ -93,15 +121,14 @@ class Powergiver extends React.Component<Props, State> {
     const update = !ownerType && !ownerValue;
     const isPerson = ownerType === 'person' || owner.type === 'person';
     // HACK: for create from update
-    const omitNulls = obj =>
-      reduce(
-        obj,
-        (res, v, k) => ({
-          ...res,
-          ...(typeof v === 'object' && v !== null ? { [k]: omitNulls(v) } : !v ? {} : { [k]: v }),
-        }),
-        {},
-      );
+    const omitNulls = obj => reduce(
+      obj,
+      (res, v, k) => ({
+        ...res,
+        ...(typeof v === 'object' && v !== null ? { [k]: omitNulls(v) } : !v ? {} : { [k]: v }),
+      }),
+      {},
+    );
     // HACK
     if (isPerson) {
       if (!params.preferredLanguage) params.preferredLanguage = 'de';
@@ -188,17 +215,24 @@ class Powergiver extends React.Component<Props, State> {
     const { ownerType, selectedOwner, selectedContact, selectedLR } = this.state;
 
     const personValidationRules = !ownerType && !selectedOwner ? updatePersonOwner : createPersonOwner;
-    const organizationValidationRules =
-      !ownerType && !selectedOwner ? updateOrganizationOwner : createOrganizationOwner;
+    const organizationValidationRules = !ownerType && !selectedOwner ? updateOrganizationOwner : createOrganizationOwner;
 
     const prefix = 'admin.groups';
 
     const personOptions: Array<{ value: null | string; label: string }> = [
       { value: null, label: owner.id ? 'Update existing' : 'Create new' },
-    ].concat(availableUsers.array.filter(u => owner.id !== u.id).map(u => ({ value: u.id, label: `${u.firstName} ${u.lastName} ${u.email}` })));
+    ].concat(
+      availableUsers.array
+        .filter(u => owner.id !== u.id)
+        .map(u => ({ value: u.id, label: `${u.firstName} ${u.lastName} ${u.email}` })),
+    );
     const organizationOptions: Array<{ value: null | string; label: string }> = [
       { value: null, label: owner.id ? 'Update existing' : 'Create new' },
-    ].concat(availableOrganizations.array.filter(o => owner.id !== o.id).map(u => ({ value: u.id, label: `${u.name} ${u.email}` })));
+    ].concat(
+      availableOrganizations.array
+        .filter(o => owner.id !== o.id)
+        .map(u => ({ value: u.id, label: `${u.name} ${u.email}` })),
+    );
     if (owner.id) {
       personOptions.unshift({ value: 'new', label: 'Create new' });
       organizationOptions.unshift({ value: 'new', label: 'Create new' });
@@ -208,9 +242,9 @@ class Powergiver extends React.Component<Props, State> {
       <Col xs="12">
         <p className="h5 grey-underline header text-uppercase">
           <FormattedMessage id={`${prefix}.headerPowergiver`} />
-          {!editMode &&
-            owner.id &&
-            updatable && <i className="buzzn-pencil" style={{ float: 'right' }} onClick={this.switchEditMode} />}
+          {!editMode
+            && owner.id
+            && updatable && <i className="buzzn-pencil" style={{ float: 'right' }} onClick={this.switchEditMode} />}
         </p>
         <form onSubmit={handleSubmit(this.submitForm)}>
           <FormPanel
@@ -226,8 +260,8 @@ class Powergiver extends React.Component<Props, State> {
               saveDisabled: (pristine && !selectedOwner) || submitting,
             }}
           >
-            {updatable &&
-              !owner.id && (
+            {updatable
+              && !owner.id && (
                 <OwnerOptions>
                   <FormGroup check inline>
                     <CustomInput
@@ -250,7 +284,7 @@ class Powergiver extends React.Component<Props, State> {
                     />
                   </FormGroup>
                 </OwnerOptions>
-              )}
+            )}
             {!owner.id && !ownerType ? null : owner.type === 'person' || ownerType === 'person' ? (
               <React.Fragment>
                 {editMode && (
