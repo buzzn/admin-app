@@ -10,6 +10,8 @@ interface Props {
   switchAddDevice: Function;
   devices: Array<{ [key: string]: any }>;
   groupId: string;
+  url: string;
+  history: any;
 }
 
 const DevicesList = ({
@@ -17,11 +19,13 @@ const DevicesList = ({
   devices,
   intl,
   groupId,
+  url,
+  history,
   breadcrumbs,
 }: Props & InjectIntlProps & BreadcrumbsProps) => {
   const prefix = 'admin.devices';
 
-  const data = devices.map(d => ({ ...d, status: '? no status ?' }));
+  const data = devices.map(d => ({ ...d, status: '? no status ?', linkDevice: `${url}/${d.id}` }));
 
   const columns = [
     {
@@ -57,7 +61,19 @@ const DevicesList = ({
             <FormattedMessage id="admin.devices.addNew" /> <i className="fa fa-plus-circle" />
           </SpanClick>
           <br />
-          <ReactTableSorted {...{ data, columns, uiSortPath: `groups.${groupId}.devices` }} />
+          <ReactTableSorted
+            {...{
+              data,
+              columns,
+              uiSortPath: `groups.${groupId}.devices`,
+              getTrProps: (_state, rowInfo) => ({
+                onClick: (_e, handleoriginal) => {
+                  history.push(rowInfo.original.linkDevice);
+                  if (handleoriginal) handleoriginal();
+                },
+              }),
+            }}
+          />
         </div>
       </CenterContent>
     </React.Fragment>

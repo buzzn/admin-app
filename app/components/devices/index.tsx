@@ -2,15 +2,14 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Switch, Route, Redirect, RouteComponentProps } from 'react-router-dom';
 import Alert from 'react-s-alert';
-import { injectIntl,
-  // FormattedMessage,
-  InjectedIntlProps } from 'react-intl';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import Groups from 'groups';
 import Organizations from 'organizations';
 import DevicesModule from 'devices';
 import Loading from 'components/loading';
 import DevicesList from './devices_list';
 import AddDevice from './add_device';
+import Device from './device_data';
 
 class Devices extends React.Component<
   ExtProps & StateProps & DispatchProps & InjectedIntlProps & RouteComponentProps<{}>,
@@ -40,11 +39,10 @@ class Devices extends React.Component<
     const {
       loadDevices,
       loadGroup,
-      group,
       match: { params: { groupId } },
     } = this.props;
     loadDevices(groupId);
-    if (groupId !== group.id) loadGroup(groupId);
+    loadGroup(groupId);
   }
 
   componentWillUnmount() {
@@ -54,13 +52,15 @@ class Devices extends React.Component<
   render() {
     const {
       createValidationRules,
-      // updateValidationRules,
+      updateValidationRules,
       setDevices,
       devices,
       group,
       loading,
       loadAvailableOrganizationMarkets,
       organizationMarkets,
+      updateDevice,
+      history,
       match: {
         url,
         params: { groupId },
@@ -82,9 +82,30 @@ class Devices extends React.Component<
     return (
       <React.Fragment>
         <Switch>
-          <Route path={url}>
-            <DevicesList {...{ switchAddDevice: this.switchAddDevice, devices: devices.array, groupId, breadcrumbs }} />
+          <Route exact path={url}>
+            <DevicesList
+              {...{ switchAddDevice: this.switchAddDevice, devices: devices.array, groupId, breadcrumbs, url, history }}
+            />
           </Route>
+          <Route
+            path={`${url}/:deviceId`}
+            render={({ match: { params: { deviceId } } }) => {
+              const device = devices.array.find(d => d.id === deviceId);
+              if (!device) return <Redirect to={url} />;
+              return (
+                <Device
+                  {...{
+                    breadcrumbs,
+                    device,
+                    initialValues: device,
+                    groupId,
+                    validationRules: updateValidationRules,
+                    updateDevice,
+                  }}
+                />
+              );
+            }}
+          />
         </Switch>
         <AddDevice
           {...{
@@ -131,6 +152,7 @@ interface DispatchProps {
   loadDevices: Function;
   setDevices: Function;
   addDevice: Function;
+  updateDevice: Function;
   loadAvailableOrganizationMarkets: Function;
 }
 
@@ -152,6 +174,7 @@ export default connect<StateProps, DispatchProps, ExtProps>(
     loadDevices: DevicesModule.actions.loadDevices,
     setDevices: DevicesModule.actions.setDevices,
     addDevice: DevicesModule.actions.addDevice,
+    updateDevice: DevicesModule.actions.updateDevice,
     loadAvailableOrganizationMarkets: Organizations.actions.loadAvailableOrganizationMarkets,
   },
 )(injectIntl(Devices));
