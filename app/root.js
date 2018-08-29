@@ -34,6 +34,7 @@ import AppLoading from 'components/app_loading';
 import AppMaintenance from 'components/app_maintenance';
 import AddGroup from 'components/add_group';
 import Contract from 'components/contract';
+import DevicesContainer from 'components/devices';
 import { EditOverlay } from 'style';
 import './react_table_config';
 
@@ -67,6 +68,7 @@ const RouterHack = ({ token, devMode, multiGroups, editMode, switchEditMode, add
                       <Route path="/groups/:groupId/documents" component={DocumentsContainer} />
                       <Route path="/groups/:groupId/bubbles" component={BubblesContainer} />
                       <Route path="/groups/:groupId/settings" component={GroupSettingsContainer} />
+                      <Route path="/groups/:groupId/devices" component={DevicesContainer} />
                       <Route path="/groups/:groupId/contracts/:contractId" render={({ match: { params: { groupId, contractId } } }) => <Contract {...{ url: `${url}/tail`, groupId, contractId }} />} />
                       <Route
                         path="/groups/:groupId"

@@ -7,4 +7,9 @@ export default {
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
+  fetchAvailableOrganizationMarkets({ token, apiUrl, apiPath }) {
+    return fetch(`${apiUrl}${apiPath}/organization_markets`, { headers: prepareHeaders(token) })
+      .then(parseResponse)
+      .then(camelizeResponseKeys);
+  },
 };

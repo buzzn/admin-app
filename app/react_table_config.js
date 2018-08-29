@@ -94,6 +94,38 @@ export const tableParts = {
         {value.includes('wind') && <i className="fa fa-modx" />}
       </span>
     ),
+    deviceEnergyCell: ({ value }) => {
+      let icon = {};
+      switch (value) {
+        case 'bio_mass':
+        case 'bio_gas':
+        case 'natural_gas':
+        case 'fluid_gas':
+        case 'fuel_oil':
+        case 'veg_oil':
+        case 'wood':
+          icon = { icon: 'buzzn-fire', color: '#f57c00' };
+          break;
+        case 'sun':
+          icon = { icon: 'buzzn-sun', color: '#fdd835' };
+          break;
+        case 'wind':
+          icon = { icon: 'buzzn-windmill', color: '#90caf9' };
+          break;
+        case 'water':
+          icon = { icon: 'buzzn-water', color: '#1e88e5' };
+          break;
+        default:
+          icon = { icon: 'fa fa-question', color: 'red' };
+          break;
+      }
+
+      return (
+        <span>
+          <i className={icon.icon} style={{ color: icon.color }} />
+        </span>
+      );
+    },
     incompleteCell: ({ value }) => {
       if (!value) return false;
       return <i className="fa fa-exclamation-triangle" style={{ color: '#f57c00' }} />;

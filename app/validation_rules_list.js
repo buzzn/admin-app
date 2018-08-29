@@ -5,6 +5,7 @@ import Readings from 'readings';
 import Groups from 'groups';
 import Contracts from 'contracts';
 import BillingCycles from 'billing_cycles';
+import Devices from 'devices';
 
 export const authList = [
   {
@@ -53,6 +54,15 @@ export default [
   {
     swaggerPath: '/localpools/{localpool_id}/meters/{real_meter_id}/registers/{real_register_id}.patch.parameters',
     setAction: Registers.actions.setValidationRules,
+  },
+  // Devices rules
+  {
+    swaggerPath: '/localpools/{localpool_id}/devices.post.parameters',
+    setAction: rules => Devices.actions.setValidationRules('create', rules),
+  },
+  {
+    swaggerPath: '/localpools/{localpool_id}/devices/{device_id}.patch.parameters',
+    setAction: rules => Devices.actions.setValidationRules('update', rules),
   },
   // Readings rules
   {
