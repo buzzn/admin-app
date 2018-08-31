@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Alert from 'react-s-alert';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Row, Col } from 'reactstrap';
 import { reduxForm, Field } from 'redux-form';
@@ -13,6 +14,24 @@ interface Props {
 }
 
 class AddGroup extends React.Component<Props & InjectedIntlProps> {
+  addGroup = (values) => {
+    const { addGroup, toggle, history } = this.props;
+    const params = { ...values };
+
+    // Country is always predefined, so if there is only one address field,
+    // user did not entered anything in address fields
+    // uncomment if address fields must be optional
+    // if (Object.keys(values.address).length === 1) delete params.address;
+
+    return new Promise((resolve, reject) => {
+      addGroup({ resolve, reject, params });
+    }).then((res: { [key: string]: any }) => {
+      Alert.success('Saved!');
+      toggle();
+      history.push(`/groups/${res.id}`);
+    });
+  };
+
   handleToggle = (event) => {
     const { pristine, reset, toggle, intl } = this.props;
 
@@ -36,20 +55,40 @@ class AddGroup extends React.Component<Props & InjectedIntlProps> {
         <ModalHeader toggle={this.handleToggle}>
           <FormattedMessage id={`${prefix}.modalHeaderAdd`} />
         </ModalHeader>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(this.addGroup)}>
           <ModalBody>
             <Row>
               <Col xs={12}>
-                <Field name="name" type="text" component={FieldInput} label={intl.formatMessage({ id: `${prefix}.name` })} />
+                <Field
+                  name="name"
+                  type="text"
+                  component={FieldInput}
+                  label={intl.formatMessage({ id: `${prefix}.name` })}
+                />
               </Col>
               <Col xs={6}>
-                <Field name="address.street" type="text" component={FieldInput} label={intl.formatMessage({ id: 'admin.addresses.street' })} />
+                <Field
+                  name="address.street"
+                  type="text"
+                  component={FieldInput}
+                  label={intl.formatMessage({ id: 'admin.addresses.street' })}
+                />
               </Col>
               <Col xs={2}>
-                <Field name="address.zip" type="text" component={FieldInput} label={intl.formatMessage({ id: 'admin.addresses.zip' })} />
+                <Field
+                  name="address.zip"
+                  type="text"
+                  component={FieldInput}
+                  label={intl.formatMessage({ id: 'admin.addresses.zip' })}
+                />
               </Col>
               <Col xs={4}>
-                <Field name="address.city" type="text" component={FieldInput} label={intl.formatMessage({ id: 'admin.addresses.city' })} />
+                <Field
+                  name="address.city"
+                  type="text"
+                  component={FieldInput}
+                  label={intl.formatMessage({ id: 'admin.addresses.city' })}
+                />
               </Col>
             </Row>
           </ModalBody>
