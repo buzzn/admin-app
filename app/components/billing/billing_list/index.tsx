@@ -89,7 +89,7 @@ class BillingList extends React.Component<
           {...{
             breadcrumbs: breadcrumbs.concat([
               { id: 1, link: `/groups/${groupId}`, title: groupName },
-              { id: '-----', title: intl.formatMessage({ id: 'admin.breadcumbs.billingCycles' }) },
+              { id: '-----', title: intl.formatMessage({ id: 'admin.breadcrumbs.billingCycles' }) },
             ]),
             title: intl.formatMessage({ id: 'admin.billingCycles.backBillingCycles' }),
           }}

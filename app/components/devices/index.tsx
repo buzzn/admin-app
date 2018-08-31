@@ -39,10 +39,12 @@ class Devices extends React.Component<
     const {
       loadDevices,
       loadGroup,
+      loadAvailableOrganizationMarkets,
       match: { params: { groupId } },
     } = this.props;
     loadDevices(groupId);
     loadGroup(groupId);
+    loadAvailableOrganizationMarkets();
   }
 
   componentWillUnmount() {
@@ -101,6 +103,7 @@ class Devices extends React.Component<
                     groupId,
                     validationRules: updateValidationRules,
                     updateDevice,
+                    organizationMarkets,
                   }}
                 />
               );

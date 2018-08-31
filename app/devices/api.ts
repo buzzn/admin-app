@@ -3,12 +3,12 @@ import { prepareHeaders, parseResponse, camelizeResponseKeys, snakeReq } from '.
 
 export default {
   fetchDevice({ token, apiUrl, apiPath, deviceId, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/devices/${deviceId}`, { headers: prepareHeaders(token) })
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/devices/${deviceId}?include=electricity_supplier`, { headers: prepareHeaders(token) })
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
   fetchDevices({ token, apiUrl, apiPath, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/devices`, { headers: prepareHeaders(token) })
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/devices?include=electricity_supplier`, { headers: prepareHeaders(token) })
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },

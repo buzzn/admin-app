@@ -16,6 +16,7 @@ import { CenterContent } from 'components/style';
 
 interface Props {
   device: { _status: null | number; [key: string]: any };
+  organizationMarkets: Array<{ [key: string]: any }>;
   updateDevice: Function;
   groupId: string;
   validationRules: any;
@@ -23,6 +24,7 @@ interface Props {
 
 const Device = ({
   device,
+  organizationMarkets,
   handleSubmit,
   editMode,
   switchEditMode,
@@ -161,6 +163,17 @@ const Device = ({
                     validationRules,
                     component: EditableInput,
                     normalize: numberNormalizer,
+                  }}
+                />
+                <TwoColField
+                  {...{
+                    prefix,
+                    name: 'electricitySupplier.id',
+                    editMode,
+                    validationRules: {},
+                    component: EditableSelect,
+                    noValTranslations: true,
+                    listOverride: organizationMarkets.map(o => ({ value: o.id, label: o.name })),
                   }}
                 />
               </Col>

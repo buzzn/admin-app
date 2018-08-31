@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Row, Col } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Col } from 'reactstrap';
 import { reduxForm } from 'redux-form';
 import FieldValidationWrapper from 'components/field_validation_wrapper';
 import EditableInput from 'components/editable_input';
 import EditableDate from 'components/editable_date';
 import EditableSelect from 'components/editable_select';
+
+import { SpacedRow } from './style';
 
 interface Props {
   isOpen: boolean;
@@ -38,9 +40,7 @@ class AddDevice extends React.Component<Props & InjectedIntlProps> {
   };
 
   render() {
-    const { isOpen, handleSubmit, validationRules,
-      // organizationMarkets
-    } = this.props;
+    const { isOpen, handleSubmit, validationRules, organizationMarkets } = this.props;
     const prefix = 'admin.devices';
 
     return (
@@ -50,12 +50,13 @@ class AddDevice extends React.Component<Props & InjectedIntlProps> {
         </ModalHeader>
         <form onSubmit={handleSubmit}>
           <ModalBody>
-            <Row>
+            <SpacedRow>
               <Col xs={4}>
                 <FieldValidationWrapper
                   {...{
                     name: 'twoWayMeter',
                     editMode: true,
+                    withLabel: true,
                     component: EditableSelect,
                     validationRules,
                     prefix,
@@ -67,6 +68,7 @@ class AddDevice extends React.Component<Props & InjectedIntlProps> {
                   {...{
                     name: 'twoWayMeterUsed',
                     editMode: true,
+                    withLabel: true,
                     component: EditableSelect,
                     validationRules,
                     prefix,
@@ -78,72 +80,92 @@ class AddDevice extends React.Component<Props & InjectedIntlProps> {
                   {...{
                     name: 'primaryEnergy',
                     editMode: true,
+                    withLabel: true,
                     component: EditableSelect,
                     validationRules,
                     prefix,
                   }}
                 />
               </Col>
-            </Row>
-            <Row>
-              <Col xs={4}>
+            </SpacedRow>
+            <SpacedRow>
+              <Col xs={3}>
                 <FieldValidationWrapper
                   {...{
                     name: 'commissioning',
                     editMode: true,
+                    withLabel: true,
                     component: EditableDate,
                     validationRules,
                     prefix,
                   }}
                 />
               </Col>
-              <Col xs={4}>
+              <Col xs={3}>
                 <FieldValidationWrapper
                   {...{
                     name: 'law',
                     editMode: true,
+                    withLabel: true,
                     component: EditableSelect,
                     validationRules,
                     prefix,
                   }}
                 />
               </Col>
-              <Col xs={4}>
-                <FieldValidationWrapper
-                  {...{
-                    name: 'manufacturer',
-                    editMode: true,
-                    component: EditableInput,
-                    validationRules,
-                    prefix,
-                  }}
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={4}>
+              <Col xs={3}>
                 <FieldValidationWrapper
                   {...{
                     name: 'kwPeak',
                     editMode: true,
+                    withLabel: true,
                     component: EditableInput,
                     validationRules,
                     prefix,
                   }}
                 />
               </Col>
-              <Col xs={4}>
+              <Col xs={3}>
                 <FieldValidationWrapper
                   {...{
                     name: 'kwhPerAnnum',
                     editMode: true,
+                    withLabel: true,
                     component: EditableInput,
                     validationRules,
                     prefix,
                   }}
                 />
               </Col>
-            </Row>
+            </SpacedRow>
+            <SpacedRow>
+              <Col xs={6}>
+                <FieldValidationWrapper
+                  {...{
+                    name: 'manufacturer',
+                    editMode: true,
+                    withLabel: true,
+                    component: EditableInput,
+                    validationRules,
+                    prefix,
+                  }}
+                />
+              </Col>
+              <Col xs={6}>
+                <FieldValidationWrapper
+                  {...{
+                    prefix,
+                    name: 'electricitySupplier.id',
+                    validationRules: {},
+                    editMode: true,
+                    withLabel: true,
+                    component: EditableSelect,
+                    noValTranslations: true,
+                    listOverride: organizationMarkets.map(o => ({ value: o.id, label: o.name })),
+                  }}
+                />
+              </Col>
+            </SpacedRow>
           </ModalBody>
           <ModalFooter>
             <button className="btn btn-link" onClick={this.handleToggle}>
