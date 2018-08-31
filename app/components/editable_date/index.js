@@ -1,6 +1,7 @@
 import * as React from 'react';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 import moment from 'moment';
+import { FormattedMessage } from 'react-intl';
 import momentLocalizer from 'react-widgets-moment';
 import { FormGroup } from 'components/style';
 
@@ -9,11 +10,14 @@ import './style.scss';
 momentLocalizer(moment);
 
 const EditableDate = ({
+  withLabel,
+  name,
+  prefix,
   editMode,
   input,
   dateFormat,
   inputFormats = [],
-  meta: { touched, error, dirty },
+  meta: { active, touched, error, dirty },
 }) => {
   if (editMode) {
     return (
@@ -35,13 +39,18 @@ const EditableDate = ({
             }}
           />
         </div>
-        {touched &&
-          !!error && (
+        {withLabel && (
+          <label className={`${input.value || active ? 'top' : 'center'}`}>
+            <FormattedMessage id={`${prefix}.${name || input.name.split('.').pop()}`} />
+          </label>
+        )}
+        {touched
+          && !!error && (
             <React.Fragment>
               <div className="inline-error">{error}</div>
               <i className="error-icon buzzn-attention" />
             </React.Fragment>
-          )}
+        )}
       </FormGroup>
     );
   }

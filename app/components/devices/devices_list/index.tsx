@@ -1,4 +1,5 @@
 import * as React from 'react';
+import moment from 'moment';
 import { injectIntl, InjectIntlProps, FormattedMessage } from 'react-intl';
 import { tableParts as TableParts } from 'react_table_config';
 import ReactTableSorted from 'components/react_table_sorted';
@@ -36,12 +37,29 @@ const DevicesList = ({
       Cell: TableParts.components.deviceEnergyCell,
     },
     {
+      Header: () => (
+        <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableManufacturer` })} />
+      ),
+      accessor: 'manufacturer',
+    },
+    {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableStatus` })} />,
       accessor: 'status',
     },
     {
-      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.kwPeak` })} />,
+      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableKwPeak` })} />,
       accessor: 'kwPeak',
+    },
+    {
+      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableLaw` })} />,
+      accessor: 'law',
+    },
+    {
+      Header: () => (
+        <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableCommissioning` })} />
+      ),
+      accessor: 'commissioning',
+      Cell: ({ value }) => moment(value).format('DD.MM.YYYY'),
     },
   ];
 
