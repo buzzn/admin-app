@@ -28,7 +28,7 @@ class AddGroup extends React.Component<Props & InjectedIntlProps> {
   };
 
   render() {
-    const { isOpen, handleSubmit } = this.props;
+    const { isOpen, handleSubmit, intl } = this.props;
     const prefix = 'admin.groups';
 
     return (
@@ -40,16 +40,16 @@ class AddGroup extends React.Component<Props & InjectedIntlProps> {
           <ModalBody>
             <Row>
               <Col xs={12}>
-                <Field name="name" type="text" component={FieldInput} label="Name" />
+                <Field name="name" type="text" component={FieldInput} label={intl.formatMessage({ id: `${prefix}.name` })} />
               </Col>
               <Col xs={6}>
-                <Field name="address.street" type="text" component={FieldInput} label="Street" />
-              </Col>
-              <Col xs={4}>
-                <Field name="address.city" type="text" component={FieldInput} label="City" />
+                <Field name="address.street" type="text" component={FieldInput} label={intl.formatMessage({ id: 'admin.addresses.street' })} />
               </Col>
               <Col xs={2}>
-                <Field name="address.zip" type="text" component={FieldInput} label="ZIP" />
+                <Field name="address.zip" type="text" component={FieldInput} label={intl.formatMessage({ id: 'admin.addresses.zip' })} />
+              </Col>
+              <Col xs={4}>
+                <Field name="address.city" type="text" component={FieldInput} label={intl.formatMessage({ id: 'admin.addresses.city' })} />
               </Col>
             </Row>
           </ModalBody>
