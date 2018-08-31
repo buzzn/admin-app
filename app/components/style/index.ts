@@ -86,6 +86,7 @@ export const FormGroup = styled.div`
     position: absolute;
     font-weight: normal;
     top: 0;
+    left: 0;
     padding: 15px 0 0 13px;
     transition: all 200ms;
     opacity: 0.5;
@@ -138,7 +139,7 @@ export const FormGroup = styled.div`
     font-weight: normal;
     font-size: 1.3rem;
     top: 4px;
-    right: 8px;
+    right: 16px;
   }
   .date-wrapper {
     &.dirty {

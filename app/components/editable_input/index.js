@@ -15,7 +15,7 @@ const EditableInput = ({
   meta: { active, touched, error, dirty },
 }) => {
   let type = 'text';
-  if (field.type === 'integer') type = 'number';
+  if (field.type === 'integer' || field.type === 'number') type = 'number';
 
   if (editMode) {
     return (
@@ -39,13 +39,13 @@ const EditableInput = ({
             <FormattedMessage id={`${prefix}.${name || input.name.split('.').pop()}`} />
           </label>
         )}
-        {touched &&
-          !!error && (
+        {touched
+          && !!error && (
             <React.Fragment>
               <div className="inline-error">{error}</div>
               <i className="error-icon buzzn-attention" />
             </React.Fragment>
-          )}
+        )}
       </FormGroup>
     );
   }

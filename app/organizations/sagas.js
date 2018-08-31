@@ -10,6 +10,12 @@ export const getOrganizationsFunctions = {
     fetch: api.fetchAvailableOrganizations,
     loaded: actions.loadedAvailableOrganizations,
   },
+  availableOrganizationMarkets: {
+    loading: actions.loadingAvailableOrganizationMarkets,
+    set: actions.setAvailableOrganizationMarkets,
+    fetch: api.fetchAvailableOrganizationMarkets,
+    loaded: actions.loadedAvailableOrganizationMarkets,
+  },
 };
 
 export function* getOrganizations({ apiUrl, apiPath, token, type }, params) {
@@ -29,6 +35,12 @@ export function* organizationsSagas({ apiUrl, apiPath, token }) {
     apiPath,
     token,
     type: 'availableOrganizations',
+  });
+  yield takeLatest(constants.LOAD_AVAILABLE_ORGANIZATION_MARKETS, getOrganizations, {
+    apiUrl,
+    apiPath,
+    token,
+    type: 'availableOrganizationMarkets',
   });
 }
 
