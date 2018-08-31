@@ -26,7 +26,7 @@ exports[`breadcrumbs tests renders different crumb types 1`] = `
     <li>
       <span>
         <a
-          href="/localhost"
+          href="localhost"
           onClick={[Function]}
         >
           Title
@@ -37,7 +37,7 @@ exports[`breadcrumbs tests renders different crumb types 1`] = `
     <li>
       <span>
         <a
-          href="/localhost"
+          href="localhost"
           onClick={[Function]}
         >
           <span>
