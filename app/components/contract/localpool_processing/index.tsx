@@ -10,7 +10,7 @@ import TwoColView from 'components/two_col_view';
 import TwoColField from 'components/two_col_field';
 import EditableInput from 'components/editable_input';
 import EditableDate from 'components/editable_date';
-import { dateNormalizer, numberNormalizer } from 'validation_normalizers';
+import { dateNormalizer } from 'validation_normalizers';
 
 interface Props {
   url: string;
@@ -86,7 +86,6 @@ const LPCContract = ({
                   editMode,
                   validationRules,
                   component: EditableInput,
-                  normalize: numberNormalizer,
                 }}
               />
               <TwoColView {...{ prefix, field: 'customer' }}>
