@@ -83,14 +83,18 @@ class NestedDetails extends React.Component<Props, State> {
           <Col xs={12}>
             <LabeledValue
               {...{
-                label: <FormattedMessage id="admin.groups.owner" />, value: <Link
-                  to={`${url
-                    .split('/')
-                    .slice(0, -1)
-                    .join('/')}/settings/powergiver`}
-                >
-                  {groupOwner}
-                </Link> }}
+                label: <FormattedMessage id="admin.groups.owner" />,
+                value: (
+                  <Link
+                    to={`${url
+                      .split('/')
+                      .slice(0, -1)
+                      .join('/')}/settings/powergiver`}
+                  >
+                    {groupOwner}
+                  </Link>
+                ),
+              }}
             />
           </Col>
           <Col xs={8}>
@@ -134,14 +138,15 @@ class NestedDetails extends React.Component<Props, State> {
           <Col xs={12}>
             <br />
             {!!contract.allowedActions && (
-              <button
-                id="generate-pdf"
-                className="btn btn-dark btn-sm"
-                onClick={() => this.handleGeneratePDF(contract.id)}
-                disabled={PDFdisabled}
-              >
-                <FormattedMessage id="admin.buttons.generatePDF" />
-              </button>
+              <span id="generate-pdf">
+                <button
+                  className="btn btn-dark btn-sm"
+                  onClick={() => this.handleGeneratePDF(contract.id)}
+                  disabled={PDFdisabled}
+                >
+                  <FormattedMessage id="admin.buttons.generatePDF" />
+                </button>
+              </span>
             )}
             {PDFdisabled && (
               <UncontrolledTooltip target="generate-pdf">Please, fill the group owner</UncontrolledTooltip>
