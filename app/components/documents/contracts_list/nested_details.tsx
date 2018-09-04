@@ -1,11 +1,11 @@
 import * as React from 'react';
 import moment from 'moment';
 import { FormattedMessage } from 'react-intl';
-import { Row, Col } from 'reactstrap';
+import { Row, Col, UncontrolledTooltip } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import Alert from 'react-s-alert';
-import UploadModal from './upload_modal';
 import LabeledValue from 'components/labeled_value';
+import UploadModal from './upload_modal';
 
 import { DocumentsListHeader, NestedDetailsWrapper } from './style';
 
@@ -70,6 +70,8 @@ class NestedDetails extends React.Component<Props, State> {
 
     const prefix = 'admin.contracts';
 
+    const PDFdisabled = !!contract.allowedActions && contract.allowedActions.documentLocalpoolProcessingContract !== true;
+
     return (
       <NestedDetailsWrapper>
         <Row>
@@ -79,33 +81,70 @@ class NestedDetails extends React.Component<Props, State> {
             </h6>
           </Col>
           <Col xs={12}>
-            <LabeledValue {...{ label: <FormattedMessage id="admin.groups.owner" />, value: groupOwner }} />
+            <LabeledValue
+              {...{
+                label: <FormattedMessage id="admin.groups.owner" />, value: <Link
+                  to={`${url
+                    .split('/')
+                    .slice(0, -1)
+                    .join('/')}/settings/powergiver`}
+                >
+                  {groupOwner}
+                </Link> }}
+            />
           </Col>
           <Col xs={8}>
-            <LabeledValue {...{
-              label: <FormattedMessage id={`${prefix}.contractNumber`} />, value: <Link to={`${url
-                .split('/')
-                .slice(0, -1)
-                .join('/')}/contracts/${contract.id}`}>{contract.fullContractNumber}</Link> }} />
+            <LabeledValue
+              {...{
+                label: <FormattedMessage id={`${prefix}.contractNumber`} />,
+                value: (
+                  <Link
+                    to={`${url
+                      .split('/')
+                      .slice(0, -1)
+                      .join('/')}/contracts/${contract.id}`}
+                  >
+                    {contract.fullContractNumber}
+                  </Link>
+                ),
+              }}
+            />
           </Col>
           <Col xs={4}>
             <LabeledValue {...{ label: <FormattedMessage id={`${prefix}.status`} />, value: contract.status }} />
           </Col>
           <Col xs={8}>
-            <LabeledValue {...{ label: <FormattedMessage id={`${prefix}.createdAt`} />, value: moment(contract.createdAt).format('DD.MM.YYYY') }} />
+            <LabeledValue
+              {...{
+                label: <FormattedMessage id={`${prefix}.createdAt`} />,
+                value: moment(contract.createdAt).format('DD.MM.YYYY'),
+              }}
+            />
           </Col>
           <Col xs={4}>
-            <LabeledValue {...{ label: <FormattedMessage id={`${prefix}.updatedAt`} />, value: moment(contract.updatedAt).format('DD.MM.YYYY') }} />
+            <LabeledValue
+              {...{
+                label: <FormattedMessage id={`${prefix}.updatedAt`} />,
+                value: moment(contract.updatedAt).format('DD.MM.YYYY'),
+              }}
+            />
           </Col>
         </Row>
         <Row>
           <Col xs={12}>
             <br />
-            {!!contract.allowedActions
-              && contract.allowedActions.documentLocalpoolProcessingContract === true && (
-                <button className="btn btn-dark btn-sm" onClick={() => this.handleGeneratePDF(contract.id)}>
-                  <FormattedMessage id="admin.buttons.generatePDF" />
-                </button>
+            {!!contract.allowedActions && (
+              <button
+                id="generate-pdf"
+                className="btn btn-dark btn-sm"
+                onClick={() => this.handleGeneratePDF(contract.id)}
+                disabled={PDFdisabled}
+              >
+                <FormattedMessage id="admin.buttons.generatePDF" />
+              </button>
+            )}
+            {PDFdisabled && (
+              <UncontrolledTooltip target="generate-pdf">Please, fill the group owner</UncontrolledTooltip>
             )}
           </Col>
         </Row>
