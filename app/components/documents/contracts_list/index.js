@@ -66,8 +66,10 @@ class ContractsList extends React.Component {
 
     const data = contracts.filter(c => !!c.id).map(c => ({
       ...c,
-      type: intl.formatMessage({ id: `admin.contracts.${c.type}` }),
-      ownerChanged: c.customer.id !== get(group.owner, 'id'),
+      typeIntl: intl.formatMessage({ id: `admin.contracts.${c.type}` }),
+      ownerChanged: !['contract_localpool_power_taker', 'contract_localpool_third_party'].includes(c.type)
+        ? c.customer.id !== get(group.owner, 'id')
+        : false,
       since: c.signingDate,
       number: c.fullContractNumber,
       link: `${url}/${c.id}`,
@@ -78,7 +80,7 @@ class ContractsList extends React.Component {
         Header: () => (
           <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.contracts.tableType' })} />
         ),
-        accessor: 'type',
+        accessor: 'typeIntl',
         minWidth: 200,
       },
       {
@@ -88,7 +90,9 @@ class ContractsList extends React.Component {
         Cell: ({ value, original }) => (value ? (
             <React.Fragment>
               <i id={`owner-changed-${original.id}`} className="fa fa-warning" style={{ color: 'red' }} />
-              <UncontrolledTooltip target={`owner-changed-${original.id}`}>The group owner was changed</UncontrolledTooltip>
+              <UncontrolledTooltip target={`owner-changed-${original.id}`}>
+                The group owner was changed
+              </UncontrolledTooltip>
             </React.Fragment>
         ) : (
           ''

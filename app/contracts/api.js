@@ -32,7 +32,7 @@ export default {
       body: JSON.stringify(snakeReq(params)),
     }).then(parseResponse);
   },
-  fetchOperatorContract({ token, apiUrl, apiPath, groupId }) {
+  fetchOperatorContracts({ token, apiUrl, apiPath, groupId }) {
     return (
       fetch(
         `${apiUrl}${apiPath}/localpools/${groupId}/contracts?type=contract_metering_point_operator&include=documents,customer:[address,contact:address]`,
@@ -40,11 +40,9 @@ export default {
       )
         .then(parseResponse)
         .then(camelizeResponseKeys)
-        // FIXME
-        .then(json => json.array[0])
     );
   },
-  fetchProcessingContract({ token, apiUrl, apiPath, groupId }) {
+  fetchProcessingContracts({ token, apiUrl, apiPath, groupId }) {
     return (
       fetch(
         `${apiUrl}${apiPath}/localpools/${groupId}/contracts?type=contract_localpool_processing&include=documents,customer:[address,contact:address]`,
@@ -52,8 +50,16 @@ export default {
       )
         .then(parseResponse)
         .then(camelizeResponseKeys)
-        // FIXME
-        .then(json => json.array[0])
+    );
+  },
+  fetchGroupContracts({ token, apiUrl, apiPath, groupId }) {
+    return (
+      fetch(
+        `${apiUrl}${apiPath}/localpools/${groupId}/contracts?include=documents,customer:[address,contact:address]`,
+        { headers: prepareHeaders(token) },
+      )
+        .then(parseResponse)
+        .then(camelizeResponseKeys)
     );
   },
   addContract({ token, apiUrl, apiPath, groupId, params }) {

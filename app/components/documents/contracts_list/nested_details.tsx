@@ -81,21 +81,42 @@ class NestedDetails extends React.Component<Props, State> {
             </h6>
           </Col>
           <Col xs={12}>
-            <LabeledValue
-              {...{
-                label: <FormattedMessage id="admin.groups.owner" />,
-                value: (
-                  <Link
-                    to={`${url
-                      .split('/')
-                      .slice(0, -1)
-                      .join('/')}/settings/powergiver`}
-                  >
-                    {groupOwner}
-                  </Link>
-                ),
-              }}
-            />
+            {['contract_localpool_power_taker', 'contract_localpool_third_party'].includes(contract.type) ? (
+              <LabeledValue
+                {...{
+                  label: <FormattedMessage id="admin.groups.customer" />,
+                  value:
+                    contract.type === 'contract_localpool_power_taker' ? (
+                      <Link
+                        to={`${url
+                          .split('/')
+                          .slice(0, -1)
+                          .join('/')}/powertakers/${contract.id}/powertaker`}
+                      >
+                        {`${contract.customer.firstName} ${contract.customer.lastName}`}
+                      </Link>
+                    ) : (
+                      'Third party'
+                    ),
+                }}
+              />
+            ) : (
+              <LabeledValue
+                {...{
+                  label: <FormattedMessage id="admin.groups.owner" />,
+                  value: (
+                    <Link
+                      to={`${url
+                        .split('/')
+                        .slice(0, -1)
+                        .join('/')}/settings/powergiver`}
+                    >
+                      {groupOwner}
+                    </Link>
+                  ),
+                }}
+              />
+            )}
           </Col>
           <Col xs={8}>
             <LabeledValue

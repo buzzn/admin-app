@@ -5,6 +5,7 @@ import uniqBy from 'lodash/uniqBy';
 import compact from 'lodash/compact';
 import { logException } from '_util';
 import Groups from 'groups';
+import { array } from 'prop-types';
 import { constants, actions } from './actions';
 import api from './api';
 
@@ -55,10 +56,12 @@ export function* getGroupContracts({ apiUrl, apiPath, token }, { groupId }) {
   yield put(actions.loadingGroupContracts());
   try {
     // FIXME
-    const operatorContract = yield call(api.fetchOperatorContract, { apiUrl, apiPath, token, groupId });
-    const processingContract = yield call(api.fetchProcessingContract, { apiUrl, apiPath, token, groupId });
-    const groupContracts = uniqBy(compact([operatorContract, processingContract]), 'id') || [];
-    yield put(actions.setGroupContracts(groupContracts));
+    // const operatorContracts = yield call(api.fetchOperatorContracts, { apiUrl, apiPath, token, groupId });
+    // const processingContracts = yield call(api.fetchProcessingContracts, { apiUrl, apiPath, token, groupId });
+    // const groupContracts = operatorContracts.array.concat(processingContracts.array);
+    // yield put(actions.setGroupContracts(groupContracts));
+    const groupContracts = yield call(api.fetchGroupContracts, { apiUrl, apiPath, token, groupId });
+    yield put(actions.setGroupContracts(groupContracts.array));
   } catch (error) {
     logException(error);
   }
