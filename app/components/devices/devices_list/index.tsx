@@ -43,16 +43,24 @@ const DevicesList = ({
       accessor: 'manufacturer',
     },
     {
-      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableStatus` })} />,
-      accessor: 'status',
+      Header: () => (
+        <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableModel` })} />
+      ),
+      accessor: 'model',
+    },
+    {
+      Header: () => (
+        <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableName` })} />
+      ),
+      accessor: 'name',
     },
     {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableKwPeak` })} />,
       accessor: 'kwPeak',
     },
     {
-      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableLaw` })} />,
-      accessor: 'law',
+      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableKwhPerAnnum` })} />,
+      accessor: 'kwhPerAnnum',
     },
     {
       Header: () => (
@@ -60,6 +68,10 @@ const DevicesList = ({
       ),
       accessor: 'commissioning',
       Cell: ({ value }) => moment(value).format('DD.MM.YYYY'),
+    },
+    {
+      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableLaw` })} />,
+      accessor: 'law',
     },
   ];
 

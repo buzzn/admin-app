@@ -13,18 +13,12 @@ interface Props {
   isOpen: boolean;
   toggle: () => void;
   addDevice: Function;
-  loadAvailableOrganizationMarkets: Function;
-  organizationMarkets: Array<{ [key: string]: any }>;
   loading: boolean;
   handleSubmit: () => void;
   validationRules: any;
 }
 
 class AddDevice extends React.Component<Props & InjectedIntlProps> {
-  componentDidMount() {
-    this.props.loadAvailableOrganizationMarkets();
-  }
-
   handleToggle = (event) => {
     const { pristine, reset, toggle, intl } = this.props;
 
@@ -40,7 +34,7 @@ class AddDevice extends React.Component<Props & InjectedIntlProps> {
   };
 
   render() {
-    const { isOpen, handleSubmit, validationRules, organizationMarkets } = this.props;
+    const { isOpen, handleSubmit, validationRules } = this.props;
     const prefix = 'admin.devices';
 
     return (
@@ -51,31 +45,7 @@ class AddDevice extends React.Component<Props & InjectedIntlProps> {
         <form onSubmit={handleSubmit}>
           <ModalBody>
             <SpacedRow>
-              <Col xs={4}>
-                <FieldValidationWrapper
-                  {...{
-                    name: 'twoWayMeter',
-                    editMode: true,
-                    withLabel: true,
-                    component: EditableSelect,
-                    validationRules,
-                    prefix,
-                  }}
-                />
-              </Col>
-              <Col xs={4}>
-                <FieldValidationWrapper
-                  {...{
-                    name: 'twoWayMeterUsed',
-                    editMode: true,
-                    withLabel: true,
-                    component: EditableSelect,
-                    validationRules,
-                    prefix,
-                  }}
-                />
-              </Col>
-              <Col xs={4}>
+              <Col xs={8}>
                 <FieldValidationWrapper
                   {...{
                     name: 'primaryEnergy',
@@ -87,21 +57,7 @@ class AddDevice extends React.Component<Props & InjectedIntlProps> {
                   }}
                 />
               </Col>
-            </SpacedRow>
-            <SpacedRow>
-              <Col xs={3}>
-                <FieldValidationWrapper
-                  {...{
-                    name: 'commissioning',
-                    editMode: true,
-                    withLabel: true,
-                    component: EditableDate,
-                    validationRules,
-                    prefix,
-                  }}
-                />
-              </Col>
-              <Col xs={3}>
+              <Col xs={4}>
                 <FieldValidationWrapper
                   {...{
                     name: 'law',
@@ -113,6 +69,46 @@ class AddDevice extends React.Component<Props & InjectedIntlProps> {
                   }}
                 />
               </Col>
+            </SpacedRow>
+            <SpacedRow>
+              <Col xs={4}>
+                <FieldValidationWrapper
+                  {...{
+                    name: 'manufacturer',
+                    editMode: true,
+                    withLabel: true,
+                    component: EditableInput,
+                    validationRules,
+                    prefix,
+                  }}
+                />
+              </Col>
+              <Col xs={4}>
+                <FieldValidationWrapper
+                  {...{
+                    name: 'model',
+                    editMode: true,
+                    withLabel: true,
+                    component: EditableInput,
+                    validationRules,
+                    prefix,
+                  }}
+                />
+              </Col>
+              <Col xs={4}>
+                <FieldValidationWrapper
+                  {...{
+                    name: 'name',
+                    editMode: true,
+                    withLabel: true,
+                    component: EditableInput,
+                    validationRules,
+                    prefix,
+                  }}
+                />
+              </Col>
+            </SpacedRow>
+            <SpacedRow>
               <Col xs={3}>
                 <FieldValidationWrapper
                   {...{
@@ -137,31 +133,15 @@ class AddDevice extends React.Component<Props & InjectedIntlProps> {
                   }}
                 />
               </Col>
-            </SpacedRow>
-            <SpacedRow>
               <Col xs={6}>
                 <FieldValidationWrapper
                   {...{
-                    name: 'manufacturer',
+                    name: 'commissioning',
                     editMode: true,
                     withLabel: true,
-                    component: EditableInput,
+                    component: EditableDate,
                     validationRules,
                     prefix,
-                  }}
-                />
-              </Col>
-              <Col xs={6}>
-                <FieldValidationWrapper
-                  {...{
-                    prefix,
-                    name: 'electricitySupplier.id',
-                    validationRules: {},
-                    editMode: true,
-                    withLabel: true,
-                    component: EditableSelect,
-                    noValTranslations: true,
-                    listOverride: organizationMarkets.map(o => ({ value: o.id, label: o.name })),
                   }}
                 />
               </Col>

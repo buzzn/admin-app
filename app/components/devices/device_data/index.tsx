@@ -16,7 +16,6 @@ import { CenterContent } from 'components/style';
 
 interface Props {
   device: { _status: null | number; [key: string]: any };
-  organizationMarkets: Array<{ [key: string]: any }>;
   updateDevice: Function;
   groupId: string;
   validationRules: any;
@@ -24,7 +23,6 @@ interface Props {
 
 const Device = ({
   device,
-  organizationMarkets,
   handleSubmit,
   editMode,
   switchEditMode,
@@ -93,24 +91,6 @@ const Device = ({
                 <TwoColField
                   {...{
                     prefix,
-                    name: 'twoWayMeter',
-                    editMode,
-                    validationRules,
-                    component: EditableSelect,
-                  }}
-                />
-                <TwoColField
-                  {...{
-                    prefix,
-                    name: 'twoWayMeterUsed',
-                    editMode,
-                    validationRules,
-                    component: EditableSelect,
-                  }}
-                />
-                <TwoColField
-                  {...{
-                    prefix,
                     name: 'primaryEnergy',
                     editMode,
                     validationRules,
@@ -148,6 +128,24 @@ const Device = ({
                 <TwoColField
                   {...{
                     prefix,
+                    name: 'model',
+                    editMode,
+                    validationRules,
+                    component: EditableInput,
+                  }}
+                />
+                <TwoColField
+                  {...{
+                    prefix,
+                    name: 'name',
+                    editMode,
+                    validationRules,
+                    component: EditableInput,
+                  }}
+                />
+                <TwoColField
+                  {...{
+                    prefix,
                     name: 'kwPeak',
                     editMode,
                     validationRules,
@@ -163,17 +161,6 @@ const Device = ({
                     validationRules,
                     component: EditableInput,
                     normalize: numberNormalizer,
-                  }}
-                />
-                <TwoColField
-                  {...{
-                    prefix,
-                    name: 'electricitySupplier.id',
-                    editMode,
-                    validationRules: {},
-                    component: EditableSelect,
-                    noValTranslations: true,
-                    listOverride: organizationMarkets.map(o => ({ value: o.id, label: o.name })),
                   }}
                 />
               </Col>

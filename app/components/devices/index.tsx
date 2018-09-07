@@ -4,7 +4,6 @@ import { Switch, Route, Redirect, RouteComponentProps } from 'react-router-dom';
 import Alert from 'react-s-alert';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import Groups from 'groups';
-import Organizations from 'organizations';
 import DevicesModule from 'devices';
 import Loading from 'components/loading';
 import DevicesList from './devices_list';
@@ -39,12 +38,10 @@ class Devices extends React.Component<
     const {
       loadDevices,
       loadGroup,
-      loadAvailableOrganizationMarkets,
       match: { params: { groupId } },
     } = this.props;
     loadDevices(groupId);
     loadGroup(groupId);
-    loadAvailableOrganizationMarkets();
   }
 
   componentWillUnmount() {
@@ -59,8 +56,6 @@ class Devices extends React.Component<
       devices,
       group,
       loading,
-      loadAvailableOrganizationMarkets,
-      organizationMarkets,
       updateDevice,
       history,
       match: {
@@ -103,7 +98,6 @@ class Devices extends React.Component<
                     groupId,
                     validationRules: updateValidationRules,
                     updateDevice,
-                    organizationMarkets,
                   }}
                 />
               );
@@ -116,8 +110,6 @@ class Devices extends React.Component<
             toggle: this.switchAddDevice,
             onSubmit: this.addDevice,
             validationRules: createValidationRules,
-            loadAvailableOrganizationMarkets,
-            organizationMarkets,
           }}
         />
       </React.Fragment>
@@ -138,14 +130,12 @@ interface StatePart {
     validationRules: { create: any; update: any };
   };
   groups: { group: { _status: null | number; [key: string]: any }; loadingGroup: boolean };
-  organizations: { availableOrganizationMarkets: { _status: null | number; array: Array<{ [key: string]: any }> } };
 }
 
 interface StateProps {
   createValidationRules: any;
   updateValidationRules: any;
   group: { _status: null | number; [key: string]: any };
-  organizationMarkets: Array<{ [key: string]: any }>;
   devices: { _status: null | number; array: Array<{ [key: string]: any }> };
   loading: boolean;
 }
@@ -156,7 +146,6 @@ interface DispatchProps {
   setDevices: Function;
   addDevice: Function;
   updateDevice: Function;
-  loadAvailableOrganizationMarkets: Function;
 }
 
 function mapStateToProps(state: StatePart) {
@@ -166,7 +155,6 @@ function mapStateToProps(state: StatePart) {
     group: state.groups.group,
     devices: state.devices.devices,
     loading: state.devices.loadingDevices || state.groups.loadingGroup,
-    organizationMarkets: state.organizations.availableOrganizationMarkets.array,
   };
 }
 
@@ -178,6 +166,5 @@ export default connect<StateProps, DispatchProps, ExtProps>(
     setDevices: DevicesModule.actions.setDevices,
     addDevice: DevicesModule.actions.addDevice,
     updateDevice: DevicesModule.actions.updateDevice,
-    loadAvailableOrganizationMarkets: Organizations.actions.loadAvailableOrganizationMarkets,
   },
 )(injectIntl(Devices));
