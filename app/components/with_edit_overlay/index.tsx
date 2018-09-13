@@ -5,7 +5,7 @@ function withEditOverlay(Component) {
   return function WrappedComponent(props) {
     return (
       <EditOverlayContext.Consumer>
-        {({ editMode, switchEditMode }) => <Component {...props} {...{ editMode, switchEditMode }} />}
+        {({ editMode, switchEditMode, setEditMode }) => <Component {...props} {...{ editMode, switchEditMode, setEditMode }} />}
       </EditOverlayContext.Consumer>
     );
   };

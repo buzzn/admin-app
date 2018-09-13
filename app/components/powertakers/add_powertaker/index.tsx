@@ -22,6 +22,8 @@ import { CustomerOptions } from './style';
 interface Props {
   url: string;
   history: any;
+  setEditMode: (boolean) => void;
+  editMode: boolean;
   loadAvailableUsers: () => void;
   loadAvailableOrganizations: () => void;
   addContract: (any) => void;
@@ -44,6 +46,14 @@ interface State {
 
 class AddPowertaker extends React.Component<Props, State> {
   state = { customerType: null, selectedCustomer: null, selectedContact: null, selectedLR: null };
+
+  componentDidMount() {
+    this.props.setEditMode(true);
+  }
+
+  componentWillUnmount() {
+    this.props.setEditMode(false);
+  }
 
   preselect = () => {
     this.setState({
@@ -86,7 +96,6 @@ class AddPowertaker extends React.Component<Props, State> {
 
   submitForm = (values) => {
     let params = { ...values };
-    console.log(params);
     const { addContract, history, url } = this.props;
     const { customerType, selectedCustomer, selectedContact, selectedLR } = this.state;
     const customerValue = (selectedCustomer || { value: null }).value;
@@ -158,6 +167,7 @@ class AddPowertaker extends React.Component<Props, State> {
       url,
       pristine,
       submitting,
+      editMode,
     } = this.props;
 
     const { customerType, selectedCustomer, selectedContact, selectedLR } = this.state;
@@ -173,13 +183,8 @@ class AddPowertaker extends React.Component<Props, State> {
 
     const validationRules = customerType === 'person' ? allRules.lptp : allRules.lpto;
 
-    const editMode = true;
-
     return (
       <Col xs="12">
-        <p className="h5 grey-underline header text-uppercase">
-          <FormattedMessage id={`${prefix}.headerAddPowertaker`} />
-        </p>
         <form onSubmit={handleSubmit(this.submitForm)}>
           <FormPanel
             {...{
@@ -193,6 +198,9 @@ class AddPowertaker extends React.Component<Props, State> {
               saveDisabled: (pristine && !selectedCustomer) || submitting,
             }}
           >
+            <p className="h5 grey-underline header text-uppercase">
+              <FormattedMessage id={`${prefix}.headerAddPowertaker`} />
+            </p>
             <TwoColField
               {...{
                 prefix,

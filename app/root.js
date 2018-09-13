@@ -47,11 +47,12 @@ const RouterHack = ({
   multiGroups,
   editMode,
   switchEditMode,
+  setEditMode,
   addGroupOpen,
   switchAddGroup,
   addGroup,
 }) => (
-  <EditOverlayContext.Provider value={{ editMode, switchEditMode }}>
+  <EditOverlayContext.Provider value={{ editMode, switchEditMode, setEditMode }}>
     {token && <TopNavBarContainer {...{ devMode, switchAddGroup }} />}
     {token ? (
       <Container style={{ maxWidth: '1440px' }}>
@@ -130,6 +131,10 @@ class NewRoot extends React.Component {
     this.setState({ editMode: !this.state.editMode });
   };
 
+  setEditMode = (value) => {
+    this.setState({ editMode: value });
+  }
+
   switchAddGroup = () => {
     this.setState({ addGroupOpen: !this.state.addGroupOpen });
   };
@@ -168,6 +173,7 @@ class NewRoot extends React.Component {
                       multiGroups,
                       editMode,
                       switchEditMode: this.switchEditMode,
+                      setEditMode: this.setEditMode,
                       addGroupOpen,
                       groupValidationRules,
                       switchAddGroup: this.switchAddGroup,
