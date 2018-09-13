@@ -1,4 +1,5 @@
 import * as React from 'react';
+import get from 'lodash/get';
 import { connect } from 'react-redux';
 import { Switch, Route, Redirect, NavLink } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
@@ -28,6 +29,7 @@ export class Documents extends React.Component {
       generateContractPDF,
       deleteContractPDF,
       loadGroupContracts,
+      addContractFormValues,
       group,
       setGroup,
       loading,
@@ -83,6 +85,7 @@ export class Documents extends React.Component {
                   generateContractPDF,
                   deleteContractPDF,
                   loadGroupContracts,
+                  addContractFormValues,
                   groupId,
                   group,
                 }}
@@ -103,7 +106,8 @@ function mapStateToProps(state) {
   return {
     group: state.groups.group,
     contracts: state.contracts.groupContracts,
-    loading: state.contracts.loadingGroupContracts,
+    loading: state.contracts.loadingGroupContracts || state.groups.loadingGroup,
+    addContractFormValues: get(state.form, 'addContract.values', {}),
   };
 }
 

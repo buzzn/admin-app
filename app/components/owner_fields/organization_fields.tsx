@@ -5,10 +5,10 @@ import { FormattedMessage } from 'react-intl';
 import get from 'lodash/get';
 import FieldValidationWrapper from 'components/field_validation_wrapper';
 import EditableInput from 'components/editable_input';
+import { mainStyle } from 'components/react_select_styles';
 import AddressFields from './address_fields';
 import PersonFields from './person_fields';
 
-import { mainStyle } from 'components/react_select_styles';
 
 interface Props {
   path: string;
@@ -157,7 +157,9 @@ const OrganizationFields = ({
         />
       )}
       <br />
-      <PersonFields {...{ editMode, path: 'contact.', overrideData: overridePerson, validationRules }} />
+      <PersonFields
+        {...{ editMode, path: `${path ? `${path}` : ''}contact.`, overrideData: overridePerson, validationRules }}
+      />
       <br />
       {editMode && (
         <Select
@@ -173,7 +175,7 @@ const OrganizationFields = ({
         {...{
           legalRepresentation: true,
           editMode,
-          path: 'legalRepresentation.',
+          path: `${path ? `${path}` : ''}legalRepresentation.`,
           overrideData: overrideLegal,
           validationRules,
         }}

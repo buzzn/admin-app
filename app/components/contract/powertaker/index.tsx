@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import { Link } from 'react-router-dom';
-import { Row, Col } from 'reactstrap';
+import { Row, Col, UncontrolledTooltip } from 'reactstrap';
 import truncate from 'lodash/truncate';
 import moment from 'moment';
 import { formatLabel } from '_util';
@@ -98,14 +98,21 @@ const PowertakerContract = ({ url, contract, prefix, register, contractor, intl 
           </Link>
         </TwoColView>
         <TwoColView {...{ prefix, field: 'meterSerial' }}>
-          <Link
-            to={`${url
-              .split('/')
-              .slice(0, -1)
-              .join('/')}/market-locations/meters/${register.meterId}`}
-          >
-            {register.meter.productSerialnumber}
-          </Link>
+          {register.meter ? (
+            <Link
+              to={`${url
+                .split('/')
+                .slice(0, -1)
+                .join('/')}/market-locations/meters/${register.meterId}`}
+            >
+              {register.meter.productSerialnumber}
+            </Link>
+          ) : (
+            <React.Fragment>
+              <i id="no-meter" className="fa fa-warning" style={{ color: 'red' }} />
+              <UncontrolledTooltip target="no-meter">No meter/register attached</UncontrolledTooltip>
+            </React.Fragment>
+          )}
         </TwoColView>
         <TwoColView {...{ prefix, field: 'renewableEnergyLawTaxation' }}>
           {contract.renewableEnergyLawTaxation
@@ -121,7 +128,9 @@ const PowertakerContract = ({ url, contract, prefix, register, contractor, intl 
         <TwoColView {...{ prefix, field: 'contractor' }}>
           {contractor.name || `${contractor.firstName} ${contractor.lastName}`}
         </TwoColView>
-        <TwoColView {...{ prefix, field: 'forecastKwhPa' }}>{formatLabel(contract.forecastKwhPa * 1000, 'h')}</TwoColView>
+        <TwoColView {...{ prefix, field: 'forecastKwhPa' }}>
+          {formatLabel(contract.forecastKwhPa * 1000, 'h')}
+        </TwoColView>
         <TwoColView {...{ prefix, field: 'oldSupplierName' }}>{contract.oldSupplierName}</TwoColView>
         <TwoColView {...{ prefix, field: 'oldCustomerNumber' }}>{contract.oldCustomerNumber}</TwoColView>
         <TwoColView {...{ prefix, field: 'oldAccountNumber' }}>{contract.oldAccountNumber}</TwoColView>
@@ -141,7 +150,9 @@ const PowertakerContract = ({ url, contract, prefix, register, contractor, intl 
         <TwoColView {...{ prefix, field: 'terminationDate' }}>
           {moment(contract.terminationDate).format('DD.MM.YYYY')}
         </TwoColView>
-        <TwoColView {...{ prefix, field: 'lastDate' }}>{contract.lastDate ? moment(contract.lastDate).format('DD.MM.YYYY') : ''}</TwoColView>
+        <TwoColView {...{ prefix, field: 'lastDate' }}>
+          {contract.lastDate ? moment(contract.lastDate).format('DD.MM.YYYY') : ''}
+        </TwoColView>
       </Col>
     </Row>
   </div>

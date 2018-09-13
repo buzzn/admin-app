@@ -1,21 +1,27 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Switch, Route, Redirect, NavLink } from 'react-router-dom';
-import { FormattedMessage, injectIntl } from 'react-intl';
-import { Nav } from 'reactstrap';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import { injectIntl } from 'react-intl';
 import find from 'lodash/find';
 import truncate from 'lodash/truncate';
 import get from 'lodash/get';
 import Contracts from 'contracts';
 import Groups from 'groups';
+import Users from 'users';
+import Organizations from 'organizations';
 import Loading from 'components/loading';
 import PowertakersList from './powertakers_list';
 import PowertakerData from './powertaker_data';
 import ContractData from './contract_data';
+import AddPowertaker from './add_powertaker';
 
 export class Powertakers extends React.Component {
   componentDidMount() {
-    const { loadGroupPowertakers, loadGroup, group, match: { params: { groupId } } } = this.props;
+    const {
+      loadGroupPowertakers,
+      loadGroup,
+      match: { params: { groupId } },
+    } = this.props;
     loadGroup(groupId);
     loadGroupPowertakers(groupId);
   }
@@ -25,7 +31,24 @@ export class Powertakers extends React.Component {
   }
 
   render() {
-    const { intl, powertakers, setGroupPowertakers, match: { url, params: { groupId } }, loading, group } = this.props;
+    const {
+      intl,
+      powertakers,
+      setGroupPowertakers,
+      loadAvailableUsers,
+      availableUsers,
+      loadAvailableOrganizations,
+      availableOrganizations,
+      validationRules,
+      history,
+      match: {
+        url,
+        params: { groupId },
+      },
+      loading,
+      group,
+      addContract,
+    } = this.props;
 
     if (powertakers._status === 404 || powertakers._status === 403) {
       setGroupPowertakers({ _status: null, array: [] });
@@ -43,7 +66,7 @@ export class Powertakers extends React.Component {
       <Switch>
         <Route
           path={`${url}/:pType(active|past)`}
-          render={({ history, match: { params: { pType } } }) => (
+          render={({ match: { params: { pType } } }) => (
             <PowertakersList
               active
               {...{
@@ -51,21 +74,39 @@ export class Powertakers extends React.Component {
                 pType,
                 powertakers: powertakers.array,
                 loading,
-                groupId,
+                group,
                 url,
                 history,
               }}
             />
           )}
         />
+        <Route path={`${url}/add-powertaker`}>
+          <AddPowertaker
+            {...{
+              history,
+              url,
+              loadAvailableUsers,
+              availableUsers,
+              loadAvailableOrganizations,
+              availableOrganizations,
+              addContract: params => addContract({ groupId, ...params }),
+              validationRules,
+            }}
+          />
+        </Route>
         <Route
           path={`${url}/:contractId`}
-          render={({ history, match: { url: contractUrl, params: { contractId } } }) => {
+          render={({
+            match: {
+              url: contractUrl,
+              params: { contractId },
+            },
+          }) => {
             const contract = find(powertakers.array, p => p.id === contractId);
             if (!contract) return <Redirect to={url} />;
             const powertaker = contract.customer || {};
-            const powertakerTitle =
-              powertaker.type === 'person' ? `${powertaker.firstName} ${powertaker.lastName}` : powertaker.name;
+            const powertakerTitle = powertaker.type === 'person' ? `${powertaker.firstName} ${powertaker.lastName}` : powertaker.name;
             breadcrumbs.push({
               id: contract.id,
               type: 'contract',
@@ -108,11 +149,20 @@ function mapStateToProps(state) {
     group: state.groups.group,
     powertakers: state.contracts.groupPowertakers,
     loading: state.contracts.loadingGroupPowertakers,
+    availableUsers: state.users.availableUsers,
+    availableOrganizations: state.organizations.availableOrganizations,
+    validationRules: state.contracts.validationRules,
   };
 }
 
-export default connect(mapStateToProps, {
-  loadGroupPowertakers: Contracts.actions.loadGroupPowertakers,
-  setGroupPowertakers: Contracts.actions.setGroupPowertakers,
-  loadGroup: Groups.actions.loadGroup,
-})(injectIntl(Powertakers));
+export default connect(
+  mapStateToProps,
+  {
+    loadGroupPowertakers: Contracts.actions.loadGroupPowertakers,
+    setGroupPowertakers: Contracts.actions.setGroupPowertakers,
+    addContract: Contracts.actions.addContract,
+    loadGroup: Groups.actions.loadGroup,
+    loadAvailableUsers: Users.actions.loadAvailableUsers,
+    loadAvailableOrganizations: Organizations.actions.loadAvailableOrganizations,
+  },
+)(injectIntl(Powertakers));

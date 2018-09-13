@@ -15,6 +15,7 @@ interface Props {
   addContract: Function;
   loading: boolean;
   contractTypes: Array<{ value: string; label: string }>;
+  addContractFormValues: { [key: string]: any };
   handleSubmit: () => void;
   validationRules: { _status: null | number; [key: string]: any };
   groupName: string;
@@ -48,6 +49,7 @@ class AddContract extends React.Component<Props & InjectedIntlProps> {
       groupOwnerErrors,
       handleSubmit,
       validationRules,
+      addContractFormValues,
       onSubmit,
       url,
     } = this.props;
@@ -76,6 +78,7 @@ class AddContract extends React.Component<Props & InjectedIntlProps> {
                         component: EditableSelect,
                         validationRules,
                         listOverride: contractTypes,
+                        noDefault: true,
                         prefix,
                       }}
                     />
@@ -105,19 +108,25 @@ class AddContract extends React.Component<Props & InjectedIntlProps> {
                     )}
                   </Col>
                 </Row>
-                <Row>
-                  <Col xs={12}>
-                    <FieldValidationWrapper
-                      {...{
-                        name: 'taxNumber',
-                        type: 'text',
-                        label: <FormattedMessage id={`${prefix}.taxNumber`} />,
-                        component: FieldInput,
-                        validationRules,
-                      }}
-                    />
-                  </Col>
-                </Row>
+                {addContractFormValues.type === 'contract_localpool_processing' ? (
+                  <Row>
+                    <Col xs={12}>
+                      <FieldValidationWrapper
+                        {...{
+                          name: 'taxNumber',
+                          type: 'text',
+                          label: <FormattedMessage id={`${prefix}.taxNumber`} />,
+                          component: FieldInput,
+                          validationRules,
+                        }}
+                      />
+                    </Col>
+                  </Row>
+                  ) : addContractFormValues.type === 'contract_metering_point_operator' ? (
+                  <React.Fragment>MPO</React.Fragment>
+                ) : (
+                  false
+                )}
               </React.Fragment>
             )}
           </ModalBody>
@@ -133,19 +142,23 @@ class AddContract extends React.Component<Props & InjectedIntlProps> {
             {disabled && (
               <UncontrolledTooltip target="submit-add-contract">Please, add group owner</UncontrolledTooltip>
             )}
-            <span id="submit-add-contract-pdf">
-              <button
-                className="btn btn-dark"
-                disabled={pdfDisabled}
-                onClick={handleSubmit(values => onSubmit({ ...values, generatePDF: true }))}
-              >
-                <FormattedMessage id="admin.buttons.submitAndGeneratePDF" />
-              </button>
-            </span>
-            {pdfDisabled && (
-              <UncontrolledTooltip target="submit-add-contract-pdf">
-                Please, add missing group owner data
-              </UncontrolledTooltip>
+            {addContractFormValues.type === 'contract_localpool_processing' && (
+              <React.Fragment>
+                <span id="submit-add-contract-pdf">
+                  <button
+                    className="btn btn-dark"
+                    disabled={pdfDisabled}
+                    onClick={handleSubmit(values => onSubmit({ ...values, generatePDF: true }))}
+                  >
+                    <FormattedMessage id="admin.buttons.submitAndGeneratePDF" />
+                  </button>
+                </span>
+                {pdfDisabled && (
+                  <UncontrolledTooltip target="submit-add-contract-pdf">
+                    Please, add missing group owner data
+                  </UncontrolledTooltip>
+                )}
+              </React.Fragment>
             )}
           </ModalFooter>
         </form>
@@ -156,6 +169,7 @@ class AddContract extends React.Component<Props & InjectedIntlProps> {
 
 export default reduxForm({
   form: 'addContract',
+  enableReinitialize: true,
   onSubmitSuccess: (_result, _dispatch, { reset }) => {
     reset();
   },

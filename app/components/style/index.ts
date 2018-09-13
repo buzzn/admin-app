@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import { Nav } from 'reactstrap';
 
-export const CenterContent = styled.div``;
+export const CenterContent = styled.div`
+  position: relative;
+`;
 
 export const SubNav = styled(Nav)`
   border-bottom: #e0e0e0 solid 1px;

@@ -8,8 +8,8 @@ import Select from 'react-select';
 import withEditOverlay from 'components/with_edit_overlay';
 import FormPanel from 'components/form_panel';
 import { mainStyle } from 'components/react_select_styles';
-import PersonFields from './person_fields';
-import OrganizationFields from './organization_fields';
+import PersonFields from 'components/owner_fields/person_fields';
+import OrganizationFields from 'components/owner_fields/organization_fields';
 
 import { OwnerOptions } from './style';
 
@@ -136,11 +136,11 @@ class Powergiver extends React.Component<Props, State> {
       if (params.address && !params.address.country) params.address.country = 'DE';
     } else {
       if (params.address && !params.address.country) params.address.country = 'DE';
-      if (!contactValue && params.contact) {
+      if ((!contactValue || contactValue === 'new') && params.contact) {
         if (!params.contact.preferredLanguage) params.contact.preferredLanguage = 'de';
         if (params.contact.address && !params.contact.address.country) params.contact.address.country = 'DE';
       }
-      if (!lrValue && params.legalRepresentation) {
+      if ((!lrValue || lrValue === 'new') && params.legalRepresentation) {
         if (!params.legalRepresentation.preferredLanguage) params.legalRepresentation.preferredLanguage = 'de';
       }
     }

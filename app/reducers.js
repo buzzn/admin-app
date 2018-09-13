@@ -88,21 +88,21 @@ export function appReducer(state = initialState, action) {
 }
 
 export default combineReducers({
-  // apiUrl and apiPath will be located in 'config' property
-  config: configReducer,
-  form: formReducer,
+  app: appReducer,
   auth: Auth.reducers,
+  billingCycles: BillingCycles.reducers,
   bubbles: Bubbles.reducers,
   charts: Charts.reducers,
-  app: appReducer,
-  meters: Meters.reducers,
+  // apiUrl and apiPath will be located in 'config' property
+  config: configReducer,
+  contracts: Contracts.reducers,
+  devices: Devices.reducers,
   groups: Groups.reducers,
+  form: formReducer,
+  marketLocations: MarketLocations.reducers,
+  meters: Meters.reducers,
+  organizations: Organizations.reducers,
+  readings: Readings.reducers,
   registers: Registers.reducers,
   users: Users.reducers,
-  organizations: Organizations.reducers,
-  contracts: Contracts.reducers,
-  readings: Readings.reducers,
-  marketLocations: MarketLocations.reducers,
-  billingCycles: BillingCycles.reducers,
-  devices: Devices.reducers,
 });

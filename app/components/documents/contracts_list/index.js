@@ -44,6 +44,7 @@ class ContractsList extends React.Component {
       generateContractPDF,
       deleteContractPDF,
       loadGroupContracts,
+      addContractFormValues,
       groupId,
       group,
       loading,
@@ -52,15 +53,20 @@ class ContractsList extends React.Component {
 
     const contractTypes = [];
     if (
-      !get(group.allowedActions, 'createLocalpoolProcessingContract.localpoolProcessingContract', []).find(
+      get(group.allowedActions, 'createLocalpoolProcessingContract')
+      && !get(group.allowedActions, 'createLocalpoolProcessingContract.localpoolProcessingContract', []).find(
         e => e === 'cannot be defined',
       )
     ) {
       contractTypes.push({
         value: 'contract_localpool_processing',
         label: 'LPC',
-        disabled: get(group.allowedActions, 'createLocalpoolProcessingContract') !== true,
-        incompleteness: get(group.allowedActions, 'createLocalpoolProcessingContract'),
+      });
+    }
+    if (get(group.allowedActions, 'createMeteringPointOperatorContract') === true) {
+      contractTypes.push({
+        value: 'contract_metering_point_operator',
+        label: 'MPO',
       });
     }
 
@@ -133,10 +139,12 @@ class ContractsList extends React.Component {
             loading,
             toggle: this.switchAddContract,
             isOpen,
+            addContractFormValues,
             // TODO: replace with real validationRules
             validationRules: {},
             onSubmit: this.addContract,
             contractTypes,
+            initialValues: { type: get(contractTypes[0], 'value') },
             groupName: group.name,
             groupOwner: group.owner,
             groupOwnerErrors: get(group.incompleteness, 'owner'),
