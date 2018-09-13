@@ -1,11 +1,8 @@
 import { saveAs } from 'file-saver/FileSaver';
 import { put, call, takeLatest, take, cancel, select, fork } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
-import uniqBy from 'lodash/uniqBy';
-import compact from 'lodash/compact';
 import { logException } from '_util';
 import Groups from 'groups';
-import { array } from 'prop-types';
 import { constants, actions } from './actions';
 import api from './api';
 
@@ -55,11 +52,6 @@ export function* updateBankAccount(
 export function* getGroupContracts({ apiUrl, apiPath, token }, { groupId }) {
   yield put(actions.loadingGroupContracts());
   try {
-    // FIXME
-    // const operatorContracts = yield call(api.fetchOperatorContracts, { apiUrl, apiPath, token, groupId });
-    // const processingContracts = yield call(api.fetchProcessingContracts, { apiUrl, apiPath, token, groupId });
-    // const groupContracts = operatorContracts.array.concat(processingContracts.array);
-    // yield put(actions.setGroupContracts(groupContracts));
     const groupContracts = yield call(api.fetchGroupContracts, { apiUrl, apiPath, token, groupId });
     yield put(actions.setGroupContracts(groupContracts.array));
   } catch (error) {
@@ -88,6 +80,7 @@ export function* addContract({ apiUrl, apiPath, token }, { params, resolve, reje
       yield call(resolve, res);
       yield put(Groups.actions.loadGroup(groupId));
       yield call(getGroupContracts, { apiUrl, apiPath, token }, { groupId });
+      yield call(getPowertakers, { apiUrl, apiPath, token }, { groupId });
     }
   } catch (error) {
     logException(error);
