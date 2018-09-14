@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { getFormSubmitErrors } from 'redux-form';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import find from 'lodash/find';
@@ -9,6 +10,7 @@ import Contracts from 'contracts';
 import Groups from 'groups';
 import Users from 'users';
 import Organizations from 'organizations';
+import MarketLocations from 'market_locations';
 import Loading from 'components/loading';
 import PowertakersList from './powertakers_list';
 import PowertakerData from './powertaker_data';
@@ -39,7 +41,11 @@ export class Powertakers extends React.Component {
       availableUsers,
       loadAvailableOrganizations,
       availableOrganizations,
+      loadMarketLocations,
+      marketLocations,
       validationRules,
+      addPowertakerFormName,
+      addPowertakerErrors,
       history,
       match: {
         url,
@@ -90,8 +96,12 @@ export class Powertakers extends React.Component {
               availableUsers,
               loadAvailableOrganizations,
               availableOrganizations,
+              loadMarketLocations: () => loadMarketLocations(groupId),
+              marketLocations,
               addContract: params => addContract({ groupId, ...params }),
               validationRules,
+              form: addPowertakerFormName,
+              addPowertakerErrors,
             }}
           />
         </Route>
@@ -145,6 +155,7 @@ export class Powertakers extends React.Component {
 }
 
 function mapStateToProps(state) {
+  const addPowertakerFormName = 'addPowertaker';
   return {
     group: state.groups.group,
     powertakers: state.contracts.groupPowertakers,
@@ -152,6 +163,9 @@ function mapStateToProps(state) {
     availableUsers: state.users.availableUsers,
     availableOrganizations: state.organizations.availableOrganizations,
     validationRules: state.contracts.validationRules,
+    marketLocations: state.marketLocations.marketLocations,
+    addPowertakerErrors: getFormSubmitErrors(addPowertakerFormName)(state),
+    addPowertakerFormName,
   };
 }
 
@@ -164,5 +178,6 @@ export default connect(
     loadGroup: Groups.actions.loadGroup,
     loadAvailableUsers: Users.actions.loadAvailableUsers,
     loadAvailableOrganizations: Organizations.actions.loadAvailableOrganizations,
+    loadMarketLocations: MarketLocations.actions.loadMarketLocations,
   },
 )(injectIntl(Powertakers));

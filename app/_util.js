@@ -19,7 +19,7 @@ export function prepareHeaders(token, noType) {
 const flattenErrors = ({ errors }) => reduce(
   errors,
   (res, v, k) => {
-    if (Array.isArray(v)) return { ...res, [k]: v.join(', ') };
+    if (Array.isArray(v)) return { ...res, [k]: (typeof v === 'object' ? v : v.join(', ')) };
     return { ...res, [k]: flattenErrors({ errors: v }) };
   },
   {},

@@ -26,15 +26,18 @@ interface Props {
   editMode: boolean;
   loadAvailableUsers: () => void;
   loadAvailableOrganizations: () => void;
+  loadMarketLocations: () => void;
   addContract: (any) => void;
   availableUsers: { _status: null | number; array: Array<any> };
   availableOrganizations: { _status: null | number; array: Array<any> };
+  marketLocations: { _status: null | number; array: Array<any> };
   pristine: boolean;
   reset: () => void;
   submitting: boolean;
   handleSubmit: Function;
   change: Function;
   validationRules: { lptp: {}; lpto: {} };
+  addPowertakerErrors: { registerMeta?: Array<any> };
 }
 
 interface State {
@@ -42,13 +45,18 @@ interface State {
   selectedCustomer: null | { value: null | string; label: string };
   selectedContact: null | { value: null | string; label: string };
   selectedLR: null | { value: null | string; label: string };
+  selectedMaLo: null | { value: null | string; label: string };
 }
 
 class AddPowertaker extends React.Component<Props, State> {
-  state = { customerType: null, selectedCustomer: null, selectedContact: null, selectedLR: null };
+  state = { customerType: null, selectedCustomer: null, selectedContact: null, selectedLR: null, selectedMaLo: null };
 
   componentDidMount() {
+    const { loadAvailableUsers, loadAvailableOrganizations, loadMarketLocations } = this.props;
     this.props.setEditMode(true);
+    loadMarketLocations();
+    loadAvailableUsers();
+    loadAvailableOrganizations();
   }
 
   componentWillUnmount() {
@@ -64,12 +72,7 @@ class AddPowertaker extends React.Component<Props, State> {
   };
 
   handleCustomerType = (customerType) => {
-    const { loadAvailableUsers, loadAvailableOrganizations, reset } = this.props;
-    if (customerType === 'organization') {
-      loadAvailableOrganizations();
-    }
-    loadAvailableUsers();
-    reset();
+    this.props.reset();
     this.preselect();
     this.setState({ customerType });
   };
@@ -94,12 +97,19 @@ class AddPowertaker extends React.Component<Props, State> {
     this.setState({ selectedLR: param });
   };
 
+  handleMaLoChange = (param) => {
+    const { change } = this.props;
+    change('registerMeta.id', param ? param.value : param);
+    this.setState({ selectedMaLo: param });
+  };
+
   submitForm = (values) => {
     let params = { ...values };
     const { addContract, history, url } = this.props;
-    const { customerType, selectedCustomer, selectedContact, selectedLR } = this.state;
+    const { customerType, selectedCustomer, selectedContact, selectedLR, selectedMaLo } = this.state;
     const customerValue = (selectedCustomer || { value: null }).value;
     const contactValue = (selectedContact || { value: null }).value;
+    const maLoValue = (selectedMaLo || { value: null }).value;
     const lrValue = (selectedLR || { value: null }).value;
     const isPerson = customerType === 'person';
     // HACK
@@ -140,6 +150,10 @@ class AddPowertaker extends React.Component<Props, State> {
       params.customer = { id: customerValue };
     }
 
+    if (maLoValue) {
+      params.registerMeta = { id: maLoValue };
+    }
+
     return new Promise((resolve, reject) => {
       addContract({
         params: {
@@ -161,6 +175,7 @@ class AddPowertaker extends React.Component<Props, State> {
     const {
       availableUsers,
       availableOrganizations,
+      marketLocations,
       handleSubmit,
       validationRules: allRules,
       history,
@@ -168,9 +183,11 @@ class AddPowertaker extends React.Component<Props, State> {
       pristine,
       submitting,
       editMode,
+      addPowertakerErrors,
     } = this.props;
 
-    const { customerType, selectedCustomer, selectedContact, selectedLR } = this.state;
+    const { customerType, selectedCustomer, selectedContact, selectedLR, selectedMaLo } = this.state;
+    const maLoValue = (selectedMaLo || { value: null }).value;
 
     const prefix = 'admin.contracts';
 
@@ -180,6 +197,9 @@ class AddPowertaker extends React.Component<Props, State> {
     const organizationOptions: Array<{ value: null | string; label: string }> = [
       { value: null, label: 'Create new' },
     ].concat(availableOrganizations.array.map(u => ({ value: u.id, label: `${u.name} ${u.email}` })));
+    const maLoOptions: Array<{ value: null | string; label: string }> = [{ value: null, label: 'Create new' }].concat(
+      marketLocations.array.map(u => ({ value: u.id, label: `${u.name} ${u.kind}` })),
+    );
 
     const validationRules = customerType === 'person' ? allRules.lptp : allRules.lpto;
 
@@ -239,26 +259,6 @@ class AddPowertaker extends React.Component<Props, State> {
                 validationRules,
                 component: EditableDate,
                 normalize: dateNormalizer('YYYY-MM-DD'),
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'contractNumber',
-                editMode,
-                validationRules,
-                component: EditableInput,
-                normalize: numberNormalizer,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'contractNumberAddition',
-                editMode,
-                validationRules,
-                component: EditableInput,
-                normalize: numberNormalizer,
               }}
             />
             <TwoColField
@@ -433,62 +433,37 @@ class AddPowertaker extends React.Component<Props, State> {
                 component: EditableCheckbox,
               }}
             />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'registerMeta.name',
-                editMode,
-                validationRules,
-                component: EditableInput,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'registerMeta.label',
-                editMode,
-                validationRules,
-                component: EditableSelect,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'registerMeta.observerEnabled',
-                editMode,
-                validationRules,
-                component: EditableCheckbox,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'registerMeta.observerMinThreshold',
-                editMode,
-                validationRules,
-                component: EditableInput,
-                normalize: numberNormalizer,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'registerMeta.observerMaxThreshold',
-                editMode,
-                validationRules,
-                component: EditableInput,
-                normalize: numberNormalizer,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'registerMeta.observerOfflineMonitoring',
-                editMode,
-                validationRules,
-                component: EditableCheckbox,
-              }}
-            />
+            <Select options={maLoOptions} onChange={this.handleMaLoChange} styles={mainStyle} value={selectedMaLo} />
+            {!!addPowertakerErrors.registerMeta && (
+              <ul>
+                {addPowertakerErrors.registerMeta.filter(e => e !== null && typeof e === 'object').map((e, i) => (
+                  <li key={i}>{e.error}</li>
+                ))}
+              </ul>
+            )}
+            <br />
+            {!maLoValue && (
+              <React.Fragment>
+                <TwoColField
+                  {...{
+                    prefix,
+                    name: 'registerMeta.name',
+                    editMode,
+                    validationRules,
+                    component: EditableInput,
+                  }}
+                />
+                <TwoColField
+                  {...{
+                    prefix,
+                    name: 'registerMeta.label',
+                    editMode,
+                    validationRules,
+                    component: EditableSelect,
+                  }}
+                />
+              </React.Fragment>
+            )}
             <CustomerOptions>
               <FormGroup check inline>
                 <CustomInput
@@ -575,7 +550,6 @@ class AddPowertaker extends React.Component<Props, State> {
 }
 
 export default reduxForm({
-  form: 'addPowertakerForm',
   enableReinitialize: true,
   // HACK: see #3729, #3362 in redux-form
   keepDirtyOnReinitialize: true,
