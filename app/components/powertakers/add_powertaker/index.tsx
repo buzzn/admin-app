@@ -1,10 +1,11 @@
 import * as React from 'react';
 import omit from 'lodash/omit';
 import set from 'lodash/set';
-import { reduxForm } from 'redux-form';
+import { reduxForm, FormSection } from 'redux-form';
 import { FormattedMessage } from 'react-intl';
 import { Col, FormGroup, CustomInput } from 'reactstrap';
 import Select from 'react-select';
+import { Link, Prompt } from 'react-router-dom';
 import withEditOverlay from 'components/with_edit_overlay';
 import FormPanel from 'components/form_panel';
 import { mainStyle } from 'components/react_select_styles';
@@ -17,7 +18,7 @@ import EditableSelect from 'components/editable_select';
 import EditableCheckbox from 'components/editable_checkbox';
 import { dateNormalizer, numberNormalizer } from 'validation_normalizers';
 
-import { CustomerOptions } from './style';
+import { CustomerOptions, RegisterMetaErrors } from './style';
 
 interface Props {
   url: string;
@@ -32,7 +33,7 @@ interface Props {
   availableOrganizations: { _status: null | number; array: Array<any> };
   marketLocations: { _status: null | number; array: Array<any> };
   pristine: boolean;
-  reset: () => void;
+  resetSection: (string) => void;
   submitting: boolean;
   handleSubmit: Function;
   change: Function;
@@ -72,7 +73,7 @@ class AddPowertaker extends React.Component<Props, State> {
   };
 
   handleCustomerType = (customerType) => {
-    this.props.reset();
+    this.props.resetSection('customer');
     this.preselect();
     this.setState({ customerType });
   };
@@ -215,7 +216,7 @@ class AddPowertaker extends React.Component<Props, State> {
               },
               cancelDisabled: submitting,
               onSave: handleSubmit(this.submitForm),
-              saveDisabled: (pristine && !selectedCustomer) || submitting,
+              saveDisabled: (pristine && !customerType) || submitting,
             }}
           >
             <p className="h5 grey-underline header text-uppercase">
@@ -434,12 +435,19 @@ class AddPowertaker extends React.Component<Props, State> {
               }}
             />
             <Select options={maLoOptions} onChange={this.handleMaLoChange} styles={mainStyle} value={selectedMaLo} />
+            <Prompt
+              when={!pristine}
+              message={location => `You have unsaved data in form. Are you sure you want to go to ${location.pathname}`}
+            />
             {!!addPowertakerErrors.registerMeta && (
-              <ul>
+              <RegisterMetaErrors>
                 {addPowertakerErrors.registerMeta.filter(e => e !== null && typeof e === 'object').map((e, i) => (
-                  <li key={i}>{e.error}</li>
+                  <li key={i}>
+                    <FormattedMessage id={`${prefix}.${e.error}`} />{' '}
+                    <Link to={`${url}/${e.contractId}`}>Contract id: {e.contractId}</Link>
+                  </li>
                 ))}
-              </ul>
+              </RegisterMetaErrors>
             )}
             <br />
             {!maLoValue && (
@@ -497,16 +505,18 @@ class AddPowertaker extends React.Component<Props, State> {
                   />
                   <br />
                 </React.Fragment>
-                <PersonFields
-                  {...{
-                    editMode,
-                    path: 'customer.',
-                    overrideData: selectedCustomer
-                      ? availableUsers.array.find(o => o.id === (selectedCustomer || { value: null }).value)
-                      : null,
-                    validationRules,
-                  }}
-                />
+                <FormSection name="customer">
+                  <PersonFields
+                    {...{
+                      editMode,
+                      path: '',
+                      overrideData: selectedCustomer
+                        ? availableUsers.array.find(o => o.id === (selectedCustomer || { value: null }).value)
+                        : null,
+                      validationRules,
+                    }}
+                  />
+                </FormSection>
               </React.Fragment>
             ) : (
               <React.Fragment>
@@ -519,27 +529,29 @@ class AddPowertaker extends React.Component<Props, State> {
                   />
                   <br />
                 </React.Fragment>
-                <OrganizationFields
-                  {...{
-                    editMode,
-                    path: 'customer.',
-                    overrideData: selectedCustomer
-                      ? availableOrganizations.array.find(o => o.id === (selectedCustomer || { value: null }).value)
-                      : null,
-                    overrideContact: selectedContact
-                      ? availableUsers.array.find(o => o.id === (selectedContact || { value: null }).value)
-                      : null,
-                    overrideLR: selectedLR
-                      ? availableUsers.array.find(o => o.id === (selectedLR || { value: null }).value)
-                      : null,
-                    validationRules,
-                    personOptions,
-                    handleContactChange: this.handleContactChange,
-                    handleLRChange: this.handleLRChange,
-                    selectedContact,
-                    selectedLR,
-                  }}
-                />
+                <FormSection name="customer">
+                  <OrganizationFields
+                    {...{
+                      editMode,
+                      path: '',
+                      overrideData: selectedCustomer
+                        ? availableOrganizations.array.find(o => o.id === (selectedCustomer || { value: null }).value)
+                        : null,
+                      overrideContact: selectedContact
+                        ? availableUsers.array.find(o => o.id === (selectedContact || { value: null }).value)
+                        : null,
+                      overrideLR: selectedLR
+                        ? availableUsers.array.find(o => o.id === (selectedLR || { value: null }).value)
+                        : null,
+                      validationRules,
+                      personOptions,
+                      handleContactChange: this.handleContactChange,
+                      handleLRChange: this.handleLRChange,
+                      selectedContact,
+                      selectedLR,
+                    }}
+                  />
+                </FormSection>
               </React.Fragment>
             )}
           </FormPanel>

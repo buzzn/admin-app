@@ -11,3 +11,9 @@ export const CustomerOptions = styled.div`
     line-height: 1.5rem;
   }
 `;
+
+export const RegisterMetaErrors = styled.ul`
+  list-style: none;
+  padding-left: 0;
+  color: #ff4a00;
+`;
