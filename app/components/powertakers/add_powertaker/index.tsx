@@ -527,7 +527,7 @@ class AddPowertaker extends React.Component<Props, State> {
             <Select options={maLoOptions} onChange={this.handleMaLoChange} styles={mainStyle} value={selectedMaLo} />
             <Prompt
               when={!pristine && !saved}
-              message={location => `You have unsaved data in form. Are you sure you want to go to ${location.pathname}`}
+              message={location => location.pathname === url ? true : `You have unsaved data in form. Are you sure you want to go to ${location.pathname}`}
             />
             {Array.isArray(addPowertakerErrors.registerMeta) && (
               <RegisterMetaErrors>
