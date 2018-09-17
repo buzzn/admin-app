@@ -47,10 +47,11 @@ interface State {
   selectedContact: null | { value: null | string; label: string };
   selectedLR: null | { value: null | string; label: string };
   selectedMaLo: null | { value: null | string; label: string };
+  saved: boolean;
 }
 
 class AddPowertaker extends React.Component<Props, State> {
-  state = { customerType: null, selectedCustomer: null, selectedContact: null, selectedLR: null, selectedMaLo: null };
+  state = { customerType: null, selectedCustomer: null, selectedContact: null, selectedLR: null, selectedMaLo: null, saved: false };
 
   componentDidMount() {
     const { loadAvailableUsers, loadAvailableOrganizations, loadMarketLocations } = this.props;
@@ -153,7 +154,11 @@ class AddPowertaker extends React.Component<Props, State> {
 
     if (maLoValue) {
       params.registerMeta = { id: maLoValue };
+    } else {
+      params = omit(params, 'registerMeta.id');
     }
+
+    params.customer.type = customerType;
 
     return new Promise((resolve, reject) => {
       addContract({
@@ -162,12 +167,13 @@ class AddPowertaker extends React.Component<Props, State> {
           registerMeta: {},
           ...params,
           type: 'contract_localpool_power_taker',
-          customer: { ...params.customer, type: customerType },
+          // customer: { type: customerType, ...params.customer },
         },
         resolve,
         reject,
       });
     }).then(() => {
+      this.setState({ saved: true });
       history.push(url);
     });
   };
@@ -187,7 +193,7 @@ class AddPowertaker extends React.Component<Props, State> {
       addPowertakerErrors,
     } = this.props;
 
-    const { customerType, selectedCustomer, selectedContact, selectedLR, selectedMaLo } = this.state;
+    const { customerType, selectedCustomer, selectedContact, selectedLR, selectedMaLo, saved } = this.state;
     const maLoValue = (selectedMaLo || { value: null }).value;
 
     const prefix = 'admin.contracts';
@@ -436,10 +442,10 @@ class AddPowertaker extends React.Component<Props, State> {
             />
             <Select options={maLoOptions} onChange={this.handleMaLoChange} styles={mainStyle} value={selectedMaLo} />
             <Prompt
-              when={!pristine}
+              when={!pristine && !saved}
               message={location => `You have unsaved data in form. Are you sure you want to go to ${location.pathname}`}
             />
-            {!!addPowertakerErrors.registerMeta && (
+            {Array.isArray(addPowertakerErrors.registerMeta) && (
               <RegisterMetaErrors>
                 {addPowertakerErrors.registerMeta.filter(e => e !== null && typeof e === 'object').map((e, i) => (
                   <li key={i}>
