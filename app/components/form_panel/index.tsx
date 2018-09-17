@@ -82,6 +82,7 @@ class FormPanel extends React.Component<Props & InjectedIntlProps, State> {
           <div className="side-buttons" ref={this.buttonsRef} style={{ top: `${top}px` }}>
             <button
               className="btn btn-link"
+              type="button"
               onClick={(event) => {
                 if (dirty && confirm(intl.formatMessage({ id: 'admin.messages.cancelDirtyForm' }))) {
                   onCancel();
