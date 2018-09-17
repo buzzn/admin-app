@@ -9,7 +9,12 @@ export const initialState = {
   customer: { _status: null },
   groupContracts: [],
   groupPowertakers: { _status: null, array: [] },
-  validationRules: { lpc: { _status: null }, lptp: { _status: null }, lpto: { _status: null } },
+  validationRules: {
+    lpc: { _status: null },
+    lptp: { _status: null },
+    lpto: { _status: null },
+    lptUpdate: { _status: null },
+  },
 };
 
 export default function (state = initialState, action) {

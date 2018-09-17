@@ -49,6 +49,10 @@ export default [
     swaggerPath: '/localpools/{localpool_ptp_id}/contracts.post.parameters',
     setAction: rules => Contracts.actions.setValidationRules('lptp', rules),
   },
+  {
+    swaggerPath: '/localpools/{localpool_id}/contracts/{localpool_power_taker_contract_id}.patch.parameters',
+    setAction: rules => Contracts.actions.setValidationRules('lptUpdate', rules),
+  },
   // Meter rules
   {
     swaggerPath: '/localpools/{localpool_id}/meters/{real_meter_id}.patch.parameters',
