@@ -233,6 +233,85 @@ class AddPowertaker extends React.Component<Props, State> {
             <p className="h5 grey-underline header text-uppercase">
               <FormattedMessage id={`${prefix}.headerAddPowertaker`} />
             </p>
+            <CustomerOptions>
+              <FormGroup check inline>
+                <CustomInput
+                  checked={customerType === 'person'}
+                  type="radio"
+                  name="ownerType"
+                  onChange={() => this.handleCustomerType('person')}
+                  label="Person"
+                  id="person-radio"
+                />
+              </FormGroup>
+              <FormGroup check inline>
+                <CustomInput
+                  checked={customerType === 'organization'}
+                  type="radio"
+                  name="ownerType"
+                  onChange={() => this.handleCustomerType('organization')}
+                  label="Organization"
+                  id="organization-radio"
+                />
+              </FormGroup>
+            </CustomerOptions>
+            {!customerType ? null : customerType === 'person' ? (
+              <React.Fragment>
+                <React.Fragment>
+                  <Select
+                    options={personOptions}
+                    onChange={this.handleExistingSelect}
+                    styles={mainStyle}
+                    value={selectedCustomer}
+                  />
+                  <br />
+                </React.Fragment>
+                <PersonFields
+                  {...{
+                    editMode,
+                    path: 'customer.',
+                    overrideData: selectedCustomer
+                      ? availableUsers.array.find(o => o.id === (selectedCustomer || { value: null }).value)
+                      : null,
+                    validationRules,
+                  }}
+                />
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <React.Fragment>
+                  <Select
+                    options={organizationOptions}
+                    onChange={this.handleExistingSelect}
+                    styles={mainStyle}
+                    value={selectedCustomer}
+                  />
+                  <br />
+                </React.Fragment>
+                <OrganizationFields
+                  {...{
+                    editMode,
+                    path: 'customer.',
+                    overrideData: selectedCustomer
+                      ? availableOrganizations.array.find(o => o.id === (selectedCustomer || { value: null }).value)
+                      : null,
+                    overrideContact: selectedContact
+                      ? availableUsers.array.find(o => o.id === (selectedContact || { value: null }).value)
+                      : null,
+                    overrideLR: selectedLR
+                      ? availableUsers.array.find(o => o.id === (selectedLR || { value: null }).value)
+                      : null,
+                    validationRules,
+                    personOptions,
+                    handleContactChange: this.handleContactChange,
+                    handleLRChange: this.handleLRChange,
+                    selectedContact,
+                    selectedLR,
+                  }}
+                />
+              </React.Fragment>
+            )}
+            <br />
             <TwoColField
               {...{
                 prefix,
@@ -479,84 +558,6 @@ class AddPowertaker extends React.Component<Props, State> {
                     editMode,
                     validationRules,
                     component: EditableSelect,
-                  }}
-                />
-              </React.Fragment>
-            )}
-            <CustomerOptions>
-              <FormGroup check inline>
-                <CustomInput
-                  checked={customerType === 'person'}
-                  type="radio"
-                  name="ownerType"
-                  onChange={() => this.handleCustomerType('person')}
-                  label="Person"
-                  id="person-radio"
-                />
-              </FormGroup>
-              <FormGroup check inline>
-                <CustomInput
-                  checked={customerType === 'organization'}
-                  type="radio"
-                  name="ownerType"
-                  onChange={() => this.handleCustomerType('organization')}
-                  label="Organization"
-                  id="organization-radio"
-                />
-              </FormGroup>
-            </CustomerOptions>
-            {!customerType ? null : customerType === 'person' ? (
-              <React.Fragment>
-                <React.Fragment>
-                  <Select
-                    options={personOptions}
-                    onChange={this.handleExistingSelect}
-                    styles={mainStyle}
-                    value={selectedCustomer}
-                  />
-                  <br />
-                </React.Fragment>
-                <PersonFields
-                  {...{
-                    editMode,
-                    path: 'customer.',
-                    overrideData: selectedCustomer
-                      ? availableUsers.array.find(o => o.id === (selectedCustomer || { value: null }).value)
-                      : null,
-                    validationRules,
-                  }}
-                />
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                <React.Fragment>
-                  <Select
-                    options={organizationOptions}
-                    onChange={this.handleExistingSelect}
-                    styles={mainStyle}
-                    value={selectedCustomer}
-                  />
-                  <br />
-                </React.Fragment>
-                <OrganizationFields
-                  {...{
-                    editMode,
-                    path: 'customer.',
-                    overrideData: selectedCustomer
-                      ? availableOrganizations.array.find(o => o.id === (selectedCustomer || { value: null }).value)
-                      : null,
-                    overrideContact: selectedContact
-                      ? availableUsers.array.find(o => o.id === (selectedContact || { value: null }).value)
-                      : null,
-                    overrideLR: selectedLR
-                      ? availableUsers.array.find(o => o.id === (selectedLR || { value: null }).value)
-                      : null,
-                    validationRules,
-                    personOptions,
-                    handleContactChange: this.handleContactChange,
-                    handleLRChange: this.handleLRChange,
-                    selectedContact,
-                    selectedLR,
                   }}
                 />
               </React.Fragment>
