@@ -1,7 +1,7 @@
 import * as React from 'react';
 import omit from 'lodash/omit';
 import set from 'lodash/set';
-import { reduxForm, FormSection } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { FormattedMessage } from 'react-intl';
 import { Col, FormGroup, CustomInput } from 'reactstrap';
 import Select from 'react-select';
@@ -33,7 +33,6 @@ interface Props {
   availableOrganizations: { _status: null | number; array: Array<any> };
   marketLocations: { _status: null | number; array: Array<any> };
   pristine: boolean;
-  resetSection: (string) => void;
   submitting: boolean;
   handleSubmit: Function;
   change: Function;
@@ -51,7 +50,14 @@ interface State {
 }
 
 class AddPowertaker extends React.Component<Props, State> {
-  state = { customerType: null, selectedCustomer: null, selectedContact: null, selectedLR: null, selectedMaLo: null, saved: false };
+  state = {
+    customerType: null,
+    selectedCustomer: null,
+    selectedContact: null,
+    selectedLR: null,
+    selectedMaLo: null,
+    saved: false,
+  };
 
   componentDidMount() {
     const { loadAvailableUsers, loadAvailableOrganizations, loadMarketLocations } = this.props;
@@ -74,7 +80,6 @@ class AddPowertaker extends React.Component<Props, State> {
   };
 
   handleCustomerType = (customerType) => {
-    this.props.resetSection('customer');
     this.preselect();
     this.setState({ customerType });
   };
@@ -511,18 +516,16 @@ class AddPowertaker extends React.Component<Props, State> {
                   />
                   <br />
                 </React.Fragment>
-                <FormSection name="customer">
-                  <PersonFields
-                    {...{
-                      editMode,
-                      path: '',
-                      overrideData: selectedCustomer
-                        ? availableUsers.array.find(o => o.id === (selectedCustomer || { value: null }).value)
-                        : null,
-                      validationRules,
-                    }}
-                  />
-                </FormSection>
+                <PersonFields
+                  {...{
+                    editMode,
+                    path: 'customer.',
+                    overrideData: selectedCustomer
+                      ? availableUsers.array.find(o => o.id === (selectedCustomer || { value: null }).value)
+                      : null,
+                    validationRules,
+                  }}
+                />
               </React.Fragment>
             ) : (
               <React.Fragment>
@@ -535,29 +538,27 @@ class AddPowertaker extends React.Component<Props, State> {
                   />
                   <br />
                 </React.Fragment>
-                <FormSection name="customer">
-                  <OrganizationFields
-                    {...{
-                      editMode,
-                      path: '',
-                      overrideData: selectedCustomer
-                        ? availableOrganizations.array.find(o => o.id === (selectedCustomer || { value: null }).value)
-                        : null,
-                      overrideContact: selectedContact
-                        ? availableUsers.array.find(o => o.id === (selectedContact || { value: null }).value)
-                        : null,
-                      overrideLR: selectedLR
-                        ? availableUsers.array.find(o => o.id === (selectedLR || { value: null }).value)
-                        : null,
-                      validationRules,
-                      personOptions,
-                      handleContactChange: this.handleContactChange,
-                      handleLRChange: this.handleLRChange,
-                      selectedContact,
-                      selectedLR,
-                    }}
-                  />
-                </FormSection>
+                <OrganizationFields
+                  {...{
+                    editMode,
+                    path: 'customer.',
+                    overrideData: selectedCustomer
+                      ? availableOrganizations.array.find(o => o.id === (selectedCustomer || { value: null }).value)
+                      : null,
+                    overrideContact: selectedContact
+                      ? availableUsers.array.find(o => o.id === (selectedContact || { value: null }).value)
+                      : null,
+                    overrideLR: selectedLR
+                      ? availableUsers.array.find(o => o.id === (selectedLR || { value: null }).value)
+                      : null,
+                    validationRules,
+                    personOptions,
+                    handleContactChange: this.handleContactChange,
+                    handleLRChange: this.handleLRChange,
+                    selectedContact,
+                    selectedLR,
+                  }}
+                />
               </React.Fragment>
             )}
           </FormPanel>
