@@ -184,6 +184,8 @@ class Powergiver extends React.Component<Props, State> {
       }
     }
 
+    if (params.additionalLegalRepresentation) params.additionalLegalRepresentation = Object.values(params.additionalLegalRepresentation).join('$#$');
+
     return new Promise((resolve, reject) => {
       updateOwner({
         params,

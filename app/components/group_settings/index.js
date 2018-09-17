@@ -156,6 +156,7 @@ class GroupSettings extends React.Component {
     if (ownerValues.contact && !ownerValues.contact.address) ownerValues.contact.address = {};
     if (!ownerValues.legalRepresentation) ownerValues.legalRepresentation = { address: {} };
     if (ownerValues.legalRepresentation && !ownerValues.legalRepresentation.address) ownerValues.legalRepresentation.address = {};
+    if (ownerValues.additionalLegalRepresentation) ownerValues.additionalLegalRepresentation = ownerValues.additionalLegalRepresentation.split('$#$');
 
     return (
       <React.Fragment>
