@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { Row, Col } from 'reactstrap';
 import Users from 'users';
+import Organizations from 'organizations';
 import Loading from 'components/loading';
 import { tableParts as TableParts } from 'react_table_config';
 import ContractStatus from 'components/contract_status';
@@ -21,9 +22,12 @@ class PowertakerData extends React.Component<
   ExtProps & DispatchProps & StateProps & BreadcrumbsProps & InjectedIntlProps
   > {
   componentDidMount() {
-    const { loadUser, userId, groupId, powertaker } = this.props;
-    // FIXME: temporary workaround for organizations
-    if (!powertaker.id || powertaker.type === 'person') loadUser({ groupId, userId });
+    const { loadUser, loadOrganization, powertakerId, powertakerType } = this.props;
+    if (powertakerType === 'person') {
+      loadUser({ userId: powertakerId });
+    } else {
+      loadOrganization({ organizationId: powertakerId });
+    }
   }
 
   render() {
@@ -393,12 +397,12 @@ class PowertakerData extends React.Component<
 
 interface StatePart {
   users: { loadingUser: boolean; user: { _status: null | number; [key: string]: any } };
+  organizations: { loadingOrganization: boolean; organization: { _status: null | number; [key: string]: any } };
 }
 
 interface ExtProps {
-  userId: null | string;
-  groupId: string;
-  powertaker: null | { _status: null | number; [key: string]: any };
+  powertakerId: string;
+  powertakerType: string;
   url: string;
 }
 
@@ -409,14 +413,17 @@ interface StateProps {
 
 interface DispatchProps {
   loadUser: Function;
+  loadOrganization: Function;
 }
 
 function mapStateToProps(state: StatePart, props: ExtProps) {
   return {
-    // FIXME: temporary workaround for organizations
-    powertaker: props.powertaker || state.users.user,
-    loading: state.users.loadingUser,
+    powertaker: props.powertakerType === 'person' ? state.users.user : state.organizations.organization,
+    loading: state.users.loadingUser || state.organizations.loadingOrganization,
   };
 }
 
-export default connect<StateProps, DispatchProps, ExtProps>(mapStateToProps, { loadUser: Users.actions.loadUser })(injectIntl(PowertakerData));
+export default connect<StateProps, DispatchProps, ExtProps>(
+  mapStateToProps,
+  { loadUser: Users.actions.loadUser, loadOrganization: Organizations.actions.loadOrganization },
+)(injectIntl(PowertakerData));

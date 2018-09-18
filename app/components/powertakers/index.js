@@ -5,7 +5,6 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import find from 'lodash/find';
 import truncate from 'lodash/truncate';
-import get from 'lodash/get';
 import Contracts from 'contracts';
 import Groups from 'groups';
 import Users from 'users';
@@ -128,10 +127,8 @@ export class Powertakers extends React.Component {
                 <Route path={`${contractUrl}/powertaker`}>
                   <PowertakerData
                     {...{
-                      // FIXME: temporary workaround for organizations
-                      powertaker: get(contract.customer, 'type') === 'organization' ? contract.customer : null,
-                      userId: get(contract.customer, 'type') === 'person' ? contract.customer.id : null,
-                      groupId,
+                      powertakerType: contract.customer.type,
+                      powertakerId: contract.customer.id,
                       url,
                       history,
                       breadcrumbs,

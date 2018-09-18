@@ -1,14 +1,25 @@
 import { constants } from './actions';
 
 export const initialState = {
+  loadingOrganization: false,
   loadingAvailableOrganizations: false,
   loadingAvailableOrganizationMarkets: false,
+  organization: { _status: null },
   availableOrganizations: { _status: null, array: [] },
   availableOrganizationMarkets: { _status: null, array: [] },
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case constants.LOAD_ORGANIZATION:
+      return { ...state, organizationId: action.organizationId };
+    case constants.LOADING_ORGANIZATION:
+      return { ...state, loadingOrganization: true };
+    case constants.LOADED_ORGANIZATION:
+      return { ...state, loadingOrganization: false };
+    case constants.SET_ORGANIZATION:
+      return { ...state, organization: action.organization };
+
     case constants.LOAD_AVAILABLE_ORGANIZATIONS:
       return { ...state };
     case constants.LOADING_AVAILABLE_ORGANIZATIONS:
