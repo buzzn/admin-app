@@ -9,10 +9,19 @@ export const initialState = {
   customer: { _status: null },
   groupContracts: [],
   groupPowertakers: { _status: null, array: [] },
+  validationRules: {
+    lpc: { _status: null },
+    lptp: { _status: null },
+    lpto: { _status: null },
+    lptUpdate: { _status: null },
+  },
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case constants.SET_VALIDATION_RULES:
+      return { ...state, validationRules: { ...state.validationRules, [action.ruleType]: action.validationRules } };
+
     case constants.LOAD_GROUP_CONTRACTS:
       return { ...state, groupId: action.groupId };
     case constants.LOADING_GROUP_CONTRACTS:

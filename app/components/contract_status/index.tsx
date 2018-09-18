@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 interface Props {
-  status: 'onboarding' | 'active' | 'terminated' | 'ended';
+  status: 'onboarding' | 'active' | 'terminated' | 'ended' | 'signed';
   size: 'small' | 'large';
 }
 
@@ -14,6 +14,10 @@ const ContractStatus = ({ status, size }: Props) => {
     active: {
       icon: 'fa-check',
       color: '#21D343',
+    },
+    signed: {
+      icon: 'fa-pencil',
+      color: '#1E88E5',
     },
     terminated: {
       icon: 'fa-minus',

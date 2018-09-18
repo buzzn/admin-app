@@ -9,12 +9,13 @@ import { Row, Col } from 'reactstrap';
 import Alert from 'react-s-alert';
 import withEditOverlay from 'components/with_edit_overlay';
 import FormPanel from 'components/form_panel';
-import { MeterHeader, MeterTitle } from './style';
 import EditableInput from 'components/editable_input';
 import EditableSelect from 'components/editable_select';
+import TwoColView from 'components/two_col_view';
 import TwoColField from 'components/two_col_field';
 import EditableDate from 'components/editable_date';
 import { dateNormalizer, numberNormalizer } from 'validation_normalizers';
+import { MeterHeader, MeterTitle } from './style';
 
 interface Props {
   meter: any;
@@ -81,31 +82,29 @@ class MeterData extends React.Component<Props & InjectedIntlProps, State> {
       },
       {
         expander: true,
-        Expander: row =>
-          (row.original.lastReading.value ? (
+        Expander: row => (row.original.lastReading.value ? (
             <div>{row.isExpanded ? <i className="fa fa-chevron-up" /> : <i className="fa fa-chevron-down" />}</div>
-          ) : (
-            ''
-          )),
+        ) : (
+          ''
+        )),
         style: { color: '#bdbdbd' },
       },
     ];
 
     const prefix = 'admin.meters';
 
-    const submit = values =>
-      new Promise((resolve, reject) => {
-        updateMeter({
-          meterId: meter.id,
-          params: values,
-          resolve,
-          reject,
-          groupId,
-        });
-      }).then(() => {
-        Alert.success('Saved!');
-        switchEditMode();
+    const submit = values => new Promise((resolve, reject) => {
+      updateMeter({
+        meterId: meter.id,
+        params: values,
+        resolve,
+        reject,
+        groupId,
       });
+    }).then(() => {
+      Alert.success('Saved!');
+      switchEditMode();
+    });
 
     return (
       <div className="meter-data">
@@ -264,36 +263,21 @@ class MeterData extends React.Component<Props & InjectedIntlProps, State> {
               <TwoColField
                 {...{ prefix, name: 'locationDescription', editMode, validationRules, component: EditableInput }}
               />
-              <Row className="fieldgroup">
-                <Col xs="4" className="fieldname">
-                  <FormattedMessage id={`${prefix}.dataSource`} />
-                </Col>
-                <Col xs="8" className="grey-underline fieldvalue">
-                  <FormattedMessage id={`${prefix}.${meter.dataSource}`} />
-                </Col>
-              </Row>
+              <TwoColView {...{ prefix, field: 'dataSource' }}>
+                <FormattedMessage id={`${prefix}.${meter.dataSource}`} />
+              </TwoColView>
               <TwoColField
                 {...{ prefix, name: 'directionNumber', editMode, validationRules, component: EditableSelect }}
               />
               <TwoColField
                 {...{ prefix, name: 'productSerialnumber', editMode, validationRules, component: EditableInput }}
               />
-              <Row className="fieldgroup">
-                <Col xs="4" className="fieldname">
-                  <FormattedMessage id={`${prefix}.sequenceNumber`} />
-                </Col>
-                <Col xs="8" className="grey-underline fieldvalue">
-                  {meter.sequenceNumber}
-                </Col>
-              </Row>
-              <Row className="fieldgroup">
-                <Col xs="4" className="fieldname">
-                  <FormattedMessage id={`${prefix}.type`} />
-                </Col>
-                <Col xs="8" className="grey-underline fieldvalue">
-                  <FormattedMessage id={`${prefix}.${meter.type}`} />
-                </Col>
-              </Row>
+              <TwoColView {...{ prefix, field: 'sequenceNumber' }}>
+                {meter.sequenceNumber}
+              </TwoColView>
+              <TwoColView {...{ prefix, field: 'type' }}>
+                <FormattedMessage id={`${prefix}.${meter.type}`} />
+              </TwoColView>
               <MeterTitle>
                 <FormattedMessage id={`${prefix}.headerEdifactInformation`} />
               </MeterTitle>

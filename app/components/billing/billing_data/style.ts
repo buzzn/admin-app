@@ -113,8 +113,8 @@ export const BillingDetails = styled.div`
 interface BarStyleProps {
   width: number;
   transparent?: boolean;
-  status?: 'open' | 'closed';
-  contractType?: 'power_taker' | 'third_party' | 'gap';
+  status?: 'default' | 'open' | 'closed';
+  contractType?: 'default' | 'power_taker' | 'third_party' | 'gap';
   narrow?: boolean;
 }
 

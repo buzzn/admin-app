@@ -1,12 +1,11 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 module.exports = {
   devtool: 'sourcemap',
-  devServer: {
-    historyApiFallback: true,
-  },
+  devServer: { historyApiFallback: true },
   entry: [
     '@babel/polyfill',
     'bootstrap-loader',
@@ -26,25 +25,6 @@ module.exports = {
         test: /\.(ts|tsx|js)$/,
         exclude: /(node_modules|bower_components)/,
         loader: 'babel-loader',
-        query: {
-          presets: [
-            ['@babel/env', {
-              targets: {
-                browsers: ['last 2 versions', 'safari >= 7'],
-              },
-            }],
-            '@babel/stage-3',
-            '@babel/react',
-            '@babel/typescript',
-          ],
-          plugins: [
-            'react-hot-loader/babel',
-            '@babel/plugin-proposal-object-rest-spread',
-            '@babel/plugin-proposal-class-properties',
-            '@babel/plugin-syntax-class-properties',
-            '@babel/plugin-syntax-object-rest-spread',
-          ],
-        },
       },
       {
         test: /\.css$/,
@@ -80,17 +60,14 @@ module.exports = {
   resolve: {
     modules: [path.resolve(__dirname, 'node_modules'), path.resolve(__dirname, 'app'), 'node_modules'],
     extensions: ['.ts', '.tsx', '.js', '.json'],
-    alias: {
-      moment$: 'moment/moment.js',
-    },
+    alias: { moment$: 'moment/moment.js' },
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: 'app/index.html',
       filename: 'index.html',
     }),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development'),
-    }),
+    new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify('development') }),
+    new FaviconsWebpackPlugin('./favicon.png'),
   ],
 };

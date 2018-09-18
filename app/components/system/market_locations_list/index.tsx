@@ -66,9 +66,9 @@ const MarketLocationsList = ({
       <PageTitle
         {...{
           breadcrumbs: breadcrumbs.concat([
-            { id: '-----', title: intl.formatMessage({ id: 'admin.breadcrumbs.devices' }) },
+            { id: '-----', title: intl.formatMessage({ id: 'admin.breadcrumbs.marketLocations' }) },
           ]),
-          title: intl.formatMessage({ id: 'admin.breadcrumbs.devices' }),
+          title: intl.formatMessage({ id: 'admin.breadcrumbs.marketLocations' }),
         }}
       />
       <CenterContent>

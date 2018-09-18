@@ -6,6 +6,7 @@ import Contracts from 'contracts';
 import Loading from 'components/loading';
 import PowertakerContract from './powertaker';
 import ThirdPartyContract from './third_party';
+import LPCContract from './localpool_processing';
 
 class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
   componentDidMount() {
@@ -18,13 +19,26 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
   }
 
   render() {
-    const { loading, contract, contractor, url } = this.props;
+    const {
+      loading,
+      contract,
+      contractor,
+      url,
+      groupId,
+      updateContract,
+      LPCValidationRules,
+      LPTUpdateRules,
+    } = this.props;
 
     if (loading || contract._status === null) return <Loading minHeight={40} />;
     if (contract._status && contract._status !== 200) return <Redirect to={url} />;
 
     const register = contract.marketLocation
-      ? { ...contract.marketLocation.register, name: contract.marketLocation.name, locationId: contract.marketLocation.id }
+      ? {
+        ...contract.marketLocation.register,
+        name: contract.marketLocation.name,
+        locationId: contract.marketLocation.id,
+      }
       : {};
     const prefix = 'admin.contracts';
 
@@ -32,14 +46,48 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
       return <ThirdPartyContract {...{ contract, register, prefix, url }} />;
     }
     if (contract.type === 'contract_localpool_power_taker') {
-      return <PowertakerContract {...{ contract, register, contractor, prefix, url }} />;
+      return (
+        <PowertakerContract
+          {...{
+            contract,
+            register,
+            contractor,
+            prefix,
+            url,
+            initialValues: contract,
+            groupId,
+            updateContract,
+            validationRules: LPTUpdateRules,
+          }}
+        />
+      );
+    }
+    if (contract.type === 'contract_localpool_processing') {
+      return (
+        <LPCContract
+          {...{
+            contract,
+            contractor,
+            prefix,
+            url,
+            initialValues: contract,
+            groupId,
+            updateContract,
+            validationRules: LPCValidationRules,
+          }}
+        />
+      );
     }
     return 'Unknown contract type';
   }
 }
 
 interface StatePart {
-  contracts: { loadingContract: boolean; contract: { _status: null | number; [key: string]: any } };
+  contracts: {
+    loadingContract: boolean;
+    contract: { _status: null | number; [key: string]: any };
+    validationRules: { lpc: any; lptUpdate: any };
+  };
   groups: { loadingGroup: boolean; group: { _status: null | number; [key: string]: any } };
 }
 
@@ -53,11 +101,14 @@ interface StateProps {
   loading: boolean;
   contract: { _status: null | number; [key: string]: any };
   contractor: { [key: string]: any };
+  LPCValidationRules: any;
+  LPTUpdateRules: any;
 }
 
 interface DispatchProps {
   loadContract: Function;
   setContract: Function;
+  updateContract: Function;
 }
 
 function mapStateToProps(state: StatePart) {
@@ -65,10 +116,16 @@ function mapStateToProps(state: StatePart) {
     loading: state.contracts.loadingContract || state.groups.loadingGroup,
     contract: state.contracts.contract,
     contractor: get(state.groups.group, 'owner', {}),
+    LPCValidationRules: state.contracts.validationRules.lpc,
+    LPTUpdateRules: state.contracts.validationRules.lptUpdate,
   };
 }
 
-export default connect<StateProps, DispatchProps, ExtProps>(mapStateToProps, {
-  loadContract: Contracts.actions.loadContract,
-  setContract: Contracts.actions.setContract,
-})(Contract);
+export default connect<StateProps, DispatchProps, ExtProps>(
+  mapStateToProps,
+  {
+    loadContract: Contracts.actions.loadContract,
+    setContract: Contracts.actions.setContract,
+    updateContract: Contracts.actions.updateContract,
+  },
+)(Contract);

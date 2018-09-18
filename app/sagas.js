@@ -12,10 +12,12 @@ import Groups from 'groups';
 import Meters from 'meters';
 import Registers from 'registers';
 import Users from 'users';
+import Organizations from 'organizations';
 import Contracts from 'contracts';
 import Readings from 'readings';
 import MarketLocations from 'market_locations';
 import BillingCycles from 'billing_cycles';
+import Devices from 'devices';
 import ValidationRules from 'validation_rules';
 
 import loadingList, { authList } from 'validation_rules_list';
@@ -56,10 +58,12 @@ export function* setToken(token) {
   yield put(Meters.actions.setToken(token));
   yield put(Registers.actions.setToken(token));
   yield put(Users.actions.setToken(token));
+  yield put(Organizations.actions.setToken(token));
   yield put(Contracts.actions.setToken(token));
   yield put(Readings.actions.setToken(token));
   yield put(MarketLocations.actions.setToken(token));
   yield put(BillingCycles.actions.setToken(token));
+  yield put(Devices.actions.setToken(token));
   yield put(ValidationRules.actions.setToken(token));
 }
 
@@ -120,10 +124,12 @@ export default function* () {
   yield put(Meters.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Registers.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Users.actions.setApiParams({ apiUrl, apiPath }));
+  yield put(Organizations.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Contracts.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Readings.actions.setApiParams({ apiUrl, apiPath }));
   yield put(MarketLocations.actions.setApiParams({ apiUrl, apiPath }));
   yield put(BillingCycles.actions.setApiParams({ apiUrl, apiPath }));
+  yield put(Devices.actions.setApiParams({ apiUrl, apiPath }));
   yield put(ValidationRules.actions.setApiParams({ apiUrl, apiPath }));
 
   yield fork(setHealth, { apiUrl });

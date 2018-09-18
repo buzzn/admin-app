@@ -55,19 +55,19 @@ class Sidebar extends React.Component<Props> {
           <SidebarItem to={`${url}/tariffs`} icon="fa-eur">
             <FormattedMessage id={`${prefix}.tariffs`} />
           </SidebarItem>
-          <SidebarItem to={`${url}/billing`} icon="fa-money">
+          <SidebarItem to={`${url}/billing`} icon="fa-money" devMode={devMode}>
             <FormattedMessage id={`${prefix}.billing`} />
           </SidebarItem>
           <SidebarItem to={`${url}/market-locations`} icon="buzzn-meters">
             <FormattedMessage id={`${prefix}.system`} />
           </SidebarItem>
-          <SidebarItem to={`${url}/documents`} icon="fa-folder-open-o" devMode={devMode}>
+          <SidebarItem to={`${url}/documents`} icon="fa-folder-open-o">
             <FormattedMessage id={`${prefix}.documents`} />
           </SidebarItem>
           <SidebarItem to={`${url}/settings`} icon="fa-cogs">
             <FormattedMessage id={`${prefix}.settings`} />
           </SidebarItem>
-          <SidebarItem to={`${url}/devices`} icon="buzzn-devices" devMode={devMode}>
+          <SidebarItem to={`${url}/devices`} icon="buzzn-devices">
             <FormattedMessage id={`${prefix}.devices`} />
           </SidebarItem>
           <SidebarItem to={`${url}/bubbles`} icon="fa-pie-chart" devMode={devMode}>

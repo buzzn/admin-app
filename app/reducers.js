@@ -9,10 +9,12 @@ import Groups from 'groups';
 import Meters from 'meters';
 import Registers from 'registers';
 import Users from 'users';
+import Organizations from 'organizations';
 import Contracts from 'contracts';
 import Readings from 'readings';
 import MarketLocations from 'market_locations';
 import BillingCycles from 'billing_cycles';
+import Devices from 'devices';
 
 // in this case initialState includes apiUrl and apiPath, so it will just copy this params into app state.
 export function configReducer(state = config) {
@@ -86,19 +88,21 @@ export function appReducer(state = initialState, action) {
 }
 
 export default combineReducers({
-  // apiUrl and apiPath will be located in 'config' property
-  config: configReducer,
-  form: formReducer,
+  app: appReducer,
   auth: Auth.reducers,
+  billingCycles: BillingCycles.reducers,
   bubbles: Bubbles.reducers,
   charts: Charts.reducers,
-  app: appReducer,
-  meters: Meters.reducers,
+  // apiUrl and apiPath will be located in 'config' property
+  config: configReducer,
+  contracts: Contracts.reducers,
+  devices: Devices.reducers,
   groups: Groups.reducers,
+  form: formReducer,
+  marketLocations: MarketLocations.reducers,
+  meters: Meters.reducers,
+  organizations: Organizations.reducers,
+  readings: Readings.reducers,
   registers: Registers.reducers,
   users: Users.reducers,
-  contracts: Contracts.reducers,
-  readings: Readings.reducers,
-  marketLocations: MarketLocations.reducers,
-  billingCycles: BillingCycles.reducers,
 });

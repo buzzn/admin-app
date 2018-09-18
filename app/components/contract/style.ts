@@ -13,7 +13,7 @@ export const InnerRow = styled(Row)`
   height: 80px;
 `;
 
-export const InnerBorderRow = InnerRow.extend`
+export const InnerBorderRow = styled(InnerRow)`
   border-bottom: 1px #e0e0e0 solid;
 `;
 

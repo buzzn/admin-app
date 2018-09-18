@@ -1,7 +1,9 @@
 import * as React from 'react';
 import find from 'lodash/find';
-import { injectIntl } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import { FormGroup } from 'components/style';
+import HTMLSelect from './html_select';
+import CustomSelect from './custom_select';
 
 import './style.scss';
 
@@ -13,10 +15,14 @@ const EditableSelect = ({
   intl,
   defaultValue,
   listOverride,
+  overrideData,
   noValTranslations,
   noDefault,
   withValue,
-  meta: { touched, error, dirty },
+  customSelect,
+  withLabel,
+  name,
+  meta: { touched, error, dirty, active },
 }) => {
   let list = [input.value];
   let options = [];
@@ -32,28 +38,44 @@ const EditableSelect = ({
       label: noValTranslations ? value : intl.formatMessage({ id: `${prefix}.${value}` }),
     }));
   }
+  const SelectComponent = customSelect ? CustomSelect : HTMLSelect;
 
   if (editMode) {
     return (
       <FormGroup className={`editable-select ${touched && error && 'has-danger'}`}>
-        <select
-          className={`custom-select form-control ${touched && error && 'form-control-danger'} ${dirty && 'dirty'}`}
-          {...input}
-        >
-          {!noDefault && <option value={defaultValue.value}>{defaultValue.label}</option>}
-          {options.map(o => (
-            <option key={o.value} value={o.value}>
-              {withValue ? `${o.value} - ${o.label}` : o.label}
-            </option>
-          ))}
-        </select>
-        {touched &&
-          !!error && (
+        {!overrideData ? (
+          <SelectComponent
+            {...{
+              touched,
+              error,
+              dirty,
+              input,
+              noDefault,
+              defaultValue,
+              options,
+              withValue,
+            }}
+          />
+        ) : (
+          <input
+            className="form-control"
+            value={overrideData[input.name.split('.').pop()] || ''}
+            type="text"
+            disabled
+          />
+        )}
+        {withLabel && (
+          <label className={`${input.value || active || overrideData ? 'top' : 'center'}`}>
+            <FormattedMessage id={`${prefix}.${name || input.name.split('.').pop()}`} />
+          </label>
+        )}
+        {touched
+          && !!error && (
             <React.Fragment>
               <div className="inline-error">{error}</div>
               <i className="error-icon buzzn-attention" />
             </React.Fragment>
-          )}
+        )}
       </FormGroup>
     );
   }

@@ -13,6 +13,8 @@ export const constants = {
   UPDATE_GROUP: 'buzzn_groups/UPDATE_GROUP',
   DELETE_GROUP: 'buzzn_groups/DELETE_GROUP',
 
+  UPDATE_OWNER: 'buzzn_groups/UPDATE_OWNER',
+
   LOAD_GROUPS: 'buzzn_groups/LOAD_GROUPS',
   LOADING_GROUPS: 'buzzn_groups/LOADING_GROUPS',
   LOADED_GROUPS: 'buzzn_groups/LOADED_GROUPS',
@@ -23,7 +25,11 @@ export const actions = {
   setApiParams: ({ apiPath, apiUrl }) => ({ type: constants.SET_API_PARAMS, apiPath, apiUrl }),
   setToken: token => ({ type: constants.SET_TOKEN, token }),
 
-  setValidationRules: validationRules => ({ type: constants.SET_VALIDATION_RULES, validationRules }),
+  setValidationRules: (ruleType, validationRules) => ({
+    type: constants.SET_VALIDATION_RULES,
+    ruleType,
+    validationRules,
+  }),
 
   loadGroup: groupId => ({ type: constants.LOAD_GROUP, groupId }),
   loadingGroup: () => ({ type: constants.LOADING_GROUP }),
@@ -48,6 +54,17 @@ export const actions = {
   deleteGroup: ({ groupId }) => ({
     type: constants.DELETE_GROUP,
     groupId,
+  }),
+
+  updateOwner: ({ groupId, params, resolve, reject, update, ownerId, ownerType }) => ({
+    type: constants.UPDATE_OWNER,
+    groupId,
+    params,
+    resolve,
+    reject,
+    update,
+    ownerId,
+    ownerType,
   }),
 
   loadGroups: () => ({ type: constants.LOAD_GROUPS }),

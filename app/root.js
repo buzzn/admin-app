@@ -33,14 +33,26 @@ import Footer from 'components/footer';
 import AppLoading from 'components/app_loading';
 import AppMaintenance from 'components/app_maintenance';
 import AddGroup from 'components/add_group';
+import Contract from 'components/contract';
+import DevicesContainer from 'components/devices';
 import { EditOverlay } from 'style';
 import './react_table_config';
 
 export const EditOverlayContext = React.createContext();
 
 // FIXME: react router old context api hack. See react-router#5901, react-router#6072, react#12551, react#12586
-const RouterHack = ({ token, devMode, multiGroups, editMode, switchEditMode, addGroupOpen, switchAddGroup, addGroup }) => (
-  <EditOverlayContext.Provider value={{ editMode, switchEditMode }}>
+const RouterHack = ({
+  token,
+  devMode,
+  multiGroups,
+  editMode,
+  switchEditMode,
+  setEditMode,
+  addGroupOpen,
+  switchAddGroup,
+  addGroup,
+}) => (
+  <EditOverlayContext.Provider value={{ editMode, switchEditMode, setEditMode }}>
     {token && <TopNavBarContainer {...{ devMode, switchAddGroup }} />}
     {token ? (
       <Container style={{ maxWidth: '1440px' }}>
@@ -66,6 +78,11 @@ const RouterHack = ({ token, devMode, multiGroups, editMode, switchEditMode, add
                       <Route path="/groups/:groupId/documents" component={DocumentsContainer} />
                       <Route path="/groups/:groupId/bubbles" component={BubblesContainer} />
                       <Route path="/groups/:groupId/settings" component={GroupSettingsContainer} />
+                      <Route path="/groups/:groupId/devices" component={DevicesContainer} />
+                      <Route
+                        path="/groups/:groupId/contracts/:contractId"
+                        render={({ match: { params: { groupId, contractId } } }) => <Contract {...{ url: `${url}/tail`, groupId, contractId }} />}
+                      />
                       <Route
                         path="/groups/:groupId"
                         render={({ match: { params: { groupId } } }) => <Redirect to={`/groups/${groupId || ''}/settings`} />}
@@ -85,12 +102,17 @@ const RouterHack = ({ token, devMode, multiGroups, editMode, switchEditMode, add
         </Row>
         <Row>
           <Col xs={12}>
-            <AddGroup
-              {...{
-                isOpen: addGroupOpen,
-                toggle: switchAddGroup,
-                onSubmit: addGroup,
-              }}
+            <Route
+              render={({ history }) => (
+                <AddGroup
+                  {...{
+                    isOpen: addGroupOpen,
+                    toggle: switchAddGroup,
+                    addGroup,
+                    history,
+                  }}
+                />
+              )}
             />
             <Footer />
           </Col>
@@ -109,35 +131,16 @@ class NewRoot extends React.Component {
     this.setState({ editMode: !this.state.editMode });
   };
 
+  setEditMode = (value) => {
+    this.setState({ editMode: value });
+  }
+
   switchAddGroup = () => {
     this.setState({ addGroupOpen: !this.state.addGroupOpen });
   };
 
-  addGroup = (values) => {
-    const { addGroup } = this.props;
-    const params = { ...values };
-
-    // Country is always predefined, so if there is only one address field,
-    // user did not entered anything in address fields
-    if (Object.keys(values.address).length === 1) delete params.address;
-
-    return new Promise((resolve, reject) => {
-      addGroup({ resolve, reject, params });
-    }).then(() => {
-      Alert.success('Saved!');
-      this.switchAddGroup();
-    });
-  };
-
   render() {
-    const {
-      token,
-      devMode,
-      multiGroups,
-      appLoading,
-      health,
-      groupValidationRules,
-    } = this.props;
+    const { token, devMode, multiGroups, appLoading, health, groupValidationRules, addGroup } = this.props;
     const { editMode, addGroupOpen } = this.state;
 
     return (
@@ -162,18 +165,21 @@ class NewRoot extends React.Component {
                   }}
                 </Transition>
 
-                {(health.healthy && health.maintenance === 'off') ? (
-                  <RouterHack {...{
-                    token,
-                    devMode,
-                    multiGroups,
-                    editMode,
-                    switchEditMode: this.switchEditMode,
-                    addGroupOpen,
-                    groupValidationRules,
-                    switchAddGroup: this.switchAddGroup,
-                    addGroup: this.addGroup,
-                  }} />
+                {health.healthy && health.maintenance === 'off' ? (
+                  <RouterHack
+                    {...{
+                      token,
+                      devMode,
+                      multiGroups,
+                      editMode,
+                      switchEditMode: this.switchEditMode,
+                      setEditMode: this.setEditMode,
+                      addGroupOpen,
+                      groupValidationRules,
+                      switchAddGroup: this.switchAddGroup,
+                      addGroup,
+                    }}
+                  />
                 ) : (
                   <AppMaintenance />
                 )}
@@ -196,6 +202,7 @@ const mapStateToProps = state => ({
   health: state.app.health,
 });
 
-export default connect(mapStateToProps, {
-  addGroup: Groups.actions.addGroup,
-})(NewRoot);
+export default connect(
+  mapStateToProps,
+  { addGroup: Groups.actions.addGroup },
+)(NewRoot);

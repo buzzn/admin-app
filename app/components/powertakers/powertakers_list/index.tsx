@@ -3,13 +3,15 @@ import ReactTableSorted from 'components/react_table_sorted';
 import orderBy from 'lodash/orderBy';
 import moment from 'moment';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { tableParts as TableParts } from 'react_table_config';
 import ContractStatus from 'components/contract_status';
 import Loading from 'components/loading';
 import PageTitle from 'components/page_title';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
 import { CenterContent, SubNav } from 'components/style';
+
+import { AddPowertakerLink } from './style';
 
 const DefaultPerson = require('images/default_person.jpg');
 const DefaultOrganisation = require('images/default_organisation.jpg');
@@ -19,7 +21,7 @@ interface Props {
   pType: 'active' | 'past';
   powertakers: Array<any>;
   loading: boolean;
-  groupId: string;
+  group: { _status: null | number; [key: string]: any };
   url: string;
   history: any;
 }
@@ -29,23 +31,24 @@ const PowertakersList = ({
   pType,
   powertakers,
   loading,
-  groupId,
+  group,
   url,
   intl,
   history,
 }: Props & BreadcrumbsProps & InjectedIntlProps) => {
   if (loading) return <Loading minHeight={40} />;
 
-  const filteredPowertakers = powertakers.filter(o => (pType === 'active' ? o.status !== 'ended' : o.status === 'ended'));
+  const filteredPowertakers = powertakers.filter(
+    o => (pType === 'active' ? o.status !== 'ended' : o.status === 'ended'),
+  );
 
   const prefix = 'admin.contracts';
 
   const data = orderBy(
     filteredPowertakers,
-    o =>
-      (o.type === 'contract_localpool_third_party'
-        ? null
-        : o.customer.name || `${o.customer.lastName} ${o.customer.firstName}`),
+    o => (o.type === 'contract_localpool_third_party'
+      ? null
+      : o.customer.name || `${o.customer.lastName} ${o.customer.firstName}`),
     'asc',
   ).map(p => ({
     ...p,
@@ -140,6 +143,14 @@ const PowertakersList = ({
         }}
       />
       <CenterContent>
+        {!!group.allowedActions
+          && group.allowedActions.createLocalpoolPowerTakerContract === true && (
+            <AddPowertakerLink>
+              <Link to={`${url}/add-powertaker`}>
+                <FormattedMessage id="admin.contracts.addNew" /> <i className="fa fa-plus-circle" />
+              </Link>
+            </AddPowertakerLink>
+        )}
         <SubNav>
           <NavLink to={`${url}/active`} exact className="nav-link">
             <FormattedMessage id="admin.contracts.navActivePowertakers" />
@@ -163,7 +174,7 @@ const PowertakersList = ({
                   if (handleOriginal) handleOriginal();
                 },
               }),
-              uiSortPath: `groups.${groupId}.powertakers`,
+              uiSortPath: `groups.${group.id}.powertakers`,
             }}
           />
         </div>

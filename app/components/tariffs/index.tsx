@@ -28,7 +28,7 @@ class Tariffs extends React.Component<StateProps & DispatchProps & ExtProps & In
     }
 
     const breadcrumbs = [
-      { id: 0, link: '/groups', title: intl.formatMessage({ id: 'admin.breadcumbs.myGroups' }) },
+      { id: 0, link: '/groups', title: intl.formatMessage({ id: 'admin.breadcrumbs.myGroups' }) },
       { id: group.id || 1, link: url, title: group.name },
     ];
 
@@ -46,7 +46,7 @@ class Tariffs extends React.Component<StateProps & DispatchProps & ExtProps & In
               <PageTitle
                 {...{
                   breadcrumbs: breadcrumbs.concat([
-                    { id: '-----', title: intl.formatMessage({ id: 'admin.breadcumbs.tariffs' }), link: null },
+                    { id: '-----', title: intl.formatMessage({ id: 'admin.breadcrumbs.tariffs' }), link: null },
                   ]),
                   title: intl.formatMessage({ id: `${prefix}.backTariffs` }),
                 }}

@@ -1,22 +1,43 @@
 import * as React from 'react';
+import get from 'lodash/get';
 import { connect } from 'react-redux';
-import { Switch, Route, Redirect } from 'react-router-dom';
-import find from 'lodash/find';
+import { Switch, Route, Redirect, NavLink } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 import ContractsModule from 'contracts';
 import Groups from 'groups';
 import PageTitle from 'components/page_title';
+import { CenterContent, SubNav } from 'components/style';
 import ContractsList from './contracts_list';
-import ContractDataForm from './contract_data';
 
 export class Documents extends React.Component {
   componentDidMount() {
-    const { loadGroupContracts, loadGroup, group, match: { params: { groupId } } } = this.props;
-    if (group.id !== groupId) loadGroup(groupId);
+    const {
+      loadGroupContracts,
+      loadGroup,
+      match: { params: { groupId } },
+    } = this.props;
+    loadGroup(groupId);
     loadGroupContracts(groupId);
   }
 
   render() {
-    const { contracts, group, setGroup, loading, match: { url, params: { groupId } } } = this.props;
+    const {
+      contracts,
+      addContract,
+      getContractPDFData,
+      attachContractPDF,
+      generateContractPDF,
+      deleteContractPDF,
+      loadGroupContracts,
+      addContractFormValues,
+      group,
+      setGroup,
+      loading,
+      match: {
+        url,
+        params: { groupId },
+      },
+    } = this.props;
 
     if (group.status === 404 || group.status === 403) {
       setGroup({ _status: null });
@@ -25,86 +46,57 @@ export class Documents extends React.Component {
 
     const breadcrumbs = [
       { id: 0, link: '/groups', title: 'My groups' },
-      { id: group.id | 1, link: url, title: group.name },
+      { id: group.id || 1, link: url, title: group.name },
+      { id: '-----', title: 'Documents' },
     ];
 
     return (
       <React.Fragment>
-        {/* Breadcrumbs */}
-        <Switch>
-          <Route
-            path={`${url}/:contractId`}
-            render={({ match: { url: contractUrl, params: { contractId } } }) => {
-              const contract = find(contracts, c => c.id === contractId);
-              if (!contract) return <Redirect to={url} />;
-              breadcrumbs.push({ id: contract.id, type: 'contract', title: contract.fullContractNumber });
-              return (
-                <Switch>
-                  <Route
-                    path={contractUrl}
-                    render={() => (
-                      <PageTitle {...{ breadcrumbs, title: contract.fullContractNumber }} />
-                    )}
-                  />
-                </Switch>
-              );
-            }}
-          />
-          <Route
-            path={url}
-            render={() => (
-              <PageTitle {...{ breadcrumbs: breadcrumbs.concat([{ id: '-----', title: 'Localpool contracts' }]), title: 'Localpool contracts' }} />
-            )}
-          />
-        </Switch>
-        {/* End of Breadcrumbs */}
-
-        <div className="center-content">
+        <PageTitle
+          {...{
+            breadcrumbs,
+            title: 'Documents',
+          }}
+        />
+        <CenterContent>
+          <SubNav>
+            <NavLink to={`${url}/bills`} exact className="nav-link">
+              <FormattedMessage id="admin.contracts.navBills" />
+            </NavLink>
+            <NavLink to={`${url}/contracts`} exact className="nav-link">
+              <FormattedMessage id="admin.contracts.navContracts" />
+            </NavLink>
+            <NavLink to={`${url}/bureaucracy`} exact className="nav-link">
+              <FormattedMessage id="admin.contracts.navBureaucracy" />
+            </NavLink>
+          </SubNav>
           <Switch>
-            {/* Detailed UI */}
-            <Route
-              path={`${url}/:contractId`}
-              render={({ match: { url: contractUrl, params: { contractId } } }) => {
-                const contract = find(contracts, c => c.id === contractId);
-                if (!contract) return <Redirect to={url} />;
-                return (
-                  <React.Fragment>
-                    {/* Sub nav */}
-                    {/* End of sub nav */}
-
-                    {/* Main UI */}
-                    <Switch>
-                      <Route path={contractUrl}>
-                        <ContractDataForm
-                          {...{
-                            // TODO: real validation rules and updateContract action
-                            validationRules: {},
-                            contract,
-                            initialValues: contract,
-                          }}
-                        />
-                      </Route>
-                    </Switch>
-                    {/* End of main UI */}
-                  </React.Fragment>
-                );
-              }}
-            />
-            {/* End of detailed UI */}
-
-            {/* Contracts list */}
-            <Route path={url}>
+            <Route path={`${url}/bills`} render={() => <div>Bills</div>} />
+            <Route path={`${url}/contracts`}>
               <ContractsList
                 {...{
+                  breadcrumbs,
                   contracts,
                   url,
                   loading,
+                  addContract,
+                  getContractPDFData,
+                  attachContractPDF,
+                  generateContractPDF,
+                  deleteContractPDF,
+                  loadGroupContracts,
+                  addContractFormValues,
+                  groupId,
+                  group,
                 }}
               />
             </Route>
-            {/* End of contracts list */}
+            <Route path={`${url}/bureaucracy`} render={() => <div>Bureaucracy</div>} />
+            <Route path={url}>
+              <Redirect to={`${url}/contracts`} />
+            </Route>
           </Switch>
-        </div>
+        </CenterContent>
       </React.Fragment>
     );
   }
@@ -114,12 +106,21 @@ function mapStateToProps(state) {
   return {
     group: state.groups.group,
     contracts: state.contracts.groupContracts,
-    loading: state.contracts.loadingGroupContracts,
+    loading: state.contracts.loadingGroupContracts || state.groups.loadingGroup,
+    addContractFormValues: get(state.form, 'addContract.values', {}),
   };
 }
 
-export default connect(mapStateToProps, {
-  loadGroupContracts: ContractsModule.actions.loadGroupContracts,
-  loadGroup: Groups.actions.loadGroup,
-  setGroup: Groups.actions.setGroup,
-})(Documents);
+export default connect(
+  mapStateToProps,
+  {
+    loadGroupContracts: ContractsModule.actions.loadGroupContracts,
+    getContractPDFData: ContractsModule.actions.getContractPDFData,
+    attachContractPDF: ContractsModule.actions.attachContractPDF,
+    generateContractPDF: ContractsModule.actions.generateContractPDF,
+    deleteContractPDF: ContractsModule.actions.deleteContractPDF,
+    addContract: ContractsModule.actions.addContract,
+    loadGroup: Groups.actions.loadGroup,
+    setGroup: Groups.actions.setGroup,
+  },
+)(Documents);

@@ -7,36 +7,58 @@ import Alert from 'react-s-alert';
 import Auth from '@buzzn/module_auth';
 import store from './configure_store';
 
-export function prepareHeaders(token) {
-  return {
+export function prepareHeaders(token, noType) {
+  const headers = {
     Accept: 'application/json',
-    'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,
   };
+  if (!noType) headers['Content-Type'] = 'application/json';
+  return headers;
 }
 
-const flattenErrors = ({ errors }) => reduce(errors, (res, v, k) => {
-  if (Array.isArray(v)) return { ...res, [k]: v.join(', ') };
-  return { ...res, [k]: flattenErrors({ errors: v }) };
-}, {});
+const flattenErrors = ({ errors }) => reduce(
+  errors,
+  (res, v, k) => {
+    if (Array.isArray(v)) return { ...res, [k]: (typeof v === 'object' ? v : v.join(', ')) };
+    return { ...res, [k]: flattenErrors({ errors: v }) };
+  },
+  {},
+);
 
-export const wrapErrors = errors => ({ ...flattenErrors({ errors }), status: 422, _error: 'Form save failed' });
+export const wrapErrors = errors => ({
+  ...camelizeResponseKeys(flattenErrors({ errors })),
+  status: 422,
+  _error: 'Form save failed',
+});
 
 export function parseResponse(response) {
+  if (response.ok) {
+    const type = response.headers.get('content-type');
+    if (type.startsWith('application/json')) {
+      const json = response.json();
+      return json.then(res => ({ ...res, _status: 200 }));
+    }
+    if (type.startsWith('application/pdf')) {
+      return response.blob();
+    }
+    return Promise.reject(Error('unknown response content-type'));
+  }
   const json = response.json();
-  if (response.status >= 200 && response.status < 300) {
-    return json.then(res => ({ ...res, _status: 200 }));
-  } else if (response.status === 503 && last(response.url.split('/')) === 'health') {
+  if (response.status === 503 && last(response.url.split('/')) === 'health') {
     return json;
-  } else if (response.status === 404) {
+  }
+  if (response.status === 404) {
     Alert.error("<h4>404</h4>I can't remember what you requested.");
     return Promise.resolve({ _status: 404 });
-  } else if (response.status === 403) {
+  }
+  if (response.status === 403) {
     Alert.error('<h4>403</h4>All your base are belong to us.');
     return Promise.resolve({ _status: 403 });
-  } else if (response.status === 422) {
+  }
+  if (response.status === 422) {
     return json.then(errors => Promise.resolve(wrapErrors(errors)));
-  } else if (response.status === 401) {
+  }
+  if (response.status === 401) {
     return json.then((error) => {
       if (error.error === 'This session has expired, please login again.') {
         // HACK: dirty hack and anti-pattern. But it will allow us to keep modules clean.
@@ -46,6 +68,7 @@ export function parseResponse(response) {
       return Promise.reject(error);
     });
   }
+
   return json.then(error => Promise.reject(error));
 }
 
@@ -83,7 +106,22 @@ export function camelizeResponseKeys(data) {
 }
 
 export function snakeReq(data) {
-  return reduce(data, (res, v, k) => ({ ...res, [snakeCase(k)]: v }), {});
+  return reduce(
+    data,
+    (res, v, k) => ({
+      ...res,
+      [snakeCase(k)]:
+        Object.prototype.toString.call(v) === '[object Date]'
+          ? v
+          : typeof v === 'object' && v !== null
+            ? snakeReq(v)
+            // HACK: server validation hack
+            : v === ''
+              ? null
+              : v,
+    }),
+    {},
+  );
 }
 
 export function logException(ex, context) {

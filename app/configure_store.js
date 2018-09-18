@@ -10,10 +10,12 @@ import Groups from 'groups';
 import Meters from 'meters';
 import Registers from 'registers';
 import Users from 'users';
+import Organizations from 'organizations';
 import Contracts from 'contracts';
 import Readings from 'readings';
 import MarketLocations from 'market_locations';
 import BillingCycles from 'billing_cycles';
+import Devices from 'devices';
 import ValidationRules from 'validation_rules';
 import RootReducer from 'reducers';
 import { logException } from '_util';
@@ -27,10 +29,12 @@ function* rootSaga() {
     call(Meters.sagas),
     call(Registers.sagas),
     call(Users.sagas),
+    call(Organizations.sagas),
     call(Contracts.sagas),
     call(Readings.sagas),
     call(MarketLocations.sagas),
     call(BillingCycles.sagas),
+    call(Devices.sagas),
     call(ValidationRules.sagas),
     call(appSaga),
   ]);
