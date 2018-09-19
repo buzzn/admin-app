@@ -26,7 +26,7 @@ export const isPhoneNumber = value => (value && !/^(0|[1-9][0-9]{9})$/i.test(val
 
 export const isIncluded = list => value => (value === undefined || value === null || list.includes(value) ? undefined : 'Must be the one of the values');
 
-export const isDate = value => (value === undefined || value === '' || moment(value).isValid() ? undefined : 'Must be a valid date');
+export const isDate = value => (value === undefined || value === '' || value === null || moment(value).isValid() ? undefined : 'Must be a valid date');
 
 export const fieldValidator = (field) => {
   const validators = [];
