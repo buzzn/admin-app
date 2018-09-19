@@ -53,6 +53,16 @@ export default [
     swaggerPath: '/localpools/{localpool_id}/contracts/{localpool_power_taker_contract_id}.patch.parameters',
     setAction: rules => Contracts.actions.setValidationRules('lptUpdate', rules),
   },
+  {
+    swaggerPath:
+      '/localpools/{localpool_id}/contracts/{localpool_power_taker_contract_id}/customer-organization.patch.parameters',
+    setAction: rules => Contracts.actions.setValidationRules('lptOrgCustomer', rules),
+  },
+  {
+    swaggerPath:
+      '/localpools/{localpool_id}/contracts/{localpool_power_taker_contract_id}/customer-person.patch.parameters',
+    setAction: rules => Contracts.actions.setValidationRules('lptPerCustomer', rules),
+  },
   // Meter rules
   {
     swaggerPath: '/localpools/{localpool_id}/meters/{real_meter_id}.patch.parameters',

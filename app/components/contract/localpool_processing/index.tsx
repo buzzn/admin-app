@@ -43,6 +43,7 @@ const LPCContract = ({
       resolve,
       reject,
       params,
+      updateType: 'contract',
     });
   }).then(() => {
     Alert.success('Saved!');

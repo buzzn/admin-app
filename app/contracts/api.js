@@ -33,34 +33,28 @@ export default {
     }).then(parseResponse);
   },
   fetchOperatorContracts({ token, apiUrl, apiPath, groupId }) {
-    return (
-      fetch(
-        `${apiUrl}${apiPath}/localpools/${groupId}/contracts?type=contract_metering_point_operator&include=documents,customer:[address,contact:address]`,
-        { headers: prepareHeaders(token) },
-      )
-        .then(parseResponse)
-        .then(camelizeResponseKeys)
-    );
+    return fetch(
+      `${apiUrl}${apiPath}/localpools/${groupId}/contracts?type=contract_metering_point_operator&include=documents,customer:[address,contact:address]`,
+      { headers: prepareHeaders(token) },
+    )
+      .then(parseResponse)
+      .then(camelizeResponseKeys);
   },
   fetchProcessingContracts({ token, apiUrl, apiPath, groupId }) {
-    return (
-      fetch(
-        `${apiUrl}${apiPath}/localpools/${groupId}/contracts?type=contract_localpool_processing&include=documents,customer:[address,contact:address]`,
-        { headers: prepareHeaders(token) },
-      )
-        .then(parseResponse)
-        .then(camelizeResponseKeys)
-    );
+    return fetch(
+      `${apiUrl}${apiPath}/localpools/${groupId}/contracts?type=contract_localpool_processing&include=documents,customer:[address,contact:address]`,
+      { headers: prepareHeaders(token) },
+    )
+      .then(parseResponse)
+      .then(camelizeResponseKeys);
   },
   fetchGroupContracts({ token, apiUrl, apiPath, groupId }) {
-    return (
-      fetch(
-        `${apiUrl}${apiPath}/localpools/${groupId}/contracts?include=documents,customer:[address,contact:address]`,
-        { headers: prepareHeaders(token) },
-      )
-        .then(parseResponse)
-        .then(camelizeResponseKeys)
-    );
+    return fetch(
+      `${apiUrl}${apiPath}/localpools/${groupId}/contracts?include=documents,customer:[address,contact:address]`,
+      { headers: prepareHeaders(token) },
+    )
+      .then(parseResponse)
+      .then(camelizeResponseKeys);
   },
   addContract({ token, apiUrl, apiPath, groupId, params }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts`, {
@@ -71,6 +65,20 @@ export default {
   },
   updateContract({ token, apiUrl, apiPath, groupId, contractId, params }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}`, {
+      headers: prepareHeaders(token),
+      method: 'PATCH',
+      body: JSON.stringify(snakeReq(params)),
+    }).then(parseResponse);
+  },
+  updateOrganizationCustomer({ token, apiUrl, apiPath, groupId, contractId, params }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/customer-organization`, {
+      headers: prepareHeaders(token),
+      method: 'PATCH',
+      body: JSON.stringify(snakeReq(params)),
+    }).then(parseResponse);
+  },
+  updatePersonCustomer({ token, apiUrl, apiPath, groupId, contractId, params }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/customer-person`, {
       headers: prepareHeaders(token),
       method: 'PATCH',
       body: JSON.stringify(snakeReq(params)),

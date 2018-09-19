@@ -55,13 +55,19 @@ const PowertakerContract = ({
   submitting,
   validationRules,
 }: Props & InjectedIntlProps) => {
-  const submit = params => new Promise((resolve, reject) => {
+  const submit = values => new Promise((resolve, reject) => {
+    // HACK: backend validation hack
+    const params = { ...values };
+    if (!params.shareRegisterWithGroup) params.shareRegisterWithGroup = false;
+    if (!params.shareRegisterPublicly) params.shareRegisterPublicly = false;
+
     updateContract({
       groupId,
       contractId: contract.id,
       resolve,
       reject,
       params,
+      updateType: 'contract',
     });
   }).then(() => {
     Alert.success('Saved!');
@@ -314,6 +320,24 @@ const PowertakerContract = ({
                   editMode,
                   validationRules,
                   component: EditableInput,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'shareRegisterWithGroup',
+                  editMode,
+                  validationRules,
+                  component: EditableCheckbox,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'shareRegisterPublicly',
+                  editMode,
+                  validationRules,
+                  component: EditableCheckbox,
                 }}
               />
               <TwoColField
