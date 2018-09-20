@@ -1,5 +1,6 @@
 import * as React from 'react';
 import moment from 'moment';
+import get from 'lodash/get';
 import { FormattedMessage } from 'react-intl';
 import { Row, Col, UncontrolledTooltip } from 'reactstrap';
 import { Link } from 'react-router-dom';
@@ -70,7 +71,11 @@ class NestedDetails extends React.Component<Props, State> {
 
     const prefix = 'admin.contracts';
 
-    const PDFdisabled = !!contract.allowedActions && contract.allowedActions.documentLocalpoolProcessingContract !== true;
+    let PDFdisabled = true;
+    if (
+      get(contract.allowedActions, 'documentLocalpoolProcessingContract') === true
+      || get(contract.allowedActions, 'documentMeteringPointOperatorContract') === true
+    ) PDFdisabled = false;
 
     return (
       <NestedDetailsWrapper>
@@ -159,18 +164,20 @@ class NestedDetails extends React.Component<Props, State> {
           <Col xs={12}>
             <br />
             {!!contract.allowedActions && (
-              <span id="generate-pdf">
-                <button
-                  className="btn btn-dark btn-sm"
-                  onClick={() => this.handleGeneratePDF(contract.id)}
-                  disabled={PDFdisabled}
-                >
-                  <FormattedMessage id="admin.buttons.generatePDF" />
-                </button>
-              </span>
-            )}
-            {PDFdisabled && (
-              <UncontrolledTooltip target="generate-pdf">Please, fill the group owner</UncontrolledTooltip>
+              <React.Fragment>
+                <span id="generate-pdf">
+                  <button
+                    className="btn btn-dark btn-sm"
+                    onClick={() => this.handleGeneratePDF(contract.id)}
+                    disabled={PDFdisabled}
+                  >
+                    <FormattedMessage id="admin.buttons.generatePDF" />
+                  </button>
+                </span>
+                {PDFdisabled && (
+                  <UncontrolledTooltip target="generate-pdf">Please, fill the group owner</UncontrolledTooltip>
+                )}
+              </React.Fragment>
             )}
           </Col>
         </Row>

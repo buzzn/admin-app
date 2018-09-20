@@ -122,8 +122,20 @@ class AddContract extends React.Component<Props & InjectedIntlProps> {
                       />
                     </Col>
                   </Row>
-                  ) : addContractFormValues.type === 'contract_metering_point_operator' ? (
-                  <React.Fragment>MPO</React.Fragment>
+                ) : addContractFormValues.type === 'contract_metering_point_operator' ? (
+                  <Row>
+                    <Col xs={12}>
+                      <FieldValidationWrapper
+                        {...{
+                          name: 'taxNumber',
+                          type: 'text',
+                          label: <FormattedMessage id={`${prefix}.taxNumber`} />,
+                          component: FieldInput,
+                          validationRules,
+                        }}
+                      />
+                    </Col>
+                  </Row>
                 ) : (
                   false
                 )}
