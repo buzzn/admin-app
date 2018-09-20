@@ -1,19 +1,23 @@
 import * as React from 'react';
 import ReactTableSorted from 'components/react_table_sorted';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import { reduxForm } from 'redux-form';
 import get from 'lodash/get';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { Row, Col } from 'reactstrap';
 import Users from 'users';
 import Organizations from 'organizations';
+import Contracts from 'contracts';
 import Loading from 'components/loading';
 import { tableParts as TableParts } from 'react_table_config';
 import ContractStatus from 'components/contract_status';
 import ContractType from 'components/contract_type';
 import PageTitle from 'components/page_title';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
+import withEditOverlay from 'components/with_edit_overlay';
 import { CenterContent, LargeAvatar } from 'components/style';
+import PowertakerForm from './powertaker_form';
 
 const DefaultPerson = require('images/default_person.jpg');
 const DefaultOrganisation = require('images/default_organisation.jpg');
@@ -31,15 +35,31 @@ class PowertakerData extends React.Component<
   }
 
   render() {
-    const { powertaker, loading, url, intl, history, breadcrumbs, title } = this.props;
+    const {
+      powertaker,
+      loading,
+      url,
+      intl,
+      history,
+      breadcrumbs,
+      title,
+      availableUsers,
+      validationRules,
+      powertakerType,
+      loadUser,
+      loadOrganization,
+      updateContract,
+      groupId,
+      contractId,
+      powertakerId,
+      loadAvailableUsers,
+      updatable,
+    } = this.props;
 
     if (powertaker._status === null || loading) return <Loading minHeight={40} />;
     if (powertaker._status && powertaker._status !== 200) return <Redirect to={url} />;
 
-    const powertakerImage = powertaker.image || (powertaker.type === 'person' ? DefaultPerson : DefaultOrganisation);
-    const powertakerAddress = powertaker.address || {};
-    const contact = powertaker.contact || {};
-    const contactAddress = get(powertaker, 'contract.address') || {};
+    const powertakerImage = powertaker.image || (powertakerType === 'person' ? DefaultPerson : DefaultOrganisation);
 
     const contracts = get(powertaker.contracts, 'array', []);
     const data = contracts.map(c => ({
@@ -108,260 +128,23 @@ class PowertakerData extends React.Component<
               <LargeAvatar src={powertakerImage} />
             </Col>
             <Col xs="9">
-              <h5 className="grey-underline pb-2">
-                <FormattedMessage id={'admin.contracts.headerContactInfo'} />
-              </h5>
-              {powertaker.type === 'person' ? (
-                <React.Fragment>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.persons.prefix" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      <FormattedMessage id={`admin.persons.${powertaker.prefix}`} defaultMessage=" " />
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.persons.title" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      <FormattedMessage id={`admin.persons.${powertaker.title}`} defaultMessage=" " />
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.persons.firstName" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {powertaker.firstName}
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.persons.lastName" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {powertaker.lastName}
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.addresses.address" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {powertakerAddress.street}
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname" />
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {powertakerAddress.zip} {powertakerAddress.city}
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.persons.phone" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {powertaker.phone}
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.persons.fax" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {powertaker.fax}
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.persons.email" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      <a href={`mailto:${powertaker.email}`}>{powertaker.email}</a>
-                    </Col>
-                  </Row>
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  <h5>
-                    <FormattedMessage id="admin.organizations.headerOrganization" />
-                  </h5>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.organizations.name" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {powertaker.name}
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.organizations.description" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {powertaker.description}
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.organizations.email" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {powertaker.email}
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.organizations.website" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {powertaker.website}
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.organizations.phone" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {powertaker.phone}
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.organizations.fax" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {powertaker.fax}
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.addresses.street" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {powertakerAddress.street}
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.addresses.zip" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {powertakerAddress.zip}
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.addresses.city" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {powertakerAddress.city}
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.addresses.state" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {powertakerAddress.state}
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.addresses.country" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {powertakerAddress.country}
-                    </Col>
-                  </Row>
-                  <h5>
-                    <FormattedMessage id="admin.persons.headerContact" />
-                  </h5>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.persons.prefix" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {contact.prefix}
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.persons.title" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {contact.title}
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.persons.firstName" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {contact.firstName}
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.persons.lastName" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {contact.lastName}
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.persons.email" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {contact.email}
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.persons.phone" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {contact.phone}
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.addresses.street" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {contactAddress.street}
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.addresses.zip" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {contactAddress.zip}
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.addresses.city" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {contactAddress.city}
-                    </Col>
-                  </Row>
-                  <Row className="fieldgroup">
-                    <Col xs="6" className="fieldname">
-                      <FormattedMessage id="admin.addresses.country" />
-                    </Col>
-                    <Col xs="6" className="grey-underline fieldvalue">
-                      {contactAddress.country}
-                    </Col>
-                  </Row>
-                </React.Fragment>
-              )}
+              <PowertakerForm
+                {...{
+                  availableUsers,
+                  validationRules,
+                  powertakerType,
+                  powertaker,
+                  initialValues: powertaker,
+                  loadUser,
+                  loadOrganization,
+                  updateContract,
+                  groupId,
+                  contractId,
+                  powertakerId,
+                  loadAvailableUsers,
+                  updatable,
+                }}
+              />
               {contracts.length > 0 && (
                 <React.Fragment>
                   <h5 className="grey-underline mt-5 pb-2">
@@ -396,34 +179,66 @@ class PowertakerData extends React.Component<
 }
 
 interface StatePart {
-  users: { loadingUser: boolean; user: { _status: null | number; [key: string]: any } };
+  users: {
+    loadingUser: boolean;
+    user: { _status: null | number; [key: string]: any };
+    availableUsers: { _status: null | number; array: Array<any> };
+  };
   organizations: { loadingOrganization: boolean; organization: { _status: null | number; [key: string]: any } };
+  contracts: {
+    validationRules: {
+      lptOrgCustomer: { [key: string]: { any } };
+      lptPerCustomer: { [key: string]: { any } };
+    };
+  };
 }
 
 interface ExtProps {
   powertakerId: string;
   powertakerType: string;
   url: string;
+  groupId: string;
+  contractId: string;
+  updatable: boolean;
 }
 
 interface StateProps {
   powertaker: { _status: null | number; [key: string]: any };
   loading: boolean;
+  availableUsers: { _status: null | number; array: Array<any> };
+  validationRules: {
+    lptOrgCustomer: { [key: string]: { any } };
+    lptPerCustomer: { [key: string]: { any } };
+  };
 }
 
 interface DispatchProps {
   loadUser: Function;
   loadOrganization: Function;
+  loadAvailableUsers: Function;
+  updateContract: Function;
 }
 
 function mapStateToProps(state: StatePart, props: ExtProps) {
   return {
     powertaker: props.powertakerType === 'person' ? state.users.user : state.organizations.organization,
     loading: state.users.loadingUser || state.organizations.loadingOrganization,
+    availableUsers: state.users.availableUsers,
+    validationRules: state.contracts.validationRules,
   };
 }
 
+const PowertakerWithForm = reduxForm({
+  form: 'powertakerCustomerForm',
+  enableReinitialize: true,
+})(withEditOverlay(PowertakerData));
+
 export default connect<StateProps, DispatchProps, ExtProps>(
   mapStateToProps,
-  { loadUser: Users.actions.loadUser, loadOrganization: Organizations.actions.loadOrganization },
-)(injectIntl(PowertakerData));
+  {
+    loadUser: Users.actions.loadUser,
+    loadOrganization: Organizations.actions.loadOrganization,
+    loadAvailableUsers: Users.actions.loadAvailableUsers,
+    updateContract: Contracts.actions.updateContract,
+  },
+)(injectIntl(PowertakerWithForm));

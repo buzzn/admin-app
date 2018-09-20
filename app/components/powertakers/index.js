@@ -129,10 +129,13 @@ export class Powertakers extends React.Component {
                     {...{
                       powertakerType: contract.customer.type,
                       powertakerId: contract.customer.id,
+                      updatable: powertaker.updatable,
                       url,
                       history,
                       breadcrumbs,
                       title: truncate(powertakerTitle || '', 20),
+                      groupId,
+                      contractId: contract.id,
                     }}
                   />
                 </Route>
