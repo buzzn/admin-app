@@ -73,6 +73,7 @@ class PowertakerForm extends React.Component<Props, State> {
 
   submitForm = (values) => {
     let params = { ...values };
+    params = omit(params, 'contracts');
     const {
       updateContract,
       groupId,
@@ -96,12 +97,19 @@ class PowertakerForm extends React.Component<Props, State> {
       {},
     );
     // HACK
-    if ((!contactValue || contactValue === 'new') && params.contact) {
-      if (!params.contact.preferredLanguage) params.contact.preferredLanguage = 'de';
-      if (params.contact.address && !params.contact.address.country) params.contact.address.country = 'DE';
-    }
-    if ((!lrValue || lrValue === 'new') && params.legalRepresentation) {
-      if (!params.legalRepresentation.preferredLanguage) params.legalRepresentation.preferredLanguage = 'de';
+    if (!params.address) params.address = {};
+    if (isPerson) {
+      if (!params.preferredLanguage) params.preferredLanguage = 'de';
+      if (params.address && !params.address.country) params.address.country = 'DE';
+    } else {
+      if (params.address && !params.address.country) params.address.country = 'DE';
+      if ((!contactValue || contactValue === 'new') && params.contact) {
+        if (!params.contact.preferredLanguage) params.contact.preferredLanguage = 'de';
+        if (params.contact.address && !params.contact.address.country) params.contact.address.country = 'DE';
+      }
+      if ((!lrValue || lrValue === 'new') && params.legalRepresentation) {
+        if (!params.legalRepresentation.preferredLanguage) params.legalRepresentation.preferredLanguage = 'de';
+      }
     }
 
     // HACK
