@@ -78,6 +78,24 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
         />
       );
     }
+
+    // FIXME !!!!! it's just a temporary hack!!!!!!!
+    if (contract.type === 'contract_metering_point_operator') {
+      return (
+        <LPCContract
+          {...{
+            contract,
+            contractor,
+            prefix,
+            url,
+            initialValues: contract,
+            groupId,
+            updateContract,
+            validationRules: LPCValidationRules,
+          }}
+        />
+      );
+    }
     return 'Unknown contract type';
   }
 }
