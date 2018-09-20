@@ -5,11 +5,12 @@ import { injectIntl, FormattedMessage } from 'react-intl';
 import { UncontrolledTooltip } from 'reactstrap';
 import { tableParts as TableParts } from 'react_table_config';
 import { SpanClick } from 'components/style';
+import Loading from 'components/loading';
 import AddContract from '../add_contract';
 import NestedDetails from './nested_details';
 
 class ContractsList extends React.Component {
-  state = { isOpen: false, expanded: {} };
+  state = { isOpen: false, expanded: {}, generatingPDF: false };
 
   handleRowClick = (rowNum) => {
     this.setState(state => ({ expanded: { ...state.expanded, [rowNum]: !state.expanded[rowNum] } }));
@@ -26,12 +27,17 @@ class ContractsList extends React.Component {
       addContract({ resolve, reject, params, groupId });
     })
       .then((res) => {
+        this.switchAddContract();
+        return res;
+      })
+      .then((res) => {
         if (params.generatePDF) {
+          this.setState({ generatingPDF: true });
           return new Promise((resolve, reject) => generateContractPDF({ groupId, contractId: res.id, resolve, reject })).then(loadGroupContracts(groupId));
         }
         return res;
       })
-      .then(() => this.switchAddContract());
+      .finally(() => this.setState({ generatingPDF: false }));
   };
 
   render() {
@@ -49,7 +55,7 @@ class ContractsList extends React.Component {
       group,
       loading,
     } = this.props;
-    const { isOpen } = this.state;
+    const { isOpen, generatingPDF } = this.state;
 
     const contractTypes = [];
     if (
@@ -129,6 +135,7 @@ class ContractsList extends React.Component {
 
     return (
       <div className="p-0">
+        {generatingPDF && <Loading absolute={true} />}
         {!!contractTypes.length && (
           <SpanClick onClick={this.switchAddContract} className="float-right">
             <FormattedMessage id="admin.contracts.addNew" /> <i className="fa fa-plus-circle" />

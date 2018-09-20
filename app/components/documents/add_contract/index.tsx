@@ -154,7 +154,9 @@ class AddContract extends React.Component<Props & InjectedIntlProps> {
             {disabled && (
               <UncontrolledTooltip target="submit-add-contract">Please, add group owner</UncontrolledTooltip>
             )}
-            {addContractFormValues.type === 'contract_localpool_processing' && (
+            {['contract_localpool_processing', 'contract_metering_point_operator'].includes(
+              addContractFormValues.type,
+            ) && (
               <React.Fragment>
                 <span id="submit-add-contract-pdf">
                   <button

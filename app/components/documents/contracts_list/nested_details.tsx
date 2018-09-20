@@ -6,6 +6,7 @@ import { Row, Col, UncontrolledTooltip } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import Alert from 'react-s-alert';
 import LabeledValue from 'components/labeled_value';
+import Loading from 'components/loading';
 import UploadModal from './upload_modal';
 
 import { DocumentsListHeader, NestedDetailsWrapper } from './style';
@@ -25,10 +26,11 @@ interface Props {
 
 interface State {
   isOpen: boolean;
+  generatingPDF: boolean;
 }
 
 class NestedDetails extends React.Component<Props, State> {
-  state = { isOpen: false };
+  state = { isOpen: false, generatingPDF: false };
 
   switchUpload = () => {
     this.setState({ isOpen: !this.state.isOpen });
@@ -36,7 +38,9 @@ class NestedDetails extends React.Component<Props, State> {
 
   handleGeneratePDF = async (contractId) => {
     const { generateContractPDF, groupId, loadGroupContracts } = this.props;
+    this.setState({ generatingPDF: true });
     const res = await new Promise((resolve, reject) => generateContractPDF({ groupId, contractId, resolve, reject }));
+    this.setState({ generatingPDF: false });
     if (res) {
       Alert.error(JSON.stringify(res));
     } else {
@@ -69,6 +73,8 @@ class NestedDetails extends React.Component<Props, State> {
       url,
     } = this.props;
 
+    const { generatingPDF } = this.state;
+
     const prefix = 'admin.contracts';
 
     let PDFdisabled = true;
@@ -79,6 +85,7 @@ class NestedDetails extends React.Component<Props, State> {
 
     return (
       <NestedDetailsWrapper>
+        {generatingPDF && <Loading absolute={true} />}
         <Row>
           <Col xs={12}>
             <h6>
