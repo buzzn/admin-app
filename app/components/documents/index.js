@@ -1,6 +1,6 @@
 import * as React from 'react';
-import get from 'lodash/get';
 import { connect } from 'react-redux';
+import { getFormSubmitErrors, formValueSelector } from 'redux-form';
 import { Switch, Route, Redirect, NavLink } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import ContractsModule from 'contracts';
@@ -29,7 +29,9 @@ export class Documents extends React.Component {
       generateContractPDF,
       deleteContractPDF,
       loadGroupContracts,
-      addContractFormValues,
+      addContractFormName,
+      addContractType,
+      addContractErrors,
       group,
       setGroup,
       loading,
@@ -85,7 +87,9 @@ export class Documents extends React.Component {
                   generateContractPDF,
                   deleteContractPDF,
                   loadGroupContracts,
-                  addContractFormValues,
+                  addContractFormName,
+                  addContractType,
+                  addContractErrors,
                   groupId,
                   group,
                 }}
@@ -102,12 +106,17 @@ export class Documents extends React.Component {
   }
 }
 
+const addContractFormName = 'addContract';
+const addContractSelector = formValueSelector(addContractFormName);
+
 function mapStateToProps(state) {
   return {
     group: state.groups.group,
     contracts: state.contracts.groupContracts,
     loading: state.contracts.loadingGroupContracts || state.groups.loadingGroup,
-    addContractFormValues: get(state.form, 'addContract.values', {}),
+    addContractFormName,
+    addContractType: addContractSelector(state, 'type'),
+    addContractErrors: getFormSubmitErrors(addContractFormName)(state),
   };
 }
 

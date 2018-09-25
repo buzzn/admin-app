@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import Loading from 'components/loading';
 import FieldValidationWrapper from 'components/field_validation_wrapper';
 import FieldInput from 'components/field_input';
+import FieldDate from 'components/field_date';
 import EditableSelect from 'components/editable_select';
 import LabeledValue from 'components/labeled_value';
 
@@ -15,7 +16,8 @@ interface Props {
   addContract: Function;
   loading: boolean;
   contractTypes: Array<{ value: string; label: string }>;
-  addContractFormValues: { [key: string]: any };
+  addContractType: string;
+  addContractErrors: { onlyActiveContract?: Array<string> };
   handleSubmit: () => void;
   validationRules: { _status: null | number; [key: string]: any };
   groupName: string;
@@ -49,7 +51,8 @@ class AddContract extends React.Component<Props & InjectedIntlProps> {
       groupOwnerErrors,
       handleSubmit,
       validationRules,
-      addContractFormValues,
+      addContractType,
+      addContractErrors,
       onSubmit,
       url,
     } = this.props;
@@ -108,9 +111,9 @@ class AddContract extends React.Component<Props & InjectedIntlProps> {
                     )}
                   </Col>
                 </Row>
-                {addContractFormValues.type === 'contract_localpool_processing' ? (
+                {['contract_metering_point_operator', 'contract_localpool_processing'].includes(addContractType) && (
                   <Row>
-                    <Col xs={12}>
+                    <Col xs={6}>
                       <FieldValidationWrapper
                         {...{
                           name: 'taxNumber',
@@ -121,23 +124,19 @@ class AddContract extends React.Component<Props & InjectedIntlProps> {
                         }}
                       />
                     </Col>
-                  </Row>
-                ) : addContractFormValues.type === 'contract_metering_point_operator' ? (
-                  <Row>
-                    <Col xs={12}>
+                    <Col xs={6}>
                       <FieldValidationWrapper
                         {...{
-                          name: 'taxNumber',
+                          name: 'beginDate',
                           type: 'text',
-                          label: <FormattedMessage id={`${prefix}.taxNumber`} />,
-                          component: FieldInput,
+                          label: <FormattedMessage id={`${prefix}.beginDate`} />,
+                          component: FieldDate,
                           validationRules,
                         }}
                       />
+                      {!!addContractErrors.onlyActiveContract && addContractErrors.onlyActiveContract[0]}
                     </Col>
                   </Row>
-                ) : (
-                  false
                 )}
               </React.Fragment>
             )}
@@ -154,9 +153,7 @@ class AddContract extends React.Component<Props & InjectedIntlProps> {
             {disabled && (
               <UncontrolledTooltip target="submit-add-contract">Please, add group owner</UncontrolledTooltip>
             )}
-            {['contract_localpool_processing', 'contract_metering_point_operator'].includes(
-              addContractFormValues.type,
-            ) && (
+            {['contract_localpool_processing', 'contract_metering_point_operator'].includes(addContractType) && (
               <React.Fragment>
                 <span id="submit-add-contract-pdf">
                   <button
@@ -182,7 +179,6 @@ class AddContract extends React.Component<Props & InjectedIntlProps> {
 }
 
 export default reduxForm({
-  form: 'addContract',
   enableReinitialize: true,
   onSubmitSuccess: (_result, _dispatch, { reset }) => {
     reset();
