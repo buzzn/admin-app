@@ -111,7 +111,22 @@ class AddContract extends React.Component<Props & InjectedIntlProps> {
                     )}
                   </Col>
                 </Row>
-                {['contract_metering_point_operator', 'contract_localpool_processing'].includes(addContractType) && (
+                {addContractType === 'contract_metering_point_operator' ? (
+                  <Row>
+                    <Col xs={12}>
+                      <FieldValidationWrapper
+                        {...{
+                          name: 'beginDate',
+                          type: 'text',
+                          label: <FormattedMessage id={`${prefix}.beginDate`} />,
+                          component: FieldDate,
+                          validationRules,
+                        }}
+                      />
+                      {!!addContractErrors.onlyActiveContract && addContractErrors.onlyActiveContract[0]}
+                    </Col>
+                  </Row>
+                ) : addContractType === 'contract_localpool_processing' ? (
                   <Row>
                     <Col xs={6}>
                       <FieldValidationWrapper
@@ -137,6 +152,8 @@ class AddContract extends React.Component<Props & InjectedIntlProps> {
                       {!!addContractErrors.onlyActiveContract && addContractErrors.onlyActiveContract[0]}
                     </Col>
                   </Row>
+                ) : (
+                  false
                 )}
               </React.Fragment>
             )}

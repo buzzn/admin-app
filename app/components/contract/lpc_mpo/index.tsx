@@ -22,7 +22,7 @@ interface Props {
   updateContract: Function;
 }
 
-const LPCContract = ({
+const LPCMPOContract = ({
   contract,
   prefix,
   contractor,
@@ -80,15 +80,17 @@ const LPCContract = ({
                     />
                 )}
               </h5>
-              <TwoColField
-                {...{
-                  prefix,
-                  name: 'taxNumber',
-                  editMode,
-                  validationRules,
-                  component: EditableInput,
-                }}
-              />
+              {contract.type === 'contract_localpool_processing' && (
+                <TwoColField
+                  {...{
+                    prefix,
+                    name: 'taxNumber',
+                    editMode,
+                    validationRules,
+                    component: EditableInput,
+                  }}
+                />
+              )}
               <TwoColView {...{ prefix, field: 'customer' }}>
                 {contract.customer.name || `${contract.customer.firstName} ${contract.customer.lastName}`}
               </TwoColView>
@@ -151,4 +153,6 @@ const LPCContract = ({
   );
 };
 
-export default injectIntl(withEditOverlay(reduxForm({ form: 'LPCUpdateForm', enableReinitialize: true })(LPCContract)));
+export default injectIntl(
+  withEditOverlay(reduxForm({ form: 'LPCUpdateForm', enableReinitialize: true })(LPCMPOContract)),
+);

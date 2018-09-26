@@ -6,7 +6,7 @@ import Contracts from 'contracts';
 import Loading from 'components/loading';
 import PowertakerContract from './powertaker';
 import ThirdPartyContract from './third_party';
-import LPCContract from './localpool_processing';
+import LPCMPOContract from './lpc_mpo';
 
 class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
   componentDidMount() {
@@ -62,27 +62,9 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
         />
       );
     }
-    if (contract.type === 'contract_localpool_processing') {
+    if (['contract_localpool_processing', 'contract_metering_point_operator'].includes(contract.type)) {
       return (
-        <LPCContract
-          {...{
-            contract,
-            contractor,
-            prefix,
-            url,
-            initialValues: contract,
-            groupId,
-            updateContract,
-            validationRules: LPCValidationRules,
-          }}
-        />
-      );
-    }
-
-    // FIXME !!!!! it's just a temporary hack!!!!!!!
-    if (contract.type === 'contract_metering_point_operator') {
-      return (
-        <LPCContract
+        <LPCMPOContract
           {...{
             contract,
             contractor,
