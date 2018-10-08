@@ -21,3 +21,7 @@ export const InputRow = styled(Row)`
     right: 1.5rem;
   }
 `;
+
+export const PadRow = styled.div`
+  height: 3rem;
+`;

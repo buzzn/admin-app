@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { reduxForm, FieldArray } from 'redux-form';
 import { FormattedMessage } from 'react-intl';
-import { Col } from 'reactstrap';
+import { Col, Row } from 'reactstrap';
+import Select from 'react-select';
+import { mainStyle } from 'components/react_select_styles';
 import pullAt from 'lodash/pullAt';
 import withEditOverlay from 'components/with_edit_overlay';
 import FormPanel from 'components/form_panel';
@@ -29,7 +31,46 @@ interface Props {
 }
 
 class AddMeter extends React.Component<Props> {
-  state = { selectedRegisters: [] };
+  state = { selectedRegisters: [], selectedPreset: { value: 'custom', label: 'Custom meter' } };
+
+  presets = [
+    { value: 'custom', label: 'Custom meter', lockRegisters: false, registersNum: 1, init: {} },
+    {
+      value: 'transfer',
+      label: 'Transfer meter',
+      lockRegisters: true,
+      registersNum: 2,
+      init: { directionNumber: 'ZRZ' },
+    },
+    {
+      value: 'demarcation',
+      label: 'Demarcation meter',
+      lockRegisters: true,
+      registersNum: 2,
+      init: { directionNumber: 'ZRZ' },
+    },
+    {
+      value: 'production',
+      label: 'Production meter',
+      lockRegisters: true,
+      registersNum: 1,
+      init: { directionNumber: 'ERZ' },
+    },
+    {
+      value: 'consumption',
+      label: 'Consumption meter',
+      lockRegisters: true,
+      registersNum: 1,
+      init: { directionNumber: 'ERZ' },
+    },
+  ];
+
+  setPreset = (value) => {
+    const { initialize } = this.props;
+    this.setState({ selectedPreset: value });
+    const preset = this.presets.find(p => p.value === value.value);
+    if (preset) initialize(preset.init);
+  };
 
   addSelectedRegister = () => {
     const { selectedRegisters } = this.state;
@@ -42,6 +83,10 @@ class AddMeter extends React.Component<Props> {
     const { selectedRegisters } = this.state;
     pullAt(selectedRegisters, [idx]);
     this.setState({ selectedRegisters });
+  };
+
+  deleteAllRegisters = () => {
+    this.setState({ selectedRegisters: [] });
   };
 
   setSelectedRegister = (idx, value) => {
@@ -96,9 +141,10 @@ class AddMeter extends React.Component<Props> {
       clearInitMeter,
       initialize,
     } = this.props;
-    const { selectedRegisters } = this.state;
+    const { selectedRegisters, selectedPreset } = this.state;
 
     const prefix = 'admin.meters';
+    const preset = this.presets.find(p => p.value === selectedPreset.value);
 
     return (
       <Col xs={12}>
@@ -117,6 +163,35 @@ class AddMeter extends React.Component<Props> {
               saveDisabled: pristine || submitting,
             }}
           >
+            <Row>
+              <Col>
+                <div className="header1">
+                  <Select
+                    options={this.presets.map(p => ({ value: p.value, label: p.label }))}
+                    onChange={value => this.setPreset(value)}
+                    styles={mainStyle}
+                    value={selectedPreset}
+                  />
+                </div>
+              </Col>
+            </Row>
+            <FieldArray
+              {...{
+                label: <FormattedMessage id={`${prefix}.registers`} />,
+                name: 'registers',
+                component: RegisterFields,
+                validationRules,
+                prefix,
+                editMode,
+                addSelectedRegister: this.addSelectedRegister,
+                deleteSelectedRegister: this.deleteSelectedRegister,
+                deleteAllRegisters: this.deleteAllRegisters,
+                setSelectedRegister: this.setSelectedRegister,
+                selectedRegisters,
+                marketLocations,
+                preset,
+              }}
+            />
             <p className="h5 grey-underline header text-uppercase">
               <FormattedMessage id={`${prefix}.headerAddMeter`} />
             </p>
@@ -320,21 +395,6 @@ class AddMeter extends React.Component<Props> {
                 editMode,
                 validationRules,
                 component: EditableSelect,
-              }}
-            />
-            <FieldArray
-              {...{
-                label: <FormattedMessage id={`${prefix}.registers`} />,
-                name: 'registers',
-                component: RegisterFields,
-                validationRules,
-                prefix,
-                editMode,
-                addSelectedRegister: this.addSelectedRegister,
-                deleteSelectedRegister: this.deleteSelectedRegister,
-                setSelectedRegister: this.setSelectedRegister,
-                selectedRegisters,
-                marketLocations,
               }}
             />
           </FormPanel>
