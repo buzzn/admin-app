@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { Col } from 'reactstrap';
+import { Col, Row } from 'reactstrap';
 import Select from 'react-select';
 import get from 'lodash/get';
+import { FormattedMessage } from 'react-intl';
 import { mainStyle } from 'components/react_select_styles';
 import TwoColField from 'components/two_col_field';
 import EditableInput from 'components/editable_input';
@@ -31,8 +32,24 @@ const EditableInputArray = ({
     marketLocations.map(m => ({ value: m.id, label: `${m.name} ${m.kind}` })),
   );
 
+  const FormattedMalo = ({ maloId }) => {
+    const malo = marketLocations.find(m => m.id === maloId);
+    return (
+      <span>
+        {malo.name} {malo.register.meter.productSerialnumber} {malo.kind}
+      </span>
+    );
+  };
+
   return (
     <React.Fragment>
+      <Row>
+        <Col xs={12}>
+          <p className="h5 grey-underline header text-uppercase" style={{ paddingTop: '2rem' }}>
+            <FormattedMessage id="admin.meters.registers" />
+          </p>
+        </Col>
+      </Row>
       {fields.map((field, i) => (
         <InputRow className="fieldgroup" key={i}>
           {editMode && (
@@ -62,8 +79,11 @@ const EditableInputArray = ({
               styles={mainStyle}
               value={selectedRegisters[i]}
             />
+            <br />
             {get(selectedRegisters[i], 'value') ? (
-              <React.Fragment>{selectedRegisters[i].label}</React.Fragment>
+              <React.Fragment>
+                <FormattedMalo maloId={selectedRegisters[i].value} />
+              </React.Fragment>
             ) : (
               <React.Fragment>
                 <TwoColField
@@ -121,6 +141,15 @@ const EditableInputArray = ({
                     editMode,
                     validationRules,
                     component: EditableCheckbox,
+                  }}
+                />
+                <TwoColField
+                  {...{
+                    prefix,
+                    name: `${field}.marketLocationId`,
+                    editMode,
+                    validationRules,
+                    component: EditableInput,
                   }}
                 />
               </React.Fragment>

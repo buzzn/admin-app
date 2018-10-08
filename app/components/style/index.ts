@@ -139,6 +139,7 @@ export const FormGroup = styled.div`
     font-weight: normal;
     bottom: 0;
     right: 8px;
+    z-index: -1;
   }
   .error-icon {
     color: #ff4a00;

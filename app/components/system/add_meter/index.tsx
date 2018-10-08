@@ -186,6 +186,15 @@ class AddMeter extends React.Component<Props> {
             <TwoColField
               {...{
                 prefix,
+                name: 'meteringLocationId',
+                editMode,
+                validationRules,
+                component: EditableInput,
+              }}
+            />
+            <TwoColField
+              {...{
+                prefix,
                 name: 'ownership',
                 editMode,
                 validationRules,
