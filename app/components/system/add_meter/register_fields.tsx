@@ -78,6 +78,7 @@ const EditableInputArray = ({
                 <TwoColField
                   {...{
                     prefix,
+                    valuesPrefix: `${prefix}.registers`,
                     name: `${field}.label`,
                     editMode,
                     validationRules,

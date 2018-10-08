@@ -29,7 +29,8 @@ const MarketLocationsList = ({
 
   const data = marketLocations.filter(m => m.kind === maloType).map(m => ({
     ...m,
-    label: intl.formatMessage({ id: `admin.registers.${m.register.label}` }),
+    label: m.register.label,
+    labelIntl: intl.formatMessage({ id: `admin.registers.${m.register.label}` }),
     meterProductSerialnumber: m.register.meter.productSerialnumber,
     linkMeter: `${url}/meters/${m.register.meter.id}`,
     linkMarketLocation: `${url}/${m.id}`,
@@ -58,7 +59,7 @@ const MarketLocationsList = ({
       Header: () => (
         <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.registers.tableLabel' })} />
       ),
-      accessor: 'label',
+      accessor: 'labelIntl',
     },
     {
       Header: '',
