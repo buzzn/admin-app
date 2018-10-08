@@ -4,7 +4,6 @@ import { FormattedMessage } from 'react-intl';
 import { Col, Row } from 'reactstrap';
 import Select from 'react-select';
 import { mainStyle } from 'components/react_select_styles';
-import pullAt from 'lodash/pullAt';
 import withEditOverlay from 'components/with_edit_overlay';
 import FormPanel from 'components/form_panel';
 import TwoColField from 'components/two_col_field';
@@ -72,29 +71,9 @@ class AddMeter extends React.Component<Props> {
     if (preset) initialize(preset.init);
   };
 
-  addSelectedRegister = () => {
-    const { selectedRegisters } = this.state;
-    // @ts-ignore
-    selectedRegisters.push(null);
+  setSelectedRegisters = (selectedRegisters) => {
     this.setState({ selectedRegisters });
-  };
-
-  deleteSelectedRegister = (idx) => {
-    const { selectedRegisters } = this.state;
-    pullAt(selectedRegisters, [idx]);
-    this.setState({ selectedRegisters });
-  };
-
-  deleteAllRegisters = () => {
-    this.setState({ selectedRegisters: [] });
-  };
-
-  setSelectedRegister = (idx, value) => {
-    const { selectedRegisters } = this.state;
-    // @ts-ignore
-    selectedRegisters[idx] = value;
-    this.setState({ selectedRegisters });
-  };
+  }
 
   componentDidMount() {
     const { setEditMode, loadMarketLocations, marketLocations } = this.props;
@@ -141,7 +120,7 @@ class AddMeter extends React.Component<Props> {
       clearInitMeter,
       initialize,
     } = this.props;
-    const { selectedRegisters, selectedPreset } = this.state;
+    const { selectedPreset } = this.state;
 
     const prefix = 'admin.meters';
     const preset = this.presets.find(p => p.value === selectedPreset.value);
@@ -183,11 +162,7 @@ class AddMeter extends React.Component<Props> {
                 validationRules,
                 prefix,
                 editMode,
-                addSelectedRegister: this.addSelectedRegister,
-                deleteSelectedRegister: this.deleteSelectedRegister,
-                deleteAllRegisters: this.deleteAllRegisters,
-                setSelectedRegister: this.setSelectedRegister,
-                selectedRegisters,
+                setSelectedRegisters: this.setSelectedRegisters,
                 marketLocations,
                 preset,
               }}

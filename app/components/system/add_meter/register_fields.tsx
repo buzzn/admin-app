@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Col, Row } from 'reactstrap';
 import Select from 'react-select';
 import get from 'lodash/get';
+import pullAt from 'lodash/pullAt';
 import { FormattedMessage } from 'react-intl';
 import { mainStyle } from 'components/react_select_styles';
 import TwoColField from 'components/two_col_field';
@@ -14,59 +15,66 @@ import { InputRow, PadRow } from './style';
 
 interface Props {
   preset: { [key: string]: any };
-  addSelectedRegister: () => void;
-  deleteSelectedRegister: (number) => void;
-  deleteAllRegisters: () => void;
+  setSelectedRegisters: (any) => void;
   fields: any;
   editMode: boolean;
   validationRules: { [key: string]: any };
-  setSelectedRegister: (number, any) => void;
-  selectedRegisters: Array<{ [key: string]: any }>;
   marketLocations: Array<{ [key: string]: any }>;
 }
 
 class EditableInputArray extends React.Component<Props> {
+  state: { selectedRegisters: any } = { selectedRegisters: [] };
+
+  componentDidMount() {
+    this.addField();
+  }
+
   componentDidUpdate(prevProps) {
-    if (prevProps.preset.label !== this.props.preset.label) {
-      this.deleteAllFields();
-      for (let i = 0; i < this.props.preset.registersNum; i++) {
-        this.addField();
-      }
+    if (prevProps.preset.value !== this.props.preset.value) {
+      this.deleteAllFields(this.props.preset.registersNum);
     }
   }
 
+  setSelectedRegister = (idx, value) => {
+    const { setSelectedRegisters } = this.props;
+    const { selectedRegisters } = this.state;
+    selectedRegisters[idx] = value;
+    this.setState({ selectedRegisters });
+    setSelectedRegisters(selectedRegisters);
+  };
+
   addField = () => {
-    const { addSelectedRegister, fields } = this.props;
-    addSelectedRegister();
+    const { fields, setSelectedRegisters } = this.props;
+    const { selectedRegisters } = this.state;
     fields.push();
+    selectedRegisters.push(null);
+    this.setState({ selectedRegisters });
+    setSelectedRegisters(selectedRegisters);
   };
 
   deleteField = (i) => {
-    const { deleteSelectedRegister, fields } = this.props;
-    deleteSelectedRegister(i);
+    const { fields, setSelectedRegisters } = this.props;
+    const { selectedRegisters } = this.state;
     fields.remove(i);
+    pullAt(selectedRegisters, [i]);
+    this.setState({ selectedRegisters });
+    setSelectedRegisters(selectedRegisters);
   };
 
-  deleteAllFields = () => {
-    const { deleteAllRegisters, fields } = this.props;
-    deleteAllRegisters();
+  deleteAllFields = (newNum) => {
+    const { fields, setSelectedRegisters } = this.props;
     fields.removeAll();
+    this.setState(() => ({ selectedRegisters: [] }), () => {
+      for (let i = 0; i < newNum; i++) {
+        this.addField();
+      }
+    });
+    setSelectedRegisters([]);
   };
 
   render() {
-    const {
-      fields,
-      editMode,
-      validationRules,
-      setSelectedRegister,
-      selectedRegisters,
-      marketLocations,
-      preset,
-    } = this.props;
-
-    if (!fields.length) {
-      this.addField();
-    }
+    const { fields, editMode, validationRules, marketLocations, preset } = this.props;
+    const { selectedRegisters } = this.state;
 
     const prefix = 'admin';
     const malos: Array<{ value: null | string; label: string }> = [{ value: null, label: 'Create new' }].concat(
@@ -118,7 +126,7 @@ class EditableInputArray extends React.Component<Props> {
             <Col xs={12}>
               <Select
                 options={malos}
-                onChange={value => setSelectedRegister(i, value)}
+                onChange={value => this.setSelectedRegister(i, value)}
                 styles={mainStyle}
                 value={selectedRegisters[i]}
               />

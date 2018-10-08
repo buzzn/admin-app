@@ -4,9 +4,9 @@ export const required = value => (value ? undefined : 'Required');
 
 export const isString = value => (value === undefined || value === null || typeof value === 'string' ? undefined : 'Must be a string');
 
-export const maxLength = max => value => (value === undefined || value === null || value.length < max ? undefined : `Must be ${max} characters or less`);
+export const maxLength = max => value => (value === undefined || value === null || value.length <= max ? undefined : `Must be ${max} characters or less`);
 
-export const minLength = min => value => (value === undefined || value === null || value.length > min ? undefined : `Must be ${min} characters or more`);
+export const minLength = min => value => (value === undefined || value === null || value.length >= min ? undefined : `Must be ${min} characters or more`);
 
 export const isNumber = value => (value === undefined || !isNaN(Number(value)) ? undefined : 'Must be a number');
 
