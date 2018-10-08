@@ -65,12 +65,16 @@ export default [
   },
   // Meter rules
   {
+    swaggerPath: '/localpools/{localpool_meter_real_id}/meters.post.parameters',
+    setAction: rules => Meters.actions.setValidationRules('realCreate', rules),
+  },
+  {
     swaggerPath: '/localpools/{localpool_id}/meters/{real_meter_id}.patch.parameters',
-    setAction: Meters.actions.setRealValidationRules,
+    setAction: rules => Meters.actions.setValidationRules('realUpdate', rules),
   },
   {
     swaggerPath: '/localpools/{localpool_id}/meters/{virtual_meter_id}.patch.parameters',
-    setAction: Meters.actions.setVirtualValidationRules,
+    setAction: rules => Meters.actions.setValidationRules('virtualUpdate', rules),
   },
   // Register rules
   {

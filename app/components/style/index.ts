@@ -5,6 +5,11 @@ export const CenterContent = styled.div`
   position: relative;
 `;
 
+export const SubNavAddLink = styled.span`
+  position: absolute;
+  right: 0;
+`;
+
 export const SubNav = styled(Nav)`
   border-bottom: #e0e0e0 solid 1px;
   margin-bottom: 2rem;

@@ -19,7 +19,7 @@ export function prepareHeaders(token, noType) {
 const flattenErrors = ({ errors }) => reduce(
   errors,
   (res, v, k) => {
-    if (Array.isArray(v)) return { ...res, [k]: (typeof v === 'object' ? v : v.join(', ')) };
+    if (Array.isArray(v)) return { ...res, [k]: typeof v === 'object' ? v : v.join(', ') };
     return { ...res, [k]: flattenErrors({ errors: v }) };
   },
   {},
@@ -113,12 +113,14 @@ export function snakeReq(data) {
       [snakeCase(k)]:
         Object.prototype.toString.call(v) === '[object Date]'
           ? v
-          : typeof v === 'object' && v !== null
-            ? snakeReq(v)
-            // HACK: server validation hack
-            : v === ''
-              ? null
-              : v,
+          : Array.isArray(v)
+            ? v.map(a => snakeReq(a))
+            : typeof v === 'object' && v !== null
+              ? snakeReq(v)
+              : // HACK: server validation hack
+              v === ''
+                ? null
+                : v,
     }),
     {},
   );

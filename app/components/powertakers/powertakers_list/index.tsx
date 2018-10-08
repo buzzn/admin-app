@@ -9,9 +9,7 @@ import ContractStatus from 'components/contract_status';
 import Loading from 'components/loading';
 import PageTitle from 'components/page_title';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
-import { CenterContent, SubNav } from 'components/style';
-
-import { AddPowertakerLink } from './style';
+import { CenterContent, SubNav, SubNavAddLink } from 'components/style';
 
 const DefaultPerson = require('images/default_person.jpg');
 const DefaultOrganisation = require('images/default_organisation.jpg');
@@ -145,11 +143,11 @@ const PowertakersList = ({
       <CenterContent>
         {!!group.allowedActions
           && group.allowedActions.createLocalpoolPowerTakerContract === true && (
-            <AddPowertakerLink>
+            <SubNavAddLink>
               <Link to={`${url}/add-powertaker`}>
                 <FormattedMessage id="admin.contracts.addNew" /> <i className="fa fa-plus-circle" />
               </Link>
-            </AddPowertakerLink>
+            </SubNavAddLink>
         )}
         <SubNav>
           <NavLink to={`${url}/active`} exact className="nav-link">

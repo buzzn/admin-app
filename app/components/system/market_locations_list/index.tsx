@@ -1,11 +1,11 @@
 import * as React from 'react';
 import ReactTableSorted from 'components/react_table_sorted';
 import { injectIntl, InjectIntlProps, FormattedMessage } from 'react-intl';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { tableParts as TableParts } from 'react_table_config';
 import PageTitle from 'components/page_title';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
-import { CenterContent, SubNav } from 'components/style';
+import { CenterContent, SubNav, SubNavAddLink } from 'components/style';
 
 interface Props {
   marketLocations: Array<any>;
@@ -23,6 +23,7 @@ const MarketLocationsList = ({
   groupId,
   breadcrumbs,
   maloType,
+  duplicateMeter,
 }: Props & BreadcrumbsProps & InjectIntlProps) => {
   const prefix = 'admin.marketLocations';
 
@@ -59,6 +60,11 @@ const MarketLocationsList = ({
       ),
       accessor: 'label',
     },
+    {
+      Header: '',
+      width: 40,
+      Cell: ({ original }) => TableParts.components.iconCell({ icon: 'copy', action: () => duplicateMeter(original) }),
+    },
   ];
 
   return (
@@ -72,6 +78,11 @@ const MarketLocationsList = ({
         }}
       />
       <CenterContent>
+        <SubNavAddLink>
+          <Link to={`${url}/add-meter`}>
+            <FormattedMessage id="admin.meters.addNew" /> <i className="fa fa-plus-circle" />
+          </Link>
+        </SubNavAddLink>
         <SubNav>
           <NavLink to={`${url}/consumption`} exact className="nav-link">
             <FormattedMessage id="admin.marketLocations.navConsumption" />

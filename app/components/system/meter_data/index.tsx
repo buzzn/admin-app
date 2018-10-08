@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import Meters from 'meters';
 import Loading from 'components/loading';
-import RealMeterDataForm from './real_form';
-import VirtualMeterDataForm from './virtual_form';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
 import { CenterContent } from 'components/style';
 import PageTitle from 'components/page_title';
+import VirtualMeterDataForm from './virtual_form';
+import RealMeterDataForm from './real_form';
 
 class MeterData extends React.Component<ExtProps & DispatchProps & StateProps & BreadcrumbsProps> {
   componentDidMount() {
@@ -20,7 +20,16 @@ class MeterData extends React.Component<ExtProps & DispatchProps & StateProps & 
   }
 
   render() {
-    const { url, breadcrumbs, meter, realValidationRules, virtualValidationRules, loading, updateMeter, groupId } = this.props;
+    const {
+      url,
+      breadcrumbs,
+      meter,
+      realValidationRules,
+      virtualValidationRules,
+      loading,
+      updateMeter,
+      groupId,
+    } = this.props;
 
     if (loading || meter._status === null) return <Loading minHeight={40} />;
     if (meter._status && meter._status !== 200) return <Redirect to={url} />;
@@ -42,7 +51,9 @@ class MeterData extends React.Component<ExtProps & DispatchProps & StateProps & 
         />
         <CenterContent>
           {meter.type === 'meter_real' ? (
-            <RealMeterDataForm {...{ meter, validationRules: realValidationRules, initialValues: meter, updateMeter, groupId }} />
+            <RealMeterDataForm
+              {...{ meter, validationRules: realValidationRules, initialValues: meter, updateMeter, groupId }}
+            />
           ) : (
             <VirtualMeterDataForm {...{ meter, validationRules: virtualValidationRules, initialValues: meter }} />
           )}
@@ -56,8 +67,10 @@ interface StatePart {
   meters: {
     loadingMeter: boolean;
     meter: { _status: null | number; [key: string]: any };
-    virtualValidationRules: any;
-    realValidationRules: any;
+    validationRules: {
+      realUpdate: any;
+      virtualUpdate: any;
+    };
   };
 }
 
@@ -84,13 +97,16 @@ function mapStateToProps(state: StatePart) {
   return {
     meter: state.meters.meter,
     loading: state.meters.loadingMeter,
-    realValidationRules: state.meters.realValidationRules,
-    virtualValidationRules: state.meters.virtualValidationRules,
+    realValidationRules: state.meters.validationRules.realUpdate,
+    virtualValidationRules: state.meters.validationRules.virtualUpdate,
   };
 }
 
-export default connect<StateProps, DispatchProps, ExtProps>(mapStateToProps, {
-  loadMeter: Meters.actions.loadMeter,
-  setMeter: Meters.actions.setMeter,
-  updateMeter: Meters.actions.updateMeter,
-})(MeterData);
+export default connect<StateProps, DispatchProps, ExtProps>(
+  mapStateToProps,
+  {
+    loadMeter: Meters.actions.loadMeter,
+    setMeter: Meters.actions.setMeter,
+    updateMeter: Meters.actions.updateMeter,
+  },
+)(MeterData);

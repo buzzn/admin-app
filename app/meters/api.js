@@ -10,6 +10,13 @@ export default {
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
+  addRealMeter({ token, apiUrl, apiPath, groupId, params }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/meters`, {
+      headers: prepareHeaders(token),
+      method: 'POST',
+      body: JSON.stringify(snakeReq(params)),
+    }).then(parseResponse);
+  },
   updateMeter({ token, apiUrl, apiPath, meterId, params, groupId }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/meters/${meterId}`, {
       headers: prepareHeaders(token),
