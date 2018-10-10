@@ -64,11 +64,14 @@ class EditableInputArray extends React.Component<Props> {
   deleteAllFields = (newNum) => {
     const { fields, setSelectedRegisters } = this.props;
     fields.removeAll();
-    this.setState(() => ({ selectedRegisters: [] }), () => {
-      for (let i = 0; i < newNum; i++) {
-        this.addField();
-      }
-    });
+    this.setState(
+      () => ({ selectedRegisters: [] }),
+      () => {
+        for (let i = 0; i < newNum; i++) {
+          this.addField();
+        }
+      },
+    );
     setSelectedRegisters([]);
   };
 
@@ -78,20 +81,8 @@ class EditableInputArray extends React.Component<Props> {
 
     const prefix = 'admin';
     const malos: Array<{ value: null | string; label: string }> = [{ value: null, label: 'Create new' }].concat(
-      marketLocations.map(m => ({ value: m.id, label: `${m.name} ${m.kind}` })),
+      marketLocations.map(m => ({ value: m.id, label: `${m.name} ${m.register.meter.productSerialnumber} ${m.kind}` })),
     );
-
-    const FormattedMalo = ({ maloId }) => {
-      const malo = marketLocations.find(m => m.id === maloId);
-      if (!malo) return <React.Fragment />;
-      return (
-        <Row>
-          <Col xs={12}>
-            {malo.name} {malo.register.meter.productSerialnumber} {malo.kind}
-          </Col>
-        </Row>
-      );
-    };
 
     return (
       <React.Fragment>
@@ -124,18 +115,20 @@ class EditableInputArray extends React.Component<Props> {
                 </React.Fragment>
             )}
             <Col xs={12}>
-              <Select
-                options={malos}
-                onChange={value => this.setSelectedRegister(i, value)}
-                styles={mainStyle}
-                value={selectedRegisters[i]}
-              />
-              <br />
-              {get(selectedRegisters[i], 'value') ? (
-                <React.Fragment>
-                  <FormattedMalo maloId={selectedRegisters[i].value} />
-                </React.Fragment>
-              ) : (
+              <Row>
+                <Col xs={4}>
+                  <span className="h5">Register №{i + 1}:</span>
+                </Col>
+                <Col xs={8}>
+                  <Select
+                    options={malos}
+                    onChange={value => this.setSelectedRegister(i, value)}
+                    styles={mainStyle}
+                    value={selectedRegisters[i]}
+                  />
+                </Col>
+              </Row>
+              {!get(selectedRegisters[i], 'value') && (
                 <React.Fragment>
                   <TwoColField
                     {...{
