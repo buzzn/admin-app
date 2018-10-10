@@ -66,7 +66,7 @@ const EditableSelect = ({
           />
         )}
         {withLabel && (
-          <label className={`${input.value || active || overrideData ? 'top' : 'center'}`}>
+          <label className={`${input.value || active || overrideData ? 'top' : 'center'}`} for={input.name}>
             <FormattedMessage id={`${prefix}.${name || input.name.split('.').pop()}`} />
           </label>
         )}

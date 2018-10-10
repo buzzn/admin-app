@@ -5,7 +5,7 @@ import get from 'lodash/get';
 import pullAt from 'lodash/pullAt';
 import { FormattedMessage } from 'react-intl';
 import { mainStyle } from 'components/react_select_styles';
-import TwoColField from 'components/two_col_field';
+import FieldValidationWrapper from 'components/field_validation_wrapper';
 import EditableInput from 'components/editable_input';
 import EditableSelect from 'components/editable_select';
 import EditableCheckbox from 'components/editable_checkbox';
@@ -79,7 +79,7 @@ class EditableInputArray extends React.Component<Props> {
     const { fields, editMode, validationRules, marketLocations, preset } = this.props;
     const { selectedRegisters } = this.state;
 
-    const prefix = 'admin';
+    const prefix = 'admin.registers';
     const malos: Array<{ value: null | string; label: string }> = [{ value: null, label: 'Create new' }].concat(
       marketLocations.map(m => ({ value: m.id, label: `${m.name} ${m.register.meter.productSerialnumber} ${m.kind}` })),
     );
@@ -130,72 +130,94 @@ class EditableInputArray extends React.Component<Props> {
               </Row>
               {!get(selectedRegisters[i], 'value') && (
                 <React.Fragment>
-                  <TwoColField
-                    {...{
-                      prefix,
-                      name: `${field}.name`,
-                      editMode,
-                      validationRules,
-                      component: EditableInput,
-                    }}
-                  />
-                  <TwoColField
-                    {...{
-                      prefix,
-                      valuesPrefix: `${prefix}.registers`,
-                      name: `${field}.label`,
-                      editMode,
-                      validationRules,
-                      component: EditableSelect,
-                    }}
-                  />
-                  <TwoColField
-                    {...{
-                      prefix,
-                      name: `${field}.observerEnabled`,
-                      editMode,
-                      validationRules,
-                      component: EditableCheckbox,
-                    }}
-                  />
-                  <TwoColField
-                    {...{
-                      prefix,
-                      name: `${field}.observerMinThreshold`,
-                      editMode,
-                      validationRules,
-                      component: EditableInput,
-                      normalize: numberNormalizer,
-                    }}
-                  />
-                  <TwoColField
-                    {...{
-                      prefix,
-                      name: `${field}.observerMaxThreshold`,
-                      editMode,
-                      validationRules,
-                      component: EditableInput,
-                      normalize: numberNormalizer,
-                    }}
-                  />
-                  <TwoColField
-                    {...{
-                      prefix,
-                      name: `${field}.observerOfflineMonitoring`,
-                      editMode,
-                      validationRules,
-                      component: EditableCheckbox,
-                    }}
-                  />
-                  <TwoColField
-                    {...{
-                      prefix,
-                      name: `${field}.marketLocationId`,
-                      editMode,
-                      validationRules,
-                      component: EditableInput,
-                    }}
-                  />
+                  <Row>
+                    <Col xs={4} xl={3}>
+                      <FieldValidationWrapper
+                        {...{
+                          prefix,
+                          name: `${field}.name`,
+                          editMode,
+                          withLabel: true,
+                          validationRules,
+                          component: EditableInput,
+                        }}
+                      />
+                    </Col>
+                    <Col xs={4} xl={3}>
+                      <FieldValidationWrapper
+                        {...{
+                          prefix,
+                          name: `${field}.label`,
+                          editMode,
+                          withLabel: true,
+                          validationRules,
+                          component: EditableSelect,
+                        }}
+                      />
+                    </Col>
+                    <Col xs={4} xl={2}>
+                      <FieldValidationWrapper
+                        {...{
+                          prefix,
+                          name: `${field}.marketLocationId`,
+                          editMode,
+                          withLabel: true,
+                          validationRules,
+                          component: EditableInput,
+                        }}
+                      />
+                    </Col>
+                    <Col xs={3} xl={2}>
+                      <FieldValidationWrapper
+                        {...{
+                          prefix,
+                          name: `${field}.observerMinThreshold`,
+                          editMode,
+                          withLabel: true,
+                          validationRules,
+                          component: EditableInput,
+                          normalize: numberNormalizer,
+                        }}
+                      />
+                    </Col>
+                    <Col xs={3} xl={2}>
+                      <FieldValidationWrapper
+                        {...{
+                          prefix,
+                          name: `${field}.observerMaxThreshold`,
+                          editMode,
+                          withLabel: true,
+                          validationRules,
+                          component: EditableInput,
+                          normalize: numberNormalizer,
+                        }}
+                      />
+                    </Col>
+                    <Col xs={3}>
+                      <FieldValidationWrapper
+                        {...{
+                          prefix,
+                          name: `${field}.observerEnabled`,
+                          editMode,
+                          withLabel: true,
+                          validationRules,
+                          component: EditableCheckbox,
+                        }}
+                      />
+                    </Col>
+                    <Col xs={3}>
+                      <FieldValidationWrapper
+                        {...{
+                          prefix,
+                          name: `${field}.observerOfflineMonitoring`,
+                          editMode,
+                          withLabel: true,
+                          validationRules,
+                          component: EditableCheckbox,
+                        }}
+                      />
+                    </Col>
+                  </Row>
                 </React.Fragment>
               )}
             </Col>

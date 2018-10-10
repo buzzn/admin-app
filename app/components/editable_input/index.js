@@ -23,6 +23,7 @@ const EditableInput = ({
         {!overrideData ? (
           <input
             className={`form-control ${touched && error && 'form-control-danger'} ${dirty && 'dirty'}`}
+            id={input.name}
             {...input}
             type={type}
           />
@@ -35,7 +36,7 @@ const EditableInput = ({
           />
         )}
         {withLabel && (
-          <label className={`${input.value || active || overrideData ? 'top' : 'center'}`}>
+          <label className={`${input.value || active || overrideData ? 'top' : 'center'}`} for={input.name}>
             <FormattedMessage id={`${prefix}.${name || input.name.split('.').pop()}`} />
           </label>
         )}
