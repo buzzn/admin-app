@@ -94,9 +94,10 @@ class MeterData extends React.Component<Props & InjectedIntlProps, State> {
     const prefix = 'admin.meters';
 
     const submit = values => new Promise((resolve, reject) => {
+      const { registers, ...params } = values;
       updateMeter({
         meterId: meter.id,
-        params: values,
+        params,
         resolve,
         reject,
         groupId,

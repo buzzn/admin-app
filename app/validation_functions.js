@@ -38,6 +38,7 @@ export const fieldValidator = (field) => {
   } else if (field.type === 'string') {
     validators.push(isString);
     if (field.maxLength) validators.push(maxLength(field.maxLength));
+    if (field.minLength) validators.push(minLength(field.minLength));
   }
   if (field.enum) validators.push(isIncluded(field.enum));
   if (field.type === 'integer') {
