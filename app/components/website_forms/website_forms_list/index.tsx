@@ -1,5 +1,5 @@
 import * as React from 'react';
-import moment from 'moment';
+// import moment from 'moment';
 import { injectIntl, InjectIntlProps } from 'react-intl';
 import { tableParts as TableParts } from 'react_table_config';
 import ReactTableSorted from 'components/react_table_sorted';
