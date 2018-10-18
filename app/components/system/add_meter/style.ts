@@ -8,7 +8,6 @@ export const InputRow = styled(Row)`
   i {
     position: absolute;
     top: 0.5rem;
-    z-index: 10;
     cursor: pointer;
     font-size: 1rem;
   }

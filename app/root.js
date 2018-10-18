@@ -35,6 +35,7 @@ import AppMaintenance from 'components/app_maintenance';
 import AddGroup from 'components/add_group';
 import Contract from 'components/contract';
 import DevicesContainer from 'components/devices';
+import WebsiteFormsContainer from 'components/website_forms';
 import { EditOverlay } from 'style';
 import './react_table_config';
 
@@ -70,6 +71,7 @@ const RouterHack = ({
                 <div className="center-content-wrapper">
                   <PartErrorBoundary part="main-part">
                     <Switch>
+                      <Route path="/website-forms" component={WebsiteFormsContainer} />
                       <Route path="/groups/:groupId/analytics" component={AnalyticsContainer} />
                       <Route path="/groups/:groupId/powertakers" component={PowertakersContainer} />
                       <Route path="/groups/:groupId/tariffs" component={TariffsContainer} />
