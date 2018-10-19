@@ -10,7 +10,7 @@ interface Props {
   websiteForms: Array<{ [key: string]: any }>;
 }
 
-const WebsiteFormsList = ({
+const FormsList = ({
   websiteForms,
   history,
   url,
@@ -58,4 +58,4 @@ const WebsiteFormsList = ({
   );
 };
 
-export default injectIntl(WebsiteFormsList);
+export default injectIntl(FormsList);

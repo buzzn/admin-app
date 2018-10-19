@@ -4,7 +4,8 @@ import { Switch, Route, Redirect, RouteComponentProps } from 'react-router-dom';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import WebsiteForms from 'website_forms';
 import Loading from 'components/loading';
-import WebsiteFormsList from './website_forms_list';
+import FormsList from './forms_list';
+import FormData from './form_data';
 
 class Devices extends React.Component<
   ExtProps & StateProps & DispatchProps & InjectedIntlProps & RouteComponentProps<{}>
@@ -37,8 +38,15 @@ class Devices extends React.Component<
       <React.Fragment>
         <Switch>
           <Route exact path={url}>
-            <WebsiteFormsList {...{ websiteForms: websiteForms.array, history, url }} />
+            <FormsList {...{ websiteForms: websiteForms.array, history, url }} />
           </Route>
+          <Route
+            path={`${url}/:formId`}
+            render={({ match: { params: { formId } } }) => {
+              const form = websiteForms.array.find(f => f.id === formId);
+              return <FormData {...{ form }} />;
+            }}
+          />
         </Switch>
       </React.Fragment>
     );
