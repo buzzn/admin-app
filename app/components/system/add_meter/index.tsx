@@ -22,7 +22,7 @@ interface Props {
   initialize: Function;
   addMeter: (any) => void;
   loadMarketLocations: () => void;
-  marketLocations: Array<{ [key: string]: any }>;
+  marketLocations: { _status: null | number; array: Array<{ [key: string]: any }> };
   handleSubmit: Function;
   pristine: boolean;
   submitting: boolean;
@@ -65,6 +65,7 @@ class AddMeter extends React.Component<Props> {
   ];
 
   setPreset = (value) => {
+    if (value.value === this.state.selectedPreset.value) return;
     const { initialize } = this.props;
     this.setState({ selectedPreset: value });
     const preset = this.presets.find(p => p.value === value.value);
@@ -78,7 +79,7 @@ class AddMeter extends React.Component<Props> {
   componentDidMount() {
     const { setEditMode, loadMarketLocations, marketLocations } = this.props;
     setEditMode(true);
-    if (!marketLocations.length) loadMarketLocations();
+    if (!marketLocations._status && !marketLocations.array.length) loadMarketLocations();
   }
 
   componentWillUnmount() {
@@ -163,7 +164,7 @@ class AddMeter extends React.Component<Props> {
                 prefix,
                 editMode,
                 setSelectedRegisters: this.setSelectedRegisters,
-                marketLocations,
+                marketLocations: marketLocations.array,
                 preset,
               }}
             />

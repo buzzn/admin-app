@@ -36,7 +36,7 @@ const EditableInput = ({
           />
         )}
         {withLabel && (
-          <label className={`${input.value || active || overrideData ? 'top' : 'center'}`} for={input.name}>
+          <label className={`${input.value || active || overrideData ? 'top' : 'center'}`} htmlFor={input.name}>
             <FormattedMessage id={`${prefix}.${name || input.name.split('.').pop()}`} />
           </label>
         )}

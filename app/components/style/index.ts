@@ -139,7 +139,7 @@ export const FormGroup = styled.div`
     font-weight: normal;
     bottom: 0;
     right: 8px;
-    z-index: -1;
+    pointer-events: none;
   }
   .error-icon {
     color: #ff4a00;
@@ -148,6 +148,7 @@ export const FormGroup = styled.div`
     font-size: 1.3rem;
     top: 4px;
     right: 16px;
+    pointer-events: none;
   }
   .date-wrapper {
     &.dirty {

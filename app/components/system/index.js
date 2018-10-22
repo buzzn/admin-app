@@ -99,7 +99,7 @@ export class System extends React.Component {
               addMeter: params => addRealMeter({ groupId, ...params }),
               validationRules: createMeterValidationRules,
               loadMarketLocations: () => loadMarketLocations(groupId),
-              marketLocations: marketLocations.array,
+              marketLocations: marketLocations,
             }}
           />
         </Route>

@@ -72,7 +72,7 @@ class PowertakerForm extends React.Component<Props, State> {
   };
 
   submitForm = (values) => {
-    let params = { ...values };
+    let params = JSON.parse(JSON.stringify(values));
     params = omit(params, 'contracts');
     const {
       updateContract,

@@ -113,7 +113,7 @@ class Powergiver extends React.Component<Props, State> {
   };
 
   submitForm = (values) => {
-    let params = { ...values };
+    let params = JSON.parse(JSON.stringify(values));
     const { updateOwner, owner } = this.props;
     const { ownerType, selectedOwner, selectedContact, selectedLR } = this.state;
     const ownerValue = (selectedOwner || { value: null }).value;

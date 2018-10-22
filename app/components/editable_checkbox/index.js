@@ -17,7 +17,7 @@ const EditableCheckbox = ({ prefix, name, withLabel, editMode, input, meta: { to
       type="checkbox"
     />
     {withLabel && (
-      <label className="custom-control-label" for={input.name}>
+      <label className="custom-control-label" htmlFor={input.name}>
         <FormattedMessage id={`${prefix}.${name || input.name.split('.').pop()}`} />
       </label>
     )}

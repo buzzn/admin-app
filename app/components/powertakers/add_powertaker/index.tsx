@@ -111,7 +111,7 @@ class AddPowertaker extends React.Component<Props, State> {
   };
 
   submitForm = (values) => {
-    let params = { ...values };
+    let params = JSON.parse(JSON.stringify(values));
     const { addContract, history, url } = this.props;
     const { customerType, selectedCustomer, selectedContact, selectedLR, selectedMaLo } = this.state;
     const customerValue = (selectedCustomer || { value: null }).value;
@@ -487,7 +487,10 @@ class AddPowertaker extends React.Component<Props, State> {
             <Select options={maLoOptions} onChange={this.handleMaLoChange} styles={mainStyle} value={selectedMaLo} />
             <Prompt
               when={!pristine && !saved}
-              message={location => location.pathname === url ? true : `You have unsaved data in form. Are you sure you want to go to ${location.pathname}`}
+              message={location => (location.pathname === url
+                ? true
+                : `You have unsaved data in form. Are you sure you want to go to ${location.pathname}`)
+              }
             />
             {Array.isArray(addPowertakerErrors.registerMeta) && (
               <RegisterMetaErrors>
