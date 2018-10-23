@@ -1,10 +1,14 @@
 import styled from 'styled-components';
 
-export const MarketLocationId = styled.div`
+export const HeaderData = styled.div`
+  display: flex;
+`;
+
+export const HeaderValue = styled.div`
   font-size: 1.25rem;
   font-weight: bold;
-  margin-bottom: 20px;
-  margin-top: -20px;
+  padding-left: 2rem;
+  padding-top: 0.6rem;
   .value {
     font-weight: normal;
   }

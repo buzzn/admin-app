@@ -8,7 +8,7 @@ import { CenterContent, SubNav } from 'components/style';
 import Contracts from './contracts';
 import Registers from './registers';
 import RegisterPowerContainer from '../register_data/register_power';
-import { MarketLocationId } from './style';
+import { HeaderData, HeaderValue } from './style';
 
 interface Props {
   marketLocation: any;
@@ -40,17 +40,18 @@ const MarketLocationData = ({
       }}
     />
     <CenterContent>
-      <RegisterPowerContainer
-        {...{ groupId, meterId: marketLocation.register.meterId, registerId: marketLocation.register.id }}
-      />
-      <MarketLocationId>
-        <FormattedMessage id="admin.marketLocations.thirdPartyId" />:{' '}
-        <span className="value">{marketLocation.marketLocationId || '-----'}</span>
-      </MarketLocationId>
-      <MarketLocationId>
-        <FormattedMessage id="admin.marketLocations.kind" />:{' '}
-        <span className="value">{marketLocation.kind}</span>
-      </MarketLocationId>
+      <HeaderData>
+        <RegisterPowerContainer
+          {...{ groupId, meterId: marketLocation.register.meterId, registerId: marketLocation.register.id }}
+        />
+        <HeaderValue>
+          <FormattedMessage id="admin.marketLocations.thirdPartyId" />:{' '}
+          <span className="value">{marketLocation.marketLocationId || '-----'}</span>
+        </HeaderValue>
+        <HeaderValue>
+          <FormattedMessage id="admin.marketLocations.kind" />: <span className="value">{marketLocation.kind}</span>
+        </HeaderValue>
+      </HeaderData>
       <SubNav>
         <NavLink to={`${locationUrl}/contracts`} exact className="nav-link">
           <FormattedMessage id="admin.marketLocations.navContracts" />

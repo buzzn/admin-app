@@ -22,6 +22,7 @@ class MeterData extends React.Component<ExtProps & DispatchProps & StateProps & 
   render() {
     const {
       url,
+      history,
       breadcrumbs,
       meter,
       realValidationRules,
@@ -52,10 +53,10 @@ class MeterData extends React.Component<ExtProps & DispatchProps & StateProps & 
         <CenterContent>
           {meter.type === 'meter_real' ? (
             <RealMeterDataForm
-              {...{ meter, validationRules: realValidationRules, initialValues: meter, updateMeter, groupId }}
+              {...{ meter, validationRules: realValidationRules, initialValues: meter, updateMeter, groupId, url, history }}
             />
           ) : (
-            <VirtualMeterDataForm {...{ meter, validationRules: virtualValidationRules, initialValues: meter }} />
+            <VirtualMeterDataForm {...{ meter, validationRules: virtualValidationRules, initialValues: meter, url, history }} />
           )}
         </CenterContent>
       </React.Fragment>
@@ -76,6 +77,7 @@ interface StatePart {
 
 interface ExtProps {
   url: string;
+  history: any;
   meterId: string;
   groupId: string;
 }

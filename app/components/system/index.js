@@ -99,7 +99,7 @@ export class System extends React.Component {
               addMeter: params => addRealMeter({ groupId, ...params }),
               validationRules: createMeterValidationRules,
               loadMarketLocations: () => loadMarketLocations(groupId),
-              marketLocations: marketLocations,
+              marketLocations,
             }}
           />
         </Route>
@@ -108,7 +108,7 @@ export class System extends React.Component {
           render={({ match: { params: { meterId } } }) => {
             const meter = meters.find(m => m.id === meterId);
             if (!meter) return <Redirect to={url} />;
-            return <MeterData {...{ url, breadcrumbs, meterId, groupId }} />;
+            return <MeterData {...{ url, breadcrumbs, meterId, groupId, history }} />;
           }}
         />
         <Route

@@ -19,18 +19,18 @@ const Registers = ({ url, history, locationId, registers, intl }: Props & Inject
   }));
   const columns = [
     {
-      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableObis` })} />,
-      accessor: 'obis',
+      Header: () => (
+        <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.meters.tableProductSerialnumber' })} />
+      ),
+      accessor: 'meter.productSerialnumber',
       style: {
         cursor: 'pointer',
         textDecoration: 'underline',
       },
     },
     {
-      Header: () => (
-        <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.meters.tableProductSerialnumber' })} />
-      ),
-      accessor: 'meter.productSerialnumber',
+      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableObis` })} />,
+      accessor: 'obis',
       style: {
         cursor: 'pointer',
         textDecoration: 'underline',
