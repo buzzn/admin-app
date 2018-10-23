@@ -38,18 +38,18 @@ const MarketLocationsList = ({
 
   const columns = [
     {
-      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableName` })} />,
-      accessor: 'name',
+      Header: () => (
+        <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.meters.tableProductSerialnumber' })} />
+      ),
+      accessor: 'meterProductSerialnumber',
       style: {
         cursor: 'pointer',
         textDecoration: 'underline',
       },
     },
     {
-      Header: () => (
-        <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.meters.tableProductSerialnumber' })} />
-      ),
-      accessor: 'meterProductSerialnumber',
+      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableName` })} />,
+      accessor: 'name',
       style: {
         cursor: 'pointer',
         textDecoration: 'underline',
