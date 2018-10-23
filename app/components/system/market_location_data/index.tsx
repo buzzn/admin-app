@@ -47,6 +47,10 @@ const MarketLocationData = ({
         <FormattedMessage id="admin.marketLocations.thirdPartyId" />:{' '}
         <span className="value">{marketLocation.marketLocationId || '-----'}</span>
       </MarketLocationId>
+      <MarketLocationId>
+        <FormattedMessage id="admin.marketLocations.kind" />:{' '}
+        <span className="value">{marketLocation.kind}</span>
+      </MarketLocationId>
       <SubNav>
         <NavLink to={`${locationUrl}/contracts`} exact className="nav-link">
           <FormattedMessage id="admin.marketLocations.navContracts" />
