@@ -15,7 +15,10 @@ export class System extends React.Component {
   state = { initialMeter: {} };
 
   duplicateMeter = (original) => {
-    const { history, match: { url } } = this.props;
+    const {
+      history,
+      match: { url },
+    } = this.props;
     const {
       register: { meter },
       ...malo
