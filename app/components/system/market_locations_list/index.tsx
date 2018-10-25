@@ -29,8 +29,7 @@ const MarketLocationsList = ({
 
   const data = marketLocations.filter(m => m.kind === maloType).map(m => ({
     ...m,
-    label: m.register.label,
-    labelIntl: intl.formatMessage({ id: `admin.registers.${m.register.label}` }),
+    labelIntl: intl.formatMessage({ id: `admin.registers.${m.label}` }),
     meterProductSerialnumber: m.register.meter.productSerialnumber,
     linkMeter: `${url}/meters/${m.register.meter.id}`,
     linkMarketLocation: `${url}/${m.id}`,

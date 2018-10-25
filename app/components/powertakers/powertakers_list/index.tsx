@@ -63,12 +63,12 @@ const PowertakersList = ({
           : { value: p.customer.name, image: p.customer.image || DefaultOrganisation, type: 'avatar', clickable: true },
     linkPowertaker: p.type === 'contract_localpool_third_party' ? '' : `${url}/${p.id}/powertaker`,
     linkContract: `${url}/${p.id}`,
-    marketLocationName: p.marketLocation.name,
+    marketLocationName: p.registerMeta.name,
     // HACK
     linkMarketLocation: `${url
       .split('/')
       .slice(0, -1)
-      .join('/')}/market-locations/${p.marketLocation.id}`,
+      .join('/')}/market-locations/${p.registerMeta.id}`,
     beginDate: moment(p.beginDate).toDate(),
     lastDate: p.lastDate ? moment(p.lastDate).toDate() : p.lastDate,
     status: {

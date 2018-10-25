@@ -4,7 +4,7 @@ import { prepareHeaders, parseResponse, camelizeResponseKeys } from '../_util';
 export default {
   fetchOrganization({ token, apiUrl, apiPath, organizationId }) {
     return fetch(
-      `${apiUrl}${apiPath}/organizations/${organizationId}?include=address,legal_representation,contact:[address],contracts:[localpool,market_location:[register]]`,
+      `${apiUrl}${apiPath}/organizations/${organizationId}?include=address,legal_representation,contact:[address],contracts:[localpool,register_meta:[register]]`,
       { headers: prepareHeaders(token) },
     )
       .then(parseResponse)

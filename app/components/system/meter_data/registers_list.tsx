@@ -34,7 +34,7 @@ class RegistersList extends React.Component<Props & InjectedIntlProps, State> {
     const columns = [
       {
         Header: () => <FormattedMessage id="admin.registers.tableName" />,
-        accessor: 'marketLocation.name',
+        accessor: 'registerMeta.name',
         filterable: false,
         sortable: false,
       },

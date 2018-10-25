@@ -67,14 +67,14 @@ class PowertakerData extends React.Component<
       type: <ContractType {...{ size: 'large', type: c.type }} />,
       status: <ContractStatus {...{ size: 'large', status: c.status }} />,
       groupName: c.localpool.name,
-      marketLocationName: get(c.marketLocation, 'name', ''),
+      marketLocationName: get(c.registerMeta, 'name', ''),
       linkContract: c.type === 'contract_localpool_power_taker' ? `${url}/${c.id}` : '',
       // HACK
-      linkMarketLocation: c.marketLocation
+      linkMarketLocation: c.registerMeta
         ? `${url
           .split('/')
           .slice(0, -1)
-          .join('/')}/market-locations/${c.marketLocation.id}`
+          .join('/')}/market-locations/${c.registerMeta.id}`
         : '',
     }));
 

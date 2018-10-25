@@ -127,8 +127,8 @@ export class Powertakers extends React.Component {
                 <Route path={`${contractUrl}/powertaker`}>
                   <PowertakerData
                     {...{
-                      powertakerType: contract.customer.type,
-                      powertakerId: contract.customer.id,
+                      powertakerType: powertaker.type,
+                      powertakerId: powertaker.id,
                       updatable: powertaker.updatable,
                       url,
                       history,

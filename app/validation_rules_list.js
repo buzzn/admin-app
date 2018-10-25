@@ -78,7 +78,7 @@ export default [
   },
   // Register rules
   {
-    swaggerPath: '/localpools/{localpool_id}/meters/{real_meter_id}/registers/{real_register_id}.patch.parameters',
+    swaggerPath: '/localpools/{localpool_id}/register-metas/{register_meta_id}.patch.parameters',
     setAction: Registers.actions.setValidationRules,
   },
   // Devices rules

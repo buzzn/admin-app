@@ -39,11 +39,11 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
               {
                 id: register.id,
                 type: 'register',
-                title: register.marketLocation.name,
+                title: register.registerMeta.name,
                 link: undefined,
               },
             ]),
-            title: register.marketLocation.name,
+            title: register.registerMeta.name,
           }}
         />
         <CenterContent>
@@ -115,7 +115,10 @@ function mapStateToProps(state: StatePart) {
   };
 }
 
-export default connect<StateProps, DispatchProps, ExtProps>(mapStateToProps, {
-  loadMeter: Meters.actions.loadMeter,
-  setMeter: Meters.actions.setMeter,
-})(RegisterData);
+export default connect<StateProps, DispatchProps, ExtProps>(
+  mapStateToProps,
+  {
+    loadMeter: Meters.actions.loadMeter,
+    setMeter: Meters.actions.setMeter,
+  },
+)(RegisterData);

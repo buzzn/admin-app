@@ -33,7 +33,7 @@ class RegisterData extends React.Component<Props> {
             <FormattedMessage id={`${prefix}.label`} />
           </Col>
           <Col xs="8" className="grey-underline fieldvalue">
-            <FormattedMessage id={`${prefix}.${register.label}`} />
+            <FormattedMessage id={`${prefix}.${register.registerMeta.label}`} />
           </Col>
         </Row>
         <Row className="fieldgroup">
@@ -49,8 +49,8 @@ class RegisterData extends React.Component<Props> {
             <FormattedMessage id="admin.marketLocations.name" />
           </Col>
           <Col xs="8" className="grey-underline fieldvalue">
-            <Link to={`${url}/${register.marketLocation.id}`}>
-              {register.marketLocation.name}
+            <Link to={`${url}/${register.registerMeta.id}`}>
+              {register.registerMeta.name}
             </Link>
           </Col>
         </Row>
