@@ -21,6 +21,7 @@ class Devices extends React.Component<
   render() {
     const {
       setWebsiteForms,
+      updateWebsiteForm,
       websiteForms,
       loading,
       history,
@@ -38,7 +39,7 @@ class Devices extends React.Component<
       <React.Fragment>
         <Switch>
           <Route exact path={url}>
-            <FormsList {...{ websiteForms: websiteForms.array, history, url }} />
+            <FormsList {...{ websiteForms: websiteForms.array, history, url, updateWebsiteForm }} />
           </Route>
           <Route
             path={`${url}/:formId`}
@@ -70,6 +71,7 @@ interface StateProps {
 interface DispatchProps {
   loadWebsiteForms: Function;
   setWebsiteForms: Function;
+  updateWebsiteForm: Function;
 }
 
 function mapStateToProps(state: StatePart) {
@@ -84,5 +86,6 @@ export default connect<StateProps, DispatchProps, ExtProps>(
   {
     loadWebsiteForms: WebsiteForms.actions.loadWebsiteForms,
     setWebsiteForms: WebsiteForms.actions.setWebsiteForms,
+    updateWebsiteForm: WebsiteForms.actions.updateWebsiteForm,
   },
 )(injectIntl(Devices));

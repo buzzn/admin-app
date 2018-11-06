@@ -14,8 +14,24 @@ export function* getWebsiteForms({ apiUrl, apiPath, token }) {
   }
   yield put(actions.loadedWebsiteForms());
 }
+
+export function* updateWebsiteForm({ apiUrl, apiPath, token }, { formId, params, resolve, reject }) {
+  try {
+    const res = yield call(api.updateWebsiteForm, { apiUrl, apiPath, token, formId, params });
+    if (res._error) {
+      yield call(reject, new SubmissionError(res));
+    } else {
+      yield call(resolve, res);
+      yield call(getWebsiteForms, { apiUrl, apiPath, token });
+    }
+  } catch (error) {
+    logException(error);
+  }
+}
+
 export function* websiteFormsSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_WEBSITE_FORMS, getWebsiteForms, { apiUrl, apiPath, token });
+  yield takeLatest(constants.UPDATE_WEBSITE_FORM, updateWebsiteForm, { apiUrl, apiPath, token });
 }
 
 export default function* () {

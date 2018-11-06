@@ -6,6 +6,8 @@ export const constants = {
   LOADING_WEBSITE_FORMS: 'buzzn_website_forms/LOADING_WEBSITE_FORMS',
   LOADED_WEBSITE_FORMS: 'buzzn_website_forms/LOADED_WEBSITE_FORMS',
   SET_WEBSITE_FORMS: 'buzzn_website_forms/SET_WEBSITE_FORMS',
+
+  UPDATE_WEBSITE_FORM: 'buzzn_website_forms/UPDATE_WEBSITE_FORM',
 };
 
 export const actions = {
@@ -16,4 +18,12 @@ export const actions = {
   loadingWebsiteForms: () => ({ type: constants.LOADING_WEBSITE_FORMS }),
   loadedWebsiteForms: () => ({ type: constants.LOADED_WEBSITE_FORMS }),
   setWebsiteForms: websiteForms => ({ type: constants.SET_WEBSITE_FORMS, websiteForms }),
+
+  updateWebsiteForm: ({ formId, params, resolve, reject }) => ({
+    type: constants.UPDATE_WEBSITE_FORM,
+    formId,
+    params,
+    resolve,
+    reject,
+  }),
 };
