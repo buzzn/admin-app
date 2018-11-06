@@ -31,24 +31,24 @@ const FormsList = ({
     {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableOverview` })} />,
       accessor: 'formContent',
-      Cell: ({ value }) => (
-        <span>
-          {get(value, 'calculator.customerType') === 'person'
-            ? `${get(value, 'personalInfo.person.prefix')} ${get(value, 'personalInfo.person.firstName')} ${get(
-              value,
-              'personalInfo.person.lastName',
-            )} ${get(value, 'personalInfo.person.email')}`
-            : `${get(value, 'personalInfo.person.name')} ${get(value, 'personalInfo.person.email')}`}{' '}
-          {moment(value.createdAt).format('DD.MM.YYYY - HH:mm:ss')}
-        </span>
-      ),
+      Cell: ({ value }) => {
+        const type = get(value, 'calculator.customerType');
+        const contact = type === 'person'
+          ? get(value, 'personalInfo.person', {})
+          : get(value, 'personalInfo.organization.contractingParty', {});
+        return (
+          <span>
+            <b>{type}:</b> {contact.prefix}{' '}
+            {['herr', 'frau'].includes(contact.prefix) ? `${contact.firstName} ${contact.lastName}` : contact.name}{' '}
+            <b>{contact.email}</b> {moment(value.createdAt).format('DD.MM.YYYY - HH:mm:ss')}
+          </span>
+        );
+      },
     },
     {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableProcessed` })} />,
       accessor: 'processed',
-      style: {
-        cursor: 'pointer',
-      },
+      style: { cursor: 'pointer' },
       width: 80,
       Cell: ({ value }) => <i className={`fa fa-2x fa-${value ? 'check' : 'times'}`} />,
     },
