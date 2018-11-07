@@ -17,7 +17,7 @@ const EditableCheckbox = ({ prefix, name, withLabel, editMode, input, meta: { to
         <FormattedMessage id={`${prefix}.${name || input.name.split('.').pop()}`} />
       </label>
     )}
-    {touched && error && <div className="invalid-feedback">{error}</div>}
+    {touched && error && <div className="invalid-feedback" style={{ display: 'inline' }}>{error}</div>}
   </div>
 );
 
