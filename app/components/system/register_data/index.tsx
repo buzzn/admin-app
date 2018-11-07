@@ -35,6 +35,7 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
       registerId,
       devMode,
       updateRegister,
+      validationRules,
     } = this.props;
 
     if (loading || meter._status === null) return <Loading minHeight={40} />;
@@ -87,7 +88,7 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
                 <div className={devMode ? '' : 'under-construction'} style={{ height: '8rem' }} />
               </Route>
               <Route path={registerUrl} exact>
-                <RegisterDataForm {...{ register, meter, url, groupId, updateRegister }} />
+                <RegisterDataForm {...{ register, meter, url, groupId, updateRegister, validationRules }} />
               </Route>
             </Switch>
           </Switch>
@@ -99,6 +100,7 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
 
 interface StatePart {
   meters: { loadingMeter: boolean; meter: { _status: null | number; [key: string]: any } };
+  registers: { validationRules: any };
 }
 
 interface ExtProps {
@@ -113,6 +115,7 @@ interface ExtProps {
 interface StateProps {
   loading: boolean;
   meter: { _status: null | number; [key: string]: any };
+  validationRules: any;
 }
 
 interface DispatchProps {
@@ -125,6 +128,7 @@ function mapStateToProps(state: StatePart) {
   return {
     meter: state.meters.meter,
     loading: state.meters.loadingMeter,
+    validationRules: state.registers.validationRules,
   };
 }
 
