@@ -2,13 +2,9 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 const EditableCheckbox = ({ prefix, name, withLabel, editMode, input, meta: { touched, error } }) => (
-  <div
-    className={`editable-checkbox form-check custom-control custom-checkbox ${touched
-      && error
-      && 'has-danger'} ${!withLabel && 'position-static'}`}
-  >
+  <div className={`editable-checkbox form-check custom-control$ custom-checkbox$ ${touched && error && 'has-danger'}`}>
     <input
-      className="custom-control-input"
+      className={`custom-control-input$ form-check-input ${!withLabel && 'position-static'}`}
       id={input.name}
       {...input}
       disabled={!editMode}
