@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Row, Col } from 'reactstrap';
+import { FormTitle } from 'components/style';
 import RegistersList from './registers_list';
-import { MeterHeader, MeterTitle } from './style';
+import { MeterHeader } from './style';
 
 interface Props {
   meter: any;
@@ -49,9 +50,9 @@ class MeterData extends React.Component<Props> {
         </MeterHeader>
         <Row>
           <Col xs="12">
-            <MeterTitle>
+            <FormTitle>
               <FormattedMessage id={`${prefix}.headerRegistersReadings`} />
-            </MeterTitle>
+            </FormTitle>
             <RegistersList {...{ registers: meter.registers, history, url }} />
           </Col>
         </Row>

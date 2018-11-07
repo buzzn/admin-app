@@ -5,6 +5,14 @@ export const CenterContent = styled.div`
   position: relative;
 `;
 
+export const FormTitle = styled.h5`
+  margin-top: 2rem;
+  padding-top: 1rem;
+  i {
+    float: right;
+  }
+`;
+
 export const SubNavAddLink = styled.span`
   position: absolute;
   right: 0;

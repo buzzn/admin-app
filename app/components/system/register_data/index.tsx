@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { Switch, Route, NavLink, Redirect } from 'react-router-dom';
 import get from 'lodash/get';
 import Meters from 'meters';
+import Registers from 'registers';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
 import Loading from 'components/loading';
 import { CenterContent, SubNav } from 'components/style';
@@ -23,7 +24,18 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
   }
 
   render() {
-    const { url, registerUrl, breadcrumbs, loading, meter, groupId, meterId, registerId, devMode } = this.props;
+    const {
+      url,
+      registerUrl,
+      breadcrumbs,
+      loading,
+      meter,
+      groupId,
+      meterId,
+      registerId,
+      devMode,
+      updateRegister,
+    } = this.props;
 
     if (loading || meter._status === null) return <Loading minHeight={40} />;
     if (meter._status && meter._status !== 200) return <Redirect to={url} />;
@@ -75,7 +87,7 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
                 <div className={devMode ? '' : 'under-construction'} style={{ height: '8rem' }} />
               </Route>
               <Route path={registerUrl} exact>
-                <RegisterDataForm {...{ register, meter, url }} />
+                <RegisterDataForm {...{ register, meter, url, groupId, updateRegister }} />
               </Route>
             </Switch>
           </Switch>
@@ -106,6 +118,7 @@ interface StateProps {
 interface DispatchProps {
   loadMeter: Function;
   setMeter: Function;
+  updateRegister: Function;
 }
 
 function mapStateToProps(state: StatePart) {
@@ -120,5 +133,6 @@ export default connect<StateProps, DispatchProps, ExtProps>(
   {
     loadMeter: Meters.actions.loadMeter,
     setMeter: Meters.actions.setMeter,
+    updateRegister: Registers.actions.updateRegister,
   },
 )(RegisterData);

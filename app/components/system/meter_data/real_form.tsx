@@ -12,7 +12,8 @@ import TwoColField from 'components/two_col_field';
 import EditableDate from 'components/editable_date';
 import { dateNormalizer, numberNormalizer } from 'validation_normalizers';
 import RegistersList from './registers_list';
-import { MeterHeader, MeterTitle } from './style';
+import { MeterHeader } from './style';
+import { FormTitle } from 'components/style';
 
 interface Props {
   meter: any;
@@ -97,9 +98,9 @@ class MeterData extends React.Component<Props> {
         </MeterHeader>
         <Row>
           <Col xs="12">
-            <MeterTitle>
+            <FormTitle>
               <FormattedMessage id={`${prefix}.headerRegistersReadings`} />
-            </MeterTitle>
+            </FormTitle>
             <RegistersList {...{ registers: meter.registers, history, url }} />
           </Col>
         </Row>
@@ -118,10 +119,10 @@ class MeterData extends React.Component<Props> {
                 saveDisabled: pristine || submitting,
               }}
             >
-              <MeterTitle>
+              <FormTitle>
                 <FormattedMessage id={`${prefix}.headerMeterDetails`} />
                 {!editMode && meter.updatable && <i className="buzzn-pencil" onClick={switchEditMode} />}
-              </MeterTitle>
+              </FormTitle>
               <TwoColField
                 {...{
                   prefix,
@@ -183,9 +184,9 @@ class MeterData extends React.Component<Props> {
               <TwoColView {...{ prefix, field: 'type' }}>
                 <FormattedMessage id={`${prefix}.${meter.type}`} />
               </TwoColView>
-              <MeterTitle>
+              <FormTitle>
                 <FormattedMessage id={`${prefix}.headerEdifactInformation`} />
-              </MeterTitle>
+              </FormTitle>
               <TwoColField
                 {...{
                   prefix,

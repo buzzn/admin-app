@@ -16,8 +16,8 @@ export default {
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
-  updateRegister({ token, apiUrl, apiPath, meterId, registerId, params, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/meters/${meterId}/registers/${registerId}`, {
+  updateRegister({ token, apiUrl, apiPath, registerId, params, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/register-metas/${registerId}`, {
       headers: prepareHeaders(token),
       method: 'PATCH',
       body: JSON.stringify(snakeReq(params)),

@@ -82,7 +82,7 @@ class ContractsList extends React.Component {
       ...c,
       typeIntl: intl.formatMessage({ id: `admin.contracts.${c.type}` }),
       ownerChanged: !['contract_localpool_power_taker', 'contract_localpool_third_party'].includes(c.type)
-        ? c.customer.id !== get(group.owner, 'id')
+        ? get(c.customer, 'id') !== get(group.owner, 'id')
         : false,
       since: c.signingDate,
       number: c.fullContractNumber,
