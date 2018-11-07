@@ -29,6 +29,6 @@ export const actions = {
   loadRegisterPower: ({ registerId, groupId, meterId }) => ({ type: constants.LOAD_REGISTER_POWER, registerId, groupId, meterId }),
   setRegisterPower: ({ power }) => ({ type: constants.SET_REGISTER_POWER, power }),
 
-  updateRegister: ({ registerId, params, resolve, reject, groupId }) => (
-    { type: constants.UPDATE_REGISTER, registerId, params, resolve, reject, groupId }),
+  updateRegister: ({ meterId, registerId, params, resolve, reject, groupId }) => (
+    { type: constants.UPDATE_REGISTER, meterId, registerId, params, resolve, reject, groupId }),
 };
