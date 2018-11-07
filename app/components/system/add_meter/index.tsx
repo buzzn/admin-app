@@ -74,7 +74,7 @@ class AddMeter extends React.Component<Props> {
 
   setSelectedRegisters = (selectedRegisters) => {
     this.setState({ selectedRegisters });
-  }
+  };
 
   componentDidMount() {
     const { setEditMode, loadMarketLocations, marketLocations } = this.props;
@@ -127,255 +127,257 @@ class AddMeter extends React.Component<Props> {
     const preset = this.presets.find(p => p.value === selectedPreset.value);
 
     return (
-      <Col xs={12}>
-        <form onSubmit={handleSubmit(this.submitForm)}>
-          <FormPanel
-            {...{
-              editMode,
-              dirty: !pristine,
-              onCancel: () => {
-                initialize({});
-                clearInitMeter();
-                history.push(url);
-              },
-              cancelDisabled: submitting,
-              onSave: handleSubmit(this.submitForm),
-              saveDisabled: pristine || submitting,
-            }}
-          >
-            <Row>
-              <Col>
-                <div className="header1">
-                  <Select
-                    options={this.presets.map(p => ({ value: p.value, label: p.label }))}
-                    onChange={value => this.setPreset(value)}
-                    styles={mainStyle}
-                    value={selectedPreset}
-                  />
-                </div>
-              </Col>
-            </Row>
-            <FieldArray
+      <Row>
+        <Col xs={12}>
+          <form onSubmit={handleSubmit(this.submitForm)}>
+            <FormPanel
               {...{
-                label: <FormattedMessage id={`${prefix}.registers`} />,
-                name: 'registers',
-                component: RegisterFields,
-                validationRules,
-                prefix,
                 editMode,
-                setSelectedRegisters: this.setSelectedRegisters,
-                marketLocations: marketLocations.array,
-                preset,
+                dirty: !pristine,
+                onCancel: () => {
+                  initialize({});
+                  clearInitMeter();
+                  history.push(url);
+                },
+                cancelDisabled: submitting,
+                onSave: handleSubmit(this.submitForm),
+                saveDisabled: pristine || submitting,
               }}
-            />
-            <p className="h5 grey-underline header text-uppercase">
-              <FormattedMessage id={`${prefix}.headerAddMeter`} />
-            </p>
-            <TwoColField
-              {...{
-                prefix,
-                name: 'type',
-                editMode,
-                validationRules,
-                component: EditableSelect,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'productSerialnumber',
-                editMode,
-                validationRules,
-                component: EditableInput,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'datasource',
-                editMode,
-                validationRules,
-                component: EditableSelect,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'productName',
-                editMode,
-                validationRules,
-                component: EditableInput,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'manufacturerName',
-                editMode,
-                validationRules,
-                component: EditableSelect,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'manufacturerDescription',
-                editMode,
-                validationRules,
-                component: EditableInput,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'locationDescription',
-                editMode,
-                validationRules,
-                component: EditableInput,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'meteringLocationId',
-                editMode,
-                validationRules,
-                component: EditableInput,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'ownership',
-                editMode,
-                validationRules,
-                component: EditableSelect,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'buildYear',
-                editMode,
-                validationRules,
-                component: EditableInput,
-                normalize: numberNormalizer,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'sentDataDso',
-                editMode,
-                validationRules,
-                component: EditableDate,
-                normalize: dateNormalizer('YYYY-MM-DD'),
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'converterConstant',
-                editMode,
-                validationRules,
-                component: EditableInput,
-                normalize: numberNormalizer,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'calibratedUntil',
-                editMode,
-                validationRules,
-                component: EditableDate,
-                normalize: dateNormalizer('YYYY-MM-DD'),
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'directionNumber',
-                editMode,
-                validationRules,
-                component: EditableSelect,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'edifactMeteringType',
-                editMode,
-                validationRules,
-                component: EditableSelect,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'edifactMeterSize',
-                editMode,
-                validationRules,
-                component: EditableSelect,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'edifactMeasurementMethod',
-                editMode,
-                validationRules,
-                component: EditableSelect,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'edifactTariff',
-                editMode,
-                validationRules,
-                component: EditableSelect,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'edifactMountingMethod',
-                editMode,
-                validationRules,
-                component: EditableSelect,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'edifactVoltageLevel',
-                editMode,
-                validationRules,
-                component: EditableSelect,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'edifactCycleInterval',
-                editMode,
-                validationRules,
-                component: EditableSelect,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'edifactDataLogging',
-                editMode,
-                validationRules,
-                component: EditableSelect,
-              }}
-            />
-          </FormPanel>
-        </form>
-      </Col>
+            >
+              <Row>
+                <Col>
+                  <div className="header1">
+                    <Select
+                      options={this.presets.map(p => ({ value: p.value, label: p.label }))}
+                      onChange={value => this.setPreset(value)}
+                      styles={mainStyle}
+                      value={selectedPreset}
+                    />
+                  </div>
+                </Col>
+              </Row>
+              <FieldArray
+                {...{
+                  label: <FormattedMessage id={`${prefix}.registers`} />,
+                  name: 'registers',
+                  component: RegisterFields,
+                  validationRules,
+                  prefix,
+                  editMode,
+                  setSelectedRegisters: this.setSelectedRegisters,
+                  marketLocations: marketLocations.array,
+                  preset,
+                }}
+              />
+              <p className="h5 header text-uppercase">
+                <FormattedMessage id={`${prefix}.headerAddMeter`} />
+              </p>
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'type',
+                  editMode,
+                  validationRules,
+                  component: EditableSelect,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'productSerialnumber',
+                  editMode,
+                  validationRules,
+                  component: EditableInput,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'datasource',
+                  editMode,
+                  validationRules,
+                  component: EditableSelect,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'productName',
+                  editMode,
+                  validationRules,
+                  component: EditableInput,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'manufacturerName',
+                  editMode,
+                  validationRules,
+                  component: EditableSelect,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'manufacturerDescription',
+                  editMode,
+                  validationRules,
+                  component: EditableInput,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'locationDescription',
+                  editMode,
+                  validationRules,
+                  component: EditableInput,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'meteringLocationId',
+                  editMode,
+                  validationRules,
+                  component: EditableInput,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'ownership',
+                  editMode,
+                  validationRules,
+                  component: EditableSelect,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'buildYear',
+                  editMode,
+                  validationRules,
+                  component: EditableInput,
+                  normalize: numberNormalizer,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'sentDataDso',
+                  editMode,
+                  validationRules,
+                  component: EditableDate,
+                  normalize: dateNormalizer('YYYY-MM-DD'),
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'converterConstant',
+                  editMode,
+                  validationRules,
+                  component: EditableInput,
+                  normalize: numberNormalizer,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'calibratedUntil',
+                  editMode,
+                  validationRules,
+                  component: EditableDate,
+                  normalize: dateNormalizer('YYYY-MM-DD'),
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'directionNumber',
+                  editMode,
+                  validationRules,
+                  component: EditableSelect,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'edifactMeteringType',
+                  editMode,
+                  validationRules,
+                  component: EditableSelect,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'edifactMeterSize',
+                  editMode,
+                  validationRules,
+                  component: EditableSelect,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'edifactMeasurementMethod',
+                  editMode,
+                  validationRules,
+                  component: EditableSelect,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'edifactTariff',
+                  editMode,
+                  validationRules,
+                  component: EditableSelect,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'edifactMountingMethod',
+                  editMode,
+                  validationRules,
+                  component: EditableSelect,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'edifactVoltageLevel',
+                  editMode,
+                  validationRules,
+                  component: EditableSelect,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'edifactCycleInterval',
+                  editMode,
+                  validationRules,
+                  component: EditableSelect,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'edifactDataLogging',
+                  editMode,
+                  validationRules,
+                  component: EditableSelect,
+                }}
+              />
+            </FormPanel>
+          </form>
+        </Col>
+      </Row>
     );
   }
 }

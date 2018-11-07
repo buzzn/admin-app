@@ -11,7 +11,7 @@ import { DeleteButton } from 'components/style';
 interface Props {
   editMode: boolean;
   switchEditMode: () => void;
-  handleSubmit: (Function) => void;
+  handleSubmit: Function;
   submitGroup: () => void;
   group: { [key: string]: any };
   deleteGroup: () => void;

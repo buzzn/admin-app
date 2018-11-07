@@ -17,7 +17,9 @@ interface State {
 
 class FormPanel extends React.Component<Props & InjectedIntlProps, State> {
   wrapperRef: any;
+
   buttonsRef: any;
+
   ticking: boolean;
 
   constructor(props) {
@@ -43,7 +45,7 @@ class FormPanel extends React.Component<Props & InjectedIntlProps, State> {
   componentDidUpdate(prevProps) {
     if (this.props.editMode && !prevProps.editMode) {
       this.handleScroll();
-      window.scrollBy(0, this.wrapperRef.current.getBoundingClientRect().top - 72);
+      if (this.wrapperRef.current) window.scrollBy(0, this.wrapperRef.current.getBoundingClientRect().top - 72);
     }
     if (this.props.dirty && !prevProps.dirty) {
       window.onbeforeunload = () => true;
@@ -57,14 +59,16 @@ class FormPanel extends React.Component<Props & InjectedIntlProps, State> {
     if (!this.buttonsRef.current || this.ticking) return;
 
     window.requestAnimationFrame(() => {
-      const wrapperSize = this.wrapperRef.current.getBoundingClientRect();
-      let top = window.innerHeight / 2 - wrapperSize.top - 36;
-      if (top + 72 > wrapperSize.height) {
-        top = wrapperSize.height - 72;
-      } else if (top < 0) {
-        top = 0;
+      if (this.wrapperRef.current) {
+        const wrapperSize = this.wrapperRef.current.getBoundingClientRect();
+        let top = window.innerHeight / 2 - wrapperSize.top - 36;
+        if (top + 72 > wrapperSize.height) {
+          top = wrapperSize.height - 72;
+        } else if (top < 0) {
+          top = 0;
+        }
+        this.setState({ top });
       }
-      this.setState({ top });
 
       this.ticking = false;
     });
@@ -77,7 +81,7 @@ class FormPanel extends React.Component<Props & InjectedIntlProps, State> {
     const { top } = this.state;
 
     return (
-      <Wrapper {...{ editMode }} innerRef={this.wrapperRef}>
+      <Wrapper {...{ editMode }} ref={this.wrapperRef}>
         {editMode && (
           <div className="side-buttons" ref={this.buttonsRef} style={{ top: `${top}px` }}>
             <button

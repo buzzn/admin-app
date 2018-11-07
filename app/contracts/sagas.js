@@ -1,4 +1,4 @@
-import { saveAs } from 'file-saver/FileSaver';
+import saveAs from 'file-saver';
 import { put, call, takeLatest, take, cancel, select, fork } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import { logException } from '_util';

@@ -88,13 +88,13 @@ class EditableInputArray extends React.Component<Props> {
       <React.Fragment>
         <Row>
           <Col xs={12}>
-            <p className="h5 grey-underline header text-uppercase" style={{ paddingTop: '2rem' }}>
+            <p className="h5 header text-uppercase" style={{ paddingTop: '2rem' }}>
               <FormattedMessage id="admin.meters.registers" />
             </p>
           </Col>
         </Row>
         {fields.map((field, i) => (
-          <InputRow className="fieldgroup" key={i}>
+          <InputRow className="fieldgroup" key={i} noGutters>
             {editMode
               && !preset.lockRegisters && (
                 <React.Fragment>
