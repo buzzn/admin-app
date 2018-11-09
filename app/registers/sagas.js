@@ -32,6 +32,11 @@ export function* updateRegister({ apiUrl, apiPath, token }, { meterId, registerI
   try {
     const res = yield call(api.updateRegister, { apiUrl, apiPath, token, registerId, params, groupId });
     if (res._error) {
+      if (res.observer) {
+        res.observerMinThreshold = res.observer;
+        res.observerMaxThreshold = res.observer;
+        delete res.observer;
+      }
       yield call(reject, new SubmissionError(res));
     } else {
       yield call(resolve, res);
