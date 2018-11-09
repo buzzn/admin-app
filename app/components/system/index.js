@@ -4,6 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import Groups from 'groups';
 import MarketLocations from 'market_locations';
 import Meters from 'meters';
+import Registers from 'registers';
 import Loading from 'components/loading';
 import MarketLocationsList from './market_locations_list';
 import RegisterData from './register_data';
@@ -51,6 +52,8 @@ export class System extends React.Component {
       marketLocations,
       setMarketLocations,
       createMeterValidationRules,
+      updateRegister,
+      updateMaLoValidationRules,
       addRealMeter,
       registers,
       meters,
@@ -149,7 +152,7 @@ export class System extends React.Component {
           }) => {
             const marketLocation = marketLocations.array.find(m => m.id === locationId);
             if (!marketLocation) return <Redirect to={url} />;
-            return <MarketLocationData {...{ breadcrumbs, url, groupId, locationUrl, marketLocation }} />;
+            return <MarketLocationData {...{ breadcrumbs, url, groupId, locationUrl, marketLocation, updateRegister, updateMaLoValidationRules }} />;
           }}
         />
         <Route path={url}>
@@ -171,6 +174,7 @@ function mapStateToProps(state) {
     registers: getRegisters(state.marketLocations.marketLocations),
     meters: getMeters(state.marketLocations.marketLocations),
     createMeterValidationRules: state.meters.validationRules.realCreate,
+    updateMaLoValidationRules: state.registers.validationRules,
   };
 }
 
@@ -181,5 +185,6 @@ export default connect(
     setMarketLocations: MarketLocations.actions.setMarketLocations,
     loadGroup: Groups.actions.loadGroup,
     addRealMeter: Meters.actions.addRealMeter,
+    updateRegister: Registers.actions.updateRegister,
   },
 )(System);

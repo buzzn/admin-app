@@ -7,6 +7,7 @@ import { BreadcrumbsProps } from 'components/breadcrumbs';
 import { CenterContent, SubNav } from 'components/style';
 import Contracts from './contracts';
 import Registers from './registers';
+import MarketLocationForm from './form';
 import RegisterPowerContainer from '../register_data/register_power';
 import { HeaderData, HeaderValue } from './style';
 
@@ -24,6 +25,8 @@ const MarketLocationData = ({
   groupId,
   marketLocation,
   intl,
+  updateMaLoValidationRules,
+  updateRegister,
 }: Props & BreadcrumbsProps & InjectIntlProps) => (
   <React.Fragment>
     <PageTitle
@@ -85,6 +88,7 @@ const MarketLocationData = ({
           <Redirect to={`${locationUrl}/contracts`} />
         </Route>
       </Switch>
+        <MarketLocationForm {...{ marketLocation, initialValues: marketLocation, groupId, updateRegister, validationRules: updateMaLoValidationRules}}/>
     </CenterContent>
   </React.Fragment>
 );
