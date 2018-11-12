@@ -30,8 +30,8 @@ const MarketLocationsList = ({
   const data = marketLocations.filter(m => m.kind === maloType).map(m => ({
     ...m,
     labelIntl: intl.formatMessage({ id: `admin.registers.${m.label}` }),
-    meterProductSerialnumber: m.register.meter.productSerialnumber,
-    linkMeter: `${url}/meters/${m.register.meter.id}`,
+    meterProductSerialnumber: m.register ? m.register.meter.productSerialnumber : '',
+    linkMeter: m.register ? `${url}/meters/${m.register.meter.id}` : null,
     linkMarketLocation: `${url}/${m.id}`,
   }));
 
@@ -103,7 +103,7 @@ const MarketLocationsList = ({
               getTdProps: (_state, rowInfo, column) => ({
                 onClick: (_e, handleOriginal) => {
                   if (column.id === 'name') history.push(rowInfo.original.linkMarketLocation);
-                  if (column.id === 'meterProductSerialnumber') history.push(rowInfo.original.linkMeter);
+                  if (column.id === 'meterProductSerialnumber' && rowInfo.original.linkMeter) history.push(rowInfo.original.linkMeter);
                   if (handleOriginal) handleOriginal();
                 },
               }),

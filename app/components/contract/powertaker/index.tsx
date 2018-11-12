@@ -57,10 +57,24 @@ const PowertakerContract = ({
 }: Props & InjectedIntlProps) => {
   const submit = values => new Promise((resolve, reject) => {
     // HACK: backend validation hack
-    const { contractor, customer, customerBankAccount, documents, payments, tariffs, registerMeta, ...params } = values;
+    const {
+      contractor,
+      customer,
+      customerBankAccount,
+      documents,
+      payments,
+      tariffs,
+      registerMeta,
+      ...params
+    } = values;
     params.registerMeta = { name: registerMeta.name, label: registerMeta.label, updatedAt: registerMeta.updatedAt };
     if (!params.shareRegisterWithGroup) params.shareRegisterWithGroup = false;
     if (!params.shareRegisterPublicly) params.shareRegisterPublicly = false;
+    if (!params.confirmPricingModel) params.confirmPricingModel = false;
+    if (!params.powerOfAttorney) params.powerOfAttorney = false;
+    if (!params.otherContract) params.otherContract = false;
+    if (!params.moveIn) params.moveIn = false;
+    if (!params.authorization) params.authorization = false;
 
     updateContract({
       groupId,
