@@ -44,9 +44,11 @@ const MarketLocationData = ({
     />
     <CenterContent>
       <HeaderData>
-        <RegisterPowerContainer
-          {...{ groupId, meterId: marketLocation.register.meterId, registerId: marketLocation.register.id }}
-        />
+        {!!marketLocation.register && (
+          <RegisterPowerContainer
+            {...{ groupId, meterId: marketLocation.register.meterId, registerId: marketLocation.register.id }}
+          />
+        )}
         <HeaderValue>
           <FormattedMessage id="admin.marketLocations.thirdPartyId" />:{' '}
           <span className="value">{marketLocation.marketLocationId || '-----'}</span>
@@ -88,7 +90,15 @@ const MarketLocationData = ({
           <Redirect to={`${locationUrl}/contracts`} />
         </Route>
       </Switch>
-        <MarketLocationForm {...{ marketLocation, initialValues: marketLocation, groupId, updateRegister, validationRules: updateMaLoValidationRules}}/>
+      <MarketLocationForm
+        {...{
+          marketLocation,
+          initialValues: marketLocation,
+          groupId,
+          updateRegister,
+          validationRules: updateMaLoValidationRules,
+        }}
+      />
     </CenterContent>
   </React.Fragment>
 );
