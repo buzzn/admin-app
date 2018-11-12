@@ -164,8 +164,8 @@ export class System extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const getRegisters = malo => (malo._status === 200 ? malo.array.map(m => m.register) : []);
-  const getMeters = malo => (malo._status === 200 ? malo.array.map(m => m.register.meter) : []);
+  const getRegisters = malo => (malo._status === 200 ? malo.array.filter(m => m.register).map(m => m.register) : []);
+  const getMeters = malo => (malo._status === 200 ? malo.array.filter(m => m.register).map(m => m.register.meter) : []);
   return {
     devMode: state.app.ui.devMode,
     group: state.groups.group,
