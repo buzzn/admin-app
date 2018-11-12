@@ -63,7 +63,7 @@ const MarketLocationsList = ({
     {
       Header: '',
       width: 40,
-      Cell: ({ original }) => original.meter ? TableParts.components.iconCell({ icon: 'copy', action: () => duplicateMeter(original) }) : false,
+      Cell: ({ original }) => original.register ? TableParts.components.iconCell({ icon: 'copy', action: () => duplicateMeter(original) }) : false,
     },
   ];
 
