@@ -57,14 +57,16 @@ const MarketLocationData = ({
           <FormattedMessage id="admin.marketLocations.kind" />: <span className="value">{marketLocation.kind}</span>
         </HeaderValue>
       </HeaderData>
-      <SubNav>
-        <NavLink to={`${locationUrl}/contracts`} exact className="nav-link">
-          <FormattedMessage id="admin.marketLocations.navContracts" />
-        </NavLink>
-        <NavLink to={`${locationUrl}/registers`} exact className="nav-link">
-          <FormattedMessage id="admin.marketLocations.navRegisters" />
-        </NavLink>
-      </SubNav>
+      {!!marketLocation.register && (
+        <SubNav>
+          <NavLink to={`${locationUrl}/contracts`} exact className="nav-link">
+            <FormattedMessage id="admin.marketLocations.navContracts" />
+          </NavLink>
+          <NavLink to={`${locationUrl}/registers`} exact className="nav-link">
+            <FormattedMessage id="admin.marketLocations.navRegisters" />
+          </NavLink>
+        </SubNav>
+      )}
       <Switch>
         <Route
           path={`${locationUrl}/contracts`}
@@ -79,12 +81,14 @@ const MarketLocationData = ({
             />
           )}
         />
-        <Route
-          path={`${locationUrl}/registers`}
-          render={({ history }) => (
-            <Registers {...{ url, history, locationId: marketLocation.id, registers: [marketLocation.register] }} />
-          )}
-        />
+        {!!marketLocation.register && (
+          <Route
+            path={`${locationUrl}/registers`}
+            render={({ history }) => (
+              <Registers {...{ url, history, locationId: marketLocation.id, registers: [marketLocation.register] }} />
+            )}
+          />
+        )}
 
         <Route path={locationUrl}>
           <Redirect to={`${locationUrl}/contracts`} />
