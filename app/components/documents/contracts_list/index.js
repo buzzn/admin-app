@@ -88,7 +88,7 @@ class ContractsList extends React.Component {
       since: c.signingDate,
       number: c.fullContractNumber,
       link: `${url}/${c.id}`,
-      status: {
+      statusIcon: {
         value: c.status,
         Display: (
           <div>
@@ -140,7 +140,7 @@ class ContractsList extends React.Component {
         Header: () => (
           <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.contracts.tableStatus' })} />
         ),
-        accessor: 'status',
+        accessor: 'statusIcon',
         filterMethod: TableParts.filters.filterByValue,
         sortMethod: TableParts.sort.sortByValue,
         Cell: ({ value: { Display } }) => Display,
