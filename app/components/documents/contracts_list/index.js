@@ -6,6 +6,7 @@ import { UncontrolledTooltip } from 'reactstrap';
 import { tableParts as TableParts } from 'react_table_config';
 import { SpanClick } from 'components/style';
 import Loading from 'components/loading';
+import ContractStatus from 'components/contract_status';
 import AddContract from '../add_contract';
 import NestedDetails from './nested_details';
 
@@ -87,6 +88,15 @@ class ContractsList extends React.Component {
       since: c.signingDate,
       number: c.fullContractNumber,
       link: `${url}/${c.id}`,
+      status: {
+        value: c.status,
+        Display: (
+          <div>
+            <ContractStatus {...{ size: 'small', status: c.status }} />
+            <span className="ml-2">{intl.formatMessage({ id: `admin.contracts.${c.status}` })}</span>
+          </div>
+        ),
+      },
     }));
 
     const columns = [
@@ -125,6 +135,15 @@ class ContractsList extends React.Component {
         ),
         accessor: 'number',
         minWidth: 60,
+      },
+      {
+        Header: () => (
+          <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.contracts.tableStatus' })} />
+        ),
+        accessor: 'status',
+        filterMethod: TableParts.filters.filterByValue,
+        sortMethod: TableParts.sort.sortByValue,
+        Cell: ({ value: { Display } }) => Display,
       },
       {
         expander: true,
