@@ -98,6 +98,7 @@ export const FormGroup = styled.div`
   }
 
   label {
+    pointer-events: none;
     position: absolute;
     font-weight: normal;
     top: 0;
