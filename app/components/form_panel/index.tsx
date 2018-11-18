@@ -98,11 +98,18 @@ class FormPanel extends React.Component<Props & InjectedIntlProps, State> {
                 }
               }}
               disabled={cancelDisabled}
+              data-cy="form button cancel"
             >
               <FormattedMessage id="admin.buttons.cancel" />
               <i className="fa fa-close" />
             </button>
-            <button className="btn btn-primary" onClick={onSave} disabled={saveDisabled} type="submit">
+            <button
+              className="btn btn-primary"
+              onClick={onSave}
+              disabled={saveDisabled}
+              type="submit"
+              data-cy="form button save"
+            >
               <FormattedMessage id="admin.buttons.save" />
               <i className="fa fa-check" />
             </button>

@@ -62,7 +62,7 @@ class AddContract extends React.Component<Props & InjectedIntlProps> {
     const pdfDisabled = !groupOwner || groupOwnerErrors;
 
     return (
-      <Modal {...{ isOpen, toggle: this.handleToggle }}>
+      <Modal {...{ isOpen, toggle: this.handleToggle }} data-cy="create contract modal">
         <ModalHeader toggle={this.handleToggle}>
           <FormattedMessage id={`${prefix}.modalHeaderAdd`} />
         </ModalHeader>

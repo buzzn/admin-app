@@ -12,10 +12,10 @@ interface ContentProps {
   icon: string;
 }
 
-const SidebarItem = ({ to, children, exact, icon, devMode }: ItemProps & ContentProps) => {
+const SidebarItem = ({ to, children, exact, icon, devMode, ...props }: ItemProps & ContentProps) => {
   if (devMode === undefined || devMode) {
     return (
-      <SidebarLink to={to} exact={exact}>
+      <SidebarLink to={to} exact={exact} {...props}>
         <SidebarItemContent {...{ children, icon }} />
       </SidebarLink>
     );

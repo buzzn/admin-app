@@ -158,7 +158,7 @@ class ContractsList extends React.Component {
       <div className="p-0">
         {generatingPDF && <Loading absolute={true} />}
         {!!contractTypes.length && (
-          <SpanClick onClick={this.switchAddContract} className="float-right">
+          <SpanClick onClick={this.switchAddContract} className="float-right" data-cy="add contract CTA">
             <FormattedMessage id="admin.contracts.addNew" /> <i className="fa fa-plus-circle" />
           </SpanClick>
         )}
