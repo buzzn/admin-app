@@ -1,4 +1,3 @@
-import get from 'lodash/get';
 import { constants } from './actions';
 
 export const initialState = {
@@ -7,8 +6,11 @@ export const initialState = {
   groupMeters: { _status: null, array: [] },
   meter: { _status: null },
   meterRegisters: { _status: null, array: [] },
-  realValidationRules: { _status: null },
-  virtualValidationRules: { _status: null },
+  validationRules: {
+    realCreate: { _status: null },
+    realUpdate: { _status: null },
+    virtualUpdate: { _status: null },
+  },
 };
 
 export default function (state = initialState, action) {
@@ -34,10 +36,8 @@ export default function (state = initialState, action) {
     case constants.SET_TOKEN:
       return { ...state };
 
-    case constants.SET_REAL_VALIDATION_RULES:
-      return { ...state, realValidationRules: action.realValidationRules };
-    case constants.SET_VIRTUAL_VALIDATION_RULES:
-      return { ...state, virtualValidationRules: action.virtualValidationRules };
+    case constants.SET_VALIDATION_RULES:
+      return { ...state, validationRules: { ...state.validationRules, [action.ruleType]: action.validationRules } };
 
     default:
       return state;

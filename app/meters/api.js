@@ -4,11 +4,18 @@ import { prepareHeaders, parseResponse, camelizeResponseKeys, snakeReq } from '.
 export default {
   fetchMeter({ token, apiUrl, apiPath, meterId, groupId }) {
     return fetch(
-      `${apiUrl}${apiPath}/localpools/${groupId}/meters/${meterId}?include=registers:[readings,market_location:[contracts:[customer:[contact]]]]`,
+      `${apiUrl}${apiPath}/localpools/${groupId}/meters/${meterId}?include=registers:[readings,register_meta:[contracts:[customer:[contact]]]]`,
       { headers: prepareHeaders(token) },
     )
       .then(parseResponse)
       .then(camelizeResponseKeys);
+  },
+  addRealMeter({ token, apiUrl, apiPath, groupId, params }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/meters`, {
+      headers: prepareHeaders(token),
+      method: 'POST',
+      body: JSON.stringify(snakeReq(params)),
+    }).then(parseResponse);
   },
   updateMeter({ token, apiUrl, apiPath, meterId, params, groupId }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/meters/${meterId}`, {
@@ -26,7 +33,7 @@ export default {
   },
   fetchGroupMeters({ token, apiUrl, apiPath, groupId }) {
     return fetch(
-      `${apiUrl}${apiPath}/localpools/${groupId}/meters?include=registers:[readings,market_location,contracts:[customer]],formula_parts:[register]`,
+      `${apiUrl}${apiPath}/localpools/${groupId}/meters?include=registers:[readings,register_meta,contracts:[customer]],formula_parts:[register]`,
       { headers: prepareHeaders(token) },
     )
       .then(parseResponse)

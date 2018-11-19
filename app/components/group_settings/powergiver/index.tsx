@@ -113,7 +113,7 @@ class Powergiver extends React.Component<Props, State> {
   };
 
   submitForm = (values) => {
-    let params = { ...values };
+    let params = JSON.parse(JSON.stringify(values));
     const { updateOwner, owner } = this.props;
     const { ownerType, selectedOwner, selectedContact, selectedLR } = this.state;
     const ownerValue = (selectedOwner || { value: null }).value;
@@ -249,7 +249,7 @@ class Powergiver extends React.Component<Props, State> {
             && owner.id
             && updatable && <i className="buzzn-pencil" style={{ float: 'right' }} onClick={this.switchEditMode} />}
         </p>
-        <form onSubmit={handleSubmit(this.submitForm)}>
+        <form onSubmit={handleSubmit(this.submitForm)} data-cy="group owner form">
           <FormPanel
             {...{
               editMode,
@@ -266,7 +266,7 @@ class Powergiver extends React.Component<Props, State> {
             {updatable
               && !owner.id && (
                 <OwnerOptions>
-                  <FormGroup check inline>
+                  <FormGroup check inline data-cy="group owner radio person">
                     <CustomInput
                       checked={ownerType === 'person'}
                       type="radio"

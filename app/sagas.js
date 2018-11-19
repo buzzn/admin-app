@@ -18,6 +18,7 @@ import Readings from 'readings';
 import MarketLocations from 'market_locations';
 import BillingCycles from 'billing_cycles';
 import Devices from 'devices';
+import WebsiteForms from 'website_forms';
 import ValidationRules from 'validation_rules';
 
 import loadingList, { authList } from 'validation_rules_list';
@@ -64,6 +65,7 @@ export function* setToken(token) {
   yield put(MarketLocations.actions.setToken(token));
   yield put(BillingCycles.actions.setToken(token));
   yield put(Devices.actions.setToken(token));
+  yield put(WebsiteForms.actions.setToken(token));
   yield put(ValidationRules.actions.setToken(token));
 }
 
@@ -109,7 +111,7 @@ export function* initialLoadPause() {
 }
 
 export default function* () {
-  const { apiUrl, apiPath, authPath, secure } = yield select(getConfig);
+  const { apiUrl, apiPath, authPath, websitePath, secure } = yield select(getConfig);
 
   if (secure && window.location.protocol !== 'https:') {
     window.location.href = `https:${window.location.href.substring(window.location.protocol.length)}`;
@@ -130,6 +132,7 @@ export default function* () {
   yield put(MarketLocations.actions.setApiParams({ apiUrl, apiPath }));
   yield put(BillingCycles.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Devices.actions.setApiParams({ apiUrl, apiPath }));
+  yield put(WebsiteForms.actions.setApiParams({ apiUrl, apiPath: websitePath }));
   yield put(ValidationRules.actions.setApiParams({ apiUrl, apiPath }));
 
   yield fork(setHealth, { apiUrl });

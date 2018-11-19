@@ -5,6 +5,19 @@ export const CenterContent = styled.div`
   position: relative;
 `;
 
+export const FormTitle = styled.h5`
+  margin-top: 2rem;
+  padding-top: 1rem;
+  i {
+    float: right;
+  }
+`;
+
+export const SubNavAddLink = styled.span`
+  position: absolute;
+  right: 0;
+`;
+
 export const SubNav = styled(Nav)`
   border-bottom: #e0e0e0 solid 1px;
   margin-bottom: 2rem;
@@ -85,6 +98,7 @@ export const FormGroup = styled.div`
   }
 
   label {
+    pointer-events: none;
     position: absolute;
     font-weight: normal;
     top: 0;
@@ -134,6 +148,7 @@ export const FormGroup = styled.div`
     font-weight: normal;
     bottom: 0;
     right: 8px;
+    pointer-events: none;
   }
   .error-icon {
     color: #ff4a00;
@@ -142,6 +157,7 @@ export const FormGroup = styled.div`
     font-size: 1.3rem;
     top: 4px;
     right: 16px;
+    pointer-events: none;
   }
   .date-wrapper {
     &.dirty {

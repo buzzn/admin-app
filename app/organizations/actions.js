@@ -2,6 +2,11 @@ export const constants = {
   SET_API_PARAMS: 'buzzn_organizations/SET_API_PARAMS',
   SET_TOKEN: 'buzzn_organizations/SET_TOKEN',
 
+  LOAD_ORGANIZATION: 'buzzn_organizations/LOAD_ORGANIZATION',
+  LOADING_ORGANIZATION: 'buzzn_organizations/LOADING_ORGANIZATION',
+  LOADED_ORGANIZATION: 'buzzn_organizations/LOADED_ORGANIZATION',
+  SET_ORGANIZATION: 'buzzn_organizations/SET_ORGANIZATION',
+
   LOAD_AVAILABLE_ORGANIZATIONS: 'buzzn_organizations/LOAD_AVAILABLE_ORGANIZATIONS',
   LOADING_AVAILABLE_ORGANIZATIONS: 'buzzn_organizations/LOADING_AVAILABLE_ORGANIZATIONS',
   LOADED_AVAILABLE_ORGANIZATIONS: 'buzzn_organizations/LOADED_AVAILABLE_ORGANIZATIONS',
@@ -16,6 +21,11 @@ export const constants = {
 export const actions = {
   setApiParams: ({ apiPath, apiUrl }) => ({ type: constants.SET_API_PARAMS, apiPath, apiUrl }),
   setToken: token => ({ type: constants.SET_TOKEN, token }),
+
+  loadOrganization: ({ organizationId }) => ({ type: constants.LOAD_ORGANIZATION, organizationId }),
+  loadingOrganization: () => ({ type: constants.LOADING_ORGANIZATION }),
+  loadedOrganization: () => ({ type: constants.LOADED_ORGANIZATION }),
+  setOrganization: organization => ({ type: constants.SET_ORGANIZATION, organization }),
 
   loadAvailableOrganizations: () => ({ type: constants.LOAD_AVAILABLE_ORGANIZATIONS }),
   loadingAvailableOrganizations: () => ({ type: constants.LOADING_AVAILABLE_ORGANIZATIONS }),

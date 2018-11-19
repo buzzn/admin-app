@@ -1,7 +1,7 @@
 export const mainStyle = {
   container: (base, state) => ({
     ...base,
-    marginRight: '-16px',
+    // marginRight: '-16px',
   }),
   control: (base, { isDisabled, isFocused }) => ({
     ...base,

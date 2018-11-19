@@ -53,18 +53,32 @@ export default [
     swaggerPath: '/localpools/{localpool_id}/contracts/{localpool_power_taker_contract_id}.patch.parameters',
     setAction: rules => Contracts.actions.setValidationRules('lptUpdate', rules),
   },
+  {
+    swaggerPath:
+      '/localpools/{localpool_id}/contracts/{localpool_power_taker_contract_id}/customer-organization.patch.parameters',
+    setAction: rules => Contracts.actions.setValidationRules('lptOrgCustomer', rules),
+  },
+  {
+    swaggerPath:
+      '/localpools/{localpool_id}/contracts/{localpool_power_taker_contract_id}/customer-person.patch.parameters',
+    setAction: rules => Contracts.actions.setValidationRules('lptPerCustomer', rules),
+  },
   // Meter rules
   {
+    swaggerPath: '/localpools/{localpool_meter_real_id}/meters.post.parameters',
+    setAction: rules => Meters.actions.setValidationRules('realCreate', rules),
+  },
+  {
     swaggerPath: '/localpools/{localpool_id}/meters/{real_meter_id}.patch.parameters',
-    setAction: Meters.actions.setRealValidationRules,
+    setAction: rules => Meters.actions.setValidationRules('realUpdate', rules),
   },
   {
     swaggerPath: '/localpools/{localpool_id}/meters/{virtual_meter_id}.patch.parameters',
-    setAction: Meters.actions.setVirtualValidationRules,
+    setAction: rules => Meters.actions.setValidationRules('virtualUpdate', rules),
   },
   // Register rules
   {
-    swaggerPath: '/localpools/{localpool_id}/meters/{real_meter_id}/registers/{real_register_id}.patch.parameters',
+    swaggerPath: '/localpools/{localpool_id}/register-metas/{register_meta_id}.patch.parameters',
     setAction: Registers.actions.setValidationRules,
   },
   // Devices rules

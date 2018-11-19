@@ -35,10 +35,12 @@ import AppMaintenance from 'components/app_maintenance';
 import AddGroup from 'components/add_group';
 import Contract from 'components/contract';
 import DevicesContainer from 'components/devices';
+import WebsiteFormsContainer from 'components/website_forms';
 import { EditOverlay } from 'style';
 import './react_table_config';
 
 export const EditOverlayContext = React.createContext();
+export const DevModeContext = React.createContext();
 
 // FIXME: react router old context api hack. See react-router#5901, react-router#6072, react#12551, react#12586
 const RouterHack = ({
@@ -52,76 +54,79 @@ const RouterHack = ({
   switchAddGroup,
   addGroup,
 }) => (
-  <EditOverlayContext.Provider value={{ editMode, switchEditMode, setEditMode }}>
-    {token && <TopNavBarContainer {...{ devMode, switchAddGroup }} />}
-    {token ? (
-      <Container style={{ maxWidth: '1440px' }}>
-        <Route exact path="/" render={() => <Redirect to="/groups" />} />
-        <Row>
-          <Route
-            path="/groups/:groupId"
-            render={({ match: { url } }) => <Sidebar url={url || ''} devMode={devMode} multiGroups={multiGroups} />}
-          />
-
-          <Route
-            path="/*"
-            render={({ match: { url } }) => (
-              <Col xs={url === '/' || url === '/groups' ? '9' : '8'} className="pl-0 pr-0">
-                <div className="center-content-wrapper">
-                  <PartErrorBoundary part="main-part">
-                    <Switch>
-                      <Route path="/groups/:groupId/analytics" component={AnalyticsContainer} />
-                      <Route path="/groups/:groupId/powertakers" component={PowertakersContainer} />
-                      <Route path="/groups/:groupId/tariffs" component={TariffsContainer} />
-                      <Route path="/groups/:groupId/billing" component={BillingContainer} />
-                      <Route path="/groups/:groupId/market-locations" component={SystemContainer} />
-                      <Route path="/groups/:groupId/documents" component={DocumentsContainer} />
-                      <Route path="/groups/:groupId/bubbles" component={BubblesContainer} />
-                      <Route path="/groups/:groupId/settings" component={GroupSettingsContainer} />
-                      <Route path="/groups/:groupId/devices" component={DevicesContainer} />
-                      <Route
-                        path="/groups/:groupId/contracts/:contractId"
-                        render={({ match: { params: { groupId, contractId } } }) => <Contract {...{ url: `${url}/tail`, groupId, contractId }} />}
-                      />
-                      <Route
-                        path="/groups/:groupId"
-                        render={({ match: { params: { groupId } } }) => <Redirect to={`/groups/${groupId || ''}/settings`} />}
-                      />
-                      <Route path="/groups" component={LocalpoolsListContainer} />
-                      <Route render={() => <div>404</div>} />
-                    </Switch>
-                  </PartErrorBoundary>
-                </div>
-              </Col>
-            )}
-          />
-
-          <Col xs="3" className="pl-0 pr-0">
-            <TodoList devMode={devMode} />
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12}>
+  <DevModeContext.Provider value={devMode}>
+    <EditOverlayContext.Provider value={{ editMode, switchEditMode, setEditMode }}>
+      {token && <TopNavBarContainer {...{ devMode, switchAddGroup }} />}
+      {token ? (
+        <Container style={{ maxWidth: '1440px' }}>
+          <Route exact path="/" render={() => <Redirect to="/groups" />} />
+          <Row>
             <Route
-              render={({ history }) => (
-                <AddGroup
-                  {...{
-                    isOpen: addGroupOpen,
-                    toggle: switchAddGroup,
-                    addGroup,
-                    history,
-                  }}
-                />
+              path="/groups/:groupId"
+              render={({ match: { url } }) => <Sidebar url={url || ''} devMode={devMode} multiGroups={multiGroups} />}
+            />
+
+            <Route
+              path="/*"
+              render={({ match: { url } }) => (
+                <Col xs={url === '/' || url === '/groups' ? '9' : '8'} className="pl-0 pr-0">
+                  <div className="center-content-wrapper">
+                    <PartErrorBoundary part="main-part">
+                      <Switch>
+                        <Route path="/website-forms" component={WebsiteFormsContainer} />
+                        <Route path="/groups/:groupId/analytics" component={AnalyticsContainer} />
+                        <Route path="/groups/:groupId/powertakers" component={PowertakersContainer} />
+                        <Route path="/groups/:groupId/tariffs" component={TariffsContainer} />
+                        <Route path="/groups/:groupId/billing" component={BillingContainer} />
+                        <Route path="/groups/:groupId/market-locations" component={SystemContainer} />
+                        <Route path="/groups/:groupId/documents" component={DocumentsContainer} />
+                        <Route path="/groups/:groupId/bubbles" component={BubblesContainer} />
+                        <Route path="/groups/:groupId/settings" component={GroupSettingsContainer} />
+                        <Route path="/groups/:groupId/devices" component={DevicesContainer} />
+                        <Route
+                          path="/groups/:groupId/contracts/:contractId"
+                          render={({ match: { params: { groupId, contractId } } }) => <Contract {...{ url: `${url}/tail`, groupId, contractId }} />}
+                        />
+                        <Route
+                          path="/groups/:groupId"
+                          render={({ match: { params: { groupId } } }) => <Redirect to={`/groups/${groupId || ''}/settings`} />}
+                        />
+                        <Route path="/groups" component={LocalpoolsListContainer} />
+                        <Route render={() => <div>404</div>} />
+                      </Switch>
+                    </PartErrorBoundary>
+                  </div>
+                </Col>
               )}
             />
-            <Footer />
-          </Col>
-        </Row>
-      </Container>
-    ) : (
-      <Route component={SignInContainer} />
-    )}
-  </EditOverlayContext.Provider>
+
+            <Col xs="3" className="pl-0 pr-0">
+              <TodoList devMode={devMode} />
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12}>
+              <Route
+                render={({ history }) => (
+                  <AddGroup
+                    {...{
+                      isOpen: addGroupOpen,
+                      toggle: switchAddGroup,
+                      addGroup,
+                      history,
+                    }}
+                  />
+                )}
+              />
+              <Footer />
+            </Col>
+          </Row>
+        </Container>
+      ) : (
+        <Route component={SignInContainer} />
+      )}
+    </EditOverlayContext.Provider>
+  </DevModeContext.Provider>
 );
 
 class NewRoot extends React.Component {
@@ -133,7 +138,7 @@ class NewRoot extends React.Component {
 
   setEditMode = (value) => {
     this.setState({ editMode: value });
-  }
+  };
 
   switchAddGroup = () => {
     this.setState({ addGroupOpen: !this.state.addGroupOpen });

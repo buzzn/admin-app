@@ -6,7 +6,7 @@ import Contracts from 'contracts';
 import Loading from 'components/loading';
 import PowertakerContract from './powertaker';
 import ThirdPartyContract from './third_party';
-import LPCContract from './localpool_processing';
+import LPCMPOContract from './lpc_mpo';
 
 class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
   componentDidMount() {
@@ -33,11 +33,11 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
     if (loading || contract._status === null) return <Loading minHeight={40} />;
     if (contract._status && contract._status !== 200) return <Redirect to={url} />;
 
-    const register = contract.marketLocation
+    const register = contract.registerMeta
       ? {
-        ...contract.marketLocation.register,
-        name: contract.marketLocation.name,
-        locationId: contract.marketLocation.id,
+        ...contract.registerMeta.register,
+        name: contract.registerMeta.name,
+        locationId: contract.registerMeta.id,
       }
       : {};
     const prefix = 'admin.contracts';
@@ -62,9 +62,9 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
         />
       );
     }
-    if (contract.type === 'contract_localpool_processing') {
+    if (['contract_localpool_processing', 'contract_metering_point_operator'].includes(contract.type)) {
       return (
-        <LPCContract
+        <LPCMPOContract
           {...{
             contract,
             contractor,

@@ -106,6 +106,11 @@ export class TopNavBar extends React.Component {
                 </DropdownMenu>
               </Dropdown>
               <NavItem className={`icon-nav-item ${devMode ? '' : 'under-construction'}`}>
+                <Link to="/website-forms">
+                  <i className="fa fa-vcard" />
+                </Link>
+              </NavItem>
+              <NavItem className={`icon-nav-item ${devMode ? '' : 'under-construction'}`}>
                 <i className="fa fa-bell" />
               </NavItem>
               <NavItem className={`icon-nav-item ${devMode ? '' : 'under-construction'}`}>
@@ -136,4 +141,7 @@ function mapStateToProps(state) {
   return { myProfile: state.app.userMe };
 }
 
-export default connect(mapStateToProps, { signOut: Auth.actions.signOut })(withHover(TopNavBar));
+export default connect(
+  mapStateToProps,
+  { signOut: Auth.actions.signOut },
+)(withHover(TopNavBar));

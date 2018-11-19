@@ -9,9 +9,7 @@ import ContractStatus from 'components/contract_status';
 import Loading from 'components/loading';
 import PageTitle from 'components/page_title';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
-import { CenterContent, SubNav } from 'components/style';
-
-import { AddPowertakerLink } from './style';
+import { CenterContent, SubNav, SubNavAddLink } from 'components/style';
 
 const DefaultPerson = require('images/default_person.jpg');
 const DefaultOrganisation = require('images/default_organisation.jpg');
@@ -65,12 +63,12 @@ const PowertakersList = ({
           : { value: p.customer.name, image: p.customer.image || DefaultOrganisation, type: 'avatar', clickable: true },
     linkPowertaker: p.type === 'contract_localpool_third_party' ? '' : `${url}/${p.id}/powertaker`,
     linkContract: `${url}/${p.id}`,
-    marketLocationName: p.marketLocation.name,
+    marketLocationName: p.registerMeta.name,
     // HACK
     linkMarketLocation: `${url
       .split('/')
       .slice(0, -1)
-      .join('/')}/market-locations/${p.marketLocation.id}`,
+      .join('/')}/market-locations/${p.registerMeta.id}`,
     beginDate: moment(p.beginDate).toDate(),
     lastDate: p.lastDate ? moment(p.lastDate).toDate() : p.lastDate,
     status: {
@@ -145,11 +143,11 @@ const PowertakersList = ({
       <CenterContent>
         {!!group.allowedActions
           && group.allowedActions.createLocalpoolPowerTakerContract === true && (
-            <AddPowertakerLink>
+            <SubNavAddLink>
               <Link to={`${url}/add-powertaker`}>
                 <FormattedMessage id="admin.contracts.addNew" /> <i className="fa fa-plus-circle" />
               </Link>
-            </AddPowertakerLink>
+            </SubNavAddLink>
         )}
         <SubNav>
           <NavLink to={`${url}/active`} exact className="nav-link">

@@ -2,7 +2,7 @@
 
 exports[`field input tests active 1`] = `
 <div
-  className="form-group false sc-EHOje hrRiON"
+  className="form-group false sc-gzVnrw ngnWY"
 >
   <input
     className="form-control false"
@@ -19,7 +19,7 @@ exports[`field input tests active 1`] = `
 
 exports[`field input tests error 1`] = `
 <div
-  className="form-group has-danger sc-EHOje hrRiON"
+  className="form-group has-danger sc-gzVnrw ngnWY"
 >
   <input
     className="form-control form-control-danger"
@@ -41,7 +41,7 @@ exports[`field input tests error 1`] = `
 
 exports[`field input tests inactive 1`] = `
 <div
-  className="form-group false sc-EHOje hrRiON"
+  className="form-group false sc-gzVnrw ngnWY"
 >
   <input
     className="form-control false"

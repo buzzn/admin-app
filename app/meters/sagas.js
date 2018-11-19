@@ -1,5 +1,6 @@
 import { put, call, takeLatest, take, fork, cancel, select } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
+import MarketLocations from 'market_locations';
 import { logException } from '_util';
 import { actions, constants } from './actions';
 import api from './api';
@@ -48,6 +49,20 @@ export function* updateFormulaPart(
   }
 }
 
+export function* addRealMeter({ apiUrl, apiPath, token }, { params, resolve, reject, groupId }) {
+  try {
+    const res = yield call(api.addRealMeter, { apiUrl, apiPath, token, params, groupId });
+    if (res._error) {
+      yield call(reject, new SubmissionError(res));
+    } else {
+      yield call(resolve, res);
+      yield put(MarketLocations.actions.loadMarketLocations(groupId));
+    }
+  } catch (error) {
+    logException(error);
+  }
+}
+
 export function* updateMeter({ apiUrl, apiPath, token }, { meterId, params, resolve, reject, groupId }) {
   try {
     const res = yield call(api.updateMeter, { apiUrl, apiPath, token, meterId, params, groupId });
@@ -67,6 +82,7 @@ export function* updateMeter({ apiUrl, apiPath, token }, { meterId, params, reso
 export function* metersSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_GROUP_METERS, getGroupMeters, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_METER, getMeter, { apiUrl, apiPath, token });
+  yield takeLatest(constants.ADD_REAL_METER, addRealMeter, { apiUrl, apiPath, token });
   yield takeLatest(constants.UPDATE_METER, updateMeter, { apiUrl, apiPath, token });
   yield takeLatest(constants.UPDATE_FORMULA_PART, updateFormulaPart, { apiUrl, apiPath, token });
   const meterId = yield select(selectMeterId);

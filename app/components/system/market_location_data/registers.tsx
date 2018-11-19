@@ -14,19 +14,10 @@ const Registers = ({ url, history, locationId, registers, intl }: Props & Inject
   const prefix = 'admin.registers';
   const data = registers.map(r => ({
     ...r,
-    label: intl.formatMessage({ id: `admin.registers.${r.label}` }),
     linkRegister: `${url}/registers/${r.id}`,
     linkMeter: `${url}/meters/${r.meter.id}`,
   }));
   const columns = [
-    {
-      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableObis` })} />,
-      accessor: 'obis',
-      style: {
-        cursor: 'pointer',
-        textDecoration: 'underline',
-      },
-    },
     {
       Header: () => (
         <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.meters.tableProductSerialnumber' })} />
@@ -38,8 +29,12 @@ const Registers = ({ url, history, locationId, registers, intl }: Props & Inject
       },
     },
     {
-      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.registers.tableLabel' })} />,
-      accessor: 'label',
+      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableObis` })} />,
+      accessor: 'obis',
+      style: {
+        cursor: 'pointer',
+        textDecoration: 'underline',
+      },
     },
   ];
 

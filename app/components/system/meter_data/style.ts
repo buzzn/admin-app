@@ -18,11 +18,3 @@ export const MeterHeader = styled(Row)`
     line-height: 11px;
   }
 `;
-
-export const MeterTitle = styled.h5`
-  margin-top: 2rem;
-  padding-top: 1rem;
-  i {
-    float: right;
-  }
-`;

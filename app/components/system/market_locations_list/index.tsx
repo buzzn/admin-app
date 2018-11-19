@@ -1,11 +1,11 @@
 import * as React from 'react';
 import ReactTableSorted from 'components/react_table_sorted';
 import { injectIntl, InjectIntlProps, FormattedMessage } from 'react-intl';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { tableParts as TableParts } from 'react_table_config';
 import PageTitle from 'components/page_title';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
-import { CenterContent, SubNav } from 'components/style';
+import { CenterContent, SubNav, SubNavAddLink } from 'components/style';
 
 interface Props {
   marketLocations: Array<any>;
@@ -23,26 +23,19 @@ const MarketLocationsList = ({
   groupId,
   breadcrumbs,
   maloType,
+  duplicateMeter,
 }: Props & BreadcrumbsProps & InjectIntlProps) => {
   const prefix = 'admin.marketLocations';
 
   const data = marketLocations.filter(m => m.kind === maloType).map(m => ({
     ...m,
-    label: intl.formatMessage({ id: `admin.registers.${m.register.label}` }),
-    meterProductSerialnumber: m.register.meter.productSerialnumber,
-    linkMeter: `${url}/meters/${m.register.meter.id}`,
+    labelIntl: intl.formatMessage({ id: `admin.registers.${m.label}` }),
+    meterProductSerialnumber: m.register ? m.register.meter.productSerialnumber : '',
+    linkMeter: m.register ? `${url}/meters/${m.register.meter.id}` : null,
     linkMarketLocation: `${url}/${m.id}`,
   }));
 
   const columns = [
-    {
-      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableName` })} />,
-      accessor: 'name',
-      style: {
-        cursor: 'pointer',
-        textDecoration: 'underline',
-      },
-    },
     {
       Header: () => (
         <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.meters.tableProductSerialnumber' })} />
@@ -54,10 +47,23 @@ const MarketLocationsList = ({
       },
     },
     {
+      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableName` })} />,
+      accessor: 'name',
+      style: {
+        cursor: 'pointer',
+        textDecoration: 'underline',
+      },
+    },
+    {
       Header: () => (
         <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.registers.tableLabel' })} />
       ),
-      accessor: 'label',
+      accessor: 'labelIntl',
+    },
+    {
+      Header: '',
+      width: 40,
+      Cell: ({ original }) => original.register ? TableParts.components.iconCell({ icon: 'copy', action: () => duplicateMeter(original) }) : false,
     },
   ];
 
@@ -72,6 +78,11 @@ const MarketLocationsList = ({
         }}
       />
       <CenterContent>
+        <SubNavAddLink>
+          <Link to={`${url}/add-meter`}>
+            <FormattedMessage id="admin.meters.addNew" /> <i className="fa fa-plus-circle" />
+          </Link>
+        </SubNavAddLink>
         <SubNav>
           <NavLink to={`${url}/consumption`} exact className="nav-link">
             <FormattedMessage id="admin.marketLocations.navConsumption" />
@@ -92,7 +103,7 @@ const MarketLocationsList = ({
               getTdProps: (_state, rowInfo, column) => ({
                 onClick: (_e, handleOriginal) => {
                   if (column.id === 'name') history.push(rowInfo.original.linkMarketLocation);
-                  if (column.id === 'meterProductSerialnumber') history.push(rowInfo.original.linkMeter);
+                  if (column.id === 'meterProductSerialnumber' && rowInfo.original.linkMeter) history.push(rowInfo.original.linkMeter);
                   if (handleOriginal) handleOriginal();
                 },
               }),

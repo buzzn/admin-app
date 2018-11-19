@@ -16,6 +16,7 @@ import Readings from 'readings';
 import MarketLocations from 'market_locations';
 import BillingCycles from 'billing_cycles';
 import Devices from 'devices';
+import WebsiteForms from 'website_forms';
 import ValidationRules from 'validation_rules';
 import RootReducer from 'reducers';
 import { logException } from '_util';
@@ -35,6 +36,7 @@ function* rootSaga() {
     call(MarketLocations.sagas),
     call(BillingCycles.sagas),
     call(Devices.sagas),
+    call(WebsiteForms.sagas),
     call(ValidationRules.sagas),
     call(appSaga),
   ]);

@@ -167,10 +167,10 @@ class GroupSettings extends React.Component {
           </div>
           <Row>
             <SubNav>
-              <NavLink to={`${url}/group`} exact className="nav-link">
+              <NavLink to={`${url}/group`} exact className="nav-link" data-cy="group settings tab">
                 <FormattedMessage id="admin.groups.navGroupSettings" />
               </NavLink>
-              <NavLink to={`${url}/powergiver`} exact className="nav-link">
+              <NavLink to={`${url}/powergiver`} exact className="nav-link" data-cy="group owner tab">
                 <FormattedMessage id="admin.groups.navPowergiver" />
               </NavLink>
               {!!owner.id && (

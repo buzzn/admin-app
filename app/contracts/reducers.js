@@ -14,6 +14,8 @@ export const initialState = {
     lptp: { _status: null },
     lpto: { _status: null },
     lptUpdate: { _status: null },
+    lptOrgCustomer: { _status: null },
+    lptPerCustomer: { _status: null },
   },
 };
 

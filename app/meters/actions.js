@@ -2,14 +2,14 @@ export const constants = {
   SET_API_PARAMS: 'buzzn_meters/SET_API_PARAMS',
   SET_TOKEN: 'buzzn_meters/SET_TOKEN',
 
-  SET_REAL_VALIDATION_RULES: 'buzzn_meters/SET_REAL_VALIDATION_RULES',
-  SET_VIRTUAL_VALIDATION_RULES: 'buzzn_meters/SET_VIRTUAL_VALIDATION_RULES',
+  SET_VALIDATION_RULES: 'buzzn_meters/SET_VALIDATION_RULES',
 
   LOAD_METER: 'buzzn_meters/LOAD_METER',
   LOADING_METER: 'buzzn_meters/LOADING_METER',
   LOADED_METER: 'buzzn_meters/LOADED_METER',
   SET_METER: 'buzzn_meters/SET_METER',
 
+  ADD_REAL_METER: 'buzzn_meters/ADD_REAL_METER',
   UPDATE_METER: 'buzzn_meters/UPDATE_METER',
   UPDATE_FORMULA_PART: 'buzzn_meters/UPDATE_FORMULA_PART',
 
@@ -23,16 +23,24 @@ export const actions = {
   setApiParams: ({ apiPath, apiUrl }) => ({ type: constants.SET_API_PARAMS, apiPath, apiUrl }),
   setToken: token => ({ type: constants.SET_TOKEN, token }),
 
-  setRealValidationRules: realValidationRules => ({ type: constants.SET_REAL_VALIDATION_RULES, realValidationRules }),
-  setVirtualValidationRules: virtualValidationRules => ({
-    type: constants.SET_VIRTUAL_VALIDATION_RULES,
-    virtualValidationRules,
+  setValidationRules: (ruleType, validationRules) => ({
+    type: constants.SET_VALIDATION_RULES,
+    ruleType,
+    validationRules,
   }),
 
   loadMeter: ({ meterId, groupId }) => ({ type: constants.LOAD_METER, meterId, groupId }),
   loadingMeter: () => ({ type: constants.LOADING_METER }),
   loadedMeter: () => ({ type: constants.LOADED_METER }),
   setMeter: meter => ({ type: constants.SET_METER, meter }),
+
+  addRealMeter: ({ params, resolve, reject, groupId }) => ({
+    type: constants.ADD_REAL_METER,
+    params,
+    resolve,
+    reject,
+    groupId,
+  }),
 
   updateMeter: ({ meterId, params, resolve, reject, groupId }) => ({
     type: constants.UPDATE_METER,

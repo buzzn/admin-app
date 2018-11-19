@@ -79,13 +79,14 @@ export const actions = {
     reject,
     params,
   }),
-  updateContract: ({ groupId, contractId, resolve, reject, params }) => ({
+  updateContract: ({ groupId, contractId, resolve, reject, params, updateType }) => ({
     type: constants.UPDATE_CONTRACT,
     groupId,
     contractId,
     resolve,
     reject,
     params,
+    updateType,
   }),
 
   generateContractPDF: ({ groupId, contractId, resolve, reject }) => ({

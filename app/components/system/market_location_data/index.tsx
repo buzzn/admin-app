@@ -7,8 +7,9 @@ import { BreadcrumbsProps } from 'components/breadcrumbs';
 import { CenterContent, SubNav } from 'components/style';
 import Contracts from './contracts';
 import Registers from './registers';
+import MarketLocationForm from './form';
 import RegisterPowerContainer from '../register_data/register_power';
-import { MarketLocationId } from './style';
+import { HeaderData, HeaderValue } from './style';
 
 interface Props {
   marketLocation: any;
@@ -24,6 +25,8 @@ const MarketLocationData = ({
   groupId,
   marketLocation,
   intl,
+  updateMaLoValidationRules,
+  updateRegister,
 }: Props & BreadcrumbsProps & InjectIntlProps) => (
   <React.Fragment>
     <PageTitle
@@ -40,23 +43,30 @@ const MarketLocationData = ({
       }}
     />
     <CenterContent>
-      <RegisterPowerContainer
-        {...{ groupId, meterId: marketLocation.register.meterId, registerId: marketLocation.register.id }}
-      />
-      {!!marketLocation.marketLocationId && (
-        <MarketLocationId>
+      <HeaderData>
+        {!!marketLocation.register && (
+          <RegisterPowerContainer
+            {...{ groupId, meterId: marketLocation.register.meterId, registerId: marketLocation.register.id }}
+          />
+        )}
+        <HeaderValue>
           <FormattedMessage id="admin.marketLocations.thirdPartyId" />:{' '}
-          <span className="value">{marketLocation.marketLocationId}</span>
-        </MarketLocationId>
+          <span className="value">{marketLocation.marketLocationId || '-----'}</span>
+        </HeaderValue>
+        <HeaderValue>
+          <FormattedMessage id="admin.marketLocations.kind" />: <span className="value">{marketLocation.kind}</span>
+        </HeaderValue>
+      </HeaderData>
+      {!!marketLocation.register && (
+        <SubNav>
+          <NavLink to={`${locationUrl}/contracts`} exact className="nav-link">
+            <FormattedMessage id="admin.marketLocations.navContracts" />
+          </NavLink>
+          <NavLink to={`${locationUrl}/registers`} exact className="nav-link">
+            <FormattedMessage id="admin.marketLocations.navRegisters" />
+          </NavLink>
+        </SubNav>
       )}
-      <SubNav>
-        <NavLink to={`${locationUrl}/contracts`} exact className="nav-link">
-          <FormattedMessage id="admin.marketLocations.navContracts" />
-        </NavLink>
-        <NavLink to={`${locationUrl}/registers`} exact className="nav-link">
-          <FormattedMessage id="admin.marketLocations.navRegisters" />
-        </NavLink>
-      </SubNav>
       <Switch>
         <Route
           path={`${locationUrl}/contracts`}
@@ -71,17 +81,28 @@ const MarketLocationData = ({
             />
           )}
         />
-        <Route
-          path={`${locationUrl}/registers`}
-          render={({ history }) => (
-            <Registers {...{ url, history, locationId: marketLocation.id, registers: [marketLocation.register] }} />
-          )}
-        />
+        {!!marketLocation.register && (
+          <Route
+            path={`${locationUrl}/registers`}
+            render={({ history }) => (
+              <Registers {...{ url, history, locationId: marketLocation.id, registers: [marketLocation.register] }} />
+            )}
+          />
+        )}
 
         <Route path={locationUrl}>
           <Redirect to={`${locationUrl}/contracts`} />
         </Route>
       </Switch>
+      <MarketLocationForm
+        {...{
+          marketLocation,
+          initialValues: marketLocation,
+          groupId,
+          updateRegister,
+          validationRules: updateMaLoValidationRules,
+        }}
+      />
     </CenterContent>
   </React.Fragment>
 );

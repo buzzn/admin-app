@@ -1,6 +1,7 @@
 import { put, call, takeLatest, take, cancel, select, fork } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import { logException } from '_util';
+import MarketLocations from 'market_locations';
 import { actions, constants } from './actions';
 import api from './api';
 
@@ -27,14 +28,19 @@ export function* getRegisterPower({ apiUrl, apiPath, token }, { registerId, grou
   }
 }
 
-export function* updateRegister({ apiUrl, apiPath, token }, { meterId, registerId, params, resolve, reject, groupId }) {
+export function* updateRegister({ apiUrl, apiPath, token }, { registerId, params, resolve, reject, groupId }) {
   try {
-    const res = yield call(api.updateRegister, { apiUrl, apiPath, token, meterId, registerId, params, groupId });
+    const res = yield call(api.updateRegister, { apiUrl, apiPath, token, registerId, params, groupId });
     if (res._error) {
+      if (res.observer) {
+        res.observerMinThreshold = res.observer;
+        res.observerMaxThreshold = res.observer;
+        delete res.observer;
+      }
       yield call(reject, new SubmissionError(res));
     } else {
       yield call(resolve, res);
-      yield call(getRegister, { apiUrl, apiPath, token }, { registerId, groupId });
+      yield put(MarketLocations.actions.loadMarketLocations(groupId));
     }
   } catch (error) {
     logException(error);

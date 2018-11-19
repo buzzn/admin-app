@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Field } from 'redux-form';
 import isEqual from 'lodash/isEqual';
-import camelCase from 'lodash/camelCase';
 import { fieldValidator } from 'validation_functions';
+import { getValidators } from '_util';
 
 interface Props {
   name: string;
@@ -13,11 +13,11 @@ interface Props {
 
 // HACK: hack for redux form field rerender
 class FieldValidationWrapper extends React.Component<Props> {
-  state = { validate: fieldValidator(this.props.validationRules[camelCase(this.props.name)]) };
+  state = { validate: fieldValidator(getValidators(this.props)) };
 
   componentDidUpdate(prevProps) {
-    if (!isEqual(prevProps.validationRules[prevProps.name], this.props.validationRules[this.props.name])) {
-      return { validate: fieldValidator(this.props.validationRules[camelCase(this.props.name)]) };
+    if (!isEqual(getValidators(prevProps), getValidators(this.props))) {
+      return { validate: fieldValidator(getValidators(this.props)) };
     }
 
     return null;
@@ -27,7 +27,7 @@ class FieldValidationWrapper extends React.Component<Props> {
     return (
       <Field
         {...{ ...this.props, validationRules: null }}
-        field={this.props.field || this.props.validationRules[camelCase(this.props.name)] || { type: 'text' }}
+        field={this.props.field || getValidators(this.props) || { type: 'text' }}
         validate={this.props.overrideData ? undefined : this.state.validate}
       />
     );

@@ -49,7 +49,7 @@ class Sidebar extends React.Component<Props> {
           <SidebarItem to={`${url}/analytics`} icon="fa-line-chart" devMode={devMode}>
             <FormattedMessage id={`${prefix}.analytics`} />
           </SidebarItem>
-          <SidebarItem to={`${url}/powertakers`} icon="fa-users">
+          <SidebarItem to={`${url}/powertakers`} icon="fa-users" data-cy="sidebar powertakers">
             <FormattedMessage id={`${prefix}.powertakers`} />
           </SidebarItem>
           <SidebarItem to={`${url}/tariffs`} icon="fa-eur">
@@ -61,7 +61,7 @@ class Sidebar extends React.Component<Props> {
           <SidebarItem to={`${url}/market-locations`} icon="buzzn-meters">
             <FormattedMessage id={`${prefix}.system`} />
           </SidebarItem>
-          <SidebarItem to={`${url}/documents`} icon="fa-folder-open-o">
+          <SidebarItem to={`${url}/documents`} icon="fa-folder-open-o" data-cy="sidebar documents">
             <FormattedMessage id={`${prefix}.documents`} />
           </SidebarItem>
           <SidebarItem to={`${url}/settings`} icon="fa-cogs">

@@ -12,6 +12,7 @@ const EditableSelect = ({
   input,
   field,
   prefix,
+  valuesPrefix,
   intl,
   defaultValue,
   listOverride,
@@ -35,7 +36,7 @@ const EditableSelect = ({
     if (field && field.enum) list = field.enum;
     options = list.map(value => ({
       value,
-      label: noValTranslations ? value : intl.formatMessage({ id: `${prefix}.${value}` }),
+      label: noValTranslations ? value : intl.formatMessage({ id: `${valuesPrefix || prefix}.${value}` }),
     }));
   }
   const SelectComponent = customSelect ? CustomSelect : HTMLSelect;
@@ -65,7 +66,7 @@ const EditableSelect = ({
           />
         )}
         {withLabel && (
-          <label className={`${input.value || active || overrideData ? 'top' : 'center'}`}>
+          <label className={`${input.value || active || overrideData ? 'top' : 'center'}`} htmlFor={input.name}>
             <FormattedMessage id={`${prefix}.${name || input.name.split('.').pop()}`} />
           </label>
         )}

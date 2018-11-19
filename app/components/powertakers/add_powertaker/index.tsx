@@ -111,7 +111,7 @@ class AddPowertaker extends React.Component<Props, State> {
   };
 
   submitForm = (values) => {
-    let params = { ...values };
+    let params = JSON.parse(JSON.stringify(values));
     const { addContract, history, url } = this.props;
     const { customerType, selectedCustomer, selectedContact, selectedLR, selectedMaLo } = this.state;
     const customerValue = (selectedCustomer || { value: null }).value;
@@ -315,46 +315,6 @@ class AddPowertaker extends React.Component<Props, State> {
             <TwoColField
               {...{
                 prefix,
-                name: 'signingDate',
-                editMode,
-                validationRules,
-                component: EditableDate,
-                normalize: dateNormalizer('YYYY-MM-DD'),
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'beginDate',
-                editMode,
-                validationRules,
-                component: EditableDate,
-                normalize: dateNormalizer('YYYY-MM-DD'),
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'terminationDate',
-                editMode,
-                validationRules,
-                component: EditableDate,
-                normalize: dateNormalizer('YYYY-MM-DD'),
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'endDate',
-                editMode,
-                validationRules,
-                component: EditableDate,
-                normalize: dateNormalizer('YYYY-MM-DD'),
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
                 name: 'renewableEnergyLawTaxation',
                 editMode,
                 validationRules,
@@ -437,24 +397,6 @@ class AddPowertaker extends React.Component<Props, State> {
             <TwoColField
               {...{
                 prefix,
-                name: 'thirdPartyBillingNumber',
-                editMode,
-                validationRules,
-                component: EditableInput,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'thirdPartyRenterNumber',
-                editMode,
-                validationRules,
-                component: EditableInput,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
                 name: 'meteringPointOperatorName',
                 editMode,
                 validationRules,
@@ -491,7 +433,7 @@ class AddPowertaker extends React.Component<Props, State> {
             <TwoColField
               {...{
                 prefix,
-                name: 'energyConsumptionBeforeKwhPa',
+                name: 'thirdPartyBillingNumber',
                 editMode,
                 validationRules,
                 component: EditableInput,
@@ -500,7 +442,7 @@ class AddPowertaker extends React.Component<Props, State> {
             <TwoColField
               {...{
                 prefix,
-                name: 'downPaymentBeforeCentsPerMonth',
+                name: 'thirdPartyRenterNumber',
                 editMode,
                 validationRules,
                 component: EditableInput,
@@ -524,10 +466,31 @@ class AddPowertaker extends React.Component<Props, State> {
                 component: EditableCheckbox,
               }}
             />
+            <TwoColField
+              {...{
+                prefix,
+                name: 'energyConsumptionBeforeKwhPa',
+                editMode,
+                validationRules,
+                component: EditableInput,
+              }}
+            />
+            <TwoColField
+              {...{
+                prefix,
+                name: 'downPaymentBeforeCentsPerMonth',
+                editMode,
+                validationRules,
+                component: EditableInput,
+              }}
+            />
             <Select options={maLoOptions} onChange={this.handleMaLoChange} styles={mainStyle} value={selectedMaLo} />
             <Prompt
               when={!pristine && !saved}
-              message={location => location.pathname === url ? true : `You have unsaved data in form. Are you sure you want to go to ${location.pathname}`}
+              message={location => (location.pathname === url
+                ? true
+                : `You have unsaved data in form. Are you sure you want to go to ${location.pathname}`)
+              }
             />
             {Array.isArray(addPowertakerErrors.registerMeta) && (
               <RegisterMetaErrors>
@@ -562,6 +525,49 @@ class AddPowertaker extends React.Component<Props, State> {
                 />
               </React.Fragment>
             )}
+            <h5 className="grey-underline mt-5 pb-2">
+              <FormattedMessage id={`${prefix}.headerDates`} />
+            </h5>
+            <TwoColField
+              {...{
+                prefix,
+                name: 'signingDate',
+                editMode,
+                validationRules,
+                component: EditableDate,
+                normalize: dateNormalizer('YYYY-MM-DD'),
+              }}
+            />
+            <TwoColField
+              {...{
+                prefix,
+                name: 'beginDate',
+                editMode,
+                validationRules,
+                component: EditableDate,
+                normalize: dateNormalizer('YYYY-MM-DD'),
+              }}
+            />
+            <TwoColField
+              {...{
+                prefix,
+                name: 'terminationDate',
+                editMode,
+                validationRules,
+                component: EditableDate,
+                normalize: dateNormalizer('YYYY-MM-DD'),
+              }}
+            />
+            <TwoColField
+              {...{
+                prefix,
+                name: 'endDate',
+                editMode,
+                validationRules,
+                component: EditableDate,
+                normalize: dateNormalizer('YYYY-MM-DD'),
+              }}
+            />
           </FormPanel>
         </form>
       </Col>

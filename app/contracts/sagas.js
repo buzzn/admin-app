@@ -1,4 +1,4 @@
-import { saveAs } from 'file-saver/FileSaver';
+import saveAs from 'file-saver';
 import { put, call, takeLatest, take, cancel, select, fork } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import { logException } from '_util';
@@ -87,9 +87,18 @@ export function* addContract({ apiUrl, apiPath, token }, { params, resolve, reje
   }
 }
 
-export function* updateContract({ apiUrl, apiPath, token }, { params, resolve, reject, groupId, contractId }) {
+export function* updateContract(
+  { apiUrl, apiPath, token },
+  { params, resolve, reject, groupId, contractId, updateType },
+) {
+  const updateTypes = {
+    contract: api.updateContract,
+    organizationCustomer: api.updateOrganizationCustomer,
+    personCustomer: api.updatePersonCustomer,
+  };
+
   try {
-    const res = yield call(api.updateContract, { apiUrl, apiPath, token, params, groupId, contractId });
+    const res = yield call(updateTypes[updateType], { apiUrl, apiPath, token, params, groupId, contractId });
     if (res._error) {
       yield call(reject, new SubmissionError(res));
     } else {

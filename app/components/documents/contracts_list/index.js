@@ -5,11 +5,13 @@ import { injectIntl, FormattedMessage } from 'react-intl';
 import { UncontrolledTooltip } from 'reactstrap';
 import { tableParts as TableParts } from 'react_table_config';
 import { SpanClick } from 'components/style';
+import Loading from 'components/loading';
+import ContractStatus from 'components/contract_status';
 import AddContract from '../add_contract';
 import NestedDetails from './nested_details';
 
 class ContractsList extends React.Component {
-  state = { isOpen: false, expanded: {} };
+  state = { isOpen: false, expanded: {}, generatingPDF: false };
 
   handleRowClick = (rowNum) => {
     this.setState(state => ({ expanded: { ...state.expanded, [rowNum]: !state.expanded[rowNum] } }));
@@ -26,12 +28,17 @@ class ContractsList extends React.Component {
       addContract({ resolve, reject, params, groupId });
     })
       .then((res) => {
+        this.switchAddContract();
+        return res;
+      })
+      .then((res) => {
         if (params.generatePDF) {
+          this.setState({ generatingPDF: true });
           return new Promise((resolve, reject) => generateContractPDF({ groupId, contractId: res.id, resolve, reject })).then(loadGroupContracts(groupId));
         }
         return res;
       })
-      .then(() => this.switchAddContract());
+      .finally(() => this.setState({ generatingPDF: false }));
   };
 
   render() {
@@ -44,12 +51,14 @@ class ContractsList extends React.Component {
       generateContractPDF,
       deleteContractPDF,
       loadGroupContracts,
-      addContractFormValues,
+      addContractFormName,
+      addContractType,
+      addContractErrors,
       groupId,
       group,
       loading,
     } = this.props;
-    const { isOpen } = this.state;
+    const { isOpen, generatingPDF } = this.state;
 
     const contractTypes = [];
     if (
@@ -74,11 +83,20 @@ class ContractsList extends React.Component {
       ...c,
       typeIntl: intl.formatMessage({ id: `admin.contracts.${c.type}` }),
       ownerChanged: !['contract_localpool_power_taker', 'contract_localpool_third_party'].includes(c.type)
-        ? c.customer.id !== get(group.owner, 'id')
+        ? get(c.customer, 'id') !== get(group.owner, 'id')
         : false,
       since: c.signingDate,
       number: c.fullContractNumber,
       link: `${url}/${c.id}`,
+      statusIcon: {
+        value: c.status,
+        Display: (
+          <div>
+            <ContractStatus {...{ size: 'small', status: c.status }} />
+            <span className="ml-2">{intl.formatMessage({ id: `admin.contracts.${c.status}` })}</span>
+          </div>
+        ),
+      },
     }));
 
     const columns = [
@@ -119,6 +137,15 @@ class ContractsList extends React.Component {
         minWidth: 60,
       },
       {
+        Header: () => (
+          <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.contracts.tableStatus' })} />
+        ),
+        accessor: 'statusIcon',
+        filterMethod: TableParts.filters.filterByValue,
+        sortMethod: TableParts.sort.sortByValue,
+        Cell: ({ value: { Display } }) => Display,
+      },
+      {
         expander: true,
         Expander: row => (
           <div>{row.isExpanded ? <i className="fa fa-chevron-up" /> : <i className="fa fa-chevron-down" />}</div>
@@ -129,8 +156,9 @@ class ContractsList extends React.Component {
 
     return (
       <div className="p-0">
+        {generatingPDF && <Loading absolute={true} />}
         {!!contractTypes.length && (
-          <SpanClick onClick={this.switchAddContract} className="float-right">
+          <SpanClick onClick={this.switchAddContract} className="float-right" data-cy="add contract CTA">
             <FormattedMessage id="admin.contracts.addNew" /> <i className="fa fa-plus-circle" />
           </SpanClick>
         )}
@@ -139,7 +167,9 @@ class ContractsList extends React.Component {
             loading,
             toggle: this.switchAddContract,
             isOpen,
-            addContractFormValues,
+            form: addContractFormName,
+            addContractType,
+            addContractErrors,
             // TODO: replace with real validationRules
             validationRules: {},
             onSubmit: this.addContract,
