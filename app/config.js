@@ -2,7 +2,7 @@ let config = {};
 
 if (process.env.NODE_ENV === 'production') {
   config = {
-    apiUrl: 'https://core.buzzn.io/',
+    apiUrl: 'https://api.de.buzzn.net/',
     apiPath: 'api/admin',
     authPath: 'api/me',
     websitePath: 'api/website',
