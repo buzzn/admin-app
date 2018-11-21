@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const StatsPlugin = require('stats-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const GenerateJsonPlugin = require('generate-json-webpack-plugin');
 
 module.exports = {
   entry: { app: ['@babel/polyfill', 'bootstrap-loader', 'whatwg-fetch', './app/index.production.js'] },
@@ -90,5 +91,6 @@ module.exports = {
       modules: true,
     }),
     new FaviconsWebpackPlugin('./favicon.png'),
+    new GenerateJsonPlugin('version.json', { buildDate: (new Date()).valueOf() }),
   ],
 };
