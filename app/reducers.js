@@ -27,6 +27,8 @@ export const initialState = {
   userMe: {},
   userMeValidationRules: {},
   uiVer: '',
+  buildDate: process.env.buildDate,
+  versionMismatch: false,
   health: {},
   appLoading: true,
   ui: {
@@ -75,6 +77,9 @@ export function appReducer(state = initialState, action) {
 
     case constants.SET_APP_LOADING:
       return { ...state, appLoading: action.appLoading };
+
+    case constants.SET_VERSION_MISMATCH:
+      return { ...state, versionMismatch: action.versionMismatch };
 
     case constants.SET_UI:
     case constants.SET_TABLE_SORT:

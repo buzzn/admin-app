@@ -36,7 +36,7 @@ import AddGroup from 'components/add_group';
 import Contract from 'components/contract';
 import DevicesContainer from 'components/devices';
 import WebsiteFormsContainer from 'components/website_forms';
-import { EditOverlay } from 'style';
+import { EditOverlay, VersionMismatch } from 'style';
 import './react_table_config';
 
 export const EditOverlayContext = React.createContext();
@@ -53,12 +53,20 @@ const RouterHack = ({
   addGroupOpen,
   switchAddGroup,
   addGroup,
+  versionMismatch,
 }) => (
   <DevModeContext.Provider value={devMode}>
     <EditOverlayContext.Provider value={{ editMode, switchEditMode, setEditMode }}>
       {token && <TopNavBarContainer {...{ devMode, switchAddGroup }} />}
       {token ? (
         <Container style={{ maxWidth: '1440px' }}>
+          {versionMismatch && (
+            <VersionMismatch>
+              You're outdated. Sorry for that.
+              <br />
+              Please, refresh this page to replace yourself with shiny robot.
+            </VersionMismatch>
+          )}
           <Route exact path="/" render={() => <Redirect to="/groups" />} />
           <Row>
             <Route
@@ -145,7 +153,16 @@ class NewRoot extends React.Component {
   };
 
   render() {
-    const { token, devMode, multiGroups, appLoading, health, groupValidationRules, addGroup } = this.props;
+    const {
+      token,
+      devMode,
+      multiGroups,
+      appLoading,
+      health,
+      groupValidationRules,
+      addGroup,
+      versionMismatch,
+    } = this.props;
     const { editMode, addGroupOpen } = this.state;
 
     return (
@@ -183,6 +200,7 @@ class NewRoot extends React.Component {
                       groupValidationRules,
                       switchAddGroup: this.switchAddGroup,
                       addGroup,
+                      versionMismatch,
                     }}
                   />
                 ) : (
@@ -205,6 +223,7 @@ const mapStateToProps = state => ({
   multiGroups: !!state.groups.groups.array.length,
   appLoading: state.app.appLoading,
   health: state.app.health,
+  versionMismatch: state.app.versionMismatch,
 });
 
 export default connect(
