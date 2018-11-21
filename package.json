@@ -98,6 +98,7 @@
     "@buzzn/module_auth": "git+https://github.com/buzzn/module-auth.git#c77cb07ca99a71a7f5f915010b4a1d563b368145",
     "@buzzn/module_bubbles": "git+https://github.com/buzzn/module-bubbles.git#master",
     "@buzzn/module_charts": "git+https://github.com/buzzn/module-charts.git#master",
+    "@sentry/browser": "4.3.4",
     "bootstrap": "4.1.3",
     "buzzn-style": "git://github.com/buzzn/buzzn-style.git",
     "d3": "^5.7.0",

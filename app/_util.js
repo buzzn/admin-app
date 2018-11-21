@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/browser';
 import forEach from 'lodash/forEach';
 import camelCase from 'lodash/camelCase';
 import snakeCase from 'lodash/snakeCase';
@@ -130,10 +131,8 @@ export function snakeReq(data) {
   );
 }
 
-export function logException(ex, context) {
-  if (Raven.isSetup()) {
-    Raven.captureException(ex, { extra: context });
-  }
+export function logException(ex) {
+  Sentry.captureException(ex);
   console.error(ex);
 }
 

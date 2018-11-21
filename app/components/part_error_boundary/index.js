@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as Sentry from '@sentry/browser';
 import { logException } from '_util';
 
 export default class PartErrorBoundary extends React.Component {
@@ -9,7 +10,12 @@ export default class PartErrorBoundary extends React.Component {
 
   componentDidCatch(error, errorInfo) {
     this.setState({ error, errorInfo });
-    // logException(error);
+    Sentry.withScope((scope) => {
+      Object.keys(errorInfo).forEach((key) => {
+        scope.setExtra(key, errorInfo[key]);
+      });
+      Sentry.captureException(error);
+    });
   }
 
   render() {
