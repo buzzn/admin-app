@@ -3,9 +3,7 @@ import { prepareHeaders, parseResponse, camelizeResponseKeys, snakeReq } from '.
 
 export default {
   fetchUserMe({ token, apiUrl }) {
-    return fetch(`${apiUrl}api/me?include=address,bank_accounts`, {
-      headers: prepareHeaders(token),
-    })
+    return fetch(`${apiUrl}api/me?include=address,bank_accounts`, { headers: prepareHeaders(token) })
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
@@ -14,14 +12,18 @@ export default {
       headers: prepareHeaders(token),
       method: 'PATCH',
       body: JSON.stringify(snakeReq(params)),
-    })
-      .then(parseResponse);
-  },
-  fetchHealth({ apiUrl }) {
-    return fetch(`${apiUrl}health`, {
-      headers: prepareHeaders(),
     }).then(parseResponse);
   },
-  setUI(ui) { localStorage.setItem('buzznAdminUI', JSON.stringify(ui || {})); },
-  getUI() { return JSON.parse(localStorage.getItem('buzznAdminUI')) || {}; },
+  fetchHealth({ apiUrl }) {
+    return fetch(`${apiUrl}health`, { headers: prepareHeaders() }).then(parseResponse);
+  },
+  fetchVersion({ versionPath }) {
+    return fetch(`${window.location.origin}/${versionPath}`, { headers: prepareHeaders() }).then(parseResponse);
+  },
+  setUI(ui) {
+    localStorage.setItem('buzznAdminUI', JSON.stringify(ui || {}));
+  },
+  getUI() {
+    return JSON.parse(localStorage.getItem('buzznAdminUI')) || {};
+  },
 };

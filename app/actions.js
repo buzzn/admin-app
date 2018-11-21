@@ -11,6 +11,8 @@ export const constants = {
 
   SET_APP_LOADING: 'buzzn_admin/SET_APP_LOADING',
 
+  SET_VERSION_MISMATCH: 'buzzn_admin/SET_VERSION_MISMATCH',
+
   SET_UI: 'buzzn_admin/SET_UI',
   SET_TABLE_SORT: 'buzzn_admin/SET_TABLE_SORT',
 
@@ -29,6 +31,8 @@ export const actions = {
   setHealth: health => ({ type: constants.SET_HEALTH, health }),
 
   setAppLoading: appLoading => ({ type: constants.SET_APP_LOADING, appLoading }),
+
+  setVersionMismatch: versionMismatch => ({ type: constants.SET_VERSION_MISMATCH, versionMismatch }),
 
   setUI: ui => ({ type: constants.SET_UI, ui }),
   setTableSort: ({ table, sort }) => ({ type: constants.SET_TABLE_SORT, table, sort }),

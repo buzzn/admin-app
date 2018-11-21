@@ -11,3 +11,12 @@ export const EditOverlay = styled.div`
   z-index: 2000;
   cursor: not-allowed;
 `;
+
+export const VersionMismatch = styled.div`
+  background-color: #ff9800;
+  padding: 40px 100px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+  margin: 0 -16px;
+`;

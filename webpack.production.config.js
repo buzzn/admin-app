@@ -4,6 +4,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const StatsPlugin = require('stats-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const GenerateJsonPlugin = require('generate-json-webpack-plugin');
+
+const buildDate = new Date().valueOf();
 
 module.exports = {
   entry: { app: ['@babel/polyfill', 'bootstrap-loader', 'whatwg-fetch', './app/index.production.js'] },
@@ -70,7 +73,10 @@ module.exports = {
     },
   },
   plugins: [
-    new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      'process.env.buildDate': buildDate,
+    }),
     new webpack.ProvidePlugin({ 'window.Tether': 'tether' }),
     new webpack.HashedModuleIdsPlugin({}),
     new webpack.LoaderOptionsPlugin({
@@ -90,5 +96,6 @@ module.exports = {
       modules: true,
     }),
     new FaviconsWebpackPlugin('./favicon.png'),
+    new GenerateJsonPlugin('version.json', { buildDate }),
   ],
 };

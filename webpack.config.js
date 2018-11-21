@@ -2,6 +2,9 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const GenerateJsonPlugin = require('generate-json-webpack-plugin');
+
+const buildDate = new Date().valueOf();
 
 module.exports = {
   devtool: 'sourcemap',
@@ -67,7 +70,11 @@ module.exports = {
       template: 'app/index.html',
       filename: 'index.html',
     }),
-    new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify('development') }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('development'),
+      'process.env.buildDate': buildDate,
+    }),
     new FaviconsWebpackPlugin('./favicon.png'),
+    new GenerateJsonPlugin('version.json', { buildDate }),
   ],
 };

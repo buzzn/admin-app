@@ -26,6 +26,7 @@ import loadingList, { authList } from 'validation_rules_list';
 export const getConfig = state => state.config;
 export const getAuth = state => state.auth;
 export const getUI = state => state.app.ui;
+export const getBuildDate = state => state.app.buildDate;
 
 export function* getUserMe({ apiUrl, apiPath, token }) {
   try {
@@ -82,6 +83,20 @@ export function* setHealth({ apiUrl }) {
   }
 }
 
+export function* checkVersion({ versionPath, buildDate }) {
+  while (true) {
+    try {
+      const remoteVersion = yield call(api.fetchVersion, { versionPath });
+      if (remoteVersion.buildDate !== buildDate) {
+        yield put(actions.setVersionMismatch(true));
+      }
+    } catch (error) {
+      logException(error);
+    }
+    yield call(delay, 60 * 1000);
+  }
+}
+
 export function* setUI() {
   const devModeUrl = getAllUrlParams().devmode;
   let ui = yield call(api.getUI);
@@ -111,7 +126,8 @@ export function* initialLoadPause() {
 }
 
 export default function* () {
-  const { apiUrl, apiPath, authPath, websitePath, secure } = yield select(getConfig);
+  const { apiUrl, apiPath, authPath, websitePath, secure, versionPath } = yield select(getConfig);
+  const buildDate = yield select(getBuildDate);
 
   if (secure && window.location.protocol !== 'https:') {
     window.location.href = `https:${window.location.href.substring(window.location.protocol.length)}`;
@@ -136,6 +152,7 @@ export default function* () {
   yield put(ValidationRules.actions.setApiParams({ apiUrl, apiPath }));
 
   yield fork(setHealth, { apiUrl });
+  yield fork(checkVersion, { versionPath, buildDate });
   yield fork(setUI);
 
   let { token } = yield select(getAuth);
