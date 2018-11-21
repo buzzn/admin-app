@@ -13,12 +13,13 @@ import Root from './root';
 Sentry.init({
   dsn: 'https://2ebfe56b13714bd7b614df15f9d3a3fd@sentry.io/195034',
   environment: process.env.NODE_ENV,
-  beforeSend(event) {
-    if (event.exception && process.env.NODE_ENV === 'staging') {
-      Sentry.showReportDialog();
-    }
-    return event;
-  },
+  release: (new Date(process.env.buildDate)).toString(),
+  // beforeSend(event) {
+  //   if (event.exception && process.env.NODE_ENV === 'staging') {
+  //     Sentry.showReportDialog();
+  //   }
+  //   return event;
+  // },
 });
 
 addLocaleData([...en, ...de]);
