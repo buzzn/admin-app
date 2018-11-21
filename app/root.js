@@ -64,7 +64,7 @@ const RouterHack = ({
             <VersionMismatch>
               You're outdated. Sorry for that.
               <br />
-              Please, refresh this page to replace yourself with shiny robot.
+              Please, refresh this page to replace yourself with a shiny robot.
             </VersionMismatch>
           )}
           <Route exact path="/" render={() => <Redirect to="/groups" />} />
