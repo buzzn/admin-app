@@ -18,7 +18,7 @@ export default {
     return fetch(`${apiUrl}health`, { headers: prepareHeaders() }).then(parseResponse);
   },
   fetchVersion({ versionPath }) {
-    return fetch(`${window.location.origin}/${versionPath}`, { headers: prepareHeaders() }).then(parseResponse);
+    return fetch(`${window.location.origin}/${versionPath}`, { headers: prepareHeaders(null, false, true) }).then(parseResponse);
   },
   setUI(ui) {
     localStorage.setItem('buzznAdminUI', JSON.stringify(ui || {}));

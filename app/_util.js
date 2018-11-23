@@ -12,12 +12,13 @@ export const cleanArrStr = str => str.replace(/\[\d*\]/, '');
 
 export const getValidators = ({ validationRules, name }) => validationRules[camelCase(cleanArrStr(name))];
 
-export function prepareHeaders(token, noType) {
+export function prepareHeaders(token, noType, noCache) {
   const headers = {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   };
   if (!noType) headers['Content-Type'] = 'application/json';
+  if (!noCache) headers['Cache-Control'] = 'no-cache';
   return headers;
 }
 
