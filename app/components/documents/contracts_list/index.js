@@ -104,6 +104,7 @@ class ContractsList extends React.Component {
         Header: () => (
           <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.contracts.tableType' })} />
         ),
+        className: 'cy-type-intl',
         accessor: 'typeIntl',
         minWidth: 200,
       },
@@ -133,6 +134,7 @@ class ContractsList extends React.Component {
         Header: () => (
           <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.contracts.tableNumber' })} />
         ),
+        className: 'cy-number',
         accessor: 'number',
         minWidth: 60,
       },

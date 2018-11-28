@@ -117,6 +117,7 @@ class LocalpoolsList extends React.Component<
         ) : (
           <ReactTableSorted
             {...{
+              className: 'cy-groups-list',
               data,
               columns,
               filterable: true,

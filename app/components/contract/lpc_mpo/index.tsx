@@ -73,7 +73,7 @@ const LPCMPOContract = ({
                 {!editMode
                   && contract.updatable && (
                     <i
-                      data-cy="group edit switch"
+                      data-cy="contract edit switch"
                       className="buzzn-pencil"
                       style={{ float: 'right' }}
                       onClick={switchEditMode}

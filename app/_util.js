@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/browser';
 import forEach from 'lodash/forEach';
 import camelCase from 'lodash/camelCase';
 import snakeCase from 'lodash/snakeCase';
@@ -11,12 +12,13 @@ export const cleanArrStr = str => str.replace(/\[\d*\]/, '');
 
 export const getValidators = ({ validationRules, name }) => validationRules[camelCase(cleanArrStr(name))];
 
-export function prepareHeaders(token, noType) {
+export function prepareHeaders(token, noType, noCache) {
   const headers = {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   };
   if (!noType) headers['Content-Type'] = 'application/json';
+  if (!noCache) headers['Cache-Control'] = 'no-cache';
   return headers;
 }
 
@@ -130,10 +132,8 @@ export function snakeReq(data) {
   );
 }
 
-export function logException(ex, context) {
-  if (Raven.isSetup()) {
-    Raven.captureException(ex, { extra: context });
-  }
+export function logException(ex) {
+  Sentry.captureException(ex);
   console.error(ex);
 }
 

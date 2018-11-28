@@ -86,6 +86,7 @@ const PowertakersList = ({
     {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableName` })} />,
       accessor: 'name',
+      className: 'cy-powertaker',
       filterMethod: TableParts.filters.filterByValue,
       sortMethod: TableParts.sort.sortByValue,
       Cell: TableParts.components.iconNameCell,
@@ -95,6 +96,7 @@ const PowertakersList = ({
         <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableMarketLocation` })} />
       ),
       accessor: 'marketLocationName',
+      className: 'cy-malo',
       style: {
         cursor: 'pointer',
         textDecoration: 'underline',
@@ -105,6 +107,7 @@ const PowertakersList = ({
         <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableContractNumber` })} />
       ),
       accessor: 'fullContractNumber',
+      className: 'cy-number',
       style: {
         cursor: 'pointer',
         textDecoration: 'underline',
@@ -144,7 +147,7 @@ const PowertakersList = ({
         {!!group.allowedActions
           && group.allowedActions.createLocalpoolPowerTakerContract === true && (
             <SubNavAddLink>
-              <Link to={`${url}/add-powertaker`}>
+              <Link to={`${url}/add-powertaker`} data-cy="add powertaker CTA">
                 <FormattedMessage id="admin.contracts.addNew" /> <i className="fa fa-plus-circle" />
               </Link>
             </SubNavAddLink>

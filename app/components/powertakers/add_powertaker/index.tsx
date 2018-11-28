@@ -217,7 +217,7 @@ class AddPowertaker extends React.Component<Props, State> {
 
     return (
       <Col xs="12">
-        <form onSubmit={handleSubmit(this.submitForm)}>
+        <form onSubmit={handleSubmit(this.submitForm)} data-cy="create powertaker form">
           <FormPanel
             {...{
               editMode,
@@ -234,7 +234,7 @@ class AddPowertaker extends React.Component<Props, State> {
               <FormattedMessage id={`${prefix}.headerAddPowertaker`} />
             </p>
             <CustomerOptions>
-              <FormGroup check inline>
+              <FormGroup check inline data-cy="powertaker radio person">
                 <CustomInput
                   checked={customerType === 'person'}
                   type="radio"
