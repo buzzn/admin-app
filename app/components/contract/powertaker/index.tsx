@@ -142,7 +142,7 @@ const PowertakerContract = ({
           </InnerRow>
         </Col>
       </ContractHeader>
-      <form onSubmit={handleSubmit(submit)}>
+      <form onSubmit={handleSubmit(submit)} data-cy="powertaker contract form">
         <FormPanel
           {...{
             editMode,
@@ -163,7 +163,7 @@ const PowertakerContract = ({
                 {!editMode
                   && contract.updatable && (
                     <i
-                      data-cy="group edit switch"
+                      data-cy="contract edit switch"
                       className="buzzn-pencil"
                       style={{ float: 'right' }}
                       onClick={switchEditMode}
