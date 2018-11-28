@@ -23,7 +23,8 @@ import withHover from 'components/with_hover';
 
 import './style.scss';
 import LogoImg from '../../images/logo_white.png';
-import DevLogoImg from '../../images/dev_logo_white.png';
+import DevLogoImg from '../../images/logo_white.png';
+// import DevLogoImg from '../../images/dev_logo_white.png';
 import DefaultPerson from '../../images/default_person.jpg';
 
 export class TopNavBar extends React.Component {
