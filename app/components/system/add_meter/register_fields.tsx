@@ -81,7 +81,7 @@ class EditableInputArray extends React.Component<Props> {
 
     const prefix = 'admin.registers';
     const malos: Array<{ value: null | string; label: string }> = [{ value: null, label: 'Create new' }].concat(
-      marketLocations.map(m => ({ value: m.id, label: `${m.name} ${m.register.meter.productSerialnumber} ${m.kind}` })),
+      marketLocations.map(m => ({ value: m.id, label: `${m.name} ${m.register ? m.register.meter.productSerialnumber : ''} ${m.kind}` })),
     );
 
     return (
