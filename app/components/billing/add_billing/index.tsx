@@ -71,7 +71,7 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
                       }}
                     />
                     <Field
-                      name="endDate"
+                      name="lastDate"
                       type="text"
                       component={({ meta: { error } }) => <div>{!!error && error}</div>}
                     />

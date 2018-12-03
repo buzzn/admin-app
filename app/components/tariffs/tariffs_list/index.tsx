@@ -79,7 +79,7 @@ const TariffsList = ({ active, tariffs, intl, groupId }: Props & InjectIntlProps
 
   if (!active) {
     columns.splice(2, 0, {
-      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableEndDate` })} />,
+      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableLastDate` })} />,
       accessor: 'lastDate',
       Cell: ({ value }) => (value ? moment(value).format('DD.MM.YYYY') : ''),
     });

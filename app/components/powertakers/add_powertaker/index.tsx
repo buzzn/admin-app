@@ -561,7 +561,7 @@ class AddPowertaker extends React.Component<Props, State> {
             <TwoColField
               {...{
                 prefix,
-                name: 'endDate',
+                name: 'lastDate',
                 editMode,
                 validationRules,
                 component: EditableDate,

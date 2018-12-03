@@ -11,9 +11,9 @@ import TwoColView from 'components/two_col_view';
 import TwoColField from 'components/two_col_field';
 import EditableDate from 'components/editable_date';
 import { dateNormalizer, numberNormalizer } from 'validation_normalizers';
+import { FormTitle } from 'components/style';
 import RegistersList from './registers_list';
 import { MeterHeader } from './style';
-import { FormTitle } from 'components/style';
 
 interface Props {
   meter: any;
@@ -105,7 +105,7 @@ class MeterData extends React.Component<Props> {
           </Col>
         </Row>
         <React.Fragment>
-          <form onSubmit={handleSubmit(submit)}>
+          <form onSubmit={handleSubmit(submit)} data-cy="edit meter form">
             <FormPanel
               {...{
                 editMode,
@@ -121,7 +121,10 @@ class MeterData extends React.Component<Props> {
             >
               <FormTitle>
                 <FormattedMessage id={`${prefix}.headerMeterDetails`} />
-                {!editMode && meter.updatable && <i className="buzzn-pencil" onClick={switchEditMode} />}
+                {!editMode
+                  && meter.updatable && (
+                    <i className="buzzn-pencil" data-cy="meter edit switch" onClick={switchEditMode} />
+                )}
               </FormTitle>
               <TwoColField
                 {...{
@@ -172,7 +175,7 @@ class MeterData extends React.Component<Props> {
                 {...{ prefix, name: 'locationDescription', editMode, validationRules, component: EditableInput }}
               />
               <TwoColView {...{ prefix, field: 'dataSource' }}>
-                <FormattedMessage id={`${prefix}.${meter.dataSource}`} />
+                <FormattedMessage id={`${prefix}.${meter.datasource}`} />
               </TwoColView>
               <TwoColField
                 {...{ prefix, name: 'directionNumber', editMode, validationRules, component: EditableSelect }}

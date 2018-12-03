@@ -114,20 +114,23 @@ export function camelizeResponseKeys(data) {
 export function snakeReq(data) {
   return reduce(
     data,
-    (res, v, k) => ({
-      ...res,
-      [snakeCase(k)]:
-        Object.prototype.toString.call(v) === '[object Date]'
-          ? v
-          : Array.isArray(v)
-            ? v.map(a => snakeReq(a))
-            : typeof v === 'object' && v !== null
-              ? snakeReq(v)
-              : // HACK: server validation hack
-              v === ''
-                ? null
-                : v,
-    }),
+    (res, v, k) => {
+      if (k === 'endDate') return res;
+      return {
+        ...res,
+        [snakeCase(k)]:
+          Object.prototype.toString.call(v) === '[object Date]'
+            ? v
+            : Array.isArray(v)
+              ? v.map(a => snakeReq(a))
+              : typeof v === 'object' && v !== null
+                ? snakeReq(v)
+                : // HACK: server validation hack
+                v === ''
+                  ? null
+                  : v,
+      };
+    },
     {},
   );
 }

@@ -129,7 +129,7 @@ class AddMeter extends React.Component<Props> {
     return (
       <Row>
         <Col xs={12}>
-          <form onSubmit={handleSubmit(this.submitForm)}>
+          <form onSubmit={handleSubmit(this.submitForm)} data-cy="create meter form">
             <FormPanel
               {...{
                 editMode,

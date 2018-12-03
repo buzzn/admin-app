@@ -89,7 +89,7 @@ const Contracts = ({ locationId, url, history, contracts, intl }: Props & Inject
       Cell: ({ value }) => moment(value).format('DD.MM.YYYY'),
     },
     {
-      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableEndDate` })} />,
+      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableLastDate` })} />,
       accessor: 'lastDate',
       Cell: ({ value }) => (value ? moment(value).format('DD.MM.YYYY') : ''),
     },

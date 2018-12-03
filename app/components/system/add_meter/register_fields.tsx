@@ -99,7 +99,7 @@ class EditableInputArray extends React.Component<Props> {
               && !preset.lockRegisters && (
                 <React.Fragment>
                   <i
-                    className="fa fa-plus-circle add"
+                    className="fa fa-plus-circle add cy-add-register"
                     onClick={() => {
                       this.addField();
                     }}
@@ -121,6 +121,8 @@ class EditableInputArray extends React.Component<Props> {
                 </Col>
                 <Col xs={8}>
                   <Select
+                    className={`cy-registers-${i}`}
+                    classNamePrefix="cy"
                     options={malos}
                     onChange={value => this.setSelectedRegister(i, value)}
                     styles={mainStyle}
