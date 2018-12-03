@@ -41,6 +41,7 @@ const MarketLocationsList = ({
         <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.meters.tableProductSerialnumber' })} />
       ),
       accessor: 'meterProductSerialnumber',
+      className: 'cy-meter-serial',
       style: {
         cursor: 'pointer',
         textDecoration: 'underline',
@@ -49,6 +50,7 @@ const MarketLocationsList = ({
     {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableName` })} />,
       accessor: 'name',
+      className: 'cy-malo-name',
       style: {
         cursor: 'pointer',
         textDecoration: 'underline',
@@ -59,11 +61,14 @@ const MarketLocationsList = ({
         <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.registers.tableLabel' })} />
       ),
       accessor: 'labelIntl',
+      className: 'cy-label',
     },
     {
       Header: '',
       width: 40,
-      Cell: ({ original }) => original.register ? TableParts.components.iconCell({ icon: 'copy', action: () => duplicateMeter(original) }) : false,
+      Cell: ({ original }) => (original.register
+        ? TableParts.components.iconCell({ icon: 'copy', action: () => duplicateMeter(original) })
+        : false),
     },
   ];
 
@@ -79,18 +84,18 @@ const MarketLocationsList = ({
       />
       <CenterContent>
         <SubNavAddLink>
-          <Link to={`${url}/add-meter`}>
+          <Link to={`${url}/add-meter`} data-cy="add malo CTA">
             <FormattedMessage id="admin.meters.addNew" /> <i className="fa fa-plus-circle" />
           </Link>
         </SubNavAddLink>
         <SubNav>
-          <NavLink to={`${url}/consumption`} exact className="nav-link">
+          <NavLink to={`${url}/consumption`} exact className="nav-link" data-cy="consumption tab">
             <FormattedMessage id="admin.marketLocations.navConsumption" />
           </NavLink>
-          <NavLink to={`${url}/production`} exact className="nav-link">
+          <NavLink to={`${url}/production`} exact className="nav-link" data-cy="production tab">
             <FormattedMessage id="admin.marketLocations.navProduction" />
           </NavLink>
-          <NavLink to={`${url}/system`} exact className="nav-link">
+          <NavLink to={`${url}/system`} exact className="nav-link" data-cy="system tab">
             <FormattedMessage id="admin.marketLocations.navSystem" />
           </NavLink>
         </SubNav>

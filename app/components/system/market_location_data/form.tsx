@@ -58,7 +58,7 @@ class MarketLocationForm extends React.Component<Props> {
 
     return (
       <div>
-        <form onSubmit={handleSubmit(submit)}>
+        <form onSubmit={handleSubmit(submit)} data-cy="edit malo form">
           <FormPanel
             {...{
               editMode,
@@ -74,7 +74,7 @@ class MarketLocationForm extends React.Component<Props> {
           >
             <FormTitle>
               <FormattedMessage id={`admin.marketLocations.headerMarketLocationDetails`} />
-              {!editMode && marketLocation.updatable && <i className="buzzn-pencil" onClick={switchEditMode} />}
+              {!editMode && marketLocation.updatable && <i className="buzzn-pencil" data-cy="malo edit switch" onClick={switchEditMode} />}
             </FormTitle>
             <TwoColField
               {...{

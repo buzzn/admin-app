@@ -81,7 +81,8 @@ const EditableSelect = ({
     );
   }
 
-  const label = (find(options, o => o.value === input.value) || {}).label;
+  if (!input.value) return <span />;
+  const { label } = (find(options, o => o.value === input.value) || {});
   return <span>{withValue ? `${input.value} - ${label}` : label}</span>;
 };
 

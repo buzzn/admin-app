@@ -413,7 +413,7 @@ const PowertakerContract = ({
               <TwoColField
                 {...{
                   prefix,
-                  name: 'endDate',
+                  name: 'lastDate',
                   editMode,
                   validationRules,
                   component: EditableDate,
