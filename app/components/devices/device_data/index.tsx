@@ -60,7 +60,7 @@ const Device = ({
         }}
       />
       <CenterContent>
-        <form onSubmit={handleSubmit(submit)}>
+        <form onSubmit={handleSubmit(submit)} data-cy="edit device form">
           <FormPanel
             {...{
               editMode,
@@ -81,7 +81,7 @@ const Device = ({
                   {!editMode
                     && device.updatable && (
                       <i
-                        data-cy="group edit switch"
+                        data-cy="device edit switch"
                         className="buzzn-pencil"
                         style={{ float: 'right' }}
                         onClick={switchEditMode}

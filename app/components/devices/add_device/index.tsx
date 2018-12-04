@@ -6,6 +6,7 @@ import FieldValidationWrapper from 'components/field_validation_wrapper';
 import EditableInput from 'components/editable_input';
 import EditableDate from 'components/editable_date';
 import EditableSelect from 'components/editable_select';
+import { dateNormalizer } from 'validation_normalizers';
 
 import { SpacedRow } from './style';
 
@@ -142,6 +143,7 @@ class AddDevice extends React.Component<Props & InjectedIntlProps> {
                     component: EditableDate,
                     validationRules,
                     prefix,
+                    normalize: dateNormalizer('YYYY-MM-DD'),
                   }}
                 />
               </Col>
