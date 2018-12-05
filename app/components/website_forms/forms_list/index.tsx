@@ -12,78 +12,105 @@ interface Props {
   updateWebsiteForm: Function;
 }
 
-const FormsList = ({
-  updateWebsiteForm,
-  websiteForms,
-  history,
-  url,
-  intl,
-}: Props & InjectIntlProps & BreadcrumbsProps) => {
-  const prefix = 'admin.websiteForms';
+class FormsList extends React.Component<Props & InjectIntlProps & BreadcrumbsProps> {
+  handleExport = ({ id, formContent, updatedAt }) => {
+    console.log(formContent);
+    this.handleProcessed({ id, updatedAt, processed: true });
+  };
 
-  const data = websiteForms.map(f => ({
-    ...f,
-    formContent: { ...f.formContent, createdAt: f.createdAt },
-    linkForm: `${url}/${f.id}`,
-  }));
+  handleProcessed = ({ id, updatedAt, processed }) => {
+    const { updateWebsiteForm } = this.props;
+    new Promise((resolve, reject) => updateWebsiteForm({
+      formId: id,
+      params: { processed, updatedAt },
+      resolve,
+      reject,
+    }));
+  };
 
-  const columns = [
-    {
-      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableOverview` })} />,
-      accessor: 'formContent',
-      Cell: ({ value }) => {
-        const type = get(value, 'calculator.customerType');
-        const contact = type === 'person'
-          ? get(value, 'personalInfo.person', {})
-          : get(value, 'personalInfo.organization.contractingParty', {});
-        return (
-          <span>
-            <b>{type}:</b> {contact.prefix}{' '}
-            {['herr', 'frau'].includes(contact.prefix) ? `${contact.firstName} ${contact.lastName}` : contact.name}{' '}
-            <b>{contact.email}</b> {moment(value.createdAt).format('DD.MM.YYYY - HH:mm:ss')}
-          </span>
-        );
+  render() {
+    const { websiteForms, history, url, intl } = this.props;
+
+    const prefix = 'admin.websiteForms';
+
+    const data = websiteForms.map(f => ({
+      ...f,
+      linkForm: `${url}/${f.id}`,
+    }));
+
+    const columns = [
+      {
+        Header: () => (
+          <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableOverview` })} />
+        ),
+        accessor: 'formContent',
+        Cell: ({ value }) => {
+          const type = get(value, 'calculator.customerType');
+          const contact = type === 'person'
+            ? get(value, 'personalInfo.person', {})
+            : get(value, 'personalInfo.organization.contractingParty', {});
+          return (
+            <span>
+              <b>{type}:</b> {contact.prefix}{' '}
+              {['herr', 'frau'].includes(contact.prefix) ? `${contact.firstName} ${contact.lastName}` : contact.name}{' '}
+              <b>{contact.email}</b>
+            </span>
+          );
+        },
       },
-    },
-    {
-      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableProcessed` })} />,
-      accessor: 'processed',
-      style: { cursor: 'pointer' },
-      width: 80,
-      Cell: ({ value }) => <i className={`fa fa-2x fa-${value ? 'check' : 'times'}`} />,
-    },
-  ];
+      {
+        Header: () => (
+          <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableCreatedAt` })} />
+        ),
+        accessor: 'createdAt',
+        Cell: ({ value }) => moment(value).format('DD.MM.YYYY - HH:mm:ss'),
+      },
+      {
+        Header: () => (
+          <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableProcessed` })} />
+        ),
+        accessor: 'processed',
+        style: { cursor: 'pointer' },
+        width: 80,
+        Cell: ({ value }) => <i className={`fa fa-2x fa-${value ? 'check' : 'times'}`} />,
+      },
+      // {
+      //   sortable: false,
+      //   accessor: 'exportButton',
+      //   Cell: ({ original }) => <button onClick={() => this.handleExport(original)}>Export</button>,
+      // },
+    ];
 
-  return (
-    <React.Fragment>
-      <CenterContent>
-        <div className="p-0">
-          <ReactTableSorted
-            {...{
-              data,
-              columns,
-              uiSortPath: 'websiteForms',
-              getTdProps: (_state, { original }, column) => ({
-                onClick: (_e, handleOriginal) => {
-                  if (column.id === 'processed') {
-                    new Promise((resolve, reject) => updateWebsiteForm({
-                      formId: original.id,
-                      params: { processed: !original.processed, updatedAt: original.updatedAt },
-                      resolve,
-                      reject,
-                    }));
-                  } else {
-                    history.push(original.linkForm);
-                  }
-                  if (handleOriginal) handleOriginal();
-                },
-              }),
-            }}
-          />
-        </div>
-      </CenterContent>
-    </React.Fragment>
-  );
-};
+    return (
+      <React.Fragment>
+        <CenterContent>
+          <div className="p-0">
+            <ReactTableSorted
+              {...{
+                data,
+                columns,
+                uiSortPath: 'websiteForms',
+                getTdProps: (_state, { original }, column) => ({
+                  onClick: (_e, handleOriginal) => {
+                    if (column.id === 'processed') {
+                      this.handleProcessed({
+                        id: original.id,
+                        processed: !original.processed,
+                        updatedAt: original.updatedAt,
+                      });
+                    } else if (!['exportButton'].includes(column.id)) {
+                      history.push(original.linkForm);
+                    }
+                    if (handleOriginal) handleOriginal();
+                  },
+                }),
+              }}
+            />
+          </div>
+        </CenterContent>
+      </React.Fragment>
+    );
+  }
+}
 
 export default injectIntl(FormsList);
