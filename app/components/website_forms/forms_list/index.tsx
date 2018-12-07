@@ -9,27 +9,13 @@ import { CenterContent } from 'components/style';
 
 interface Props {
   websiteForms: Array<{ [key: string]: any }>;
-  updateWebsiteForm: Function;
+  changeProcessed: Function;
+  exportForms: Function;
 }
 
 class FormsList extends React.Component<Props & InjectIntlProps & BreadcrumbsProps> {
-  handleExport = ({ id, formContent, updatedAt }) => {
-    console.log(formContent);
-    this.handleProcessed({ id, updatedAt, processed: true });
-  };
-
-  handleProcessed = ({ id, updatedAt, processed }) => {
-    const { updateWebsiteForm } = this.props;
-    new Promise((resolve, reject) => updateWebsiteForm({
-      formId: id,
-      params: { processed, updatedAt },
-      resolve,
-      reject,
-    }));
-  };
-
   render() {
-    const { websiteForms, history, url, intl } = this.props;
+    const { websiteForms, changeProcessed, exportForms, history, url, intl } = this.props;
 
     const prefix = 'admin.websiteForms';
 
@@ -74,11 +60,11 @@ class FormsList extends React.Component<Props & InjectIntlProps & BreadcrumbsPro
         width: 80,
         Cell: ({ value }) => <i className={`fa fa-2x fa-${value ? 'check' : 'times'}`} />,
       },
-      // {
-      //   sortable: false,
-      //   accessor: 'exportButton',
-      //   Cell: ({ original }) => <button onClick={() => this.handleExport(original)}>Export</button>,
-      // },
+      {
+        sortable: false,
+        accessor: 'exportButton',
+        Cell: ({ original }) => <button onClick={() => exportForms([original])}>Export</button>,
+      },
     ];
 
     return (
@@ -93,7 +79,7 @@ class FormsList extends React.Component<Props & InjectIntlProps & BreadcrumbsPro
                 getTdProps: (_state, { original }, column) => ({
                   onClick: (_e, handleOriginal) => {
                     if (column.id === 'processed') {
-                      this.handleProcessed({
+                      changeProcessed({
                         id: original.id,
                         processed: !original.processed,
                         updatedAt: original.updatedAt,

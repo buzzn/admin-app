@@ -6,10 +6,14 @@ import WebsiteForms from 'website_forms';
 import Loading from 'components/loading';
 import FormsList from './forms_list';
 import FormData from './form_data';
+import formConverter from './form_converter';
 
 class Devices extends React.Component<
-  ExtProps & StateProps & DispatchProps & InjectedIntlProps & RouteComponentProps<{}>
+  ExtProps & StateProps & DispatchProps & InjectedIntlProps & RouteComponentProps<{}>,
+  ComponentState
   > {
+  state = { exporting: false };
+
   componentDidMount() {
     this.props.loadWebsiteForms();
   }
@@ -18,28 +22,46 @@ class Devices extends React.Component<
     this.props.setWebsiteForms({ _status: null, array: [] });
   }
 
+  exportForms = async (forms) => {
+    this.setState({ exporting: true });
+    formConverter(forms.map(f => ({ ...f.formContent, createdAt: f.createdAt })));
+    await Promise.all(forms.map(f => this.changeProcessed({ id: f.id, updatedAt: f.updatedAt, processed: true })));
+    this.setState({ exporting: false });
+  };
+
+  changeProcessed = ({ id, updatedAt, processed }) => {
+    const { updateWebsiteForm } = this.props;
+    return new Promise((resolve, reject) => updateWebsiteForm({
+      formId: id,
+      params: { processed, updatedAt },
+      resolve,
+      reject,
+    }));
+  };
+
   render() {
     const {
       setWebsiteForms,
-      updateWebsiteForm,
       websiteForms,
       loading,
       history,
       match: { url },
     } = this.props;
 
+    const { exporting } = this.state;
+
     if (websiteForms._status === 404 || websiteForms._status === 403) {
       setWebsiteForms({ _status: null, array: [] });
       return <Redirect to="/" />;
     }
 
-    if (websiteForms._status === null || loading) return <Loading minHeight={40} />;
+    if (websiteForms._status === null || loading || exporting) return <Loading minHeight={40} />;
 
     return (
       <React.Fragment>
         <Switch>
           <Route exact path={url}>
-            <FormsList {...{ websiteForms: websiteForms.array, history, url, updateWebsiteForm }} />
+            <FormsList {...{ websiteForms: websiteForms.array, history, url, changeProcessed: this.changeProcessed, exportForms: this.exportForms }} />
           </Route>
           <Route
             path={`${url}/:formId`}
@@ -55,6 +77,10 @@ class Devices extends React.Component<
 }
 
 interface ExtProps {}
+
+interface ComponentState {
+  exporting: boolean;
+}
 
 interface StatePart {
   websiteForms: {
