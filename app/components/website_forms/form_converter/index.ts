@@ -24,6 +24,8 @@ const formConverter = ({ forms, fields }) => {
       res['RA Vorname'] = get(f, 'personalInfo.organization.contactPerson.firstName', '');
       res['RA Nachname'] = get(f, 'personalInfo.organization.contactPerson.lastName', '');
     }
+
+    return res;
   });
   const ws = XLSX.utils.json_to_sheet(converted, { header: fields });
   const wb = XLSX.utils.book_new();
