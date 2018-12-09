@@ -30,6 +30,25 @@ class FormsList extends React.Component<Props & InjectIntlProps & BreadcrumbsPro
 
     const data = websiteForms.map(f => ({
       ...f,
+      overview: (() => {
+        const type = get(f.formContent, 'calculator.customerType');
+        const contact = type === 'person'
+          ? get(f.formContent, 'personalInfo.person', {})
+          : get(f.formContent, 'personalInfo.organization.contractingParty', {});
+        return {
+          Display: (
+            <span>
+              <b>{type}:</b> {contact.prefix}{' '}
+              {['herr', 'frau'].includes(contact.prefix) ? `${contact.firstName} ${contact.lastName}` : contact.name}{' '}
+              <b>{contact.email}</b>
+            </span>
+          ),
+          value: `${type} ${contact.prefix} ${
+            ['herr', 'frau'].includes(contact.prefix) ? `${contact.firstName} ${contact.lastName}` : contact.name
+            } ${contact.email}`,
+        };
+      })(),
+      createdAtFormatted: moment(f.createdAt).format('DD.MM.YYYY - HH:mm:ss'),
       linkForm: `${url}/${f.id}`,
     }));
 
@@ -38,32 +57,22 @@ class FormsList extends React.Component<Props & InjectIntlProps & BreadcrumbsPro
         Header: () => (
           <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableOverview` })} />
         ),
-        accessor: 'formContent',
-        Cell: ({ value }) => {
-          const type = get(value, 'calculator.customerType');
-          const contact = type === 'person'
-            ? get(value, 'personalInfo.person', {})
-            : get(value, 'personalInfo.organization.contractingParty', {});
-          return (
-            <span>
-              <b>{type}:</b> {contact.prefix}{' '}
-              {['herr', 'frau'].includes(contact.prefix) ? `${contact.firstName} ${contact.lastName}` : contact.name}{' '}
-              <b>{contact.email}</b>
-            </span>
-          );
-        },
+        accessor: 'overview',
+        filterMethod: TableParts.filters.filterByValue,
+        sortMethod: TableParts.sort.sortByValue,
+        Cell: ({ value: { Display } }) => Display,
       },
       {
         Header: () => (
           <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableCreatedAt` })} />
         ),
-        accessor: 'createdAt',
-        Cell: ({ value }) => moment(value).format('DD.MM.YYYY - HH:mm:ss'),
+        accessor: 'createdAtFormatted',
       },
       {
         Header: () => (
           <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableProcessed` })} />
         ),
+        filterable: false,
         accessor: 'processed',
         style: { cursor: 'pointer' },
         width: 80,
@@ -71,6 +80,7 @@ class FormsList extends React.Component<Props & InjectIntlProps & BreadcrumbsPro
       },
       {
         sortable: false,
+        filterable: false,
         width: 80,
         accessor: 'exportButton',
         Cell: ({ original }) => <button onClick={() => exportForms([original])}>Export</button>,
@@ -78,6 +88,7 @@ class FormsList extends React.Component<Props & InjectIntlProps & BreadcrumbsPro
       {
         Header: () => <button onClick={() => exportForms(compact(Object.values(selected)))}>Export selected</button>,
         sortable: false,
+        filterable: false,
         width: 100,
         accessor: 'selectCheckbox',
         Cell: ({ original }) => (
@@ -96,6 +107,7 @@ class FormsList extends React.Component<Props & InjectIntlProps & BreadcrumbsPro
           <div className="p-0">
             <ReactTableSorted
               {...{
+                filterable: true,
                 data,
                 columns,
                 uiSortPath: 'websiteForms',
