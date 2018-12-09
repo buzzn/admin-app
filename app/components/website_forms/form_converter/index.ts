@@ -117,6 +117,7 @@ const formConverter = ({ forms, fields }) => {
     res.Stromsteuer_NT = 2.05;
     res['USt %'] = 19;
     res['Kündigungsfrist'] = '01MM';
+    res['Zonenpreise ja/nein'] = 'Nein';
 
     return res;
   });
