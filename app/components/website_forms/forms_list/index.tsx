@@ -2,6 +2,7 @@ import * as React from 'react';
 import moment from 'moment';
 import { injectIntl, InjectIntlProps } from 'react-intl';
 import get from 'lodash/get';
+import compact from 'lodash/compact';
 import { tableParts as TableParts } from 'react_table_config';
 import ReactTableSorted from 'components/react_table_sorted';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
@@ -14,8 +15,16 @@ interface Props {
 }
 
 class FormsList extends React.Component<Props & InjectIntlProps & BreadcrumbsProps> {
+  state = { selected: {} };
+
+  changeSelected = (form) => {
+    const { selected } = this.state;
+    this.setState({ selected: { ...selected, [form.id]: selected[form.id] ? null : form } });
+  };
+
   render() {
     const { websiteForms, changeProcessed, exportForms, history, url, intl } = this.props;
+    const { selected } = this.state;
 
     const prefix = 'admin.websiteForms';
 
@@ -62,8 +71,22 @@ class FormsList extends React.Component<Props & InjectIntlProps & BreadcrumbsPro
       },
       {
         sortable: false,
+        width: 80,
         accessor: 'exportButton',
         Cell: ({ original }) => <button onClick={() => exportForms([original])}>Export</button>,
+      },
+      {
+        Header: () => <button onClick={() => exportForms(compact(Object.values(selected)))}>Export selected</button>,
+        sortable: false,
+        width: 100,
+        accessor: 'selectCheckbox',
+        Cell: ({ original }) => (
+          <input
+            type="checkbox"
+            defaultChecked={!!selected[original.id]}
+            onClick={() => this.changeSelected(original)}
+          />
+        ),
       },
     ];
 
@@ -84,7 +107,7 @@ class FormsList extends React.Component<Props & InjectIntlProps & BreadcrumbsPro
                         processed: !original.processed,
                         updatedAt: original.updatedAt,
                       });
-                    } else if (!['exportButton'].includes(column.id)) {
+                    } else if (!['exportButton', 'selectCheckbox'].includes(column.id)) {
                       history.push(original.linkForm);
                     }
                     if (handleOriginal) handleOriginal();

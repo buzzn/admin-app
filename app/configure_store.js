@@ -44,9 +44,14 @@ function* rootSaga() {
 
 function configureStore() {
   const sagaMiddleware = createSagaMiddleware();
-  const store = createStore(RootReducer,
+  const store = createStore(
+    RootReducer,
     {},
-    compose(applyMiddleware(sagaMiddleware, thunk), window.devToolsExtension ? window.devToolsExtension() : f => f));
+    compose(
+      applyMiddleware(sagaMiddleware, thunk),
+      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+    ),
+  );
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers

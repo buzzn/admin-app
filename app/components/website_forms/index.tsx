@@ -8,7 +8,7 @@ import FormsList from './forms_list';
 import FormData from './form_data';
 import formConverter from './form_converter';
 
-class Devices extends React.Component<
+class WebsiteFormsComponent extends React.Component<
   ExtProps & StateProps & DispatchProps & InjectedIntlProps & RouteComponentProps<{}>,
   ComponentState
   > {
@@ -114,4 +114,4 @@ export default connect<StateProps, DispatchProps, ExtProps>(
     setWebsiteForms: WebsiteForms.actions.setWebsiteForms,
     updateWebsiteForm: WebsiteForms.actions.updateWebsiteForm,
   },
-)(injectIntl(Devices));
+)(injectIntl(WebsiteFormsComponent));
