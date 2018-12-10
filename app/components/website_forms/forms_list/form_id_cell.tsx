@@ -16,7 +16,7 @@ class FormIdCell extends React.Component<Props, State> {
 
   componentDidMount() {
     const { original: { comment } } = this.props;
-    const formId = parseInt(comment.split('/')[0]) || 0;
+    const formId = comment ? parseInt(comment.split('/')[0]) || 0 : 0;
     this.setState({ formId });
   }
 
