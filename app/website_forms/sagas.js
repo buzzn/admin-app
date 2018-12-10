@@ -1,4 +1,4 @@
-import { put, call, takeLatest, take, fork, cancel, select } from 'redux-saga/effects';
+import { put, call, takeLatest, takeEvery, take, fork, cancel, select } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import { logException } from '_util';
 import { actions, constants } from './actions';
@@ -21,8 +21,8 @@ export function* updateWebsiteForm({ apiUrl, apiPath, token }, { formId, params,
     if (res._error) {
       yield call(reject, new SubmissionError(res));
     } else {
-      yield call(resolve, res);
       yield call(getWebsiteForms, { apiUrl, apiPath, token });
+      yield call(resolve, res);
     }
   } catch (error) {
     logException(error);
@@ -31,7 +31,8 @@ export function* updateWebsiteForm({ apiUrl, apiPath, token }, { formId, params,
 
 export function* websiteFormsSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_WEBSITE_FORMS, getWebsiteForms, { apiUrl, apiPath, token });
-  yield takeLatest(constants.UPDATE_WEBSITE_FORM, updateWebsiteForm, { apiUrl, apiPath, token });
+  // HACK: mass "processed" update
+  yield takeEvery(constants.UPDATE_WEBSITE_FORM, updateWebsiteForm, { apiUrl, apiPath, token });
 }
 
 export default function* () {

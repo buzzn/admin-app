@@ -81,7 +81,7 @@ export class TopNavBar extends React.Component {
     return (
       <Navbar fixed="top" expand dark className={`new-top-nav-bar ${shrinked && 'shrinked'}`} {...hoverEvents}>
         <Container style={{ maxWidth: '1440px' }}>
-          <Link className="navbar-brand" to="/">
+          <Link className="navbar-brand" to="/" data-cy="home link">
             <img src={devMode ? DevLogoImg : LogoImg} />
           </Link>
           <NavbarToggler onClick={this.toggle} />
@@ -105,7 +105,7 @@ export class TopNavBar extends React.Component {
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
-              <NavItem className={`icon-nav-item ${devMode ? '' : 'under-construction'}`}>
+              <NavItem className="icon-nav-item">
                 <Link to="/website-forms">
                   <i className="fa fa-vcard" />
                 </Link>

@@ -2,88 +2,167 @@ import * as React from 'react';
 import moment from 'moment';
 import { injectIntl, InjectIntlProps } from 'react-intl';
 import get from 'lodash/get';
+import compact from 'lodash/compact';
 import { tableParts as TableParts } from 'react_table_config';
 import ReactTableSorted from 'components/react_table_sorted';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
 import { CenterContent } from 'components/style';
+import FormIdCell from './form_id_cell';
 
 interface Props {
   websiteForms: Array<{ [key: string]: any }>;
-  updateWebsiteForm: Function;
+  changeProcessed: Function;
+  changeFormId: Function;
+  exportForms: Function;
+  changeStartingId: Function;
+  startingId: number;
+  idError: string;
 }
 
-const FormsList = ({
-  updateWebsiteForm,
-  websiteForms,
-  history,
-  url,
-  intl,
-}: Props & InjectIntlProps & BreadcrumbsProps) => {
-  const prefix = 'admin.websiteForms';
+class FormsList extends React.Component<Props & InjectIntlProps & BreadcrumbsProps> {
+  state = { selected: {} };
 
-  const data = websiteForms.map(f => ({
-    ...f,
-    formContent: { ...f.formContent, createdAt: f.createdAt },
-    linkForm: `${url}/${f.id}`,
-  }));
+  changeSelected = (form) => {
+    const { selected } = this.state;
+    this.setState({ selected: { ...selected, [form.id]: selected[form.id] ? null : form } });
+  };
 
-  const columns = [
-    {
-      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableOverview` })} />,
-      accessor: 'formContent',
-      Cell: ({ value }) => {
-        const type = get(value, 'calculator.customerType');
+  render() {
+    const {
+      websiteForms,
+      changeProcessed,
+      changeFormId,
+      changeStartingId,
+      startingId,
+      idError,
+      exportForms,
+      history,
+      url,
+      intl,
+    } = this.props;
+    const { selected } = this.state;
+
+    const prefix = 'admin.websiteForms';
+
+    const data = websiteForms.map(f => ({
+      ...f,
+      overview: (() => {
+        const type = get(f.formContent, 'calculator.customerType');
         const contact = type === 'person'
-          ? get(value, 'personalInfo.person', {})
-          : get(value, 'personalInfo.organization.contractingParty', {});
-        return (
-          <span>
-            <b>{type}:</b> {contact.prefix}{' '}
-            {['herr', 'frau'].includes(contact.prefix) ? `${contact.firstName} ${contact.lastName}` : contact.name}{' '}
-            <b>{contact.email}</b> {moment(value.createdAt).format('DD.MM.YYYY - HH:mm:ss')}
-          </span>
-        );
-      },
-    },
-    {
-      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableProcessed` })} />,
-      accessor: 'processed',
-      style: { cursor: 'pointer' },
-      width: 80,
-      Cell: ({ value }) => <i className={`fa fa-2x fa-${value ? 'check' : 'times'}`} />,
-    },
-  ];
+          ? get(f.formContent, 'personalInfo.person', {})
+          : get(f.formContent, 'personalInfo.organization.contractingParty', {});
+        return {
+          Display: (
+            <span>
+              <b>{type}:</b> {contact.prefix}{' '}
+              {['herr', 'frau'].includes(contact.prefix) ? `${contact.firstName} ${contact.lastName}` : contact.name}{' '}
+              <b>{contact.email}</b>
+            </span>
+          ),
+          value: `${type} ${contact.prefix} ${
+            ['herr', 'frau'].includes(contact.prefix) ? `${contact.firstName} ${contact.lastName}` : contact.name
+          } ${contact.email}`,
+        };
+      })(),
+      createdAtFormatted: moment(f.createdAt).format('DD.MM.YYYY - HH:mm:ss'),
+      linkForm: `${url}/${f.id}`,
+    }));
 
-  return (
-    <React.Fragment>
-      <CenterContent>
-        <div className="p-0">
-          <ReactTableSorted
-            {...{
-              data,
-              columns,
-              uiSortPath: 'websiteForms',
-              getTdProps: (_state, { original }, column) => ({
-                onClick: (_e, handleOriginal) => {
-                  if (column.id === 'processed') {
-                    new Promise((resolve, reject) => updateWebsiteForm({
-                      formId: original.id,
-                      params: { processed: !original.processed, updatedAt: original.updatedAt },
-                      resolve,
-                      reject,
-                    }));
-                  } else {
-                    history.push(original.linkForm);
-                  }
-                  if (handleOriginal) handleOriginal();
-                },
-              }),
-            }}
+    const columns = [
+      {
+        Header: () => (
+          <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableOverview` })} />
+        ),
+        accessor: 'overview',
+        filterMethod: TableParts.filters.filterByValue,
+        sortMethod: TableParts.sort.sortByValue,
+        Cell: ({ value: { Display } }) => Display,
+      },
+      {
+        Header: () => (
+          <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableCreatedAt` })} />
+        ),
+        accessor: 'createdAtFormatted',
+      },
+      {
+        Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.formId` })} />,
+        accessor: 'comment',
+      },
+      {
+        Header: () => (
+          <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableProcessed` })} />
+        ),
+        filterable: false,
+        accessor: 'processed',
+        style: { cursor: 'pointer' },
+        width: 80,
+        Cell: ({ value }) => <i className={`fa fa-2x fa-${value ? 'check' : 'times'}`} />,
+      },
+      {
+        sortable: false,
+        filterable: false,
+        width: 80,
+        accessor: 'exportButton',
+        Cell: ({ original }) => <button onClick={() => exportForms([original])}>Export</button>,
+      },
+      {
+        Header: () => <button onClick={() => exportForms(compact(Object.values(selected)))}>Export selected</button>,
+        sortable: false,
+        filterable: false,
+        width: 100,
+        accessor: 'selectCheckbox',
+        Cell: ({ original }) => (
+          <input
+            type="checkbox"
+            defaultChecked={!!selected[original.id]}
+            onClick={() => this.changeSelected(original)}
           />
-        </div>
-      </CenterContent>
-    </React.Fragment>
-  );
-};
+        ),
+      },
+      {
+        sortable: false,
+        filterable: false,
+        width: 200,
+        accessor: 'changeFormId',
+        Cell: ({ original }) => <FormIdCell {...{ original, changeFormId }} />,
+      },
+    ];
+
+    return (
+      <React.Fragment>
+        <CenterContent>
+          <div className="p-0">
+            <input type="number" onChange={changeStartingId} value={startingId} /> /1
+            <br />
+            {!!idError && <span>{idError}</span>}
+            <ReactTableSorted
+              {...{
+                filterable: true,
+                data,
+                columns,
+                uiSortPath: 'websiteForms',
+                getTdProps: (_state, { original }, column) => ({
+                  onClick: (_e, handleOriginal) => {
+                    if (column.id === 'processed') {
+                      changeProcessed({
+                        id: original.id,
+                        processed: !original.processed,
+                        updatedAt: original.updatedAt,
+                        comment: original.comment,
+                      });
+                    } else if (!['exportButton', 'selectCheckbox', 'changeFormId'].includes(column.id)) {
+                      history.push(original.linkForm);
+                    }
+                    if (handleOriginal) handleOriginal();
+                  },
+                }),
+              }}
+            />
+          </div>
+        </CenterContent>
+      </React.Fragment>
+    );
+  }
+}
 
 export default injectIntl(FormsList);

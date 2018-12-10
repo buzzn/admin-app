@@ -41,37 +41,42 @@ const DevicesList = ({
         <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableManufacturer` })} />
       ),
       accessor: 'manufacturer',
+      className: 'cy-manufacturer',
     },
     {
-      Header: () => (
-        <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableModel` })} />
-      ),
+      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableModel` })} />,
       accessor: 'model',
+      className: 'cy-model',
     },
     {
-      Header: () => (
-        <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableName` })} />
-      ),
+      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableName` })} />,
       accessor: 'name',
+      className: 'cy-name',
     },
     {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableKwPeak` })} />,
       accessor: 'kwPeak',
+      className: 'cy-kwPeak',
     },
     {
-      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableKwhPerAnnum` })} />,
+      Header: () => (
+        <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableKwhPerAnnum` })} />
+      ),
       accessor: 'kwhPerAnnum',
+      className: 'cy-kwhPerAnnum',
     },
     {
       Header: () => (
         <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableCommissioning` })} />
       ),
       accessor: 'commissioning',
+      className: 'cy-commissioning',
       Cell: ({ value }) => moment(value).format('DD.MM.YYYY'),
     },
     {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableLaw` })} />,
       accessor: 'law',
+      className: 'cy-law',
     },
   ];
 
@@ -87,7 +92,7 @@ const DevicesList = ({
       />
       <CenterContent>
         <div className="p-0">
-          <SpanClick onClick={switchAddDevice} className="float-right">
+          <SpanClick onClick={switchAddDevice} className="float-right" data-cy="add device CTA">
             <FormattedMessage id="admin.devices.addNew" /> <i className="fa fa-plus-circle" />
           </SpanClick>
           <br />

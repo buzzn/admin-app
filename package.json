@@ -138,7 +138,8 @@
     "redux-thunk": "^2.3.0",
     "styled-components": "^4.0.3",
     "tether": "^1.4.5",
-    "whatwg-fetch": "^3.0.0"
+    "whatwg-fetch": "^3.0.0",
+    "xlsx": "^0.14.1"
   },
   "resolutions": {
     "babel-core": "^7.0.0-bridge.0"
