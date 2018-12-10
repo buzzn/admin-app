@@ -7,11 +7,16 @@ import { tableParts as TableParts } from 'react_table_config';
 import ReactTableSorted from 'components/react_table_sorted';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
 import { CenterContent } from 'components/style';
+import FormIdCell from './form_id_cell';
 
 interface Props {
   websiteForms: Array<{ [key: string]: any }>;
   changeProcessed: Function;
+  changeFormId: Function;
   exportForms: Function;
+  changeStartingId: Function;
+  startingId: number;
+  idError: string;
 }
 
 class FormsList extends React.Component<Props & InjectIntlProps & BreadcrumbsProps> {
@@ -23,7 +28,18 @@ class FormsList extends React.Component<Props & InjectIntlProps & BreadcrumbsPro
   };
 
   render() {
-    const { websiteForms, changeProcessed, exportForms, history, url, intl } = this.props;
+    const {
+      websiteForms,
+      changeProcessed,
+      changeFormId,
+      changeStartingId,
+      startingId,
+      idError,
+      exportForms,
+      history,
+      url,
+      intl,
+    } = this.props;
     const { selected } = this.state;
 
     const prefix = 'admin.websiteForms';
@@ -45,7 +61,7 @@ class FormsList extends React.Component<Props & InjectIntlProps & BreadcrumbsPro
           ),
           value: `${type} ${contact.prefix} ${
             ['herr', 'frau'].includes(contact.prefix) ? `${contact.firstName} ${contact.lastName}` : contact.name
-            } ${contact.email}`,
+          } ${contact.email}`,
         };
       })(),
       createdAtFormatted: moment(f.createdAt).format('DD.MM.YYYY - HH:mm:ss'),
@@ -67,6 +83,10 @@ class FormsList extends React.Component<Props & InjectIntlProps & BreadcrumbsPro
           <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableCreatedAt` })} />
         ),
         accessor: 'createdAtFormatted',
+      },
+      {
+        Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.formId` })} />,
+        accessor: 'comment',
       },
       {
         Header: () => (
@@ -99,12 +119,22 @@ class FormsList extends React.Component<Props & InjectIntlProps & BreadcrumbsPro
           />
         ),
       },
+      {
+        sortable: false,
+        filterable: false,
+        width: 200,
+        accessor: 'changeFormId',
+        Cell: ({ original }) => <FormIdCell {...{ original, changeFormId }} />,
+      },
     ];
 
     return (
       <React.Fragment>
         <CenterContent>
           <div className="p-0">
+            <input type="number" onChange={changeStartingId} value={startingId} /> /1
+            <br />
+            {!!idError && <span>{idError}</span>}
             <ReactTableSorted
               {...{
                 filterable: true,
@@ -118,8 +148,9 @@ class FormsList extends React.Component<Props & InjectIntlProps & BreadcrumbsPro
                         id: original.id,
                         processed: !original.processed,
                         updatedAt: original.updatedAt,
+                        comment: original.comment,
                       });
-                    } else if (!['exportButton', 'selectCheckbox'].includes(column.id)) {
+                    } else if (!['exportButton', 'selectCheckbox', 'changeFormId'].includes(column.id)) {
                       history.push(original.linkForm);
                     }
                     if (handleOriginal) handleOriginal();

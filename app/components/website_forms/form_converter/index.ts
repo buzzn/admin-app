@@ -119,6 +119,8 @@ const formConverter = ({ forms, fields }) => {
     res['Kündigungsfrist'] = '01MM';
     res['Zonenpreise ja/nein'] = 'Nein';
 
+    res['RA Identnummer'] = `${f.formId}/1`;
+
     return res;
   });
   const ws = XLSX.utils.json_to_sheet(converted, { header: fields });
