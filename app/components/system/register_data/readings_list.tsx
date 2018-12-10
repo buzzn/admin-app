@@ -5,25 +5,49 @@ import orderBy from 'lodash/orderBy';
 import { injectIntl, FormattedMessage, InjectIntlProps } from 'react-intl';
 import { Row, Col } from 'reactstrap';
 import { tableParts as TableParts } from 'react_table_config';
+import { SpanClick } from 'components/style';
+import AddReading from '../add_reading';
 
 interface Props {
   readings: Array<any>;
   registerId: string;
+  readingsValidationRules: any;
+  addReading: Function;
+  groupId: string;
+  meterId: string;
 }
 
 interface State {
   expanded: { [key: number]: boolean };
+  isOpen: boolean;
 }
 
 class ReadingsList extends React.Component<Props & InjectIntlProps, State> {
-  state = { expanded: {} };
+  state = { expanded: {}, isOpen: false };
+
+  switchAddReading = () => {
+    this.setState({ isOpen: !this.state.isOpen });
+  };
+
+  addReading = (params) => {
+    const { addReading, groupId, meterId, registerId } = this.props;
+
+    return new Promise((resolve, reject) => {
+      addReading({ groupId, meterId, registerId, params, resolve, reject });
+    }).then((res) => {
+      this.switchAddReading();
+      return(res);
+    });
+  };
+
 
   handleRowClick(rowNum) {
     this.setState(state => ({ expanded: { ...state.expanded, [rowNum]: !state.expanded[rowNum] } }));
   }
 
   render() {
-    const { readings, intl, registerId } = this.props;
+    const { readings, intl, registerId, readingsValidationRules } = this.props;
+    const { isOpen } = this.state;
     const prefix = 'admin.readings';
 
     const data = orderBy(readings, ['date', 'reason'], ['desc', 'asc']).map(r => ({
@@ -61,7 +85,12 @@ class ReadingsList extends React.Component<Props & InjectIntlProps, State> {
     ];
 
     return (
-      <div className="p-0" style={{ marginBottom: '2rem' }} key={2}>
+      <div className="p-0" style={{ marginBottom: '2rem' }}>
+        <SpanClick onClick={this.switchAddReading} className="float-right" data-cy="add contract CTA">
+          <FormattedMessage id="admin.contracts.addNew" /> <i className="fa fa-plus-circle" />
+        </SpanClick>
+        <AddReading {...{ toggle: this.switchAddReading, isOpen, validationRules: readingsValidationRules, onSubmit: this.addReading }} />
+        <br />
         <ReactTableSorted
           {...{
             data,

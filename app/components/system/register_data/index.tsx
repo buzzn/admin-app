@@ -5,6 +5,7 @@ import { Switch, Route, NavLink, Redirect } from 'react-router-dom';
 import get from 'lodash/get';
 import Meters from 'meters';
 import Registers from 'registers';
+import Readings from 'readings';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
 import Loading from 'components/loading';
 import { CenterContent, SubNav } from 'components/style';
@@ -33,9 +34,11 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
       groupId,
       meterId,
       registerId,
+      addReading,
       devMode,
       updateRegister,
       validationRules,
+      readingsValidationRules,
     } = this.props;
 
     if (loading || meter._status === null) return <Loading minHeight={40} />;
@@ -80,6 +83,10 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
                     {...{
                       readings: register.readings.array,
                       registerId,
+                      meterId,
+                      groupId,
+                      addReading,
+                      readingsValidationRules,
                     }}
                   />
                 )}
@@ -101,6 +108,7 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
 interface StatePart {
   meters: { loadingMeter: boolean; meter: { _status: null | number; [key: string]: any } };
   registers: { validationRules: any };
+  readings: { validationRules: any };
 }
 
 interface ExtProps {
@@ -116,12 +124,14 @@ interface StateProps {
   loading: boolean;
   meter: { _status: null | number; [key: string]: any };
   validationRules: any;
+  readingsValidationRules: any;
 }
 
 interface DispatchProps {
   loadMeter: Function;
   setMeter: Function;
   updateRegister: Function;
+  addReading: Function;
 }
 
 function mapStateToProps(state: StatePart) {
@@ -129,6 +139,7 @@ function mapStateToProps(state: StatePart) {
     meter: state.meters.meter,
     loading: state.meters.loadingMeter,
     validationRules: state.registers.validationRules,
+    readingsValidationRules: state.readings.validationRules,
   };
 }
 
@@ -138,5 +149,6 @@ export default connect<StateProps, DispatchProps, ExtProps>(
     loadMeter: Meters.actions.loadMeter,
     setMeter: Meters.actions.setMeter,
     updateRegister: Registers.actions.updateRegister,
+    addReading: Readings.actions.addReading,
   },
 )(RegisterData);
