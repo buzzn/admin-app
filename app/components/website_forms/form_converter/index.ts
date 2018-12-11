@@ -8,7 +8,10 @@ const formConverter = ({ forms, fields }) => {
     const res: { [key: string]: string | number } = {};
     const { calculator: { customerType } } = f;
 
-    if (get(f, 'oldSupplier.type') === 'move') res.Transaktionsgrund = 'E01';
+    if (get(f, 'oldSupplier.type') === 'move') {
+      res.Transaktionsgrund = 'E01';
+      res.Einzugsdatum = moment(get(f, 'oldSupplier.deliveryStart', '')).format('DD.MM.YYY');
+    }
     if (get(f, 'oldSupplier.type') === 'change') res.Transaktionsgrund = 'E03';
 
     if (customerType === 'person') {
@@ -28,10 +31,6 @@ const formConverter = ({ forms, fields }) => {
       res['RA E-Mailadresse'] = get(f, 'personalInfo.person.email', '');
 
       if (!get(f, 'address.person.billingAddress.anotherAddress')) {
-        res['Straße'] = res['RA Straße'];
-        res.Hausnummer = res['RA Hausnummer'];
-        res.PLZ = res['RA Postleitzahl'];
-        res.Ort = res['RA Ort'];
         res['LS Vorname '] = res['RA Vorname'];
         res['LS Nachname'] = res['RA Nachname'];
         res['LS Straße'] = res['RA Straße'];
@@ -39,10 +38,12 @@ const formConverter = ({ forms, fields }) => {
         res['LS PLZ'] = res['RA Postleitzahl'];
         res['LS Ort'] = res['RA Ort'];
       } else {
-        res['Straße'] = get(f, 'address.person.shippingAddress.street', '');
-        res.Hausnummer = get(f, 'address.person.shippingAddress.houseNum', '');
-        res.PLZ = get(f, 'address.person.shippingAddress.zip', '');
-        res.Ort = get(f, 'address.person.shippingAddress.city', '');
+        res['LS Vorname '] = res['RA Vorname'];
+        res['LS Nachname'] = res['RA Nachname'];
+        res['LS Straße'] = get(f, 'address.person.shippingAddress.street', '');
+        res['LS Hausnummer'] = get(f, 'address.person.shippingAddress.houseNum', '');
+        res['LS PLZ'] = get(f, 'address.person.shippingAddress.zip', '');
+        res['LS Ort'] = get(f, 'address.person.shippingAddress.city', '');
       }
     }
 
@@ -61,10 +62,6 @@ const formConverter = ({ forms, fields }) => {
       res['RA E-Mailadresse'] = get(f, 'personalInfo.organization.contactPerson.email', '');
 
       if (get(f, 'address.organization.shippingAddress.sameAddress')) {
-        res['Straße'] = res['RA Straße'];
-        res.Hausnummer = res['RA Hausnummer'];
-        res.PLZ = res['RA Postleitzahl'];
-        res.Ort = res['RA Ort'];
         res['LS Vorname '] = res['RA Vorname'];
         res['LS Nachname'] = res['RA Nachname'];
         res['LS Firma'] = res['RA Firma'];
@@ -73,12 +70,20 @@ const formConverter = ({ forms, fields }) => {
         res['LS PLZ'] = res['RA Postleitzahl'];
         res['LS Ort'] = res['RA Ort'];
       } else {
-        res['Straße'] = get(f, 'address.organization.shippingAddress.street', '');
-        res.Hausnummer = get(f, 'address.organization.shippingAddress.houseNum', '');
-        res.PLZ = get(f, 'address.organization.shippingAddress.zip', '');
-        res.Ort = get(f, 'address.organization.shippingAddress.city', '');
+        res['LS Vorname '] = res['RA Vorname'];
+        res['LS Nachname'] = res['RA Nachname'];
+        res['LS Firma'] = res['RA Firma'];
+        res['LS Straße'] = get(f, 'address.organization.shippingAddress.street', '');
+        res['LS Hausnummer'] = get(f, 'address.organization.shippingAddress.houseNum', '');
+        res['LS PLZ'] = get(f, 'address.organization.shippingAddress.zip', '');
+        res['LS Ort'] = get(f, 'address.organization.shippingAddress.city', '');
       }
     }
+
+    res['Straße'] = res['RA Straße'];
+    res.Hausnummer = res['RA Hausnummer'];
+    res.PLZ = res['RA Postleitzahl'];
+    res.Ort = res['RA Ort'];
 
     res['RA Kontoinhaber'] = get(f, 'bank.accountName', '');
     res['RA IBAN'] = get(f, 'bank.iban', '');
