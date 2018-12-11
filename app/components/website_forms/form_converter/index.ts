@@ -84,13 +84,13 @@ const formConverter = ({ forms, fields }) => {
     res['RA IBAN'] = get(f, 'bank.iban', '');
 
     res['RA Datum Unterschrift'] = get(f, 'createdAt', '') ? moment(get(f, 'createdAt', '')).format('DD.MM.YYYY') : '';
-    res['RA Selbstzahler'] = 'Nein';
+    res['RA Selbstzahler'] = 'nein';
     res['RA Zahlungstermin'] = 1;
 
     res['Zählernummer'] = get(f, 'oldSupplier.meterNumber', '');
-    res['Verbrauch kWh/a HT'] = get(f, 'calculator.annual_kwh', '');
+    res['Verbrauch kWh/a HT'] = get(f, 'calculator.annualKwh', '');
     res['Zählverfahren'] = 'SLP';
-    res.Abschlag = get(f, 'price.total_cents_per_month', 0) / 100;
+    res.Abschlag = get(f, 'price.totalCentsPerMonth', 0) / 100;
     res['bisheriger Lieferant'] = get(f, 'oldSupplier.previousProvider', '');
     res['Kundennummer bei Altlieferant'] = get(f, 'oldSupplier.previousCustomerNumber', '');
     res['Handelsvertreter / VM Nr.'] = get(f, 'calculator.group', '');
@@ -104,26 +104,46 @@ const formConverter = ({ forms, fields }) => {
       : '';
     res.Bezeichnung_intern = 'People Power';
     res.Tarifart = 1;
-    res['monatlicher Grundpreis netto'] = (get(f, 'price.baseprice_cents_per_month', 0) / 1.19 / 100).toFixed(3);
+    res['monatlicher Grundpreis netto'] = (get(f, 'price.basepriceCentsPerMonth', 0) / 1.19 / 100).toFixed(3);
     res['Arbeitspreis_HT excl. Stromsteuer und USt'] = (
-      get(f, 'price.energyprice_cents_per_kilowatt_hour', 0) / 1.19
+      get(f, 'price.energypriceCentsPerKilowattHour', 0) / 1.19
       - 2.05
     ).toFixed(3);
     res['Arbeitspreis_NT excl. Stromsteuer und USt'] = (
-      get(f, 'price.energyprice_cents_per_kilowatt_hour', 0) / 1.19
+      get(f, 'price.energypriceCentsPerKilowattHour', 0) / 1.19
       - 2.05
     ).toFixed(3);
     res.Stromsteuer_HT = 2.05;
     res.Stromsteuer_NT = 2.05;
     res['USt %'] = 19;
     res['Kündigungsfrist'] = '01MM';
-    res['Zonenpreise ja/nein'] = 'Nein';
+    res['Zonenpreise ja/nein'] = 'nein';
 
     res['RA Identnummer'] = `${f.formId}/1`;
 
     return res;
   });
-  const ws = XLSX.utils.json_to_sheet(converted, { header: fields });
+  const ws = XLSX.utils.aoa_to_sheet([
+    [
+      'Codenummer:',
+      '9905229000008',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      'Laufende Nummer:',
+      '',
+      '',
+      '',
+      'Übertragungsdatum:',
+      moment().format('DD.MM.YYYY'),
+    ],
+    [],
+    fields,
+  ]);
+  XLSX.utils.sheet_add_json(ws, converted, { header: fields, skipHeader: true, origin: 3 });
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'WebsiteForms');
   XLSX.writeFile(wb, 'websiteforms.xlsx');
