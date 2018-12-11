@@ -13,8 +13,9 @@ export function* addReading({ apiUrl, apiPath, token }, { meterId, registerId, p
       yield call(reject, new SubmissionError(res));
     } else {
       yield call(resolve, res);
-      yield put(Meters.actions.loadGroupMeters(groupId));
-      yield put(Registers.actions.loadRegister({ registerId, groupId }));
+      yield put(Meters.actions.loadMeter({ groupId, meterId }));
+      // yield put(Meters.actions.loadGroupMeters(groupId));
+      // yield put(Registers.actions.loadRegister({ registerId, groupId, meterId }));
     }
   } catch (error) {
     logException(error);
