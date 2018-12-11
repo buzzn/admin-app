@@ -116,11 +116,11 @@ class WebsiteFormsComponent extends React.Component<
           <Route exact path={url}>
             <FormsList
               {...{
+                breadcrumbs: [{ id: 'forms', title: 'WebsiteForms' }],
                 websiteForms: websiteForms.array,
                 history,
                 url,
                 changeProcessed: this.changeProcessed,
-                changeFormId: this.changeFormId,
                 exportForms: this.exportForms,
                 startingId,
                 idError,
@@ -132,7 +132,15 @@ class WebsiteFormsComponent extends React.Component<
             path={`${url}/:formId`}
             render={({ match: { params: { formId } } }) => {
               const form = websiteForms.array.find(f => f.id === formId);
-              return <FormData {...{ form }} />;
+              return (
+                <FormData
+                  {...{
+                    breadcrumbs: [{ id: 'forms', link: url, title: 'WebsiteForms' }, { id: form.id, title: form.id }],
+                    form,
+                    changeFormId: this.changeFormId,
+                  }}
+                />
+              );
             }}
           />
         </Switch>

@@ -6,13 +6,12 @@ import compact from 'lodash/compact';
 import { tableParts as TableParts } from 'react_table_config';
 import ReactTableSorted from 'components/react_table_sorted';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
+import PageTitle from 'components/page_title';
 import { CenterContent } from 'components/style';
-import FormIdCell from './form_id_cell';
 
 interface Props {
   websiteForms: Array<{ [key: string]: any }>;
   changeProcessed: Function;
-  changeFormId: Function;
   exportForms: Function;
   changeStartingId: Function;
   startingId: number;
@@ -29,9 +28,9 @@ class FormsList extends React.Component<Props & InjectIntlProps & BreadcrumbsPro
 
   render() {
     const {
+      breadcrumbs,
       websiteForms,
       changeProcessed,
-      changeFormId,
       changeStartingId,
       startingId,
       idError,
@@ -119,19 +118,13 @@ class FormsList extends React.Component<Props & InjectIntlProps & BreadcrumbsPro
           />
         ),
       },
-      {
-        sortable: false,
-        filterable: false,
-        width: 200,
-        accessor: 'changeFormId',
-        Cell: ({ original }) => <FormIdCell {...{ original, changeFormId }} />,
-      },
     ];
 
     return (
       <React.Fragment>
         <CenterContent>
           <div className="p-0">
+            <PageTitle breadcrumbs={breadcrumbs} title="Forms list" />
             <input type="number" onChange={changeStartingId} value={startingId} /> /1
             <br />
             {!!idError && <span>{idError}</span>}
