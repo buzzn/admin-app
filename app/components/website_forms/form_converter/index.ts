@@ -7,15 +7,22 @@ const formConverter = ({ forms, fields }) => {
   const converted = forms.map((f) => {
     const res: { [key: string]: string | number } = {};
     const { calculator: { customerType } } = f;
+    const prefixes = {
+      '': '',
+      herr: 'Herr',
+      frau: 'Frau',
+      keineAngabe: 'Keine Angabe',
+    };
+    const formatNumber = number => new Intl.NumberFormat('de-DE').format(number);
 
     if (get(f, 'oldSupplier.type') === 'move') {
       res.Transaktionsgrund = 'E01';
-      res.Einzugsdatum = moment(get(f, 'oldSupplier.deliveryStart', '')).format('DD.MM.YYY');
+      res.Einzugsdatum = moment(get(f, 'oldSupplier.deliveryStart', '')).format('DD.MM.YYYY');
     }
     if (get(f, 'oldSupplier.type') === 'change') res.Transaktionsgrund = 'E03';
 
     if (customerType === 'person') {
-      res['RA Anrede'] = get(f, 'personalInfo.person.prefix', '');
+      res['RA Anrede'] = prefixes[get(f, 'personalInfo.person.prefix', '')];
       res['RA Titel'] = get(f, 'personalInfo.person.title', '');
       res['RA Vorname'] = get(f, 'personalInfo.person.firstName', '');
       res['RA Nachname'] = get(f, 'personalInfo.person.lastName', '');
@@ -49,7 +56,7 @@ const formConverter = ({ forms, fields }) => {
 
     if (customerType === 'organization') {
       res['RA Firma'] = get(f, 'personalInfo.organization.contractingParty.name', '');
-      res['RA Anrede'] = get(f, 'personalInfo.organization.contactPerson.prefix', '');
+      res['RA Anrede'] = prefixes[get(f, 'personalInfo.organization.contactPerson.prefix', '')];
       res['RA Titel'] = get(f, 'personalInfo.organization.contactPerson.title', '');
       res['RA Vorname'] = get(f, 'personalInfo.organization.contactPerson.firstName', '');
       res['RA Nachname'] = get(f, 'personalInfo.organization.contactPerson.lastName', '');
@@ -95,7 +102,7 @@ const formConverter = ({ forms, fields }) => {
     res['Zählernummer'] = get(f, 'oldSupplier.meterNumber', '');
     res['Verbrauch kWh/a HT'] = get(f, 'calculator.annualKwh', '');
     res['Zählverfahren'] = 'SLP';
-    res.Abschlag = get(f, 'price.totalCentsPerMonth', 0) / 100;
+    res.Abschlag = formatNumber(get(f, 'price.totalCentsPerMonth', 0) / 100);
     res['bisheriger Lieferant'] = get(f, 'oldSupplier.previousProvider', '');
     res['Kundennummer bei Altlieferant'] = get(f, 'oldSupplier.previousCustomerNumber', '');
     res['Handelsvertreter / VM Nr.'] = get(f, 'calculator.group', '');
@@ -109,17 +116,17 @@ const formConverter = ({ forms, fields }) => {
       : '';
     res.Bezeichnung_intern = 'People Power';
     res.Tarifart = 1;
-    res['monatlicher Grundpreis netto'] = (get(f, 'price.basepriceCentsPerMonth', 0) / 1.19 / 100).toFixed(3);
-    res['Arbeitspreis_HT excl. Stromsteuer und USt'] = (
-      get(f, 'price.energypriceCentsPerKilowattHour', 0) / 1.19
-      - 2.05
-    ).toFixed(3);
-    res['Arbeitspreis_NT excl. Stromsteuer und USt'] = (
-      get(f, 'price.energypriceCentsPerKilowattHour', 0) / 1.19
-      - 2.05
-    ).toFixed(3);
-    res.Stromsteuer_HT = 2.05;
-    res.Stromsteuer_NT = 2.05;
+    res['monatlicher Grundpreis netto'] = formatNumber(
+      (get(f, 'price.basepriceCentsPerMonth', 0) / 1.19 / 100).toFixed(3),
+    );
+    res['Arbeitspreis_HT excl. Stromsteuer und USt'] = formatNumber(
+      (get(f, 'price.energypriceCentsPerKilowattHour', 0) / 1.19 - 2.05).toFixed(3),
+    );
+    res['Arbeitspreis_NT excl. Stromsteuer und USt'] = formatNumber(
+      (get(f, 'price.energypriceCentsPerKilowattHour', 0) / 1.19 - 2.05).toFixed(3),
+    );
+    res.Stromsteuer_HT = formatNumber(2.05);
+    res.Stromsteuer_NT = formatNumber(2.05);
     res['USt %'] = 19;
     res['Kündigungsfrist'] = '01MM';
     res['Zonenpreise ja/nein'] = 'nein';
