@@ -22,11 +22,6 @@ const formConverter = ({ forms, fields }) => {
     if (get(f, 'oldSupplier.type') === 'change') res.Transaktionsgrund = 'E03';
 
     if (customerType === 'person') {
-      res['RA Anrede'] = prefixes[get(f, 'personalInfo.person.prefix', '')];
-      res['RA Titel'] = get(f, 'personalInfo.person.title', '');
-      res['RA Vorname'] = get(f, 'personalInfo.person.firstName', '');
-      res['RA Nachname'] = get(f, 'personalInfo.person.lastName', '');
-
       const billingAddress = get(f, 'address.person.billingAddress.anotherAddress')
         ? 'billingAddress'
         : 'shippingAddress';
@@ -37,20 +32,30 @@ const formConverter = ({ forms, fields }) => {
       res['RA Telefon privat'] = get(f, 'personalInfo.person.phone', '');
       res['RA E-Mailadresse'] = get(f, 'personalInfo.person.email', '');
 
-      if (!get(f, 'address.person.billingAddress.anotherAddress')) {
+      if (get(f, 'address.person.billingAddress.anotherAddress')) {
+        res['RA Anrede'] = prefixes[get(f, 'address.person.billingAddress.prefix', '')];
+        res['RA Titel'] = get(f, 'address.person.billingAddress.title', '');
+        res['RA Vorname'] = get(f, 'address.person.billingAddress.firstName', '');
+        res['RA Nachname'] = get(f, 'address.person.billingAddress.lastName', '');
+
+        res['LS Vorname '] = get(f, 'personalInfo.person.firstName', '');
+        res['LS Nachname'] = get(f, 'personalInfo.person.lastName', '');
+        res['LS Straße'] = get(f, 'address.person.shippingAddress.street', '');
+        res['LS Hausnummer'] = get(f, 'address.person.shippingAddress.houseNum', '');
+        res['LS PLZ'] = get(f, 'address.person.shippingAddress.zip', '');
+        res['LS Ort'] = get(f, 'address.person.shippingAddress.city', '');
+      } else {
+        res['RA Anrede'] = prefixes[get(f, 'personalInfo.person.prefix', '')];
+        res['RA Titel'] = get(f, 'personalInfo.person.title', '');
+        res['RA Vorname'] = get(f, 'personalInfo.person.firstName', '');
+        res['RA Nachname'] = get(f, 'personalInfo.person.lastName', '');
+
         res['LS Vorname '] = res['RA Vorname'];
         res['LS Nachname'] = res['RA Nachname'];
         res['LS Straße'] = res['RA Straße'];
         res['LS Hausnummer'] = res['RA Hausnummer'];
         res['LS PLZ'] = res['RA Postleitzahl'];
         res['LS Ort'] = res['RA Ort'];
-      } else {
-        res['LS Vorname '] = res['RA Vorname'];
-        res['LS Nachname'] = res['RA Nachname'];
-        res['LS Straße'] = get(f, 'address.person.shippingAddress.street', '');
-        res['LS Hausnummer'] = get(f, 'address.person.shippingAddress.houseNum', '');
-        res['LS PLZ'] = get(f, 'address.person.shippingAddress.zip', '');
-        res['LS Ort'] = get(f, 'address.person.shippingAddress.city', '');
       }
     }
 

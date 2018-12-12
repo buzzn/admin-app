@@ -115,7 +115,7 @@ export function snakeReq(data) {
   return reduce(
     data,
     (res, v, k) => {
-      if (k === 'endDate') return res;
+      // if (k === 'endDate') return res;
       return {
         ...res,
         [snakeCase(k)]:
