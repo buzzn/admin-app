@@ -14,6 +14,7 @@ import Contracts from 'contracts';
 import Readings from 'readings';
 import MarketLocations from 'market_locations';
 import BillingCycles from 'billing_cycles';
+import Billings from 'billings';
 import Devices from 'devices';
 import WebsiteForms from 'website_forms';
 
@@ -97,6 +98,7 @@ export default combineReducers({
   app: appReducer,
   auth: Auth.reducers,
   billingCycles: BillingCycles.reducers,
+  billings: Billings.reducers,
   bubbles: Bubbles.reducers,
   charts: Charts.reducers,
   // apiUrl and apiPath will be located in 'config' property

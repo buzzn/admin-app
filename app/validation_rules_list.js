@@ -5,6 +5,7 @@ import Readings from 'readings';
 import Groups from 'groups';
 import Contracts from 'contracts';
 import BillingCycles from 'billing_cycles';
+import Billings from 'billings';
 import Devices from 'devices';
 
 export const authList = [
@@ -99,5 +100,15 @@ export default [
   {
     swaggerPath: '/localpools/{localpool_id}/billing-cycles.post.parameters',
     setAction: BillingCycles.actions.setValidationRules,
+  },
+  // Billings rules
+  {
+    swaggerPath: '/localpools/{localpool_id}/contracts/{localpool_power_taker_contract_id}/billings.post.parameters',
+    setAction: rules => Billings.actions.setValidationRules('billingCreate', rules),
+  },
+  {
+    swaggerPath:
+      '/localpools/{localpool_id}/contracts/{localpool_power_taker_contract_id}/billings/{billing_id}.patch.parameters',
+    setAction: rules => Billings.actions.setValidationRules('billingUpdate', rules),
   },
 ];

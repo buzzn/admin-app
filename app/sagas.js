@@ -17,6 +17,7 @@ import Contracts from 'contracts';
 import Readings from 'readings';
 import MarketLocations from 'market_locations';
 import BillingCycles from 'billing_cycles';
+import Billings from 'billings';
 import Devices from 'devices';
 import WebsiteForms from 'website_forms';
 import ValidationRules from 'validation_rules';
@@ -65,6 +66,7 @@ export function* setToken(token) {
   yield put(Readings.actions.setToken(token));
   yield put(MarketLocations.actions.setToken(token));
   yield put(BillingCycles.actions.setToken(token));
+  yield put(Billings.actions.setToken(token));
   yield put(Devices.actions.setToken(token));
   yield put(WebsiteForms.actions.setToken(token));
   yield put(ValidationRules.actions.setToken(token));
@@ -147,6 +149,7 @@ export default function* () {
   yield put(Readings.actions.setApiParams({ apiUrl, apiPath }));
   yield put(MarketLocations.actions.setApiParams({ apiUrl, apiPath }));
   yield put(BillingCycles.actions.setApiParams({ apiUrl, apiPath }));
+  yield put(Billings.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Devices.actions.setApiParams({ apiUrl, apiPath }));
   yield put(WebsiteForms.actions.setApiParams({ apiUrl, apiPath: websitePath }));
   yield put(ValidationRules.actions.setApiParams({ apiUrl, apiPath }));
