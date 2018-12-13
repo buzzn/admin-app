@@ -82,6 +82,7 @@ class FormsList extends React.Component<Props & InjectIntlProps & BreadcrumbsPro
           <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableCreatedAt` })} />
         ),
         accessor: 'createdAtFormatted',
+        sortMethod: TableParts.sort.sortByDateTime,
       },
       {
         Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.formId` })} />,

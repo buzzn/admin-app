@@ -32,7 +32,7 @@ const ContractData = ({ breadcrumbs, title, groupId, contractId, url, contractUr
           <Contract {...{ groupId, contractId, url }} />
         </Route>
         <Route path={`${contractUrl}/billings`}>
-          <BillingsList {...{ groupId, contractId }} />
+          <BillingsList {...{ groupId, contractId, url }} />
         </Route>
       </Switch>
     </CenterContent>
