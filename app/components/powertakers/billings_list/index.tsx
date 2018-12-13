@@ -51,21 +51,23 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
           <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableBeginDate` })} />
         ),
         accessor: 'beginDate',
+        sortMethod: TableParts.sort.sortByDateTime,
         Cell: ({ value }) => moment(value).format('DD.MM.YYYY'),
       },
       {
-        Header: () => (
-          <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableEndDate` })} />
-        ),
+        Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableEndDate` })} />,
         accessor: 'endDate',
+        sortMethod: TableParts.sort.sortByDateTime,
         Cell: ({ value }) => moment(value).format('DD.MM.YYYY'),
       },
       {
-        Header: () => (
-          <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableStatus` })} />
-        ),
+        Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableStatus` })} />,
         accessor: 'status',
-        Cell: ({ value }) => <span><BillingStatus {...{ status: value, size: 'small' }} /> {value}</span>,
+        Cell: ({ value }) => (
+          <span>
+            <BillingStatus {...{ status: value, size: 'small' }} /> {value}
+          </span>
+        ),
       },
     ];
 
