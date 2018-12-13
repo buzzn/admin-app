@@ -86,8 +86,8 @@ class ReadingsList extends React.Component<Props & InjectIntlProps, State> {
 
     return (
       <div className="p-0" style={{ marginBottom: '2rem' }}>
-        <SpanClick onClick={this.switchAddReading} className="float-right" data-cy="add contract CTA">
-          <FormattedMessage id="admin.contracts.addNew" /> <i className="fa fa-plus-circle" />
+        <SpanClick onClick={this.switchAddReading} className="float-right" data-cy="add reading CTA">
+          <FormattedMessage id={`${prefix}.addNew`} /> <i className="fa fa-plus-circle" />
         </SpanClick>
         <AddReading {...{ toggle: this.switchAddReading, isOpen, validationRules: readingsValidationRules, onSubmit: this.addReading }} />
         <br />
