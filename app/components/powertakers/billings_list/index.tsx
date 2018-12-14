@@ -43,7 +43,11 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
 
     const prefix = 'admin.billings';
 
-    const data = billings.array.map(b => ({ ...b }));
+    const data = billings.array.map(b => ({
+      ...b,
+      beginDate: { display: moment(b.beginDate).format('DD.MM.YYYY'), value: b.beginDate },
+      endDate: { display: moment(b.endDate).format('DD.MM.YYYY'), value: b.endDate },
+    }));
 
     const columns = [
       {
@@ -52,13 +56,13 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
         ),
         accessor: 'beginDate',
         sortMethod: TableParts.sort.sortByDateTime,
-        Cell: ({ value }) => moment(value).format('DD.MM.YYYY'),
+        Cell: ({ value: { display } }) => display,
       },
       {
         Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableEndDate` })} />,
         accessor: 'endDate',
         sortMethod: TableParts.sort.sortByDateTime,
-        Cell: ({ value }) => moment(value).format('DD.MM.YYYY'),
+        Cell: ({ value: { display } }) => display,
       },
       {
         Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableStatus` })} />,

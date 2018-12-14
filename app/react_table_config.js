@@ -157,8 +157,8 @@ export const tableParts = {
   },
   sort: {
     sortByDateTime: (x, y) => {
-      const a = moment(x).toDate();
-      const b = moment(y).toDate();
+      const a = moment(x.value).toDate();
+      const b = moment(y.value).toDate();
 
       if (a > b) {
         return 1;
