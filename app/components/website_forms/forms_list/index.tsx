@@ -63,7 +63,7 @@ class FormsList extends React.Component<Props & InjectIntlProps & BreadcrumbsPro
           } ${contact.email}`,
         };
       })(),
-      createdAtFormatted: moment(f.createdAt).format('DD.MM.YYYY - HH:mm:ss'),
+      createdAtFormatted: { display: moment(f.createdAt).format('DD.MM.YYYY - HH:mm:ss'), value: f.createdAt },
       linkForm: `${url}/${f.id}`,
     }));
 
@@ -82,6 +82,9 @@ class FormsList extends React.Component<Props & InjectIntlProps & BreadcrumbsPro
           <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableCreatedAt` })} />
         ),
         accessor: 'createdAtFormatted',
+        filterMethod: TableParts.filters.filterByValue,
+        sortMethod: TableParts.sort.sortByDateTime,
+        Cell: ({ value: { display } }) => display,
       },
       {
         Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.formId` })} />,

@@ -1,5 +1,6 @@
 /* eslint import/prefer-default-export: 0 */
 import * as React from 'react';
+import moment from 'moment';
 import { ReactTableDefaults } from 'react-table';
 import { Link } from 'react-router-dom';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
@@ -155,6 +156,19 @@ export const tableParts = {
     },
   },
   sort: {
+    sortByDateTime: (x, y) => {
+      const a = moment(x.value).toDate();
+      const b = moment(y.value).toDate();
+
+      if (a > b) {
+        return 1;
+      }
+      if (a < b) {
+        return -1;
+      }
+      // returning 0, undefined or any falsey value will use subsequent sorts or the index as a tiebreaker
+      return 0;
+    },
     sortByValue: (x, y) => {
       let a = x.value;
       let b = y.value;
