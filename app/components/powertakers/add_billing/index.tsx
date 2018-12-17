@@ -30,7 +30,7 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
   };
 
   render() {
-    const { isOpen, handleSubmit, validationRules } = this.props;
+    const { isOpen, handleSubmit, validationRules, addBillingSubmitErrors } = this.props;
     const prefix = 'admin.billings';
 
     return (
@@ -55,7 +55,7 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
               <Col xs={4}>
                 <FieldValidationWrapper
                   {...{
-                    name: 'endDate',
+                    name: 'lastDate',
                     type: 'text',
                     label: <FormattedMessage id={`${prefix}.endDate`} />,
                     component: FieldDate,
@@ -88,6 +88,17 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
                 />
               </Col>
             </Row>
+            {!!addBillingSubmitErrors
+              && !!addBillingSubmitErrors.items && (
+                <Row>
+                  <Col xs={12}>
+                    {Object.values(addBillingSubmitErrors.items).reduce(
+                      (resErr, err) => `${resErr}${Array.isArray(err) ? err.reduce((r, e) => `${r}${e} `, '') : ' '}`,
+                      '',
+                    )}
+                  </Col>
+                </Row>
+            )}
           </ModalBody>
           <ModalFooter>
             <button className="btn btn-link" onClick={this.handleToggle}>
@@ -107,7 +118,6 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
 
 export default reduxForm({
   enableReinitialize: true,
-  form: 'addBilling',
   onSubmitSuccess: (_result, _dispatch, { reset }) => {
     reset();
   },

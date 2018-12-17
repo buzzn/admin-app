@@ -15,6 +15,8 @@ export const constants = {
   SET_BILLING: 'buzzn_billings/SET_BILLING',
 
   ADD_BILLING: 'buzzn_billings/ADD_BILLING',
+
+  UPDATE_BILLING: 'buzzn_billings/UPDATE_BILLING',
 };
 
 export const actions = {
@@ -44,5 +46,15 @@ export const actions = {
     reject,
     groupId,
     contractId,
+  }),
+
+  updateBilling: ({ params, resolve, reject, groupId, contractId, billingId}) => ({
+    type: constants.UPDATE_BILLING,
+    params,
+    resolve,
+    reject,
+    groupId,
+    contractId,
+    billingId,
   }),
 };
