@@ -75,12 +75,14 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
           <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableInvoiceNumber` })} />
         ),
         accessor: 'invoiceNumber',
+        className: 'cy-invoice-number',
       },
       {
         Header: () => (
           <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableBeginDate` })} />
         ),
         accessor: 'beginDate',
+        className: 'cy-begin-date',
         sortMethod: TableParts.sort.sortByDateTime,
         Cell: ({ value: { display } }) => display,
       },
