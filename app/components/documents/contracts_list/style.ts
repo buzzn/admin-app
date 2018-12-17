@@ -1,11 +1,5 @@
 import styled from 'styled-components';
 
-export const NestedDetailsWrapper = styled.div`
-  border: 1px solid #e5e5e5;
-  padding: 1rem;
-  position: relative;
-`;
-
 export const DocumentsListHeader = styled.div`
   width: 100%;
   margin-top: 2rem;

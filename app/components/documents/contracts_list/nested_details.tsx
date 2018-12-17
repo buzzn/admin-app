@@ -7,9 +7,10 @@ import { Link } from 'react-router-dom';
 import Alert from 'react-s-alert';
 import LabeledValue from 'components/labeled_value';
 import Loading from 'components/loading';
+import { NestedDetailsWrapper } from 'components/style';
 import UploadModal from './upload_modal';
 
-import { DocumentsListHeader, NestedDetailsWrapper } from './style';
+import { DocumentsListHeader } from './style';
 
 interface Props {
   contract: { [key: string]: any };

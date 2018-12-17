@@ -32,6 +32,12 @@ export const SubNav = styled(Nav)`
   }
 `;
 
+export const NestedDetailsWrapper = styled.div`
+  border: 1px solid #e5e5e5;
+  padding: 1rem;
+  position: relative;
+`;
+
 export const LargeAvatar = styled.img`
   width: 192px;
   height: 192px;

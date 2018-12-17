@@ -18,7 +18,7 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
   state = { isOpen: false, expanded: {} };
 
   handleRowClick = (rowNum) => {
-    this.setState(() => ({ expanded: { [rowNum]: true } }));
+    this.setState(() => ({ expanded: { [rowNum]: !this.state.expanded[rowNum] } }));
   };
 
   switchAddBilling = () => {
