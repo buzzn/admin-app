@@ -31,6 +31,7 @@ const Registers = ({ url, history, locationId, registers, intl }: Props & Inject
     {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableObis` })} />,
       accessor: 'obis',
+      className: 'cy-obis',
       style: {
         cursor: 'pointer',
         textDecoration: 'underline',

@@ -13,8 +13,26 @@ import PageTitle from 'components/page_title';
 import RegisterPowerContainer from './register_power';
 import RegisterDataForm from './form';
 import ReadingsList from './readings_list';
+import AddReading from '../add_reading';
 
 class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps & BreadcrumbsProps> {
+  state = { isOpen: false };
+
+  switchAddReading = () => {
+    this.setState({ isOpen: !this.state.isOpen });
+  };
+
+  addReading = (params) => {
+    const { addReading, groupId, meterId, registerId } = this.props;
+
+    return new Promise((resolve, reject) => {
+      addReading({ groupId, meterId, registerId, params, resolve, reject });
+    }).then((res) => {
+      this.switchAddReading();
+      return res;
+    });
+  };
+
   componentDidMount() {
     const { loadMeter, groupId, meterId } = this.props;
     loadMeter({ groupId, meterId });
@@ -40,6 +58,7 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
       validationRules,
       readingsValidationRules,
     } = this.props;
+    const { isOpen } = this.state;
 
     if (loading || meter._status === null) return <Loading minHeight={40} />;
     if (meter._status && meter._status !== 200) return <Redirect to={url} />;
@@ -65,7 +84,7 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
         <CenterContent>
           <RegisterPowerContainer {...{ groupId, meterId, registerId }} />
           <SubNav>
-            <NavLink to={`${registerUrl}/readings`} exact className="nav-link">
+            <NavLink to={`${registerUrl}/readings`} exact className="nav-link" data-cy="register readings tab">
               <FormattedMessage id="admin.registers.navReadings" />
             </NavLink>
             <NavLink to={`${registerUrl}/devices`} exact className="nav-link">
@@ -87,6 +106,7 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
                       groupId,
                       addReading,
                       readingsValidationRules,
+                      switchAddReading: this.switchAddReading,
                     }}
                   />
                 )}
@@ -95,10 +115,21 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
                 <div className={devMode ? '' : 'under-construction'} style={{ height: '8rem' }} />
               </Route>
               <Route path={registerUrl} exact>
-                <RegisterDataForm {...{ register, initialValues: register.registerMeta, meter, url, groupId, updateRegister, validationRules }} />
+                <RegisterDataForm
+                  {...{
+                    register,
+                    initialValues: register.registerMeta,
+                    meter,
+                    url,
+                    groupId,
+                    updateRegister,
+                    validationRules,
+                  }}
+                />
               </Route>
             </Switch>
           </Switch>
+          <AddReading {...{ toggle: this.switchAddReading, isOpen, validationRules: readingsValidationRules, onSubmit: this.addReading }} />
         </CenterContent>
       </React.Fragment>
     );

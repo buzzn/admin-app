@@ -62,7 +62,7 @@ const MarketLocationData = ({
           <NavLink to={`${locationUrl}/contracts`} exact className="nav-link">
             <FormattedMessage id="admin.marketLocations.navContracts" />
           </NavLink>
-          <NavLink to={`${locationUrl}/registers`} exact className="nav-link">
+          <NavLink to={`${locationUrl}/registers`} exact className="nav-link" data-cy="malo registers tab">
             <FormattedMessage id="admin.marketLocations.navRegisters" />
           </NavLink>
         </SubNav>
