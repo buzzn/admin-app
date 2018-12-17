@@ -33,7 +33,7 @@ const flattenErrors = ({ errors }) => reduce(
 
 export const wrapErrors = errors => ({
   ...camelizeResponseKeys(flattenErrors({ errors })),
-  status: 422,
+  _status: 422,
   _error: 'Form save failed',
 });
 

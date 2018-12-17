@@ -33,6 +33,7 @@ export function* getBillings({ apiUrl, apiPath, token }, { groupId, contractId }
 export function* addBilling({ apiUrl, apiPath, token }, { params, resolve, reject, groupId, contractId }) {
   try {
     const res = yield call(api.addBilling, { apiUrl, apiPath, token, params, groupId, contractId });
+    console.log(res)
     if (res._error) {
       yield call(reject, new SubmissionError(res));
     } else {

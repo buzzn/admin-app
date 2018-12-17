@@ -46,7 +46,7 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
     const data = billings.array.map(b => ({
       ...b,
       beginDate: { display: moment(b.beginDate).format('DD.MM.YYYY'), value: b.beginDate },
-      endDate: { display: moment(b.endDate).format('DD.MM.YYYY'), value: b.endDate },
+      lastDate: { display: moment(b.lastDate).format('DD.MM.YYYY'), value: b.lastDate },
     }));
 
     const columns = [
@@ -60,7 +60,7 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
       },
       {
         Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableEndDate` })} />,
-        accessor: 'endDate',
+        accessor: 'lastDate',
         sortMethod: TableParts.sort.sortByDateTime,
         Cell: ({ value: { display } }) => display,
       },
