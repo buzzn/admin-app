@@ -15,6 +15,7 @@ import Readings from 'readings';
 import MarketLocations from 'market_locations';
 import BillingCycles from 'billing_cycles';
 import Billings from 'billings';
+import Tariffs from 'tariffs';
 import Devices from 'devices';
 import WebsiteForms from 'website_forms';
 
@@ -112,6 +113,7 @@ export default combineReducers({
   organizations: Organizations.reducers,
   readings: Readings.reducers,
   registers: Registers.reducers,
+  tariffs: Tariffs.reducers,
   users: Users.reducers,
   websiteForms: WebsiteForms.reducers,
 });

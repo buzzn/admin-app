@@ -6,6 +6,7 @@ import Groups from 'groups';
 import Contracts from 'contracts';
 import BillingCycles from 'billing_cycles';
 import Billings from 'billings';
+import Tariffs from 'tariffs';
 import Devices from 'devices';
 
 export const authList = [
@@ -110,5 +111,10 @@ export default [
     swaggerPath:
       '/localpools/{localpool_id}/contracts/{localpool_power_taker_contract_id}/billings/{billing_id}.patch.parameters',
     setAction: rules => Billings.actions.setValidationRules('billingUpdate', rules),
+  },
+  // Tariffs
+  {
+    swaggerPath: '/localpools/{localpool_id}/tariffs.post.parameters',
+    setAction: Tariffs.actions.setValidationRules,
   },
 ];

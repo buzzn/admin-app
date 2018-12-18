@@ -5,16 +5,11 @@ import { reduxForm } from 'redux-form';
 import FieldValidationWrapper from 'components/field_validation_wrapper';
 import FieldInput from 'components/field_input';
 import FieldDate from 'components/field_date';
-import EditableSelect from 'components/editable_select';
+import { dateNormalizer, numberNormalizer } from 'validation_normalizers';
 
-interface Props {
-  isOpen: boolean;
-  toggle: () => void;
-  handleSubmit: () => void;
-  validationRules: { _status: null | number; [key: string]: any };
-}
+interface Props {}
 
-class AddBilling extends React.Component<Props & InjectedIntlProps> {
+class AddTariff extends React.Component<Props & InjectedIntlProps> {
   handleToggle = (event) => {
     const { pristine, reset, toggle, intl } = this.props;
 
@@ -30,18 +25,29 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
   };
 
   render() {
-    const { isOpen, handleSubmit, validationRules, addBillingSubmitErrors } = this.props;
-    const prefix = 'admin.billings';
+    const { isOpen, handleSubmit, validationRules } = this.props;
+    const prefix = 'admin.tariffs';
 
     return (
-      <Modal {...{ isOpen, toggle: this.handleToggle }} data-cy="create billing modal">
+      <Modal {...{ isOpen, toggle: this.handleToggle }} data-cy="create tariff modal">
         <ModalHeader toggle={this.handleToggle}>
           <FormattedMessage id={`${prefix}.modalHeaderAdd`} />
         </ModalHeader>
         <form onSubmit={handleSubmit}>
           <ModalBody>
             <Row>
-              <Col xs={4}>
+              <Col xs={6}>
+                <FieldValidationWrapper
+                  {...{
+                    name: 'name',
+                    type: 'text',
+                    label: <FormattedMessage id={`${prefix}.name`} />,
+                    component: FieldInput,
+                    validationRules,
+                  }}
+                />
+              </Col>
+              <Col xs={6}>
                 <FieldValidationWrapper
                   {...{
                     name: 'beginDate',
@@ -49,66 +55,43 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
                     label: <FormattedMessage id={`${prefix}.beginDate`} />,
                     component: FieldDate,
                     validationRules,
-                  }}
-                />
-              </Col>
-              <Col xs={4}>
-                <FieldValidationWrapper
-                  {...{
-                    name: 'lastDate',
-                    type: 'text',
-                    label: <FormattedMessage id={`${prefix}.endDate`} />,
-                    component: FieldDate,
-                    validationRules,
-                  }}
-                />
-              </Col>
-              <Col xs={4}>
-                <FieldValidationWrapper
-                  {...{
-                    name: 'status',
-                    editMode: true,
-                    component: EditableSelect,
-                    validationRules,
-                    prefix,
+                    normalize: dateNormalizer('YYYY-MM-DD'),
                   }}
                 />
               </Col>
             </Row>
             <Row>
-              <Col xs={12}>
+              <Col xs={6}>
                 <FieldValidationWrapper
                   {...{
-                    name: 'invoiceNumber',
+                    name: 'energypriceCentsPerKwh',
                     type: 'text',
-                    label: <FormattedMessage id={`${prefix}.invoiceNumber`} />,
+                    label: <FormattedMessage id={`${prefix}.energypriceCentsPerKwh`} />,
                     component: FieldInput,
                     validationRules,
+                    normalize: numberNormalizer,
+                  }}
+                />
+              </Col>
+              <Col xs={6}>
+                <FieldValidationWrapper
+                  {...{
+                    name: 'basepriceCentsPerMonth',
+                    type: 'text',
+                    label: <FormattedMessage id={`${prefix}.basepriceCentsPerMonth`} />,
+                    component: FieldInput,
+                    validationRules,
+                    normalize: numberNormalizer,
                   }}
                 />
               </Col>
             </Row>
-            {!!addBillingSubmitErrors
-              && !!addBillingSubmitErrors.items && (
-                <Row>
-                  <Col xs={12}>
-                    {Object.keys(addBillingSubmitErrors.items).reduce(
-                      (resErr, errKey) => `${resErr}${
-                        Array.isArray(addBillingSubmitErrors.items[errKey])
-                          ? `${errKey}: ${addBillingSubmitErrors.items[errKey].reduce((r, e) => `${r}${e} `, '')}`
-                          : ' '
-                      }`,
-                      '',
-                    )}
-                  </Col>
-                </Row>
-            )}
           </ModalBody>
           <ModalFooter>
             <button className="btn btn-link" onClick={this.handleToggle}>
               <FormattedMessage id="admin.buttons.cancel" /> <i className="fa fa-times" />
             </button>
-            <span id="submit-add-billing">
+            <span id="submit-add-reading">
               <button type="submit" className="btn btn-dark">
                 <FormattedMessage id="admin.buttons.save" />
               </button>
@@ -122,7 +105,8 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
 
 export default reduxForm({
   enableReinitialize: true,
+  form: 'addTariff',
   onSubmitSuccess: (_result, _dispatch, { reset }) => {
     reset();
   },
-})(injectIntl(AddBilling));
+})(injectIntl(AddTariff));

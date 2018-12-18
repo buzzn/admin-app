@@ -16,6 +16,7 @@ import Readings from 'readings';
 import MarketLocations from 'market_locations';
 import BillingCycles from 'billing_cycles';
 import Billings from 'billings';
+import Tariffs from 'tariffs';
 import Devices from 'devices';
 import WebsiteForms from 'website_forms';
 import ValidationRules from 'validation_rules';
@@ -37,6 +38,7 @@ function* rootSaga() {
     call(MarketLocations.sagas),
     call(BillingCycles.sagas),
     call(Billings.sagas),
+    call(Tariffs.sagas),
     call(Devices.sagas),
     call(WebsiteForms.sagas),
     call(ValidationRules.sagas),

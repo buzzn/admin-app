@@ -6,6 +6,7 @@ import FieldValidationWrapper from 'components/field_validation_wrapper';
 import FieldInput from 'components/field_input';
 import FieldDate from 'components/field_date';
 import EditableSelect from 'components/editable_select';
+import { dateNormalizer } from 'validation_normalizers';
 
 interface Props {}
 
@@ -147,6 +148,7 @@ class AddReading extends React.Component<Props & InjectedIntlProps> {
                     label: <FormattedMessage id={`${prefix}.date`} />,
                     component: FieldDate,
                     validationRules,
+                    normalize: dateNormalizer('YYYY-MM-DD'),
                   }}
                 />
               </Col>
