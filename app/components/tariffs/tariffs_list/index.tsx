@@ -51,10 +51,12 @@ const TariffsList = ({ tariffs, intl, groupId, breadcrumbs, url, tType, switchAd
     {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableName` })} />,
       accessor: 'name',
+      className: 'cy-name',
     },
     {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableBeginDate` })} />,
       accessor: 'beginDate',
+      className: 'cy-begin-date',
       Cell: ({ value }) => moment(value).format('DD.MM.YYYY'),
     },
     {

@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import Billings from 'billings';
+import Contracts from 'contracts';
 import { tableParts as TableParts } from 'react_table_config';
 import ReactTableSorted from 'components/react_table_sorted';
 import BillingStatus from 'components/billing_status';
@@ -45,8 +46,9 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
   };
 
   componentDidMount() {
-    const { loadBillings, groupId, contractId } = this.props;
+    const { loadContract, loadBillings, groupId, contractId } = this.props;
     loadBillings({ groupId, contractId });
+    loadContract({ groupId, contractId });
   }
 
   componentDidUpdate(prevProps) {
@@ -55,11 +57,22 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
   }
 
   render() {
-    const { validationRules, loading, billings, url, intl, groupId, contractId, addBillingFormName, addBillingSubmitErrors } = this.props;
+    const {
+      validationRules,
+      loading,
+      billings,
+      contract,
+      url,
+      intl,
+      groupId,
+      contractId,
+      addBillingFormName,
+      addBillingSubmitErrors,
+    } = this.props;
     const { isOpen } = this.state;
 
-    if (loading || billings._status === null) return <Loading minHeight={40} />;
-    if (billings._status && billings._status !== 200) return <Redirect to={url} />;
+    if (loading || billings._status === null || contract._status === null) return <Loading minHeight={40} />;
+    if ((billings._status && billings._status !== 200) || (contract._status && contract._status !== 200)) return <Redirect to={url} />;
 
     const prefix = 'admin.billings';
 
@@ -112,9 +125,15 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
 
     return (
       <div className="p-0">
-        <SpanClick onClick={this.switchAddBilling} className="float-right" data-cy="add billing CTA">
-          <FormattedMessage id="admin.billings.addNew" /> <i className="fa fa-plus-circle" />
-        </SpanClick>
+        {contract.allowedActions.createBilling === true ? (
+          <SpanClick onClick={this.switchAddBilling} className="float-right" data-cy="add billing CTA">
+            <FormattedMessage id="admin.billings.addNew" /> <i className="fa fa-plus-circle" />
+          </SpanClick>
+        ) : contract.allowedActions.createBilling ? (
+          'Please, create a meter and attach to this contract.'
+        ) : (
+          false
+        )}
         <AddBilling
           {...{
             addBillingSubmitErrors,
@@ -172,18 +191,24 @@ interface StatePart {
     billings: { _status: null | number; array: Array<{ [key: string]: any }> };
     validationRules: { billingCreate: any; billingUpdate: any };
   };
+  contracts: {
+    loadingContract: boolean;
+    contract: { _status: null | number; [key: string]: any };
+  };
 }
 
 interface StateProps {
   loading: boolean;
   billings: { _status: null | number; array: Array<{ [key: string]: any }> };
   validationRules: { billingCreate: any; billingUpdate: any };
+  contract: { _status: null | number; [key: string]: any };
 }
 
 interface DispatchProps {
   addBilling: Function;
   updateBilling: Function;
   loadBillings: Function;
+  loadContract: Function;
 }
 
 function mapStateToProps(state: StatePart) {
@@ -191,8 +216,9 @@ function mapStateToProps(state: StatePart) {
 
   return {
     billings: state.billings.billings,
-    loading: state.billings.loadingBillings,
+    loading: state.billings.loadingBillings || state.contracts.loadingContract,
     validationRules: state.billings.validationRules,
+    contract: state.contracts.contract,
     addBillingFormName,
     addBillingSubmitErrors: getFormSubmitErrors(addBillingFormName)(state),
   };
@@ -204,5 +230,6 @@ export default connect<StateProps, DispatchProps, ExtProps>(
     addBilling: Billings.actions.addBilling,
     updateBilling: Billings.actions.updateBilling,
     loadBillings: Billings.actions.loadBillings,
+    loadContract: Contracts.actions.loadContract,
   },
 )(injectIntl(BillingsList));
