@@ -16,7 +16,10 @@ interface Props {
   tariffs: Array<{ [key: string]: any }>;
 }
 
-interface State {}
+interface State {
+  editMode: boolean;
+  selectedTariffId: null | string;
+}
 
 class TariffsList extends React.Component<Props, State> {
   state = { editMode: false, selectedTariffId: null };
