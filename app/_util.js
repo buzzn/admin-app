@@ -22,14 +22,17 @@ export function prepareHeaders(token, noType, noCache) {
   return headers;
 }
 
-const flattenErrors = ({ errors }) => reduce(
-  errors,
-  (res, v, k) => {
-    if (Array.isArray(v)) return { ...res, [k]: typeof v === 'object' ? v : v.join(', ') };
-    return { ...res, [k]: flattenErrors({ errors: v }) };
-  },
-  {},
-);
+const flattenErrors = ({ errors }) => {
+  if (typeof errors === 'string') return { errorMessage: errors };
+  return reduce(
+    errors,
+    (res, v, k) => {
+      if (Array.isArray(v)) return { ...res, [k]: typeof v === 'object' ? v : v.join(', ') };
+      return { ...res, [k]: flattenErrors({ errors: v }) };
+    },
+    {},
+  );
+};
 
 export const wrapErrors = errors => ({
   ...camelizeResponseKeys(flattenErrors({ errors })),
@@ -112,13 +115,12 @@ export function camelizeResponseKeys(data) {
 }
 
 export function snakeReq(data) {
+  if (typeof data === 'string' || typeof data === 'number') return data;
   return reduce(
     data,
-    (res, v, k) => {
-      // if (k === 'endDate') return res;
-      return {
-        ...res,
-        [snakeCase(k)]:
+    (res, v, k) => ({
+      ...res,
+      [snakeCase(k)]:
           Object.prototype.toString.call(v) === '[object Date]'
             ? v
             : Array.isArray(v)
@@ -129,8 +131,7 @@ export function snakeReq(data) {
                 v === ''
                   ? null
                   : v,
-      };
-    },
+    }),
     {},
   );
 }

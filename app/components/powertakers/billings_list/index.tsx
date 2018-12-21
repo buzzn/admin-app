@@ -1,12 +1,14 @@
 import * as React from 'react';
 import moment from 'moment';
 import isEqual from 'lodash/isEqual';
+import get from 'lodash/get';
 import { getFormSubmitErrors } from 'redux-form';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import Billings from 'billings';
 import Contracts from 'contracts';
+import Tariffs from 'tariffs';
 import { tableParts as TableParts } from 'react_table_config';
 import ReactTableSorted from 'components/react_table_sorted';
 import BillingStatus from 'components/billing_status';
@@ -14,6 +16,7 @@ import Loading from 'components/loading';
 import { SpanClick } from 'components/style';
 import AddBilling from '../add_billing';
 import NestedDetails from './nested_details';
+import TariffsList from './tariffs_list';
 
 class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps & InjectedIntlProps, ComponentState> {
   state = { isOpen: false, expanded: {} };
@@ -46,9 +49,10 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
   };
 
   componentDidMount() {
-    const { loadContract, loadBillings, groupId, contractId } = this.props;
+    const { loadContract, loadBillings, loadTariffs, groupId, contractId } = this.props;
     loadBillings({ groupId, contractId });
     loadContract({ groupId, contractId });
+    loadTariffs(groupId);
   }
 
   componentDidUpdate(prevProps) {
@@ -62,17 +66,19 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
       loading,
       billings,
       contract,
+      tariffs,
       url,
       intl,
       groupId,
       contractId,
+      updateContract,
       addBillingFormName,
       addBillingSubmitErrors,
     } = this.props;
     const { isOpen } = this.state;
 
-    if (loading || billings._status === null || contract._status === null) return <Loading minHeight={40} />;
-    if ((billings._status && billings._status !== 200) || (contract._status && contract._status !== 200)) return <Redirect to={url} />;
+    if (loading || !billings._status || !contract._status || !tariffs._status) return <Loading minHeight={40} />;
+    if (billings._status !== 200 || contract._status !== 200 || tariffs._status !== 200) return <Redirect to={url} />;
 
     const prefix = 'admin.billings';
 
@@ -123,16 +129,31 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
       },
     ];
 
+    // HACK: please, replace it with proper error handling
+    const addBillingPreconditions = {
+      registerMeta: 'Please, create a meter and attach to this contract',
+      tariffs: 'Please, do something with tariffs',
+    };
+
     return (
       <div className="p-0">
+        <TariffsList
+          {...{
+            tariffs: tariffs.array,
+            contract,
+            updateContract: ({ resolve, reject, params }) => updateContract({ resolve, reject, params, groupId, contractId, updateType: 'tariffs' }),
+          }}
+        />
+        <h4>Billings:</h4>
         {contract.allowedActions.createBilling === true ? (
           <SpanClick onClick={this.switchAddBilling} className="float-right" data-cy="add billing CTA">
             <FormattedMessage id="admin.billings.addNew" /> <i className="fa fa-plus-circle" />
           </SpanClick>
-        ) : contract.allowedActions.createBilling ? (
-          'Please, create a meter and attach to this contract.'
         ) : (
-          false
+          Object.keys(addBillingPreconditions).reduce(
+            (e, k) => (get(contract.allowedActions.createBilling, k) ? `${e ? `${e}, ` : ''}${addBillingPreconditions[k]}` : e),
+            '',
+          )
         )}
         <AddBilling
           {...{
@@ -195,6 +216,10 @@ interface StatePart {
     loadingContract: boolean;
     contract: { _status: null | number; [key: string]: any };
   };
+  tariffs: {
+    loadingTariffs: boolean;
+    tariffs: { _status: null | number; array: Array<{ [key: string]: any }> };
+  };
 }
 
 interface StateProps {
@@ -202,6 +227,7 @@ interface StateProps {
   billings: { _status: null | number; array: Array<{ [key: string]: any }> };
   validationRules: { billingCreate: any; billingUpdate: any };
   contract: { _status: null | number; [key: string]: any };
+  tariffs: { _status: null | number; array: Array<{ [key: string]: any }> };
 }
 
 interface DispatchProps {
@@ -209,6 +235,8 @@ interface DispatchProps {
   updateBilling: Function;
   loadBillings: Function;
   loadContract: Function;
+  updateContract: Function;
+  loadTariffs: Function;
 }
 
 function mapStateToProps(state: StatePart) {
@@ -216,11 +244,12 @@ function mapStateToProps(state: StatePart) {
 
   return {
     billings: state.billings.billings,
-    loading: state.billings.loadingBillings || state.contracts.loadingContract,
+    loading: state.billings.loadingBillings || state.contracts.loadingContract || state.tariffs.loadingTariffs,
     validationRules: state.billings.validationRules,
     contract: state.contracts.contract,
     addBillingFormName,
     addBillingSubmitErrors: getFormSubmitErrors(addBillingFormName)(state),
+    tariffs: state.tariffs.tariffs,
   };
 }
 
@@ -231,5 +260,7 @@ export default connect<StateProps, DispatchProps, ExtProps>(
     updateBilling: Billings.actions.updateBilling,
     loadBillings: Billings.actions.loadBillings,
     loadContract: Contracts.actions.loadContract,
+    updateContract: Contracts.actions.updateContract,
+    loadTariffs: Tariffs.actions.loadTariffs,
   },
 )(injectIntl(BillingsList));

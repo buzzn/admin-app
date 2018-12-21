@@ -70,6 +70,13 @@ export default {
       body: JSON.stringify(snakeReq(params)),
     }).then(parseResponse);
   },
+  updateContractTariffs({ token, apiUrl, apiPath, groupId, contractId, params }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/tariffs`, {
+      headers: prepareHeaders(token),
+      method: 'PATCH',
+      body: JSON.stringify(snakeReq(params)),
+    }).then(parseResponse);
+  },
   updateOrganizationCustomer({ token, apiUrl, apiPath, groupId, contractId, params }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/customer-organization`, {
       headers: prepareHeaders(token),

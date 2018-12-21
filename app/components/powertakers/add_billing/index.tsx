@@ -103,6 +103,12 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
                   </Col>
                 </Row>
             )}
+            {!!addBillingSubmitErrors
+              && !!addBillingSubmitErrors.errorMessage && (
+                <Row>
+                  <Col xs={12}>{addBillingSubmitErrors.errorMessage}</Col>
+                </Row>
+            )}
           </ModalBody>
           <ModalFooter>
             <button className="btn btn-link" onClick={this.handleToggle}>
