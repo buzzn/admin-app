@@ -4,7 +4,7 @@ import compact from 'lodash/compact';
 import moment from 'moment';
 import Alert from 'react-s-alert';
 import { Row, Col } from 'reactstrap';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, FormattedNumber } from 'react-intl';
 import ReactTable from 'react-table';
 import { SpanClick, FormGroup } from 'components/style';
 
@@ -51,7 +51,30 @@ class TariffsList extends React.Component<Props, State> {
 
     const prefix = 'admin.tariffs';
 
-    const data = orderBy(contract.tariffs.array, t => new Date(t.beginDate), 'desc').map(t => ({ ...t }));
+    const data = orderBy(contract.tariffs.array, t => new Date(t.beginDate), 'desc').map(t => ({
+      ...t,
+      beginDate: moment(t.beginDate).toDate(),
+      lastDate: t.lastDate ? moment(t.lastDate).toDate() : t.lastDate,
+      basepriceCentsPerMonth: {
+        Display: (
+          <FormattedNumber
+            value={(t.basepriceCentsPerMonth / 100).toFixed(2)}
+            style="currency"
+            currency="EUR"
+            currencyDisplay="symbol"
+          />
+        ),
+        value: t.basepriceCentsPerMonth,
+      },
+      energypriceCentsPerKwh: {
+        Display: (
+          <React.Fragment>
+            <FormattedNumber value={t.energypriceCentsPerKwh} style="decimal" maximumFractionDigits={1} /> ¢
+          </React.Fragment>
+        ),
+        value: t.energypriceCentsPerKwh,
+      },
+    }));
 
     const columns: Array<any> = [
       {
@@ -105,7 +128,11 @@ class TariffsList extends React.Component<Props, State> {
             <Row>
               <Col xs={9}>
                 <FormGroup>
-                  <select onChange={this.setSelectedTariffId} className="custom-select form-control">
+                  <select
+                    onChange={this.setSelectedTariffId}
+                    className="custom-select form-control"
+                    name="select-tariff"
+                  >
                     <option value="">-----</option>
                     {tariffs.filter(t => !contractTariffsIds.includes(t.id)).map(t => (
                       <option key={t.id} value={t.id}>
@@ -116,7 +143,7 @@ class TariffsList extends React.Component<Props, State> {
                 </FormGroup>
               </Col>
               <Col xs={3}>
-                <AddTariffIcon className="fa fa-3x fa-plus-circle" onClick={this.addTariff} />
+                <AddTariffIcon className="fa fa-3x fa-plus-circle cy-add-tariff" onClick={this.addTariff} />
               </Col>
             </Row>
           </React.Fragment>
