@@ -32,9 +32,30 @@ export function* deleteReading({ apiUrl, apiPath, token }, { meterId, registerId
   }
 }
 
+export function* getAutoReadingValue(
+  { apiUrl, apiPath, token },
+  { groupId, meterId, registerId, params, resolve, reject },
+) {
+  try {
+    const value = yield call(api.fetchAutoReadingValue, {
+      apiUrl,
+      apiPath,
+      token,
+      groupId,
+      meterId,
+      registerId,
+      params,
+    });
+    resolve(value);
+  } catch (error) {
+    logException(error);
+  }
+}
+
 export function* readingsSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.ADD_READING, addReading, { apiUrl, apiPath, token });
   yield takeLatest(constants.DELETE_READING, deleteReading, { apiUrl, apiPath, token });
+  yield takeLatest(constants.GET_AUTO_READING_VALUE, getAutoReadingValue, { apiUrl, apiPath, token });
 }
 
 export default function* () {

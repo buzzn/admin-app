@@ -2,6 +2,7 @@ import * as React from 'react';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Row, Col } from 'reactstrap';
 import { reduxForm } from 'redux-form';
+import { Tooltip } from 'reactstrap';
 import FieldValidationWrapper from 'components/field_validation_wrapper';
 import FieldInput from 'components/field_input';
 import FieldDate from 'components/field_date';
@@ -11,6 +12,12 @@ import { dateNormalizer } from 'validation_normalizers';
 interface Props {}
 
 class AddReading extends React.Component<Props & InjectedIntlProps> {
+  state = { tooltipOpen: false };
+
+  tooltipToggle = () => {
+    this.setState({ tooltipOpen: !this.state.tooltipOpen });
+  };
+
   handleToggle = (event) => {
     const { pristine, reset, toggle, intl } = this.props;
 
@@ -26,7 +33,7 @@ class AddReading extends React.Component<Props & InjectedIntlProps> {
   };
 
   render() {
-    const { isOpen, handleSubmit, validationRules } = this.props;
+    const { isOpen, handleSubmit, validationRules, getAutoReadingValue, addReadingFormValues, datasource } = this.props;
     const prefix = 'admin.readings';
 
     return (
@@ -155,6 +162,32 @@ class AddReading extends React.Component<Props & InjectedIntlProps> {
             </Row>
           </ModalBody>
           <ModalFooter>
+            {datasource === 'discovergy' && (
+              <React.Fragment>
+                <button
+                  className="btn btn-dark"
+                  id="req_reading"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    getAutoReadingValue();
+                  }}
+                  disabled={!addReadingFormValues.date}
+                >
+                  <FormattedMessage id="admin.buttons.requestReading" /> <i className="fa fa-cog" />
+                </button>
+                {!addReadingFormValues.date && (
+                  <Tooltip
+                    placement="bottom"
+                    target="req_reading"
+                    delay={200}
+                    isOpen={this.state.tooltipOpen}
+                    toggle={this.tooltipToggle}
+                  >
+                    Please, fill the date
+                  </Tooltip>
+                )}
+              </React.Fragment>
+            )}
             <button className="btn btn-link" onClick={this.handleToggle}>
               <FormattedMessage id="admin.buttons.cancel" /> <i className="fa fa-times" />
             </button>
@@ -172,7 +205,6 @@ class AddReading extends React.Component<Props & InjectedIntlProps> {
 
 export default reduxForm({
   enableReinitialize: true,
-  form: 'addReading',
   onSubmitSuccess: (_result, _dispatch, { reset }) => {
     reset();
   },

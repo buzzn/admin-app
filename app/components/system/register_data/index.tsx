@@ -2,6 +2,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Switch, Route, NavLink, Redirect } from 'react-router-dom';
+import { getFormValues } from 'redux-form';
+import Alert from 'react-s-alert';
 import get from 'lodash/get';
 import Meters from 'meters';
 import Registers from 'registers';
@@ -16,7 +18,7 @@ import ReadingsList from './readings_list';
 import AddReading from '../add_reading';
 
 class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps & BreadcrumbsProps> {
-  state = { isOpen: false };
+  state = { isOpen: false, addReadingInit: {} };
 
   switchAddReading = () => {
     this.setState({ isOpen: !this.state.isOpen });
@@ -30,6 +32,26 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
     }).then((res) => {
       this.switchAddReading();
       return res;
+    });
+  };
+
+  getAutoReadingValue = () => {
+    const { getAutoReadingValue, addReadingFormValues, groupId, meterId, registerId } = this.props;
+    new Promise((resolve, reject) => {
+      getAutoReadingValue({
+        groupId,
+        meterId,
+        registerId,
+        resolve,
+        reject,
+        params: { date: addReadingFormValues.date },
+      });
+    }).then((res: { _status: null | number; [key: string]: any }) => {
+      if (res._status === 404) {
+        Alert.warning('<h4>No reading for this date</h4>');
+      } else {
+        this.setState({ addReadingInit: res });
+      }
     });
   };
 
@@ -57,8 +79,10 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
       updateRegister,
       validationRules,
       readingsValidationRules,
+      addReadingFormName,
+      addReadingFormValues,
     } = this.props;
-    const { isOpen } = this.state;
+    const { isOpen, addReadingInit } = this.state;
 
     if (loading || meter._status === null) return <Loading minHeight={40} />;
     if (meter._status && meter._status !== 200) return <Redirect to={url} />;
@@ -129,7 +153,19 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
               </Route>
             </Switch>
           </Switch>
-          <AddReading {...{ toggle: this.switchAddReading, isOpen, validationRules: readingsValidationRules, onSubmit: this.addReading }} />
+          <AddReading
+            {...{
+              toggle: this.switchAddReading,
+              isOpen,
+              validationRules: readingsValidationRules,
+              form: addReadingFormName,
+              initialValues: addReadingInit,
+              addReadingFormValues,
+              datasource: meter.datasource,
+              onSubmit: this.addReading,
+              getAutoReadingValue: this.getAutoReadingValue,
+            }}
+          />
         </CenterContent>
       </React.Fragment>
     );
@@ -156,6 +192,8 @@ interface StateProps {
   meter: { _status: null | number; [key: string]: any };
   validationRules: any;
   readingsValidationRules: any;
+  addReadingFormName: string;
+  addReadingFormValues: { [key: string]: any };
 }
 
 interface DispatchProps {
@@ -163,14 +201,18 @@ interface DispatchProps {
   setMeter: Function;
   updateRegister: Function;
   addReading: Function;
+  getAutoReadingValue: Function;
 }
 
 function mapStateToProps(state: StatePart) {
+  const addReadingFormName = 'addReading';
   return {
     meter: state.meters.meter,
     loading: state.meters.loadingMeter,
     validationRules: state.registers.validationRules,
     readingsValidationRules: state.readings.validationRules,
+    addReadingFormName,
+    addReadingFormValues: getFormValues(addReadingFormName)(state) || {},
   };
 }
 
@@ -181,5 +223,6 @@ export default connect<StateProps, DispatchProps, ExtProps>(
     setMeter: Meters.actions.setMeter,
     updateRegister: Registers.actions.updateRegister,
     addReading: Readings.actions.addReading,
+    getAutoReadingValue: Readings.actions.getAutoReadingValue,
   },
 )(RegisterData);
