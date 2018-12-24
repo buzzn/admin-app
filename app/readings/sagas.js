@@ -25,8 +25,9 @@ export function* addReading({ apiUrl, apiPath, token }, { meterId, registerId, p
 export function* deleteReading({ apiUrl, apiPath, token }, { meterId, registerId, groupId, readingId }) {
   try {
     yield call(api.deleteReading, { apiUrl, apiPath, token, meterId, registerId, groupId, readingId });
-    yield put(Meters.actions.loadGroupMeters(groupId));
-    yield put(Registers.actions.loadRegister({ registerId, groupId }));
+    yield put(Meters.actions.loadMeter({ groupId, meterId }));
+    // yield put(Meters.actions.loadGroupMeters(groupId));
+    // yield put(Registers.actions.loadRegister({ registerId, groupId }));
   } catch (error) {
     logException(error);
   }

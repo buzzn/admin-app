@@ -31,8 +31,15 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
       addReading({ groupId, meterId, registerId, params, resolve, reject });
     }).then((res) => {
       this.switchAddReading();
+      this.setState({ addReadingInit: {} });
       return res;
     });
+  };
+
+  deleteReading = (readingId) => {
+    const { deleteReading, groupId, meterId, registerId } = this.props;
+    if (!confirm('Delete?')) return;
+    deleteReading({ groupId, meterId, registerId, readingId });
   };
 
   getAutoReadingValue = () => {
@@ -75,7 +82,6 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
       groupId,
       meterId,
       registerId,
-      addReading,
       devMode,
       updateRegister,
       validationRules,
@@ -129,7 +135,7 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
                       registerId,
                       meterId,
                       groupId,
-                      addReading,
+                      deleteReading: this.deleteReading,
                       readingsValidationRules,
                       switchAddReading: this.switchAddReading,
                     }}
@@ -202,6 +208,7 @@ interface DispatchProps {
   setMeter: Function;
   updateRegister: Function;
   addReading: Function;
+  deleteReading: Function;
   getAutoReadingValue: Function;
 }
 
@@ -224,6 +231,7 @@ export default connect<StateProps, DispatchProps, ExtProps>(
     setMeter: Meters.actions.setMeter,
     updateRegister: Registers.actions.updateRegister,
     addReading: Readings.actions.addReading,
+    deleteReading: Readings.actions.deleteReading,
     getAutoReadingValue: Readings.actions.getAutoReadingValue,
   },
 )(RegisterData);

@@ -28,6 +28,6 @@ export default {
         headers: prepareHeaders(token),
         method: 'DELETE',
       },
-    ).then(parseResponse);
+    );
   },
 };

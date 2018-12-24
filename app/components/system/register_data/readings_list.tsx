@@ -3,14 +3,17 @@ import ReactTableSorted from 'components/react_table_sorted';
 import moment from 'moment';
 import orderBy from 'lodash/orderBy';
 import { injectIntl, FormattedMessage, InjectIntlProps } from 'react-intl';
-import { Row, Col } from 'reactstrap';
+import { Col } from 'reactstrap';
 import { tableParts as TableParts } from 'react_table_config';
 import { SpanClick } from 'components/style';
+
+import { ReadingDetailsWrapper } from './style';
 
 interface Props {
   readings: Array<any>;
   registerId: string;
   switchAddReading: Function;
+  deleteReading: Function;
 }
 
 interface State {
@@ -25,7 +28,7 @@ class ReadingsList extends React.Component<Props & InjectIntlProps, State> {
   }
 
   render() {
-    const { readings, intl, registerId, switchAddReading } = this.props;
+    const { readings, intl, registerId, switchAddReading, deleteReading } = this.props;
     const prefix = 'admin.readings';
 
     const data = orderBy(readings, ['date', 'reason'], ['desc', 'asc']).map(r => ({
@@ -75,14 +78,8 @@ class ReadingsList extends React.Component<Props & InjectIntlProps, State> {
             data,
             columns,
             SubComponent: row => (
-              <Row
-                style={{
-                  backgroundColor: '#F5F5F5',
-                  boxShadow: 'inset 0 1px 8px 0 rgba(0,0,0,0.07)',
-                  padding: '20px 10px',
-                  margin: 0,
-                }}
-              >
+              <ReadingDetailsWrapper>
+                <i className="fa fa-remove delete-reading" onClick={() => deleteReading(row.original.id)} />
                 <Col sm="4">
                   <b>
                     <FormattedMessage id={`${prefix}.status`} />:
@@ -109,7 +106,7 @@ class ReadingsList extends React.Component<Props & InjectIntlProps, State> {
                     {row.original.comment}
                   </Col>
                 )}
-              </Row>
+              </ReadingDetailsWrapper>
             ),
             expanded: this.state.expanded,
             getTrProps: (_state, rowInfo) => ({
