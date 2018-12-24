@@ -50,7 +50,8 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
       if (res._status === 404) {
         Alert.warning('<h4>No reading for this date</h4>');
       } else {
-        this.setState({ addReadingInit: res });
+        const { _status, ...addReadingInit } = res;
+        this.setState({ addReadingInit });
       }
     });
   };
