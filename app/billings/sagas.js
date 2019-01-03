@@ -1,4 +1,4 @@
-import { put, call, takeLatest, take, fork, cancel, select } from 'redux-saga/effects';
+import { put, call, takeLatest, takeLeading, take, fork, cancel, select } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import { logException } from '_util';
 import { actions, constants } from './actions';
@@ -64,8 +64,8 @@ export function* updateBilling(
 export function* billingsSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_BILLINGS, getBillings, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_BILLING, getBilling, { apiUrl, apiPath, token });
-  yield takeLatest(constants.ADD_BILLING, addBilling, { apiUrl, apiPath, token });
-  yield takeLatest(constants.UPDATE_BILLING, updateBilling, { apiUrl, apiPath, token });
+  yield takeLeading(constants.ADD_BILLING, addBilling, { apiUrl, apiPath, token });
+  yield takeLeading(constants.UPDATE_BILLING, updateBilling, { apiUrl, apiPath, token });
 
   const billingId = yield select(selectBillingId);
   const contractId = yield select(selectContractId);

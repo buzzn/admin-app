@@ -1,4 +1,4 @@
-import { put, call, takeLatest, take, cancel, select, fork } from 'redux-saga/effects';
+import { put, call, takeLatest, takeLeading, take, cancel, select, fork } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import { logException } from '_util';
 import { actions, constants } from './actions';
@@ -33,7 +33,7 @@ export function* addTariff({ apiUrl, apiPath, token }, { params, resolve, reject
 
 export function* tariffsSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_TARIFFS, getTariffs, { apiUrl, apiPath, token });
-  yield takeLatest(constants.ADD_TARIFF, addTariff, { apiUrl, apiPath, token });
+  yield takeLeading(constants.ADD_TARIFF, addTariff, { apiUrl, apiPath, token });
   const { groupId } = yield select(selectGroup);
   if (groupId) {
     yield call(getTariffs, { apiUrl, apiPath, token }, { groupId });

@@ -1,4 +1,4 @@
-import { put, call, takeLatest, take, fork, cancel, select } from 'redux-saga/effects';
+import { put, call, takeLatest, takeLeading, take, fork, cancel, select } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import Groups from 'groups';
 import { logException } from '_util';
@@ -70,7 +70,7 @@ export function* billingCyclesSagas({ apiUrl, apiPath, token }) {
   // @ts-ignore
   yield takeLatest(constants.LOAD_BILLING_CYCLE, getBillingCycle, { apiUrl, apiPath, token });
   // @ts-ignore
-  yield takeLatest(constants.ADD_BILLING_CYCLE, addBillingCycle, { apiUrl, apiPath, token });
+  yield takeLeading(constants.ADD_BILLING_CYCLE, addBillingCycle, { apiUrl, apiPath, token });
   // @ts-ignore
   yield takeLatest(constants.LOAD_BILLING, getBilling, { apiUrl, apiPath, token });
 

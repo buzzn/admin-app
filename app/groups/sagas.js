@@ -1,4 +1,4 @@
-import { put, call, takeLatest, take, fork, cancel, select } from 'redux-saga/effects';
+import { put, call, takeLatest, takeLeading, take, fork, cancel, select } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import { logException } from '_util';
 import { actions, constants } from './actions';
@@ -85,10 +85,10 @@ export function* updateOwner(
 export function* groupsSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_GROUPS, getGroups, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUP, getGroup, { apiUrl, apiPath, token });
-  yield takeLatest(constants.ADD_GROUP, addGroup, { apiUrl, apiPath, token });
-  yield takeLatest(constants.UPDATE_GROUP, updateGroup, { apiUrl, apiPath, token });
-  yield takeLatest(constants.DELETE_GROUP, deleteGroup, { apiUrl, apiPath, token });
-  yield takeLatest(constants.UPDATE_OWNER, updateOwner, { apiUrl, apiPath, token });
+  yield takeLeading(constants.ADD_GROUP, addGroup, { apiUrl, apiPath, token });
+  yield takeLeading(constants.UPDATE_GROUP, updateGroup, { apiUrl, apiPath, token });
+  yield takeLeading(constants.DELETE_GROUP, deleteGroup, { apiUrl, apiPath, token });
+  yield takeLeading(constants.UPDATE_OWNER, updateOwner, { apiUrl, apiPath, token });
   yield call(getGroups, { apiUrl, apiPath, token });
   const groupId = yield select(selectGroupId);
   if (groupId) yield call(getGroup, { apiUrl, apiPath, token }, { groupId });

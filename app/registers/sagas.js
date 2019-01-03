@@ -1,4 +1,4 @@
-import { put, call, takeLatest, take, cancel, select, fork } from 'redux-saga/effects';
+import { put, call, takeLatest, takeLeading, take, cancel, select, fork } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import { logException } from '_util';
 import MarketLocations from 'market_locations';
@@ -50,7 +50,7 @@ export function* updateRegister({ apiUrl, apiPath, token }, { registerId, params
 export function* registersSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_REGISTER, getRegister, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_REGISTER_POWER, getRegisterPower, { apiUrl, apiPath, token });
-  yield takeLatest(constants.UPDATE_REGISTER, updateRegister, { apiUrl, apiPath, token });
+  yield takeLeading(constants.UPDATE_REGISTER, updateRegister, { apiUrl, apiPath, token });
   const { groupId } = yield select(selectGroup);
   const { registerId, meterId } = yield select(selectRegister);
   if (groupId) {

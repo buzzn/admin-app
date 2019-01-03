@@ -1,4 +1,4 @@
-import { put, call, takeLatest, take, cancel, fork } from 'redux-saga/effects';
+import { put, call, takeLatest, takeLeading, take, cancel, fork } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import { logException } from '_util';
 import Registers from 'registers';
@@ -54,8 +54,8 @@ export function* getAutoReadingValue(
 }
 
 export function* readingsSagas({ apiUrl, apiPath, token }) {
-  yield takeLatest(constants.ADD_READING, addReading, { apiUrl, apiPath, token });
-  yield takeLatest(constants.DELETE_READING, deleteReading, { apiUrl, apiPath, token });
+  yield takeLeading(constants.ADD_READING, addReading, { apiUrl, apiPath, token });
+  yield takeLeading(constants.DELETE_READING, deleteReading, { apiUrl, apiPath, token });
   yield takeLatest(constants.GET_AUTO_READING_VALUE, getAutoReadingValue, { apiUrl, apiPath, token });
 }
 

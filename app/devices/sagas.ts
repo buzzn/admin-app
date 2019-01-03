@@ -1,4 +1,4 @@
-import { put, call, takeLatest, take, fork, cancel, select } from 'redux-saga/effects';
+import { put, call, takeLatest, takeLeading, take, fork, cancel, select } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import { logException } from '_util';
 import { actions, constants } from './actions';
@@ -73,11 +73,11 @@ export function* devicesSagas({ apiUrl, apiPath, token }) {
   // @ts-ignore
   yield takeLatest(constants.LOAD_DEVICE, getDevice, { apiUrl, apiPath, token });
   // @ts-ignore
-  yield takeLatest(constants.ADD_DEVICE, addDevice, { apiUrl, apiPath, token });
+  yield takeLeading(constants.ADD_DEVICE, addDevice, { apiUrl, apiPath, token });
   // @ts-ignore
-  yield takeLatest(constants.UPDATE_DEVICE, updateDevice, { apiUrl, apiPath, token });
+  yield takeLeading(constants.UPDATE_DEVICE, updateDevice, { apiUrl, apiPath, token });
   // @ts-ignore
-  yield takeLatest(constants.DELETE_DEVICE, deleteDevice, { apiUrl, apiPath, token });
+  yield takeLeading(constants.DELETE_DEVICE, deleteDevice, { apiUrl, apiPath, token });
 
   const deviceId = yield select(selectDeviceId);
   const groupId = yield select(selectGroupId);

@@ -1,4 +1,4 @@
-import { put, call, takeLatest, take, fork, cancel, select } from 'redux-saga/effects';
+import { put, call, takeLatest, takeLeading, take, fork, cancel, select } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import MarketLocations from 'market_locations';
 import { logException } from '_util';
@@ -82,9 +82,9 @@ export function* updateMeter({ apiUrl, apiPath, token }, { meterId, params, reso
 export function* metersSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_GROUP_METERS, getGroupMeters, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_METER, getMeter, { apiUrl, apiPath, token });
-  yield takeLatest(constants.ADD_REAL_METER, addRealMeter, { apiUrl, apiPath, token });
-  yield takeLatest(constants.UPDATE_METER, updateMeter, { apiUrl, apiPath, token });
-  yield takeLatest(constants.UPDATE_FORMULA_PART, updateFormulaPart, { apiUrl, apiPath, token });
+  yield takeLeading(constants.ADD_REAL_METER, addRealMeter, { apiUrl, apiPath, token });
+  yield takeLeading(constants.UPDATE_METER, updateMeter, { apiUrl, apiPath, token });
+  yield takeLeading(constants.UPDATE_FORMULA_PART, updateFormulaPart, { apiUrl, apiPath, token });
   const meterId = yield select(selectMeterId);
   const groupId = yield select(selectGroupId);
   if (meterId) yield call(getMeter, { apiUrl, apiPath, token }, { meterId, groupId });

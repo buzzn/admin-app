@@ -1,4 +1,4 @@
-import { put, take, select, call, takeLatest, fork, race, all, delay } from 'redux-saga/effects';
+import { put, take, select, call, takeLatest, takeLeading, fork, race, all, delay } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import Auth from '@buzzn/module_auth';
 import Bubbles from '@buzzn/module_bubbles';
@@ -120,10 +120,7 @@ export function* setUI() {
 }
 
 export function* initialLoadPause() {
-  yield all([
-    take(constants.SET_HEALTH),
-    delay(2000),
-  ]);
+  yield all([take(constants.SET_HEALTH), delay(2000)]);
 
   yield put(actions.setAppLoading(false));
 }
@@ -174,7 +171,7 @@ export default function* () {
 
     if (yield call(getUserMe, { apiUrl, apiPath, token })) {
       yield takeLatest(constants.LOAD_USER_ME, getUserMe, { apiUrl, apiPath, token });
-      yield takeLatest(constants.UPDATE_USER_ME, updateUserMe, { apiUrl, apiPath, token });
+      yield takeLeading(constants.UPDATE_USER_ME, updateUserMe, { apiUrl, apiPath, token });
       yield take(Auth.constants.SIGN_OUT);
     } else {
       yield put(Auth.actions.signOut());
