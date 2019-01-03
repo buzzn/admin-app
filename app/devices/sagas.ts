@@ -68,10 +68,15 @@ export function* deleteDevice({ apiUrl, apiPath, token }, { groupId, deviceId })
 }
 
 export function* devicesSagas({ apiUrl, apiPath, token }) {
+  // @ts-ignore
   yield takeLatest(constants.LOAD_DEVICES, getDevices, { apiUrl, apiPath, token });
+  // @ts-ignore
   yield takeLatest(constants.LOAD_DEVICE, getDevice, { apiUrl, apiPath, token });
+  // @ts-ignore
   yield takeLatest(constants.ADD_DEVICE, addDevice, { apiUrl, apiPath, token });
+  // @ts-ignore
   yield takeLatest(constants.UPDATE_DEVICE, updateDevice, { apiUrl, apiPath, token });
+  // @ts-ignore
   yield takeLatest(constants.DELETE_DEVICE, deleteDevice, { apiUrl, apiPath, token });
 
   const deviceId = yield select(selectDeviceId);

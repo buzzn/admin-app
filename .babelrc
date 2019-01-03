@@ -4,7 +4,7 @@
       "@babel/preset-env",
       {
         "targets": {
-          "browsers": ["last 2 versions", "safari >= 7"]
+          "browsers": ["last 1 version", "ie 11", "> 1%"]
         },
         "modules": "commonjs"
       }
@@ -17,6 +17,7 @@
     "@babel/plugin-proposal-object-rest-spread",
     "@babel/plugin-proposal-class-properties",
     "@babel/plugin-syntax-class-properties",
-    "@babel/plugin-syntax-object-rest-spread"
+    "@babel/plugin-syntax-object-rest-spread",
+    "@babel/plugin-syntax-dynamic-import"
   ]
 }

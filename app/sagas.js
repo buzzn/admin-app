@@ -1,5 +1,4 @@
-import { put, take, select, call, takeLatest, fork, race, all } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
+import { put, take, select, call, takeLatest, fork, race, all, delay } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import Auth from '@buzzn/module_auth';
 import Bubbles from '@buzzn/module_bubbles';
@@ -83,7 +82,7 @@ export function* setHealth({ apiUrl }) {
       logException(error);
       yield put(actions.setHealth({}));
     }
-    yield call(delay, 60 * 1000);
+    yield delay(60 * 1000);
   }
 }
 
@@ -97,7 +96,7 @@ export function* checkVersion({ versionPath, buildDate }) {
     } catch (error) {
       logException(error);
     }
-    yield call(delay, 60 * 1000);
+    yield delay(60 * 1000);
   }
 }
 

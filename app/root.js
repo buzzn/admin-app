@@ -20,9 +20,6 @@ import SignInContainer from 'components/sign_in';
 import Sidebar from 'components/sidebar';
 import LocalpoolsListContainer from 'components/localpools_list';
 import TodoList from 'components/todo_list';
-import AnalyticsContainer from 'components/analytics';
-import PowertakersContainer from 'components/powertakers';
-import TariffsContainer from 'components/tariffs';
 import BillingContainer from 'components/billing';
 import DocumentsContainer from 'components/documents';
 import SystemContainer from 'components/system';
@@ -35,9 +32,14 @@ import AppMaintenance from 'components/app_maintenance';
 import AddGroup from 'components/add_group';
 import Contract from 'components/contract';
 import DevicesContainer from 'components/devices';
-import WebsiteFormsContainer from 'components/website_forms';
+import withSuspense from 'components/with_suspense';
 import { EditOverlay, VersionMismatch } from 'style';
 import './react_table_config';
+
+const WebsiteFormsContainer = React.lazy(() => import('components/website_forms'));
+const AnalyticsContainer = React.lazy(() => import('components/analytics'));
+const PowertakersContainer = React.lazy(() => import('components/powertakers'));
+const TariffsContainer = React.lazy(() => import('components/tariffs'));
 
 export const EditOverlayContext = React.createContext();
 export const DevModeContext = React.createContext();
@@ -81,16 +83,16 @@ const RouterHack = ({
                   <div className="center-content-wrapper">
                     <PartErrorBoundary part="main-part">
                       <Switch>
-                        <Route path="/website-forms" component={WebsiteFormsContainer} />
-                        <Route path="/groups/:groupId/analytics" component={AnalyticsContainer} />
-                        <Route path="/groups/:groupId/powertakers" component={PowertakersContainer} />
-                        <Route path="/groups/:groupId/tariffs" component={TariffsContainer} />
-                        <Route path="/groups/:groupId/billing" component={BillingContainer} />
-                        <Route path="/groups/:groupId/market-locations" component={SystemContainer} />
-                        <Route path="/groups/:groupId/documents" component={DocumentsContainer} />
-                        <Route path="/groups/:groupId/bubbles" component={BubblesContainer} />
-                        <Route path="/groups/:groupId/settings" component={GroupSettingsContainer} />
-                        <Route path="/groups/:groupId/devices" component={DevicesContainer} />
+                        <Route path="/website-forms" component={withSuspense(WebsiteFormsContainer)} />
+                        <Route path="/groups/:groupId/analytics" component={withSuspense(AnalyticsContainer)} />
+                        <Route path="/groups/:groupId/powertakers" component={withSuspense(PowertakersContainer)} />
+                        <Route path="/groups/:groupId/tariffs" component={withSuspense(TariffsContainer)} />
+                        <Route path="/groups/:groupId/billing" component={withSuspense(BillingContainer)} />
+                        <Route path="/groups/:groupId/market-locations" component={withSuspense(SystemContainer)} />
+                        <Route path="/groups/:groupId/documents" component={withSuspense(DocumentsContainer)} />
+                        <Route path="/groups/:groupId/bubbles" component={withSuspense(BubblesContainer)} />
+                        <Route path="/groups/:groupId/settings" component={withSuspense(GroupSettingsContainer)} />
+                        <Route path="/groups/:groupId/devices" component={withSuspense(DevicesContainer)} />
                         <Route
                           path="/groups/:groupId/contracts/:contractId"
                           render={({ match: { params: { groupId, contractId } } }) => <Contract {...{ url: `${url}/tail`, groupId, contractId }} />}

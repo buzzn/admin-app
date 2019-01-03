@@ -50,7 +50,6 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js', '.json'],
     alias: { moment$: 'moment/moment.js' },
   },
-  // optimization: { splitChunks: { chunks: 'all' } },
   optimization: {
     runtimeChunk: 'single',
     splitChunks: {
@@ -90,6 +89,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: 'app/index.html',
       filename: '../index.html',
+      chunksSortMode: 'none',
     }),
     new StatsPlugin('webpack.stats.json', {
       source: false,

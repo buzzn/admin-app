@@ -29,7 +29,9 @@ export function* getMarketLocations({ apiUrl, apiPath, token }, { groupId }) {
 }
 
 export function* marketLocationsSagas({ apiUrl, apiPath, token }) {
+  // @ts-ignore
   yield takeLatest(constants.LOAD_MARKET_LOCATIONS, getMarketLocations, { apiUrl, apiPath, token });
+  // @ts-ignore
   yield takeLatest(constants.LOAD_MARKET_LOCATION, getMarketLocation, { apiUrl, apiPath, token });
   const locationId = yield select(selectLocationId);
   const groupId = yield select(selectGroupId);

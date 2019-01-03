@@ -65,9 +65,13 @@ export function* addBillingCycle({ apiUrl, apiPath, token }, { params, resolve, 
 }
 
 export function* billingCyclesSagas({ apiUrl, apiPath, token }) {
+  // @ts-ignore
   yield takeLatest(constants.LOAD_BILLING_CYCLES, getBillingCycles, { apiUrl, apiPath, token });
+  // @ts-ignore
   yield takeLatest(constants.LOAD_BILLING_CYCLE, getBillingCycle, { apiUrl, apiPath, token });
+  // @ts-ignore
   yield takeLatest(constants.ADD_BILLING_CYCLE, addBillingCycle, { apiUrl, apiPath, token });
+  // @ts-ignore
   yield takeLatest(constants.LOAD_BILLING, getBilling, { apiUrl, apiPath, token });
 
   const billingCycleId = yield select(selectBillingCycleId);
