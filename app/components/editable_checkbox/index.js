@@ -8,7 +8,7 @@ const EditableCheckbox = ({ prefix, name, withLabel, editMode, input, meta: { to
       id={input.name}
       {...input}
       disabled={!editMode}
-      defaultChecked={input.value}
+      checked={input.value}
       onBlur={({ target }) => input.onBlur(target.value.checked)}
       type="checkbox"
     />
