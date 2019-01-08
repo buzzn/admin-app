@@ -181,10 +181,18 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
             SubComponent: row => (
               <NestedDetails
                 {...{
+                  billing: row.original,
                   initialValues: row.original,
                   validationRules: validationRules.billingUpdate,
                   form: `billingUpdateForm${row.original.id}`,
-                  onSubmit: params => this.updateBilling({ billingId: row.original.id, params }),
+                  onSubmit: params => this.updateBilling({
+                    billingId: row.original.id,
+                    params: {
+                      status: params.status,
+                      invoiceNumber: params.invoiceNumber,
+                      updatedAt: params.updatedAt,
+                    },
+                  }),
                 }}
               />
             ),

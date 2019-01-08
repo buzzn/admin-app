@@ -5,11 +5,13 @@ import EditableInput from 'components/editable_input';
 import EditableSelect from 'components/editable_select';
 import TwoColField from 'components/two_col_field';
 import { NestedDetailsWrapper } from 'components/style';
+import ItemDetails from './item_details';
 
 interface Props {
   dirty: boolean;
   handleSubmit: Function;
   validationRules: any;
+  billing: any;
 }
 
 interface State {
@@ -33,7 +35,7 @@ class NestedDetails extends React.Component<Props & InjectedIntlProps, State> {
   };
 
   render() {
-    const { handleSubmit, validationRules } = this.props;
+    const { handleSubmit, validationRules, billing } = this.props;
     const { editMode } = this.state;
 
     const prefix = 'admin.billings';
@@ -71,6 +73,12 @@ class NestedDetails extends React.Component<Props & InjectedIntlProps, State> {
             </div>
           )}
         </form>
+        <h5>
+          <FormattedMessage id={`${prefix}.headerBillingItems`} />:
+        </h5>
+        {billing.items.array.map(item => (
+          <ItemDetails {...{ item }} />
+        ))}
       </NestedDetailsWrapper>
     );
   }
