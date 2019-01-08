@@ -71,7 +71,7 @@ class AddContract extends React.Component<Props & InjectedIntlProps> {
             {loading ? (
               <Loading minHeight={10} />
             ) : (
-              <React.Fragment>
+              <>
                 <Row>
                   <Col xs={12}>
                     <FieldValidationWrapper
@@ -155,7 +155,7 @@ class AddContract extends React.Component<Props & InjectedIntlProps> {
                 ) : (
                   false
                 )}
-              </React.Fragment>
+              </>
             )}
           </ModalBody>
           <ModalFooter>
@@ -171,7 +171,7 @@ class AddContract extends React.Component<Props & InjectedIntlProps> {
               <UncontrolledTooltip target="submit-add-contract">Please, add group owner</UncontrolledTooltip>
             )}
             {['contract_localpool_processing', 'contract_metering_point_operator'].includes(addContractType) && (
-              <React.Fragment>
+              <>
                 <span id="submit-add-contract-pdf">
                   <button
                     className="btn btn-dark"
@@ -186,7 +186,7 @@ class AddContract extends React.Component<Props & InjectedIntlProps> {
                     Please, add missing group owner data
                   </UncontrolledTooltip>
                 )}
-              </React.Fragment>
+              </>
             )}
           </ModalFooter>
         </form>

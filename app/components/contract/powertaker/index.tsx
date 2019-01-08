@@ -191,10 +191,10 @@ const PowertakerContract = ({
                     {register.meter.productSerialnumber}
                   </Link>
                 ) : (
-                  <React.Fragment>
+                  <>
                     <i id="no-meter" className="fa fa-warning" style={{ color: 'red' }} />
                     <UncontrolledTooltip target="no-meter">No meter/register attached</UncontrolledTooltip>
-                  </React.Fragment>
+                  </>
                 )}
               </TwoColView>
               <TwoColView {...{ prefix, field: 'renewableEnergyLawTaxation' }}>

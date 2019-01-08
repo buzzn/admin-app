@@ -113,12 +113,12 @@ class ContractsList extends React.Component {
         accessor: 'ownerChanged',
         width: 40,
         Cell: ({ value, original }) => (value ? (
-            <React.Fragment>
+            <>
               <i id={`owner-changed-${original.id}`} className="fa fa-warning" style={{ color: 'red' }} />
               <UncontrolledTooltip target={`owner-changed-${original.id}`}>
                 The group owner was changed
               </UncontrolledTooltip>
-            </React.Fragment>
+            </>
         ) : (
           ''
         )),

@@ -5,7 +5,7 @@ import { actions } from 'actions';
 import { NoData } from './style';
 
 const ReactTableSorted = props => (
-  <React.Fragment>
+  <>
     {props.data.length ? (
       <ReactTable
         {...{
@@ -19,7 +19,7 @@ const ReactTableSorted = props => (
     ) : (
       <NoData>No data</NoData>
     )}
-  </React.Fragment>
+  </>
 );
 
 interface ExtProps {

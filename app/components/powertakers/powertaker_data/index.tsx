@@ -120,7 +120,7 @@ class PowertakerData extends React.Component<
     ];
 
     return (
-      <React.Fragment>
+      <>
         <PageTitle {...{ breadcrumbs, title }} />
         <CenterContent>
           <Row className="powertaker-data">
@@ -146,7 +146,7 @@ class PowertakerData extends React.Component<
                 }}
               />
               {contracts.length > 0 && (
-                <React.Fragment>
+                <>
                   <h5 className="grey-underline mt-5 pb-2">
                     <FormattedMessage id={'admin.contracts.headerContractsList'} />
                   </h5>
@@ -168,12 +168,12 @@ class PowertakerData extends React.Component<
                       uiSortPath: `powertakers.${powertaker.id}.registers`,
                     }}
                   />
-                </React.Fragment>
+                </>
               )}
             </Col>
           </Row>
         </CenterContent>
-      </React.Fragment>
+      </>
     );
   }
 }

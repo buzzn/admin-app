@@ -42,10 +42,10 @@ const EditableInput = ({
         )}
         {touched
           && !!error && (
-            <React.Fragment>
+            <>
               <div className="inline-error">{error}</div>
               <i className="error-icon buzzn-attention" />
-            </React.Fragment>
+            </>
         )}
       </FormGroup>
     );

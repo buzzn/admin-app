@@ -77,7 +77,7 @@ class TariffsComponent extends React.Component<
     ];
 
     return (
-      <React.Fragment>
+      <>
         <Switch>
           <Route path={url} exact>
             <Redirect to={`${url}/active`} />
@@ -93,7 +93,7 @@ class TariffsComponent extends React.Component<
           />
         </Switch>
         <AddTariff {...{ toggle: this.switchAddTariff, isOpen, validationRules, onSubmit: this.addTariff }} />
-      </React.Fragment>
+      </>
     );
   }
 }

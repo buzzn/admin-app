@@ -124,7 +124,7 @@ class FormsList extends React.Component<Props & InjectIntlProps & BreadcrumbsPro
     ];
 
     return (
-      <React.Fragment>
+      <>
         <CenterContent>
           <div className="p-0">
             <PageTitle breadcrumbs={breadcrumbs} title="Forms list" />
@@ -156,7 +156,7 @@ class FormsList extends React.Component<Props & InjectIntlProps & BreadcrumbsPro
             />
           </div>
         </CenterContent>
-      </React.Fragment>
+      </>
     );
   }
 }

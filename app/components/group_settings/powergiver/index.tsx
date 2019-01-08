@@ -289,9 +289,9 @@ class Powergiver extends React.Component<Props, State> {
                 </OwnerOptions>
             )}
             {!owner.id && !ownerType ? null : owner.type === 'person' || ownerType === 'person' ? (
-              <React.Fragment>
+              <>
                 {editMode && (
-                  <React.Fragment>
+                  <>
                     <Select
                       options={personOptions}
                       onChange={this.handleExistingSelect}
@@ -299,7 +299,7 @@ class Powergiver extends React.Component<Props, State> {
                       value={selectedOwner}
                     />
                     <br />
-                  </React.Fragment>
+                  </>
                 )}
                 <PersonFields
                   {...{
@@ -311,11 +311,11 @@ class Powergiver extends React.Component<Props, State> {
                     validationRules: personValidationRules,
                   }}
                 />
-              </React.Fragment>
+              </>
             ) : (
-              <React.Fragment>
+              <>
                 {editMode && (
-                  <React.Fragment>
+                  <>
                     <Select
                       options={organizationOptions}
                       onChange={this.handleExistingSelect}
@@ -323,7 +323,7 @@ class Powergiver extends React.Component<Props, State> {
                       value={selectedOwner}
                     />
                     <br />
-                  </React.Fragment>
+                  </>
                 )}
                 <OrganizationFields
                   {...{
@@ -346,7 +346,7 @@ class Powergiver extends React.Component<Props, State> {
                     selectedLR,
                   }}
                 />
-              </React.Fragment>
+              </>
             )}
           </FormPanel>
         </form>

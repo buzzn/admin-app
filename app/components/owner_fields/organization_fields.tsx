@@ -45,7 +45,7 @@ const OrganizationFields = ({
   const overrideLegal = overrideLR || (overrideData ? get(overrideData, 'legalRepresentation') || {} : null);
 
   return (
-    <React.Fragment>
+    <>
       <Row className="fieldgroup">
         <Col xs="4" className="fieldname">
           <FormattedMessage id="admin.organizations.headerOrganization" />
@@ -193,7 +193,7 @@ const OrganizationFields = ({
           }}
         />
       )}
-    </React.Fragment>
+    </>
   );
 };
 

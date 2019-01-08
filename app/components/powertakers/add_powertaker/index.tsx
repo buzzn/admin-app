@@ -256,8 +256,8 @@ class AddPowertaker extends React.Component<Props, State> {
               </FormGroup>
             </CustomerOptions>
             {!customerType ? null : customerType === 'person' ? (
-              <React.Fragment>
-                <React.Fragment>
+              <>
+                <>
                   <Select
                     options={personOptions}
                     onChange={this.handleExistingSelect}
@@ -265,7 +265,7 @@ class AddPowertaker extends React.Component<Props, State> {
                     value={selectedCustomer}
                   />
                   <br />
-                </React.Fragment>
+                </>
                 <PersonFields
                   {...{
                     editMode,
@@ -276,10 +276,10 @@ class AddPowertaker extends React.Component<Props, State> {
                     validationRules,
                   }}
                 />
-              </React.Fragment>
+              </>
             ) : (
-              <React.Fragment>
-                <React.Fragment>
+              <>
+                <>
                   <Select
                     options={organizationOptions}
                     onChange={this.handleExistingSelect}
@@ -287,7 +287,7 @@ class AddPowertaker extends React.Component<Props, State> {
                     value={selectedCustomer}
                   />
                   <br />
-                </React.Fragment>
+                </>
                 <OrganizationFields
                   {...{
                     editMode,
@@ -309,7 +309,7 @@ class AddPowertaker extends React.Component<Props, State> {
                     selectedLR,
                   }}
                 />
-              </React.Fragment>
+              </>
             )}
             <br />
             <TwoColField
@@ -504,7 +504,7 @@ class AddPowertaker extends React.Component<Props, State> {
             )}
             <br />
             {!maLoValue && (
-              <React.Fragment>
+              <>
                 <TwoColField
                   {...{
                     prefix,
@@ -523,7 +523,7 @@ class AddPowertaker extends React.Component<Props, State> {
                     component: EditableSelect,
                   }}
                 />
-              </React.Fragment>
+              </>
             )}
             <h5 className="grey-underline mt-5 pb-2">
               <FormattedMessage id={`${prefix}.headerDates`} />

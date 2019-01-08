@@ -39,9 +39,9 @@ const TariffsList = ({ tariffs, intl, groupId, breadcrumbs, url, tType, switchAd
     },
     energypriceCentsPerKwh: {
       Display: (
-        <React.Fragment>
+        <>
           <FormattedNumber value={t.energypriceCentsPerKwh} style="decimal" maximumFractionDigits={1} /> ¢
-        </React.Fragment>
+        </>
       ),
       value: t.energypriceCentsPerKwh,
     },

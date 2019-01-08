@@ -73,7 +73,7 @@ const MarketLocationsList = ({
   ];
 
   return (
-    <React.Fragment>
+    <>
       <PageTitle
         {...{
           breadcrumbs: breadcrumbs.concat([
@@ -117,7 +117,7 @@ const MarketLocationsList = ({
           />
         </div>
       </CenterContent>
-    </React.Fragment>
+    </>
   );
 };
 

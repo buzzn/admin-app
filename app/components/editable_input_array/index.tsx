@@ -9,7 +9,7 @@ const EditableInputArray = (props) => {
   if (!props.fields.length) props.fields.push();
 
   return (
-    <React.Fragment>
+    <>
       {props.fields.map((field, i) => (
         <InputRow className="fieldgroup" key={i}>
           <Col xs="4" className="fieldname">
@@ -18,15 +18,15 @@ const EditableInputArray = (props) => {
           <Col xs={8} className={props.fieldClassName}>
             <Field {...{ ...props, name: field, field: { type: 'text' }, component: EditableInput }} />
             {props.editMode && (
-              <React.Fragment>
+              <>
                 <i className="fa fa-plus-circle add" onClick={() => props.fields.push()} />
                 {i > 0 && <i className="fa fa-remove remove" onClick={() => props.fields.remove(i)} />}
-              </React.Fragment>
+              </>
             )}
           </Col>
         </InputRow>
       ))}
-    </React.Fragment>
+    </>
   );
 };
 

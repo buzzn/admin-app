@@ -47,7 +47,7 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
             {loading ? (
               <Loading minHeight={10} />
             ) : (
-              <React.Fragment>
+              <>
                 <Row>
                   <Col xs={6}>
                     <FieldInput
@@ -88,7 +88,7 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
                     />
                   </Col>
                 </Row>
-              </React.Fragment>
+              </>
             )}
           </ModalBody>
           <ModalFooter>

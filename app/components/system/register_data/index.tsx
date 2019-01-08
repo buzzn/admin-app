@@ -98,7 +98,7 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
     if (!register) return <Redirect to={url} />;
 
     return (
-      <React.Fragment>
+      <>
         <PageTitle
           {...{
             breadcrumbs: breadcrumbs.concat([
@@ -174,7 +174,7 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
             }}
           />
         </CenterContent>
-      </React.Fragment>
+      </>
     );
   }
 }

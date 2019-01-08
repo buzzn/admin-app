@@ -136,7 +136,7 @@ const PowertakersList = ({
   }
 
   return (
-    <React.Fragment>
+    <>
       <PageTitle
         {...{
           breadcrumbs: breadcrumbs.concat([{ id: '-----', title: 'Powertakers' }]),
@@ -180,7 +180,7 @@ const PowertakersList = ({
           />
         </div>
       </CenterContent>
-    </React.Fragment>
+    </>
   );
 };
 

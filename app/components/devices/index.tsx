@@ -77,7 +77,7 @@ class Devices extends React.Component<
     ];
 
     return (
-      <React.Fragment>
+      <>
         <Switch>
           <Route exact path={url}>
             <DevicesList
@@ -112,7 +112,7 @@ class Devices extends React.Component<
             validationRules: createValidationRules,
           }}
         />
-      </React.Fragment>
+      </>
     );
   }
 }

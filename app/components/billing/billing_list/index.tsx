@@ -84,7 +84,7 @@ class BillingList extends React.Component<
     ];
 
     return (
-      <React.Fragment>
+      <>
         <PageTitle
           {...{
             breadcrumbs: breadcrumbs.concat([
@@ -131,7 +131,7 @@ class BillingList extends React.Component<
             />
           </div>
         </CenterContent>
-      </React.Fragment>
+      </>
     );
   }
 }

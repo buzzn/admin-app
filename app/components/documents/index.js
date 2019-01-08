@@ -53,7 +53,7 @@ export class Documents extends React.Component {
     ];
 
     return (
-      <React.Fragment>
+      <>
         <PageTitle
           {...{
             breadcrumbs,
@@ -101,7 +101,7 @@ export class Documents extends React.Component {
             </Route>
           </Switch>
         </CenterContent>
-      </React.Fragment>
+      </>
     );
   }
 }

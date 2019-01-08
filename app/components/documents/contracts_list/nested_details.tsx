@@ -172,7 +172,7 @@ class NestedDetails extends React.Component<Props, State> {
           <Col xs={12}>
             <br />
             {!!contract.allowedActions && (
-              <React.Fragment>
+              <>
                 <span id="generate-pdf">
                   <button
                     className="btn btn-dark btn-sm"
@@ -185,7 +185,7 @@ class NestedDetails extends React.Component<Props, State> {
                 {PDFdisabled && (
                   <UncontrolledTooltip target="generate-pdf">Please, fill the group owner</UncontrolledTooltip>
                 )}
-              </React.Fragment>
+              </>
             )}
           </Col>
         </Row>

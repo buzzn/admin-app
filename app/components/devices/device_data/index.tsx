@@ -50,7 +50,7 @@ const Device = ({
   });
 
   return (
-    <React.Fragment>
+    <>
       <PageTitle
         {...{
           breadcrumbs: breadcrumbs.concat([
@@ -168,7 +168,7 @@ const Device = ({
           </FormPanel>
         </form>
       </CenterContent>
-    </React.Fragment>
+    </>
   );
 };
 

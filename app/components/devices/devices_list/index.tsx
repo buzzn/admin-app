@@ -81,7 +81,7 @@ const DevicesList = ({
   ];
 
   return (
-    <React.Fragment>
+    <>
       <PageTitle
         {...{
           breadcrumbs: breadcrumbs.concat([
@@ -111,7 +111,7 @@ const DevicesList = ({
           />
         </div>
       </CenterContent>
-    </React.Fragment>
+    </>
   );
 };
 

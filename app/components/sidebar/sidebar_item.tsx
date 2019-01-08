@@ -24,10 +24,10 @@ const SidebarItem = ({ to, children, exact, icon, devMode, ...props }: ItemProps
 };
 
 const SidebarItemContent = ({ children, icon }: ContentProps) => (
-  <React.Fragment>
+  <>
     <SidebarIcon className={icon.startsWith('fa') ? `fa fa-lg ${icon}`: `buzzn-icon ${icon}`} />
     <SidebarText>{children}</SidebarText>
-  </React.Fragment>
+  </>
 );
 
 export default SidebarItem;

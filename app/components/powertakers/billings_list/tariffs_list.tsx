@@ -71,9 +71,9 @@ class TariffsList extends React.Component<Props, State> {
       },
       energypriceCentsPerKwh: {
         Display: (
-          <React.Fragment>
+          <>
             <FormattedNumber value={t.energypriceCentsPerKwh} style="decimal" maximumFractionDigits={1} /> ¢
-          </React.Fragment>
+          </>
         ),
         value: t.energypriceCentsPerKwh,
       },
@@ -134,7 +134,7 @@ class TariffsList extends React.Component<Props, State> {
         </SpanClick>
         <br />
         {editMode && (
-          <React.Fragment>
+          <>
             <Row>
               <Col xs={9}>
                 <FormGroup>
@@ -156,7 +156,7 @@ class TariffsList extends React.Component<Props, State> {
                 <AddTariffIcon className="fa fa-3x fa-plus-circle cy-add-tariff" onClick={this.addTariff} />
               </Col>
             </Row>
-          </React.Fragment>
+          </>
         )}
         <ReactTable
           {...{

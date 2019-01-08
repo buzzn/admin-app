@@ -21,7 +21,7 @@ const PersonFields = ({ path, editMode, overrideData, validationRules, legalRepr
   const overrideAddress = overrideData ? (get(overrideData, `${path}address`) || get(overrideData, 'address') || {}) : null;
 
   return (
-    <React.Fragment>
+    <>
       <Row className="fieldgroup">
         <Col xs="4" className="fieldname">
           <FormattedMessage
@@ -138,7 +138,7 @@ const PersonFields = ({ path, editMode, overrideData, validationRules, legalRepr
           />
         </Col>
       </Row>
-    </React.Fragment>
+    </>
   );
 };
 
