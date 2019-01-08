@@ -94,6 +94,13 @@ class TariffsList extends React.Component<Props, State> {
         Cell: ({ value }) => moment(value).format('DD.MM.YYYY'),
       },
       {
+        Header: () => <FormattedMessage id={`${prefix}.tableLastDate`} />,
+        accessor: 'lastDate',
+        className: 'cy-last-date',
+        sortable: false,
+        Cell: ({ value }) => value ? moment(value).format('DD.MM.YYYY') : '',
+      },
+      {
         Header: () => <FormattedMessage id={`${prefix}.tableBasepriceCentsPerMonth`} />,
         accessor: 'basepriceCentsPerMonth',
         sortable: false,

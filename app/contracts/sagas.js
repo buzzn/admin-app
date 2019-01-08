@@ -13,6 +13,7 @@ export function* getContract({ apiUrl, apiPath, token }, { contractId, groupId }
   yield put(actions.loadingContract());
   try {
     const contract = yield call(api.fetchContract, { apiUrl, apiPath, token, contractId, groupId });
+    if (contract.type === 'contract_localpool_power_taker') contract.tariffs = yield call(api.fetchContractTariffs, { apiUrl, apiPath, token, contractId, groupId });
     yield put(actions.setContract({ contract, contractor: contract.contractor, customer: contract.customer }));
   } catch (error) {
     logException(error);
