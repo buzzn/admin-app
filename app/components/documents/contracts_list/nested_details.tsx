@@ -171,7 +171,7 @@ class NestedDetails extends React.Component<Props, State> {
         <Row>
           <Col xs={12}>
             <br />
-            {!!contract.allowedActions && (
+            {['contract_localpool_processing', 'contract_metering_point_operator'].includes(contract.type) && (
               <>
                 <span id="generate-pdf">
                   <button
