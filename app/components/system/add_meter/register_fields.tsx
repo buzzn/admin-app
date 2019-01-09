@@ -11,7 +11,7 @@ import EditableSelect from 'components/editable_select';
 import EditableCheckbox from 'components/editable_checkbox';
 import { numberNormalizer } from 'validation_normalizers';
 
-import { InputRow, PadRow } from './style';
+import { InputRow, PadRow, RegisterFormWrapper } from './style';
 
 interface Props {
   preset: { [key: string]: any };
@@ -131,7 +131,7 @@ class EditableInputArray extends React.Component<Props> {
                 </Col>
               </Row>
               {!get(selectedRegisters[i], 'value') && (
-                <>
+                <RegisterFormWrapper>
                   <Row>
                     <Col xs={4} xl={3}>
                       <FieldValidationWrapper
@@ -220,7 +220,7 @@ class EditableInputArray extends React.Component<Props> {
                       />
                     </Col>
                   </Row>
-                </>
+                </RegisterFormWrapper>
               )}
             </Col>
           </InputRow>
