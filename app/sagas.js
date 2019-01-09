@@ -1,8 +1,6 @@
 import { put, take, select, call, takeLatest, takeLeading, fork, race, all, delay } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import Auth from '@buzzn/module_auth';
-import Bubbles from '@buzzn/module_bubbles';
-import Charts from '@buzzn/module_charts';
 import { logException, getAllUrlParams } from '_util';
 import { actions, constants } from 'actions';
 import api from 'api';
@@ -55,8 +53,6 @@ export function* updateUserMe({ apiUrl, apiPath, token }, { params, resolve, rej
 }
 
 export function* setToken(token) {
-  yield put(Bubbles.actions.setToken(token));
-  yield put(Charts.actions.setToken(token));
   yield put(Groups.actions.setToken(token));
   yield put(Meters.actions.setToken(token));
   yield put(Registers.actions.setToken(token));
@@ -136,8 +132,6 @@ export default function* () {
   yield fork(initialLoadPause);
 
   yield put(Auth.actions.setApiParams({ apiUrl, apiPath: authPath }));
-  yield put(Bubbles.actions.setApiParams({ apiUrl, apiPath: `${apiPath}/localpools` }));
-  yield put(Charts.actions.setApiParams({ apiUrl, apiPath: `${apiPath}/localpools` }));
   yield put(Groups.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Meters.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Registers.actions.setApiParams({ apiUrl, apiPath }));

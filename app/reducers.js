@@ -1,8 +1,6 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 import Auth from '@buzzn/module_auth';
-import Bubbles from '@buzzn/module_bubbles';
-import Charts from '@buzzn/module_charts';
 import config from 'config';
 import { constants } from 'actions';
 import Groups from 'groups';
@@ -100,8 +98,6 @@ export default combineReducers({
   auth: Auth.reducers,
   billingCycles: BillingCycles.reducers,
   billings: Billings.reducers,
-  bubbles: Bubbles.reducers,
-  charts: Charts.reducers,
   // apiUrl and apiPath will be located in 'config' property
   config: configReducer,
   contracts: Contracts.reducers,

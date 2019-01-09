@@ -3,8 +3,6 @@ import { call, all } from 'redux-saga/effects';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import Auth from '@buzzn/module_auth';
-import Bubbles from '@buzzn/module_bubbles';
-import Charts from '@buzzn/module_charts';
 import appSaga from 'sagas';
 import Groups from 'groups';
 import Meters from 'meters';
@@ -21,13 +19,10 @@ import Devices from 'devices';
 import WebsiteForms from 'website_forms';
 import ValidationRules from 'validation_rules';
 import RootReducer from 'reducers';
-import { logException } from '_util';
 
 function* rootSaga() {
   yield all([
     call(Auth.sagas),
-    call(Bubbles.sagas, logException, true),
-    call(Charts.sagas),
     call(Groups.sagas),
     call(Meters.sagas),
     call(Registers.sagas),

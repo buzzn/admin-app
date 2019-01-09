@@ -29,13 +29,11 @@ import { EditOverlay, VersionMismatch } from 'style';
 import './react_table_config';
 
 const WebsiteFormsContainer = React.lazy(() => import('components/website_forms'));
-const AnalyticsContainer = React.lazy(() => import('components/analytics'));
 const PowertakersContainer = React.lazy(() => import('components/powertakers'));
 const TariffsContainer = React.lazy(() => import('components/tariffs'));
 const BillingContainer = React.lazy(() => import('components/billing'));
 const SystemContainer = React.lazy(() => import('components/system'));
 const DocumentsContainer = React.lazy(() => import('components/documents'));
-const BubblesContainer = React.lazy(() => import('components/bubbles'));
 const GroupSettingsContainer = React.lazy(() => import('components/group_settings'));
 const DevicesContainer = React.lazy(() => import('components/devices'));
 const Contract = React.lazy(() => import('components/contract'));
@@ -85,10 +83,6 @@ const RouterHack = ({
                       <Switch>
                         <Route path="/website-forms" render={props => withSuspense(WebsiteFormsContainer)(props)} />
                         <Route
-                          path="/groups/:groupId/analytics"
-                          render={props => withSuspense(AnalyticsContainer)(props)}
-                        />
-                        <Route
                           path="/groups/:groupId/powertakers"
                           render={props => withSuspense(PowertakersContainer)(props)}
                         />
@@ -107,10 +101,6 @@ const RouterHack = ({
                         <Route
                           path="/groups/:groupId/documents"
                           render={props => withSuspense(DocumentsContainer)(props)}
-                        />
-                        <Route
-                          path="/groups/:groupId/bubbles"
-                          render={props => withSuspense(BubblesContainer)(props)}
                         />
                         <Route
                           path="/groups/:groupId/settings"
