@@ -357,7 +357,7 @@ const PowertakerContract = ({
               />
               <TwoColField
                 {...{
-                  prefix: 'admin.register_metas.name',
+                  prefix: 'admin.register_metas',
                   name: 'registerMeta.name',
                   editMode,
                   validationRules,
@@ -366,7 +366,7 @@ const PowertakerContract = ({
               />
               <TwoColField
                 {...{
-                  prefix: 'admin.register_metas.label',
+                  prefix: 'admin.register_metas',
                   name: 'registerMeta.label',
                   editMode,
                   validationRules,
