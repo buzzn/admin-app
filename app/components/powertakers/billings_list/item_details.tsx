@@ -52,7 +52,7 @@ const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admi
         <LabeledValue
           {...{
             label: <FormattedMessage id={`${prefix}.basePriceCents`} />,
-            value: <><FormattedNumber value={item.basePriceCents} style="decimal" maximumFractionDigits={1} /> ¢</>,
+            value: item.basePriceCents ? <><FormattedNumber value={item.basePriceCents} style="decimal" maximumFractionDigits={1} /> ¢</> : '',
           }}
         />
       </Col>
@@ -60,7 +60,7 @@ const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admi
         <LabeledValue
           {...{
             label: <FormattedMessage id={`${prefix}.energyPriceCents`} />,
-            value: <><FormattedNumber value={item.energyPriceCents} style="decimal" maximumFractionDigits={1} /> ¢</>,
+            value: item.energyPriceCents ? <><FormattedNumber value={item.energyPriceCents} style="decimal" maximumFractionDigits={1} /> ¢</> : '',
           }}
         />
       </Col>
@@ -79,7 +79,7 @@ const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admi
         <LabeledValue
           {...{
             label: <FormattedMessage id={`${tariffPrefix}.energypriceCentsPerKwh`} />,
-            value: <><FormattedNumber value={item.tariff.energypriceCentsPerKwh} style="decimal" maximumFractionDigits={1} /> ¢</>,
+            value: item.tariff.energypriceCentsPerKwh ? <><FormattedNumber value={item.tariff.energypriceCentsPerKwh} style="decimal" maximumFractionDigits={1} /> ¢</> : '',
           }}
         />
       </Col>
@@ -87,7 +87,7 @@ const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admi
         <LabeledValue
           {...{
             label: <FormattedMessage id={`${tariffPrefix}.basepriceCentsPerMonth`} />,
-            value: <><FormattedNumber value={item.tariff.basepriceCentsPerMonth} style="decimal" maximumFractionDigits={1} /> ¢</>,
+            value: item.tariff.basepriceCentsPerMonth ? <><FormattedNumber value={item.tariff.basepriceCentsPerMonth} style="decimal" maximumFractionDigits={1} /> ¢</> : '',
           }}
         />
       </Col>

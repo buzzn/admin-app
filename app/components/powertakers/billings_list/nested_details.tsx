@@ -77,7 +77,7 @@ class NestedDetails extends React.Component<Props & InjectedIntlProps, State> {
           <FormattedMessage id={`${prefix}.headerBillingItems`} />:
         </h5>
         {billing.items.array.map(item => (
-          <ItemDetails {...{ item }} />
+          <ItemDetails key={item.id} {...{ item }} />
         ))}
       </NestedDetailsWrapper>
     );
