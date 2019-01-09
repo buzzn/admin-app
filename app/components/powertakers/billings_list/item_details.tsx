@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, FormattedNumber } from 'react-intl';
 import { Row, Col } from 'reactstrap';
 import LabeledValue from 'components/labeled_value';
 import { ItemDetailsWrapper } from './style';
@@ -52,7 +52,7 @@ const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admi
         <LabeledValue
           {...{
             label: <FormattedMessage id={`${prefix}.basePriceCents`} />,
-            value: `i18n!!! ${item.basePriceCents}`,
+            value: <><FormattedNumber value={item.basePriceCents} style="decimal" maximumFractionDigits={1} /> ¢</>,
           }}
         />
       </Col>
@@ -60,12 +60,12 @@ const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admi
         <LabeledValue
           {...{
             label: <FormattedMessage id={`${prefix}.energyPriceCents`} />,
-            value: `i18n!!! ${item.energyPriceCents}`,
+            value: <><FormattedNumber value={item.energyPriceCents} style="decimal" maximumFractionDigits={1} /> ¢</>,
           }}
         />
       </Col>
     </Row>
-    Tariff:::::::
+    <div className="tariff-header"><FormattedMessage id={`${prefix}.headerTariff`} />:</div>
     <Row>
       <Col xs={6}>
         <LabeledValue
@@ -79,7 +79,7 @@ const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admi
         <LabeledValue
           {...{
             label: <FormattedMessage id={`${tariffPrefix}.energypriceCentsPerKwh`} />,
-            value: `i18n!!! ${item.tariff.energypriceCentsPerKwh}`,
+            value: <><FormattedNumber value={item.tariff.energypriceCentsPerKwh} style="decimal" maximumFractionDigits={1} /> ¢</>,
           }}
         />
       </Col>
@@ -87,7 +87,7 @@ const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admi
         <LabeledValue
           {...{
             label: <FormattedMessage id={`${tariffPrefix}.basepriceCentsPerMonth`} />,
-            value: `i18n!!! ${item.tariff.basepriceCentsPerMonth}`,
+            value: <><FormattedNumber value={item.tariff.basepriceCentsPerMonth} style="decimal" maximumFractionDigits={1} /> ¢</>,
           }}
         />
       </Col>
