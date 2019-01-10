@@ -10,3 +10,8 @@ export const ItemDetailsWrapper = styled.div`
     margin-top: 5px;
   }
 `;
+
+export const ItemErrors = styled.span`
+  color: red;
+  font-weight: bold;
+`;

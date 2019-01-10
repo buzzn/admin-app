@@ -6,6 +6,7 @@ import { getFormSubmitErrors } from 'redux-form';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import Alert from 'react-s-alert';
 import Billings from 'billings';
 import Contracts from 'contracts';
 import Tariffs from 'tariffs';
@@ -14,9 +15,9 @@ import ReactTableSorted from 'components/react_table_sorted';
 import BillingStatus from 'components/billing_status';
 import Loading from 'components/loading';
 import { SpanClick } from 'components/style';
+import AttachedTariffs from 'components/attached_tariffs';
 import AddBilling from '../add_billing';
 import NestedDetails from './nested_details';
-import AttachedTariffs from 'components/attached_tariffs';
 
 class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps & InjectedIntlProps, ComponentState> {
   state = { isOpen: false, expanded: {} };
@@ -45,7 +46,9 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
 
     return new Promise((resolve, reject) => {
       updateBilling({ resolve, reject, params, groupId, contractId, billingId });
-    }).then(res => res);
+    })
+      .then(res => res)
+      .catch(err => Alert.error(err.errors.completeness.join(', ')));
   };
 
   componentDidMount() {
@@ -142,7 +145,14 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
             title: 'Contract tariffs',
             tariffs: tariffs.array,
             attachedTariffs: contract.tariffs.array,
-            updateList: ({ resolve, reject, tariffIds }) => updateContract({ resolve, reject, params: { tariffIds, updatedAt: contract.updatedAt }, groupId, contractId, updateType: 'tariffs' }),
+            updateList: ({ resolve, reject, tariffIds }) => updateContract({
+              resolve,
+              reject,
+              params: { tariffIds, updatedAt: contract.updatedAt },
+              groupId,
+              contractId,
+              updateType: 'tariffs',
+            }),
           }}
         />
         <h4>Billings:</h4>

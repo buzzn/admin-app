@@ -3,10 +3,22 @@ import moment from 'moment';
 import { FormattedMessage, FormattedNumber } from 'react-intl';
 import { Row, Col } from 'reactstrap';
 import LabeledValue from 'components/labeled_value';
-import { ItemDetailsWrapper } from './style';
+import { ItemDetailsWrapper, ItemErrors } from './style';
 
 const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admin.tariffs' }) => (
   <ItemDetailsWrapper>
+    {!!item.incompleteness && (
+      <Row>
+        <Col xs={12}>
+          <ItemErrors>
+            {Object.keys(item.incompleteness).reduce(
+              (err, key) => `${err ? ', ' : ''}${key}: ${item.incompleteness[key].join(', ')}`,
+              '',
+            )}
+          </ItemErrors>
+        </Col>
+      </Row>
+    )}
     <Row>
       <Col xs={6}>
         <LabeledValue
@@ -52,7 +64,13 @@ const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admi
         <LabeledValue
           {...{
             label: <FormattedMessage id={`${prefix}.basePriceCents`} />,
-            value: item.basePriceCents ? <React.Fragment><FormattedNumber value={item.basePriceCents} style="decimal" maximumFractionDigits={1} /> ¢</React.Fragment> : '',
+            value: item.basePriceCents ? (
+              <React.Fragment>
+                <FormattedNumber value={item.basePriceCents} style="decimal" maximumFractionDigits={1} /> ¢
+              </React.Fragment>
+            ) : (
+              ''
+            ),
           }}
         />
       </Col>
@@ -60,12 +78,20 @@ const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admi
         <LabeledValue
           {...{
             label: <FormattedMessage id={`${prefix}.energyPriceCents`} />,
-            value: item.energyPriceCents ? <React.Fragment><FormattedNumber value={item.energyPriceCents} style="decimal" maximumFractionDigits={1} /> ¢</React.Fragment> : '',
+            value: item.energyPriceCents ? (
+              <React.Fragment>
+                <FormattedNumber value={item.energyPriceCents} style="decimal" maximumFractionDigits={1} /> ¢
+              </React.Fragment>
+            ) : (
+              ''
+            ),
           }}
         />
       </Col>
     </Row>
-    <div className="tariff-header"><FormattedMessage id={`${prefix}.headerTariff`} />:</div>
+    <div className="tariff-header">
+      <FormattedMessage id={`${prefix}.headerTariff`} />:
+    </div>
     <Row>
       <Col xs={6}>
         <LabeledValue
@@ -79,7 +105,14 @@ const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admi
         <LabeledValue
           {...{
             label: <FormattedMessage id={`${tariffPrefix}.energypriceCentsPerKwh`} />,
-            value: item.tariff.energypriceCentsPerKwh ? <React.Fragment><FormattedNumber value={item.tariff.energypriceCentsPerKwh} style="decimal" maximumFractionDigits={1} /> ¢</React.Fragment> : '',
+            value: item.tariff.energypriceCentsPerKwh ? (
+              <React.Fragment>
+                <FormattedNumber value={item.tariff.energypriceCentsPerKwh} style="decimal" maximumFractionDigits={1} />{' '}
+                ¢
+              </React.Fragment>
+            ) : (
+              ''
+            ),
           }}
         />
       </Col>
@@ -87,7 +120,14 @@ const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admi
         <LabeledValue
           {...{
             label: <FormattedMessage id={`${tariffPrefix}.basepriceCentsPerMonth`} />,
-            value: item.tariff.basepriceCentsPerMonth ? <React.Fragment><FormattedNumber value={item.tariff.basepriceCentsPerMonth} style="decimal" maximumFractionDigits={1} /> ¢</React.Fragment> : '',
+            value: item.tariff.basepriceCentsPerMonth ? (
+              <React.Fragment>
+                <FormattedNumber value={item.tariff.basepriceCentsPerMonth} style="decimal" maximumFractionDigits={1} />{' '}
+                ¢
+              </React.Fragment>
+            ) : (
+              ''
+            ),
           }}
         />
       </Col>
