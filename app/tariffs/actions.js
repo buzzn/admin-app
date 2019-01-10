@@ -10,6 +10,7 @@ export const constants = {
   SET_TARIFFS: 'buzzn_tariffs/SET_TARIFFS',
 
   ADD_TARIFF: 'buzzn_tariffs/ADD_TARIFF',
+  SET_GAP_TARIFFS: 'buzzn_tariffs/SET_GAP_TARIFFS',
 };
 
 export const actions = {
@@ -21,10 +22,18 @@ export const actions = {
   loadTariffs: groupId => ({ type: constants.LOAD_TARIFFS, groupId }),
   loadingTariffs: () => ({ type: constants.LOADING_TARIFFS }),
   loadedTariffs: () => ({ type: constants.LOADED_TARIFFS }),
-  setTariffs: tariffs => ({ type: constants.SET_TARIFFS, tariffs }),
+  setTariffs: ({ tariffs, gapTariffs }) => ({ type: constants.SET_TARIFFS, tariffs, gapTariffs }),
 
   addTariff: ({ resolve, reject, params, groupId }) => ({
     type: constants.ADD_TARIFF,
+    resolve,
+    reject,
+    params,
+    groupId,
+  }),
+
+  setGapTariffs: ({ resolve, reject, params, groupId }) => ({
+    type: constants.SET_GAP_TARIFFS,
     resolve,
     reject,
     params,

@@ -156,8 +156,7 @@
   "eslintConfig": {
     "parser": "babel-eslint",
     "extends": [
-      "airbnb/base",
-      "plugin:prettier/recommended"
+      "airbnb/base"
     ],
     "env": {
       "browser": true,

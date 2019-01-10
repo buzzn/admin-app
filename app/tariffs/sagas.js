@@ -10,7 +10,8 @@ export function* getTariffs({ apiUrl, apiPath, token }, { groupId }) {
   yield put(actions.loadingTariffs());
   try {
     const tariffs = yield call(api.fetchTariffs, { apiUrl, apiPath, token, groupId });
-    yield put(actions.setTariffs(tariffs));
+    const gapTariffs = yield call(api.fetchGapTariffs, { apiUrl, apiPath, token, groupId });
+    yield put(actions.setTariffs({ tariffs, gapTariffs }));
   } catch (error) {
     logException(error);
   }
@@ -31,9 +32,24 @@ export function* addTariff({ apiUrl, apiPath, token }, { params, resolve, reject
   }
 }
 
+export function* setGapTariffs({ apiUrl, apiPath, token }, { params, resolve, reject, groupId }) {
+  try {
+    const res = yield call(api.setGapTariffs, { apiUrl, apiPath, token, params, groupId });
+    if (res._error) {
+      yield call(reject, new SubmissionError(res));
+    } else {
+      yield call(resolve, res);
+      yield call(getTariffs, { apiUrl, apiPath, token }, { groupId });
+    }
+  } catch (error) {
+    logException(error);
+  }
+}
+
 export function* tariffsSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_TARIFFS, getTariffs, { apiUrl, apiPath, token });
   yield takeLeading(constants.ADD_TARIFF, addTariff, { apiUrl, apiPath, token });
+  yield takeLeading(constants.SET_GAP_TARIFFS, addTariff, { apiUrl, apiPath, token });
   const { groupId } = yield select(selectGroup);
   if (groupId) {
     yield call(getTariffs, { apiUrl, apiPath, token }, { groupId });

@@ -18,7 +18,8 @@ import ReadingsList from './readings_list';
 import AddReading from '../add_reading';
 
 class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps & BreadcrumbsProps> {
-  state = { isOpen: false, addReadingInit: {} };
+  defaultAddReading = { status: 'Z86' };
+  state = { isOpen: false, addReadingInit: this.defaultAddReading };
 
   switchAddReading = () => {
     this.setState({ isOpen: !this.state.isOpen });
@@ -31,7 +32,7 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
       addReading({ groupId, meterId, registerId, params, resolve, reject });
     }).then((res) => {
       this.switchAddReading();
-      this.setState({ addReadingInit: {} });
+      this.setState({ addReadingInit: this.defaultAddReading });
       return res;
     });
   };

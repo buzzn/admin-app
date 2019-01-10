@@ -3,10 +3,11 @@ import { constants } from './actions';
 export const initialState = {
   loadingTariffs: false,
   tariffs: { _status: null, array: [] },
+  gapTariffs: { _status: null, array: [] },
   validationRules: {},
 };
 
-export default function (state = initialState, action) {
+export default function(state = initialState, action) {
   switch (action.type) {
     case constants.LOAD_TARIFFS:
       return { ...state, groupId: action.groupId };
@@ -15,7 +16,7 @@ export default function (state = initialState, action) {
     case constants.LOADED_TARIFFS:
       return { ...state, loadingTariffs: false };
     case constants.SET_TARIFFS:
-      return { ...state, tariffs: action.tariffs };
+      return { ...state, tariffs: action.tariffs, gapTariffs: action.gapTariffs };
 
     case constants.SET_VALIDATION_RULES:
       return { ...state, validationRules: action.validationRules };

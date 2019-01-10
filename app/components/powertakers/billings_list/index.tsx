@@ -16,7 +16,7 @@ import Loading from 'components/loading';
 import { SpanClick } from 'components/style';
 import AddBilling from '../add_billing';
 import NestedDetails from './nested_details';
-import TariffsList from './tariffs_list';
+import AttachedTariffs from 'components/attached_tariffs';
 
 class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps & InjectedIntlProps, ComponentState> {
   state = { isOpen: false, expanded: {} };
@@ -137,11 +137,12 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
 
     return (
       <div className="p-0">
-        <TariffsList
+        <AttachedTariffs
           {...{
+            title: 'Gap tariffs',
             tariffs: tariffs.array,
-            contract,
-            updateContract: ({ resolve, reject, params }) => updateContract({ resolve, reject, params, groupId, contractId, updateType: 'tariffs' }),
+            attachedTariffs: contract.tariffs.array,
+            updateList: ({ resolve, reject, tariffIds }) => updateContract({ resolve, reject, params: { tariffIds, updatedAt: contract.updatedAt }, groupId, contractId, updateType: 'tariffs' }),
           }}
         />
         <h4>Billings:</h4>

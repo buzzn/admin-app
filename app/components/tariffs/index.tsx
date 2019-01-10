@@ -5,6 +5,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import Groups from 'groups';
 import Tariffs from 'tariffs';
 import Loading from 'components/loading';
+import AttachedTariffs from 'components/attached_tariffs';
 import TariffsList from './tariffs_list';
 import AddTariff from './add_tariff';
 
@@ -44,7 +45,7 @@ class TariffsComponent extends React.Component<
 
   componentWillUnmount() {
     this.props.setGroup({ _status: null });
-    this.props.setTariffs({ _status: null, array: [] });
+    this.props.setTariffs({ tariffs: { _status: null, array: [] }, gapTariffs: { _status: null, array: [] } });
   }
 
   render() {
@@ -53,6 +54,8 @@ class TariffsComponent extends React.Component<
       intl,
       group,
       tariffs,
+      gapTariffs,
+      setGapTariffs,
       setGroup,
       setTariffs,
       validationRules,
@@ -63,13 +66,13 @@ class TariffsComponent extends React.Component<
     } = this.props;
     const { isOpen } = this.state;
 
-    if (group._status === 404 || group._status === 403 || tariffs._status === 404 || tariffs._status === 403) {
+    if (group._status === 404 || group._status === 403 || tariffs._status === 404 || tariffs._status === 403 || gapTariffs._status === 404 || gapTariffs._status === 403) {
       setGroup({ _status: null });
-      setTariffs({ _status: null, array: [] });
+      setTariffs({ tariffs: { _status: null, array: [] }, gapTariffs: { _status: null, array: [] } });
       return <Redirect to="/groups" />;
     }
 
-    if (group._status === null || tariffs._status === null || loading) return <Loading minHeight={40} />;
+    if (group._status === null || tariffs._status === null || gapTariffs._status === null || loading) return <Loading minHeight={40} />;
 
     const breadcrumbs = [
       { id: 0, link: '/groups', title: intl.formatMessage({ id: 'admin.breadcrumbs.myGroups' }) },
@@ -92,6 +95,13 @@ class TariffsComponent extends React.Component<
             )}
           />
         </Switch>
+
+        <AttachedTariffs {...{
+          title: 'Contract tariffs',
+          tariffs: tariffs.array,
+          attachedTariffs: gapTariffs.array,
+          updateList: ({ resolve, reject, tariffIds }) => setGapTariffs({ resolve, reject, params: { tariffIds, updatedAt: group.updatedAt }, groupId }),
+        }} />
         <AddTariff {...{ toggle: this.switchAddTariff, isOpen, validationRules, onSubmit: this.addTariff }} />
       </>
     );
@@ -117,6 +127,7 @@ interface StatePart {
   tariffs: {
     loadingTariffs: boolean;
     tariffs: { _status: null | number; array: Array<{ [key: string]: any }> };
+    gapTariffs: { _status: null | number; array: Array<{ [key: string]: any }> };
     validationRules: any;
   };
 }
@@ -125,6 +136,7 @@ interface StateProps {
   loading: boolean;
   group: { _status: null | number; [key: string]: any };
   tariffs: { _status: null | number; array: Array<{ [key: string]: any }> };
+  gapTariffs: { _status: null | number; array: Array<{ [key: string]: any }> };
   validationRules: any;
 }
 
@@ -134,6 +146,7 @@ interface DispatchProps {
   loadTariffs: Function;
   setTariffs: Function;
   addTariff: Function;
+  setGapTariffs: Function;
 }
 
 function mapStateToProps(state: StatePart) {
@@ -141,6 +154,7 @@ function mapStateToProps(state: StatePart) {
     loading: state.groups.loadingGroup || state.tariffs.loadingTariffs,
     group: state.groups.group,
     tariffs: state.tariffs.tariffs,
+    gapTariffs: state.tariffs.gapTariffs,
     validationRules: state.tariffs.validationRules,
   };
 }
@@ -153,5 +167,6 @@ export default connect<StateProps, DispatchProps, ExtProps>(
     loadTariffs: Tariffs.actions.loadTariffs,
     setTariffs: Tariffs.actions.setTariffs,
     addTariff: Tariffs.actions.addTariff,
+    setGapTariffs: Tariffs.actions.setGapTariffs,
   },
 )(injectIntl(TariffsComponent));

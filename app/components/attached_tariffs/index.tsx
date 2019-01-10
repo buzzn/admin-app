@@ -11,9 +11,10 @@ import { SpanClick, FormGroup } from 'components/style';
 import { TariffListWrapper, AddTariffIcon } from './style';
 
 interface Props {
-  updateContract: Function;
-  contract: { [key: string]: any };
+  updateList: Function;
+  attachedTariffs: { [key: string]: any };
   tariffs: Array<{ [key: string]: any }>;
+  title: string;
 }
 
 interface State {
@@ -21,7 +22,7 @@ interface State {
   selectedTariffId: null | string;
 }
 
-class TariffsList extends React.Component<Props, State> {
+class AttachedTariffs extends React.Component<Props, State> {
   state = { editMode: false, selectedTariffId: null };
 
   switchEditMode = () => {
@@ -29,8 +30,8 @@ class TariffsList extends React.Component<Props, State> {
   };
 
   setTariffs = (params) => {
-    const { updateContract, contract } = this.props;
-    new Promise((resolve, reject) => updateContract({ resolve, reject, params: { updatedAt: contract.updatedAt, tariffIds: params } })).catch(res => Alert.error(JSON.stringify(res.errors)));
+    const { updateList } = this.props;
+    new Promise((resolve, reject) => updateList({ resolve, reject, tariffIds: params })).catch(res => Alert.error(JSON.stringify(res.errors)));
   };
 
   setSelectedTariffId = ({ target: { value } }) => {
@@ -38,23 +39,23 @@ class TariffsList extends React.Component<Props, State> {
   };
 
   addTariff = () => {
-    const { contract: { tariffs: { array: tariffs } } } = this.props;
-    this.setTariffs(compact(tariffs.map(t => t.id).concat(this.state.selectedTariffId)));
+    const { attachedTariffs } = this.props;
+    this.setTariffs(compact(attachedTariffs.map(t => t.id).concat(this.state.selectedTariffId)));
   };
 
   deleteTariff = (tariffId) => {
     if (!confirm('Delete?')) return;
-    const { contract: { tariffs: { array: tariffs } } } = this.props;
-    this.setTariffs(compact(tariffs.map(t => t.id).filter(t => t !== tariffId)));
+    const { attachedTariffs } = this.props;
+    this.setTariffs(compact(attachedTariffs.map(t => t.id).filter(t => t !== tariffId)));
   };
 
   render() {
-    const { tariffs, contract } = this.props;
+    const { tariffs, attachedTariffs, title } = this.props;
     const { editMode } = this.state;
 
     const prefix = 'admin.tariffs';
 
-    const data = orderBy(contract.tariffs.array, t => new Date(t.beginDate), 'desc').map(t => ({
+    const data = orderBy(attachedTariffs, t => new Date(t.beginDate), 'desc').map(t => ({
       ...t,
       beginDate: moment(t.beginDate).toDate(),
       lastDate: t.lastDate ? moment(t.lastDate).toDate() : t.lastDate,
@@ -114,7 +115,7 @@ class TariffsList extends React.Component<Props, State> {
       },
     ];
 
-    let contractTariffsIds: Array<string> = [];
+    let attachedTariffsIds: Array<string> = [];
     if (editMode) {
       columns.push({
         width: 40,
@@ -123,12 +124,12 @@ class TariffsList extends React.Component<Props, State> {
         sortable: false,
         Cell: () => <i className="fa fa-2x fa-remove" />,
       });
-      contractTariffsIds = contract.tariffs.array.map(t => t.id);
+      attachedTariffsIds = attachedTariffs.map(t => t.id);
     }
 
     return (
       <TariffListWrapper>
-        <h4>Contract tariffs:</h4>
+        <h4>{title}:</h4>
         <SpanClick onClick={this.switchEditMode} className="float-right" data-cy="manage tariffs CTA">
           <FormattedMessage id="admin.contracts.manageTariffs" /> <i className="fa fa-pencil" />
         </SpanClick>
@@ -144,7 +145,7 @@ class TariffsList extends React.Component<Props, State> {
                     name="select-tariff"
                   >
                     <option value="">-----</option>
-                    {tariffs.filter(t => !contractTariffsIds.includes(t.id)).map(t => (
+                    {tariffs.filter(t => !attachedTariffsIds.includes(t.id)).map(t => (
                       <option key={t.id} value={t.id}>
                         {t.name}
                       </option>
@@ -175,4 +176,4 @@ class TariffsList extends React.Component<Props, State> {
   }
 }
 
-export default TariffsList;
+export default AttachedTariffs;
