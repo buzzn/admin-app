@@ -14,38 +14,52 @@ const EditableInput = ({
   input,
   meta: { active, touched, error, dirty },
 }) => {
-  let type = 'text';
-  if (field.type === 'integer' || field.type === 'number') type = 'number';
+  const fieldProps = { type: 'text' };
+  if (field.type === 'integer' || field.type === 'number') {
+    fieldProps.type = 'number';
+    if (!isNaN(Number(field.minimum))) fieldProps.min = field.minimum;
+    if (!isNaN(Number(field.maximum))) fieldProps.max = field.maximum;
+  }
 
   if (editMode) {
     return (
-      <FormGroup className={`editable-input ${touched && error && 'has-danger'}`}>
+      <FormGroup
+        className={`editable-input ${touched && error && 'has-danger'}`}
+      >
         {!overrideData ? (
           <input
-            className={`form-control ${touched && error && 'form-control-danger'} ${dirty && 'dirty'}`}
+            className={`form-control ${touched &&
+              error &&
+              'form-control-danger'} ${dirty && 'dirty'}`}
             id={input.name}
             {...input}
-            type={type}
+            {...fieldProps}
           />
         ) : (
           <input
             className="form-control"
             value={overrideData[input.name.split('.').pop()] || ''}
-            type={type}
+            {...fieldProps}
             disabled
           />
         )}
         {withLabel && (
-          <label className={`${input.value || active || overrideData ? 'top' : 'center'}`} htmlFor={input.name}>
-            <FormattedMessage id={`${prefix}.${name || input.name.split('.').pop()}`} />
+          <label
+            className={`${
+              input.value || active || overrideData ? 'top' : 'center'
+            }`}
+            htmlFor={input.name}
+          >
+            <FormattedMessage
+              id={`${prefix}.${name || input.name.split('.').pop()}`}
+            />
           </label>
         )}
-        {touched
-          && !!error && (
-            <>
-              <div className="inline-error">{error}</div>
-              <i className="error-icon buzzn-attention" />
-            </>
+        {touched && !!error && (
+          <>
+            <div className="inline-error">{error}</div>
+            <i className="error-icon buzzn-attention" />
+          </>
         )}
       </FormGroup>
     );
