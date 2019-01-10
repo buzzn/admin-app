@@ -42,19 +42,20 @@ class MarketLocationForm extends React.Component<Props> {
 
     const prefix = 'admin.registers';
 
-    const submit = values => new Promise((resolve, reject) => {
-      const { contracts, ...params } = values;
-      updateRegister({
-        registerId: marketLocation.id,
-        params,
-        resolve,
-        reject,
-        groupId,
+    const submit = values =>
+      new Promise((resolve, reject) => {
+        const { contracts, ...params } = values;
+        updateRegister({
+          registerId: marketLocation.id,
+          params,
+          resolve,
+          reject,
+          groupId,
+        });
+      }).then(() => {
+        Alert.success('Saved!');
+        switchEditMode();
       });
-    }).then(() => {
-      Alert.success('Saved!');
-      switchEditMode();
-    });
 
     return (
       <div>
@@ -74,7 +75,9 @@ class MarketLocationForm extends React.Component<Props> {
           >
             <FormTitle>
               <FormattedMessage id={`admin.marketLocations.headerMarketLocationDetails`} />
-              {!editMode && marketLocation.updatable && <i className="buzzn-pencil" data-cy="malo edit switch" onClick={switchEditMode} />}
+              {!editMode && marketLocation.updatable && (
+                <i className="buzzn-pencil" data-cy="malo edit switch" onClick={switchEditMode} />
+              )}
             </FormTitle>
             <TwoColField
               {...{
@@ -89,6 +92,15 @@ class MarketLocationForm extends React.Component<Props> {
               {...{
                 prefix,
                 name: 'name',
+                editMode,
+                validationRules,
+                component: EditableInput,
+              }}
+            />
+            <TwoColField
+              {...{
+                prefix,
+                name: 'marketLocationId',
                 editMode,
                 validationRules,
                 component: EditableInput,
@@ -132,15 +144,6 @@ class MarketLocationForm extends React.Component<Props> {
                 component: EditableCheckbox,
               }}
             />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'marketLocationId',
-                editMode,
-                validationRules,
-                component: EditableInput,
-              }}
-            />
           </FormPanel>
         </form>
       </div>
@@ -148,4 +151,6 @@ class MarketLocationForm extends React.Component<Props> {
   }
 }
 
-export default withEditOverlay(reduxForm({ form: 'marketLocationUpdateForm', enableReinitialize: true })(MarketLocationForm));
+export default withEditOverlay(
+  reduxForm({ form: 'marketLocationUpdateForm', enableReinitialize: true })(MarketLocationForm),
+);
