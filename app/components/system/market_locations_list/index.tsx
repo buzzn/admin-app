@@ -27,13 +27,15 @@ const MarketLocationsList = ({
 }: Props & BreadcrumbsProps & InjectIntlProps) => {
   const prefix = 'admin.marketLocations';
 
-  const data = marketLocations.filter(m => m.kind === maloType).map(m => ({
-    ...m,
-    labelIntl: intl.formatMessage({ id: `admin.registers.${m.label}` }),
-    meterProductSerialnumber: m.register ? m.register.meter.productSerialnumber : '',
-    linkMeter: m.register ? `${url}/meters/${m.register.meter.id}` : null,
-    linkMarketLocation: `${url}/${m.id}`,
-  }));
+  const data = marketLocations
+    .filter(m => m.kind === maloType)
+    .map(m => ({
+      ...m,
+      labelIntl: intl.formatMessage({ id: `admin.registers.${m.label}` }),
+      meterProductSerialnumber: m.register ? m.register.meter.productSerialnumber : '',
+      linkMeter: m.register ? `${url}/meters/${m.register.meter.id}` : null,
+      linkMarketLocation: `${url}/${m.id}`,
+    }));
 
   const columns = [
     {
@@ -66,9 +68,17 @@ const MarketLocationsList = ({
     {
       Header: '',
       width: 40,
-      Cell: ({ original }) => (original.register
-        ? TableParts.components.iconCell({ icon: 'copy', action: () => duplicateMeter(original) })
-        : false),
+      Cell: ({ original }) =>
+        original.register
+          ? TableParts.components.iconCell({
+              icon: 'copy',
+              action: () => duplicateMeter(original),
+              tooltip: {
+                id: `clone-meter-${original.id}`,
+                text: 'Zähler klonen',
+              },
+            })
+          : false,
     },
   ];
 
@@ -77,7 +87,10 @@ const MarketLocationsList = ({
       <PageTitle
         {...{
           breadcrumbs: breadcrumbs.concat([
-            { id: '-----', title: intl.formatMessage({ id: 'admin.breadcrumbs.marketLocations' }) },
+            {
+              id: '-----',
+              title: intl.formatMessage({ id: 'admin.breadcrumbs.marketLocations' }),
+            },
           ]),
           title: intl.formatMessage({ id: 'admin.breadcrumbs.marketLocations' }),
         }}
@@ -108,7 +121,8 @@ const MarketLocationsList = ({
               getTdProps: (_state, rowInfo, column) => ({
                 onClick: (_e, handleOriginal) => {
                   if (column.id === 'name') history.push(rowInfo.original.linkMarketLocation);
-                  if (column.id === 'meterProductSerialnumber' && rowInfo.original.linkMeter) history.push(rowInfo.original.linkMeter);
+                  if (column.id === 'meterProductSerialnumber' && rowInfo.original.linkMeter)
+                    history.push(rowInfo.original.linkMeter);
                   if (handleOriginal) handleOriginal();
                 },
               }),

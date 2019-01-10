@@ -3,7 +3,7 @@ import * as React from 'react';
 import moment from 'moment';
 import { ReactTableDefaults } from 'react-table';
 import { Link } from 'react-router-dom';
-import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledTooltip } from 'reactstrap';
 
 const FilterComponent = ({ filter, onChange }) => (
   <div className="input-group" style={{ height: '38px' }}>
@@ -30,8 +30,8 @@ Object.assign(ReactTableDefaults, {
     const id = filter.pivotId || filter.id;
     return row[id] !== undefined
       ? String(row[id])
-        .toLowerCase()
-        .includes(filter.value)
+          .toLowerCase()
+          .includes(filter.value)
       : true;
   },
 });
@@ -53,8 +53,8 @@ export const tableParts = {
         View
       </Link>
     ),
-    iconCell: ({ icon, action }) => (
-      <span style={{ float: 'right', marginRight: '15px' }}>
+    iconCell: ({ icon, action, tooltip: { id = '', text = '' } = {} }) => (
+      <span style={{ float: 'right', marginRight: '15px' }} id={id}>
         {typeof action === 'string' ? (
           <Link to={action}>
             <i className={`fa fa-${icon}`} />
@@ -62,6 +62,7 @@ export const tableParts = {
         ) : (
           <i onClick={action} className={`fa fa-${icon}`} />
         )}
+        {!!id && !!text && <UncontrolledTooltip target={id}>{text}</UncontrolledTooltip>}
       </span>
     ),
     dropDownCell: ({ row, menuItems }) => (
@@ -150,8 +151,8 @@ export const tableParts = {
       const id = filter.pivotId || filter.id;
       return row[id] !== undefined
         ? String(row[id].value)
-          .toLowerCase()
-          .includes(filter.value)
+            .toLowerCase()
+            .includes(filter.value)
         : true;
     },
   },
