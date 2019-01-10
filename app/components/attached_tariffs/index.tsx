@@ -72,9 +72,9 @@ class AttachedTariffs extends React.Component<Props, State> {
       },
       energypriceCentsPerKwh: {
         Display: (
-          <>
+          <React.Fragment>
             <FormattedNumber value={t.energypriceCentsPerKwh} style="decimal" maximumFractionDigits={1} /> ¢
-          </>
+          </React.Fragment>
         ),
         value: t.energypriceCentsPerKwh,
       },
@@ -99,7 +99,7 @@ class AttachedTariffs extends React.Component<Props, State> {
         accessor: 'lastDate',
         className: 'cy-last-date',
         sortable: false,
-        Cell: ({ value }) => value ? moment(value).format('DD.MM.YYYY') : '',
+        Cell: ({ value }) => (value ? moment(value).format('DD.MM.YYYY') : ''),
       },
       {
         Header: () => <FormattedMessage id={`${prefix}.tableBasepriceCentsPerMonth`} />,
@@ -135,7 +135,7 @@ class AttachedTariffs extends React.Component<Props, State> {
         </SpanClick>
         <br />
         {editMode && (
-          <>
+          <React.Fragment>
             <Row>
               <Col xs={9}>
                 <FormGroup>
@@ -145,11 +145,13 @@ class AttachedTariffs extends React.Component<Props, State> {
                     name="select-tariff"
                   >
                     <option value="">-----</option>
-                    {tariffs.filter(t => !attachedTariffsIds.includes(t.id)).map(t => (
-                      <option key={t.id} value={t.id}>
-                        {t.name}
-                      </option>
-                    ))}
+                    {tariffs
+                      .filter(t => !attachedTariffsIds.includes(t.id))
+                      .map(t => (
+                        <option key={t.id} value={t.id}>
+                          {t.name}
+                        </option>
+                      ))}
                   </select>
                 </FormGroup>
               </Col>
@@ -157,7 +159,7 @@ class AttachedTariffs extends React.Component<Props, State> {
                 <AddTariffIcon className="fa fa-3x fa-plus-circle cy-add-tariff" onClick={this.addTariff} />
               </Col>
             </Row>
-          </>
+          </React.Fragment>
         )}
         <ReactTable
           {...{

@@ -7,9 +7,10 @@ export default {
       .then(camelizeResponseKeys);
   },
   fetchGapTariffs({ token, apiUrl, apiPath, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/gap-contract-tariffs`, { headers: prepareHeaders(token) })
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/gap-contract-tariffs?include=tariff`, { headers: prepareHeaders(token) })
       .then(parseResponse)
-      .then(camelizeResponseKeys);
+      .then(camelizeResponseKeys)
+      .then(r => ({ array: r.array.map(t => ({ ...t, ...t.tariff })) }));
   },
   addTariff({ token, apiUrl, apiPath, params, groupId }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/tariffs`, {

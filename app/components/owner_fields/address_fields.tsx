@@ -15,7 +15,7 @@ const AddressFields = ({ path, editMode, overrideData, validationRules }: Props)
   const prefix = 'admin.addresses';
 
   return (
-    <>
+    <React.Fragment>
       <Row className="fieldgroup">
         <Col xs="4" className="fieldname" />
         <Col xs="8" className={fieldClassName}>
@@ -65,7 +65,7 @@ const AddressFields = ({ path, editMode, overrideData, validationRules }: Props)
           </Row>
         </Col>
       </Row>
-    </>
+    </React.Fragment>
   );
 };
 

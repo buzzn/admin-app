@@ -49,7 +49,7 @@ export function* setGapTariffs({ apiUrl, apiPath, token }, { params, resolve, re
 export function* tariffsSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_TARIFFS, getTariffs, { apiUrl, apiPath, token });
   yield takeLeading(constants.ADD_TARIFF, addTariff, { apiUrl, apiPath, token });
-  yield takeLeading(constants.SET_GAP_TARIFFS, addTariff, { apiUrl, apiPath, token });
+  yield takeLeading(constants.SET_GAP_TARIFFS, setGapTariffs, { apiUrl, apiPath, token });
   const { groupId } = yield select(selectGroup);
   if (groupId) {
     yield call(getTariffs, { apiUrl, apiPath, token }, { groupId });

@@ -80,7 +80,7 @@ class TariffsComponent extends React.Component<
     ];
 
     return (
-      <>
+      <React.Fragment>
         <Switch>
           <Route path={url} exact>
             <Redirect to={`${url}/active`} />
@@ -97,13 +97,13 @@ class TariffsComponent extends React.Component<
         </Switch>
 
         <AttachedTariffs {...{
-          title: 'Contract tariffs',
+          title: 'Gap tariffs',
           tariffs: tariffs.array,
           attachedTariffs: gapTariffs.array,
           updateList: ({ resolve, reject, tariffIds }) => setGapTariffs({ resolve, reject, params: { tariffIds, updatedAt: group.updatedAt }, groupId }),
         }} />
         <AddTariff {...{ toggle: this.switchAddTariff, isOpen, validationRules, onSubmit: this.addTariff }} />
-      </>
+      </React.Fragment>
     );
   }
 }

@@ -159,7 +159,7 @@ class GroupSettings extends React.Component {
     if (ownerValues.additionalLegalRepresentation) ownerValues.additionalLegalRepresentation = ownerValues.additionalLegalRepresentation.split('$#$');
 
     return (
-      <>
+      <React.Fragment>
         <PageTitle {...{ breadcrumbs, title: intl.formatMessage({ id: `${prefix}.headerSettings` }), thin: 'true' }} />
         <div className="center-content group-settings">
           <div className="group-image">
@@ -239,7 +239,7 @@ class GroupSettings extends React.Component {
             </Switch>
           </Row>
         </div>
-      </>
+      </React.Fragment>
     );
   }
 }

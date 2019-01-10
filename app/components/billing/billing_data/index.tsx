@@ -103,7 +103,7 @@ class BillingData extends React.Component<
       .map(t => barScale(t)));
 
     return (
-      <>
+      <React.Fragment>
         <PageTitle
           {...{
             breadcrumbs: breadcrumbs.concat([
@@ -209,7 +209,7 @@ class BillingData extends React.Component<
                           <div className="error">
                             {b.contractType !== 'third_party' &&
                               !!b.errors && (
-                                <>
+                                <React.Fragment>
                                   <i id={`err-tip-${m.id}-${b.billingId}`} className="fa fa-exclamation-triangle" />
                                   <UncontrolledTooltip
                                     placement="bottom"
@@ -222,7 +222,7 @@ class BillingData extends React.Component<
                                       '',
                                     ).slice(0, -2)}
                                   </UncontrolledTooltip>
-                                </>
+                                </React.Fragment>
                               )}
                           </div>
                         </div>
@@ -321,7 +321,7 @@ class BillingData extends React.Component<
             </div>
           </Legend>
         </CenterContent>
-      </>
+      </React.Fragment>
     );
   }
 }

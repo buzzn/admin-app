@@ -85,7 +85,7 @@ class EditableInputArray extends React.Component<Props> {
     );
 
     return (
-      <>
+      <React.Fragment>
         <Row>
           <Col xs={12}>
             <p className="h5 header text-uppercase" style={{ paddingTop: '2rem' }}>
@@ -97,7 +97,7 @@ class EditableInputArray extends React.Component<Props> {
           <InputRow className="fieldgroup" key={i} noGutters>
             {editMode
               && !preset.lockRegisters && (
-                <>
+                <React.Fragment>
                   <i
                     className="fa fa-plus-circle add cy-add-register"
                     onClick={() => {
@@ -112,7 +112,7 @@ class EditableInputArray extends React.Component<Props> {
                       }}
                     />
                   )}
-                </>
+                </React.Fragment>
             )}
             <Col xs={12}>
               <Row>
@@ -226,7 +226,7 @@ class EditableInputArray extends React.Component<Props> {
           </InputRow>
         ))}
         <PadRow />
-      </>
+      </React.Fragment>
     );
   }
 }

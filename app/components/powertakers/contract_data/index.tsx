@@ -16,7 +16,7 @@ interface Props {
 }
 
 const ContractData = ({ breadcrumbs, title, groupId, contractId, url, contractUrl }: Props & BreadcrumbsProps) => (
-  <>
+  <React.Fragment>
     <PageTitle {...{ breadcrumbs, title }} />
     <CenterContent>
       <SubNav>
@@ -36,7 +36,7 @@ const ContractData = ({ breadcrumbs, title, groupId, contractId, url, contractUr
         </Route>
       </Switch>
     </CenterContent>
-  </>
+  </React.Fragment>
 );
 
 export default ContractData;

@@ -139,7 +139,7 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
       <div className="p-0">
         <AttachedTariffs
           {...{
-            title: 'Gap tariffs',
+            title: 'Contract tariffs',
             tariffs: tariffs.array,
             attachedTariffs: contract.tariffs.array,
             updateList: ({ resolve, reject, tariffIds }) => updateContract({ resolve, reject, params: { tariffIds, updatedAt: contract.updatedAt }, groupId, contractId, updateType: 'tariffs' }),

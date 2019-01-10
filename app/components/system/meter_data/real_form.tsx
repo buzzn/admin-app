@@ -104,7 +104,7 @@ class MeterData extends React.Component<Props> {
             <RegistersList {...{ registers: meter.registers, history, url }} />
           </Col>
         </Row>
-        <>
+        <React.Fragment>
           <form onSubmit={handleSubmit(submit)} data-cy="edit meter form">
             <FormPanel
               {...{
@@ -272,7 +272,7 @@ class MeterData extends React.Component<Props> {
               />
             </FormPanel>
           </form>
-        </>
+        </React.Fragment>
       </div>
     );
   }

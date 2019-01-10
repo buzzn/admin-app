@@ -111,7 +111,7 @@ class WebsiteFormsComponent extends React.Component<
     if (websiteForms._status === null || loading || exporting) return <Loading minHeight={40} />;
 
     return (
-      <>
+      <React.Fragment>
         <Switch>
           <Route exact path={url}>
             <FormsList
@@ -144,7 +144,7 @@ class WebsiteFormsComponent extends React.Component<
             }}
           />
         </Switch>
-      </>
+      </React.Fragment>
     );
   }
 }

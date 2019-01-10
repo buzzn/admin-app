@@ -36,7 +36,7 @@ class MeterData extends React.Component<ExtProps & DispatchProps & StateProps & 
     if (meter._status && meter._status !== 200) return <Redirect to={url} />;
 
     return (
-      <>
+      <React.Fragment>
         <PageTitle
           {...{
             breadcrumbs: breadcrumbs.concat([
@@ -59,7 +59,7 @@ class MeterData extends React.Component<ExtProps & DispatchProps & StateProps & 
             <VirtualMeterDataForm {...{ meter, validationRules: virtualValidationRules, initialValues: meter, url, history }} />
           )}
         </CenterContent>
-      </>
+      </React.Fragment>
     );
   }
 }

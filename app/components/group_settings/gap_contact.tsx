@@ -15,19 +15,19 @@ const GapContact = ({ gap, gapAddress, gapContact, gapContactAddress }: Props) =
   return (
     <Col xs="12">
       {!!gap.id && (
-        <>
+        <React.Fragment>
           <p className="h5 grey-underline header text-uppercase mt-4">
             <FormattedMessage id={`${prefix}.headerGapCustomer`} />
           </p>
           {gap.type === 'person' ? (
             <Owner {...{ address: gapAddress, owner: gap }} />
           ) : (
-            <>
+            <React.Fragment>
               <Owner {...{ address: gapAddress, owner: gap }} />
               {!!gapContact.id && <Owner {...{ contact: true, address: gapContactAddress, owner: gapContact }} />}
-            </>
+            </React.Fragment>
           )}
-        </>
+        </React.Fragment>
       )}
     </Col>
   );

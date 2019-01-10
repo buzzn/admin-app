@@ -29,7 +29,7 @@ class FormData extends React.Component<Props & BreadcrumbsProps, State> {
     const { formId } = this.state;
 
     return (
-      <>
+      <React.Fragment>
         <PageTitle breadcrumbs={breadcrumbs} title={`Form ${form.id}`} />
         <input type="number" value={formId} onChange={this.handleInputChange} />
         <button
@@ -46,7 +46,7 @@ class FormData extends React.Component<Props & BreadcrumbsProps, State> {
         </button>
 
         <pre>{JSON.stringify(form, null, 2)}</pre>
-      </>
+      </React.Fragment>
     );
   }
 }

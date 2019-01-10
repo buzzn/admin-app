@@ -163,7 +163,7 @@ class AddReading extends React.Component<Props & InjectedIntlProps> {
           </ModalBody>
           <ModalFooter>
             {datasource === 'discovergy' && (
-              <>
+              <React.Fragment>
                 <button
                   className="btn btn-dark"
                   id="req_reading"
@@ -186,7 +186,7 @@ class AddReading extends React.Component<Props & InjectedIntlProps> {
                     Please, fill the date
                   </Tooltip>
                 )}
-              </>
+              </React.Fragment>
             )}
             <button className="btn btn-link" onClick={this.handleToggle}>
               <FormattedMessage id="admin.buttons.cancel" /> <i className="fa fa-times" />

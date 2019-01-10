@@ -52,7 +52,7 @@ const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admi
         <LabeledValue
           {...{
             label: <FormattedMessage id={`${prefix}.basePriceCents`} />,
-            value: item.basePriceCents ? <><FormattedNumber value={item.basePriceCents} style="decimal" maximumFractionDigits={1} /> ¢</> : '',
+            value: item.basePriceCents ? <React.Fragment><FormattedNumber value={item.basePriceCents} style="decimal" maximumFractionDigits={1} /> ¢</React.Fragment> : '',
           }}
         />
       </Col>
@@ -60,7 +60,7 @@ const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admi
         <LabeledValue
           {...{
             label: <FormattedMessage id={`${prefix}.energyPriceCents`} />,
-            value: item.energyPriceCents ? <><FormattedNumber value={item.energyPriceCents} style="decimal" maximumFractionDigits={1} /> ¢</> : '',
+            value: item.energyPriceCents ? <React.Fragment><FormattedNumber value={item.energyPriceCents} style="decimal" maximumFractionDigits={1} /> ¢</React.Fragment> : '',
           }}
         />
       </Col>
@@ -79,7 +79,7 @@ const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admi
         <LabeledValue
           {...{
             label: <FormattedMessage id={`${tariffPrefix}.energypriceCentsPerKwh`} />,
-            value: item.tariff.energypriceCentsPerKwh ? <><FormattedNumber value={item.tariff.energypriceCentsPerKwh} style="decimal" maximumFractionDigits={1} /> ¢</> : '',
+            value: item.tariff.energypriceCentsPerKwh ? <React.Fragment><FormattedNumber value={item.tariff.energypriceCentsPerKwh} style="decimal" maximumFractionDigits={1} /> ¢</React.Fragment> : '',
           }}
         />
       </Col>
@@ -87,7 +87,7 @@ const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admi
         <LabeledValue
           {...{
             label: <FormattedMessage id={`${tariffPrefix}.basepriceCentsPerMonth`} />,
-            value: item.tariff.basepriceCentsPerMonth ? <><FormattedNumber value={item.tariff.basepriceCentsPerMonth} style="decimal" maximumFractionDigits={1} /> ¢</> : '',
+            value: item.tariff.basepriceCentsPerMonth ? <React.Fragment><FormattedNumber value={item.tariff.basepriceCentsPerMonth} style="decimal" maximumFractionDigits={1} /> ¢</React.Fragment> : '',
           }}
         />
       </Col>

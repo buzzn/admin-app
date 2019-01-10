@@ -16,7 +16,7 @@ const Owner = ({ owner, address, contact }: Props) => {
   if (contact) ownerType = 'headerContact';
 
   return (
-    <>
+    <React.Fragment>
       <Row className="fieldgroup">
         <Col xs="4" className="fieldname">
           <FormattedMessage id={`${prefix}.${ownerType}`} />
@@ -52,7 +52,7 @@ const Owner = ({ owner, address, contact }: Props) => {
           {owner.email}
         </Col>
       </Row>
-      <>
+      <React.Fragment>
         {owner.type === 'organization' && (
           <Row className="fieldgroup">
             <Col xs="4" className="fieldname" />
@@ -61,8 +61,8 @@ const Owner = ({ owner, address, contact }: Props) => {
             </Col>
           </Row>
         )}
-      </>
-    </>
+      </React.Fragment>
+    </React.Fragment>
   );
 };
 

@@ -28,7 +28,7 @@ const MarketLocationData = ({
   updateMaLoValidationRules,
   updateRegister,
 }: Props & BreadcrumbsProps & InjectIntlProps) => (
-  <>
+  <React.Fragment>
     <PageTitle
       {...{
         breadcrumbs: breadcrumbs.concat([
@@ -104,7 +104,7 @@ const MarketLocationData = ({
         }}
       />
     </CenterContent>
-  </>
+  </React.Fragment>
 );
 
 export default injectIntl(MarketLocationData);
