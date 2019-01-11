@@ -18,7 +18,7 @@ import ReadingsList from './readings_list';
 import AddReading from '../add_reading';
 
 class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps & BreadcrumbsProps> {
-  defaultAddReading = { status: 'Z86' };
+  defaultAddReading = { status: 'Z86', reason: 'PMR', readBy: 'SG', quality: '220' };
   state = { isOpen: false, addReadingInit: this.defaultAddReading };
 
   switchAddReading = () => {
