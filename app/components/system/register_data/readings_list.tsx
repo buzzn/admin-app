@@ -57,6 +57,7 @@ class ReadingsList extends React.Component<Props & InjectIntlProps, State> {
         className: 'cy-reason',
         filterMethod: TableParts.filters.filterByValue,
         sortMethod: TableParts.sort.sortByValue,
+        Cell: ({ value }) => intl.formatMessage({ id: `${prefix}.${value}` }),
       },
       {
         expander: true,
