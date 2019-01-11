@@ -6,6 +6,7 @@ import EditableSelect from 'components/editable_select';
 import TwoColField from 'components/two_col_field';
 import { NestedDetailsWrapper } from 'components/style';
 import ItemDetails from './item_details';
+import { ButtonsWrapper } from './style';
 
 interface Props {
   dirty: boolean;
@@ -63,14 +64,16 @@ class NestedDetails extends React.Component<Props & InjectedIntlProps, State> {
             }}
           />
           {editMode && (
-            <div className="float-right mt-3">
-              <button className="btn btn-link" onClick={this.switchEditMode}>
-                <FormattedMessage id="admin.buttons.cancel" /> <i className="fa fa-times" />
-              </button>
-              <button className="btn btn-primary" type="submit">
-                <FormattedMessage id="admin.buttons.submit" />
-              </button>
-            </div>
+            <ButtonsWrapper>
+              <div className="float-right mt-3">
+                <button className="btn btn-link" onClick={this.switchEditMode}>
+                  <FormattedMessage id="admin.buttons.cancel" /> <i className="fa fa-times" />
+                </button>
+                <button className="btn btn-primary" type="submit">
+                  <FormattedMessage id="admin.buttons.submit" />
+                </button>
+              </div>
+            </ButtonsWrapper>
           )}
         </form>
         <h5>

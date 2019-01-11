@@ -15,3 +15,8 @@ export const ItemErrors = styled.span`
   color: red;
   font-weight: bold;
 `;
+
+export const ButtonsWrapper = styled.div`
+  width: 100%;
+  height: 60px;
+`;
