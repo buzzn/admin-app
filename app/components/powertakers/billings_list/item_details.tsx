@@ -12,7 +12,7 @@ const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admi
         <Col xs={12}>
           <ItemErrors>
             {Object.keys(item.incompleteness).reduce(
-              (err, key) => `${err ? ', ' : ''}${key}: ${item.incompleteness[key].join(', ')}`,
+              (err, key) => `${err ? `${err}, ` : ''}${key}: ${item.incompleteness[key].join(', ')}`,
               '',
             )}
           </ItemErrors>

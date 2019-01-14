@@ -49,7 +49,11 @@ class AddReading extends React.Component<Props & InjectedIntlProps> {
                   {...{
                     name: 'rawValue',
                     type: 'text',
-                    label: <FormattedMessage id={`${prefix}.rawValue`} />,
+                    label: (
+                      <React.Fragment>
+                        <FormattedMessage id={`${prefix}.rawValue`} /> kWh
+                      </React.Fragment>
+                    ),
                     component: FieldInput,
                     validationRules,
                   }}
@@ -60,7 +64,11 @@ class AddReading extends React.Component<Props & InjectedIntlProps> {
                   {...{
                     name: 'value',
                     type: 'text',
-                    label: <FormattedMessage id={`${prefix}.value`} />,
+                    label: (
+                      <React.Fragment>
+                        <FormattedMessage id={`${prefix}.value`} /> kWh
+                      </React.Fragment>
+                    ),
                     component: FieldInput,
                     validationRules,
                   }}
@@ -69,11 +77,12 @@ class AddReading extends React.Component<Props & InjectedIntlProps> {
               <Col xs={4}>
                 <FieldValidationWrapper
                   {...{
-                    name: 'unit',
-                    editMode: true,
-                    component: EditableSelect,
+                    name: 'date',
+                    type: 'text',
+                    label: <FormattedMessage id={`${prefix}.date`} />,
+                    component: FieldDate,
                     validationRules,
-                    prefix,
+                    normalize: dateNormalizer('YYYY-MM-DD'),
                   }}
                 />
               </Col>
@@ -87,6 +96,7 @@ class AddReading extends React.Component<Props & InjectedIntlProps> {
                     component: EditableSelect,
                     validationRules,
                     prefix,
+                    withLabel: true,
                   }}
                 />
               </Col>
@@ -98,6 +108,7 @@ class AddReading extends React.Component<Props & InjectedIntlProps> {
                     component: EditableSelect,
                     validationRules,
                     prefix,
+                    withLabel: true,
                   }}
                 />
               </Col>
@@ -109,6 +120,7 @@ class AddReading extends React.Component<Props & InjectedIntlProps> {
                     component: EditableSelect,
                     validationRules,
                     prefix,
+                    withLabel: true,
                   }}
                 />
               </Col>
@@ -120,6 +132,7 @@ class AddReading extends React.Component<Props & InjectedIntlProps> {
                     component: EditableSelect,
                     validationRules,
                     prefix,
+                    withLabel: true,
                   }}
                 />
               </Col>
@@ -133,10 +146,11 @@ class AddReading extends React.Component<Props & InjectedIntlProps> {
                     component: EditableSelect,
                     validationRules,
                     prefix,
+                    withLabel: true,
                   }}
                 />
               </Col>
-              <Col xs={6}>
+              <Col xs={9}>
                 <FieldValidationWrapper
                   {...{
                     name: 'comment',
@@ -144,18 +158,6 @@ class AddReading extends React.Component<Props & InjectedIntlProps> {
                     label: <FormattedMessage id={`${prefix}.comment`} />,
                     component: FieldInput,
                     validationRules,
-                  }}
-                />
-              </Col>
-              <Col xs={3}>
-                <FieldValidationWrapper
-                  {...{
-                    name: 'date',
-                    type: 'text',
-                    label: <FormattedMessage id={`${prefix}.date`} />,
-                    component: FieldDate,
-                    validationRules,
-                    normalize: dateNormalizer('YYYY-MM-DD'),
                   }}
                 />
               </Col>

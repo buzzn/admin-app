@@ -18,7 +18,8 @@ import ReadingsList from './readings_list';
 import AddReading from '../add_reading';
 
 class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps & BreadcrumbsProps> {
-  defaultAddReading = { status: 'Z86', reason: 'PMR', readBy: 'SG', quality: '220' };
+  defaultAddReading = { status: 'Z86', reason: 'PMR', readBy: 'SG', quality: '220', unit: 'Wh' };
+
   state = { isOpen: false, addReadingInit: this.defaultAddReading };
 
   switchAddReading = () => {
@@ -29,7 +30,14 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
     const { addReading, groupId, meterId, registerId } = this.props;
 
     return new Promise((resolve, reject) => {
-      addReading({ groupId, meterId, registerId, params, resolve, reject });
+      addReading({
+        groupId,
+        meterId,
+        registerId,
+        params: { ...params, value: params.value * 1000, rawValue: params.rawValue * 1000 },
+        resolve,
+        reject,
+      });
     }).then((res) => {
       this.switchAddReading();
       this.setState({ addReadingInit: this.defaultAddReading });
@@ -59,7 +67,14 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
         Alert.warning('<h4>No reading for this date</h4>');
       } else {
         const { _status, ...addReadingInit } = res;
-        this.setState({ addReadingInit });
+        this.setState({
+          addReadingInit: {
+            ...addReadingInit,
+            unit: 'Wh',
+            value: addReadingInit.value / 1000,
+            rawValue: addReadingInit.rawValue / 1000,
+          },
+        });
       }
     });
   };
