@@ -83,7 +83,7 @@ class RegisterData extends React.Component<Props> {
               {!editMode && register.updatable && <i className="buzzn-pencil" onClick={switchEditMode} />}
             </FormTitle>
             <TwoColView {...{ prefix, field: 'obis' }}>
-              <FormattedMessage id={`${prefix}.obis`} />
+              {register.obis}
             </TwoColView>
             <TwoColField
               {...{
@@ -95,7 +95,7 @@ class RegisterData extends React.Component<Props> {
               }}
             />
             <TwoColView {...{ prefix, field: 'direction' }}>
-              <FormattedMessage id={`${prefix}.direction`} />
+              {register.direction}
             </TwoColView>
             <TwoColField
               {...{
