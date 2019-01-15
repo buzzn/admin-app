@@ -11,6 +11,7 @@ module.exports = {
   devServer: { historyApiFallback: true },
   entry: [
     '@babel/polyfill',
+    'core-js/fn/array/flat-map',
     'bootstrap-loader',
     'react-hot-loader/patch',
     'webpack/hot/only-dev-server',
