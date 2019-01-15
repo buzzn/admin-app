@@ -22,7 +22,7 @@ export function* getRegister({ apiUrl, apiPath, token }, { registerId, groupId, 
 export function* getRegisterPower({ apiUrl, apiPath, token }, { registerId, groupId, meterId }) {
   try {
     const power = yield call(api.fetchRegisterPower, { apiUrl, apiPath, token, registerId, groupId, meterId });
-    yield put(actions.setRegisterPower({ power }));
+    yield put(actions.setRegisterPower({ power, registerId }));
   } catch (error) {
     logException(error);
   }

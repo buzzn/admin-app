@@ -44,11 +44,10 @@ const MarketLocationData = ({
     />
     <CenterContent>
       <HeaderData>
-        {!!marketLocation.register && (
-          <RegisterPowerContainer
-            {...{ groupId, meterId: marketLocation.register.meterId, registerId: marketLocation.register.id }}
-          />
-        )}
+        {!!marketLocation.registers.array
+          && marketLocation.registers.array.map(r => (
+            <RegisterPowerContainer {...{ groupId, meterId: r.meterId, registerId: r.id, key: r.id }} />
+          ))}
         <HeaderValue>
           <FormattedMessage id="admin.marketLocations.thirdPartyId" />:{' '}
           <span className="value">{marketLocation.marketLocationId || '-----'}</span>
@@ -57,7 +56,7 @@ const MarketLocationData = ({
           <FormattedMessage id="admin.marketLocations.kind" />: <span className="value">{marketLocation.kind}</span>
         </HeaderValue>
       </HeaderData>
-      {!!marketLocation.register && (
+      {!!marketLocation.registers.array && (
         <SubNav>
           <NavLink to={`${locationUrl}/contracts`} exact className="nav-link">
             <FormattedMessage id="admin.marketLocations.navContracts" />
@@ -85,7 +84,9 @@ const MarketLocationData = ({
           <Route
             path={`${locationUrl}/registers`}
             render={({ history }) => (
-              <Registers {...{ url, history, locationId: marketLocation.id, registers: marketLocation.registers.array }} />
+              <Registers
+                {...{ url, history, locationId: marketLocation.id, registers: marketLocation.registers.array }}
+              />
             )}
           />
         )}
