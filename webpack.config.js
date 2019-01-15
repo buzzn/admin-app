@@ -96,6 +96,8 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'),
       'process.env.buildDate': buildDate,
+      'process.env.DEV_LOGIN': JSON.stringify(process.env.DEV_LOGIN),
+      'process.env.DEV_PASS': JSON.stringify(process.env.DEV_PASS),
     }),
     new FaviconsWebpackPlugin('./favicon.png'),
     new GenerateJsonPlugin('version.json', { buildDate }),

@@ -121,6 +121,13 @@ export function* initialLoadPause() {
   yield put(actions.setAppLoading(false));
 }
 
+export function* setDevLogin() {
+  if (process.env.DEV_LOGIN && process.env.DEV_PASS) {
+    yield put(Auth.actions.setLogin(process.env.DEV_LOGIN));
+    yield put(Auth.actions.setPassword(process.env.DEV_PASS));
+  }
+}
+
 export default function* () {
   const { apiUrl, apiPath, authPath, websitePath, secure, versionPath } = yield select(getConfig);
   const buildDate = yield select(getBuildDate);
@@ -155,6 +162,7 @@ export default function* () {
 
   while (true) {
     if (!token) {
+      yield call(setDevLogin);
       ({ token } = yield take(Auth.constants.SIGN_IN));
     }
 
