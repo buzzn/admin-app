@@ -88,11 +88,12 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
                 />
               </Col>
             </Row>
-            {!!addBillingSubmitErrors
-              && !!addBillingSubmitErrors.items && (
-                <Row>
-                  <Col xs={12}>
-                    {Object.keys(addBillingSubmitErrors.items).reduce(
+            {!!addBillingSubmitErrors && !!addBillingSubmitErrors.items && (
+              <Row>
+                <Col xs={12}>
+                  {Array.isArray(addBillingSubmitErrors.items)
+                    ? addBillingSubmitErrors.items.join(', ')
+                    : Object.keys(addBillingSubmitErrors.items).reduce(
                       (resErr, errKey) => `${resErr}${
                         Array.isArray(addBillingSubmitErrors.items[errKey])
                           ? `${errKey}: ${addBillingSubmitErrors.items[errKey].reduce((r, e) => `${r}${e} `, '')}`
@@ -100,14 +101,13 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
                       }`,
                       '',
                     )}
-                  </Col>
-                </Row>
+                </Col>
+              </Row>
             )}
-            {!!addBillingSubmitErrors
-              && !!addBillingSubmitErrors.errorMessage && (
-                <Row>
-                  <Col xs={12}>{addBillingSubmitErrors.errorMessage}</Col>
-                </Row>
+            {!!addBillingSubmitErrors && !!addBillingSubmitErrors.errorMessage && (
+              <Row>
+                <Col xs={12}>{addBillingSubmitErrors.errorMessage}</Col>
+              </Row>
             )}
           </ModalBody>
           <ModalFooter>
