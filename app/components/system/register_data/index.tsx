@@ -2,8 +2,6 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Switch, Route, NavLink, Redirect } from 'react-router-dom';
-import { getFormValues } from 'redux-form';
-import Alert from 'react-s-alert';
 import get from 'lodash/get';
 import Meters from 'meters';
 import Registers from 'registers';
@@ -12,71 +10,22 @@ import { BreadcrumbsProps } from 'components/breadcrumbs';
 import Loading from 'components/loading';
 import { CenterContent, SubNav } from 'components/style';
 import PageTitle from 'components/page_title';
+import AddReading from 'components/add_reading';
 import RegisterPowerContainer from './register_power';
 import RegisterDataForm from './form';
 import ReadingsList from './readings_list';
-import AddReading from '../add_reading';
 
 class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps & BreadcrumbsProps> {
-  defaultAddReading = { status: 'Z86', reason: 'PMR', readBy: 'SG', quality: '220', unit: 'Wh' };
-
-  state = { isOpen: false, addReadingInit: this.defaultAddReading };
+  state = { isOpen: false };
 
   switchAddReading = () => {
     this.setState({ isOpen: !this.state.isOpen });
-  };
-
-  addReading = (params) => {
-    const { addReading, groupId, meterId, registerId } = this.props;
-
-    return new Promise((resolve, reject) => {
-      addReading({
-        groupId,
-        meterId,
-        registerId,
-        params: { ...params, value: params.value * 1000, rawValue: params.rawValue * 1000 },
-        resolve,
-        reject,
-      });
-    }).then((res) => {
-      this.switchAddReading();
-      this.setState({ addReadingInit: this.defaultAddReading });
-      return res;
-    });
   };
 
   deleteReading = (readingId) => {
     const { deleteReading, groupId, meterId, registerId } = this.props;
     if (!confirm('Delete?')) return;
     deleteReading({ groupId, meterId, registerId, readingId });
-  };
-
-  getAutoReadingValue = () => {
-    const { getAutoReadingValue, addReadingFormValues, groupId, meterId, registerId } = this.props;
-    new Promise((resolve, reject) => {
-      getAutoReadingValue({
-        groupId,
-        meterId,
-        registerId,
-        resolve,
-        reject,
-        params: { date: addReadingFormValues.date },
-      });
-    }).then((res: { _status: null | number; [key: string]: any }) => {
-      if (res._status === 404) {
-        Alert.warning('<h4>No reading for this date</h4>');
-      } else {
-        const { _status, ...addReadingInit } = res;
-        this.setState({
-          addReadingInit: {
-            ...addReadingInit,
-            unit: 'Wh',
-            value: addReadingInit.value / 1000,
-            rawValue: addReadingInit.rawValue / 1000,
-          },
-        });
-      }
-    });
   };
 
   componentDidMount() {
@@ -101,11 +50,7 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
       devMode,
       updateRegister,
       validationRules,
-      readingsValidationRules,
-      addReadingFormName,
-      addReadingFormValues,
     } = this.props;
-    const { isOpen, addReadingInit } = this.state;
 
     if (loading || meter._status === null) return <Loading minHeight={40} />;
     if (meter._status && meter._status !== 200) return <Redirect to={url} />;
@@ -152,7 +97,6 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
                       meterId,
                       groupId,
                       deleteReading: this.deleteReading,
-                      readingsValidationRules,
                       switchAddReading: this.switchAddReading,
                     }}
                   />
@@ -178,15 +122,12 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
           </Switch>
           <AddReading
             {...{
-              toggle: this.switchAddReading,
-              isOpen,
-              validationRules: readingsValidationRules,
-              form: addReadingFormName,
-              initialValues: addReadingInit,
-              addReadingFormValues,
-              datasource: meter.datasource,
-              onSubmit: this.addReading,
-              getAutoReadingValue: this.getAutoReadingValue,
+              edifactMeasurementMethod: meter.edifactMeasurementMethod,
+              isOpen: this.state.isOpen,
+              switchAddReading: this.switchAddReading,
+              groupId,
+              meterId,
+              registerId,
             }}
           />
         </CenterContent>
@@ -198,7 +139,6 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
 interface StatePart {
   meters: { loadingMeter: boolean; meter: { _status: null | number; [key: string]: any } };
   registers: { validationRules: any };
-  readings: { validationRules: any };
 }
 
 interface ExtProps {
@@ -214,29 +154,20 @@ interface StateProps {
   loading: boolean;
   meter: { _status: null | number; [key: string]: any };
   validationRules: any;
-  readingsValidationRules: any;
-  addReadingFormName: string;
-  addReadingFormValues: { [key: string]: any };
 }
 
 interface DispatchProps {
   loadMeter: Function;
   setMeter: Function;
   updateRegister: Function;
-  addReading: Function;
   deleteReading: Function;
-  getAutoReadingValue: Function;
 }
 
 function mapStateToProps(state: StatePart) {
-  const addReadingFormName = 'addReading';
   return {
     meter: state.meters.meter,
     loading: state.meters.loadingMeter,
     validationRules: state.registers.validationRules,
-    readingsValidationRules: state.readings.validationRules,
-    addReadingFormName,
-    addReadingFormValues: getFormValues(addReadingFormName)(state) || {},
   };
 }
 
@@ -246,8 +177,6 @@ export default connect<StateProps, DispatchProps, ExtProps>(
     loadMeter: Meters.actions.loadMeter,
     setMeter: Meters.actions.setMeter,
     updateRegister: Registers.actions.updateRegister,
-    addReading: Readings.actions.addReading,
     deleteReading: Readings.actions.deleteReading,
-    getAutoReadingValue: Readings.actions.getAutoReadingValue,
   },
 )(RegisterData);

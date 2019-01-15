@@ -19,6 +19,20 @@ import AttachedTariffs from 'components/attached_tariffs';
 import AddBilling from '../add_billing';
 import NestedDetails from './nested_details';
 
+interface ManageReadingInterface {
+  attachReading: Function;
+  groupId: string;
+  contractId: string;
+  billingId: string;
+}
+
+export const ManageReadingContext = React.createContext<ManageReadingInterface>({
+  attachReading: () => false,
+  groupId: '',
+  contractId: '',
+  billingId: '',
+});
+
 class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps & InjectedIntlProps, ComponentState> {
   state = { isOpen: false, expanded: {} };
 
@@ -77,6 +91,7 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
       updateContract,
       addBillingFormName,
       addBillingSubmitErrors,
+      attachReading,
     } = this.props;
     const { isOpen } = this.state;
 
@@ -190,22 +205,31 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
               },
             }),
             SubComponent: row => (
-              <NestedDetails
-                {...{
-                  billing: row.original,
-                  initialValues: row.original,
-                  validationRules: validationRules.billingUpdate,
-                  form: `billingUpdateForm${row.original.id}`,
-                  onSubmit: params => this.updateBilling({
-                    billingId: row.original.id,
-                    params: {
-                      status: params.status,
-                      invoiceNumber: params.invoiceNumber,
-                      updatedAt: params.updatedAt,
-                    },
-                  }),
+              <ManageReadingContext.Provider
+                value={{
+                  attachReading,
+                  groupId,
+                  contractId,
+                  billingId: row.original.id,
                 }}
-              />
+              >
+                <NestedDetails
+                  {...{
+                    billing: row.original,
+                    initialValues: row.original,
+                    validationRules: validationRules.billingUpdate,
+                    form: `billingUpdateForm${row.original.id}`,
+                    onSubmit: params => this.updateBilling({
+                      billingId: row.original.id,
+                      params: {
+                        status: params.status,
+                        invoiceNumber: params.invoiceNumber,
+                        updatedAt: params.updatedAt,
+                      },
+                    }),
+                  }}
+                />
+              </ManageReadingContext.Provider>
             ),
           }}
         />
@@ -256,6 +280,7 @@ interface DispatchProps {
   loadContract: Function;
   updateContract: Function;
   loadTariffs: Function;
+  attachReading: Function;
 }
 
 function mapStateToProps(state: StatePart) {
@@ -281,5 +306,6 @@ export default connect<StateProps, DispatchProps, ExtProps>(
     loadContract: Contracts.actions.loadContract,
     updateContract: Contracts.actions.updateContract,
     loadTariffs: Tariffs.actions.loadTariffs,
+    attachReading: Billings.actions.attachReading,
   },
 )(injectIntl(BillingsList));

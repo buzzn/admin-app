@@ -11,7 +11,7 @@ import { dateNormalizer } from 'validation_normalizers';
 
 interface Props {}
 
-class AddReading extends React.Component<Props & InjectedIntlProps> {
+class AddReadingForm extends React.Component<Props & InjectedIntlProps> {
   state = { tooltipOpen: false };
 
   tooltipToggle = () => {
@@ -33,7 +33,14 @@ class AddReading extends React.Component<Props & InjectedIntlProps> {
   };
 
   render() {
-    const { isOpen, handleSubmit, validationRules, getAutoReadingValue, addReadingFormValues, datasource } = this.props;
+    const {
+      isOpen,
+      handleSubmit,
+      validationRules,
+      getAutoReadingValue,
+      addReadingFormValues,
+      edifactMeasurementMethod,
+    } = this.props;
     const prefix = 'admin.readings';
 
     return (
@@ -164,7 +171,7 @@ class AddReading extends React.Component<Props & InjectedIntlProps> {
             </Row>
           </ModalBody>
           <ModalFooter>
-            {datasource === 'discovergy' && (
+            {edifactMeasurementMethod === 'AMR' && (
               <React.Fragment>
                 <button
                   className="btn btn-dark"
@@ -210,4 +217,4 @@ export default reduxForm({
   onSubmitSuccess: (_result, _dispatch, { reset }) => {
     reset();
   },
-})(injectIntl(AddReading));
+})(injectIntl(AddReadingForm));

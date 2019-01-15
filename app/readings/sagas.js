@@ -1,21 +1,39 @@
 import { put, call, takeLatest, takeLeading, take, cancel, fork } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import { logException } from '_util';
-import Registers from 'registers';
+import Billings from 'billings';
 import Meters from 'meters';
 import { constants } from './actions';
 import api from './api';
 
-export function* addReading({ apiUrl, apiPath, token }, { meterId, registerId, params, resolve, reject, groupId }) {
+export function* addReading(
+  { apiUrl, apiPath, token },
+  { meterId, registerId, params, resolve, reject, groupId, billingItem },
+) {
   try {
     const res = yield call(api.addReading, { apiUrl, apiPath, token, meterId, registerId, params, groupId });
     if (res._error) {
       yield call(reject, new SubmissionError(res));
+      // HACK: dirty hack.
+    } else if (billingItem) {
+      yield put(
+        Billings.actions.attachReading({
+          params: {
+            ...params,
+            [billingItem.begin ? 'beginReadingId' : 'endReadingId']: res.id,
+            updatedAt: billingItem.updatedAt,
+          },
+          resolve,
+          reject,
+          groupId,
+          contractId: billingItem.contractId,
+          billingId: billingItem.billingId,
+          billingItemId: billingItem.billingItemId,
+        }),
+      );
     } else {
       yield call(resolve, res);
       yield put(Meters.actions.loadMeter({ groupId, meterId }));
-      // yield put(Meters.actions.loadGroupMeters(groupId));
-      // yield put(Registers.actions.loadRegister({ registerId, groupId, meterId }));
     }
   } catch (error) {
     logException(error);
@@ -26,8 +44,6 @@ export function* deleteReading({ apiUrl, apiPath, token }, { meterId, registerId
   try {
     yield call(api.deleteReading, { apiUrl, apiPath, token, meterId, registerId, groupId, readingId });
     yield put(Meters.actions.loadMeter({ groupId, meterId }));
-    // yield put(Meters.actions.loadGroupMeters(groupId));
-    // yield put(Registers.actions.loadRegister({ registerId, groupId }));
   } catch (error) {
     logException(error);
   }

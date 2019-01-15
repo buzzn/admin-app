@@ -152,7 +152,19 @@ export class System extends React.Component {
           }) => {
             const marketLocation = marketLocations.array.find(m => m.id === locationId);
             if (!marketLocation) return <Redirect to={url} />;
-            return <MarketLocationData {...{ breadcrumbs, url, groupId, locationUrl, marketLocation, updateRegister, updateMaLoValidationRules }} />;
+            return (
+              <MarketLocationData
+                {...{
+                  breadcrumbs,
+                  url,
+                  groupId,
+                  locationUrl,
+                  marketLocation,
+                  updateRegister,
+                  updateMaLoValidationRules,
+                }}
+              />
+            );
           }}
         />
         <Route path={url}>
@@ -164,15 +176,16 @@ export class System extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const getRegisters = malo => (malo._status === 200 ? malo.array.filter(m => m.register).map(m => m.register) : []);
-  const getMeters = malo => (malo._status === 200 ? malo.array.filter(m => m.register).map(m => m.register.meter) : []);
+  const marketLocations = state.marketLocations.marketLocations;
+  const registers = marketLocations._status === 200 ? marketLocations.array.reduce((regs, malo) => ([...regs, ...malo.registers.array]), []) : [];
+  const meters = registers.length ? registers.map(r => r.meter) : [];
   return {
     devMode: state.app.ui.devMode,
     group: state.groups.group,
     loading: state.marketLocations.loadingMarketLocations || !state.groups.group.id,
-    marketLocations: state.marketLocations.marketLocations,
-    registers: getRegisters(state.marketLocations.marketLocations),
-    meters: getMeters(state.marketLocations.marketLocations),
+    marketLocations,
+    registers,
+    meters,
     createMeterValidationRules: state.meters.validationRules.realCreate,
     updateMaLoValidationRules: state.registers.validationRules,
   };

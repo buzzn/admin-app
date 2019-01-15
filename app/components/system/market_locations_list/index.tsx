@@ -29,13 +29,24 @@ const MarketLocationsList = ({
 
   const data = marketLocations
     .filter(m => m.kind === maloType)
-    .map(m => ({
-      ...m,
-      labelIntl: intl.formatMessage({ id: `admin.registers.${m.label}` }),
-      meterProductSerialnumber: m.register ? m.register.meter.productSerialnumber : '',
-      linkMeter: m.register ? `${url}/meters/${m.register.meter.id}` : null,
-      linkMarketLocation: `${url}/${m.id}`,
-    }));
+    .flatMap((m) => {
+      if (!m.registers.array || !m.registers.array.length) {
+        return {
+          ...m,
+          labelIntl: intl.formatMessage({ id: `admin.registers.${m.label}` }),
+          meterProductSerialnumber: '',
+          linkMeter: null,
+          linkMarketLocation: `${url}/${m.id}`,
+        };
+      }
+      return m.registers.array.map(r => ({
+        ...m,
+        labelIntl: intl.formatMessage({ id: `admin.registers.${m.label}` }),
+        meterProductSerialnumber: r.meter.productSerialnumber,
+        linkMeter: `${url}/meters/${r.meter.id}`,
+        linkMarketLocation: `${url}/${m.id}`,
+      }));
+    });
 
   const columns = [
     {
@@ -68,17 +79,16 @@ const MarketLocationsList = ({
     {
       Header: '',
       width: 40,
-      Cell: ({ original }) =>
-        original.register
-          ? TableParts.components.iconCell({
-              icon: 'copy',
-              action: () => duplicateMeter(original),
-              tooltip: {
-                id: `clone-meter-${original.id}`,
-                text: 'Zähler klonen',
-              },
-            })
-          : false,
+      Cell: ({ original }) => (original.register
+        ? TableParts.components.iconCell({
+          icon: 'copy',
+          action: () => duplicateMeter(original),
+          tooltip: {
+            id: `clone-meter-${original.id}`,
+            text: 'Zähler klonen',
+          },
+        })
+        : false),
     },
   ];
 
@@ -121,8 +131,7 @@ const MarketLocationsList = ({
               getTdProps: (_state, rowInfo, column) => ({
                 onClick: (_e, handleOriginal) => {
                   if (column.id === 'name') history.push(rowInfo.original.linkMarketLocation);
-                  if (column.id === 'meterProductSerialnumber' && rowInfo.original.linkMeter)
-                    history.push(rowInfo.original.linkMeter);
+                  if (column.id === 'meterProductSerialnumber' && rowInfo.original.linkMeter) history.push(rowInfo.original.linkMeter);
                   if (handleOriginal) handleOriginal();
                 },
               }),

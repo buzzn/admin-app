@@ -3,14 +3,17 @@ import { prepareHeaders, parseResponse, camelizeResponseKeys, snakeReq } from '.
 export default {
   fetchBilling({ token, apiUrl, apiPath, billingId, groupId, contractId }) {
     return fetch(
-      `${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/billings/${billingId}?include=items:[tariff]`,
+      `${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/billings/${billingId}?include=items:[tariff,register]`,
       { headers: prepareHeaders(token) },
     )
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
   fetchBillings({ token, apiUrl, apiPath, groupId, contractId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/billings?include=items:[tariff]`, { headers: prepareHeaders(token) })
+    return fetch(
+      `${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/billings?include=items:[tariff,meter,register:[readings]]`,
+      { headers: prepareHeaders(token) },
+    )
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
@@ -23,6 +26,13 @@ export default {
   },
   updateBilling({ token, apiUrl, apiPath, billingId, groupId, contractId, params }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/billings/${billingId}`, {
+      headers: prepareHeaders(token),
+      method: 'PATCH',
+      body: JSON.stringify(snakeReq(params)),
+    }).then(parseResponse);
+  },
+  attachReading({ token, apiUrl, apiPath, billingId, groupId, contractId, billingItemId, params }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/billings/${billingId}/items/${billingItemId}`, {
       headers: prepareHeaders(token),
       method: 'PATCH',
       body: JSON.stringify(snakeReq(params)),

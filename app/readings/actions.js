@@ -16,7 +16,7 @@ export const actions = {
 
   setValidationRules: validationRules => ({ type: constants.SET_VALIDATION_RULES, validationRules }),
 
-  addReading: ({ meterId, registerId, params, resolve, reject, groupId }) => ({
+  addReading: ({ meterId, registerId, params, resolve, reject, groupId, billingItem }) => ({
     type: constants.ADD_READING,
     meterId,
     registerId,
@@ -24,6 +24,7 @@ export const actions = {
     resolve,
     reject,
     groupId,
+    billingItem,
   }),
   deleteReading: ({ meterId, registerId, groupId, readingId }) => ({
     type: constants.DELETE_READING,

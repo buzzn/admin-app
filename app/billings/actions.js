@@ -17,6 +17,8 @@ export const constants = {
   ADD_BILLING: 'buzzn_billings/ADD_BILLING',
 
   UPDATE_BILLING: 'buzzn_billings/UPDATE_BILLING',
+
+  ATTACH_READING: 'buzzn_billings/ATTACH_READING',
 };
 
 export const actions = {
@@ -34,7 +36,12 @@ export const actions = {
   loadedBillings: () => ({ type: constants.LOADED_BILLINGS }),
   setBillings: billings => ({ type: constants.SET_BILLINGS, billings }),
 
-  loadBilling: ({ groupId, contractId, billingId }) => ({ type: constants.LOAD_BILLING, groupId, contractId, billingId }),
+  loadBilling: ({ groupId, contractId, billingId }) => ({
+    type: constants.LOAD_BILLING,
+    groupId,
+    contractId,
+    billingId,
+  }),
   loadingBilling: () => ({ type: constants.LOADING_BILLING }),
   loadedBilling: () => ({ type: constants.LOADED_BILLING }),
   setBilling: ({ billing }) => ({ type: constants.SET_BILLING, billing }),
@@ -48,7 +55,7 @@ export const actions = {
     contractId,
   }),
 
-  updateBilling: ({ params, resolve, reject, groupId, contractId, billingId}) => ({
+  updateBilling: ({ params, resolve, reject, groupId, contractId, billingId }) => ({
     type: constants.UPDATE_BILLING,
     params,
     resolve,
@@ -56,5 +63,16 @@ export const actions = {
     groupId,
     contractId,
     billingId,
+  }),
+
+  attachReading: ({ params, resolve, reject, groupId, contractId, billingId, billingItemId }) => ({
+    type: constants.ATTACH_READING,
+    params,
+    resolve,
+    reject,
+    groupId,
+    contractId,
+    billingId,
+    billingItemId,
   }),
 };

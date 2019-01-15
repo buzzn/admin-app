@@ -81,11 +81,11 @@ const MarketLocationData = ({
             />
           )}
         />
-        {!!marketLocation.register && (
+        {!!marketLocation.registers.array && (
           <Route
             path={`${locationUrl}/registers`}
             render={({ history }) => (
-              <Registers {...{ url, history, locationId: marketLocation.id, registers: [marketLocation.register] }} />
+              <Registers {...{ url, history, locationId: marketLocation.id, registers: marketLocation.registers.array }} />
             )}
           />
         )}

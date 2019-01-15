@@ -112,6 +112,11 @@ export default [
       '/localpools/{localpool_id}/contracts/{localpool_power_taker_contract_id}/billings/{billing_id}.patch.parameters',
     setAction: rules => Billings.actions.setValidationRules('billingUpdate', rules),
   },
+  {
+    swaggerPath:
+      '/localpools/{localpool_id}/contracts/{localpool_power_taker_contract_id}/billings/{billing_id}/items/{billing_item_id}.patch.parameters',
+    setAction: rules => Billings.actions.setValidationRules('readingAttach', rules),
+  },
   // Tariffs
   {
     swaggerPath: '/localpools/{localpool_id}/tariffs.post.parameters',

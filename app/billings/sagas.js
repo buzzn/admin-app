@@ -30,26 +30,18 @@ export function* getBillings({ apiUrl, apiPath, token }, { groupId, contractId }
   yield put(actions.loadedBillings());
 }
 
-export function* addBilling({ apiUrl, apiPath, token }, { params, resolve, reject, groupId, contractId }) {
-  try {
-    const res = yield call(api.addBilling, { apiUrl, apiPath, token, params, groupId, contractId });
-    if (res._error) {
-      yield call(reject, new SubmissionError(res));
-    } else {
-      yield call(resolve, res);
-      yield call(getBillings, { apiUrl, apiPath, token }, { groupId, contractId });
-    }
-  } catch (error) {
-    logException(error);
-  }
-}
-
-export function* updateBilling(
-  { apiUrl, apiPath, token },
-  { params, resolve, reject, groupId, contractId, billingId },
+export function* changeBilling(
+  { apiUrl, apiPath, token, type },
+  { resolve, reject, params, groupId, contractId, ...other },
 ) {
+  const billingsApi = {
+    add: api.addBilling,
+    update: api.updateBilling,
+    attachReading: api.attachReading,
+  };
+
   try {
-    const res = yield call(api.updateBilling, { apiUrl, apiPath, token, params, groupId, contractId, billingId });
+    const res = yield call(billingsApi[type], { apiUrl, apiPath, token, params, groupId, contractId, ...other });
     if (res._error) {
       yield call(reject, new SubmissionError(res));
     } else {
@@ -64,8 +56,9 @@ export function* updateBilling(
 export function* billingsSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_BILLINGS, getBillings, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_BILLING, getBilling, { apiUrl, apiPath, token });
-  yield takeLeading(constants.ADD_BILLING, addBilling, { apiUrl, apiPath, token });
-  yield takeLeading(constants.UPDATE_BILLING, updateBilling, { apiUrl, apiPath, token });
+  yield takeLeading(constants.ADD_BILLING, changeBilling, { apiUrl, apiPath, token, type: 'add' });
+  yield takeLeading(constants.UPDATE_BILLING, changeBilling, { apiUrl, apiPath, token, type: 'update' });
+  yield takeLeading(constants.ATTACH_READING, changeBilling, { apiUrl, apiPath, token, type: 'attachReading' });
 
   const billingId = yield select(selectBillingId);
   const contractId = yield select(selectContractId);
