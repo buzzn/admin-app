@@ -52,7 +52,7 @@ const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admi
     .catch(err => Alert.error(JSON.stringify(err)));
 
   return (
-    <ItemDetailsWrapper>
+    <ItemDetailsWrapper className="cy-item-details">
       {!!item.incompleteness && (
         <Row>
           <Col xs={12}>
@@ -71,6 +71,7 @@ const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admi
             {...{
               label: <FormattedMessage id={`${prefix}.beginDate`} />,
               value: moment(item.beginDate).format('DD.MM.YYYY'),
+              valueClassName: 'cy-item-begin-date',
             }}
           />
         </Col>
@@ -79,6 +80,7 @@ const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admi
             {...{
               label: <FormattedMessage id={`${prefix}.lastDate`} />,
               value: moment(item.lastDate).format('DD.MM.YYYY'),
+              valueClassName: 'cy-item-last-date',
             }}
           />
         </Col>
@@ -144,6 +146,7 @@ const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admi
             {...{
               label: <FormattedMessage id={`${tariffPrefix}.name`} />,
               value: item.tariff.name,
+              valueClassName: 'cy-item-tariff-name',
             }}
           />
         </Col>
