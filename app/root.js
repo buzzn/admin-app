@@ -30,6 +30,7 @@ import './react_table_config';
 
 const WebsiteFormsContainer = React.lazy(() => import('components/website_forms'));
 const PowertakersContainer = React.lazy(() => import('components/powertakers'));
+const BillingsOverviewContainer = React.lazy(() => import('components/billings_overview'));
 const TariffsContainer = React.lazy(() => import('components/tariffs'));
 const BillingContainer = React.lazy(() => import('components/billing'));
 const SystemContainer = React.lazy(() => import('components/system'));
@@ -85,6 +86,10 @@ const RouterHack = ({
                         <Route
                           path="/groups/:groupId/powertakers"
                           render={props => withSuspense(PowertakersContainer)(props)}
+                        />
+                        <Route
+                          path="/groups/:groupId/billings-overview"
+                          render={props => withSuspense(BillingsOverviewContainer)(props)}
                         />
                         <Route
                           path="/groups/:groupId/tariffs"

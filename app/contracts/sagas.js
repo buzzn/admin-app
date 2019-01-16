@@ -7,6 +7,7 @@ import { constants, actions } from './actions';
 import api from './api';
 
 export const selectGroup = state => state.contracts.groupId;
+export const selectWithBillings = state => state.contracts.withBillings;
 export const selectContractId = state => state.contracts.contractId;
 
 export function* getContract({ apiUrl, apiPath, token }, { contractId, groupId }) {
@@ -61,10 +62,15 @@ export function* getGroupContracts({ apiUrl, apiPath, token }, { groupId }) {
   yield put(actions.loadedGroupContracts());
 }
 
-export function* getPowertakers({ apiUrl, apiPath, token }, { groupId }) {
+export function* getPowertakers({ apiUrl, apiPath, token }, { groupId, withBillings }) {
   yield put(actions.loadingGroupPowertakers());
   try {
-    const powertakers = yield call(api.fetchGroupPowertakers, { apiUrl, apiPath, token, groupId });
+    const powertakers = yield call(withBillings ? api.fetchGroupPowertakersWithBillings : api.fetchGroupPowertakers, {
+      apiUrl,
+      apiPath,
+      token,
+      groupId,
+    });
     yield put(actions.setGroupPowertakers(powertakers));
   } catch (error) {
     logException(error);
@@ -171,10 +177,11 @@ export function* contractSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.GENERATE_CONTRACT_PDF, generateContractPDF, { apiUrl, apiPath, token });
   yield takeLatest(constants.DELETE_CONTRACT_PDF, deleteContractPDF, { apiUrl, apiPath, token });
   const groupId = yield select(selectGroup);
+  const withBillings = yield select(selectWithBillings);
   const contractId = yield select(selectContractId);
   if (groupId) {
     yield call(getGroupContracts, { apiUrl, apiPath, token }, { groupId });
-    yield call(getPowertakers, { apiUrl, apiPath, token }, { groupId });
+    yield call(getPowertakers, { apiUrl, apiPath, token }, { groupId, withBillings });
     if (contractId) {
       yield call(getContract, { apiUrl, apiPath, token }, { contractId, groupId });
     }

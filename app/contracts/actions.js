@@ -56,7 +56,11 @@ export const actions = {
   loadedGroupContracts: () => ({ type: constants.LOADED_GROUP_CONTRACTS }),
   setGroupContracts: contracts => ({ type: constants.SET_GROUP_CONTRACTS, contracts }),
 
-  loadGroupPowertakers: groupId => ({ type: constants.LOAD_GROUP_POWERTAKERS, groupId }),
+  loadGroupPowertakers: ({ groupId, withBillings }) => ({
+    type: constants.LOAD_GROUP_POWERTAKERS,
+    groupId,
+    withBillings,
+  }),
   loadingGroupPowertakers: () => ({ type: constants.LOADING_GROUP_POWERTAKERS }),
   loadedGroupPowertakers: () => ({ type: constants.LOADED_GROUP_POWERTAKERS }),
   setGroupPowertakers: powertakers => ({ type: constants.SET_GROUP_POWERTAKERS, powertakers }),

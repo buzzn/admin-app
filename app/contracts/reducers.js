@@ -43,7 +43,7 @@ export default function (state = initialState, action) {
       return { ...state, contract: action.contract, contractor: action.contractor, customer: action.customer };
 
     case constants.LOAD_GROUP_POWERTAKERS:
-      return { ...state, groupId: action.groupId };
+      return { ...state, groupId: action.groupId, withBillings: action.withBillings };
     case constants.LOADING_GROUP_POWERTAKERS:
       return { ...state, loadingGroupPowertakers: true };
     case constants.LOADED_GROUP_POWERTAKERS:

@@ -24,7 +24,7 @@ export class Powertakers extends React.Component {
       match: { params: { groupId } },
     } = this.props;
     loadGroup(groupId);
-    loadGroupPowertakers(groupId);
+    loadGroupPowertakers({ groupId });
   }
 
   componentWillUnmount() {

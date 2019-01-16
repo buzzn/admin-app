@@ -11,10 +11,7 @@ export default {
       .then(camelizeResponseKeys);
   },
   fetchContractTariffs({ token, apiUrl, apiPath, contractId, groupId }) {
-    return fetch(
-      `${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/tariffs?include=tariff`,
-      { headers: prepareHeaders(token) },
-    )
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/tariffs?include=tariff`, { headers: prepareHeaders(token) })
       .then(parseResponse)
       .then(camelizeResponseKeys)
       .then(r => ({ array: r.array.map(t => ({ ...t, ...t.tariff })) }));
@@ -23,6 +20,21 @@ export default {
     return (
       fetch(
         `${apiUrl}${apiPath}/localpools/${groupId}/contracts?include=register_meta:[register],customer:[address,contact:address]`,
+        { headers: prepareHeaders(token) },
+      )
+        .then(parseResponse)
+        .then(camelizeResponseKeys)
+        // FIXME
+        .then(json => ({
+          ...json,
+          array: json.array.filter(c => ['contract_localpool_power_taker', 'contract_localpool_third_party'].includes(c.type)),
+        }))
+    );
+  },
+  fetchGroupPowertakersWithBillings({ token, apiUrl, apiPath, groupId }) {
+    return (
+      fetch(
+        `${apiUrl}${apiPath}/localpools/${groupId}/contracts?include=billings:[items:[tariff,meter,register:[readings]]],register_meta:[register],customer:[address,contact:address]`,
         { headers: prepareHeaders(token) },
       )
         .then(parseResponse)

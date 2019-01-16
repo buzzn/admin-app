@@ -3,6 +3,7 @@ import moment from 'moment';
 import get from 'lodash/get';
 import Alert from 'react-s-alert';
 import { FormattedMessage, FormattedNumber } from 'react-intl';
+import { Link } from 'react-router-dom';
 import { Row, Col } from 'reactstrap';
 import LabeledValue from 'components/labeled_value';
 import AddReading from 'components/add_reading';
@@ -134,7 +135,7 @@ const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admi
           />
         </Col>
       </Row>
-      <div className="tariff-header">
+      <div className="sub-header">
         <FormattedMessage id={`${prefix}.headerTariff`} />:
       </div>
       <Row>
@@ -180,6 +181,54 @@ const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admi
                 </React.Fragment>
               ) : (
                 ''
+              ),
+            }}
+          />
+        </Col>
+      </Row>
+      <div className="sub-header">Meter info:</div>
+      <Row>
+        <Col xs={6}>
+          <LabeledValue
+            {...{
+              label: 'Meter id',
+              value: <Link to={`/groups/${groupId}/market-locations/meters/${item.meter.id}`}>{item.meter.id}</Link>,
+            }}
+          />
+        </Col>
+        <Col xs={6}>
+          <LabeledValue
+            {...{
+              label: 'Meter serial',
+              value: (
+                <Link to={`/groups/${groupId}/market-locations/meters/${item.meter.id}`}>
+                  {item.meter.productSerialnumber}
+                </Link>
+              ),
+            }}
+          />
+        </Col>
+      </Row>
+      <div className="sub-header">Register info:</div>
+      <Row>
+        <Col xs={6}>
+          <LabeledValue
+            {...{
+              label: 'Register id',
+              value: (
+                <Link to={`/groups/${groupId}/market-locations/registers/${item.register.id}`}>{item.register.id}</Link>
+              ),
+            }}
+          />
+        </Col>
+        <Col xs={6}>
+          <LabeledValue
+            {...{
+              label: 'Register obis',
+              value: (
+                <Link to={`/groups/${groupId}/market-locations/registers/${item.register.id}`}>
+                  {item.register.obis}
+                </Link>
               ),
             }}
           />
