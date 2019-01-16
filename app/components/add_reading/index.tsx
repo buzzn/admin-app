@@ -23,7 +23,7 @@ interface Props {
     billingId: string;
     billingItemId: string;
     updatedAt: string;
-  }
+  };
   date?: string;
 }
 

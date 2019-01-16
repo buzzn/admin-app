@@ -16,6 +16,11 @@ export const ItemErrors = styled.span`
   font-weight: bold;
 `;
 
+export const ReadingAction = styled.span`
+  cursor: pointer;
+  text-decoration: underline;
+`;
+
 export const ButtonsWrapper = styled.div`
   width: 100%;
   height: 60px;

@@ -6,7 +6,7 @@ import { FormattedMessage, FormattedNumber } from 'react-intl';
 import { Row, Col } from 'reactstrap';
 import LabeledValue from 'components/labeled_value';
 import AddReading from 'components/add_reading';
-import { ItemDetailsWrapper, ItemErrors } from './style';
+import { ItemDetailsWrapper, ItemErrors, ReadingAction } from './style';
 import { ManageReadingContext } from './index';
 
 const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admin.tariffs' }) => {
@@ -17,23 +17,23 @@ const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admi
     const reading = get(item, 'register.readings.array', []).find(r => r.date === date);
     if (reading) {
       return (
-        <span
+        <ReadingAction
           onClick={() => handleAttachReading({ [begin ? 'beginReadingId' : 'endReadingId']: reading.id, updatedAt: item.updatedAt })
           }
         >
           Attach reading
-        </span>
+        </ReadingAction>
       );
     }
     return (
-      <span
+      <ReadingAction
         onClick={() => {
           setDate({ begin, date });
           switchAddReading(true);
         }}
       >
         Add reading
-      </span>
+      </ReadingAction>
     );
   };
   const handleAttachReading = params => new Promise((resolve, reject) => {
@@ -185,24 +185,26 @@ const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admi
           />
         </Col>
       </Row>
-      <AddReading
-        {...{
-          edifactMeasurementMethod: item.meter.edifactMeasurementMethod,
-          isOpen,
-          switchAddReading,
-          groupId,
-          meterId: item.meter.id,
-          registerId: item.register.id,
-          date: date['date'],
-          billingItem: {
-            begin: date['begin'],
-            contractId,
-            billingId,
-            billingItemId: item.id,
-            updatedAt: item.updatedAt,
-          },
-        }}
-      />
+      {isOpen && (
+        <AddReading
+          {...{
+            edifactMeasurementMethod: item.meter.edifactMeasurementMethod,
+            isOpen,
+            switchAddReading,
+            groupId,
+            meterId: item.meter.id,
+            registerId: item.register.id,
+            date: date['date'],
+            billingItem: {
+              begin: date['begin'],
+              contractId,
+              billingId,
+              billingItemId: item.id,
+              updatedAt: item.updatedAt,
+            },
+          }}
+        />
+      )}
     </ItemDetailsWrapper>
   );
 };
