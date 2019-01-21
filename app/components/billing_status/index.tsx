@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 interface Props {
-  status: 'open' | 'calculated' | 'delivered' | 'settled' | 'closed';
+  status: string | 'open' | 'calculated' | 'delivered' | 'settled' | 'closed';
   size: 'small' | 'large';
 }
 

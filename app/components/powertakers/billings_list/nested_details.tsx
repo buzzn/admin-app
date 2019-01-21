@@ -6,6 +6,7 @@ import EditableSelect from 'components/editable_select';
 import TwoColField from 'components/two_col_field';
 import { NestedDetailsWrapper } from 'components/style';
 import ItemDetails from './item_details';
+import { ManageReadingContext } from './index';
 import { ButtonsWrapper } from './style';
 
 interface Props {
@@ -80,7 +81,7 @@ class NestedDetails extends React.Component<Props & InjectedIntlProps, State> {
           <FormattedMessage id={`${prefix}.headerBillingItems`} />:
         </h5>
         {billing.items.array.map(item => (
-          <ItemDetails key={item.id} {...{ item }} />
+          <ItemDetails key={item.id} {...{ item, ManageReadingContext }} />
         ))}
       </NestedDetailsWrapper>
     );

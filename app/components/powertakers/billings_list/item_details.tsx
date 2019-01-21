@@ -8,9 +8,8 @@ import { Row, Col } from 'reactstrap';
 import LabeledValue from 'components/labeled_value';
 import AddReading from 'components/add_reading';
 import { ItemDetailsWrapper, ItemErrors, ReadingAction } from './style';
-import { ManageReadingContext } from './index';
 
-const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admin.tariffs' }) => {
+const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admin.tariffs', ManageReadingContext }) => {
   const { attachReading, groupId, contractId, billingId } = useContext(ManageReadingContext);
   const [isOpen, switchAddReading] = useState(false);
   const [date, setDate] = useState({});
