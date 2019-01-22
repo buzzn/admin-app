@@ -42,7 +42,6 @@ class AddReadingForm extends React.Component<Props & InjectedIntlProps> {
       edifactMeasurementMethod,
     } = this.props;
     const prefix = 'admin.readings';
-    console.log('form rerender')
 
     return (
       <Modal {...{ isOpen, toggle: this.handleToggle }} data-cy="create reading modal">

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import moment from 'moment';
 import isEqual from 'lodash/isEqual';
-import get from 'lodash/get';
 import { getFormSubmitErrors } from 'redux-form';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
@@ -18,6 +17,7 @@ import { SpanClick } from 'components/style';
 import AttachedTariffs from 'components/attached_tariffs';
 import AddBilling from '../add_billing';
 import NestedDetails from './nested_details';
+import ActionsErrors from 'components/actions_errors';
 
 interface ManageReadingInterface {
   attachReading: Function;
@@ -147,12 +147,6 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
       },
     ];
 
-    // HACK: please, replace it with proper error handling
-    const addBillingPreconditions = {
-      registerMeta: 'Please, create a meter and attach to this contract',
-      tariffs: 'Please, do something with tariffs',
-    };
-
     return (
       <div className="p-0">
         <AttachedTariffs
@@ -176,10 +170,7 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
             <FormattedMessage id="admin.billings.addNew" /> <i className="fa fa-plus-circle" />
           </SpanClick>
         ) : (
-          Object.keys(addBillingPreconditions).reduce(
-            (e, k) => (get(contract.allowedActions.createBilling, k) ? `${e ? `${e}, ` : ''}${addBillingPreconditions[k]}` : e),
-            '',
-          )
+            <ActionsErrors {...{ actions: contract.allowedActions.createBilling }} />
         )}
         <AddBilling
           {...{
