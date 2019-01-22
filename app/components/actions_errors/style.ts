@@ -9,8 +9,26 @@ export const ErrorsWrapper = styled.div`
     animation: blinker 1s ease-out infinite;
   }
   @keyframes blinker {
-    50% {
+    12% {
+      opacity: 1;
+    }
+    16% {
       opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    32% {
+      opacity: 0;
+    }
+    40% {
+      opacity: 1;
+    }
+    44% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
     }
   }
 `;

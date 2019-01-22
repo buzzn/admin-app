@@ -7,7 +7,8 @@ import { Link } from 'react-router-dom';
 import { Row, Col } from 'reactstrap';
 import LabeledValue from 'components/labeled_value';
 import AddReading from 'components/add_reading';
-import { ItemDetailsWrapper, ItemErrors, ReadingAction } from './style';
+import ActionsErrors from 'components/actions_errors';
+import { ItemDetailsWrapper, ReadingAction } from './style';
 
 const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admin.tariffs', ManageReadingContext }) => {
   const { attachReading, groupId, contractId, billingId } = useContext(ManageReadingContext);
@@ -52,18 +53,7 @@ const ItemDetails = ({ item, prefix = 'admin.billingItems', tariffPrefix = 'admi
 
   return (
     <ItemDetailsWrapper className="cy-item-details">
-      {!!item.incompleteness && (
-        <Row>
-          <Col xs={12}>
-            <ItemErrors>
-              {Object.keys(item.incompleteness).reduce(
-                (err, key) => `${err ? `${err}, ` : ''}${key}: ${item.incompleteness[key].join(', ')}`,
-                '',
-              )}
-            </ItemErrors>
-          </Col>
-        </Row>
-      )}
+      <ActionsErrors {...{ actions: item.incompleteness }} />
       <Row>
         <Col xs={6}>
           <LabeledValue
