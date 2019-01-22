@@ -29,7 +29,7 @@ const ActionError = ({ action, val }) => {
 const ActionsErrors = ({ actions }) => (
     <ErrorsWrapper>
       {Object.keys(actions).map(action => (
-        <ActionError {...{ key: 'action', action, val: actions[action] }} />
+        <ActionError {...{ key: action, action, val: actions[action] }} />
       ))}
     </ErrorsWrapper>
 );
