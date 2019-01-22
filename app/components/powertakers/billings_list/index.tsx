@@ -152,21 +152,23 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
 
     return (
       <div className="p-0">
-        <AttachedTariffs
-          {...{
-            title: 'Contract tariffs',
-            tariffs: tariffs.array,
-            attachedTariffs: contract.tariffs.array,
-            updateList: ({ resolve, reject, tariffIds }) => updateContract({
-              resolve,
-              reject,
-              params: { tariffIds, updatedAt: contract.updatedAt },
-              groupId,
-              contractId,
-              updateType: 'tariffs',
-            }),
-          }}
-        />
+        <div style={{ color: contract.allowedActions.createBilling.tariffs ? 'red' : 'black' }}>
+          <AttachedTariffs
+            {...{
+              title: 'Contract tariffs',
+              tariffs: tariffs.array,
+              attachedTariffs: contract.tariffs.array,
+              updateList: ({ resolve, reject, tariffIds }) => updateContract({
+                resolve,
+                reject,
+                params: { tariffIds, updatedAt: contract.updatedAt },
+                groupId,
+                contractId,
+                updateType: 'tariffs',
+              }),
+            }}
+          />
+        </div>
         <h4>Billings:</h4>
         {contract.allowedActions.createBilling === true ? (
           <SpanClick onClick={this.switchAddBilling} className="float-right" data-cy="add billing CTA">
@@ -175,17 +177,19 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
         ) : (
           <React.Fragment>
             <ActionsErrors {...{ actions: contract.allowedActions.createBilling }} />
-            <div style={{ color: 'red' }}>
-              <h5>Registers:</h5>
-              <Registers
-                {...{
-                  url: `/groups/${groupId}/market-locations`,
-                  history,
-                  locationId: contract.registerMeta.id,
-                  registers: get(contract, 'registerMeta.registers.array', []),
-                }}
-              />
-            </div>
+            {!!contract.allowedActions.createBilling.registerMeta && (
+              <div style={{ color: 'red' }}>
+                <h5>Registers:</h5>
+                <Registers
+                  {...{
+                    url: `/groups/${groupId}/market-locations`,
+                    history,
+                    locationId: contract.registerMeta.id,
+                    registers: get(contract, 'registerMeta.registers.array', []),
+                  }}
+                />
+              </div>
+            )}
           </React.Fragment>
         )}
         <AddBilling
