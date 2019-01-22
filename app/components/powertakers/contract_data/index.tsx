@@ -31,9 +31,10 @@ const ContractData = ({ breadcrumbs, title, groupId, contractId, url, contractUr
         <Route path={contractUrl} exact>
           <Contract {...{ groupId, contractId, url }} />
         </Route>
-        <Route path={`${contractUrl}/billings`}>
-          <BillingsList {...{ groupId, contractId, url }} />
-        </Route>
+        <Route
+          path={`${contractUrl}/billings`}
+          render={({ history }) => <BillingsList {...{ groupId, contractId, url, history }} />}
+        />
       </Switch>
     </CenterContent>
   </React.Fragment>

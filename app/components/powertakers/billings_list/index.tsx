@@ -1,5 +1,6 @@
 import * as React from 'react';
 import moment from 'moment';
+import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import { getFormSubmitErrors } from 'redux-form';
 import { connect } from 'react-redux';
@@ -15,9 +16,10 @@ import BillingStatus from 'components/billing_status';
 import Loading from 'components/loading';
 import { SpanClick } from 'components/style';
 import AttachedTariffs from 'components/attached_tariffs';
+import ActionsErrors from 'components/actions_errors';
+import Registers from 'components/system/market_location_data/registers';
 import AddBilling from '../add_billing';
 import NestedDetails from './nested_details';
-import ActionsErrors from 'components/actions_errors';
 
 interface ManageReadingInterface {
   attachReading: Function;
@@ -85,6 +87,7 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
       contract,
       tariffs,
       url,
+      history,
       intl,
       groupId,
       contractId,
@@ -170,7 +173,20 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
             <FormattedMessage id="admin.billings.addNew" /> <i className="fa fa-plus-circle" />
           </SpanClick>
         ) : (
+          <React.Fragment>
             <ActionsErrors {...{ actions: contract.allowedActions.createBilling }} />
+            <div style={{ color: 'red' }}>
+              <h5>Registers:</h5>
+              <Registers
+                {...{
+                  url: `/groups/${groupId}/market-locations`,
+                  history,
+                  locationId: contract.registerMeta.id,
+                  registers: get(contract, 'registerMeta.registers.array', []),
+                }}
+              />
+            </div>
+          </React.Fragment>
         )}
         <AddBilling
           {...{
@@ -183,47 +199,49 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
           }}
         />
         <br />
-        <ReactTableSorted
-          {...{
-            data,
-            columns,
-            expanded: this.state.expanded,
-            uiSortPath: `groups.${groupId}.contracts.${contractId}.billings`,
-            getTrProps: (_state, rowInfo) => ({
-              onClick: (_event, handleOriginal) => {
-                this.handleRowClick(rowInfo.viewIndex);
-                handleOriginal && handleOriginal();
-              },
-            }),
-            SubComponent: row => (
-              <ManageReadingContext.Provider
-                value={{
-                  attachReading,
-                  groupId,
-                  contractId,
-                  billingId: row.original.id,
-                }}
-              >
-                <NestedDetails
-                  {...{
-                    billing: row.original,
-                    initialValues: row.original,
-                    validationRules: validationRules.billingUpdate,
-                    form: `billingUpdateForm${row.original.id}`,
-                    onSubmit: params => this.updateBilling({
-                      billingId: row.original.id,
-                      params: {
-                        status: params.status,
-                        invoiceNumber: params.invoiceNumber,
-                        updatedAt: params.updatedAt,
-                      },
-                    }),
+        {!!data.length && (
+          <ReactTableSorted
+            {...{
+              data,
+              columns,
+              expanded: this.state.expanded,
+              uiSortPath: `groups.${groupId}.contracts.${contractId}.billings`,
+              getTrProps: (_state, rowInfo) => ({
+                onClick: (_event, handleOriginal) => {
+                  this.handleRowClick(rowInfo.viewIndex);
+                  handleOriginal && handleOriginal();
+                },
+              }),
+              SubComponent: row => (
+                <ManageReadingContext.Provider
+                  value={{
+                    attachReading,
+                    groupId,
+                    contractId,
+                    billingId: row.original.id,
                   }}
-                />
-              </ManageReadingContext.Provider>
-            ),
-          }}
-        />
+                >
+                  <NestedDetails
+                    {...{
+                      billing: row.original,
+                      initialValues: row.original,
+                      validationRules: validationRules.billingUpdate,
+                      form: `billingUpdateForm${row.original.id}`,
+                      onSubmit: params => this.updateBilling({
+                        billingId: row.original.id,
+                        params: {
+                          status: params.status,
+                          invoiceNumber: params.invoiceNumber,
+                          updatedAt: params.updatedAt,
+                        },
+                      }),
+                    }}
+                  />
+                </ManageReadingContext.Provider>
+              ),
+            }}
+          />
+        )}
       </div>
     );
   }
