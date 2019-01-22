@@ -57,7 +57,7 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
                   {...{
                     name: 'lastDate',
                     type: 'text',
-                    label: <FormattedMessage id={`${prefix}.endDate`} />,
+                    label: <FormattedMessage id={`${prefix}.lastDate`} />,
                     component: FieldDate,
                     validationRules,
                   }}
