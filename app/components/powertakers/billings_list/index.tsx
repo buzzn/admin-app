@@ -4,7 +4,7 @@ import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import { getFormSubmitErrors } from 'redux-form';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import Alert from 'react-s-alert';
 import Billings from 'billings';
@@ -179,15 +179,24 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
             <ActionsErrors {...{ actions: contract.allowedActions.createBilling }} />
             {!!contract.allowedActions.createBilling.registerMeta && (
               <div style={{ color: 'red' }}>
-                <h5>Registers:</h5>
-                <Registers
-                  {...{
-                    url: `/groups/${groupId}/market-locations`,
-                    history,
-                    locationId: contract.registerMeta.id,
-                    registers: get(contract, 'registerMeta.registers.array', []),
-                  }}
-                />
+                {get(contract, 'registerMeta.registers.array', []).length ? (
+                  <React.Fragment>
+                    {' '}
+                    <h5>Registers:</h5>
+                    <Registers
+                      {...{
+                        url: `/groups/${groupId}/market-locations`,
+                        history,
+                        locationId: contract.registerMeta.id,
+                        registers: get(contract, 'registerMeta.registers.array', []),
+                      }}
+                    />
+                  </React.Fragment>
+                ) : (
+                  <Link to={`/groups/${groupId}/market-locations/add-meter`} data-cy="add malo CTA">
+                    <FormattedMessage id="admin.meters.addNew" /> <i className="fa fa-plus-circle" />
+                  </Link>
+                )}
               </div>
             )}
           </React.Fragment>
