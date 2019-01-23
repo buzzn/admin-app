@@ -4,7 +4,7 @@ import { prepareHeaders, parseResponse, camelizeResponseKeys, camelizeResponseAr
 export default {
   fetchContract({ token, apiUrl, apiPath, contractId, groupId }) {
     return fetch(
-      `${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}?include=register_meta:[registers:[meter]],contrator_bank_account,contractor:[address],customer_bank_account,customer:[address,contact:address],tariffs,payments,documents`,
+      `${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}?include=register_meta:[registers:[meter,readings]],contrator_bank_account,contractor:[address],customer_bank_account,customer:[address,contact:address],tariffs,payments,documents`,
       { headers: prepareHeaders(token) },
     )
       .then(parseResponse)

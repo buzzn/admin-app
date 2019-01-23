@@ -87,6 +87,7 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
       contract,
       tariffs,
       url,
+      billingsUrl,
       history,
       intl,
       groupId,
@@ -188,12 +189,15 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
                         url: `/groups/${groupId}/market-locations`,
                         history,
                         locationId: contract.registerMeta.id,
-                        registers: get(contract, 'registerMeta.registers.array', []),
+                        registers: get(contract, 'registerMeta.registers.array', []).filter(
+                          r => !r.readings.array.length
+                            || !r.readings.array.find(re => ['IOM', 'COM1'].includes(re.reason)),
+                        ),
                       }}
                     />
                   </React.Fragment>
                 ) : (
-                  <Link to={`/groups/${groupId}/market-locations/add-meter`} data-cy="add malo CTA">
+                  <Link to={`${billingsUrl}/add-meter`} data-cy="add malo CTA">
                     <FormattedMessage id="admin.meters.addNew" /> <i className="fa fa-plus-circle" />
                   </Link>
                 )}
@@ -264,6 +268,7 @@ interface ExtProps {
   groupId: string;
   contractId: string;
   url: string;
+  billingsUrl: string;
 }
 
 interface ComponentState {

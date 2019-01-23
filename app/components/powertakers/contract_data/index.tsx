@@ -5,6 +5,7 @@ import PageTitle from 'components/page_title';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
 import { CenterContent, SubNav } from 'components/style';
 import Contract from 'components/contract';
+import AddMeter from 'components/system/add_meter';
 import BillingsList from '../billings_list';
 
 interface Props {
@@ -32,8 +33,22 @@ const ContractData = ({ breadcrumbs, title, groupId, contractId, url, contractUr
           <Contract {...{ groupId, contractId, url }} />
         </Route>
         <Route
+          exact
           path={`${contractUrl}/billings`}
-          render={({ history }) => <BillingsList {...{ groupId, contractId, url, history }} />}
+          render={({ history, match: { url: billingsUrl } }) => (
+            <BillingsList {...{ groupId, contractId, url, history, billingsUrl }} />
+          )}
+        />
+        <Route
+          path={`${contractUrl}/billings/add-meter`}
+          render={() => (
+            <AddMeter
+              {...{
+                url: `${contractUrl}/billings`,
+                groupId,
+              }}
+            />
+          )}
         />
       </Switch>
     </CenterContent>

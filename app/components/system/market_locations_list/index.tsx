@@ -43,6 +43,7 @@ const MarketLocationsList = ({
         ...m,
         labelIntl: intl.formatMessage({ id: `admin.registers.${m.label}` }),
         meterProductSerialnumber: r.meter.productSerialnumber,
+        meter: r.meter,
         linkMeter: `${url}/meters/${r.meter.id}`,
         linkMarketLocation: `${url}/${m.id}`,
       }));
@@ -79,7 +80,7 @@ const MarketLocationsList = ({
     {
       Header: '',
       width: 40,
-      Cell: ({ original }) => (original.register
+      Cell: ({ original }) => (original.registers && original.registers.array.length
         ? TableParts.components.iconCell({
           icon: 'copy',
           action: () => duplicateMeter(original),

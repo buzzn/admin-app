@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Groups from 'groups';
 import MarketLocations from 'market_locations';
-import Meters from 'meters';
 import Registers from 'registers';
 import Loading from 'components/loading';
 import MarketLocationsList from './market_locations_list';
@@ -20,10 +19,7 @@ export class System extends React.Component {
       history,
       match: { url },
     } = this.props;
-    const {
-      register: { meter },
-      ...malo
-    } = original;
+    const { meter, ...malo } = original;
     this.setState({ initialMeter: { ...meter, registers: [malo] } });
     history.push(`${url}/add-meter`);
   };
@@ -48,13 +44,10 @@ export class System extends React.Component {
     const {
       devMode,
       loading,
-      loadMarketLocations,
       marketLocations,
       setMarketLocations,
-      createMeterValidationRules,
       updateRegister,
       updateMaLoValidationRules,
-      addRealMeter,
       registers,
       meters,
       group,
@@ -98,14 +91,10 @@ export class System extends React.Component {
         <Route path={`${url}/add-meter`}>
           <AddMeter
             {...{
-              history,
+              initMeter: this.state.initialMeter,
               url,
-              clearInitMeter: this.clearInitMeter,
-              initialValues: this.state.initialMeter,
-              addMeter: params => addRealMeter({ groupId, ...params }),
-              validationRules: createMeterValidationRules,
-              loadMarketLocations: () => loadMarketLocations(groupId),
-              marketLocations,
+              groupId,
+              cb: this.clearInitMeter,
             }}
           />
         </Route>
@@ -177,7 +166,9 @@ export class System extends React.Component {
 
 function mapStateToProps(state) {
   const marketLocations = state.marketLocations.marketLocations;
-  const registers = marketLocations._status === 200 ? marketLocations.array.reduce((regs, malo) => ([...regs, ...malo.registers.array]), []) : [];
+  const registers = marketLocations._status === 200
+    ? marketLocations.array.reduce((regs, malo) => [...regs, ...malo.registers.array], [])
+    : [];
   const meters = registers.length ? registers.map(r => r.meter) : [];
   return {
     devMode: state.app.ui.devMode,
@@ -186,7 +177,6 @@ function mapStateToProps(state) {
     marketLocations,
     registers,
     meters,
-    createMeterValidationRules: state.meters.validationRules.realCreate,
     updateMaLoValidationRules: state.registers.validationRules,
   };
 }
@@ -197,7 +187,6 @@ export default connect(
     loadMarketLocations: MarketLocations.actions.loadMarketLocations,
     setMarketLocations: MarketLocations.actions.setMarketLocations,
     loadGroup: Groups.actions.loadGroup,
-    addRealMeter: Meters.actions.addRealMeter,
     updateRegister: Registers.actions.updateRegister,
   },
 )(System);
