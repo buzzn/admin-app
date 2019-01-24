@@ -29,7 +29,7 @@ const AddMeter = ({
     () => {
       if (!marketLocations._status && !marketLocations.array.length) loadMarketLocations(groupId);
     },
-    [marketLocations],
+    [marketLocations, groupId],
   );
   const submitForm = (values, selectedRegisters) => {
     const params = { ...values };

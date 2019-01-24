@@ -17,6 +17,7 @@ interface Props {
   readingsValidationRules: any;
   switchAddReading: Function;
   isOpen: boolean;
+  cb?: () => void;
   billingItem?: {
     begin: boolean;
     contractId: string;
@@ -41,6 +42,7 @@ const AddReading = ({
   isOpen,
   billingItem,
   date,
+  cb,
 }: Props) => {
   const defaultAddReading: any = { status: 'Z86', reason: 'PMR', readBy: 'SG', quality: '220', unit: 'Wh' };
   const [addReadingInit, setAddReadingInit] = useState(defaultAddReading);
@@ -56,6 +58,7 @@ const AddReading = ({
     });
   }).then(() => {
     switchAddReading();
+    cb && cb();
   });
   const handleGetAutoReadingValue = () => {
     new Promise((resolve, reject) => {

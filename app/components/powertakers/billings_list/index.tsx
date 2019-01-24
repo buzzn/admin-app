@@ -10,6 +10,7 @@ import Alert from 'react-s-alert';
 import Billings from 'billings';
 import Contracts from 'contracts';
 import Tariffs from 'tariffs';
+import MarketLocations from 'market_locations';
 import { tableParts as TableParts } from 'react_table_config';
 import ReactTableSorted from 'components/react_table_sorted';
 import BillingStatus from 'components/billing_status';
@@ -68,10 +69,11 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
   };
 
   componentDidMount() {
-    const { loadContract, loadBillings, loadTariffs, groupId, contractId } = this.props;
+    const { loadContract, loadBillings, loadTariffs, groupId, contractId, loadMarketLocations } = this.props;
     loadBillings({ groupId, contractId });
     loadContract({ groupId, contractId });
     loadTariffs(groupId);
+    loadMarketLocations(groupId);
   }
 
   componentDidUpdate(prevProps) {
@@ -92,6 +94,7 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
       intl,
       groupId,
       contractId,
+      loadContract,
       updateContract,
       addBillingFormName,
       addBillingSubmitErrors,
@@ -188,6 +191,9 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
                       {...{
                         url: `/groups/${groupId}/market-locations`,
                         history,
+                        groupId,
+                        withAddReading: true,
+                        cb: () => loadContract({ groupId, contractId }),
                         locationId: contract.registerMeta.id,
                         registers: get(contract, 'registerMeta.registers.array', []).filter(
                           r => !r.readings.array.length
@@ -308,6 +314,7 @@ interface DispatchProps {
   updateContract: Function;
   loadTariffs: Function;
   attachReading: Function;
+  loadMarketLocations: Function;
 }
 
 function mapStateToProps(state: StatePart) {
@@ -334,5 +341,6 @@ export default connect<StateProps, DispatchProps, ExtProps>(
     updateContract: Contracts.actions.updateContract,
     loadTariffs: Tariffs.actions.loadTariffs,
     attachReading: Billings.actions.attachReading,
+    loadMarketLocations: MarketLocations.actions.loadMarketLocations,
   },
 )(injectIntl(BillingsList));
