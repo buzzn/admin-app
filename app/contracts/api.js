@@ -91,6 +91,13 @@ export default {
       body: JSON.stringify(snakeReq(params)),
     }).then(parseResponse);
   },
+  updateContractAccount({ token, apiUrl, apiPath, groupId, contractId, params }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/accounting/book`, {
+      headers: prepareHeaders(token),
+      method: 'POST',
+      body: JSON.stringify(snakeReq(params)),
+    }).then(parseResponse);
+  },
   updateContractTariffs({ token, apiUrl, apiPath, groupId, contractId, params }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/tariffs`, {
       headers: prepareHeaders(token),

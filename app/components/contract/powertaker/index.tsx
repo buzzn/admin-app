@@ -16,6 +16,7 @@ import EditableDate from 'components/editable_date';
 import EditableCheckbox from 'components/editable_checkbox';
 import EditableSelect from 'components/editable_select';
 import { dateNormalizer } from 'validation_normalizers';
+import Balance from './balance';
 
 import {
   ContractHeader,
@@ -142,6 +143,21 @@ const PowertakerContract = ({
           </InnerRow>
         </Col>
       </ContractHeader>
+      <Balance
+        {...{
+          balanceSheet: contract.balanceSheet,
+          groupId,
+          contractId: contract.id,
+          updateContract: ({ resolve, reject, params }) => updateContract({
+            resolve,
+            reject,
+            params: { ...params, updatedAt: contract.updatedAt },
+            groupId,
+            contractId: contract.id,
+            updateType: 'account',
+          }),
+        }}
+      />
       <form onSubmit={handleSubmit(submit)} data-cy="powertaker contract form">
         <FormPanel
           {...{
@@ -160,14 +176,13 @@ const PowertakerContract = ({
             <Col xs="12">
               <h5 className="grey-underline mt-5 pb-2">
                 <FormattedMessage id={`${prefix}.headerContractsDetails`} />
-                {!editMode
-                  && contract.updatable && (
-                    <i
-                      data-cy="contract edit switch"
-                      className="buzzn-pencil"
-                      style={{ float: 'right' }}
-                      onClick={switchEditMode}
-                    />
+                {!editMode && contract.updatable && (
+                  <i
+                    data-cy="contract edit switch"
+                    className="buzzn-pencil"
+                    style={{ float: 'right' }}
+                    onClick={switchEditMode}
+                  />
                 )}
               </h5>
               <TwoColView {...{ prefix, field: 'marketLocation' }}>

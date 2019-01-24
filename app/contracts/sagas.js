@@ -103,6 +103,7 @@ export function* updateContract(
     organizationCustomer: api.updateOrganizationCustomer,
     personCustomer: api.updatePersonCustomer,
     tariffs: api.updateContractTariffs,
+    account: api.updateContractAccount,
   };
 
   try {
