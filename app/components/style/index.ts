@@ -36,6 +36,7 @@ export const NestedDetailsWrapper = styled.div`
   border: 1px solid #e5e5e5;
   padding: 1rem;
   position: relative;
+  box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.1);
 `;
 
 export const LargeAvatar = styled.img`

@@ -1,12 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import { injectIntl } from 'react-intl';
+import Alert from 'react-s-alert';
+import moment from 'moment';
 import Contracts from 'contracts';
 import Billings from 'billings';
+import ReactTableSorted from 'components/react_table_sorted';
 import Loading from 'components/loading';
-import Billing from './billing';
 import BillingStatus from 'components/billing_status';
-import { StatusWrapper } from './style';
+import { tableParts as TableParts } from 'react_table_config';
+import NestedDetails from 'components/powertakers/billings_list/nested_details';
+import { CellWrap } from './style';
+
+const DefaultPerson = require('images/default_person.jpg');
+const DefaultOrganisation = require('images/default_organisation.jpg');
+const DefaultThirdParty = require('images/default_3rd_party.jpg');
 
 interface ManageReadingInterface {
   attachReading: Function;
@@ -29,7 +38,11 @@ const BillingsOverview = ({
   powertakers,
   attachReading,
   match: { params: { groupId } },
+  intl,
+  validationRules,
+  updateBilling,
 }) => {
+  const [expanded, setExpanded] = useState({});
   useEffect(
     () => {
       loadGroupPowertakers({ groupId, withBillings: true });
@@ -45,32 +58,136 @@ const BillingsOverview = ({
 
   if (powertakers._status === null || loading) return <Loading minHeight={40} />;
 
-  const statuses = powertakers.array
+  const prefix = 'admin.billings';
+  const data = powertakers.array
     .filter(p => !!p.billings && p.billings.array.length)
-    .flatMap(p => p.billings.array.map(b => ({ ...b, powertaker: { ...p, billings: null } })))
-    .reduce((s, b) => ({ ...s, [b.status]: [...(s[b.status] || []), b] }), {});
+    .flatMap(p => p.billings.array.map(b => ({
+      ...b,
+      name:
+          p.type === 'contract_localpool_third_party'
+            ? { value: 'drittbeliefert', image: DefaultThirdParty, type: 'avatar' }
+            : p.customer.type === 'person'
+              ? {
+                value: `${p.customer.lastName} ${p.customer.firstName}`,
+                image: p.customer.image || DefaultPerson,
+                type: 'avatar',
+                clickable: true,
+              }
+              : {
+                value: p.customer.name,
+                image: p.customer.image || DefaultOrganisation,
+                type: 'avatar',
+                clickable: true,
+              },
+      beginDate: { display: moment(b.beginDate).format('DD.MM.YYYY'), value: b.beginDate },
+      lastDate: { display: moment(b.lastDate).format('DD.MM.YYYY'), value: b.lastDate },
+      powertaker: { ...p, billings: null },
+    })));
+  const columns = [
+    {
+      Header: () => (
+        <TableParts.components.headerCell title={intl.formatMessage({ id: 'admin.contracts.tableName' })} />
+      ),
+      accessor: 'name',
+      className: 'cy-powertaker',
+      filterMethod: TableParts.filters.filterByValue,
+      sortMethod: TableParts.sort.sortByValue,
+      Cell: ({ value, original }) => (
+        <CellWrap status={original.status}>
+          <TableParts.components.iconNameCell {...{ value }} />
+        </CellWrap>
+      ),
+    },
+    {
+      Header: () => (
+        <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableInvoiceNumber` })} />
+      ),
+      accessor: 'invoiceNumber',
+      className: 'cy-invoice-number',
+      Cell: ({ value, original }) => <CellWrap status={original.status}>{value}</CellWrap>,
+    },
+    {
+      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableBeginDate` })} />,
+      accessor: 'beginDate',
+      className: 'cy-begin-date',
+      sortMethod: TableParts.sort.sortByDateTime,
+      Cell: ({ value: { display }, original }) => <CellWrap status={original.status}>{display}</CellWrap>,
+    },
+    {
+      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableEndDate` })} />,
+      accessor: 'lastDate',
+      sortMethod: TableParts.sort.sortByDateTime,
+      Cell: ({ value: { display }, original }) => <CellWrap status={original.status}>{display}</CellWrap>,
+    },
+    {
+      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableStatus` })} />,
+      accessor: 'status',
+      Cell: ({ value, original }) => (
+        <CellWrap status={original.status}>
+          <BillingStatus {...{ status: value, size: 'small' }} /> {value}
+        </CellWrap>
+      ),
+    },
+    {
+      expander: true,
+      Expander: row => (
+        <CellWrap status={row.original.status}>
+          {row.isExpanded ? <i className="fa fa-chevron-up" /> : <i className="fa fa-chevron-down" />}
+        </CellWrap>
+      ),
+      style: { color: '#bdbdbd' },
+    },
+  ];
+  const submitUpdateBilling = ({ billingId, contractId, params }) => new Promise((resolve, reject) => {
+    updateBilling({ resolve, reject, params, groupId, contractId, billingId });
+  })
+    .then(res => res)
+    .catch(err => Alert.error(err.errors.completeness.join(', ')));
 
   return (
     <React.Fragment>
-      {['open', 'calculated', 'delivered', 'settled', 'closed'].map(status => (
-        <StatusWrapper key={status}>
-          <div className="status-name"><BillingStatus {...{ status, size: 'small' }} /> {status} billings:</div>
-          <br />
-          {(statuses[status] || []).map(billing => (
+      <ReactTableSorted
+        {...{
+          data,
+          columns,
+          expanded,
+          uiSortPath: `groups.${groupId}.billings`,
+          getTrProps: (_state, rowInfo) => ({
+            onClick: (_event, handleOriginal) => {
+              setExpanded({ ...expanded, [rowInfo.viewIndex]: !expanded[rowInfo.viewIndex] });
+              handleOriginal && handleOriginal();
+            },
+          }),
+          SubComponent: row => (
             <ManageReadingContext.Provider
-              key={billing.id}
               value={{
                 attachReading,
                 groupId,
-                contractId: billing.powertaker.id,
-                billingId: billing.id,
+                contractId: row.original.powertaker.id,
+                billingId: row.original.id,
               }}
             >
-              <Billing {...{ billing }} />
+              <NestedDetails
+                {...{
+                  billing: row.original,
+                  initialValues: row.original,
+                  validationRules: validationRules.billingUpdate,
+                  form: `billingUpdateForm${row.original.id}`,
+                  onSubmit: params => submitUpdateBilling({
+                    billingId: row.original.id,
+                    contractId: row.original.powertaker.id,
+                    params: {
+                      status: params.status,
+                      invoiceNumber: params.invoiceNumber,
+                      updatedAt: params.updatedAt,
+                    },
+                  }),
+                }}
+              />
             </ManageReadingContext.Provider>
-          ))}
-        </StatusWrapper>
-      ))}
+          ),
+        }}
+      />
     </React.Fragment>
   );
 };
@@ -79,6 +196,7 @@ function mapStateToProps(state) {
   return {
     powertakers: state.contracts.groupPowertakers,
     loading: state.contracts.loadingGroupPowertakers,
+    validationRules: state.billings.validationRules,
   };
 }
 
@@ -88,5 +206,6 @@ export default connect(
     loadGroupPowertakers: Contracts.actions.loadGroupPowertakers,
     setGroupPowertakers: Contracts.actions.setGroupPowertakers,
     attachReading: Billings.actions.attachReading,
+    updateBilling: Billings.actions.updateBilling,
   },
-)(BillingsOverview);
+)(injectIntl(BillingsOverview));
