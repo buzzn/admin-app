@@ -157,7 +157,7 @@ const BillingDetails = ({
     {
       Header: intl.formatMessage({ id: `${prefix}.tableEndReadingKwh` }),
       accessor: 'endReadingKwh',
-      Cell: ({ value, original }) => (value ? `${value} kWh` : <ErrCell>{checkReading(original.lastDate, true, original)}</ErrCell>),
+      Cell: ({ value, original }) => (value ? `${value} kWh` : <ErrCell>{checkReading(original.lastDate, false, original)}</ErrCell>),
     },
     {
       Header: intl.formatMessage({ id: `${prefix}.tableConsumedEnergyKwh` }),
