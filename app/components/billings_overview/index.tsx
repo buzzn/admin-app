@@ -8,9 +8,8 @@ import Contracts from 'contracts';
 import Billings from 'billings';
 import ReactTableSorted from 'components/react_table_sorted';
 import Loading from 'components/loading';
-import BillingStatus from 'components/billing_status';
 import { tableParts as TableParts } from 'react_table_config';
-import NestedDetails from 'components/powertakers/billings_list/nested_details';
+import BillingDetails from 'components/billing_details';
 import { CellWrap } from './style';
 
 const DefaultPerson = require('images/default_person.jpg');
@@ -37,6 +36,7 @@ const BillingsOverview = ({
   loading,
   powertakers,
   attachReading,
+  history,
   match: { params: { groupId } },
   intl,
   validationRules,
@@ -81,7 +81,7 @@ const BillingsOverview = ({
               },
       beginDate: { display: moment(b.beginDate).format('DD.MM.YYYY'), value: b.beginDate },
       lastDate: { display: moment(b.lastDate).format('DD.MM.YYYY'), value: b.lastDate },
-      powertaker: { ...p, billings: null },
+      contract: { ...p, billings: null },
     })));
   const columns = [
     {
@@ -124,7 +124,7 @@ const BillingsOverview = ({
       accessor: 'status',
       Cell: ({ value, original }) => (
         <CellWrap status={original.status}>
-          <BillingStatus {...{ status: value, size: 'small' }} /> {value}
+          {value}
         </CellWrap>
       ),
     },
@@ -163,27 +163,29 @@ const BillingsOverview = ({
               value={{
                 attachReading,
                 groupId,
-                contractId: row.original.powertaker.id,
+                contractId: row.original.contract.id,
                 billingId: row.original.id,
               }}
             >
-              <NestedDetails
-                {...{
-                  billing: row.original,
-                  initialValues: row.original,
-                  validationRules: validationRules.billingUpdate,
-                  form: `billingUpdateForm${row.original.id}`,
-                  onSubmit: params => submitUpdateBilling({
-                    billingId: row.original.id,
-                    contractId: row.original.powertaker.id,
-                    params: {
-                      status: params.status,
-                      invoiceNumber: params.invoiceNumber,
-                      updatedAt: params.updatedAt,
-                    },
-                  }),
-                }}
-              />
+              <BillingDetails {...{
+                ManageReadingContext,
+                billing: row.original,
+                history,
+                marketLocation: row.original.contract.registerMeta,
+                groupId,
+                initialValues: row.original,
+                validationRules: validationRules.billingUpdate,
+                form: `billingUpdateForm${row.original.id}`,
+                onSubmit: params => submitUpdateBilling({
+                  billingId: row.original.id,
+                  contractId: row.original.contract.id,
+                  params: {
+                    status: params.status,
+                    invoiceNumber: params.invoiceNumber,
+                    updatedAt: params.updatedAt,
+                  },
+                }),
+              }} />
             </ManageReadingContext.Provider>
           ),
         }}

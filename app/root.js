@@ -78,7 +78,18 @@ const RouterHack = ({
             <Route
               path="/*"
               render={({ match: { url } }) => (
-                <Col xs={url === '/' || url === '/groups' ? '9' : '8'} className="pl-0 pr-0">
+                <Col
+                  xs={
+                    devMode
+                      ? url === '/' || url === '/groups'
+                        ? '9'
+                        : '8'
+                      : url === '/' || url === '/groups'
+                        ? '12'
+                        : '11'
+                  }
+                  className="pl-0 pr-0"
+                >
                   <div className="center-content-wrapper">
                     <PartErrorBoundary part="main-part">
                       <Switch>
@@ -132,9 +143,11 @@ const RouterHack = ({
               )}
             />
 
-            <Col xs="3" className="pl-0 pr-0">
-              <TodoList devMode={devMode} />
-            </Col>
+            {devMode && (
+              <Col xs="3" className="pl-0 pr-0">
+                <TodoList />
+              </Col>
+            )}
           </Row>
           <Row>
             <Col xs={12}>

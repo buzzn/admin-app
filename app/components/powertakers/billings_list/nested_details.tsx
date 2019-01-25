@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { reduxForm } from 'redux-form';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import { Row, Col } from 'reactstrap';
 import EditableInput from 'components/editable_input';
 import EditableSelect from 'components/editable_select';
 import TwoColField from 'components/two_col_field';
+import TwoColView from 'components/two_col_view';
 import { NestedDetailsWrapper } from 'components/style';
 import ItemDetails from './item_details';
 import { ManageReadingContext } from './index';
@@ -41,29 +43,56 @@ class NestedDetails extends React.Component<Props & InjectedIntlProps, State> {
     const { editMode } = this.state;
 
     const prefix = 'admin.billings';
+    const centered = 'true';
 
     return (
       <NestedDetailsWrapper>
+        <Row>
+          <Col xs={6}>
+            <TwoColView {...{ prefix, field: 'customerName', centered }}>{billing.name.value}</TwoColView>
+          </Col>
+          <Col xs={6}>
+            <TwoColView {...{ prefix, field: 'customerEmail', centered }}>
+              <a href={`mailto:${billing.contract.customer.email}`}>{billing.contract.customer.email}</a>
+            </TwoColView>
+          </Col>
+          <Col xs={6}>
+            <TwoColView {...{ prefix, field: 'registerMeta', centered }}>
+              {billing.contract.registerMeta.name}
+            </TwoColView>
+          </Col>
+          <Col xs={6}>
+            <TwoColView {...{ prefix, field: 'contractNumber', centered }}>
+              {billing.contract.fullContractNumber}
+            </TwoColView>
+          </Col>
+        </Row>
         {!editMode && <i className="buzzn-pencil float-right" onClick={this.switchEditMode} />}
         <form onSubmit={handleSubmit}>
-          <TwoColField
-            {...{
-              prefix,
-              name: 'invoiceNumber',
-              editMode,
-              validationRules,
-              component: EditableInput,
-            }}
-          />
-          <TwoColField
-            {...{
-              prefix,
-              name: 'status',
-              editMode,
-              validationRules,
-              component: EditableSelect,
-            }}
-          />
+          <Row>
+            <Col xs={6}>
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'invoiceNumber',
+                  editMode,
+                  validationRules,
+                  component: EditableInput,
+                }}
+              />
+            </Col>
+            <Col xs={6}>
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'status',
+                  editMode,
+                  validationRules,
+                  component: EditableSelect,
+                }}
+              />
+            </Col>
+          </Row>
           {editMode && (
             <ButtonsWrapper>
               <div className="float-right mt-3">

@@ -19,8 +19,12 @@ import { SpanClick } from 'components/style';
 import AttachedTariffs from 'components/attached_tariffs';
 import ActionsErrors from 'components/actions_errors';
 import Registers from 'components/system/market_location_data/registers';
+import BillingDetails from 'components/billing_details';
 import AddBilling from '../add_billing';
-import NestedDetails from './nested_details';
+
+const DefaultPerson = require('images/default_person.jpg');
+const DefaultOrganisation = require('images/default_organisation.jpg');
+const DefaultThirdParty = require('images/default_3rd_party.jpg');
 
 interface ManageReadingInterface {
   attachReading: Function;
@@ -109,6 +113,23 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
 
     const data = billings.array.map(b => ({
       ...b,
+      name:
+        contract.type === 'contract_localpool_third_party'
+          ? { value: 'drittbeliefert', image: DefaultThirdParty, type: 'avatar' }
+          : contract.customer.type === 'person'
+            ? {
+              value: `${contract.customer.lastName} ${contract.customer.firstName}`,
+              image: contract.customer.image || DefaultPerson,
+              type: 'avatar',
+              clickable: true,
+            }
+            : {
+              value: contract.customer.name,
+              image: contract.customer.image || DefaultOrganisation,
+              type: 'avatar',
+              clickable: true,
+            },
+      contract: { ...contract, billings: null },
       beginDate: { display: moment(b.beginDate).format('DD.MM.YYYY'), value: b.beginDate },
       lastDate: { display: moment(b.lastDate).format('DD.MM.YYYY'), value: b.lastDate },
     }));
@@ -244,22 +265,24 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
                     billingId: row.original.id,
                   }}
                 >
-                  <NestedDetails
-                    {...{
-                      billing: row.original,
-                      initialValues: row.original,
-                      validationRules: validationRules.billingUpdate,
-                      form: `billingUpdateForm${row.original.id}`,
-                      onSubmit: params => this.updateBilling({
-                        billingId: row.original.id,
-                        params: {
-                          status: params.status,
-                          invoiceNumber: params.invoiceNumber,
-                          updatedAt: params.updatedAt,
-                        },
-                      }),
-                    }}
-                  />
+                  <BillingDetails {...{
+                    ManageReadingContext,
+                    billing: row.original,
+                    history,
+                    marketLocation: row.original.contract.registerMeta,
+                    groupId,
+                    initialValues: row.original,
+                    validationRules: validationRules.billingUpdate,
+                    form: `billingUpdateForm${row.original.id}`,
+                    onSubmit: params => this.updateBilling({
+                      billingId: row.original.id,
+                      params: {
+                        status: params.status,
+                        invoiceNumber: params.invoiceNumber,
+                        updatedAt: params.updatedAt,
+                      },
+                    }),
+                  }} />
                 </ManageReadingContext.Provider>
               ),
             }}
