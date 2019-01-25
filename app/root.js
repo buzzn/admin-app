@@ -85,8 +85,8 @@ const RouterHack = ({
                         ? '9'
                         : '8'
                       : url === '/' || url === '/groups'
-                        ? '12'
-                        : '11'
+                        ? '10'
+                        : '9'
                   }
                   className="pl-0 pr-0"
                 >
