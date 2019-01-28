@@ -1,6 +1,7 @@
 import { put, call, takeLatest, takeLeading, take, fork, cancel, select } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import { logException } from '_util';
+import Contracts from 'contracts';
 import { actions, constants } from './actions';
 import api from './api';
 
@@ -47,6 +48,8 @@ export function* changeBilling(
     } else {
       yield call(resolve, res);
       yield call(getBillings, { apiUrl, apiPath, token }, { groupId, contractId });
+      // HACK
+      yield put(Contracts.actions.loadGroupPowertakers({ groupId, withBillings: true }));
     }
   } catch (error) {
     logException(error);
