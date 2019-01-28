@@ -90,7 +90,7 @@ export const MaLoRow = styled.div`
 `;
 
 export const DetailsWrapper = styled(UnmountClosed)`
-  box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.1); */
   background: white;
 `;
 

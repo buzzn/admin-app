@@ -276,8 +276,10 @@ const BillingDetails = ({
             <TwoColView {...{ prefix: 'admin.contracts', field: 'fullContractNumber', centered }}>
               <Link to={`/groups/${groupId}/powertakers/${contract.id}`}>{contract.fullContractNumber}</Link>
             </TwoColView>
-            {!editMode && <i className="buzzn-pencil float-right" onClick={switchEditMode} />}
             <form onSubmit={handleSubmit}>
+              <div className="edit-switch-wrap">
+                {!editMode && <i className="edit-switch buzzn-pencil float-right" onClick={switchEditMode} />}
+              </div>
               <TwoColField
                 {...{
                   prefix,
@@ -285,6 +287,8 @@ const BillingDetails = ({
                   editMode,
                   validationRules,
                   component: EditableInput,
+                  centered: true,
+                  noColon: true,
                 }}
               />
               <TwoColField
@@ -294,6 +298,8 @@ const BillingDetails = ({
                   editMode,
                   validationRules,
                   component: EditableSelect,
+                  centered: true,
+                  noColon: true,
                 }}
               />
               {editMode && (

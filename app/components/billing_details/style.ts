@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const BillingDetailsWrapper = styled.div`
+  box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.1);
   .wrapper {
     padding: 1rem;
     height: 100%;
@@ -13,13 +14,21 @@ export const BillingDetailsWrapper = styled.div`
         margin-top: 3.5rem;
       }
     }
+    .edit-switch-wrap {
+      position: relative;
+      .edit-switch {
+        position: absolute;
+        right: 0;
+        top: 0;
+        margin-right: -1rem;
+        z-index: 10;
+      }
+    }
   }
 `;
 
 export const DoubleCell = styled.div`
-  background-color: ${(props) => {
-    return props.hasErr ? 'rgba(255, 0, 0, 0.2)' : '';
-  }};
+  background-color: ${props => (props.hasErr ? 'rgba(255, 0, 0, 0.2)' : '')};
   div {
     height: 57px;
   }
