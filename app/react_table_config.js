@@ -189,5 +189,24 @@ export const tableParts = {
       // returning 0, undefined or any falsey value will use subsequent sorts or the index as a tiebreaker
       return 0;
     },
+    sortByBillingstatus: (x, y) => {
+      const statusMap = {
+        open: 0,
+        calculated: 1,
+        delivered: 2,
+        settled: 3,
+        closed: 4,
+      };
+      const a = statusMap[x];
+      const b = statusMap[y];
+
+      if (a > b) {
+        return 1;
+      }
+      if (a < b) {
+        return -1;
+      }
+      return 0;
+    },
   },
 };

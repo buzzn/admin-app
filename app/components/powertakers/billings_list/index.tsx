@@ -160,6 +160,7 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
       {
         Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableStatus` })} />,
         accessor: 'status',
+        sortMethod: TableParts.sort.sortByBillingstatus,
         Cell: ({ value }) => (
           <span>
             <BillingStatus {...{ status: value, size: 'small' }} /> {value}
@@ -265,24 +266,26 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
                     billingId: row.original.id,
                   }}
                 >
-                  <BillingDetails {...{
-                    ManageReadingContext,
-                    billing: row.original,
-                    history,
-                    marketLocation: row.original.contract.registerMeta,
-                    groupId,
-                    initialValues: row.original,
-                    validationRules: validationRules.billingUpdate,
-                    form: `billingUpdateForm${row.original.id}`,
-                    onSubmit: params => this.updateBilling({
-                      billingId: row.original.id,
-                      params: {
-                        status: params.status,
-                        invoiceNumber: params.invoiceNumber,
-                        updatedAt: params.updatedAt,
-                      },
-                    }),
-                  }} />
+                  <BillingDetails
+                    {...{
+                      ManageReadingContext,
+                      billing: row.original,
+                      history,
+                      marketLocation: row.original.contract.registerMeta,
+                      groupId,
+                      initialValues: row.original,
+                      validationRules: validationRules.billingUpdate,
+                      form: `billingUpdateForm${row.original.id}`,
+                      onSubmit: params => this.updateBilling({
+                        billingId: row.original.id,
+                        params: {
+                          status: params.status,
+                          invoiceNumber: params.invoiceNumber,
+                          updatedAt: params.updatedAt,
+                        },
+                      }),
+                    }}
+                  />
                 </ManageReadingContext.Provider>
               ),
             }}

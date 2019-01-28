@@ -122,6 +122,7 @@ const BillingsOverview = ({
     {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableStatus` })} />,
       accessor: 'status',
+      sortMethod: TableParts.sort.sortByBillingstatus,
       Cell: ({ value, original }) => (
         <CellWrap status={original.status}>
           {value}
