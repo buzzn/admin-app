@@ -4,7 +4,6 @@ import { Redirect, NavLink, Switch, Route } from 'react-router-dom';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Row } from 'reactstrap';
 import { confirmAlert } from 'react-confirm-alert';
-import pick from 'lodash/pick';
 import get from 'lodash/get';
 import map from 'lodash/map';
 import flattenDeep from 'lodash/flattenDeep';
@@ -130,26 +129,6 @@ class GroupSettings extends React.Component {
       { id: group.id || 1, title: group.name },
     ];
 
-    const submitGroup = (values) => {
-      const changed = Object.keys(values).reduce(
-        (sum, key) => {
-          if (values[key] !== group[key]) {
-            return { ...sum, [key]: values[key] };
-          }
-          return sum;
-        },
-        { updatedAt: values.updatedAt },
-      );
-      return new Promise((resolve, reject) => {
-        updateGroup({
-          groupId: group.id,
-          params: changed,
-          resolve,
-          reject,
-        });
-      });
-    };
-
     const ownerValues = { ...owner };
     if (!ownerValues.address) ownerValues.address = {};
     if (!ownerValues.contact) ownerValues.contact = { address: {} };
@@ -190,20 +169,14 @@ class GroupSettings extends React.Component {
                 render={() => (
                   <Group
                     {...{
-                      submitGroup,
+                      updateGroup,
                       group,
                       deleteGroup: this.deleteGroup,
                       address,
                       transmissionSystemOperator,
                       distributionSystemOperator,
-                      initialValues: pick(group, [
-                        'showObject',
-                        'showProduction',
-                        'showEnergy',
-                        'showContact',
-                        'showDisplayApp',
-                        'updatedAt',
-                      ]),
+                      validationRules,
+                      initialValues: group,
                       electricitySupplier,
                     }}
                   />

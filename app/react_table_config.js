@@ -30,8 +30,8 @@ Object.assign(ReactTableDefaults, {
     const id = filter.pivotId || filter.id;
     return row[id] !== undefined
       ? String(row[id])
-          .toLowerCase()
-          .includes(filter.value)
+        .toLowerCase()
+        .includes(filter.value)
       : true;
   },
 });
@@ -151,8 +151,8 @@ export const tableParts = {
       const id = filter.pivotId || filter.id;
       return row[id] !== undefined
         ? String(row[id].value)
-            .toLowerCase()
-            .includes(filter.value)
+          .toLowerCase()
+          .includes(filter.value)
         : true;
     },
   },
@@ -193,9 +193,12 @@ export const tableParts = {
       const statusMap = {
         open: 0,
         calculated: 1,
-        delivered: 2,
-        settled: 3,
-        closed: 4,
+        documented: 2,
+        queued: 3,
+        delivered: 4,
+        settled: 5,
+        void: 6,
+        closed: 7,
       };
       const a = statusMap[x];
       const b = statusMap[y];

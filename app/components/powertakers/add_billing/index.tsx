@@ -5,7 +5,6 @@ import { reduxForm } from 'redux-form';
 import FieldValidationWrapper from 'components/field_validation_wrapper';
 import FieldInput from 'components/field_input';
 import FieldDate from 'components/field_date';
-import EditableSelect from 'components/editable_select';
 
 interface Props {
   isOpen: boolean;
@@ -41,7 +40,7 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
         <form onSubmit={handleSubmit}>
           <ModalBody>
             <Row>
-              <Col xs={4}>
+              <Col xs={6}>
                 <FieldValidationWrapper
                   {...{
                     name: 'beginDate',
@@ -52,7 +51,7 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
                   }}
                 />
               </Col>
-              <Col xs={4}>
+              <Col xs={6}>
                 <FieldValidationWrapper
                   {...{
                     name: 'lastDate',
@@ -60,17 +59,6 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
                     label: <FormattedMessage id={`${prefix}.lastDate`} />,
                     component: FieldDate,
                     validationRules,
-                  }}
-                />
-              </Col>
-              <Col xs={4}>
-                <FieldValidationWrapper
-                  {...{
-                    name: 'status',
-                    editMode: true,
-                    component: EditableSelect,
-                    validationRules,
-                    prefix,
                   }}
                 />
               </Col>

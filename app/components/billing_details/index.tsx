@@ -129,6 +129,7 @@ const BillingDetails = ({
     {
       Header: intl.formatMessage({ id: `${prefix}.tableMeterSerial` }),
       accessor: 'meterSerial',
+      className: 'cy-hw-meter-serial',
       style: {
         cursor: 'pointer',
         textDecoration: 'underline',
@@ -145,6 +146,7 @@ const BillingDetails = ({
     {
       Header: intl.formatMessage({ id: `${prefix}.tableDates` }),
       accessor: 'dates',
+      className: 'cy-hw-dates',
       filterMethod: TableParts.filters.filterByValue,
       sortMethod: TableParts.sort.sortByValue,
       Cell: ({ value: { display } }) => display,
@@ -152,16 +154,19 @@ const BillingDetails = ({
     {
       Header: intl.formatMessage({ id: `${prefix}.tableBeginReadingKwh` }),
       accessor: 'beginReadingKwh',
+      className: 'cy-hw-begin-reading',
       Cell: ({ value, original }) => (value ? `${value} kWh` : <ErrCell>{checkReading(original.beginDate, true, original)}</ErrCell>),
     },
     {
       Header: intl.formatMessage({ id: `${prefix}.tableEndReadingKwh` }),
       accessor: 'endReadingKwh',
+      className: 'cy-hw-end-reading',
       Cell: ({ value, original }) => (value ? `${value} kWh` : <ErrCell>{checkReading(original.lastDate, false, original)}</ErrCell>),
     },
     {
       Header: intl.formatMessage({ id: `${prefix}.tableConsumedEnergyKwh` }),
       accessor: 'consumedEnergyKwh',
+      className: 'cy-hw-consumed',
       Cell: ({ value }) => `${value} kWh`,
     },
   ];
@@ -197,6 +202,7 @@ const BillingDetails = ({
     {
       Header: intl.formatMessage({ id: 'admin.tariffs.name' }),
       accessor: 'tariff.name',
+      className: 'cy-item-tariff',
       Cell: ({ value, original }) => (
         <DoubleCell hasErr={hasErr(original)}>
           <div>{value}</div>

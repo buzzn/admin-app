@@ -123,11 +123,7 @@ const BillingsOverview = ({
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableStatus` })} />,
       accessor: 'status',
       sortMethod: TableParts.sort.sortByBillingstatus,
-      Cell: ({ value, original }) => (
-        <CellWrap status={original.status}>
-          {value}
-        </CellWrap>
-      ),
+      Cell: ({ value, original }) => <CellWrap status={original.status}>{value}</CellWrap>,
     },
     {
       expander: true,
@@ -143,7 +139,7 @@ const BillingsOverview = ({
     updateBilling({ resolve, reject, params, groupId, contractId, billingId });
   })
     .then(res => res)
-    .catch(err => Alert.error(err.errors.completeness.join(', ')));
+    .catch(err => Alert.error(err.errors.status ? err.errors.status.errorMessage : err.errors.completeness.join(', ')));
 
   return (
     <React.Fragment>
@@ -168,25 +164,27 @@ const BillingsOverview = ({
                 billingId: row.original.id,
               }}
             >
-              <BillingDetails {...{
-                ManageReadingContext,
-                billing: row.original,
-                history,
-                marketLocation: row.original.contract.registerMeta,
-                groupId,
-                initialValues: row.original,
-                validationRules: validationRules.billingUpdate,
-                form: `billingUpdateForm${row.original.id}`,
-                onSubmit: params => submitUpdateBilling({
-                  billingId: row.original.id,
-                  contractId: row.original.contract.id,
-                  params: {
-                    status: params.status,
-                    invoiceNumber: params.invoiceNumber,
-                    updatedAt: params.updatedAt,
-                  },
-                }),
-              }} />
+              <BillingDetails
+                {...{
+                  ManageReadingContext,
+                  billing: row.original,
+                  history,
+                  marketLocation: row.original.contract.registerMeta,
+                  groupId,
+                  initialValues: row.original,
+                  validationRules: validationRules.billingUpdate,
+                  form: `billingUpdateForm${row.original.id}`,
+                  onSubmit: params => submitUpdateBilling({
+                    billingId: row.original.id,
+                    contractId: row.original.contract.id,
+                    params: {
+                      status: params.status,
+                      invoiceNumber: params.invoiceNumber,
+                      updatedAt: params.updatedAt,
+                    },
+                  }),
+                }}
+              />
             </ManageReadingContext.Provider>
           ),
         }}

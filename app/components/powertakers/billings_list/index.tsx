@@ -69,7 +69,7 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
       updateBilling({ resolve, reject, params, groupId, contractId, billingId });
     })
       .then(res => res)
-      .catch(err => Alert.error(err.errors.completeness.join(', ')));
+      .catch(err => Alert.error(err.errors.status ? err.errors.status.errorMessage : err.errors.completeness.join(', ')));
   };
 
   componentDidMount() {

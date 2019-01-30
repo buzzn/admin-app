@@ -15,6 +15,14 @@ const BillingStatus = ({ status, size }: Props) => {
       icon: 'fa-eur',
       color: '#FDD835',
     },
+    documented: {
+      icon: 'fa-file-text-o',
+      color: '#F57C00',
+    },
+    queued: {
+      icon: 'fa-cubes',
+      color: '#D4E157',
+    },
     delivered: {
       icon: 'fa-arrow-circle-o-right',
       color: '#000000',
@@ -22,6 +30,10 @@ const BillingStatus = ({ status, size }: Props) => {
     settled: {
       icon: 'fa-check',
       color: '#21D343',
+    },
+    void: {
+      icon: 'fa-ban',
+      color: '#D84315',
     },
     closed: {
       icon: 'fa-check',
