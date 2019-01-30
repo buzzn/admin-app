@@ -21,7 +21,7 @@ const ContractData = ({ breadcrumbs, title, groupId, contractId, url, contractUr
     <PageTitle {...{ breadcrumbs, title }} />
     <CenterContent>
       <SubNav>
-        <NavLink to={`${contractUrl}`} exact className="nav-link">
+        <NavLink to={`${contractUrl}`} exact className="nav-link" data-cy="contract data tab">
           <FormattedMessage id="admin.contracts.navContract" />
         </NavLink>
         <NavLink to={`${contractUrl}/billings`} exact className="nav-link" data-cy="contract billings tab">

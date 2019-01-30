@@ -53,13 +53,14 @@ const Balance = ({ balanceSheet, updateContract, intl, groupId, contractId }) =>
 
   return (
     <BalanceWrapper>
-      <h5 className="grey-underline mt-5 pb-2">Total balance: {(balanceSheet.total / 1000).toFixed(2)} €</h5>
+      <h5 className="grey-underline mt-5 pb-2" data-cy="total balance">Total balance: {(balanceSheet.total / 1000).toFixed(2)} €</h5>
       <Row>
         <Col xs={5}>
           {' '}
           <FormGroup className="form-group">
             <input
               id="account-amount"
+              data-cy="account amount"
               className="form-control"
               onChange={({ target: { value } }) => setInput({ ...input, amount: value })}
               value={input.amount}
@@ -76,6 +77,7 @@ const Balance = ({ balanceSheet, updateContract, intl, groupId, contractId }) =>
           <FormGroup className="form-group">
             <input
               id="account-comment"
+              data-cy="account comment"
               className="form-control"
               onChange={({ target: { value } }) => setInput({ ...input, comment: value })}
               value={input.comment}
@@ -88,7 +90,7 @@ const Balance = ({ balanceSheet, updateContract, intl, groupId, contractId }) =>
           </FormGroup>
         </Col>
         <Col xs={2}>
-          <button className="btn btn-primary" onClick={submit}>
+          <button className="btn btn-primary" data-cy="button add" onClick={submit}>
             <i className="fa fa-plus" />
           </button>
         </Col>

@@ -284,7 +284,7 @@ const BillingDetails = ({
             </TwoColView>
             <form onSubmit={handleSubmit}>
               <div className="edit-switch-wrap">
-                {!editMode && <i className="edit-switch buzzn-pencil float-right" onClick={switchEditMode} />}
+                {!editMode && <i className="edit-switch buzzn-pencil float-right" data-cy="billing edit switch" onClick={switchEditMode} />}
               </div>
               <TwoColField
                 {...{
