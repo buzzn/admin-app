@@ -41,6 +41,7 @@ const BillingsOverview = ({
   intl,
   validationRules,
   updateBilling,
+  getBillingPDFData,
 }) => {
   const [expanded, setExpanded] = useState({});
   useEffect(
@@ -168,6 +169,7 @@ const BillingsOverview = ({
                 {...{
                   ManageReadingContext,
                   billing: row.original,
+                  getBillingPDFData,
                   history,
                   marketLocation: row.original.contract.registerMeta,
                   groupId,
@@ -208,5 +210,6 @@ export default connect(
     setGroupPowertakers: Contracts.actions.setGroupPowertakers,
     attachReading: Billings.actions.attachReading,
     updateBilling: Billings.actions.updateBilling,
+    getBillingPDFData: Billings.actions.getBillingPDFData,
   },
 )(injectIntl(BillingsOverview));

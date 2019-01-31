@@ -100,6 +100,7 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
       contractId,
       loadContract,
       updateContract,
+      getBillingPDFData,
       addBillingFormName,
       addBillingSubmitErrors,
       attachReading,
@@ -269,6 +270,7 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
                     {...{
                       ManageReadingContext,
                       billing: row.original,
+                      getBillingPDFData,
                       history,
                       marketLocation: row.original.contract.registerMeta,
                       groupId,
@@ -334,6 +336,7 @@ interface StateProps {
 interface DispatchProps {
   addBilling: Function;
   updateBilling: Function;
+  getBillingPDFData: Function;
   loadBillings: Function;
   loadContract: Function;
   updateContract: Function;
@@ -361,6 +364,7 @@ export default connect<StateProps, DispatchProps, ExtProps>(
   {
     addBilling: Billings.actions.addBilling,
     updateBilling: Billings.actions.updateBilling,
+    getBillingPDFData: Billings.actions.getBillingPDFData,
     loadBillings: Billings.actions.loadBillings,
     loadContract: Contracts.actions.loadContract,
     updateContract: Contracts.actions.updateContract,

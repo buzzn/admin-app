@@ -19,6 +19,8 @@ export const constants = {
   UPDATE_BILLING: 'buzzn_billings/UPDATE_BILLING',
 
   ATTACH_READING: 'buzzn_billings/ATTACH_READING',
+
+  GET_BILLING_PDF_DATA: 'buzzn_billings/GET_BILLING_PDF_DATA',
 };
 
 export const actions = {
@@ -74,5 +76,14 @@ export const actions = {
     contractId,
     billingId,
     billingItemId,
+  }),
+
+  getBillingPDFData: ({ groupId, contractId, billingId, documentId, fileName }) => ({
+    type: constants.GET_BILLING_PDF_DATA,
+    groupId,
+    contractId,
+    billingId,
+    documentId,
+    fileName,
   }),
 };

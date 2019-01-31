@@ -14,10 +14,11 @@ import EditableSelect from 'components/editable_select';
 import TwoColField from 'components/two_col_field';
 import TwoColView from 'components/two_col_view';
 import AddReading from 'components/add_reading';
-import { BillingDetailsWrapper, DoubleCell, ButtonsWrapper, ReadingAction, ErrCell } from './style';
+import { BillingDetailsWrapper, DoubleCell, ButtonsWrapper, ReadingAction, ErrCell, DocumentsWrapper } from './style';
 
 interface Props {
   billing: any;
+  getBillingPDFData: Function;
   close?: () => void;
   history: any;
   marketLocation: any;
@@ -27,6 +28,7 @@ interface Props {
 const BillingDetails = ({
   ManageReadingContext,
   billing,
+  getBillingPDFData,
   close,
   intl,
   history,
@@ -340,12 +342,39 @@ const BillingDetails = ({
                       <FormattedMessage id="admin.buttons.submit" />
                     </button>
                   </div>
-                  <span style={{ color: 'red' }}>STATUS ERRORS: {statusErrs}</span>
+                  {!!statusErrs && <span style={{ color: 'red' }}>STATUS ERRORS: {statusErrs}</span>}
                 </ButtonsWrapper>
               )}
             </form>
           </Col>
         </Row>
+        {!!billing.documents.array.length && (
+          <DocumentsWrapper>
+            <h5>Invoices:</h5>
+            {billing.documents.array.map(d => (
+              <Row key={d.id}>
+                <Col xs={8}>
+                  <span
+                    className="invoice-file"
+                    onClick={() => getBillingPDFData({
+                      groupId,
+                      contractId: contract.id,
+                      billingId: billing.id,
+                      documentId: d.id,
+                      fileName: d.filename,
+                    })
+                    }
+                  >
+                    {d.filename}
+                  </span>
+                </Col>
+                <Col xs={4}>
+                  <span className="invoice-date">{moment(d.createdAt).format('DD.MM.YYYY')}</span>
+                </Col>
+              </Row>
+            ))}
+          </DocumentsWrapper>
+        )}
         <div className="title h5">
           <FormattedMessage id={`${prefix}.titleReference`} />
         </div>

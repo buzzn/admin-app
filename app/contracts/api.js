@@ -44,7 +44,7 @@ export default {
   fetchGroupPowertakersWithBillings({ token, apiUrl, apiPath, groupId }) {
     return (
       fetch(
-        `${apiUrl}${apiPath}/localpools/${groupId}/contracts?include=billings:[items:[tariff,meter,register:[readings]]],register_meta:[registers],customer:[address,contact:address]`,
+        `${apiUrl}${apiPath}/localpools/${groupId}/contracts?include=billings:[documents,items:[tariff,meter,register:[readings]]],register_meta:[registers],customer:[address,contact:address]`,
         { headers: prepareHeaders(token) },
       )
         .then(parseResponse)
@@ -81,7 +81,7 @@ export default {
   },
   fetchGroupContracts({ token, apiUrl, apiPath, groupId }) {
     return fetch(
-      `${apiUrl}${apiPath}/localpools/${groupId}/contracts?include=documents,customer:[address,contact:address]`,
+      `${apiUrl}${apiPath}/localpools/${groupId}/contracts?include=documents,billings:[documents],customer:[address,contact:address]`,
       { headers: prepareHeaders(token) },
     )
       .then(parseResponse)

@@ -48,3 +48,16 @@ export const ErrCell = styled.div`
   background: rgba(255, 0, 0, 0.2);
   padding-left: 1rem;
 `;
+
+export const DocumentsWrapper = styled.div`
+  border-top: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
+  margin: 1.5rem 0;
+  padding: 1rem 0;
+  .invoice-file, .invoice-date {
+    font-weight: bold;
+  }
+  .invoice-file {
+    cursor: pointer;
+  }
+`;

@@ -3,7 +3,7 @@ import { prepareHeaders, parseResponse, camelizeResponseKeys, snakeReq } from '.
 export default {
   fetchBilling({ token, apiUrl, apiPath, billingId, groupId, contractId }) {
     return fetch(
-      `${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/billings/${billingId}?include=items:[tariff,register],accounting_entry`,
+      `${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/billings/${billingId}?include=documents,items:[tariff,register],accounting_entry`,
       { headers: prepareHeaders(token) },
     )
       .then(parseResponse)
@@ -11,7 +11,7 @@ export default {
   },
   fetchBillings({ token, apiUrl, apiPath, groupId, contractId }) {
     return fetch(
-      `${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/billings?include=items:[tariff,meter,register:[readings]],accounting_entry`,
+      `${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/billings?include=documents,items:[tariff,meter,register:[readings]],accounting_entry`,
       { headers: prepareHeaders(token) },
     )
       .then(parseResponse)
@@ -39,6 +39,12 @@ export default {
         method: 'PATCH',
         body: JSON.stringify(snakeReq(params)),
       },
+    ).then(parseResponse);
+  },
+  fetchBillingPDFData({ token, apiUrl, apiPath, groupId, contractId, billingId, documentId }) {
+    return fetch(
+      `${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/billings/${billingId}/documents/${documentId}/fetch`,
+      { headers: prepareHeaders(token) },
     ).then(parseResponse);
   },
 };
