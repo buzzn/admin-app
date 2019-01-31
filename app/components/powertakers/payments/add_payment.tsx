@@ -34,6 +34,7 @@ const AddPayment = ({ isOpen, toggle, pristine, reset, intl, tariffs, validation
     } else {
       delete params.tariffId;
     }
+    params.priceCents = params.priceCents * 100;
     return new Promise((resolve, reject) => {
       addPayment({ params, resolve, reject });
     });
@@ -102,7 +103,7 @@ const AddPayment = ({ isOpen, toggle, pristine, reset, intl, tariffs, validation
                   type="radio"
                   name="priceBase"
                   onChange={() => setPriceBase('cents')}
-                  label="Cents"
+                  label="Manual"
                   id="cents-radio"
                 />
               </FormGroup>
@@ -131,10 +132,13 @@ const AddPayment = ({ isOpen, toggle, pristine, reset, intl, tariffs, validation
                   {...{
                     name: 'priceCents',
                     type: 'text',
-                    label: <FormattedMessage id={`${prefix}.paymentsPriceCents`} />,
+                    label: (
+                      <React.Fragment>
+                        <FormattedMessage id={`${prefix}.paymentsPriceCents`} /> €
+                      </React.Fragment>
+                    ),
                     component: FieldInput,
                     validationRules,
-                    normalize: numberNormalizer,
                   }}
                 />
               </Col>

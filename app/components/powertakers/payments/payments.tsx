@@ -39,6 +39,7 @@ const PaymentsList = ({
       ),
       accessor: 'energyConsumptionKwhPa',
       className: 'cy-energy-consumption-kwh-pa',
+      Cell: ({ value }) => <span>{value} kWh</span>,
     },
     {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableCycle` })} />,
@@ -51,6 +52,7 @@ const PaymentsList = ({
       ),
       accessor: 'priceCents',
       className: 'cy-price-cents',
+      Cell: ({ value }) => <span>{(value / 100).toFixed(2)} €</span>,
     },
     {
       expander: true,
@@ -96,8 +98,15 @@ const PaymentsList = ({
           SubComponent: ({ original, viewIndex }) => (
             <EditPayment
               {...{
-                initialValues: original,
-                updatePayment: ({ params, resolve, reject }) => updatePayment({ resolve, reject, params, groupId, contractId, paymentId: original.id }),
+                initialValues: { ...original, priceCents: (original.priceCents / 100).toFixed(2) },
+                updatePayment: ({ params, resolve, reject }) => updatePayment({
+                  resolve,
+                  reject,
+                  params: { ...params, priceCents: params.priceCents * 100 },
+                  groupId,
+                  contractId,
+                  paymentId: original.id,
+                }),
                 form: `editPayment-${original.id}`,
                 validationRules: validationRules.paymentUpdate,
                 handleCancel: () => handleRowClick(viewIndex),

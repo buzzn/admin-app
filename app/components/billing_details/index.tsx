@@ -57,6 +57,20 @@ const BillingDetails = ({
   const [isOpen, switchAddReading] = useState(false);
   const [date, setDate] = useState({});
   const [item, setItem] = useState({});
+
+  const allowedStatus = Object.keys(billing.allowedActions.update.status)
+    .filter(k => billing.allowedActions.update.status[k] === true)
+    .map(k => ({ value: k, label: k }));
+  const reduceErrs = errObj => Object.keys(errObj).reduce((err, k) => {
+    if (typeof errObj[k] === 'string') return `${err}${k}: ${errObj[k]}, `;
+    if (Array.isArray(errObj[k])) return `${err}${k}: ${errObj[k].join(', ')}, `;
+    return `${k}: ${reduceErrs(errObj[k])}`;
+  }, '');
+  const statusErrs = Object.values(billing.allowedActions.update.status)
+    .filter(v => v !== true)
+    .map(v => reduceErrs(v))
+    .join('; ');
+
   const checkReading = (date, begin, item) => {
     const reading = get(item, 'register.readings.array', []).find(r => r.date === date);
     if (reading) {
@@ -284,7 +298,13 @@ const BillingDetails = ({
             </TwoColView>
             <form onSubmit={handleSubmit}>
               <div className="edit-switch-wrap">
-                {!editMode && <i className="edit-switch buzzn-pencil float-right" data-cy="billing edit switch" onClick={switchEditMode} />}
+                {!editMode && (
+                  <i
+                    className="edit-switch buzzn-pencil float-right"
+                    data-cy="billing edit switch"
+                    onClick={switchEditMode}
+                  />
+                )}
               </div>
               <TwoColField
                 {...{
@@ -306,6 +326,8 @@ const BillingDetails = ({
                   component: EditableSelect,
                   centered: true,
                   noColon: true,
+                  listOverride: allowedStatus,
+                  noValTranslations: true,
                 }}
               />
               {editMode && (
@@ -318,6 +340,7 @@ const BillingDetails = ({
                       <FormattedMessage id="admin.buttons.submit" />
                     </button>
                   </div>
+                  <span style={{ color: 'red' }}>STATUS ERRORS: {statusErrs}</span>
                 </ButtonsWrapper>
               )}
             </form>
