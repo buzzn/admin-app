@@ -12,3 +12,7 @@ export const BalanceWrapper = styled.div`
     }
   }
 `;
+
+export const PaymentsWrapper = styled.div`
+  margin-top: 2rem;
+`;

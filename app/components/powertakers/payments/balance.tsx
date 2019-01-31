@@ -53,7 +53,9 @@ const Balance = ({ balanceSheet, updateContract, intl, groupId, contractId }) =>
 
   return (
     <BalanceWrapper>
-      <h5 className="grey-underline mt-5 pb-2" data-cy="total balance">Total balance: {(balanceSheet.total / 1000).toFixed(2)} €</h5>
+      <h5 className="grey-underline mt-5 pb-2" data-cy="total balance">
+        Total balance: {(balanceSheet.total / 1000).toFixed(2)} €
+      </h5>
       <Row>
         <Col xs={5}>
           {' '}

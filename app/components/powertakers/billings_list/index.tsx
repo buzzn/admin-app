@@ -207,7 +207,6 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
               <div style={{ color: 'red' }}>
                 {get(contract, 'registerMeta.registers.array', []).length ? (
                   <React.Fragment>
-                    {' '}
                     <h5>Registers:</h5>
                     <Registers
                       {...{

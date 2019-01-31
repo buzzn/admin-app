@@ -9,6 +9,16 @@ export const constants = {
   LOADED_CONTRACT: 'buzzn_contracts/LOADED_CONTRACT',
   SET_CONTRACT: 'buzzn_contracts/SET_CONTRACT',
 
+  LOAD_CONTRACT_BALANCE_SHEET: 'buzzn_contracts/LOAD_CONTRACT_BALANCE_SHEET',
+  LOADING_CONTRACT_BALANCE_SHEET: 'buzzn_contracts/LOADING_CONTRACT_BALANCE_SHEET',
+  LOADED_CONTRACT_BALANCE_SHEET: 'buzzn_contracts/LOADED_CONTRACT_BALANCE_SHEET',
+  SET_CONTRACT_BALANCE_SHEET: 'buzzn_contracts/SET_CONTRACT_BALANCE_SHEET',
+
+  LOAD_CONTRACT_PAYMENTS: 'buzzn_contracts/LOAD_CONTRACT_PAYMENTS',
+  LOADING_CONTRACT_PAYMENTS: 'buzzn_contracts/LOADING_CONTRACT_PAYMENTS',
+  LOADED_CONTRACT_PAYMENTS: 'buzzn_contracts/LOADED_CONTRACT_PAYMENTS',
+  SET_CONTRACT_PAYMENTS: 'buzzn_contracts/SET_CONTRACT_PAYMENTS',
+
   LOAD_GROUP_CONTRACTS: 'buzzn_contracts/LOAD_GROUP_CONTRACTS',
   LOADING_GROUP_CONTRACTS: 'buzzn_contracts/LOADING_GROUP_CONTRACTS',
   LOADED_GROUP_CONTRACTS: 'buzzn_contracts/LOADED_GROUP_CONTRACTS',
@@ -23,6 +33,10 @@ export const constants = {
 
   ADD_CONTRACT: 'buzzn_contracts/ADD_CONTRACT',
   UPDATE_CONTRACT: 'buzzn_contracts/UPDATE_CONTRACT',
+
+  ADD_PAYMENT: 'buzzn_contracts/ADD_PAYMENT',
+  UPDATE_PAYMENT: 'buzzn_contracts/UPDATE_PAYMENT',
+  DELETE_PAYMENT: 'buzzn_contracts/DELETE_PAYMENT',
 
   GENERATE_CONTRACT_PDF: 'buzzn_contracts/GENERATE_CONTRACT_PDF',
   ATTACH_CONTRACT_PDF: 'buzzn_contracts/ATTACH_CONTRACT_PDF',
@@ -50,6 +64,24 @@ export const actions = {
     contractor,
     customer,
   }),
+
+  loadContractBalanceSheet: ({ contractId, groupId }) => ({
+    type: constants.LOAD_CONTRACT_BALANCE_SHEET,
+    contractId,
+    groupId,
+  }),
+  loadingContractBalanceSheet: () => ({ type: constants.LOADING_CONTRACT_BALANCE_SHEET }),
+  loadedContractBalanceSheet: () => ({ type: constants.LOADED_CONTRACT_BALANCE_SHEET }),
+  setContractBalanceSheet: balanceSheet => ({ type: constants.SET_CONTRACT_BALANCE_SHEET, balanceSheet }),
+
+  loadContractPayments: ({ contractId, groupId }) => ({
+    type: constants.LOAD_CONTRACT_PAYMENTS,
+    contractId,
+    groupId,
+  }),
+  loadingContractPayments: () => ({ type: constants.LOADING_CONTRACT_PAYMENTS }),
+  loadedContractPayments: () => ({ type: constants.LOADED_CONTRACT_PAYMENTS }),
+  setContractPayments: payments => ({ type: constants.SET_CONTRACT_PAYMENTS, payments }),
 
   loadGroupContracts: groupId => ({ type: constants.LOAD_GROUP_CONTRACTS, groupId }),
   loadingGroupContracts: () => ({ type: constants.LOADING_GROUP_CONTRACTS }),
@@ -91,6 +123,30 @@ export const actions = {
     reject,
     params,
     updateType,
+  }),
+
+  addPayment: ({ groupId, contractId, resolve, reject, params }) => ({
+    type: constants.ADD_PAYMENT,
+    groupId,
+    contractId,
+    resolve,
+    reject,
+    params,
+  }),
+  updatePayment: ({ groupId, contractId, paymentId, resolve, reject, params }) => ({
+    type: constants.UPDATE_PAYMENT,
+    groupId,
+    contractId,
+    paymentId,
+    resolve,
+    reject,
+    params,
+  }),
+  deletePayment: ({ groupId, contractId, paymentId }) => ({
+    type: constants.DELETE_PAYMENT,
+    groupId,
+    contractId,
+    paymentId,
   }),
 
   generateContractPDF: ({ groupId, contractId, resolve, reject }) => ({

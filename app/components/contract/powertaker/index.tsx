@@ -16,7 +16,6 @@ import EditableDate from 'components/editable_date';
 import EditableCheckbox from 'components/editable_checkbox';
 import EditableSelect from 'components/editable_select';
 import { dateNormalizer } from 'validation_normalizers';
-import Balance from './balance';
 
 import {
   ContractHeader,
@@ -143,21 +142,6 @@ const PowertakerContract = ({
           </InnerRow>
         </Col>
       </ContractHeader>
-      <Balance
-        {...{
-          balanceSheet: contract.balanceSheet,
-          groupId,
-          contractId: contract.id,
-          updateContract: ({ resolve, reject, params }) => updateContract({
-            resolve,
-            reject,
-            params: { ...params, updatedAt: contract.updatedAt },
-            groupId,
-            contractId: contract.id,
-            updateType: 'account',
-          }),
-        }}
-      />
       <form onSubmit={handleSubmit(submit)} data-cy="powertaker contract form">
         <FormPanel
           {...{

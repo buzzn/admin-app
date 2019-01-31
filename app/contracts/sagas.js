@@ -22,6 +22,28 @@ export function* getContract({ apiUrl, apiPath, token }, { contractId, groupId }
   yield put(actions.loadedContract());
 }
 
+export function* getContractBalanceSheet({ apiUrl, apiPath, token }, { contractId, groupId }) {
+  yield put(actions.loadingContractBalanceSheet());
+  try {
+    const balanceSheet = yield call(api.fetchContractBalanceSheet, { apiUrl, apiPath, token, contractId, groupId });
+    yield put(actions.setContractBalanceSheet(balanceSheet));
+  } catch (error) {
+    logException(error);
+  }
+  yield put(actions.loadedContractBalanceSheet());
+}
+
+export function* getContractPayments({ apiUrl, apiPath, token }, { contractId, groupId }) {
+  yield put(actions.loadingContractPayments());
+  try {
+    const payments = yield call(api.fetchContractPayments, { apiUrl, apiPath, token, contractId, groupId });
+    yield put(actions.setContractPayments(payments));
+  } catch (error) {
+    logException(error);
+  }
+  yield put(actions.loadedContractPayments());
+}
+
 export function* updateBankAccount(
   { apiUrl, apiPath, token },
   { bankAccountId, params, resolve, reject, groupId, partyId, partyType },
@@ -94,6 +116,46 @@ export function* addContract({ apiUrl, apiPath, token }, { params, resolve, reje
   }
 }
 
+export function* addPayment({ apiUrl, apiPath, token }, { params, resolve, reject, groupId, contractId }) {
+  try {
+    const res = yield call(api.addPayment, { apiUrl, apiPath, token, params, groupId, contractId });
+    if (res._error) {
+      yield call(reject, new SubmissionError(res));
+    } else {
+      yield call(resolve, res);
+      yield call(getContractPayments, { apiUrl, apiPath, token }, { groupId, contractId });
+    }
+  } catch (error) {
+    logException(error);
+  }
+}
+
+export function* updatePayment(
+  { apiUrl, apiPath, token },
+  { params, resolve, reject, groupId, contractId, paymentId },
+) {
+  try {
+    const res = yield call(api.updatePayment, { apiUrl, apiPath, token, params, groupId, contractId, paymentId });
+    if (res._error) {
+      yield call(reject, new SubmissionError(res));
+    } else {
+      yield call(resolve, res);
+      yield call(getContractPayments, { apiUrl, apiPath, token }, { groupId, contractId });
+    }
+  } catch (error) {
+    logException(error);
+  }
+}
+
+export function* deletePayment({ apiUrl, apiPath, token }, { groupId, contractId, paymentId }) {
+  try {
+    const res = yield call(api.deletePayment, { apiUrl, apiPath, token, groupId, contractId, paymentId });
+    yield call(getContractPayments, { apiUrl, apiPath, token }, { groupId, contractId });
+  } catch (error) {
+    logException(error);
+  }
+}
+
 export function* updateContract(
   { apiUrl, apiPath, token },
   { params, resolve, reject, groupId, contractId, updateType },
@@ -113,6 +175,7 @@ export function* updateContract(
     } else {
       yield call(resolve, res);
       yield call(getContract, { apiUrl, apiPath, token }, { groupId, contractId });
+      if (updateType === 'account') yield call(getContractBalanceSheet, { apiUrl, apiPath, token }, { groupId, contractId });
     }
   } catch (error) {
     logException(error);
@@ -169,10 +232,15 @@ export function* deleteContractPDF({ apiUrl, apiPath, token }, { documentId, gro
 export function* contractSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_GROUP_CONTRACTS, getGroupContracts, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_CONTRACT, getContract, { apiUrl, apiPath, token });
+  yield takeLatest(constants.LOAD_CONTRACT_BALANCE_SHEET, getContractBalanceSheet, { apiUrl, apiPath, token });
+  yield takeLatest(constants.LOAD_CONTRACT_PAYMENTS, getContractPayments, { apiUrl, apiPath, token });
   yield takeLatest(constants.UPDATE_BANK_ACCOUNT, updateBankAccount, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUP_POWERTAKERS, getPowertakers, { apiUrl, apiPath, token });
   yield takeLatest(constants.ADD_CONTRACT, addContract, { apiUrl, apiPath, token });
   yield takeLatest(constants.UPDATE_CONTRACT, updateContract, { apiUrl, apiPath, token });
+  yield takeLatest(constants.ADD_PAYMENT, addPayment, { apiUrl, apiPath, token });
+  yield takeLatest(constants.UPDATE_PAYMENT, updatePayment, { apiUrl, apiPath, token });
+  yield takeLatest(constants.DELETE_PAYMENT, deletePayment, { apiUrl, apiPath, token });
   yield takeLatest(constants.GET_CONTRACT_PDF_DATA, getContractPDFData, { apiUrl, apiPath, token });
   yield takeLatest(constants.ATTACH_CONTRACT_PDF, attachContractPDF, { apiUrl, apiPath, token });
   yield takeLatest(constants.GENERATE_CONTRACT_PDF, generateContractPDF, { apiUrl, apiPath, token });
@@ -185,6 +253,8 @@ export function* contractSagas({ apiUrl, apiPath, token }) {
     yield call(getPowertakers, { apiUrl, apiPath, token }, { groupId, withBillings });
     if (contractId) {
       yield call(getContract, { apiUrl, apiPath, token }, { contractId, groupId });
+      yield call(getContractBalanceSheet, { apiUrl, apiPath, token }, { contractId, groupId });
+      yield call(getContractPayments, { apiUrl, apiPath, token }, { contractId, groupId });
     }
   }
 }

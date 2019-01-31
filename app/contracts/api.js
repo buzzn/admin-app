@@ -16,6 +16,16 @@ export default {
       .then(camelizeResponseKeys)
       .then(r => ({ array: r.array.map(t => ({ ...t, ...t.tariff })) }));
   },
+  fetchContractBalanceSheet({ token, apiUrl, apiPath, contractId, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/accounting/balance_sheet?include=entries`, { headers: prepareHeaders(token) })
+      .then(parseResponse)
+      .then(camelizeResponseKeys);
+  },
+  fetchContractPayments({ token, apiUrl, apiPath, contractId, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/payments`, { headers: prepareHeaders(token) })
+      .then(parseResponse)
+      .then(camelizeResponseKeys);
+  },
   fetchGroupPowertakers({ token, apiUrl, apiPath, groupId }) {
     return (
       fetch(
@@ -83,6 +93,26 @@ export default {
       method: 'POST',
       body: JSON.stringify(snakeReq(params)),
     }).then(parseResponse);
+  },
+  addPayment({ token, apiUrl, apiPath, contractId, groupId, params }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/payments`, {
+      headers: prepareHeaders(token),
+      method: 'POST',
+      body: JSON.stringify(snakeReq(params)),
+    }).then(parseResponse);
+  },
+  updatePayment({ token, apiUrl, apiPath, groupId, contractId, paymentId, params }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/payments/${paymentId}`, {
+      headers: prepareHeaders(token),
+      method: 'PATCH',
+      body: JSON.stringify(snakeReq(params)),
+    }).then(parseResponse);
+  },
+  deletePayment({ token, apiUrl, apiPath, groupId, contractId, paymentId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/payments/${paymentId}`, {
+      headers: prepareHeaders(token),
+      method: 'DELETE',
+    });
   },
   updateContract({ token, apiUrl, apiPath, groupId, contractId, params }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}`, {

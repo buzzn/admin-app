@@ -466,6 +466,15 @@ class AddPowertaker extends React.Component<Props, State> {
                 component: EditableCheckbox,
               }}
             />
+            <TwoColField
+              {...{
+                prefix,
+                name: 'energyConsumptionBeforeKwhPa',
+                editMode,
+                validationRules,
+                component: EditableInput,
+              }}
+            />
             <Select options={maLoOptions} onChange={this.handleMaLoChange} styles={mainStyle} value={selectedMaLo} />
             <Prompt
               when={!pristine && !saved}

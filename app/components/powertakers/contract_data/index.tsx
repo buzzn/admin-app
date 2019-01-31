@@ -7,6 +7,7 @@ import { CenterContent, SubNav } from 'components/style';
 import Contract from 'components/contract';
 import AddMeter from 'components/system/add_meter';
 import BillingsList from '../billings_list';
+import Payments from '../payments';
 
 interface Props {
   title: string;
@@ -27,11 +28,21 @@ const ContractData = ({ breadcrumbs, title, groupId, contractId, url, contractUr
         <NavLink to={`${contractUrl}/billings`} exact className="nav-link" data-cy="contract billings tab">
           <FormattedMessage id="admin.contracts.navBillings" />
         </NavLink>
+        <NavLink to={`${contractUrl}/payments`} exact className="nav-link" data-cy="contract payments tab">
+          <FormattedMessage id="admin.contracts.navPayments" />
+        </NavLink>
       </SubNav>
       <Switch>
         <Route path={contractUrl} exact>
           <Contract {...{ groupId, contractId, url }} />
         </Route>
+        <Route
+          exact
+          path={`${contractUrl}/payments`}
+          render={() => (
+            <Payments {...{ groupId, contractId, url }} />
+          )}
+        />
         <Route
           exact
           path={`${contractUrl}/billings`}
