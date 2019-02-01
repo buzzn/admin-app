@@ -128,6 +128,7 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
               groupId,
               meterId,
               registerId,
+              cb: this.switchAddReading,
             }}
           />
         </CenterContent>

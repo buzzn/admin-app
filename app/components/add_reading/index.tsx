@@ -57,7 +57,6 @@ const AddReading = ({
       billingItem,
     });
   }).then(() => {
-    switchAddReading();
     cb && cb();
   });
   const handleGetAutoReadingValue = () => {
