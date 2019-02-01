@@ -14,6 +14,7 @@ import EditableSelect from 'components/editable_select';
 import TwoColField from 'components/two_col_field';
 import TwoColView from 'components/two_col_view';
 import AddReading from 'components/add_reading';
+import Loading from 'components/loading';
 import { BillingDetailsWrapper, DoubleCell, ButtonsWrapper, ReadingAction, ErrCell, DocumentsWrapper } from './style';
 
 interface Props {
@@ -37,6 +38,7 @@ const BillingDetails = ({
   dirty,
   validationRules,
   handleSubmit,
+  submitting,
 }: Props & InjectIntlProps) => {
   const { contract } = billing;
   const { customer } = contract;
@@ -312,7 +314,7 @@ const BillingDetails = ({
                 {...{
                   prefix,
                   name: 'invoiceNumber',
-                  editMode,
+                  editMode: editMode ? !submitting : false,
                   validationRules,
                   component: EditableInput,
                   centered: true,
@@ -323,7 +325,7 @@ const BillingDetails = ({
                 {...{
                   prefix,
                   name: 'status',
-                  editMode,
+                  editMode: editMode ? !submitting : false,
                   validationRules,
                   component: EditableSelect,
                   centered: true,
@@ -332,19 +334,22 @@ const BillingDetails = ({
                   noValTranslations: true,
                 }}
               />
-              {editMode && (
-                <ButtonsWrapper>
-                  <div className="float-right mt-3">
-                    <button className="btn btn-link" onClick={switchEditMode}>
-                      <FormattedMessage id="admin.buttons.cancel" /> <i className="fa fa-times" />
-                    </button>
-                    <button className="btn btn-primary" type="submit">
-                      <FormattedMessage id="admin.buttons.submit" />
-                    </button>
-                  </div>
-                  {!!statusErrs && <span style={{ color: 'red' }}>STATUS ERRORS: {statusErrs}</span>}
-                </ButtonsWrapper>
-              )}
+              {editMode
+                && (submitting ? (
+                  <Loading {...{ minHeight: 4 }}/>
+                ) : (
+                  <ButtonsWrapper>
+                    <div className="float-right mt-3">
+                      <button className="btn btn-link" onClick={switchEditMode}>
+                        <FormattedMessage id="admin.buttons.cancel" /> <i className="fa fa-times" />
+                      </button>
+                      <button className="btn btn-primary" type="submit">
+                        <FormattedMessage id="admin.buttons.submit" />
+                      </button>
+                    </div>
+                    {!!statusErrs && <span style={{ color: 'red' }}>STATUS ERRORS: {statusErrs}</span>}
+                  </ButtonsWrapper>
+                ))}
             </form>
           </Col>
         </Row>

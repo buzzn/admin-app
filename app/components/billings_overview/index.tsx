@@ -103,7 +103,7 @@ const BillingsOverview = ({
       Header: () => (
         <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableInvoiceNumber` })} />
       ),
-      accessor: 'invoiceNumber',
+      accessor: 'fullInvoiceNumber',
       className: 'cy-invoice-number',
       Cell: ({ value, original }) => <CellWrap status={original.status}>{value}</CellWrap>,
     },

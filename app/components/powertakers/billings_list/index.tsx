@@ -140,7 +140,7 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
         Header: () => (
           <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableInvoiceNumber` })} />
         ),
-        accessor: 'invoiceNumber',
+        accessor: 'fullInvoiceNumber',
         className: 'cy-invoice-number',
       },
       {
