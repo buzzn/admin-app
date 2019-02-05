@@ -68,7 +68,7 @@ export function* changeBilling(
       yield call(reject, new SubmissionError(res));
     } else {
       yield call(resolve, res);
-      yield call(getBillings, { apiUrl, apiPath, token }, { groupId, contractId });
+      yield put(actions.loadBillings({ groupId, contractId }));
       // HACK
       yield put(Contracts.actions.loadGroupPowertakers({ groupId, withBillings: true }));
     }
@@ -88,8 +88,8 @@ export function* billingsSagas({ apiUrl, apiPath, token }) {
   const billingId = yield select(selectBillingId);
   const contractId = yield select(selectContractId);
   const groupId = yield select(selectGroupId);
-  if (billingId && contractId && groupId) yield call(getBilling, { apiUrl, apiPath, token }, { billingId, groupId, contractId });
-  if (groupId && contractId) yield call(getBillings, { apiUrl, apiPath, token }, { groupId, contractId });
+  if (billingId && contractId && groupId) yield put(actions.loadBilling({ groupId, contractId, billingId }));
+  if (groupId && contractId) yield put(actions.loadBillings({ groupId, contractId }));
 }
 
 export default function* () {

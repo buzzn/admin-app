@@ -36,7 +36,7 @@ export function* addDevice({ apiUrl, apiPath, token }, { params, resolve, reject
       yield call(reject, new SubmissionError(res));
     } else {
       yield call(resolve, res);
-      yield call(getDevices, { apiUrl, apiPath, token }, { groupId });
+      yield put(actions.loadDevices(groupId));
     }
   } catch (error) {
     logException(error);
@@ -50,8 +50,8 @@ export function* updateDevice({ apiUrl, apiPath, token }, { params, resolve, rej
       yield call(reject, new SubmissionError(res));
     } else {
       yield call(resolve, res);
-      yield call(getDevice, { apiUrl, apiPath, token }, { groupId, deviceId });
-      yield call(getDevices, { apiUrl, apiPath, token }, { groupId });
+      yield put(actions.loadDevice({ groupId, deviceId }));
+      yield put(actions.loadDevices(groupId));
     }
   } catch (error) {
     logException(error);
@@ -61,7 +61,7 @@ export function* updateDevice({ apiUrl, apiPath, token }, { params, resolve, rej
 export function* deleteDevice({ apiUrl, apiPath, token }, { groupId, deviceId }) {
   try {
     yield call(api.deleteDevice, { apiUrl, apiPath, token, groupId, deviceId });
-    yield call(getDevices, { apiUrl, apiPath, token }, { groupId });
+    yield put(actions.loadDevices(groupId));
   } catch (error) {
     logException(error);
   }
@@ -81,8 +81,8 @@ export function* devicesSagas({ apiUrl, apiPath, token }) {
 
   const deviceId = yield select(selectDeviceId);
   const groupId = yield select(selectGroupId);
-  if (deviceId) yield call(getDevice, { apiUrl, apiPath, token }, { deviceId, groupId });
-  if (groupId) yield call(getDevices, { apiUrl, apiPath, token }, { groupId });
+  if (deviceId && groupId) yield put(actions.loadDevice({ groupId, deviceId }));
+  if (groupId) yield put(actions.loadDevices(groupId));
 }
 
 export default function* () {

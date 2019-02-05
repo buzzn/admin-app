@@ -53,11 +53,9 @@ export function* registersSagas({ apiUrl, apiPath, token }) {
   yield takeLeading(constants.UPDATE_REGISTER, updateRegister, { apiUrl, apiPath, token });
   const { groupId } = yield select(selectGroup);
   const { registerId, meterId } = yield select(selectRegister);
-  if (groupId) {
-    if (registerId && meterId) {
-      yield call(getRegister, { apiUrl, apiPath, token }, { registerId, groupId, meterId });
-      yield call(getRegisterPower, { apiUrl, apiPath, token }, { registerId, groupId, meterId });
-    }
+  if (groupId && registerId && meterId) {
+    yield put(actions.loadRegister({ registerId, groupId, meterId }));
+    yield put(actions.loadRegisterPower({ registerId, groupId, meterId }));
   }
 }
 

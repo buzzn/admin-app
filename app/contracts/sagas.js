@@ -1,5 +1,5 @@
 import saveAs from 'file-saver';
-import { put, call, takeLatest, take, cancel, select, fork } from 'redux-saga/effects';
+import { put, call, takeLatest, take, cancel, select, fork, takeLeading } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import { logException } from '_util';
 import Groups from 'groups';
@@ -66,7 +66,7 @@ export function* updateBankAccount(
       // FIXME: Extract bank/address loading into separate actions and use them after there will be understanding
       // of all use cases for them
       const contractId = yield select(selectContractId);
-      yield call(getContract, { apiUrl, apiPath, token }, { contractId, groupId });
+      yield put(actions.loadContract({ contractId, groupId }));
     }
   } catch (error) {
     logException(error);
@@ -108,8 +108,8 @@ export function* addContract({ apiUrl, apiPath, token }, { params, resolve, reje
     } else {
       yield call(resolve, res);
       yield put(Groups.actions.loadGroup(groupId));
-      yield call(getGroupContracts, { apiUrl, apiPath, token }, { groupId });
-      yield call(getPowertakers, { apiUrl, apiPath, token }, { groupId });
+      yield put(actions.loadGroupContracts(groupId));
+      yield put(actions.loadGroupPowertakers({ groupId }));
     }
   } catch (error) {
     logException(error);
@@ -123,7 +123,7 @@ export function* addPayment({ apiUrl, apiPath, token }, { params, resolve, rejec
       yield call(reject, new SubmissionError(res));
     } else {
       yield call(resolve, res);
-      yield call(getContractPayments, { apiUrl, apiPath, token }, { groupId, contractId });
+      yield put(actions.loadContractPayments({ groupId, contractId }));
     }
   } catch (error) {
     logException(error);
@@ -140,7 +140,7 @@ export function* updatePayment(
       yield call(reject, new SubmissionError(res));
     } else {
       yield call(resolve, res);
-      yield call(getContractPayments, { apiUrl, apiPath, token }, { groupId, contractId });
+      yield put(actions.loadContractPayments({ groupId, contractId }));
     }
   } catch (error) {
     logException(error);
@@ -150,7 +150,7 @@ export function* updatePayment(
 export function* deletePayment({ apiUrl, apiPath, token }, { groupId, contractId, paymentId }) {
   try {
     const res = yield call(api.deletePayment, { apiUrl, apiPath, token, groupId, contractId, paymentId });
-    yield call(getContractPayments, { apiUrl, apiPath, token }, { groupId, contractId });
+    yield put(actions.loadContractPayments({ groupId, contractId }));
   } catch (error) {
     logException(error);
   }
@@ -174,8 +174,8 @@ export function* updateContract(
       yield call(reject, new SubmissionError(res));
     } else {
       yield call(resolve, res);
-      yield call(getContract, { apiUrl, apiPath, token }, { groupId, contractId });
-      if (updateType === 'account') yield call(getContractBalanceSheet, { apiUrl, apiPath, token }, { groupId, contractId });
+      yield put(actions.loadContract({ groupId, contractId }));
+      if (updateType === 'account') yield put(actions.loadContractBalanceSheet({ groupId, contractId }));
     }
   } catch (error) {
     logException(error);
@@ -234,27 +234,27 @@ export function* contractSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_CONTRACT, getContract, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_CONTRACT_BALANCE_SHEET, getContractBalanceSheet, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_CONTRACT_PAYMENTS, getContractPayments, { apiUrl, apiPath, token });
-  yield takeLatest(constants.UPDATE_BANK_ACCOUNT, updateBankAccount, { apiUrl, apiPath, token });
+  yield takeLeading(constants.UPDATE_BANK_ACCOUNT, updateBankAccount, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUP_POWERTAKERS, getPowertakers, { apiUrl, apiPath, token });
-  yield takeLatest(constants.ADD_CONTRACT, addContract, { apiUrl, apiPath, token });
-  yield takeLatest(constants.UPDATE_CONTRACT, updateContract, { apiUrl, apiPath, token });
-  yield takeLatest(constants.ADD_PAYMENT, addPayment, { apiUrl, apiPath, token });
-  yield takeLatest(constants.UPDATE_PAYMENT, updatePayment, { apiUrl, apiPath, token });
-  yield takeLatest(constants.DELETE_PAYMENT, deletePayment, { apiUrl, apiPath, token });
+  yield takeLeading(constants.ADD_CONTRACT, addContract, { apiUrl, apiPath, token });
+  yield takeLeading(constants.UPDATE_CONTRACT, updateContract, { apiUrl, apiPath, token });
+  yield takeLeading(constants.ADD_PAYMENT, addPayment, { apiUrl, apiPath, token });
+  yield takeLeading(constants.UPDATE_PAYMENT, updatePayment, { apiUrl, apiPath, token });
+  yield takeLeading(constants.DELETE_PAYMENT, deletePayment, { apiUrl, apiPath, token });
   yield takeLatest(constants.GET_CONTRACT_PDF_DATA, getContractPDFData, { apiUrl, apiPath, token });
-  yield takeLatest(constants.ATTACH_CONTRACT_PDF, attachContractPDF, { apiUrl, apiPath, token });
-  yield takeLatest(constants.GENERATE_CONTRACT_PDF, generateContractPDF, { apiUrl, apiPath, token });
-  yield takeLatest(constants.DELETE_CONTRACT_PDF, deleteContractPDF, { apiUrl, apiPath, token });
+  yield takeLeading(constants.ATTACH_CONTRACT_PDF, attachContractPDF, { apiUrl, apiPath, token });
+  yield takeLeading(constants.GENERATE_CONTRACT_PDF, generateContractPDF, { apiUrl, apiPath, token });
+  yield takeLeading(constants.DELETE_CONTRACT_PDF, deleteContractPDF, { apiUrl, apiPath, token });
   const groupId = yield select(selectGroup);
   const withBillings = yield select(selectWithBillings);
   const contractId = yield select(selectContractId);
   if (groupId) {
-    yield call(getGroupContracts, { apiUrl, apiPath, token }, { groupId });
-    yield call(getPowertakers, { apiUrl, apiPath, token }, { groupId, withBillings });
+    yield put(actions.loadGroupContracts(groupId));
+    yield put(actions.loadGroupPowertakers({ groupId, withBillings }));
     if (contractId) {
-      yield call(getContract, { apiUrl, apiPath, token }, { contractId, groupId });
-      yield call(getContractBalanceSheet, { apiUrl, apiPath, token }, { contractId, groupId });
-      yield call(getContractPayments, { apiUrl, apiPath, token }, { contractId, groupId });
+      yield put(actions.loadContract({ contractId, groupId }));
+      yield put(actions.loadContractBalanceSheet({ contractId, groupId }));
+      yield put(actions.loadContractPayments({ contractId, groupId }));
     }
   }
 }

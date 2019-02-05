@@ -35,8 +35,8 @@ export function* marketLocationsSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_MARKET_LOCATION, getMarketLocation, { apiUrl, apiPath, token });
   const locationId = yield select(selectLocationId);
   const groupId = yield select(selectGroupId);
-  if (locationId) yield call(getMarketLocation, { apiUrl, apiPath, token }, { locationId, groupId });
-  if (groupId) yield call(getMarketLocations, { apiUrl, apiPath, token }, { groupId });
+  if (locationId && groupId) yield put(actions.loadMarketLocation({ locationId, groupId }));
+  if (groupId) yield put(actions.loadMarketLocations(groupId));
 }
 
 export default function* () {

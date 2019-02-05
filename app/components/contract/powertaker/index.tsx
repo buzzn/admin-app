@@ -15,7 +15,7 @@ import EditableInput from 'components/editable_input';
 import EditableDate from 'components/editable_date';
 import EditableCheckbox from 'components/editable_checkbox';
 import EditableSelect from 'components/editable_select';
-import { dateNormalizer } from 'validation_normalizers';
+import { dateNormalizer, numberNormalizer } from 'validation_normalizers';
 
 import {
   ContractHeader,
@@ -316,6 +316,16 @@ const PowertakerContract = ({
                   editMode,
                   validationRules,
                   component: EditableInput,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'energyConsumptionBeforeKwhPa',
+                  editMode,
+                  validationRules,
+                  component: EditableInput,
+                  normalize: numberNormalizer,
                 }}
               />
               <TwoColField

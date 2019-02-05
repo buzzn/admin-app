@@ -35,7 +35,7 @@ export function* addGroup({ apiUrl, apiPath, token }, { params, resolve, reject 
       yield call(reject, new SubmissionError(res));
     } else {
       yield call(resolve, res);
-      yield call(getGroups, { apiUrl, apiPath, token });
+      yield put(actions.loadGroups());
     }
   } catch (error) {
     logException(error);
@@ -49,7 +49,7 @@ export function* updateGroup({ apiUrl, apiPath, token }, { params, resolve, reje
       yield call(reject, new SubmissionError(res));
     } else {
       yield call(resolve, res);
-      yield call(getGroup, { apiUrl, apiPath, token }, { groupId });
+      yield put(actions.loadGroup(groupId));
     }
   } catch (error) {
     logException(error);
@@ -59,7 +59,7 @@ export function* updateGroup({ apiUrl, apiPath, token }, { params, resolve, reje
 export function* deleteGroup({ apiUrl, apiPath, token }, { groupId }) {
   try {
     yield call(api.deleteGroup, { apiUrl, apiPath, token, groupId });
-    yield call(getGroups, { apiUrl, apiPath, token });
+    yield put(actions.loadGroups());
   } catch (error) {
     logException(error);
   }
@@ -75,7 +75,7 @@ export function* updateOwner(
       yield call(reject, new SubmissionError(res));
     } else {
       yield call(resolve, res);
-      yield call(getGroup, { apiUrl, apiPath, token }, { groupId });
+      yield put(actions.loadGroup(groupId));
     }
   } catch (error) {
     logException(error);
@@ -89,9 +89,9 @@ export function* groupsSagas({ apiUrl, apiPath, token }) {
   yield takeLeading(constants.UPDATE_GROUP, updateGroup, { apiUrl, apiPath, token });
   yield takeLeading(constants.DELETE_GROUP, deleteGroup, { apiUrl, apiPath, token });
   yield takeLeading(constants.UPDATE_OWNER, updateOwner, { apiUrl, apiPath, token });
-  yield call(getGroups, { apiUrl, apiPath, token });
+  yield put(actions.loadGroups());
   const groupId = yield select(selectGroupId);
-  if (groupId) yield call(getGroup, { apiUrl, apiPath, token }, { groupId });
+  if (groupId) yield put(actions.loadGroup(groupId));
 }
 
 export default function* () {

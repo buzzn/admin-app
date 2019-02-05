@@ -51,22 +51,7 @@ class AddReadingForm extends React.Component<Props & InjectedIntlProps> {
         <form onSubmit={handleSubmit}>
           <ModalBody>
             <Row>
-              <Col xs={4}>
-                <FieldValidationWrapper
-                  {...{
-                    name: 'rawValue',
-                    type: 'text',
-                    label: (
-                      <React.Fragment>
-                        <FormattedMessage id={`${prefix}.rawValue`} /> kWh
-                      </React.Fragment>
-                    ),
-                    component: FieldInput,
-                    validationRules,
-                  }}
-                />
-              </Col>
-              <Col xs={4}>
+              <Col xs={8}>
                 <FieldValidationWrapper
                   {...{
                     name: 'value',

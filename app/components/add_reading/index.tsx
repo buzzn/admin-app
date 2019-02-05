@@ -51,7 +51,7 @@ const AddReading = ({
       groupId,
       meterId,
       registerId,
-      params: { ...params, value: params.value * 1000, rawValue: params.rawValue * 1000 },
+      params: { ...params, value: params.value * 1000, rawValue: params.value * 1000 },
       resolve,
       reject,
       billingItem,

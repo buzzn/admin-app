@@ -58,7 +58,7 @@ export function* organizationsSagas({ apiUrl, apiPath, token }) {
   });
 
   const organizationId = yield select(selectOrganizationId);
-  if (organizationId) yield call(getOrganization, { apiUrl, apiPath, token }, { organizationId });
+  if (organizationId) yield put(actions.loadOrganization({ organizationId }));
 }
 
 export default function* () {

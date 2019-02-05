@@ -25,7 +25,7 @@ export function* addTariff({ apiUrl, apiPath, token }, { params, resolve, reject
       yield call(reject, new SubmissionError(res));
     } else {
       yield call(resolve, res);
-      yield call(getTariffs, { apiUrl, apiPath, token }, { groupId });
+      yield put(actions.loadTariffs(groupId));
     }
   } catch (error) {
     logException(error);
@@ -39,7 +39,7 @@ export function* setGapTariffs({ apiUrl, apiPath, token }, { params, resolve, re
       yield call(reject, new SubmissionError(res));
     } else {
       yield call(resolve, res);
-      yield call(getTariffs, { apiUrl, apiPath, token }, { groupId });
+      yield put(actions.loadTariffs(groupId));
     }
   } catch (error) {
     logException(error);
@@ -52,7 +52,7 @@ export function* tariffsSagas({ apiUrl, apiPath, token }) {
   yield takeLeading(constants.SET_GAP_TARIFFS, setGapTariffs, { apiUrl, apiPath, token });
   const { groupId } = yield select(selectGroup);
   if (groupId) {
-    yield call(getTariffs, { apiUrl, apiPath, token }, { groupId });
+    yield put(actions.loadTariffs(groupId));
   }
 }
 

@@ -57,7 +57,7 @@ export function* addBillingCycle({ apiUrl, apiPath, token }, { params, resolve, 
     } else {
       yield call(resolve, res);
       yield put(Groups.actions.loadGroup(groupId));
-      yield call(getBillingCycles, { apiUrl, apiPath, token }, { groupId });
+      yield put(actions.loadBillingCycles(groupId));
     }
   } catch (error) {
     logException(error);
@@ -77,11 +77,11 @@ export function* billingCyclesSagas({ apiUrl, apiPath, token }) {
   const billingCycleId = yield select(selectBillingCycleId);
   const groupId = yield select(selectGroupId);
   const billingId = yield select(selectBillingId);
-  if (billingCycleId) yield call(getBillingCycle, { apiUrl, apiPath, token }, { billingCycleId, groupId });
-  if (billingId && billingCycleId) {
-    yield call(getBilling, { apiUrl, apiPath, token }, { billingId, groupId, billingCycleId });
+  if (billingCycleId && groupId) yield put(actions.loadBillingCycle({ billingCycleId, groupId }));
+  if (billingId && billingCycleId && groupId) {
+    yield put(actions.loadBilling({ billingId, groupId, billingCycleId }));
   }
-  if (groupId) yield call(getBillingCycles, { apiUrl, apiPath, token }, { groupId });
+  if (groupId) yield put(actions.loadBillingCycles(groupId));
 }
 
 export default function* () {
