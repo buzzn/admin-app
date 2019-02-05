@@ -38,6 +38,7 @@ const BillingDetails = ({
   dirty,
   validationRules,
   handleSubmit,
+  reset,
   submitting,
 }: Props & InjectIntlProps) => {
   const { contract } = billing;
@@ -48,6 +49,7 @@ const BillingDetails = ({
   const [editMode, setEditMode] = useState(false);
   const switchEditMode = (event) => {
     if (dirty && editMode && confirm(intl.formatMessage({ id: 'admin.messages.cancelDirtyForm' }))) {
+      reset();
       setEditMode(false);
     } else if (!dirty) {
       setEditMode(!editMode);
