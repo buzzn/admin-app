@@ -175,13 +175,13 @@ const BillingDetails = ({
       Header: intl.formatMessage({ id: `${prefix}.tableBeginReadingKwh` }),
       accessor: 'beginReadingKwh',
       className: 'cy-hw-begin-reading',
-      Cell: ({ value, original }) => (value ? `${value} kWh` : <ErrCell>{checkReading(original.beginDate, true, original)}</ErrCell>),
+      Cell: ({ value, original }) => (parseFloat(value) ? `${value} kWh` : <ErrCell>{checkReading(original.beginDate, true, original)}</ErrCell>),
     },
     {
       Header: intl.formatMessage({ id: `${prefix}.tableEndReadingKwh` }),
       accessor: 'endReadingKwh',
       className: 'cy-hw-end-reading',
-      Cell: ({ value, original }) => (value ? `${value} kWh` : <ErrCell>{checkReading(original.lastDate, false, original)}</ErrCell>),
+      Cell: ({ value, original }) => (parseFloat(value) ? `${value} kWh` : <ErrCell>{checkReading(original.lastDate, false, original)}</ErrCell>),
     },
     {
       Header: intl.formatMessage({ id: `${prefix}.tableConsumedEnergyKwh` }),

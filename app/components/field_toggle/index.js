@@ -1,9 +1,9 @@
 import React from 'react';
 
-import './style.scss';
+import { FieldToggleWrapper } from './style';
 
 const FieldToggle = ({ input, submitForm, className, meta: { touched, error, submitting } }) => (
-  <span className={`field-toggle ${touched && error && 'has-danger'} ${className} ${submitting && 'submitting'}`}>
+  <FieldToggleWrapper className={`field-toggle ${touched && error && 'has-danger'} ${className} ${submitting && 'submitting'}`}>
     <span
       className={`field-toggle-switch ${input.value ? 'on' : 'off'}`}
       // FIXME: it's an "official" feature/bug. Please check git issues for setTimeout. Fix this "200" when possible.
@@ -14,7 +14,7 @@ const FieldToggle = ({ input, submitForm, className, meta: { touched, error, sub
       }}
     />
     {touched && error && <span className="form-control-feedback">{error}</span>}
-  </span>
+  </FieldToggleWrapper>
 );
 
 export default FieldToggle;
