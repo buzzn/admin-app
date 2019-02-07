@@ -30,28 +30,31 @@ export default {
       method: 'DELETE',
     });
   },
-  updateOwner({ token, apiUrl, apiPath, groupId, params, update, ownerId, ownerType }) {
+  updateGroupContact({ token, apiUrl, apiPath, groupId, params, update, contactId, contactType, isGap }) {
     let url = `${apiUrl}${apiPath}/localpools/${groupId}/`;
     let method = 'POST';
     let body = JSON.stringify(snakeReq(params));
+    // if (isGap) url += 'organization-gap-contract-customer';
+    // if (isGap) url += 'person-gap-contract-customer';
     if (update) {
       method = 'PATCH';
-      if (ownerType === 'person') {
-        url += 'person-owner';
+      if (contactType === 'person') {
+        url += isGap ? 'person-gap-contract-customer' : 'person-owner';
       } else {
-        url += 'organization-owner';
+        url += isGap ? 'organization-gap-contract-customer' : 'organization-owner';
       }
-    } else if (ownerId) {
+    } else if (contactId) {
       body = null;
-      if (ownerType === 'person') {
-        url += `person-owner/${ownerId}`;
+      if (contactType === 'person') {
+        url += isGap ? 'person-gap-contract-customer' : 'person-owner';
       } else {
-        url += `organization-owner/${ownerId}`;
+        url += isGap ? 'organization-gap-contract-customer' : 'organization-owner';
       }
-    } else if (ownerType === 'person') {
-      url += 'person-owner';
+      url += `/${contactId}`;
+    } else if (contactType === 'person') {
+      url += isGap ? 'person-gap-contract-customer' : 'person-owner';
     } else {
-      url += 'organization-owner';
+      url += isGap ? 'organization-gap-contract-customer' : 'organization-owner';
     }
     return fetch(url, {
       headers: prepareHeaders(token),

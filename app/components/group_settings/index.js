@@ -99,7 +99,7 @@ class GroupSettings extends React.Component {
       loadAvailableUsers,
       availableOrganizations,
       loadAvailableOrganizations,
-      updateOwner,
+      updateGroupContact,
 
       gap,
       gapAddress,
@@ -136,6 +136,14 @@ class GroupSettings extends React.Component {
     if (!ownerValues.legalRepresentation) ownerValues.legalRepresentation = { address: {} };
     if (ownerValues.legalRepresentation && !ownerValues.legalRepresentation.address) ownerValues.legalRepresentation.address = {};
     if (ownerValues.additionalLegalRepresentation) ownerValues.additionalLegalRepresentation = ownerValues.additionalLegalRepresentation.split('$#$');
+
+    const gapValues = { ...gap };
+    if (!gapValues.address) gapValues.address = {};
+    if (!gapValues.contact) gapValues.contact = { address: {} };
+    if (gapValues.contact && !gapValues.contact.address) gapValues.contact.address = {};
+    if (!gapValues.legalRepresentation) gapValues.legalRepresentation = { address: {} };
+    if (gapValues.legalRepresentation && !gapValues.legalRepresentation.address) gapValues.legalRepresentation.address = {};
+    if (gapValues.additionalLegalRepresentation) gapValues.additionalLegalRepresentation = gapValues.additionalLegalRepresentation.split('$#$');
 
     return (
       <React.Fragment>
@@ -194,7 +202,7 @@ class GroupSettings extends React.Component {
                       availableOrganizations,
                       loadAvailableOrganizations,
                       validationRules,
-                      updateOwner: params => updateOwner({ groupId: group.id, ...params }),
+                      updateGroupContact: params => updateGroupContact({ groupId: group.id, isGap: false, ...params }),
                       // HACK: nested objects can be null on server after beekeeper import in some cases
                       initialValues: ownerValues,
                     }}
@@ -204,7 +212,22 @@ class GroupSettings extends React.Component {
               {!!owner.id && <Route path={`${url}/bank`} render={() => <Bank {...{ bankAccount }} />} />}
               <Route
                 path={`${url}/gapcontact`}
-                render={() => <GapContact {...{ gap, gapAddress, gapContact, gapContactAddress }} />}
+                render={() => (
+                  <Powergiver
+                    {...{
+                      updatable: group.updatable,
+                      owner: gap,
+                      loadAvailableUsers,
+                      availableUsers,
+                      availableOrganizations,
+                      loadAvailableOrganizations,
+                      validationRules,
+                      updateGroupContact: params => updateGroupContact({ groupId: group.id, isGap: true, ...params }),
+                      // HACK: nested objects can be null on server after beekeeper import in some cases
+                      initialValues: gapValues,
+                    }}
+                  />
+                )}
               />
               <Route path={url}>
                 <Redirect to={`${url}/group`} />
@@ -250,7 +273,7 @@ export default connect(
     setGroup: Groups.actions.setGroup,
     updateGroup: Groups.actions.updateGroup,
     deleteGroup: Groups.actions.deleteGroup,
-    updateOwner: Groups.actions.updateOwner,
+    updateGroupContact: Groups.actions.updateGroupContact,
     setIncompleteScreen: actions.setIncompleteScreen,
     loadAvailableUsers: Users.actions.loadAvailableUsers,
     loadAvailableOrganizations: Organizations.actions.loadAvailableOrganizations,

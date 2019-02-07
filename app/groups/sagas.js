@@ -65,12 +65,22 @@ export function* deleteGroup({ apiUrl, apiPath, token }, { groupId }) {
   }
 }
 
-export function* updateOwner(
+export function* updateContact(
   { apiUrl, apiPath, token },
-  { groupId, params, update, ownerId, ownerType, resolve, reject },
+  { groupId, params, update, contactId, contactType, isGap, resolve, reject },
 ) {
   try {
-    const res = yield call(api.updateOwner, { apiUrl, apiPath, token, params, groupId, update, ownerId, ownerType });
+    const res = yield call(api.updateGroupContact, {
+      apiUrl,
+      apiPath,
+      token,
+      params,
+      groupId,
+      update,
+      contactId,
+      contactType,
+      isGap,
+    });
     if (res._error) {
       yield call(reject, new SubmissionError(res));
     } else {
@@ -88,7 +98,7 @@ export function* groupsSagas({ apiUrl, apiPath, token }) {
   yield takeLeading(constants.ADD_GROUP, addGroup, { apiUrl, apiPath, token });
   yield takeLeading(constants.UPDATE_GROUP, updateGroup, { apiUrl, apiPath, token });
   yield takeLeading(constants.DELETE_GROUP, deleteGroup, { apiUrl, apiPath, token });
-  yield takeLeading(constants.UPDATE_OWNER, updateOwner, { apiUrl, apiPath, token });
+  yield takeLeading(constants.UPDATE_CONTACT, updateContact, { apiUrl, apiPath, token });
   yield put(actions.loadGroups());
   const groupId = yield select(selectGroupId);
   if (groupId) yield put(actions.loadGroup(groupId));

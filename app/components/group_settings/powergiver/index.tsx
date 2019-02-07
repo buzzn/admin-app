@@ -19,7 +19,7 @@ interface Props {
   editMode: boolean;
   loadAvailableUsers: () => void;
   loadAvailableOrganizations: () => void;
-  updateOwner: (any) => void;
+  updateGroupContact: (any) => void;
   updatable: boolean;
   availableUsers: { _status: null | number; array: Array<any> };
   availableOrganizations: { _status: null | number; array: Array<any> };
@@ -114,7 +114,7 @@ class Powergiver extends React.Component<Props, State> {
 
   submitForm = (values) => {
     let params = JSON.parse(JSON.stringify(values));
-    const { updateOwner, owner } = this.props;
+    const { updateGroupContact, owner } = this.props;
     const { ownerType, selectedOwner, selectedContact, selectedLR } = this.state;
     const ownerValue = (selectedOwner || { value: null }).value;
     const contactValue = (selectedContact || { value: null }).value;
@@ -187,13 +187,13 @@ class Powergiver extends React.Component<Props, State> {
     if (params.additionalLegalRepresentation) params.additionalLegalRepresentation = Object.values(params.additionalLegalRepresentation).join('$#$');
 
     return new Promise((resolve, reject) => {
-      updateOwner({
+      updateGroupContact({
         params,
         resolve,
         reject,
         update,
-        ownerId: ownerValue === 'new' ? null : ownerValue,
-        ownerType: owner.type || ownerType,
+        contactId: ownerValue === 'new' ? null : ownerValue,
+        contactType: owner.type || ownerType,
       });
     }).then(() => {
       this.setState({ ownerType: null, selectedOwner: null, selectedContact: null, selectedLR: null });
