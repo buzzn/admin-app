@@ -68,7 +68,7 @@ describe('websiteForms module', () => {
   it('updates websiteForms with an err (api)', async () => {
     logException.mockClear();
     const dispatched = [];
-    api.updateWebsiteForm = jest.fn(() => ({ _status: 200, _error: 'Error' }));
+    api.updateWebsiteForm = jest.fn(() => ({ _status: 422, _error: 'Error' }));
     const reject = jest.fn();
     const formId = '';
     const params = {};

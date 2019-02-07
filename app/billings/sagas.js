@@ -14,7 +14,7 @@ export function* getBilling({ apiUrl, apiPath, token }, { billingId, groupId, co
   yield put(actions.loadingBilling());
   try {
     const billing = yield call(api.fetchBilling, { apiUrl, apiPath, token, billingId, groupId, contractId });
-    yield put(actions.setBilling(billing));
+    yield put(actions.setBilling({ billing }));
   } catch (error) {
     logException(error);
   }

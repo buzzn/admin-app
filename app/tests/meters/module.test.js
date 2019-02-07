@@ -1,8 +1,18 @@
+import { select } from 'redux-saga/effects';
 import { expectSaga } from 'redux-saga-test-plan';
 import reducer, { initialState } from 'meters/reducers';
-import saga, { getMeter, getGroupMeters, addRealMeter, updateMeter, metersSagas } from 'meters/sagas';
+import {
+  getMeter,
+  getGroupMeters,
+  addRealMeter,
+  updateMeter,
+  metersSagas,
+  selectMeterId,
+  selectGroupId,
+} from 'meters/sagas';
 import api from 'meters/api';
 import { actions } from 'meters/actions';
+import { actions as maloActions } from 'market_locations/actions';
 import { logException } from '_util';
 
 // TODO: move to __mock__
@@ -37,7 +47,7 @@ describe('meters module', () => {
   });
 
   it('fetches group meters and stores them', () => {
-    const groupMeters = { _status: 200, array: {} };
+    const groupMeters = { _status: 200, array: [] };
     api.fetchGroupMeters = jest.fn(() => groupMeters);
     return expectSaga(getGroupMeters, { ...apiParams }, { groupId: '' })
       .put(actions.loadingGroupMeters())
@@ -74,7 +84,7 @@ describe('meters module', () => {
   });
 
   it('updates meter with an err (api)', async () => {
-    api.updateMeter = jest.fn(() => ({ _status: 200, _error: 'Error' }));
+    api.updateMeter = jest.fn(() => ({ _status: 422, _error: 'Error' }));
     const groupId = 'groupId';
     const meterId = 'meterId';
     const reject = jest.fn();
@@ -91,5 +101,72 @@ describe('meters module', () => {
       { meterId: '', params: {}, resolve: null, reject: null, groupId: '' },
     ).run();
     expect(logException).toBeCalledTimes(1);
+  });
+
+  it('creates meter and fetches group MaLos', async () => {
+    api.addRealMeter = jest.fn(() => ({ _status: 201 }));
+    const groupId = 'groupId';
+    const resolve = jest.fn();
+    await expectSaga(addRealMeter, { ...apiParams }, { params: {}, resolve, reject: null, groupId })
+      .put(maloActions.loadMarketLocations(groupId))
+      .run();
+    expect(resolve).toBeCalledTimes(1);
+    expect(resolve).toHaveBeenLastCalledWith({ _status: 201 });
+  });
+
+  it('creates meter with an err (api)', async () => {
+    api.addRealMeter = jest.fn(() => ({ _status: 422, _error: 'Error' }));
+    const groupId = 'groupId';
+    const reject = jest.fn();
+    await expectSaga(addRealMeter, { ...apiParams }, { params: {}, resolve: null, reject, groupId }).run();
+    expect(reject).toBeCalledTimes(1);
+  });
+
+  it('fails to create meter', async () => {
+    logException.mockClear();
+    api.addRealMeter = null;
+    await expectSaga(addRealMeter, { ...apiParams }, { params: {}, resolve: null, reject: null, groupId: '' }).run();
+    expect(logException).toBeCalledTimes(1);
+  });
+
+  it('loads initial data', () => expectSaga(metersSagas, { ...apiParams })
+    .provide([[select(selectGroupId), 'groupId'], [select(selectMeterId), 'meterId']])
+    .put(actions.loadGroupMeters('groupId'))
+    .put(actions.loadMeter({ meterId: 'meterId', groupId: 'groupId' }))
+    .silentRun());
+
+  it('listens for actions', async () => {
+    const groupMeters = { _status: 200, array: [] };
+    api.fetchGroupMeters = jest.fn(() => groupMeters);
+
+    const meter = { _status: 200, registers: {} };
+    api.fetchMeter = jest.fn(() => meter);
+
+    const newMeterResolve = jest.fn();
+    const newMeterParams = { serial: 'newMeter' };
+    const newMeterRes = { ...newMeterParams, _status: 200 };
+    api.addRealMeter = jest.fn(() => newMeterRes);
+
+    const updateMeterResolve = jest.fn();
+    const updateMeterParams = { serial: 'updateMeter' };
+    const updateMeterRes = { ...updateMeterParams, _status: 200 };
+    api.updateMeter = jest.fn(() => updateMeterRes);
+
+    const groupId = '';
+    const meterId = '';
+
+    await expectSaga(metersSagas, { ...apiParams })
+      .provide([[select(selectGroupId), groupId], [select(selectMeterId), meterId]])
+      .withReducer(reducer)
+      .hasFinalState({ ...initialState, groupId, meterId, groupMeters, meter, meterRegisters: {} })
+      .dispatch(actions.loadGroupMeters(groupId))
+      .dispatch(actions.loadMeter({ groupId, meterId }))
+      .dispatch(actions.addRealMeter({ params: newMeterParams, resolve: newMeterResolve, reject: null, groupId }))
+      .dispatch(
+        actions.updateMeter({ params: updateMeterParams, resolve: updateMeterResolve, reject: null, groupId, meterId }),
+      )
+      .silentRun();
+    expect(newMeterResolve).toHaveBeenLastCalledWith(newMeterRes);
+    expect(updateMeterResolve).toHaveBeenLastCalledWith(updateMeterRes);
   });
 });
