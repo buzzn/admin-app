@@ -362,4 +362,246 @@ describe('contracts module', () => {
     await expectSaga(deletePayment, { ...apiParams }, { groupId: '', contractId: '', paymentId: '' }).run();
     expect(logException).toBeCalledTimes(1);
   });
+
+  it('updates a contract', async () => {
+    api.updateContract = jest.fn(({ params }) => ({ _status: 200, ...params }));
+    const groupId = 'groupId';
+    const contractId = 'contractId';
+    const resolve = jest.fn();
+    const params = { beginDate: '01.01.0101' };
+    await expectSaga(
+      updateContract,
+      { ...apiParams },
+      { params, resolve, reject: null, groupId, contractId, updateType: 'contract' },
+    )
+      .put(actions.loadContract({ groupId, contractId }))
+      .run();
+    expect(resolve).toBeCalledWith({ _status: 200, ...params });
+  });
+
+  it('updates an org customer', async () => {
+    api.updateOrganizationCustomer = jest.fn(({ params }) => ({ _status: 200, ...params }));
+    const groupId = 'groupId';
+    const contractId = 'contractId';
+    const resolve = jest.fn();
+    const params = { name: 'name' };
+    await expectSaga(
+      updateContract,
+      { ...apiParams },
+      { params, resolve, reject: null, groupId, contractId, updateType: 'organizationCustomer' },
+    )
+      .put(actions.loadContract({ groupId, contractId }))
+      .run();
+    expect(resolve).toBeCalledWith({ _status: 200, ...params });
+  });
+
+  it('updates a person customer', async () => {
+    api.updatePersonCustomer = jest.fn(({ params }) => ({ _status: 200, ...params }));
+    const groupId = 'groupId';
+    const contractId = 'contractId';
+    const resolve = jest.fn();
+    const params = { firstName: 'name' };
+    await expectSaga(
+      updateContract,
+      { ...apiParams },
+      { params, resolve, reject: null, groupId, contractId, updateType: 'personCustomer' },
+    )
+      .put(actions.loadContract({ groupId, contractId }))
+      .run();
+    expect(resolve).toBeCalledWith({ _status: 200, ...params });
+  });
+
+  it('updates tariffs', async () => {
+    api.updateContractTariffs = jest.fn(({ params }) => ({ _status: 200, ...params }));
+    const groupId = 'groupId';
+    const contractId = 'contractId';
+    const resolve = jest.fn();
+    const params = { ids: [] };
+    await expectSaga(
+      updateContract,
+      { ...apiParams },
+      { params, resolve, reject: null, groupId, contractId, updateType: 'tariffs' },
+    )
+      .put(actions.loadContract({ groupId, contractId }))
+      .run();
+    expect(resolve).toBeCalledWith({ _status: 200, ...params });
+  });
+
+  it('updates account', async () => {
+    api.updateContractAccount = jest.fn(({ params }) => ({ _status: 200, ...params }));
+    const groupId = 'groupId';
+    const contractId = 'contractId';
+    const resolve = jest.fn();
+    const params = { balance: 500 };
+    await expectSaga(
+      updateContract,
+      { ...apiParams },
+      { params, resolve, reject: null, groupId, contractId, updateType: 'account' },
+    )
+      .put(actions.loadContract({ groupId, contractId }))
+      .put(actions.loadContractBalanceSheet({ groupId, contractId }))
+      .run();
+    expect(resolve).toBeCalledWith({ _status: 200, ...params });
+  });
+
+  it('contract update api err', async () => {
+    api.updateContract = jest.fn(() => ({ _status: 422, _error: 'Error' }));
+    const reject = jest.fn();
+    await expectSaga(
+      updateContract,
+      { ...apiParams },
+      { params: {}, resolve: null, reject, groupId: '', contractId: '', updateType: 'contract' },
+    ).run();
+    expect(reject).toBeCalledTimes(1);
+  });
+
+  it('contract update fails', async () => {
+    logException.mockClear();
+    api.updateContract = null;
+    await expectSaga(
+      updateContract,
+      { ...apiParams },
+      { params: {}, resolve: null, reject: null, groupId: '', contractId: '', updateType: 'contract' },
+    ).run();
+    expect(logException).toBeCalledTimes(1);
+  });
+
+  it('attaches PDF to the contract', async () => {
+    api.attachContractPDF = jest.fn(() => ({ _status: 200 }));
+    const resolve = jest.fn();
+    await expectSaga(
+      attachContractPDF,
+      { ...apiParams },
+      { params: {}, groupId: '', contractId: '', resolve, reject: null },
+    ).run();
+    expect(resolve).toBeCalledTimes(1);
+  });
+
+  it('fails to attach PDF (api)', async () => {
+    api.attachContractPDF = jest.fn(() => ({ _status: 422 }));
+    const reject = jest.fn();
+    await expectSaga(
+      attachContractPDF,
+      { ...apiParams },
+      { params: {}, groupId: '', contractId: '', resolve: null, reject },
+    ).run();
+    expect(reject).toHaveBeenCalledWith(422);
+  });
+
+  it('fails to attach PDF', async () => {
+    api.attachContractPDF = null;
+    const reject = jest.fn();
+    await expectSaga(
+      attachContractPDF,
+      { ...apiParams },
+      { params: {}, groupId: '', contractId: '', resolve: null, reject },
+    ).run();
+    expect(reject).toBeCalledTimes(1);
+  });
+
+  it('generates contract PDF', async () => {
+    api.generateContractPDF = jest.fn(() => ({ _status: 200 }));
+    const resolve = jest.fn();
+    await expectSaga(
+      generateContractPDF,
+      { ...apiParams },
+      { groupId: '', contractId: '', resolve, reject: null },
+    ).run();
+    expect(resolve).toBeCalledTimes(1);
+  });
+
+  it('fails to generate PDF (api)', async () => {
+    api.generateContractPDF = jest.fn(() => ({ _status: 422 }));
+    const reject = jest.fn();
+    await expectSaga(
+      generateContractPDF,
+      { ...apiParams },
+      { groupId: '', contractId: '', resolve: null, reject },
+    ).run();
+    expect(reject).toHaveBeenCalledWith(422);
+  });
+
+  it('fails to generate PDF', async () => {
+    api.generateContractPDF = null;
+    const reject = jest.fn();
+    await expectSaga(
+      generateContractPDF,
+      { ...apiParams },
+      { groupId: '', contractId: '', resolve: null, reject },
+    ).run();
+    expect(reject).toBeCalledTimes(1);
+  });
+
+  it('deletes contract PDF', async () => {
+    api.deleteContractPDF = jest.fn(() => ({ _status: 200 }));
+    const resolve = jest.fn();
+    await expectSaga(
+      deleteContractPDF,
+      { ...apiParams },
+      { documentId: '', groupId: '', contractId: '', resolve, reject: null },
+    ).run();
+    expect(resolve).toBeCalledTimes(1);
+  });
+
+  it('fails to delete PDF', async () => {
+    api.deleteContractPDF = null;
+    const reject = jest.fn();
+    await expectSaga(
+      deleteContractPDF,
+      { ...apiParams },
+      { documentId: '', groupId: '', contractId: '', resolve: null, reject },
+    ).run();
+    expect(reject).toBeCalledTimes(1);
+  });
+
+  it('loads initial data', () => {
+    const groupId = 'groupId';
+    const contractId = 'contractId';
+    const withBillings = true;
+    return expectSaga(contractSagas, { ...apiParams })
+      .provide([
+        [select(selectGroup), groupId],
+        [select(selectContractId), contractId],
+        [select(selectWithBillings), withBillings],
+      ])
+      .put(actions.loadGroupContracts(groupId))
+      .put(actions.loadGroupPowertakers({ groupId, withBillings }))
+      .put(actions.loadContract({ groupId, contractId }))
+      .put(actions.loadContractBalanceSheet({ groupId, contractId }))
+      .put(actions.loadContractPayments({ groupId, contractId }))
+      .silentRun();
+  });
+
+  // it('listens for actions', async () => {
+  //   const groupContracts = { _status: 200, array: [] };
+  //   api.fetchGroupContracts = jest.fn(() => groupContracts);
+
+  //   const contract = { _status: 200, contractor: {}, customer: {} };
+  //   api.fetchContract = jest.fn(() => contract);
+
+  //   const groupId = '';
+  //   const contractId = '';
+  //   const withBillings = true;
+
+  //   await expectSaga(contractSagas, { ...apiParams })
+  //     .withReducer(reducer)
+  //     .hasFinalState({
+  //       ...initialState,
+  //       groupContracts,
+  //       contract,
+  //       contractor: contract.contractor,
+  //       customer: contract.customer,
+  //       groupId,
+  //       contractId,
+  //       withBillings,
+  //     })
+  //     // .provide([
+  //     //   [select(selectGroup), groupId],
+  //     //   [select(selectContractId), contractId],
+  //     //   [select(selectWithBillings), withBillings],
+  //     // ])
+  //     .dispatch(actions.loadGroupContracts(groupId))
+  //     .dispatch(actions.loadContract({ groupId, contractId }))
+  //     .silentRun();
+  // });
 });
