@@ -14,6 +14,7 @@ import OrganizationFields from 'components/owner_fields/organization_fields';
 import { OwnerOptions } from './style';
 
 interface Props {
+  isGap?: boolean;
   owner: any;
   switchEditMode: () => void;
   editMode: boolean;
@@ -212,6 +213,7 @@ class Powergiver extends React.Component<Props, State> {
       reset,
       submitting,
       handleSubmit,
+      isGap,
       validationRules: { createPersonOwner, updatePersonOwner, createOrganizationOwner, updateOrganizationOwner },
     } = this.props;
 
@@ -244,7 +246,7 @@ class Powergiver extends React.Component<Props, State> {
     return (
       <Col xs="12">
         <p className="h5 grey-underline header text-uppercase">
-          <FormattedMessage id={`${prefix}.headerPowergiver`} />
+          <FormattedMessage id={`${prefix}.${isGap ? 'headerGCC' : 'headerPowergiver'}`} />
           {!editMode
             && owner.id
             && updatable && <i className="buzzn-pencil" style={{ float: 'right' }} onClick={this.switchEditMode} />}

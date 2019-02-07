@@ -225,6 +225,7 @@ class GroupSettings extends React.Component {
                       updateGroupContact: params => updateGroupContact({ groupId: group.id, isGap: true, ...params }),
                       // HACK: nested objects can be null on server after beekeeper import in some cases
                       initialValues: gapValues,
+                      isGap: true,
                     }}
                   />
                 )}
