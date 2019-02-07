@@ -358,7 +358,6 @@ class Powergiver extends React.Component<Props, State> {
 }
 
 export default reduxForm({
-  form: 'groupOwnerForm',
   enableReinitialize: true,
   // HACK: see #3729, #3362 in redux-form
   keepDirtyOnReinitialize: true,

@@ -17,11 +17,12 @@ import PageTitle from 'components/page_title';
 import Group from './group';
 import Powergiver from './powergiver';
 import Bank from './bank';
-import GapContact from './gap_contact';
 
 import './style.scss';
 
 import DefaultImage from 'images/energygroup_noimage_01.jpg';
+
+const GapWrap = props => <React.Fragment>{props.children}</React.Fragment>;
 
 class GroupSettings extends React.Component {
   setIncompletness(group) {
@@ -205,6 +206,7 @@ class GroupSettings extends React.Component {
                       updateGroupContact: params => updateGroupContact({ groupId: group.id, isGap: false, ...params }),
                       // HACK: nested objects can be null on server after beekeeper import in some cases
                       initialValues: ownerValues,
+                      form: 'groupOwnerForm',
                     }}
                   />
                 )}
@@ -213,21 +215,24 @@ class GroupSettings extends React.Component {
               <Route
                 path={`${url}/gapcontact`}
                 render={() => (
-                  <Powergiver
-                    {...{
-                      updatable: group.updatable,
-                      owner: gap,
-                      loadAvailableUsers,
-                      availableUsers,
-                      availableOrganizations,
-                      loadAvailableOrganizations,
-                      validationRules,
-                      updateGroupContact: params => updateGroupContact({ groupId: group.id, isGap: true, ...params }),
-                      // HACK: nested objects can be null on server after beekeeper import in some cases
-                      initialValues: gapValues,
-                      isGap: true,
-                    }}
-                  />
+                  <GapWrap>
+                    <Powergiver
+                      {...{
+                        updatable: group.updatable,
+                        owner: gap,
+                        loadAvailableUsers,
+                        availableUsers,
+                        availableOrganizations,
+                        loadAvailableOrganizations,
+                        validationRules,
+                        updateGroupContact: params => updateGroupContact({ groupId: group.id, isGap: true, ...params }),
+                        // HACK: nested objects can be null on server after beekeeper import in some cases
+                        initialValues: gapValues,
+                        isGap: true,
+                        form: 'groupGapForm',
+                      }}
+                    />
+                  </GapWrap>
                 )}
               />
               <Route path={url}>
