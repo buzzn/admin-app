@@ -215,7 +215,7 @@ describe('contracts module', () => {
   it('fetches powertakers without billings and stores them', () => {
     const groupPowertakers = { _status: 200, array: [] };
     api.fetchGroupPowertakers = jest.fn(() => groupPowertakers);
-    return expectSaga(getPowertakers, { ...apiParams }, { groupId: '', selectWithBillings: false })
+    return expectSaga(getPowertakers, { ...apiParams }, { groupId: '', withBillings: false })
       .put(actions.loadingGroupPowertakers())
       .put(actions.setGroupPowertakers(groupPowertakers))
       .put(actions.loadedGroupPowertakers())
@@ -227,7 +227,7 @@ describe('contracts module', () => {
   it('fetches powertakers with billings and stores them', () => {
     const groupPowertakers = { _status: 200, array: [] };
     api.fetchGroupPowertakersWithBillings = jest.fn(() => groupPowertakers);
-    return expectSaga(getPowertakers, { ...apiParams }, { groupId: '', selectWithBillings: true })
+    return expectSaga(getPowertakers, { ...apiParams }, { groupId: '', withBillings: true })
       .put(actions.loadingGroupPowertakers())
       .put(actions.setGroupPowertakers(groupPowertakers))
       .put(actions.loadedGroupPowertakers())
@@ -239,7 +239,7 @@ describe('contracts module', () => {
   it('fails to fetch powertakers', async () => {
     logException.mockClear();
     api.fetchGroupPowertakers = null;
-    await expectSaga(getPowertakers, { ...apiParams }, { groupId: '', selectWithBillings: false })
+    await expectSaga(getPowertakers, { ...apiParams }, { groupId: '', withBillings: false })
       .put(actions.loadingGroupPowertakers())
       .put(actions.loadedGroupPowertakers())
       .withReducer(reducer)
@@ -572,36 +572,150 @@ describe('contracts module', () => {
       .silentRun();
   });
 
-  // it('listens for actions', async () => {
-  //   const groupContracts = { _status: 200, array: [] };
-  //   api.fetchGroupContracts = jest.fn(() => groupContracts);
+  it('listens for actions', async () => {
+    const groupContracts = { _status: 200, array: [] };
+    api.fetchGroupContracts = jest.fn(() => groupContracts);
 
-  //   const contract = { _status: 200, contractor: {}, customer: {} };
-  //   api.fetchContract = jest.fn(() => contract);
+    const contract = { _status: 200, contractor: {}, customer: {} };
+    api.fetchContract = jest.fn(() => contract);
 
-  //   const groupId = '';
-  //   const contractId = '';
-  //   const withBillings = true;
+    const balanceSheet = { _status: 200 };
+    api.fetchContractBalanceSheet = jest.fn(() => balanceSheet);
 
-  //   await expectSaga(contractSagas, { ...apiParams })
-  //     .withReducer(reducer)
-  //     .hasFinalState({
-  //       ...initialState,
-  //       groupContracts,
-  //       contract,
-  //       contractor: contract.contractor,
-  //       customer: contract.customer,
-  //       groupId,
-  //       contractId,
-  //       withBillings,
-  //     })
-  //     // .provide([
-  //     //   [select(selectGroup), groupId],
-  //     //   [select(selectContractId), contractId],
-  //     //   [select(selectWithBillings), withBillings],
-  //     // ])
-  //     .dispatch(actions.loadGroupContracts(groupId))
-  //     .dispatch(actions.loadContract({ groupId, contractId }))
-  //     .silentRun();
-  // });
+    const payments = { _status: 200, array: [] };
+    api.fetchContractPayments = jest.fn(() => payments);
+
+    const updateBankResolve = jest.fn();
+    const updateBankParams = { balance: 500 };
+    const updateBankRes = { ...updateBankParams, _status: 200 };
+    api.updateBankAccount = jest.fn(() => updateBankRes);
+
+    const groupPowertakers = { _status: 200, array: [] };
+    api.fetchGroupPowertakersWithBillings = jest.fn(() => groupPowertakers);
+
+    const addContractResolve = jest.fn();
+    const addContractParams = { beginDate: '01.01.0101' };
+    const addContractRes = { ...addContractParams, _status: 201 };
+    api.addContract = jest.fn(() => addContractRes);
+
+    const updateContractResolve = jest.fn();
+    const updateContractParams = { beginDate: '01.01.0101' };
+    const updateContractRes = { ...updateContractParams, _status: 200 };
+    api.updateContract = jest.fn(() => updateContractRes);
+
+    const addPaymentResolve = jest.fn();
+    const addPaymentParams = { balance: 500 };
+    const addPaymentRes = { ...addPaymentParams, _status: 201 };
+    api.addPayment = jest.fn(() => addPaymentRes);
+
+    const updatePaymentResolve = jest.fn();
+    const updatePaymentParams = { balance: 500 };
+    const updatePaymentRes = { ...updatePaymentParams, _status: 200 };
+    api.updatePayment = jest.fn(() => updatePaymentRes);
+
+    api.deletePayment = jest.fn();
+
+    const attachPDFResolve = jest.fn();
+    api.attachContractPDF = jest.fn(() => ({ _status: 200 }));
+
+    const generatePDFResolve = jest.fn();
+    api.generateContractPDF = jest.fn(() => ({ _status: 200 }));
+
+    const deletePDFResolve = jest.fn();
+    api.deleteContractPDF = jest.fn(() => ({ _status: 200 }));
+
+    const groupId = '';
+    const contractId = '';
+    const withBillings = true;
+
+    await expectSaga(contractSagas, { ...apiParams })
+      .withReducer(reducer)
+      .hasFinalState({
+        ...initialState,
+        groupContracts: groupContracts.array,
+        contract,
+        balanceSheet,
+        payments,
+        groupPowertakers,
+        contractor: contract.contractor,
+        customer: contract.customer,
+        groupId,
+        contractId,
+        withBillings: undefined,
+      })
+      .provide([
+        [select(selectGroup), groupId],
+        [select(selectContractId), contractId],
+        [select(selectWithBillings), withBillings],
+      ])
+      .dispatch(actions.loadGroupContracts(groupId))
+      .dispatch(actions.loadContract({ groupId, contractId }))
+      .dispatch(actions.loadContractBalanceSheet({ groupId, contractId }))
+      .dispatch(actions.loadContractPayments({ groupId, contractId }))
+      .dispatch(
+        actions.updateBankAccount({
+          bankAccountId: '',
+          params: updateBankParams,
+          resolve: updateBankResolve,
+          reject: null,
+          groupId,
+          partyId: '',
+          partyType: '',
+        }),
+      )
+      .dispatch(actions.loadGroupPowertakers({ groupId, withBillings }))
+      .dispatch(actions.addContract({ params: addContractParams, resolve: addContractResolve, reject: null, groupId }))
+      .dispatch(
+        actions.updateContract({
+          params: updateContractParams,
+          resolve: updateContractResolve,
+          reject: null,
+          groupId,
+          contractId,
+          updateType: 'contract',
+        }),
+      )
+      .dispatch(
+        actions.addPayment({ params: addPaymentParams, resolve: addPaymentResolve, reject: null, groupId, contractId }),
+      )
+      .dispatch(
+        actions.updatePayment({
+          params: updatePaymentParams,
+          resolve: updatePaymentResolve,
+          reject: null,
+          groupId,
+          contractId,
+          paymentId: '',
+        }),
+      )
+      .dispatch(actions.deletePayment({ groupId, contractId, paymentId: '' }))
+      .dispatch(
+        actions.attachContractPDF({
+          params: {},
+          groupId: '',
+          contractId: '',
+          resolve: attachPDFResolve,
+          reject: null,
+        }),
+      )
+      .dispatch(actions.generateContractPDF({ groupId: '', contractId: '', resolve: generatePDFResolve, reject: null }))
+      .dispatch(
+        actions.deleteContractPDF({
+          documentId: '',
+          groupId: '',
+          contractId: '',
+          resolve: deletePDFResolve,
+          reject: null,
+        }),
+      )
+      .silentRun();
+    expect(updateBankResolve).toHaveBeenCalledWith(updateBankRes);
+    expect(addContractResolve).toHaveBeenCalledWith(addContractRes);
+    expect(updateContractResolve).toHaveBeenCalledWith(updateContractRes);
+    expect(addPaymentResolve).toHaveBeenCalledWith(addPaymentRes);
+    expect(updatePaymentResolve).toHaveBeenCalledWith(updatePaymentRes);
+    expect(attachPDFResolve).toBeCalledTimes(1);
+    expect(generatePDFResolve).toBeCalledTimes(1);
+    expect(deletePDFResolve).toBeCalledTimes(1);
+  });
 });
