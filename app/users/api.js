@@ -11,7 +11,10 @@ export default {
       .then(camelizeResponseKeys);
   },
   fetchGroupUser({ token, apiUrl, apiPath, userId, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/persons/${userId}`, { headers: prepareHeaders(token) })
+    return fetch(
+      `${apiUrl}${apiPath}/localpools/${groupId}/persons/${userId}?include=bank_accounts,address,contracts:[localpool,register_meta:[register]]`,
+      { headers: prepareHeaders(token) },
+    )
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },

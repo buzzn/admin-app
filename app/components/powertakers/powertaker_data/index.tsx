@@ -17,6 +17,7 @@ import PageTitle from 'components/page_title';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
 import withEditOverlay from 'components/with_edit_overlay';
 import { CenterContent, LargeAvatar } from 'components/style';
+import BankAccounts from 'components/bank_accounts';
 import PowertakerForm from './powertaker_form';
 
 const DefaultPerson = require('images/default_person.jpg');
@@ -25,13 +26,17 @@ const DefaultOrganisation = require('images/default_organisation.jpg');
 class PowertakerData extends React.Component<
   ExtProps & DispatchProps & StateProps & BreadcrumbsProps & InjectedIntlProps
   > {
-  componentDidMount() {
-    const { loadUser, loadOrganization, powertakerId, powertakerType } = this.props;
+  loadPowertaker = () => {
+    const { loadGroupUser, loadGroupOrganization, powertakerId, powertakerType, groupId } = this.props;
     if (powertakerType === 'person') {
-      loadUser({ userId: powertakerId });
+      loadGroupUser({ userId: powertakerId, groupId });
     } else {
-      loadOrganization({ organizationId: powertakerId });
+      loadGroupOrganization({ organizationId: powertakerId, groupId });
     }
+  };
+
+  componentDidMount() {
+    this.loadPowertaker();
   }
 
   render() {
@@ -46,8 +51,8 @@ class PowertakerData extends React.Component<
       availableUsers,
       validationRules,
       powertakerType,
-      loadUser,
-      loadOrganization,
+      loadGroupUser,
+      loadGroupOrganization,
       updateContract,
       groupId,
       contractId,
@@ -135,8 +140,8 @@ class PowertakerData extends React.Component<
                   powertakerType,
                   powertaker,
                   initialValues: powertaker,
-                  loadUser,
-                  loadOrganization,
+                  loadGroupUser,
+                  loadGroupOrganization,
                   updateContract,
                   groupId,
                   contractId,
@@ -145,6 +150,10 @@ class PowertakerData extends React.Component<
                   updatable,
                 }}
               />
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12}>
               {contracts.length > 0 && (
                 <React.Fragment>
                   <h5 className="grey-underline mt-5 pb-2">
@@ -171,6 +180,17 @@ class PowertakerData extends React.Component<
                 </React.Fragment>
               )}
             </Col>
+            <Col xs={12}>
+              <BankAccounts
+                {...{
+                  bankAccounts: get(powertaker, 'bankAccounts.array', []),
+                  groupId,
+                  partyId: powertaker.id,
+                  partyType: powertaker.type,
+                  reloadCb: this.loadPowertaker,
+                }}
+              />
+            </Col>
           </Row>
         </CenterContent>
       </React.Fragment>
@@ -180,11 +200,11 @@ class PowertakerData extends React.Component<
 
 interface StatePart {
   users: {
-    loadingUser: boolean;
-    user: { _status: null | number; [key: string]: any };
+    loadingGroupUser: boolean;
+    groupUser: { _status: null | number; [key: string]: any };
     availableUsers: { _status: null | number; array: Array<any> };
   };
-  organizations: { loadingOrganization: boolean; organization: { _status: null | number; [key: string]: any } };
+  organizations: { loadingGroupOrganization: boolean; groupOrganization: { _status: null | number; [key: string]: any } };
   contracts: {
     validationRules: {
       lptOrgCustomer: { [key: string]: { any } };
@@ -213,16 +233,16 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  loadUser: Function;
-  loadOrganization: Function;
+  loadGroupUser: Function;
+  loadGroupOrganization: Function;
   loadAvailableUsers: Function;
   updateContract: Function;
 }
 
 function mapStateToProps(state: StatePart, props: ExtProps) {
   return {
-    powertaker: props.powertakerType === 'person' ? state.users.user : state.organizations.organization,
-    loading: state.users.loadingUser || state.organizations.loadingOrganization,
+    powertaker: props.powertakerType === 'person' ? state.users.groupUser : state.organizations.groupOrganization,
+    loading: state.users.loadingGroupUser || state.organizations.loadingGroupOrganization,
     availableUsers: state.users.availableUsers,
     validationRules: state.contracts.validationRules,
   };
@@ -236,8 +256,8 @@ const PowertakerWithForm = reduxForm({
 export default connect<StateProps, DispatchProps, ExtProps>(
   mapStateToProps,
   {
-    loadUser: Users.actions.loadUser,
-    loadOrganization: Organizations.actions.loadOrganization,
+    loadGroupUser: Users.actions.loadGroupUser,
+    loadGroupOrganization: Organizations.actions.loadGroupOrganization,
     loadAvailableUsers: Users.actions.loadAvailableUsers,
     updateContract: Contracts.actions.updateContract,
   },

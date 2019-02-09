@@ -23,6 +23,7 @@ export const initialState = {
     payment: { _status: null },
     paymentUpdate: { _status: null },
     bankAccountUpdate: { _status: null },
+    bankAccountCreate: { _status: null },
   },
 };
 

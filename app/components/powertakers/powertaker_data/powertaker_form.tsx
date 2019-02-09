@@ -15,8 +15,8 @@ interface Props {
   groupId: string;
   contractId: string;
   powertakerId: string;
-  loadUser: (any) => void;
-  loadOrganization: (any) => void;
+  loadGroupUser: (any) => void;
+  loadGroupOrganization: (any) => void;
   switchEditMode: () => void;
   editMode: boolean;
   loadAvailableUsers: () => void;
@@ -80,8 +80,8 @@ class PowertakerForm extends React.Component<Props, State> {
       contractId,
       powertakerType,
       powertakerId,
-      loadUser,
-      loadOrganization,
+      loadGroupUser,
+      loadGroupOrganization,
     } = this.props;
     const { selectedContact, selectedLR } = this.state;
     const contactValue = (selectedContact || { value: null }).value;
@@ -160,9 +160,9 @@ class PowertakerForm extends React.Component<Props, State> {
       this.setState({ selectedContact: null, selectedLR: null });
       this.switchEditMode();
       if (powertakerType === 'person') {
-        loadUser({ userId: powertakerId });
+        loadGroupUser({ userId: powertakerId, groupId });
       } else {
-        loadOrganization({ organizationId: powertakerId });
+        loadGroupOrganization({ organizationId: powertakerId, groupId });
       }
     });
   };

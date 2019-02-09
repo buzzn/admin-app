@@ -3,15 +3,18 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import ReactTable from 'react-table';
 import Contracts from 'contracts';
+import { SpanClick } from 'components/style';
 import EditBankAccount from './edit_bank_account';
+import AddBankAccount from './add_bank_account';
 
-const BankAccounts = ({ bankAccounts, updateBankAccount, validationRules, groupId, partyId, partyType }) => {
+const BankAccounts = ({ bankAccounts, updateBankAccount, validationRules, groupId, partyId, partyType, reloadCb, addBankAccount }) => {
   const prefix = 'admin.bankAccounts';
 
-  // const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [expanded, setExpanded] = useState({});
 
   const handleRowClick = rowNum => setExpanded({ [rowNum]: !expanded[rowNum] });
+  const handleAddBankAccount = ({ params, resolve, reject }) => addBankAccount({ resolve, reject, params, groupId, partyId, partyType });
 
   const data = bankAccounts.map(b => ({ ...b }));
   const columns = [
@@ -49,10 +52,10 @@ const BankAccounts = ({ bankAccounts, updateBankAccount, validationRules, groupI
     {
       expander: true,
       Expander: row => (row.original.updatable ? (
-        <div>{row.isExpanded ? <i className="fa fa-pencil-square" /> : <i className="fa fa-pencil" />}</div>
+          <div>{row.isExpanded ? <i className="fa fa-pencil-square" /> : <i className="fa fa-pencil" />}</div>
       ) : (
-          false
-        )),
+        false
+      )),
       className: 'cy-edit-bank-account',
     },
     {
@@ -68,6 +71,9 @@ const BankAccounts = ({ bankAccounts, updateBankAccount, validationRules, groupI
     <div>
       <h5>
         <FormattedMessage id={`${prefix}.headerBankAccounts`} />
+        <SpanClick onClick={() => setIsOpen(true)} className="float-right" data-cy="add payment CTA">
+          <FormattedMessage id={`${prefix}.addNew`} /> <i className="fa fa-plus-circle" />
+        </SpanClick>
       </h5>
       <ReactTable
         {...{
@@ -94,12 +100,25 @@ const BankAccounts = ({ bankAccounts, updateBankAccount, validationRules, groupI
                   partyType,
                   bankAccountId: original.id,
                 }),
-                form: `editPayment-${original.id}`,
-                validationRules: validationRules.paymentUpdate,
-                handleCancel: () => handleRowClick(viewIndex),
+                form: `editBankAccount-${original.id}`,
+                validationRules: validationRules.bankAccountUpdate,
+                handleCancel: () => {
+                  handleRowClick(viewIndex);
+                  reloadCb && reloadCb();
+                },
               }}
             />
           ),
+        }}
+      />
+      <AddBankAccount
+        {...{
+          isOpen,
+          toggle: () => setIsOpen(!isOpen),
+          validationRules: validationRules.bankAccountCreate,
+          form: 'addBankAccount',
+          addBankAccount: handleAddBankAccount,
+          reloadCb,
         }}
       />
     </div>
@@ -107,14 +126,13 @@ const BankAccounts = ({ bankAccounts, updateBankAccount, validationRules, groupI
 };
 
 function mapStateToProps(state) {
-  return {
-    validationRules: state.contracts.validationRules,
-  };
+  return { validationRules: state.contracts.validationRules };
 }
 
 export default connect(
   mapStateToProps,
   {
     updateBankAccount: Contracts.actions.updateBankAccount,
+    addBankAccount: Contracts.actions.addBankAccount,
   },
 )(BankAccounts);

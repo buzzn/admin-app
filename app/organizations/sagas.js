@@ -19,6 +19,7 @@ export const getOrganizationsFunctions = {
 };
 
 export const selectOrganizationId = state => state.organizations.organizationId;
+export const selectGroupId = state => state.organizations.groupId;
 
 export function* getOrganization({ apiUrl, apiPath, token }, { organizationId }) {
   yield put(actions.loadingOrganization());
@@ -29,6 +30,17 @@ export function* getOrganization({ apiUrl, apiPath, token }, { organizationId })
     logException(error);
   }
   yield put(actions.loadedOrganization());
+}
+
+export function* getGroupOrganization({ apiUrl, apiPath, token }, { organizationId, groupId }) {
+  yield put(actions.loadingGroupOrganization());
+  try {
+    const organization = yield call(api.fetchGroupOrganization, { apiUrl, apiPath, token, organizationId, groupId });
+    yield put(actions.setGroupOrganization(organization));
+  } catch (error) {
+    logException(error);
+  }
+  yield put(actions.loadedGroupOrganization());
 }
 
 export function* getOrganizations({ apiUrl, apiPath, token, type }, params) {
@@ -44,6 +56,7 @@ export function* getOrganizations({ apiUrl, apiPath, token, type }, params) {
 
 export function* organizationsSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_ORGANIZATION, getOrganization, { apiUrl, apiPath, token });
+  yield takeLatest(constants.LOAD_GROUP_ORGANIZATION, getGroupOrganization, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_AVAILABLE_ORGANIZATIONS, getOrganizations, {
     apiUrl,
     apiPath,
@@ -58,6 +71,8 @@ export function* organizationsSagas({ apiUrl, apiPath, token }) {
   });
 
   const organizationId = yield select(selectOrganizationId);
+  const groupId = yield select(selectGroupId);
+  if (organizationId && groupId) yield put(actions.loadGroupOrganization({ organizationId, groupId }));
   if (organizationId) yield put(actions.loadOrganization({ organizationId }));
 }
 

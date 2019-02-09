@@ -127,7 +127,6 @@ describe('contracts module', () => {
   it('updates bank account for the contract', async () => {
     api.updateBankAccount = jest.fn(({ params }) => ({ _status: 200, ...params }));
     const groupId = 'groupId';
-    const contractId = 'contractId';
     const resolve = jest.fn();
     const params = { iban: '123' };
     await expectSaga(
@@ -143,8 +142,6 @@ describe('contracts module', () => {
         partyType: '',
       },
     )
-      .provide([[select(selectContractId), contractId]])
-      .put(actions.loadContract({ contractId, groupId }))
       .run();
     expect(resolve).toBeCalledTimes(1);
     expect(resolve).toHaveBeenCalledWith({ _status: 200, ...params });

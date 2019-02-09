@@ -95,6 +95,7 @@ class GroupSettings extends React.Component {
       transmissionSystemOperator,
       electricitySupplier,
       bankAccount,
+      loadGroup,
 
       owner,
       availableUsers,
@@ -206,16 +207,19 @@ class GroupSettings extends React.Component {
                         form: 'groupOwnerForm',
                       }}
                     />
-                    <Col xs={12}>
-                      <BankAccounts
-                        {...{
-                          bankAccounts: get(owner, 'bankAccounts.array', []),
-                          groupId: group.id,
-                          partyId: owner.id,
-                          partyType: owner.type,
-                        }}
-                      />
-                    </Col>
+                    {!!owner.id && (
+                      <Col xs={12}>
+                        <BankAccounts
+                          {...{
+                            bankAccounts: get(owner, 'bankAccounts.array', []),
+                            groupId: group.id,
+                            partyId: owner.id,
+                            partyType: owner.type,
+                            reloadCb: () => loadGroup(group.id),
+                          }}
+                        />
+                      </Col>
+                    )}
                   </React.Fragment>
                 )}
               />
@@ -240,16 +244,19 @@ class GroupSettings extends React.Component {
                         form: 'groupGapForm',
                       }}
                     />
-                    <Col xs={12}>
-                      <BankAccounts
-                        {...{
-                          bankAccounts: get(gap, 'bankAccounts.array', []),
-                          groupId: group.id,
-                          partyId: gap.id,
-                          partyType: gap.type,
-                        }}
-                      />
-                    </Col>
+                    {!!gap.id && (
+                      <Col xs={12}>
+                        <BankAccounts
+                          {...{
+                            bankAccounts: get(gap, 'bankAccounts.array', []),
+                            groupId: group.id,
+                            partyId: gap.id,
+                            partyType: gap.type,
+                            reloadCb: () => loadGroup(group.id),
+                          }}
+                        />
+                      </Col>
+                    )}
                   </GapWrap>
                 )}
               />

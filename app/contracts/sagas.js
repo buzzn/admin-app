@@ -44,6 +44,30 @@ export function* getContractPayments({ apiUrl, apiPath, token }, { contractId, g
   yield put(actions.loadedContractPayments());
 }
 
+export function* addBankAccount(
+  { apiUrl, apiPath, token },
+  { params, resolve, reject, groupId, partyId, partyType },
+) {
+  try {
+    const res = yield call(api.addBankAccount, {
+      apiUrl,
+      apiPath,
+      token,
+      params,
+      groupId,
+      partyId,
+      partyType,
+    });
+    if (res._error) {
+      yield call(reject, new SubmissionError(res));
+    } else {
+      yield call(resolve, res);
+    }
+  } catch (error) {
+    logException(error);
+  }
+}
+
 export function* updateBankAccount(
   { apiUrl, apiPath, token },
   { bankAccountId, params, resolve, reject, groupId, partyId, partyType },
@@ -63,10 +87,6 @@ export function* updateBankAccount(
       yield call(reject, new SubmissionError(res));
     } else {
       yield call(resolve, res);
-      // FIXME: Extract bank/address loading into separate actions and use them after there will be understanding
-      // of all use cases for them
-      const contractId = yield select(selectContractId);
-      yield put(actions.loadContract({ contractId, groupId }));
     }
   } catch (error) {
     logException(error);
@@ -234,6 +254,7 @@ export function* contractSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_CONTRACT, getContract, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_CONTRACT_BALANCE_SHEET, getContractBalanceSheet, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_CONTRACT_PAYMENTS, getContractPayments, { apiUrl, apiPath, token });
+  yield takeLeading(constants.ADD_BANK_ACCOUNT, addBankAccount, { apiUrl, apiPath, token });
   yield takeLeading(constants.UPDATE_BANK_ACCOUNT, updateBankAccount, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUP_POWERTAKERS, getPowertakers, { apiUrl, apiPath, token });
   yield takeLeading(constants.ADD_CONTRACT, addContract, { apiUrl, apiPath, token });
