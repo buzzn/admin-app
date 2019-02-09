@@ -4,7 +4,7 @@ import { prepareHeaders, parseResponse, camelizeResponseKeys } from '../_util';
 export default {
   fetchOrganization({ token, apiUrl, apiPath, organizationId }) {
     return fetch(
-      `${apiUrl}${apiPath}/organizations/${organizationId}?include=address,legal_representation,contact:[address],contracts:[localpool,register_meta:[register]]`,
+      `${apiUrl}${apiPath}/organizations/${organizationId}?include=address,legal_representation,contact:[address],contracts:[localpool,register_meta:[registers]]`,
       { headers: prepareHeaders(token) },
     )
       .then(parseResponse)
@@ -12,7 +12,7 @@ export default {
   },
   fetchGroupOrganization({ token, apiUrl, apiPath, organizationId, groupId }) {
     return fetch(
-      `${apiUrl}${apiPath}/localpools/${groupId}/organizations/${organizationId}?include=address,bank_accounts,legal_representation:[bank_accounts],contact:[address,bank_accounts],contracts:[localpool,register_meta:[register]]`,
+      `${apiUrl}${apiPath}/localpools/${groupId}/organizations/${organizationId}?include=address,bank_accounts,legal_representation:[bank_accounts],contact:[address,bank_accounts],contracts:[localpool,register_meta:[registers]]`,
       { headers: prepareHeaders(token) },
     )
       .then(parseResponse)

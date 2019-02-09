@@ -29,6 +29,7 @@ export const constants = {
   LOADED_GROUP_POWERTAKERS: 'buzzn_contracts/LOADED_GROUP_POWERTAKERS',
   SET_GROUP_POWERTAKERS: 'buzzn_contracts/SET_GROUP_POWERTAKERS',
 
+  ATTACH_BANK_ACCOUNT: 'buzzn_contracts/ATTACH_BANK_ACCOUNT',
   ADD_BANK_ACCOUNT: 'buzzn_contracts/ADD_BANK_ACCOUNT',
   UPDATE_BANK_ACCOUNT: 'buzzn_contracts/UPDATE_BANK_ACCOUNT',
 
@@ -98,6 +99,14 @@ export const actions = {
   loadedGroupPowertakers: () => ({ type: constants.LOADED_GROUP_POWERTAKERS }),
   setGroupPowertakers: powertakers => ({ type: constants.SET_GROUP_POWERTAKERS, powertakers }),
 
+  attachBankAccount: ({ params, resolve, reject, groupId, contractId }) => ({
+    type: constants.ATTACH_BANK_ACCOUNT,
+    params,
+    resolve,
+    reject,
+    groupId,
+    contractId,
+  }),
   addBankAccount: ({ params, resolve, reject, groupId, partyId, partyType }) => ({
     type: constants.ADD_BANK_ACCOUNT,
     params,

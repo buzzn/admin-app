@@ -44,10 +44,27 @@ export function* getContractPayments({ apiUrl, apiPath, token }, { contractId, g
   yield put(actions.loadedContractPayments());
 }
 
-export function* addBankAccount(
-  { apiUrl, apiPath, token },
-  { params, resolve, reject, groupId, partyId, partyType },
-) {
+export function* attachBankAccount({ apiUrl, apiPath, token }, { params, resolve, reject, groupId, contractId }) {
+  try {
+    const res = yield call(api.attachBankAccount, {
+      apiUrl,
+      apiPath,
+      token,
+      params,
+      groupId,
+      contractId,
+    });
+    if (res._error) {
+      yield call(reject, new SubmissionError(res));
+    } else {
+      yield call(resolve, res);
+    }
+  } catch (error) {
+    logException(error);
+  }
+}
+
+export function* addBankAccount({ apiUrl, apiPath, token }, { params, resolve, reject, groupId, partyId, partyType }) {
   try {
     const res = yield call(api.addBankAccount, {
       apiUrl,
@@ -254,6 +271,7 @@ export function* contractSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_CONTRACT, getContract, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_CONTRACT_BALANCE_SHEET, getContractBalanceSheet, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_CONTRACT_PAYMENTS, getContractPayments, { apiUrl, apiPath, token });
+  yield takeLeading(constants.ATTACH_BANK_ACCOUNT, attachBankAccount, { apiUrl, apiPath, token });
   yield takeLeading(constants.ADD_BANK_ACCOUNT, addBankAccount, { apiUrl, apiPath, token });
   yield takeLeading(constants.UPDATE_BANK_ACCOUNT, updateBankAccount, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUP_POWERTAKERS, getPowertakers, { apiUrl, apiPath, token });

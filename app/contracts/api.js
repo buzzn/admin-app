@@ -4,7 +4,7 @@ import { prepareHeaders, parseResponse, camelizeResponseKeys, camelizeResponseAr
 export default {
   fetchContract({ token, apiUrl, apiPath, contractId, groupId }) {
     return fetch(
-      `${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}?include=balance_sheet:[entries],register_meta:[registers:[meter,readings]],contrator_bank_account,contractor:[address],customer_bank_account,customer:[address,contact:address],tariffs,payments,documents`,
+      `${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}?include=balance_sheet:[entries],register_meta:[registers:[meter,readings]],contrator_bank_account,contractor:[address],customer_bank_account,customer:[bank_accounts,address,contact:address],tariffs,payments,documents`,
       { headers: prepareHeaders(token) },
     )
       .then(parseResponse)
@@ -17,7 +17,10 @@ export default {
       .then(r => ({ array: r.array.map(t => ({ ...t, ...t.tariff })) }));
   },
   fetchContractBalanceSheet({ token, apiUrl, apiPath, contractId, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/accounting/balance_sheet?include=entries`, { headers: prepareHeaders(token) })
+    return fetch(
+      `${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/accounting/balance_sheet?include=entries`,
+      { headers: prepareHeaders(token) },
+    )
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
@@ -55,6 +58,13 @@ export default {
           array: json.array.filter(c => ['contract_localpool_power_taker', 'contract_localpool_third_party'].includes(c.type)),
         }))
     );
+  },
+  attachBankAccount({ token, apiUrl, apiPath, params, groupId, contractId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/customer-bank-account`, {
+      headers: prepareHeaders(token),
+      method: 'PATCH',
+      body: JSON.stringify(snakeReq(params)),
+    }).then(parseResponse);
   },
   addBankAccount({ token, apiUrl, apiPath, params, groupId, partyId, partyType }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/${partyType}s/${partyId}/bank-accounts`, {
