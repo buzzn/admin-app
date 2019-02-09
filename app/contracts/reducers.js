@@ -22,6 +22,7 @@ export const initialState = {
     lptPerCustomer: { _status: null },
     payment: { _status: null },
     paymentUpdate: { _status: null },
+    bankAccountUpdate: { _status: null },
   },
 };
 

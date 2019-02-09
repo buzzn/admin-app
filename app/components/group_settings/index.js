@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, NavLink, Switch, Route } from 'react-router-dom';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Row } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 import { confirmAlert } from 'react-confirm-alert';
 import get from 'lodash/get';
 import map from 'lodash/map';
@@ -14,6 +14,7 @@ import Organizations from 'organizations';
 import { actions } from 'actions';
 import { SubNav } from 'components/style';
 import PageTitle from 'components/page_title';
+import BankAccounts from 'components/bank_accounts';
 import Group from './group';
 import Powergiver from './powergiver';
 import Bank from './bank';
@@ -103,11 +104,6 @@ class GroupSettings extends React.Component {
       updateGroupContact,
 
       gap,
-      gapAddress,
-      gapBankAccounts,
-      gapContact,
-      gapContactAddress,
-      gapContactBankAccounts,
 
       setGroup,
       updateGroup,
@@ -194,21 +190,33 @@ class GroupSettings extends React.Component {
               <Route
                 path={`${url}/powergiver`}
                 render={() => (
-                  <Powergiver
-                    {...{
-                      updatable: group.updatable,
-                      owner,
-                      loadAvailableUsers,
-                      availableUsers,
-                      availableOrganizations,
-                      loadAvailableOrganizations,
-                      validationRules,
-                      updateGroupContact: params => updateGroupContact({ groupId: group.id, isGap: false, ...params }),
-                      // HACK: nested objects can be null on server after beekeeper import in some cases
-                      initialValues: ownerValues,
-                      form: 'groupOwnerForm',
-                    }}
-                  />
+                  <React.Fragment>
+                    <Powergiver
+                      {...{
+                        updatable: group.updatable,
+                        owner,
+                        loadAvailableUsers,
+                        availableUsers,
+                        availableOrganizations,
+                        loadAvailableOrganizations,
+                        validationRules,
+                        updateGroupContact: params => updateGroupContact({ groupId: group.id, isGap: false, ...params }),
+                        // HACK: nested objects can be null on server after beekeeper import in some cases
+                        initialValues: ownerValues,
+                        form: 'groupOwnerForm',
+                      }}
+                    />
+                    <Col xs={12}>
+                      <BankAccounts
+                        {...{
+                          bankAccounts: get(owner, 'bankAccounts.array', []),
+                          groupId: group.id,
+                          partyId: owner.id,
+                          partyType: owner.type,
+                        }}
+                      />
+                    </Col>
+                  </React.Fragment>
                 )}
               />
               {!!owner.id && <Route path={`${url}/bank`} render={() => <Bank {...{ bankAccount }} />} />}
@@ -232,6 +240,16 @@ class GroupSettings extends React.Component {
                         form: 'groupGapForm',
                       }}
                     />
+                    <Col xs={12}>
+                      <BankAccounts
+                        {...{
+                          bankAccounts: get(gap, 'bankAccounts.array', []),
+                          groupId: group.id,
+                          partyId: gap.id,
+                          partyType: gap.type,
+                        }}
+                      />
+                    </Col>
                   </GapWrap>
                 )}
               />
@@ -261,11 +279,6 @@ const mapStateToProps = state => ({
   availableOrganizations: state.organizations.availableOrganizations,
 
   gap: state.groups.group.gapContractCustomer || {},
-  gapAddress: get(state.groups.group, 'gapContractCustomer.address') || {},
-  gapBankAccounts: get(state.groups.group, 'gapContractCustomer.bankAccounts.array') || [],
-  gapContact: get(state.groups.group, 'gapContractCustomer.contact') || {},
-  gapContactAddress: get(state.groups.group, 'gapContractCustomer.contact.address') || {},
-  gapContactBankAccounts: get(state.groups.group, 'gapContractCustomer.contact.bankAccounts.array') || [],
 
   loading: state.groups.loadingGroup,
 

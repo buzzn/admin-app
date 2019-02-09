@@ -74,6 +74,11 @@ export default [
       '/localpools/{localpool_id}/contracts/{localpool_power_taker_contract_id}/payments/{payment_id}.patch.parameters',
     setAction: rules => Contracts.actions.setValidationRules('paymentUpdate', rules),
   },
+  // HACK
+  {
+    swaggerPath: '/localpools/{localpool_id}/persons/{person_id}/bank-accounts/{bank_account_id}.patch.parameters',
+    setAction: rules => Contracts.actions.setValidationRules('bankAccountUpdate', rules),
+  },
   // Meter rules
   {
     swaggerPath: '/localpools/{localpool_meter_real_id}/meters.post.parameters',

@@ -65,7 +65,7 @@ const PaymentsList = ({
     },
     {
       accessor: 'deletePayment',
-      className: 'cy-price-cents',
+      className: 'cy-delete-payment',
       style: { color: 'red', cursor: 'pointer' },
       width: 20,
       Cell: ({ original }) => (original.deletable ? <i className="fa fa-remove" /> : false),
