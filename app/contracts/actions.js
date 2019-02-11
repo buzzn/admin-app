@@ -99,13 +99,14 @@ export const actions = {
   loadedGroupPowertakers: () => ({ type: constants.LOADED_GROUP_POWERTAKERS }),
   setGroupPowertakers: powertakers => ({ type: constants.SET_GROUP_POWERTAKERS, powertakers }),
 
-  attachBankAccount: ({ params, resolve, reject, groupId, contractId }) => ({
+  attachBankAccount: ({ params, resolve, reject, groupId, contractId, partyType }) => ({
     type: constants.ATTACH_BANK_ACCOUNT,
     params,
     resolve,
     reject,
     groupId,
     contractId,
+    partyType,
   }),
   addBankAccount: ({ params, resolve, reject, groupId, partyId, partyType }) => ({
     type: constants.ADD_BANK_ACCOUNT,

@@ -4,7 +4,7 @@ import { prepareHeaders, parseResponse, camelizeResponseKeys, camelizeResponseAr
 export default {
   fetchContract({ token, apiUrl, apiPath, contractId, groupId }) {
     return fetch(
-      `${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}?include=balance_sheet:[entries],register_meta:[registers:[meter,readings]],contrator_bank_account,contractor:[address],customer_bank_account,customer:[bank_accounts,address,contact:address],tariffs,payments,documents`,
+      `${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}?include=balance_sheet:[entries],register_meta:[registers:[meter,readings]],contractor_bank_account,contractor:[bank_accounts,address],customer_bank_account,customer:[bank_accounts,address,contact:address],tariffs,payments,documents`,
       { headers: prepareHeaders(token) },
     )
       .then(parseResponse)
@@ -59,8 +59,8 @@ export default {
         }))
     );
   },
-  attachBankAccount({ token, apiUrl, apiPath, params, groupId, contractId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/customer-bank-account`, {
+  attachBankAccount({ token, apiUrl, apiPath, params, groupId, contractId, partyType }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/${partyType}-bank-account`, {
       headers: prepareHeaders(token),
       method: 'PATCH',
       body: JSON.stringify(snakeReq(params)),

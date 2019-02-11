@@ -44,7 +44,7 @@ export function* getContractPayments({ apiUrl, apiPath, token }, { contractId, g
   yield put(actions.loadedContractPayments());
 }
 
-export function* attachBankAccount({ apiUrl, apiPath, token }, { params, resolve, reject, groupId, contractId }) {
+export function* attachBankAccount({ apiUrl, apiPath, token }, { params, resolve, reject, groupId, contractId, partyType }) {
   try {
     const res = yield call(api.attachBankAccount, {
       apiUrl,
@@ -53,6 +53,7 @@ export function* attachBankAccount({ apiUrl, apiPath, token }, { params, resolve
       params,
       groupId,
       contractId,
+      partyType,
     });
     if (res._error) {
       yield call(reject, new SubmissionError(res));
