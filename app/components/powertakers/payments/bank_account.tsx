@@ -12,8 +12,8 @@ const BankAccount = ({
   attachBankAccount,
   groupId,
   contractId,
-  loadContract,
-  contract,
+  updatedAt,
+  reloadCb,
   partyType,
 }) => {
   const prefix = 'admin.bankAccounts';
@@ -23,7 +23,7 @@ const BankAccount = ({
 
   const changeBankAccount = () => new Promise((resolve, reject) => {
     attachBankAccount({
-      params: { bankAccountId: selectedBankAccount, updatedAt: contract.updatedAt },
+      params: { bankAccountId: selectedBankAccount, updatedAt },
       resolve,
       reject,
       groupId,
@@ -33,7 +33,7 @@ const BankAccount = ({
   })
     .then(() => {
       setEditMode(false);
-      loadContract({ groupId, contractId });
+      reloadCb && reloadCb();
     })
     .catch(e => Alert.error(JSON.stringify(e)));
 

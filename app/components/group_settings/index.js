@@ -11,13 +11,14 @@ import isEqual from 'lodash/isEqual';
 import Groups from 'groups';
 import Users from 'users';
 import Organizations from 'organizations';
+import Contracts from 'contracts';
 import { actions } from 'actions';
 import { SubNav } from 'components/style';
 import PageTitle from 'components/page_title';
 import BankAccounts from 'components/bank_accounts';
+import BankAccount from 'components/powertakers/payments/bank_account';
 import Group from './group';
 import Powergiver from './powergiver';
-import Bank from './bank';
 
 import './style.scss';
 
@@ -105,6 +106,8 @@ class GroupSettings extends React.Component {
       updateGroupContact,
 
       gap,
+      attachBankAccount,
+      loadContract,
 
       setGroup,
       updateGroup,
@@ -158,11 +161,6 @@ class GroupSettings extends React.Component {
               <NavLink to={`${url}/powergiver`} exact className="nav-link" data-cy="group owner tab">
                 <FormattedMessage id="admin.groups.navPowergiver" />
               </NavLink>
-              {!!owner.id && (
-                <NavLink to={`${url}/bank`} exact className="nav-link">
-                  <FormattedMessage id="admin.groups.navBank" />
-                </NavLink>
-              )}
               <NavLink to={`${url}/gapcontact`} exact className="nav-link">
                 <FormattedMessage id="admin.groups.navGapContact" />
               </NavLink>
@@ -223,7 +221,6 @@ class GroupSettings extends React.Component {
                   </React.Fragment>
                 )}
               />
-              {!!owner.id && <Route path={`${url}/bank`} render={() => <Bank {...{ bankAccount }} />} />}
               <Route
                 path={`${url}/gapcontact`}
                 render={() => (
@@ -245,17 +242,33 @@ class GroupSettings extends React.Component {
                       }}
                     />
                     {!!gap.id && (
-                      <Col xs={12}>
-                        <BankAccounts
-                          {...{
+                      <React.Fragment>
+                        <Col xs={12}>
+                          <BankAccounts
+                            {...{
+                              bankAccounts: get(gap, 'bankAccounts.array', []),
+                              groupId: group.id,
+                              partyId: gap.id,
+                              partyType: gap.type,
+                              reloadCb: () => loadGroup(group.id),
+                            }}
+                          />
+                        </Col>
+                        <Col xs={12}>
+                          <BankAccount {...{
+                            title: 'GCC bank account',
+                            bankAccount: group.gapContractCustomerBankAccount || {},
                             bankAccounts: get(gap, 'bankAccounts.array', []),
+                            attachBankAccount,
                             groupId: group.id,
-                            partyId: gap.id,
-                            partyType: gap.type,
                             reloadCb: () => loadGroup(group.id),
-                          }}
-                        />
-                      </Col>
+                            updatedAt: group.updatedAt,
+                            // HACK
+                            contractId: '',
+                            partyType: '',
+                          }} />
+                        </Col>
+                      </React.Fragment>
                     )}
                   </GapWrap>
                 )}
@@ -303,5 +316,7 @@ export default connect(
     setIncompleteScreen: actions.setIncompleteScreen,
     loadAvailableUsers: Users.actions.loadAvailableUsers,
     loadAvailableOrganizations: Organizations.actions.loadAvailableOrganizations,
+    attachBankAccount: Contracts.actions.attachBankAccount,
+    loadContract: Contracts.actions.loadContract,
   },
 )(GroupSettingsIntl);

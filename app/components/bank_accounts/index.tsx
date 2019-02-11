@@ -6,6 +6,7 @@ import Contracts from 'contracts';
 import { SpanClick } from 'components/style';
 import EditBankAccount from './edit_bank_account';
 import AddBankAccount from './add_bank_account';
+import { BankAccountsWrapper } from './style';
 
 const BankAccounts = ({ bankAccounts, updateBankAccount, validationRules, groupId, partyId, partyType, reloadCb, addBankAccount }) => {
   const prefix = 'admin.bankAccounts';
@@ -68,7 +69,7 @@ const BankAccounts = ({ bankAccounts, updateBankAccount, validationRules, groupI
   ];
 
   return (
-    <div>
+    <BankAccountsWrapper>
       <h5>
         <FormattedMessage id={`${prefix}.headerBankAccounts`} />
         <SpanClick onClick={() => setIsOpen(true)} className="float-right" data-cy="add payment CTA">
@@ -121,7 +122,7 @@ const BankAccounts = ({ bankAccounts, updateBankAccount, validationRules, groupI
           reloadCb,
         }}
       />
-    </div>
+    </BankAccountsWrapper>
   );
 };
 

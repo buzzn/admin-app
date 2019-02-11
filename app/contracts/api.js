@@ -60,7 +60,10 @@ export default {
     );
   },
   attachBankAccount({ token, apiUrl, apiPath, params, groupId, contractId, partyType }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/${partyType}-bank-account`, {
+    const url = contractId
+      ? `${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/${partyType}-bank-account`
+      : `${apiUrl}${apiPath}/localpools/${groupId}/gap-contract-customer-bank-account`;
+    return fetch(url, {
       headers: prepareHeaders(token),
       method: 'PATCH',
       body: JSON.stringify(snakeReq(params)),

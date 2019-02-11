@@ -62,7 +62,8 @@ const Payments = ({
           groupId,
           contractId,
           loadContract,
-          contract,
+          updatedAt: contract.updatedAt,
+          reloadCb: () => loadContract({ groupId, contractId}),
           partyType: 'customer',
         }}
       />
@@ -77,7 +78,8 @@ const Payments = ({
           groupId,
           contractId,
           loadContract,
-          contract,
+          updatedAt: contract.updatedAt,
+          reloadCb: () => loadContract({ groupId, contractId}),
           partyType: 'contractor',
         }}
       />
