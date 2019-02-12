@@ -82,7 +82,7 @@ describe('billings module', () => {
       { resolve, reject: null, params, groupId, contractId },
     )
       .put(actions.loadBillings({ groupId, contractId }))
-      .put(contractActions.loadGroupPowertakers({ groupId, withBillings: true }))
+      .put(contractActions.loadContract({ groupId, contractId }))
       .run();
     expect(resolve).toBeCalledTimes(1);
     expect(resolve).toHaveBeenLastCalledWith({ _status: 201, ...params });
@@ -100,7 +100,7 @@ describe('billings module', () => {
       { resolve, reject: null, params, groupId, contractId },
     )
       .put(actions.loadBillings({ groupId, contractId }))
-      .put(contractActions.loadGroupPowertakers({ groupId, withBillings: true }))
+      .put(contractActions.loadContract({ groupId, contractId }))
       .run();
     expect(resolve).toBeCalledTimes(1);
     expect(resolve).toHaveBeenLastCalledWith({ _status: 200, ...params });
@@ -118,7 +118,7 @@ describe('billings module', () => {
       { resolve, reject: null, params, groupId, contractId },
     )
       .put(actions.loadBillings({ groupId, contractId }))
-      .put(contractActions.loadGroupPowertakers({ groupId, withBillings: true }))
+      .put(contractActions.loadContract({ groupId, contractId }))
       .run();
     expect(resolve).toBeCalledTimes(1);
     expect(resolve).toHaveBeenLastCalledWith({ _status: 200, ...params });

@@ -2,10 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
-import Alert from 'react-s-alert';
 import moment from 'moment';
 import Contracts from 'contracts';
-import Billings from 'billings';
 import ReactTableSorted from 'components/react_table_sorted';
 import Loading from 'components/loading';
 import { tableParts as TableParts } from 'react_table_config';
@@ -16,41 +14,20 @@ const DefaultPerson = require('images/default_person.jpg');
 const DefaultOrganisation = require('images/default_organisation.jpg');
 const DefaultThirdParty = require('images/default_3rd_party.jpg');
 
-interface ManageReadingInterface {
-  attachReading: Function;
-  groupId: string;
-  contractId: string;
-  billingId: string;
-}
-
-export const ManageReadingContext = React.createContext<ManageReadingInterface>({
-  attachReading: () => false,
-  groupId: '',
-  contractId: '',
-  billingId: '',
-});
-
 const BillingsOverview = ({
   loadGroupPowertakers,
   setGroupPowertakers,
   loading,
   powertakers,
-  attachReading,
   history,
   match: { params: { groupId } },
   intl,
-  validationRules,
-  updateBilling,
-  getBillingPDFData,
 }) => {
   const [expanded, setExpanded] = useState({});
-  useEffect(
-    () => {
-      loadGroupPowertakers({ groupId, withBillings: true });
-      return () => setGroupPowertakers({ _status: null, array: [] });
-    },
-    [groupId],
-  );
+  useEffect(() => {
+    loadGroupPowertakers({ groupId, withBillings: true });
+    return () => setGroupPowertakers({ _status: null, array: [] });
+  }, [groupId]);
 
   if (powertakers._status === 404 || powertakers._status === 403) {
     setGroupPowertakers({ _status: null, array: [] });
@@ -136,11 +113,6 @@ const BillingsOverview = ({
       style: { color: '#bdbdbd' },
     },
   ];
-  const submitUpdateBilling = ({ billingId, contractId, params }) => new Promise((resolve, reject) => {
-    updateBilling({ resolve, reject, params, groupId, contractId, billingId });
-  })
-    .then(res => res)
-    .catch(err => Alert.error(err.errors.status ? err.errors.status.errorMessage : err.errors.completeness.join(', ')));
 
   return (
     <React.Fragment>
@@ -152,42 +124,19 @@ const BillingsOverview = ({
           uiSortPath: `groups.${groupId}.billings`,
           getTrProps: (_state, rowInfo) => ({
             onClick: (_event, handleOriginal) => {
-              setExpanded({ ...expanded, [rowInfo.viewIndex]: !expanded[rowInfo.viewIndex] });
+              setExpanded({ [rowInfo.viewIndex]: !expanded[rowInfo.viewIndex] });
               handleOriginal && handleOriginal();
             },
           }),
           SubComponent: row => (
-            <ManageReadingContext.Provider
-              value={{
-                attachReading,
+            <BillingDetails
+              {...{
+                history,
                 groupId,
                 contractId: row.original.contract.id,
                 billingId: row.original.id,
               }}
-            >
-              <BillingDetails
-                {...{
-                  ManageReadingContext,
-                  billing: row.original,
-                  getBillingPDFData,
-                  history,
-                  marketLocation: row.original.contract.registerMeta,
-                  groupId,
-                  initialValues: row.original,
-                  validationRules: validationRules.billingUpdate,
-                  form: `billingUpdateForm${row.original.id}`,
-                  onSubmit: params => submitUpdateBilling({
-                    billingId: row.original.id,
-                    contractId: row.original.contract.id,
-                    params: {
-                      status: params.status,
-                      invoiceNumber: params.invoiceNumber,
-                      updatedAt: params.updatedAt,
-                    },
-                  }),
-                }}
-              />
-            </ManageReadingContext.Provider>
+            />
           ),
         }}
       />
@@ -199,7 +148,6 @@ function mapStateToProps(state) {
   return {
     powertakers: state.contracts.groupPowertakers,
     loading: state.contracts.loadingGroupPowertakers,
-    validationRules: state.billings.validationRules,
   };
 }
 
@@ -208,8 +156,5 @@ export default connect(
   {
     loadGroupPowertakers: Contracts.actions.loadGroupPowertakers,
     setGroupPowertakers: Contracts.actions.setGroupPowertakers,
-    attachReading: Billings.actions.attachReading,
-    updateBilling: Billings.actions.updateBilling,
-    getBillingPDFData: Billings.actions.getBillingPDFData,
   },
 )(injectIntl(BillingsOverview));

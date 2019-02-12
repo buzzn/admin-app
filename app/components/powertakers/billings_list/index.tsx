@@ -6,7 +6,6 @@ import { getFormSubmitErrors } from 'redux-form';
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
-import Alert from 'react-s-alert';
 import Billings from 'billings';
 import Contracts from 'contracts';
 import Tariffs from 'tariffs';
@@ -25,20 +24,6 @@ import AddBilling from '../add_billing';
 const DefaultPerson = require('images/default_person.jpg');
 const DefaultOrganisation = require('images/default_organisation.jpg');
 const DefaultThirdParty = require('images/default_3rd_party.jpg');
-
-interface ManageReadingInterface {
-  attachReading: Function;
-  groupId: string;
-  contractId: string;
-  billingId: string;
-}
-
-export const ManageReadingContext = React.createContext<ManageReadingInterface>({
-  attachReading: () => false,
-  groupId: '',
-  contractId: '',
-  billingId: '',
-});
 
 class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps & InjectedIntlProps, ComponentState> {
   state = { isOpen: false, expanded: {} };
@@ -60,16 +45,6 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
       this.switchAddBilling();
       return res;
     });
-  };
-
-  updateBilling = ({ billingId, params }) => {
-    const { updateBilling, groupId, contractId } = this.props;
-
-    return new Promise((resolve, reject) => {
-      updateBilling({ resolve, reject, params, groupId, contractId, billingId });
-    })
-      .then(res => res)
-      .catch(err => Alert.error(err.errors.status ? err.errors.status.errorMessage : err.errors.completeness.join(', ')));
   };
 
   componentDidMount() {
@@ -100,10 +75,8 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
       contractId,
       loadContract,
       updateContract,
-      getBillingPDFData,
       addBillingFormName,
       addBillingSubmitErrors,
-      attachReading,
     } = this.props;
     const { isOpen } = this.state;
 
@@ -131,8 +104,8 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
               clickable: true,
             },
       contract: { ...contract, billings: null },
-      beginDate: { display: moment(b.beginDate).format('DD.MM.YYYY'), value: b.beginDate },
-      lastDate: { display: moment(b.lastDate).format('DD.MM.YYYY'), value: b.lastDate },
+      beginDateObj: { display: moment(b.beginDate).format('DD.MM.YYYY'), value: b.beginDate },
+      lastDateObj: { display: moment(b.lastDate).format('DD.MM.YYYY'), value: b.lastDate },
     }));
 
     const columns = [
@@ -147,14 +120,14 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
         Header: () => (
           <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableBeginDate` })} />
         ),
-        accessor: 'beginDate',
+        accessor: 'beginDateObj',
         className: 'cy-begin-date',
         sortMethod: TableParts.sort.sortByDateTime,
         Cell: ({ value: { display } }) => display,
       },
       {
         Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableEndDate` })} />,
-        accessor: 'lastDate',
+        accessor: 'lastDateObj',
         sortMethod: TableParts.sort.sortByDateTime,
         Cell: ({ value: { display } }) => display,
       },
@@ -258,36 +231,16 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
                 },
               }),
               SubComponent: row => (
-                <ManageReadingContext.Provider
-                  value={{
-                    attachReading,
-                    groupId,
-                    contractId,
-                    billingId: row.original.id,
-                  }}
-                >
                   <BillingDetails
                     {...{
-                      ManageReadingContext,
-                      billing: row.original,
-                      getBillingPDFData,
-                      history,
-                      marketLocation: row.original.contract.registerMeta,
                       groupId,
-                      initialValues: row.original,
-                      validationRules: validationRules.billingUpdate,
-                      form: `billingUpdateForm${row.original.id}`,
-                      onSubmit: params => this.updateBilling({
-                        billingId: row.original.id,
-                        params: {
-                          status: params.status,
-                          invoiceNumber: params.invoiceNumber,
-                          updatedAt: params.updatedAt,
-                        },
-                      }),
+                      contractId,
+                      billingId: row.original.id,
+                      extContract: contract,
+                      extBilling: row.original,
+                      history,
                     }}
                   />
-                </ManageReadingContext.Provider>
               ),
             }}
           />
@@ -335,13 +288,10 @@ interface StateProps {
 
 interface DispatchProps {
   addBilling: Function;
-  updateBilling: Function;
-  getBillingPDFData: Function;
   loadBillings: Function;
   loadContract: Function;
   updateContract: Function;
   loadTariffs: Function;
-  attachReading: Function;
   loadMarketLocations: Function;
 }
 
@@ -363,13 +313,10 @@ export default connect<StateProps, DispatchProps, ExtProps>(
   mapStateToProps,
   {
     addBilling: Billings.actions.addBilling,
-    updateBilling: Billings.actions.updateBilling,
-    getBillingPDFData: Billings.actions.getBillingPDFData,
     loadBillings: Billings.actions.loadBillings,
     loadContract: Contracts.actions.loadContract,
     updateContract: Contracts.actions.updateContract,
     loadTariffs: Tariffs.actions.loadTariffs,
-    attachReading: Billings.actions.attachReading,
     loadMarketLocations: MarketLocations.actions.loadMarketLocations,
   },
 )(injectIntl(BillingsList));

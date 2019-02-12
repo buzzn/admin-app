@@ -4,7 +4,7 @@ import { prepareHeaders, parseResponse, camelizeResponseKeys, camelizeResponseAr
 export default {
   fetchContract({ token, apiUrl, apiPath, contractId, groupId }) {
     return fetch(
-      `${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}?include=balance_sheet:[entries],register_meta:[registers:[meter,readings]],contractor_bank_account,contractor:[bank_accounts,address],customer_bank_account,customer:[bank_accounts,address,contact:address],tariffs,payments,documents`,
+      `${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}?include=billings:[documents,items:[tariff,meter,register:[readings]]],balance_sheet:[entries],register_meta:[registers:[meter,readings]],contractor_bank_account,contractor:[bank_accounts,address],customer_bank_account,customer:[bank_accounts,address,contact:address],tariffs,payments,documents`,
       { headers: prepareHeaders(token) },
     )
       .then(parseResponse)
@@ -47,7 +47,7 @@ export default {
   fetchGroupPowertakersWithBillings({ token, apiUrl, apiPath, groupId }) {
     return (
       fetch(
-        `${apiUrl}${apiPath}/localpools/${groupId}/contracts?include=billings:[documents,items:[tariff,meter,register:[readings]]],register_meta:[registers],customer:[address,contact:address]`,
+        `${apiUrl}${apiPath}/localpools/${groupId}/contracts?include=billings,customer`,
         { headers: prepareHeaders(token) },
       )
         .then(parseResponse)

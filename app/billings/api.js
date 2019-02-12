@@ -3,7 +3,7 @@ import { prepareHeaders, parseResponse, camelizeResponseKeys, snakeReq } from '.
 export default {
   fetchBilling({ token, apiUrl, apiPath, billingId, groupId, contractId }) {
     return fetch(
-      `${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/billings/${billingId}?include=documents,items:[tariff,register],accounting_entry`,
+      `${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/billings/${billingId}?include=documents,items:[tariff,meter,register:[readings]],accounting_entry`,
       { headers: prepareHeaders(token) },
     )
       .then(parseResponse)

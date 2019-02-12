@@ -1,13 +1,16 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import ReactTable from 'react-table';
 import { Link } from 'react-router-dom';
 import { reduxForm } from 'redux-form';
-import { FormattedMessage, injectIntl, InjectIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { Row, Col } from 'reactstrap';
 import moment from 'moment';
 import orderBy from 'lodash/orderBy';
 import get from 'lodash/get';
 import Alert from 'react-s-alert';
+import Billings from 'billings';
+import Contracts from 'contracts';
 import { tableParts as TableParts } from 'react_table_config';
 import EditableInput from 'components/editable_input';
 import EditableSelect from 'components/editable_select';
@@ -17,36 +20,51 @@ import AddReading from 'components/add_reading';
 import Loading from 'components/loading';
 import { BillingDetailsWrapper, DoubleCell, ButtonsWrapper, ReadingAction, ErrCell, DocumentsWrapper } from './style';
 
-interface Props {
-  billing: any;
-  getBillingPDFData: Function;
-  close?: () => void;
-  history: any;
-  marketLocation: any;
-  groupId: string;
-}
-
 const BillingDetails = ({
-  ManageReadingContext,
-  billing,
+  attachReading,
+  loadContract,
+  updateBilling,
+  contractId,
+  billingId,
+  intContract,
+  intBilling,
+  extContract = null,
+  extBilling = null,
+  loading,
   getBillingPDFData,
   close,
   intl,
   history,
-  marketLocation,
   groupId,
   dirty,
   validationRules,
   handleSubmit,
   reset,
   submitting,
-}: Props & InjectIntlProps) => {
-  const { contract } = billing;
-  const { customer } = contract;
+  minHeight,
+}) => {
+  useEffect(() => {
+    if (!extContract && !extBilling) loadContract({ groupId, contractId });
+  }, [billingId]);
+  const [editMode, setEditMode] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [date, setDate] = useState({});
+  const [item, setItem] = useState({});
+
+  const contract = extContract || intContract;
+  const billing = extBilling || intBilling;
+
+  if (loading || !contract._status) {
+    if (minHeight) return <Loading {...{ minHeight, unit: 'px' }} />;
+    return <Loading minHeight={40} />;
+  }
+  if (contract._status !== 200) return <h5>{contract._status}</h5>;
+  if (!billing) return <h5>No billing :(</h5>;
+
+  const { customer, registerMeta } = contract;
   const prefix = 'admin.billings';
   const centered = 'true';
 
-  const [editMode, setEditMode] = useState(false);
   const switchEditMode = (event) => {
     if (dirty && editMode && confirm(intl.formatMessage({ id: 'admin.messages.cancelDirtyForm' }))) {
       reset();
@@ -59,10 +77,23 @@ const BillingDetails = ({
     }
   };
 
-  const { attachReading, contractId, billingId } = useContext(ManageReadingContext);
-  const [isOpen, switchAddReading] = useState(false);
-  const [date, setDate] = useState({});
-  const [item, setItem] = useState({});
+  // TODO: refactor
+  const handleUpdateBilling = ({ billingId, params }) => {
+    return new Promise((resolve, reject) => {
+      updateBilling({ resolve, reject, params, groupId, contractId, billingId });
+    })
+      .then(res => res)
+      .catch(err => Alert.error(err.errors.status ? err.errors.status.errorMessage : err.errors.completeness.join(', ')));
+  };
+
+  const submit = params => handleUpdateBilling({
+    billingId,
+    params: {
+      status: params.status,
+      invoiceNumber: params.invoiceNumber,
+      updatedAt: params.updatedAt,
+    },
+  });
 
   const allowedStatus = Object.keys(billing.allowedActions.update.status)
     .filter(k => billing.allowedActions.update.status[k] === true)
@@ -97,7 +128,7 @@ const BillingDetails = ({
         onClick={() => {
           setItem(item);
           setDate({ begin, date });
-          switchAddReading(true);
+          setIsOpen(true);
         }}
       >
         Add reading
@@ -128,8 +159,8 @@ const BillingDetails = ({
     },
     registerObis: i.register ? i.register.obis : '',
     linkRegister: i.register ? `/groups/${groupId}/market-locations/registers/${i.register.id}` : '',
-    beginReadingKwh: i.beginReadingKwh ? intl.formatNumber(i.beginReadingKwh) : null,
-    endReadingKwh: i.endReadingKwh ? intl.formatNumber(i.endReadingKwh) : null,
+    beginReadingKwh: i.beginReadingKwh === null ? null : intl.formatNumber(i.beginReadingKwh),
+    endReadingKwh: i.endReadingKwh === null ? null : intl.formatNumber(i.endReadingKwh),
     consumedEnergyKwh: intl.formatNumber(i.consumedEnergyKwh),
     amount: {
       days: i.lengthInDays,
@@ -175,13 +206,13 @@ const BillingDetails = ({
       Header: intl.formatMessage({ id: `${prefix}.tableBeginReadingKwh` }),
       accessor: 'beginReadingKwh',
       className: 'cy-hw-begin-reading',
-      Cell: ({ value, original }) => (parseFloat(value) ? `${value} kWh` : <ErrCell>{checkReading(original.beginDate, true, original)}</ErrCell>),
+      Cell: ({ value, original }) => (value || value === 0 ? `${value} kWh` : <ErrCell>{checkReading(original.beginDate, true, original)}</ErrCell>),
     },
     {
       Header: intl.formatMessage({ id: `${prefix}.tableEndReadingKwh` }),
       accessor: 'endReadingKwh',
       className: 'cy-hw-end-reading',
-      Cell: ({ value, original }) => (parseFloat(value) ? `${value} kWh` : <ErrCell>{checkReading(original.lastDate, false, original)}</ErrCell>),
+      Cell: ({ value, original }) => (value || value === 0 ? `${value} kWh` : <ErrCell>{checkReading(original.lastDate, false, original)}</ErrCell>),
     },
     {
       Header: intl.formatMessage({ id: `${prefix}.tableConsumedEnergyKwh` }),
@@ -289,7 +320,7 @@ const BillingDetails = ({
               </Link>
             </TwoColView>
             <TwoColView {...{ prefix: 'admin.marketLocations', field: 'name', centered }}>
-              <Link to={`/groups/${groupId}/market-locations/${marketLocation.id}`}>{marketLocation.name}</Link>
+              <Link to={`/groups/${groupId}/market-locations/${registerMeta.id}`}>{registerMeta.name}</Link>
             </TwoColView>
             <TwoColView {...{ prefix, field: 'dateRange', centered }}>
               {moment(billing.beginDate).format('DD.MM.YYYY')} - {moment(billing.endDate).format('DD.MM.YYYY')}
@@ -302,7 +333,7 @@ const BillingDetails = ({
             <TwoColView {...{ prefix: 'admin.contracts', field: 'fullContractNumber', centered }}>
               <Link to={`/groups/${groupId}/powertakers/${contract.id}`}>{contract.fullContractNumber}</Link>
             </TwoColView>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(submit)}>
               <div className="edit-switch-wrap">
                 {!editMode && (
                   <i
@@ -338,7 +369,7 @@ const BillingDetails = ({
               />
               {editMode
                 && (submitting ? (
-                  <Loading {...{ minHeight: 4 }}/>
+                  <Loading {...{ minHeight: 4 }} />
                 ) : (
                   <ButtonsWrapper>
                     <div className="float-right mt-3">
@@ -422,7 +453,7 @@ const BillingDetails = ({
             // @ts-ignore
             edifactMeasurementMethod: item.meter.edifactMeasurementMethod,
             isOpen,
-            switchAddReading,
+            switchAddReading: () => setIsOpen(!isOpen),
             groupId,
             // @ts-ignore
             meterId: item.meter.id,
@@ -430,6 +461,7 @@ const BillingDetails = ({
             registerId: item.register.id,
             // @ts-ignore
             date: date.date,
+            cb: () => setIsOpen(false),
             billingItem: {
               // @ts-ignore
               begin: date.begin,
@@ -447,4 +479,24 @@ const BillingDetails = ({
   );
 };
 
-export default reduxForm({ enableReinitialize: true })(injectIntl(BillingDetails));
+const WithForm = reduxForm({ enableReinitialize: true })(injectIntl(BillingDetails));
+
+function mapStateToProps(state, { billingId, extBilling = null }) {
+  const intContract = state.contracts.contract;
+  const intBilling = get(intContract, 'billings.array', []).find(b => b.id === billingId);
+  return {
+    form: `billingUpdateForm${billingId}`,
+    intBilling,
+    intContract,
+    loading: state.contracts.loadingContract,
+    initialValues: extBilling || intBilling,
+    validationRules: state.billings.validationRules.billingUpdate,
+  }
+};
+
+export default connect(mapStateToProps, {
+  attachReading: Billings.actions.attachReading,
+  loadContract: Contracts.actions.loadContract,
+  getBillingPDFData: Billings.actions.getBillingPDFData,
+  updateBilling: Billings.actions.updateBilling,
+})(WithForm);

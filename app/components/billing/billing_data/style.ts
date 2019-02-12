@@ -98,7 +98,11 @@ interface BarStyleProps {
   width: number;
   transparent?: boolean;
   status?: 'default' | 'open' | 'closed';
-  contractType?: 'default' | 'power_taker' | 'third_party' | 'gap';
+  contractType?:
+    | 'default'
+    | 'contract_localpool_power_taker'
+    | 'contract_localpool_third_party'
+    | 'contract_localpool_gap';
   narrow?: boolean;
 }
 
@@ -108,7 +112,7 @@ const barColors = {
     closed: { bg: 'transparent', border: 'none' },
     default: { bg: 'transparent', border: 'none' },
   },
-  power_taker: {
+  contract_localpool_power_taker: {
     open: {
       bg: 'rgba(0,188,212,0.25)',
       border: '#00BCD4',
@@ -118,7 +122,7 @@ const barColors = {
       border: '#8C8C8C',
     },
   },
-  gap: {
+  contract_localpool_gap: {
     open: {
       bg: 'rgba(0,188,212,0.5)',
       border: '#00BCD4',
@@ -128,7 +132,7 @@ const barColors = {
       border: '#8C8C8C',
     },
   },
-  third_party: {
+  contract_localpool_third_party: {
     bg: 'rgba(175,175,175,0.5)',
     border: '#9E9E9E',
     stripes:
@@ -147,22 +151,25 @@ export const Bar = styled.div`
     width: 100%;
     height: 80%;
     position: relative;
-    cursor: ${({ contractType }: BarStyleProps) => (contractType === 'third_party' ? 'auto' : 'pointer')};
-    background-color: ${({ status = 'default', contractType = 'default' }: BarStyleProps) =>
-    (contractType === 'third_party' ? barColors[contractType].bg : barColors[contractType][status].bg)};
-    background-image: ${({ contractType }: BarStyleProps) =>
-    (contractType !== 'third_party' ? 'none' : barColors.third_party.stripes)};
+    cursor: ${({ contractType }: BarStyleProps) => (contractType === 'contract_localpool_third_party' ? 'auto' : 'pointer')};
+    background-color: ${({ status = 'default', contractType = 'default' }: BarStyleProps) => (contractType === 'contract_localpool_third_party'
+    ? barColors[contractType].bg
+    : barColors[contractType][status].bg)};
+    background-image: ${({ contractType }: BarStyleProps) => (contractType !== 'contract_localpool_third_party' ? 'none' : barColors.contract_localpool_third_party.stripes)};
     border-left: 1px solid
-      ${({ status = 'default', contractType = 'default' }: BarStyleProps) =>
-    (contractType === 'third_party' ? barColors[contractType].border : barColors[contractType][status].border)};
+      ${({ status = 'default', contractType = 'default' }: BarStyleProps) => (contractType === 'contract_localpool_third_party'
+    ? barColors[contractType].border
+    : barColors[contractType][status].border)};
     border-right: 1px solid
-      ${({ status = 'default', contractType = 'default' }: BarStyleProps) =>
-    (contractType === 'third_party' ? barColors[contractType].border : barColors[contractType][status].border)};
+      ${({ status = 'default', contractType = 'default' }: BarStyleProps) => (contractType === 'contract_localpool_third_party'
+    ? barColors[contractType].border
+    : barColors[contractType][status].border)};
 
     &.selected {
       border: 2px solid
-        ${({ status = 'default', contractType = 'default' }: BarStyleProps) =>
-    (contractType === 'third_party' ? barColors[contractType].border : barColors[contractType][status].border)};
+        ${({ status = 'default', contractType = 'default' }: BarStyleProps) => (contractType === 'contract_localpool_third_party'
+    ? barColors[contractType].border
+    : barColors[contractType][status].border)};
       :after {
         content: '';
         position: absolute;

@@ -29,7 +29,7 @@ class Sidebar extends React.Component<Props> {
   };
 
   render() {
-    const { url, devMode, multiGroups } = this.props;
+    const { url, multiGroups } = this.props;
     const prefix = 'admin.sidebar';
 
     return (
@@ -55,7 +55,7 @@ class Sidebar extends React.Component<Props> {
           <SidebarItem to={`${url}/tariffs`} icon="fa-eur" data-cy="sidebar tariffs">
             <FormattedMessage id={`${prefix}.tariffs`} />
           </SidebarItem>
-          <SidebarItem to={`${url}/billing`} icon="fa-money" devMode={devMode}>
+          <SidebarItem to={`${url}/billing`} icon="fa-money">
             <FormattedMessage id={`${prefix}.billing`} />
           </SidebarItem>
           <SidebarItem to={`${url}/market-locations`} icon="buzzn-meters" data-cy="sidebar system">

@@ -70,7 +70,7 @@ export function* changeBilling(
       yield call(resolve, res);
       yield put(actions.loadBillings({ groupId, contractId }));
       // HACK
-      yield put(Contracts.actions.loadGroupPowertakers({ groupId, withBillings: true }));
+      yield put(Contracts.actions.loadContract({ groupId, contractId }));
     }
   } catch (error) {
     logException(error);
