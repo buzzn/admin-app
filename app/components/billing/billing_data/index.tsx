@@ -213,7 +213,7 @@ class BillingData extends React.Component<
                             </div>
                           </div>
                           <div className="error">
-                            {b.contractType !== 'contract_localpool_third_party' && !!b.errors && (
+                            {b.contractType !== 'contract_localpool_third_party' && !!b.errors && !!Object.keys(b.errors).length && (
                               <React.Fragment>
                                 <i id={`err-tip-${m.id}-${b.billingId}`} className="fa fa-exclamation-triangle" />
                                 <UncontrolledTooltip

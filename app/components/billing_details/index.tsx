@@ -77,23 +77,18 @@ const BillingDetails = ({
     }
   };
 
-  // TODO: refactor
-  const handleUpdateBilling = ({ billingId, params }) => {
-    return new Promise((resolve, reject) => {
-      updateBilling({ resolve, reject, params, groupId, contractId, billingId });
-    })
-      .then(res => res)
-      .catch(err => Alert.error(err.errors.status ? err.errors.status.errorMessage : err.errors.completeness.join(', ')));
-  };
-
-  const submit = params => handleUpdateBilling({
-    billingId,
-    params: {
-      status: params.status,
-      invoiceNumber: params.invoiceNumber,
-      updatedAt: params.updatedAt,
-    },
-  });
+  const submit = params => new Promise((resolve, reject) => {
+    updateBilling({
+      resolve,
+      reject,
+      params: { status: params.status, invoiceNumber: params.invoiceNumber, updatedAt: params.updatedAt },
+      groupId,
+      contractId,
+      billingId,
+    });
+  })
+    .then(res => res)
+    .catch(err => Alert.error(err.errors.status ? err.errors.status.errorMessage : err.errors.completeness.join(', ')));
 
   const allowedStatus = Object.keys(billing.allowedActions.update.status)
     .filter(k => billing.allowedActions.update.status[k] === true)
@@ -491,12 +486,15 @@ function mapStateToProps(state, { billingId, extBilling = null }) {
     loading: state.contracts.loadingContract,
     initialValues: extBilling || intBilling,
     validationRules: state.billings.validationRules.billingUpdate,
-  }
-};
+  };
+}
 
-export default connect(mapStateToProps, {
-  attachReading: Billings.actions.attachReading,
-  loadContract: Contracts.actions.loadContract,
-  getBillingPDFData: Billings.actions.getBillingPDFData,
-  updateBilling: Billings.actions.updateBilling,
-})(WithForm);
+export default connect(
+  mapStateToProps,
+  {
+    attachReading: Billings.actions.attachReading,
+    loadContract: Contracts.actions.loadContract,
+    getBillingPDFData: Billings.actions.getBillingPDFData,
+    updateBilling: Billings.actions.updateBilling,
+  },
+)(WithForm);
