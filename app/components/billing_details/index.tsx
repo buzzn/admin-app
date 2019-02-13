@@ -98,7 +98,8 @@ const BillingDetails = ({
   })
     .then(() => {
       Alert.success('Updated');
-      setEditMode(false);
+      // HACK: component unmounted in powertaker view before this point
+      if (!extBilling || !extContract) setEditMode(false);
     })
     .catch(err => Alert.error(err.errors.status ? err.errors.status.errorMessage : err.errors.completeness.join(', ')));
 

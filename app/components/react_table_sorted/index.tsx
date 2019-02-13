@@ -10,8 +10,12 @@ const ReactTableSorted = props => (
       <ReactTable
         {...{
           defaultSorted: props.defaultSorted,
+          defaultFiltered: props.defaultFiltered,
           onSortedChange: (sort) => {
             props.setTableSort({ table: props.uiSortPath, sort });
+          },
+          onFilteredChange: (filter) => {
+            props.setTableFilter({ table: props.uiSortPath, filter });
           },
           ...props,
         }}
@@ -31,20 +35,29 @@ interface StatePart {
   app: {
     ui: {
       tableSort: { [key: string]: Array<any> };
+      tableFilter: { [key: string]: Array<any> };
     };
   };
 }
 
 interface StateProps {
   defaultSorted: Array<any>;
+  defaultFiltered: Array<any>;
 }
 
 interface DispatchProps {
   setTableSort: Function;
+  setTableFilter: Function;
 }
 
 function mapStateToProps(state: StatePart, props: ExtProps) {
-  return { defaultSorted: state.app.ui.tableSort[props.uiSortPath] || [] };
+  return {
+    defaultSorted: state.app.ui.tableSort[props.uiSortPath] || [],
+    defaultFiltered: state.app.ui.tableFilter[props.uiSortPath] || [],
+  };
 }
 
-export default connect<StateProps, DispatchProps, ExtProps>(mapStateToProps, { setTableSort: actions.setTableSort })(ReactTableSorted);
+export default connect<StateProps, DispatchProps, ExtProps>(
+  mapStateToProps,
+  { setTableSort: actions.setTableSort, setTableFilter: actions.setTableFilter },
+)(ReactTableSorted);

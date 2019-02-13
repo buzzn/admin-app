@@ -88,12 +88,14 @@ const BillingsOverview = ({
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableBeginDate` })} />,
       accessor: 'beginDate',
       className: 'cy-begin-date',
+      filterable: false,
       sortMethod: TableParts.sort.sortByDateTime,
       Cell: ({ value: { display }, original }) => <CellWrap status={original.status}>{display}</CellWrap>,
     },
     {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableEndDate` })} />,
       accessor: 'lastDate',
+      filterable: false,
       sortMethod: TableParts.sort.sortByDateTime,
       Cell: ({ value: { display }, original }) => <CellWrap status={original.status}>{display}</CellWrap>,
     },
@@ -121,6 +123,7 @@ const BillingsOverview = ({
           data,
           columns,
           expanded,
+          filterable: true,
           uiSortPath: `groups.${groupId}.billings`,
           getTrProps: (_state, rowInfo) => ({
             onClick: (_event, handleOriginal) => {

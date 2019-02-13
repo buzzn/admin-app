@@ -14,9 +14,6 @@ const FilterComponent = ({ filter, onChange }) => (
       value={filter ? filter.value : ''}
       onChange={event => onChange(event.target.value)}
     />
-    <span className="input-group-addon">
-      <i className="fa fa-search" />
-    </span>
   </div>
 );
 

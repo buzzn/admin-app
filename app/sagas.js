@@ -109,6 +109,7 @@ export function* setUI() {
     yield race({
       ui: take(constants.SET_UI),
       sort: take(constants.SET_TABLE_SORT),
+      filter: take(constants.SET_TABLE_FILTER),
     });
     ui = yield select(getUI);
     yield call(api.setUI, ui);

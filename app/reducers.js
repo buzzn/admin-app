@@ -35,26 +35,19 @@ export const initialState = {
     devMode: false,
     groupsListTiles: false,
     tableSort: {},
+    tableFilter: {},
   },
   incompleteScreen: [],
 };
-
-export function tableSortReducer(state, action) {
-  switch (action.type) {
-    case constants.SET_TABLE_SORT:
-      return { ...state, [action.table]: action.sort };
-
-    default:
-      return state;
-  }
-}
 
 export function uiReducer(state, action) {
   switch (action.type) {
     case constants.SET_UI:
       return { ...state, ...action.ui };
     case constants.SET_TABLE_SORT:
-      return { ...state, tableSort: tableSortReducer(state.tableSort, action) };
+      return { ...state, tableSort: { ...state.tableSort, [action.table]: action.sort } };
+    case constants.SET_TABLE_FILTER:
+      return { ...state, tableFilter: { ...state.tableFilter, [action.table]: action.filter } };
 
     default:
       return state;
@@ -83,6 +76,7 @@ export function appReducer(state = initialState, action) {
 
     case constants.SET_UI:
     case constants.SET_TABLE_SORT:
+    case constants.SET_TABLE_FILTER:
       return { ...state, ui: uiReducer(state.ui, action) };
 
     case constants.SET_INCOMPLETE_SCREEN:
