@@ -15,7 +15,7 @@ import Loading from 'components/loading';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
 import { getAllUrlParams } from '_util';
 import { MaLoListHeader, MaLoRow, Bar, Legend, DetailsWrapper } from './style';
-import DetailsContainer from './details';
+import BillingDetails from 'components/billing_details';
 
 const d3 = require('d3');
 
@@ -245,7 +245,7 @@ class BillingData extends React.Component<
                     if (height > 0) this.scrollToRow();
                   }}
                 >
-                  <DetailsContainer
+                  <BillingDetails
                     {...{
                       close: () => this.selectBar(null, null, null),
                       // @ts-ignore

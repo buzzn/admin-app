@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
 import { Link } from 'react-router-dom';
@@ -41,7 +42,6 @@ const BillingDetails = ({
   handleSubmit,
   reset,
   submitting,
-  minHeight,
 }) => {
   useEffect(() => {
     if (!extContract && !extBilling) loadContract({ groupId, contractId });
@@ -50,6 +50,11 @@ const BillingDetails = ({
   const [isOpen, setIsOpen] = useState(false);
   const [date, setDate] = useState({});
   const [item, setItem] = useState({});
+  const [minHeight, setMinHeight] = useState(340);
+  useEffect(() => {
+    const node = ReactDOM.findDOMNode(this) as HTMLElement;
+    setMinHeight(node ? node.clientHeight : 290);
+  }, [billingId]);
 
   const contract = extContract || intContract;
   const billing = extBilling || intBilling;
