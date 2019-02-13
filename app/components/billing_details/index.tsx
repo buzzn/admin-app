@@ -41,10 +41,14 @@ const BillingDetails = ({
   validationRules,
   handleSubmit,
   reset,
+  initialize,
   submitting,
 }) => {
   useEffect(() => {
-    if (!extContract && !extBilling) loadContract({ groupId, contractId });
+    if (!extContract && !extBilling) {
+      loadContract({ groupId, contractId });
+      initialize(extBilling || intBilling);
+    }
   }, [billingId]);
   const [editMode, setEditMode] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -92,7 +96,10 @@ const BillingDetails = ({
       billingId,
     });
   })
-    .then(res => res)
+    .then(() => {
+      Alert.success('Updated');
+      setEditMode(false);
+    })
     .catch(err => Alert.error(err.errors.status ? err.errors.status.errorMessage : err.errors.completeness.join(', ')));
 
   const allowedStatus = Object.keys(billing.allowedActions.update.status)
@@ -485,7 +492,7 @@ function mapStateToProps(state, { billingId, extBilling = null }) {
   const intContract = state.contracts.contract;
   const intBilling = get(intContract, 'billings.array', []).find(b => b.id === billingId);
   return {
-    form: `billingUpdateForm${billingId}`,
+    form: 'billingUpdateForm',
     intBilling,
     intContract,
     loading: state.contracts.loadingContract,
