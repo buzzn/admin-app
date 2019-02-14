@@ -170,7 +170,7 @@ zalgo.heComes = function (text, options) {
 const PureAdmin = ({ hash }) => {
   const wrap = useRef(null);
   const [data, setData] = useState([]);
-  const vals = hash ? hash.split('') : '0123456789ABCDEF'.split('').concat([' ', ' ', ' ', ' ']);
+  const vals = (hash ? hash.split('') : '0123456789ABCDEF'.split('')).concat([' ', ' ', ' ', ' ']);
   // const cellWidth = 14;
   // const cellHeight = 14;
   const cellWidth = 20;

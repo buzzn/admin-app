@@ -1,5 +1,4 @@
 import * as React from 'react';
-import hash from 'object-hash';
 import { connect } from 'react-redux';
 import { Nav, NavLink, ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText } from 'reactstrap';
 import { FormattedMessage } from 'react-intl';
