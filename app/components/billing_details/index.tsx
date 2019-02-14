@@ -40,14 +40,13 @@ const BillingDetails = ({
   dirty,
   validationRules,
   handleSubmit,
-  reset,
   initialize,
+  reset,
   submitting,
 }) => {
   useEffect(() => {
     if (!extContract && !extBilling) {
       loadContract({ groupId, contractId });
-      initialize(extBilling || intBilling);
     }
   }, [billingId]);
   const [editMode, setEditMode] = useState(false);
@@ -62,6 +61,11 @@ const BillingDetails = ({
 
   const contract = extContract || intContract;
   const billing = extBilling || intBilling;
+
+  useEffect(() => {
+    reset();
+    initialize(billing);
+  }, [(billing || {}).id]);
 
   if (loading || !contract._status) {
     if (minHeight) return <Loading {...{ minHeight, unit: 'px' }} />;
@@ -105,6 +109,8 @@ const BillingDetails = ({
 
   const allowedStatus = Object.keys(billing.allowedActions.update.status)
     .filter(k => billing.allowedActions.update.status[k] === true)
+    // HACK: tmp hack for v1.0
+    .filter(k => k !== 'void')
     .map(k => ({ value: k, label: k }));
   const reduceErrs = errObj => Object.keys(errObj).reduce((err, k) => {
     if (typeof errObj[k] === 'string') return `${err}${k}: ${errObj[k]}, `;
@@ -487,7 +493,7 @@ const BillingDetails = ({
   );
 };
 
-const WithForm = reduxForm({ enableReinitialize: true })(injectIntl(BillingDetails));
+const WithForm = reduxForm({ enableReinitialize: true, destroyOnUnmount: false })(injectIntl(BillingDetails));
 
 function mapStateToProps(state, { billingId, extBilling = null }) {
   const intContract = state.contracts.contract;
