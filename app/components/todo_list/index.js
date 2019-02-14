@@ -28,7 +28,7 @@ const TodoList = ({ devMode, incompleteScreen, state }) => (
       </div>
     )}
     {devMode ? (
-      <div style={{ height: '800px' }}>
+      <div style={{ height: '100vh' }}>
         <PureAdmin {...{ hash: hashCode(JSON.stringify(state)) }} />
       </div>
     ) : (
