@@ -33,24 +33,17 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
     if (loading || contract._status === null) return <Loading minHeight={40} />;
     if (contract._status && contract._status !== 200) return <Redirect to={url} />;
 
-    const register = contract.registerMeta
-      ? {
-        ...contract.registerMeta.register,
-        name: contract.registerMeta.name,
-        locationId: contract.registerMeta.id,
-      }
-      : {};
     const prefix = 'admin.contracts';
 
     if (contract.type === 'contract_localpool_third_party') {
-      return <ThirdPartyContract {...{ contract, register, prefix, url }} />;
+      return <ThirdPartyContract {...{ contract, registerMeta: contract.registerMeta, prefix, url }} />;
     }
     if (contract.type === 'contract_localpool_power_taker') {
       return (
         <PowertakerContract
           {...{
             contract,
-            register,
+            registerMeta: contract.registerMeta,
             contractor,
             prefix,
             url,

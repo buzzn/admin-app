@@ -189,3 +189,9 @@ export const FormGroup = styled.div`
     }
   }
 `;
+
+export const PlainList = styled.ul`
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+`;
