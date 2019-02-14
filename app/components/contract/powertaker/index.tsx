@@ -36,7 +36,6 @@ import {
 } from '../style';
 
 interface Props {
-  url: string;
   contract: { _status: null | number; [key: string]: any };
   prefix: string;
   registerMeta: any;
@@ -44,7 +43,6 @@ interface Props {
 }
 
 const PowertakerContract = ({
-  url,
   contract,
   prefix,
   registerMeta,
@@ -94,6 +92,9 @@ const PowertakerContract = ({
     switchEditMode();
   });
 
+  const contractorName = contractor.type === 'person' ? `${contractor.firstName} ${contractor.lastName}` : contractor.name;
+  const customerName = contract.customer.type === 'person' ? `${contract.customer.firstName} ${contract.customer.lastName}` : contract.customer.name;
+
   return (
     <div className="contract-data">
       <ContractHeader>
@@ -101,7 +102,7 @@ const PowertakerContract = ({
           <InnerBorderRow>
             <LinkCol xs="6">
               <BigLink to={`/groups/${groupId}/powertakers/${contract.id}/powertaker`}>
-                {truncate(contract.customer.name || `${contract.customer.firstName} ${contract.customer.lastName}`, { length: 25 })}{' '}
+                {truncate(customerName, { length: 25 })}{' '}
                 >
               </BigLink>
               <LinkType>
@@ -122,7 +123,7 @@ const PowertakerContract = ({
           <InnerRow>
             <LinkCol xs="6">
               <BigSpan>
-                {truncate(contractor.name || `${contractor.firstName} ${contractor.lastName}`, { length: 25 })}
+                {truncate(contractorName, { length: 25 })}
               </BigSpan>
               <LinkType>
                 <FormattedMessage id={`${prefix}.objectTypePowerGiver`} />
@@ -210,7 +211,7 @@ const PowertakerContract = ({
                   : ''}
               </TwoColView>
               <TwoColView {...{ prefix, field: 'customer' }}>
-                <Link to={`${url}/${contract.id}/powertaker`}>
+                <Link to={`/groups/${groupId}/powertakers/${contract.id}/powertaker`}>
                   {contract.customer.name || `${contract.customer.firstName} ${contract.customer.lastName}`}
                 </Link>
               </TwoColView>

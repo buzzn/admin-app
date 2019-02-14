@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import get from 'lodash/get';
 import Contracts from 'contracts';
 import Loading from 'components/loading';
 import PowertakerContract from './powertaker';
@@ -22,7 +21,6 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
     const {
       loading,
       contract,
-      contractor,
       url,
       groupId,
       updateContract,
@@ -44,9 +42,8 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
           {...{
             contract,
             registerMeta: contract.registerMeta,
-            contractor,
+            contractor: contract.contractor,
             prefix,
-            url,
             initialValues: contract,
             groupId,
             updateContract,
@@ -60,7 +57,7 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
         <LPCMPOContract
           {...{
             contract,
-            contractor,
+            contractor: contract.contractor,
             prefix,
             url,
             initialValues: contract,
@@ -93,7 +90,6 @@ interface ExtProps {
 interface StateProps {
   loading: boolean;
   contract: { _status: null | number; [key: string]: any };
-  contractor: { [key: string]: any };
   LPCValidationRules: any;
   LPTUpdateRules: any;
 }
@@ -108,7 +104,6 @@ function mapStateToProps(state: StatePart) {
   return {
     loading: state.contracts.loadingContract || state.groups.loadingGroup,
     contract: state.contracts.contract,
-    contractor: get(state.groups.group, 'owner', {}),
     LPCValidationRules: state.contracts.validationRules.lpc,
     LPTUpdateRules: state.contracts.validationRules.lptUpdate,
   };
