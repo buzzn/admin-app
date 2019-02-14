@@ -128,7 +128,7 @@ class AddContract extends React.Component<Props & InjectedIntlProps> {
                   </Row>
                 ) : addContractType === 'contract_localpool_processing' ? (
                   <Row>
-                    <Col xs={6}>
+                    <Col xs={4}>
                       <FieldValidationWrapper
                         {...{
                           name: 'taxNumber',
@@ -139,7 +139,18 @@ class AddContract extends React.Component<Props & InjectedIntlProps> {
                         }}
                       />
                     </Col>
-                    <Col xs={6}>
+                    <Col xs={4}>
+                      <FieldValidationWrapper
+                        {...{
+                          name: 'salesTaxNumber',
+                          type: 'text',
+                          label: <FormattedMessage id={`${prefix}.salesTaxNumber`} />,
+                          component: FieldInput,
+                          validationRules,
+                        }}
+                      />
+                    </Col>
+                    <Col xs={4}>
                       <FieldValidationWrapper
                         {...{
                           name: 'beginDate',
