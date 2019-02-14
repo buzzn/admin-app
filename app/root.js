@@ -29,6 +29,7 @@ import { EditOverlay, VersionMismatch } from 'style';
 import './react_table_config';
 
 import PureAdmin from 'components/pure_admin';
+const lucky = (Math.random() * 6).toFixed(0) === '5';
 
 const WebsiteFormsContainer = React.lazy(() => import('components/website_forms'));
 const PowertakersContainer = React.lazy(() => import('components/powertakers'));
@@ -191,7 +192,7 @@ class NewRoot extends React.Component {
     } = this.props;
     const { editMode, addGroupOpen } = this.state;
 
-    if (devMode && (Math.random() * 6).toFixed(0) === '5') return <PureAdmin />;
+    if (devMode && lucky) return <PureAdmin />;
 
     return (
       <React.Fragment>
