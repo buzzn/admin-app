@@ -44,11 +44,10 @@ const MarketLocationData = ({
     />
     <CenterContent>
       <HeaderData>
-        {!!marketLocation.register && (
-          <RegisterPowerContainer
-            {...{ groupId, meterId: marketLocation.register.meterId, registerId: marketLocation.register.id }}
-          />
-        )}
+        {!!marketLocation.registers.array
+          && marketLocation.registers.array.map(r => (
+            <RegisterPowerContainer {...{ groupId, meterId: r.meterId, registerId: r.id, key: r.id }} />
+          ))}
         <HeaderValue>
           <FormattedMessage id="admin.marketLocations.thirdPartyId" />:{' '}
           <span className="value">{marketLocation.marketLocationId || '-----'}</span>
@@ -57,12 +56,12 @@ const MarketLocationData = ({
           <FormattedMessage id="admin.marketLocations.kind" />: <span className="value">{marketLocation.kind}</span>
         </HeaderValue>
       </HeaderData>
-      {!!marketLocation.register && (
+      {!!marketLocation.registers.array && (
         <SubNav>
           <NavLink to={`${locationUrl}/contracts`} exact className="nav-link">
             <FormattedMessage id="admin.marketLocations.navContracts" />
           </NavLink>
-          <NavLink to={`${locationUrl}/registers`} exact className="nav-link">
+          <NavLink to={`${locationUrl}/registers`} exact className="nav-link" data-cy="malo registers tab">
             <FormattedMessage id="admin.marketLocations.navRegisters" />
           </NavLink>
         </SubNav>
@@ -81,11 +80,13 @@ const MarketLocationData = ({
             />
           )}
         />
-        {!!marketLocation.register && (
+        {!!marketLocation.registers.array && (
           <Route
             path={`${locationUrl}/registers`}
             render={({ history }) => (
-              <Registers {...{ url, history, locationId: marketLocation.id, registers: [marketLocation.register] }} />
+              <Registers
+                {...{ url, history, locationId: marketLocation.id, registers: marketLocation.registers.array }}
+              />
             )}
           />
         )}

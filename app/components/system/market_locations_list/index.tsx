@@ -27,13 +27,27 @@ const MarketLocationsList = ({
 }: Props & BreadcrumbsProps & InjectIntlProps) => {
   const prefix = 'admin.marketLocations';
 
-  const data = marketLocations.filter(m => m.kind === maloType).map(m => ({
-    ...m,
-    labelIntl: intl.formatMessage({ id: `admin.registers.${m.label}` }),
-    meterProductSerialnumber: m.register ? m.register.meter.productSerialnumber : '',
-    linkMeter: m.register ? `${url}/meters/${m.register.meter.id}` : null,
-    linkMarketLocation: `${url}/${m.id}`,
-  }));
+  const data = marketLocations
+    .filter(m => m.kind === maloType)
+    .flatMap((m) => {
+      if (!m.registers.array || !m.registers.array.length) {
+        return {
+          ...m,
+          labelIntl: intl.formatMessage({ id: `admin.registers.${m.label}` }),
+          meterProductSerialnumber: '',
+          linkMeter: null,
+          linkMarketLocation: `${url}/${m.id}`,
+        };
+      }
+      return m.registers.array.map(r => ({
+        ...m,
+        labelIntl: intl.formatMessage({ id: `admin.registers.${m.label}` }),
+        meterProductSerialnumber: r.meter.productSerialnumber,
+        meter: r.meter,
+        linkMeter: `${url}/meters/${r.meter.id}`,
+        linkMarketLocation: `${url}/${m.id}`,
+      }));
+    });
 
   const columns = [
     {
@@ -66,8 +80,15 @@ const MarketLocationsList = ({
     {
       Header: '',
       width: 40,
-      Cell: ({ original }) => (original.register
-        ? TableParts.components.iconCell({ icon: 'copy', action: () => duplicateMeter(original) })
+      Cell: ({ original }) => (original.registers && original.registers.array.length
+        ? TableParts.components.iconCell({
+          icon: 'copy',
+          action: () => duplicateMeter(original),
+          tooltip: {
+            id: `clone-meter-${original.id}`,
+            text: 'Zähler klonen',
+          },
+        })
         : false),
     },
   ];
@@ -77,7 +98,10 @@ const MarketLocationsList = ({
       <PageTitle
         {...{
           breadcrumbs: breadcrumbs.concat([
-            { id: '-----', title: intl.formatMessage({ id: 'admin.breadcrumbs.marketLocations' }) },
+            {
+              id: '-----',
+              title: intl.formatMessage({ id: 'admin.breadcrumbs.marketLocations' }),
+            },
           ]),
           title: intl.formatMessage({ id: 'admin.breadcrumbs.marketLocations' }),
         }}

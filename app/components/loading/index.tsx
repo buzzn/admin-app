@@ -6,8 +6,10 @@ import './style.scss';
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      animateMotion: any;
-      mpath: any;
+      // @ts-ignore
+      animateMotion: React.SVGProps<SVGElement>;
+      // @ts-ignore
+      mpath: React.SVGProps<SVGElement>;
     }
   }
 }

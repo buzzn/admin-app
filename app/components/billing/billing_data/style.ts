@@ -90,67 +90,75 @@ export const MaLoRow = styled.div`
 `;
 
 export const DetailsWrapper = styled(UnmountClosed)`
-  box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.1); */
   background: white;
-`;
-
-export const BillingDetails = styled.div`
-  .wrapper {
-    padding: 1rem;
-    height: 100%;
-    .title {
-      border-bottom: 1px solid #e0e0e0;
-      width: 100%;
-      margin-top: 3rem;
-      padding-bottom: 1rem;
-      &.top {
-        margin-top: 3.5rem;
-      }
-    }
-  }
 `;
 
 interface BarStyleProps {
   width: number;
   transparent?: boolean;
-  status?: 'default' | 'open' | 'closed';
-  contractType?: 'default' | 'power_taker' | 'third_party' | 'gap';
+  status?: 'default' | 'open' | 'calculated' | 'documented' | 'queued' | 'delivered' | 'settled' | 'void' | 'closed';
+  contractType?:
+    | 'default'
+    | 'contract_localpool_power_taker'
+    | 'contract_localpool_third_party'
+    | 'contract_localpool_gap';
   narrow?: boolean;
 }
 
 const barColors = {
-  default: {
-    open: { bg: 'transparent', border: 'none' },
-    closed: { bg: 'transparent', border: 'none' },
-    default: { bg: 'transparent', border: 'none' },
-  },
-  power_taker: {
-    open: {
-      bg: 'rgba(0,188,212,0.25)',
-      border: '#00BCD4',
-    },
-    closed: {
-      bg: 'rgba(175,175,175,0.25)',
-      border: '#8C8C8C',
-    },
-  },
-  gap: {
-    open: {
-      bg: 'rgba(0,188,212,0.5)',
-      border: '#00BCD4',
-    },
-    closed: {
-      bg: 'rgba(158,158,158,0.5)',
-      border: '#8C8C8C',
-    },
-  },
-  third_party: {
+  contract_localpool_third_party: {
     bg: 'rgba(175,175,175,0.5)',
     border: '#9E9E9E',
     stripes:
       'repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.08) 16px, rgba(175,175,175,0.75) 4px, rgba(175,175,175,0.75) 18px)',
   },
 };
+
+// TODO: extract to config;
+const billingStatuses = {
+  open: { color: '#00BCD4' },
+  calculated: { color: '#FDD835' },
+  documented: { color: '#F57C00' },
+  queued: { color: '#D4E157' },
+  delivered: { color: '#000000' },
+  settled: { color: '#21D343' },
+  void: { color: '#D84315' },
+  closed: { color: '#8C8C8C' },
+  default: { color: '#8C8C8C' },
+};
+const contractTypes = {
+  contract_localpool_power_taker: { alpha: 0.25 },
+  contract_localpool_gap: { alpha: 0.5 },
+};
+barColors['default'] = Object.keys(billingStatuses).reduce(
+  (res, key) => ({ ...res, [key]: { bg: 'transparent', border: 'none' } }),
+  {},
+);
+const hexToRgbA = (hex, alpha) => {
+  let c;
+  if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+    c = hex.substring(1).split('');
+    if (c.length == 3) {
+      c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+    }
+    c = `0x${c.join('')}`;
+    return `rgba(${[(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',')},${alpha})`;
+  }
+  throw new Error('Bad Hex');
+};
+Object.keys(contractTypes).forEach((contractType) => {
+  barColors[contractType] = Object.keys(billingStatuses).reduce(
+    (res, key) => ({
+      ...res,
+      [key]: {
+        border: billingStatuses[key].color,
+        bg: hexToRgbA(billingStatuses[key].color, contractTypes[contractType].alpha),
+      },
+    }),
+    {},
+  );
+});
 
 export const Bar = styled.div`
   width: ${({ width }: BarStyleProps) => width}%;
@@ -163,22 +171,25 @@ export const Bar = styled.div`
     width: 100%;
     height: 80%;
     position: relative;
-    cursor: ${({ contractType }: BarStyleProps) => (contractType === 'third_party' ? 'auto' : 'pointer')};
-    background-color: ${({ status = 'default', contractType = 'default' }: BarStyleProps) =>
-    (contractType === 'third_party' ? barColors[contractType].bg : barColors[contractType][status].bg)};
-    background-image: ${({ contractType }: BarStyleProps) =>
-    (contractType !== 'third_party' ? 'none' : barColors.third_party.stripes)};
+    cursor: ${({ contractType }: BarStyleProps) => (contractType === 'contract_localpool_third_party' ? 'auto' : 'pointer')};
+    background-color: ${({ status = 'default', contractType = 'default' }: BarStyleProps) => (contractType === 'contract_localpool_third_party'
+    ? barColors[contractType].bg
+    : barColors[contractType][status].bg)};
+    background-image: ${({ contractType }: BarStyleProps) => (contractType !== 'contract_localpool_third_party' ? 'none' : barColors.contract_localpool_third_party.stripes)};
     border-left: 1px solid
-      ${({ status = 'default', contractType = 'default' }: BarStyleProps) =>
-    (contractType === 'third_party' ? barColors[contractType].border : barColors[contractType][status].border)};
+      ${({ status = 'default', contractType = 'default' }: BarStyleProps) => (contractType === 'contract_localpool_third_party'
+    ? barColors[contractType].border
+    : barColors[contractType][status].border)};
     border-right: 1px solid
-      ${({ status = 'default', contractType = 'default' }: BarStyleProps) =>
-    (contractType === 'third_party' ? barColors[contractType].border : barColors[contractType][status].border)};
+      ${({ status = 'default', contractType = 'default' }: BarStyleProps) => (contractType === 'contract_localpool_third_party'
+    ? barColors[contractType].border
+    : barColors[contractType][status].border)};
 
     &.selected {
       border: 2px solid
-        ${({ status = 'default', contractType = 'default' }: BarStyleProps) =>
-    (contractType === 'third_party' ? barColors[contractType].border : barColors[contractType][status].border)};
+        ${({ status = 'default', contractType = 'default' }: BarStyleProps) => (contractType === 'contract_localpool_third_party'
+    ? barColors[contractType].border
+    : barColors[contractType][status].border)};
       :after {
         content: '';
         position: absolute;
@@ -246,11 +257,5 @@ export const Legend = styled.div`
       flex-direction: column;
       justify-content: center;
     }
-  }
-`;
-
-export const DoubleCell = styled.div`
-  div {
-    height: 57px;
   }
 `;

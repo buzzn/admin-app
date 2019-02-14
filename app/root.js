@@ -18,26 +18,30 @@ import ScrollToTop from 'components/scroll_to_top';
 import TopNavBarContainer from 'components/top_nav_bar';
 import SignInContainer from 'components/sign_in';
 import Sidebar from 'components/sidebar';
-import LocalpoolsListContainer from 'components/localpools_list';
 import TodoList from 'components/todo_list';
-import AnalyticsContainer from 'components/analytics';
-import PowertakersContainer from 'components/powertakers';
-import TariffsContainer from 'components/tariffs';
-import BillingContainer from 'components/billing';
-import DocumentsContainer from 'components/documents';
-import SystemContainer from 'components/system';
-import GroupSettingsContainer from 'components/group_settings';
-import BubblesContainer from 'components/bubbles';
 import HealthContainer from 'components/health';
 import Footer from 'components/footer';
 import AppLoading from 'components/app_loading';
 import AppMaintenance from 'components/app_maintenance';
 import AddGroup from 'components/add_group';
-import Contract from 'components/contract';
-import DevicesContainer from 'components/devices';
-import WebsiteFormsContainer from 'components/website_forms';
+import withSuspense from 'components/with_suspense';
 import { EditOverlay, VersionMismatch } from 'style';
 import './react_table_config';
+
+import PureAdmin from 'components/pure_admin';
+const lucky = (Math.random() * 6).toFixed(0) === '5';
+
+const WebsiteFormsContainer = React.lazy(() => import('components/website_forms'));
+const PowertakersContainer = React.lazy(() => import('components/powertakers'));
+const BillingsOverviewContainer = React.lazy(() => import('components/billings_overview'));
+const TariffsContainer = React.lazy(() => import('components/tariffs'));
+const BillingContainer = React.lazy(() => import('components/billing'));
+const SystemContainer = React.lazy(() => import('components/system'));
+const DocumentsContainer = React.lazy(() => import('components/documents'));
+const GroupSettingsContainer = React.lazy(() => import('components/group_settings'));
+const DevicesContainer = React.lazy(() => import('components/devices'));
+const Contract = React.lazy(() => import('components/contract'));
+const LocalpoolsListContainer = React.lazy(() => import('components/localpools_list'));
 
 export const EditOverlayContext = React.createContext();
 export const DevModeContext = React.createContext();
@@ -81,25 +85,48 @@ const RouterHack = ({
                   <div className="center-content-wrapper">
                     <PartErrorBoundary part="main-part">
                       <Switch>
-                        <Route path="/website-forms" component={WebsiteFormsContainer} />
-                        <Route path="/groups/:groupId/analytics" component={AnalyticsContainer} />
-                        <Route path="/groups/:groupId/powertakers" component={PowertakersContainer} />
-                        <Route path="/groups/:groupId/tariffs" component={TariffsContainer} />
-                        <Route path="/groups/:groupId/billing" component={BillingContainer} />
-                        <Route path="/groups/:groupId/market-locations" component={SystemContainer} />
-                        <Route path="/groups/:groupId/documents" component={DocumentsContainer} />
-                        <Route path="/groups/:groupId/bubbles" component={BubblesContainer} />
-                        <Route path="/groups/:groupId/settings" component={GroupSettingsContainer} />
-                        <Route path="/groups/:groupId/devices" component={DevicesContainer} />
+                        <Route path="/website-forms" render={props => withSuspense(WebsiteFormsContainer)(props)} />
+                        <Route
+                          path="/groups/:groupId/powertakers"
+                          render={props => withSuspense(PowertakersContainer)(props)}
+                        />
+                        <Route
+                          path="/groups/:groupId/billings-overview"
+                          render={props => withSuspense(BillingsOverviewContainer)(props)}
+                        />
+                        <Route
+                          path="/groups/:groupId/tariffs"
+                          render={props => withSuspense(TariffsContainer)(props)}
+                        />
+                        <Route
+                          path="/groups/:groupId/billing"
+                          render={props => withSuspense(BillingContainer)(props)}
+                        />
+                        <Route
+                          path="/groups/:groupId/market-locations"
+                          render={props => withSuspense(SystemContainer)(props)}
+                        />
+                        <Route
+                          path="/groups/:groupId/documents"
+                          render={props => withSuspense(DocumentsContainer)(props)}
+                        />
+                        <Route
+                          path="/groups/:groupId/settings"
+                          render={props => withSuspense(GroupSettingsContainer)(props)}
+                        />
+                        <Route
+                          path="/groups/:groupId/devices"
+                          render={props => withSuspense(DevicesContainer)(props)}
+                        />
                         <Route
                           path="/groups/:groupId/contracts/:contractId"
-                          render={({ match: { params: { groupId, contractId } } }) => <Contract {...{ url: `${url}/tail`, groupId, contractId }} />}
+                          render={({ match: { params: { groupId, contractId } } }) => withSuspense(Contract)({ url: `${url}/tail`, groupId, contractId })}
                         />
                         <Route
                           path="/groups/:groupId"
                           render={({ match: { params: { groupId } } }) => <Redirect to={`/groups/${groupId || ''}/settings`} />}
                         />
-                        <Route path="/groups" component={LocalpoolsListContainer} />
+                        <Route path="/groups" render={props => withSuspense(LocalpoolsListContainer)(props)} />
                         <Route render={() => <div>404</div>} />
                       </Switch>
                     </PartErrorBoundary>
@@ -109,7 +136,7 @@ const RouterHack = ({
             />
 
             <Col xs="3" className="pl-0 pr-0">
-              <TodoList devMode={devMode} />
+              <TodoList />
             </Col>
           </Row>
           <Row>
@@ -164,6 +191,8 @@ class NewRoot extends React.Component {
       versionMismatch,
     } = this.props;
     const { editMode, addGroupOpen } = this.state;
+
+    if (devMode && lucky) return <PureAdmin />;
 
     return (
       <React.Fragment>

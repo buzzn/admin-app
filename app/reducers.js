@@ -1,8 +1,6 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 import Auth from '@buzzn/module_auth';
-import Bubbles from '@buzzn/module_bubbles';
-import Charts from '@buzzn/module_charts';
 import config from 'config';
 import { constants } from 'actions';
 import Groups from 'groups';
@@ -15,6 +13,7 @@ import Readings from 'readings';
 import MarketLocations from 'market_locations';
 import BillingCycles from 'billing_cycles';
 import Billings from 'billings';
+import Tariffs from 'tariffs';
 import Devices from 'devices';
 import WebsiteForms from 'website_forms';
 
@@ -36,26 +35,19 @@ export const initialState = {
     devMode: false,
     groupsListTiles: false,
     tableSort: {},
+    tableFilter: {},
   },
   incompleteScreen: [],
 };
-
-export function tableSortReducer(state, action) {
-  switch (action.type) {
-    case constants.SET_TABLE_SORT:
-      return { ...state, [action.table]: action.sort };
-
-    default:
-      return state;
-  }
-}
 
 export function uiReducer(state, action) {
   switch (action.type) {
     case constants.SET_UI:
       return { ...state, ...action.ui };
     case constants.SET_TABLE_SORT:
-      return { ...state, tableSort: tableSortReducer(state.tableSort, action) };
+      return { ...state, tableSort: { ...state.tableSort, [action.table]: action.sort } };
+    case constants.SET_TABLE_FILTER:
+      return { ...state, tableFilter: { ...state.tableFilter, [action.table]: action.filter } };
 
     default:
       return state;
@@ -84,6 +76,7 @@ export function appReducer(state = initialState, action) {
 
     case constants.SET_UI:
     case constants.SET_TABLE_SORT:
+    case constants.SET_TABLE_FILTER:
       return { ...state, ui: uiReducer(state.ui, action) };
 
     case constants.SET_INCOMPLETE_SCREEN:
@@ -99,8 +92,6 @@ export default combineReducers({
   auth: Auth.reducers,
   billingCycles: BillingCycles.reducers,
   billings: Billings.reducers,
-  bubbles: Bubbles.reducers,
-  charts: Charts.reducers,
   // apiUrl and apiPath will be located in 'config' property
   config: configReducer,
   contracts: Contracts.reducers,
@@ -112,6 +103,7 @@ export default combineReducers({
   organizations: Organizations.reducers,
   readings: Readings.reducers,
   registers: Registers.reducers,
+  tariffs: Tariffs.reducers,
   users: Users.reducers,
   websiteForms: WebsiteForms.reducers,
 });

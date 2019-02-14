@@ -3,51 +3,32 @@ import ReactTableSorted from 'components/react_table_sorted';
 import moment from 'moment';
 import orderBy from 'lodash/orderBy';
 import { injectIntl, FormattedMessage, InjectIntlProps } from 'react-intl';
-import { Row, Col } from 'reactstrap';
+import { Col } from 'reactstrap';
 import { tableParts as TableParts } from 'react_table_config';
 import { SpanClick } from 'components/style';
-import AddReading from '../add_reading';
+
+import { ReadingDetailsWrapper } from './style';
 
 interface Props {
   readings: Array<any>;
   registerId: string;
-  readingsValidationRules: any;
-  addReading: Function;
-  groupId: string;
-  meterId: string;
+  switchAddReading: Function;
+  deleteReading: Function;
 }
 
 interface State {
   expanded: { [key: number]: boolean };
-  isOpen: boolean;
 }
 
 class ReadingsList extends React.Component<Props & InjectIntlProps, State> {
-  state = { expanded: {}, isOpen: false };
-
-  switchAddReading = () => {
-    this.setState({ isOpen: !this.state.isOpen });
-  };
-
-  addReading = (params) => {
-    const { addReading, groupId, meterId, registerId } = this.props;
-
-    return new Promise((resolve, reject) => {
-      addReading({ groupId, meterId, registerId, params, resolve, reject });
-    }).then((res) => {
-      this.switchAddReading();
-      return(res);
-    });
-  };
-
+  state = { expanded: {} };
 
   handleRowClick(rowNum) {
     this.setState(state => ({ expanded: { ...state.expanded, [rowNum]: !state.expanded[rowNum] } }));
   }
 
   render() {
-    const { readings, intl, registerId, readingsValidationRules } = this.props;
-    const { isOpen } = this.state;
+    const { readings, intl, registerId, switchAddReading, deleteReading } = this.props;
     const prefix = 'admin.readings';
 
     const data = orderBy(readings, ['date', 'reason'], ['desc', 'asc']).map(r => ({
@@ -60,6 +41,7 @@ class ReadingsList extends React.Component<Props & InjectIntlProps, State> {
       {
         Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableDate` })} />,
         accessor: 'date',
+        className: 'cy-date',
         filterMethod: TableParts.filters.filterByValue,
         sortMethod: TableParts.sort.sortByValue,
       },
@@ -72,8 +54,10 @@ class ReadingsList extends React.Component<Props & InjectIntlProps, State> {
       {
         Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableReason` })} />,
         accessor: 'reason',
+        className: 'cy-reason',
         filterMethod: TableParts.filters.filterByValue,
         sortMethod: TableParts.sort.sortByValue,
+        Cell: ({ value }) => intl.formatMessage({ id: `${prefix}.${value}` }),
       },
       {
         expander: true,
@@ -86,24 +70,17 @@ class ReadingsList extends React.Component<Props & InjectIntlProps, State> {
 
     return (
       <div className="p-0" style={{ marginBottom: '2rem' }}>
-        <SpanClick onClick={this.switchAddReading} className="float-right" data-cy="add reading CTA">
+        <SpanClick onClick={switchAddReading} className="float-right" data-cy="add reading CTA">
           <FormattedMessage id={`${prefix}.addNew`} /> <i className="fa fa-plus-circle" />
         </SpanClick>
-        <AddReading {...{ toggle: this.switchAddReading, isOpen, validationRules: readingsValidationRules, onSubmit: this.addReading }} />
         <br />
         <ReactTableSorted
           {...{
             data,
             columns,
             SubComponent: row => (
-              <Row
-                style={{
-                  backgroundColor: '#F5F5F5',
-                  boxShadow: 'inset 0 1px 8px 0 rgba(0,0,0,0.07)',
-                  padding: '20px 10px',
-                  margin: 0,
-                }}
-              >
+              <ReadingDetailsWrapper>
+                <i className="fa fa-remove delete-reading" onClick={() => deleteReading(row.original.id)} />
                 <Col sm="4">
                   <b>
                     <FormattedMessage id={`${prefix}.status`} />:
@@ -130,7 +107,7 @@ class ReadingsList extends React.Component<Props & InjectIntlProps, State> {
                     {row.original.comment}
                   </Col>
                 )}
-              </Row>
+              </ReadingDetailsWrapper>
             ),
             expanded: this.state.expanded,
             getTrProps: (_state, rowInfo) => ({

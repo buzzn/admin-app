@@ -21,7 +21,7 @@ export function* updateWebsiteForm({ apiUrl, apiPath, token }, { formId, params,
     if (res._error) {
       yield call(reject, new SubmissionError(res));
     } else {
-      yield call(getWebsiteForms, { apiUrl, apiPath, token });
+      yield put(actions.loadWebsiteForms());
       yield call(resolve, res);
     }
   } catch (error) {

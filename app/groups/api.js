@@ -4,7 +4,7 @@ import { prepareHeaders, parseResponse, camelizeResponseKeys, snakeReq } from '.
 export default {
   fetchGroup({ token, apiUrl, apiPath, groupId }) {
     return fetch(
-      `${apiUrl}${apiPath}/localpools/${groupId}?include=tariffs,address,distribution_system_operator,transmission_system_operator,electricity_supplier,owner:[bank_accounts,address,legal_representation,contact:[bank_accounts,address]],gap_contract_customer:[address,bank_accounts,contact:[address]]`,
+      `${apiUrl}${apiPath}/localpools/${groupId}?include=billing_detail,tariffs,address,distribution_system_operator,transmission_system_operator,electricity_supplier,owner:[bank_accounts,address,legal_representation,contact:[bank_accounts,address]],gap_contract_customer_bank_account,gap_contract_customer:[address,bank_accounts,contact:[address]]`,
       { headers: prepareHeaders(token) },
     )
       .then(parseResponse)
@@ -30,28 +30,31 @@ export default {
       method: 'DELETE',
     });
   },
-  updateOwner({ token, apiUrl, apiPath, groupId, params, update, ownerId, ownerType }) {
+  updateGroupContact({ token, apiUrl, apiPath, groupId, params, update, contactId, contactType, isGap }) {
     let url = `${apiUrl}${apiPath}/localpools/${groupId}/`;
     let method = 'POST';
     let body = JSON.stringify(snakeReq(params));
+    // if (isGap) url += 'organization-gap-contract-customer';
+    // if (isGap) url += 'person-gap-contract-customer';
     if (update) {
       method = 'PATCH';
-      if (ownerType === 'person') {
-        url += 'person-owner';
+      if (contactType === 'person') {
+        url += isGap ? 'person-gap-contract-customer' : 'person-owner';
       } else {
-        url += 'organization-owner';
+        url += isGap ? 'organization-gap-contract-customer' : 'organization-owner';
       }
-    } else if (ownerId) {
+    } else if (contactId) {
       body = null;
-      if (ownerType === 'person') {
-        url += `person-owner/${ownerId}`;
+      if (contactType === 'person') {
+        url += isGap ? 'person-gap-contract-customer' : 'person-owner';
       } else {
-        url += `organization-owner/${ownerId}`;
+        url += isGap ? 'organization-gap-contract-customer' : 'organization-owner';
       }
-    } else if (ownerType === 'person') {
-      url += 'person-owner';
+      url += `/${contactId}`;
+    } else if (contactType === 'person') {
+      url += isGap ? 'person-gap-contract-customer' : 'person-owner';
     } else {
-      url += 'organization-owner';
+      url += isGap ? 'organization-gap-contract-customer' : 'organization-owner';
     }
     return fetch(url, {
       headers: prepareHeaders(token),

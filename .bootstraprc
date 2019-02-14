@@ -8,7 +8,7 @@ bootstrapVersion: 4
 # Webpack loaders, order matters
 styleLoaders:
   - style-loader?sourceMap
-  - css-loader?sourcemap
+  - css-loader?sourceMap
   - postcss-loader?sourceMap
   - sass-loader?sourceMap
 

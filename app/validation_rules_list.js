@@ -6,6 +6,7 @@ import Groups from 'groups';
 import Contracts from 'contracts';
 import BillingCycles from 'billing_cycles';
 import Billings from 'billings';
+import Tariffs from 'tariffs';
 import Devices from 'devices';
 
 export const authList = [
@@ -64,6 +65,24 @@ export default [
       '/localpools/{localpool_id}/contracts/{localpool_power_taker_contract_id}/customer-person.patch.parameters',
     setAction: rules => Contracts.actions.setValidationRules('lptPerCustomer', rules),
   },
+  {
+    swaggerPath: '/localpools/{localpool_id}/contracts/{localpool_power_taker_contract_id}/payments.post.parameters',
+    setAction: rules => Contracts.actions.setValidationRules('payment', rules),
+  },
+  {
+    swaggerPath:
+      '/localpools/{localpool_id}/contracts/{localpool_power_taker_contract_id}/payments/{payment_id}.patch.parameters',
+    setAction: rules => Contracts.actions.setValidationRules('paymentUpdate', rules),
+  },
+  // HACK
+  {
+    swaggerPath: '/localpools/{localpool_id}/persons/{person_id}/bank-accounts/{bank_account_id}.patch.parameters',
+    setAction: rules => Contracts.actions.setValidationRules('bankAccountUpdate', rules),
+  },
+  {
+    swaggerPath: '/localpools/{localpool3_id}/organizations/{organization_id}/bank-accounts.post.parameters',
+    setAction: rules => Contracts.actions.setValidationRules('bankAccountCreate', rules),
+  },
   // Meter rules
   {
     swaggerPath: '/localpools/{localpool_meter_real_id}/meters.post.parameters',
@@ -110,5 +129,15 @@ export default [
     swaggerPath:
       '/localpools/{localpool_id}/contracts/{localpool_power_taker_contract_id}/billings/{billing_id}.patch.parameters',
     setAction: rules => Billings.actions.setValidationRules('billingUpdate', rules),
+  },
+  {
+    swaggerPath:
+      '/localpools/{localpool_id}/contracts/{localpool_power_taker_contract_id}/billings/{billing_id}/items/{billing_item_id}.patch.parameters',
+    setAction: rules => Billings.actions.setValidationRules('readingAttach', rules),
+  },
+  // Tariffs
+  {
+    swaggerPath: '/localpools/{localpool_id}/tariffs.post.parameters',
+    setAction: Tariffs.actions.setValidationRules,
   },
 ];

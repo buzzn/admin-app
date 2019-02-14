@@ -8,14 +8,21 @@ import BgBubbles from 'components/bg_bubbles';
 
 const BuzznLogo = require('images/logo_black.png');
 
-class SignIn extends React.Component<ExtProps & DispatchProps & StateProps> {
+class SignIn extends React.Component<ExtProps & DispatchProps & StateProps, ComponentState> {
+  state = { active: {} };
+
   signIn = (event) => {
     event.preventDefault();
     this.props.startAuth();
   }
 
+  setActive = (id, active) => {
+    this.setState({ active: { [id]: active } });
+  }
+
   render() {
     const { setLogin, setPassword, login, password, error } = this.props;
+    const { active } = this.state;
 
     return (
       <SignInWrapper>
@@ -36,13 +43,15 @@ class SignIn extends React.Component<ExtProps & DispatchProps & StateProps> {
               <input
                 value={login}
                 onChange={event => setLogin(event.target.value)}
+                onFocus={({ target: { id } }) => this.setActive(id, true)}
+                onBlur={({ target: { id } }) => this.setActive(id, false)}
                 type="email"
                 id="inputEmail"
                 className="form-control"
                 required
                 autoFocus
               />
-              <label htmlFor="inputEmail" className={`${login ? 'top' : 'center'}`}>
+              <label htmlFor="inputEmail" className={`${!!login || active['inputEmail'] ? 'top' : 'center'}`}>
                 <FormattedMessage id="admin.auth.username" />
               </label>
             </FormGroup>
@@ -50,12 +59,14 @@ class SignIn extends React.Component<ExtProps & DispatchProps & StateProps> {
               <input
                 value={password}
                 onChange={event => setPassword(event.target.value)}
+                onFocus={({ target: { id } }) => this.setActive(id, true)}
+                onBlur={({ target: { id } }) => this.setActive(id, false)}
                 type="password"
                 id="inputPassword"
                 className="form-control"
                 required
               />
-              <label htmlFor="inputPassword" className={`${password ? 'top' : 'center'}`}>
+              <label htmlFor="inputPassword" className={`${!!password || active['inputPassword'] ? 'top' : 'center'}`}>
                 <FormattedMessage id="admin.auth.password" />
               </label>
             </FormGroup>
@@ -74,6 +85,10 @@ interface StatePart {
 }
 
 interface ExtProps {}
+
+interface ComponentState {
+  active: { [key: string]: boolean };
+}
 
 interface StateProps {
   login: string;

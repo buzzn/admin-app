@@ -14,12 +14,13 @@ import OrganizationFields from 'components/owner_fields/organization_fields';
 import { OwnerOptions } from './style';
 
 interface Props {
+  isGap?: boolean;
   owner: any;
   switchEditMode: () => void;
   editMode: boolean;
   loadAvailableUsers: () => void;
   loadAvailableOrganizations: () => void;
-  updateOwner: (any) => void;
+  updateGroupContact: (any) => void;
   updatable: boolean;
   availableUsers: { _status: null | number; array: Array<any> };
   availableOrganizations: { _status: null | number; array: Array<any> };
@@ -114,7 +115,7 @@ class Powergiver extends React.Component<Props, State> {
 
   submitForm = (values) => {
     let params = JSON.parse(JSON.stringify(values));
-    const { updateOwner, owner } = this.props;
+    const { updateGroupContact, owner } = this.props;
     const { ownerType, selectedOwner, selectedContact, selectedLR } = this.state;
     const ownerValue = (selectedOwner || { value: null }).value;
     const contactValue = (selectedContact || { value: null }).value;
@@ -187,13 +188,13 @@ class Powergiver extends React.Component<Props, State> {
     if (params.additionalLegalRepresentation) params.additionalLegalRepresentation = Object.values(params.additionalLegalRepresentation).join('$#$');
 
     return new Promise((resolve, reject) => {
-      updateOwner({
+      updateGroupContact({
         params,
         resolve,
         reject,
         update,
-        ownerId: ownerValue === 'new' ? null : ownerValue,
-        ownerType: owner.type || ownerType,
+        contactId: ownerValue === 'new' ? null : ownerValue,
+        contactType: owner.type || ownerType,
       });
     }).then(() => {
       this.setState({ ownerType: null, selectedOwner: null, selectedContact: null, selectedLR: null });
@@ -212,6 +213,7 @@ class Powergiver extends React.Component<Props, State> {
       reset,
       submitting,
       handleSubmit,
+      isGap,
       validationRules: { createPersonOwner, updatePersonOwner, createOrganizationOwner, updateOrganizationOwner },
     } = this.props;
 
@@ -244,7 +246,7 @@ class Powergiver extends React.Component<Props, State> {
     return (
       <Col xs="12">
         <p className="h5 grey-underline header text-uppercase">
-          <FormattedMessage id={`${prefix}.headerPowergiver`} />
+          <FormattedMessage id={`${prefix}.${isGap ? 'headerGCC' : 'headerPowergiver'}`} />
           {!editMode
             && owner.id
             && updatable && <i className="buzzn-pencil" style={{ float: 'right' }} onClick={this.switchEditMode} />}
@@ -356,7 +358,6 @@ class Powergiver extends React.Component<Props, State> {
 }
 
 export default reduxForm({
-  form: 'groupOwnerForm',
   enableReinitialize: true,
   // HACK: see #3729, #3362 in redux-form
   keepDirtyOnReinitialize: true,

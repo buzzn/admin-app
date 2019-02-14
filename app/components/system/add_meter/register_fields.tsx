@@ -11,7 +11,7 @@ import EditableSelect from 'components/editable_select';
 import EditableCheckbox from 'components/editable_checkbox';
 import { numberNormalizer } from 'validation_normalizers';
 
-import { InputRow, PadRow } from './style';
+import { InputRow, PadRow, RegisterFormWrapper } from './style';
 
 interface Props {
   preset: { [key: string]: any };
@@ -81,7 +81,12 @@ class EditableInputArray extends React.Component<Props> {
 
     const prefix = 'admin.registers';
     const malos: Array<{ value: null | string; label: string }> = [{ value: null, label: 'Create new' }].concat(
-      marketLocations.map(m => ({ value: m.id, label: `${m.name} ${m.register ? m.register.meter.productSerialnumber : ''} ${m.kind}` })),
+      marketLocations.map(m => ({
+        value: m.id,
+        label: `${m.name} (${
+          m.registers.array ? m.registers.array.map(r => r.meter.productSerialnumber).join(', ') : ''
+        }) ${m.kind}`,
+      })),
     );
 
     return (
@@ -95,24 +100,23 @@ class EditableInputArray extends React.Component<Props> {
         </Row>
         {fields.map((field, i) => (
           <InputRow className="fieldgroup" key={i} noGutters>
-            {editMode
-              && !preset.lockRegisters && (
-                <React.Fragment>
+            {editMode && !preset.lockRegisters && (
+              <React.Fragment>
+                <i
+                  className="fa fa-plus-circle add cy-add-register"
+                  onClick={() => {
+                    this.addField();
+                  }}
+                />
+                {i > 0 && (
                   <i
-                    className="fa fa-plus-circle add cy-add-register"
+                    className="fa fa-remove remove"
                     onClick={() => {
-                      this.addField();
+                      this.deleteField(i);
                     }}
                   />
-                  {i > 0 && (
-                    <i
-                      className="fa fa-remove remove"
-                      onClick={() => {
-                        this.deleteField(i);
-                      }}
-                    />
-                  )}
-                </React.Fragment>
+                )}
+              </React.Fragment>
             )}
             <Col xs={12}>
               <Row>
@@ -131,7 +135,7 @@ class EditableInputArray extends React.Component<Props> {
                 </Col>
               </Row>
               {!get(selectedRegisters[i], 'value') && (
-                <React.Fragment>
+                <RegisterFormWrapper>
                   <Row>
                     <Col xs={4} xl={3}>
                       <FieldValidationWrapper
@@ -220,7 +224,7 @@ class EditableInputArray extends React.Component<Props> {
                       />
                     </Col>
                   </Row>
-                </React.Fragment>
+                </RegisterFormWrapper>
               )}
             </Col>
           </InputRow>

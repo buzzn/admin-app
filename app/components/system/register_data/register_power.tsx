@@ -10,15 +10,15 @@ class RegisterPower extends React.Component<ExtProps & StateProps & DispatchProp
   }
 
   render() {
-    const { registerPower } = this.props;
+    const { registerPower, registerId } = this.props;
 
     let value = '';
-    if (registerPower._status === 404) {
+    if (!registerPower[registerId] || registerPower[registerId]._status === 404) {
       value = '--.--';
-    } else if (registerPower.value === -1) {
+    } else if (registerPower[registerId].value === -1) {
       value = '!!.!!';
     } else {
-      value = formatLabel(registerPower.value || 0);
+      value = formatLabel(registerPower[registerId].value || 0);
     }
 
     return (
@@ -51,4 +51,7 @@ function mapStateToProps(state: StatePart) {
   return { registerPower: state.registers.registerPower };
 }
 
-export default connect<StateProps, DispatchProps, ExtProps>(mapStateToProps, { loadRegisterPower: Registers.actions.loadRegisterPower })(RegisterPower);
+export default connect<StateProps, DispatchProps, ExtProps>(
+  mapStateToProps,
+  { loadRegisterPower: Registers.actions.loadRegisterPower },
+)(RegisterPower);

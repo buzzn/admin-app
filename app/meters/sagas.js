@@ -1,4 +1,4 @@
-import { put, call, takeLatest, take, fork, cancel, select } from 'redux-saga/effects';
+import { put, call, takeLatest, takeLeading, take, fork, cancel, select } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import MarketLocations from 'market_locations';
 import { logException } from '_util';
@@ -40,9 +40,9 @@ export function* updateFormulaPart(
       yield call(reject, new SubmissionError(res));
     } else {
       yield call(resolve, res);
-      yield call(getGroupMeters, { apiUrl, apiPath, token }, { groupId });
+      yield put(actions.loadGroupMeters(groupId));
       // FIXME: used for the old UI, remove after UI cleanup.
-      yield call(getMeter, { apiUrl, apiPath, token }, { meterId, groupId });
+      yield put(actions.loadMeter({ meterId, groupId }));
     }
   } catch (error) {
     logException(error);
@@ -70,9 +70,8 @@ export function* updateMeter({ apiUrl, apiPath, token }, { meterId, params, reso
       yield call(reject, new SubmissionError(res));
     } else {
       yield call(resolve, res);
-      yield call(getGroupMeters, { apiUrl, apiPath, token }, { groupId });
-      // FIXME: used for the old UI, remove after UI cleanup.
-      yield call(getMeter, { apiUrl, apiPath, token }, { meterId, groupId });
+      yield put(actions.loadGroupMeters(groupId));
+      yield put(actions.loadMeter({ meterId, groupId }));
     }
   } catch (error) {
     logException(error);
@@ -82,13 +81,13 @@ export function* updateMeter({ apiUrl, apiPath, token }, { meterId, params, reso
 export function* metersSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_GROUP_METERS, getGroupMeters, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_METER, getMeter, { apiUrl, apiPath, token });
-  yield takeLatest(constants.ADD_REAL_METER, addRealMeter, { apiUrl, apiPath, token });
-  yield takeLatest(constants.UPDATE_METER, updateMeter, { apiUrl, apiPath, token });
-  yield takeLatest(constants.UPDATE_FORMULA_PART, updateFormulaPart, { apiUrl, apiPath, token });
+  yield takeLeading(constants.ADD_REAL_METER, addRealMeter, { apiUrl, apiPath, token });
+  yield takeLeading(constants.UPDATE_METER, updateMeter, { apiUrl, apiPath, token });
+  yield takeLeading(constants.UPDATE_FORMULA_PART, updateFormulaPart, { apiUrl, apiPath, token });
   const meterId = yield select(selectMeterId);
   const groupId = yield select(selectGroupId);
-  if (meterId) yield call(getMeter, { apiUrl, apiPath, token }, { meterId, groupId });
-  if (groupId) yield call(getGroupMeters, { apiUrl, apiPath, token }, { groupId });
+  if (meterId) yield put(actions.loadMeter({ meterId, groupId }));
+  if (groupId) yield put(actions.loadGroupMeters(groupId));
 }
 
 export default function* () {

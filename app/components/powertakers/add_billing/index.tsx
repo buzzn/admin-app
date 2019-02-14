@@ -5,7 +5,6 @@ import { reduxForm } from 'redux-form';
 import FieldValidationWrapper from 'components/field_validation_wrapper';
 import FieldInput from 'components/field_input';
 import FieldDate from 'components/field_date';
-import EditableSelect from 'components/editable_select';
 
 interface Props {
   isOpen: boolean;
@@ -30,7 +29,7 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
   };
 
   render() {
-    const { isOpen, handleSubmit, validationRules } = this.props;
+    const { isOpen, handleSubmit, validationRules, addBillingSubmitErrors } = this.props;
     const prefix = 'admin.billings';
 
     return (
@@ -41,7 +40,7 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
         <form onSubmit={handleSubmit}>
           <ModalBody>
             <Row>
-              <Col xs={4}>
+              <Col xs={6}>
                 <FieldValidationWrapper
                   {...{
                     name: 'beginDate',
@@ -52,25 +51,14 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
                   }}
                 />
               </Col>
-              <Col xs={4}>
+              <Col xs={6}>
                 <FieldValidationWrapper
                   {...{
-                    name: 'endDate',
+                    name: 'lastDate',
                     type: 'text',
-                    label: <FormattedMessage id={`${prefix}.endDate`} />,
+                    label: <FormattedMessage id={`${prefix}.lastDate`} />,
                     component: FieldDate,
                     validationRules,
-                  }}
-                />
-              </Col>
-              <Col xs={4}>
-                <FieldValidationWrapper
-                  {...{
-                    name: 'status',
-                    editMode: true,
-                    component: EditableSelect,
-                    validationRules,
-                    prefix,
                   }}
                 />
               </Col>
@@ -88,6 +76,27 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
                 />
               </Col>
             </Row>
+            {!!addBillingSubmitErrors && !!addBillingSubmitErrors.items && (
+              <Row>
+                <Col xs={12}>
+                  {Array.isArray(addBillingSubmitErrors.items)
+                    ? addBillingSubmitErrors.items.join(', ')
+                    : Object.keys(addBillingSubmitErrors.items).reduce(
+                      (resErr, errKey) => `${resErr}${
+                        Array.isArray(addBillingSubmitErrors.items[errKey])
+                          ? `${errKey}: ${addBillingSubmitErrors.items[errKey].reduce((r, e) => `${r}${e} `, '')}`
+                          : ' '
+                      }`,
+                      '',
+                    )}
+                </Col>
+              </Row>
+            )}
+            {!!addBillingSubmitErrors && !!addBillingSubmitErrors.errorMessage && (
+              <Row>
+                <Col xs={12}>{addBillingSubmitErrors.errorMessage}</Col>
+              </Row>
+            )}
           </ModalBody>
           <ModalFooter>
             <button className="btn btn-link" onClick={this.handleToggle}>
@@ -107,7 +116,6 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
 
 export default reduxForm({
   enableReinitialize: true,
-  form: 'addBilling',
   onSubmitSuccess: (_result, _dispatch, { reset }) => {
     reset();
   },

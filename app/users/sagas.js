@@ -70,13 +70,13 @@ export function* usersSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.SET_USER_ID, getUser, { apiUrl, apiPath, token });
 
   const userId = yield select(selectUserId);
-  if (userId) yield call(getUser, { apiUrl, apiPath, token }, { userId });
+  if (userId) yield put(actions.loadUser({ userId }));
   const groupUserId = yield select(selectGroupUserId);
   const groupId = yield select(selectGroupId);
   if (groupId) {
     yield call(getUsers, { apiUrl, apiPath, token, type: 'groupUsers' }, { groupId });
     yield call(getUsers, { apiUrl, apiPath, token, type: 'groupManagers' }, { groupId });
-    if (groupUserId) yield call(getGroupUser, { apiUrl, apiPath, token }, { userId, groupId });
+    if (groupUserId) yield put(actions.loadGroupUser({ userId, groupId }));
   }
 }
 

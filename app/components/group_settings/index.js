@@ -2,9 +2,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, NavLink, Switch, Route } from 'react-router-dom';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Row } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 import { confirmAlert } from 'react-confirm-alert';
-import pick from 'lodash/pick';
 import get from 'lodash/get';
 import map from 'lodash/map';
 import flattenDeep from 'lodash/flattenDeep';
@@ -12,17 +11,20 @@ import isEqual from 'lodash/isEqual';
 import Groups from 'groups';
 import Users from 'users';
 import Organizations from 'organizations';
+import Contracts from 'contracts';
 import { actions } from 'actions';
 import { SubNav } from 'components/style';
 import PageTitle from 'components/page_title';
+import BankAccounts from 'components/bank_accounts';
+import BankAccount from 'components/powertakers/payments/bank_account';
 import Group from './group';
 import Powergiver from './powergiver';
-import Bank from './bank';
-import GapContact from './gap_contact';
 
 import './style.scss';
 
 import DefaultImage from 'images/energygroup_noimage_01.jpg';
+
+const GapWrap = props => <React.Fragment>{props.children}</React.Fragment>;
 
 class GroupSettings extends React.Component {
   setIncompletness(group) {
@@ -94,20 +96,18 @@ class GroupSettings extends React.Component {
       transmissionSystemOperator,
       electricitySupplier,
       bankAccount,
+      loadGroup,
 
       owner,
       availableUsers,
       loadAvailableUsers,
       availableOrganizations,
       loadAvailableOrganizations,
-      updateOwner,
+      updateGroupContact,
 
       gap,
-      gapAddress,
-      gapBankAccounts,
-      gapContact,
-      gapContactAddress,
-      gapContactBankAccounts,
+      attachBankAccount,
+      loadContract,
 
       setGroup,
       updateGroup,
@@ -130,26 +130,6 @@ class GroupSettings extends React.Component {
       { id: group.id || 1, title: group.name },
     ];
 
-    const submitGroup = (values) => {
-      const changed = Object.keys(values).reduce(
-        (sum, key) => {
-          if (values[key] !== group[key]) {
-            return { ...sum, [key]: values[key] };
-          }
-          return sum;
-        },
-        { updatedAt: values.updatedAt },
-      );
-      return new Promise((resolve, reject) => {
-        updateGroup({
-          groupId: group.id,
-          params: changed,
-          resolve,
-          reject,
-        });
-      });
-    };
-
     const ownerValues = { ...owner };
     if (!ownerValues.address) ownerValues.address = {};
     if (!ownerValues.contact) ownerValues.contact = { address: {} };
@@ -157,6 +137,14 @@ class GroupSettings extends React.Component {
     if (!ownerValues.legalRepresentation) ownerValues.legalRepresentation = { address: {} };
     if (ownerValues.legalRepresentation && !ownerValues.legalRepresentation.address) ownerValues.legalRepresentation.address = {};
     if (ownerValues.additionalLegalRepresentation) ownerValues.additionalLegalRepresentation = ownerValues.additionalLegalRepresentation.split('$#$');
+
+    const gapValues = { ...gap };
+    if (!gapValues.address) gapValues.address = {};
+    if (!gapValues.contact) gapValues.contact = { address: {} };
+    if (gapValues.contact && !gapValues.contact.address) gapValues.contact.address = {};
+    if (!gapValues.legalRepresentation) gapValues.legalRepresentation = { address: {} };
+    if (gapValues.legalRepresentation && !gapValues.legalRepresentation.address) gapValues.legalRepresentation.address = {};
+    if (gapValues.additionalLegalRepresentation) gapValues.additionalLegalRepresentation = gapValues.additionalLegalRepresentation.split('$#$');
 
     return (
       <React.Fragment>
@@ -173,11 +161,6 @@ class GroupSettings extends React.Component {
               <NavLink to={`${url}/powergiver`} exact className="nav-link" data-cy="group owner tab">
                 <FormattedMessage id="admin.groups.navPowergiver" />
               </NavLink>
-              {!!owner.id && (
-                <NavLink to={`${url}/bank`} exact className="nav-link">
-                  <FormattedMessage id="admin.groups.navBank" />
-                </NavLink>
-              )}
               <NavLink to={`${url}/gapcontact`} exact className="nav-link">
                 <FormattedMessage id="admin.groups.navGapContact" />
               </NavLink>
@@ -190,20 +173,14 @@ class GroupSettings extends React.Component {
                 render={() => (
                   <Group
                     {...{
-                      submitGroup,
+                      updateGroup,
                       group,
                       deleteGroup: this.deleteGroup,
                       address,
                       transmissionSystemOperator,
                       distributionSystemOperator,
-                      initialValues: pick(group, [
-                        'showObject',
-                        'showProduction',
-                        'showEnergy',
-                        'showContact',
-                        'showDisplayApp',
-                        'updatedAt',
-                      ]),
+                      validationRules,
+                      initialValues: group,
                       electricitySupplier,
                     }}
                   />
@@ -212,26 +189,89 @@ class GroupSettings extends React.Component {
               <Route
                 path={`${url}/powergiver`}
                 render={() => (
-                  <Powergiver
-                    {...{
-                      updatable: group.updatable,
-                      owner,
-                      loadAvailableUsers,
-                      availableUsers,
-                      availableOrganizations,
-                      loadAvailableOrganizations,
-                      validationRules,
-                      updateOwner: params => updateOwner({ groupId: group.id, ...params }),
-                      // HACK: nested objects can be null on server after beekeeper import in some cases
-                      initialValues: ownerValues,
-                    }}
-                  />
+                  <React.Fragment>
+                    <Powergiver
+                      {...{
+                        updatable: group.updatable,
+                        owner,
+                        loadAvailableUsers,
+                        availableUsers,
+                        availableOrganizations,
+                        loadAvailableOrganizations,
+                        validationRules,
+                        updateGroupContact: params => updateGroupContact({ groupId: group.id, isGap: false, ...params }),
+                        // HACK: nested objects can be null on server after beekeeper import in some cases
+                        initialValues: ownerValues,
+                        form: 'groupOwnerForm',
+                      }}
+                    />
+                    {!!owner.id && (
+                      <Col xs={12}>
+                        <BankAccounts
+                          {...{
+                            bankAccounts: get(owner, 'bankAccounts.array', []),
+                            groupId: group.id,
+                            partyId: owner.id,
+                            partyType: owner.type,
+                            reloadCb: () => loadGroup(group.id),
+                          }}
+                        />
+                      </Col>
+                    )}
+                  </React.Fragment>
                 )}
               />
-              {!!owner.id && <Route path={`${url}/bank`} render={() => <Bank {...{ bankAccount }} />} />}
               <Route
                 path={`${url}/gapcontact`}
-                render={() => <GapContact {...{ gap, gapAddress, gapContact, gapContactAddress }} />}
+                render={() => (
+                  <GapWrap>
+                    <Powergiver
+                      {...{
+                        updatable: group.updatable,
+                        owner: gap,
+                        loadAvailableUsers,
+                        availableUsers,
+                        availableOrganizations,
+                        loadAvailableOrganizations,
+                        validationRules,
+                        updateGroupContact: params => updateGroupContact({ groupId: group.id, isGap: true, ...params }),
+                        // HACK: nested objects can be null on server after beekeeper import in some cases
+                        initialValues: gapValues,
+                        isGap: true,
+                        form: 'groupGapForm',
+                      }}
+                    />
+                    {!!gap.id && (
+                      <React.Fragment>
+                        <Col xs={12}>
+                          <BankAccounts
+                            {...{
+                              bankAccounts: get(gap, 'bankAccounts.array', []),
+                              groupId: group.id,
+                              partyId: gap.id,
+                              partyType: gap.type,
+                              reloadCb: () => loadGroup(group.id),
+                            }}
+                          />
+                        </Col>
+                        <Col xs={12}>
+                          <BankAccount {...{
+                            title: 'GCC bank account',
+                            bankAccount: group.gapContractCustomerBankAccount || {},
+                            bankAccounts: get(gap, 'bankAccounts.array', []),
+                            attachBankAccount,
+                            groupId: group.id,
+                            reloadCb: () => loadGroup(group.id),
+                            updatedAt: group.updatedAt,
+                            // HACK
+                            contractId: '',
+                            partyType: '',
+                          }} />
+                        </Col>
+                      </React.Fragment>
+                    )}
+                  </GapWrap>
+                )}
               />
               <Route path={url}>
                 <Redirect to={`${url}/group`} />
@@ -259,11 +299,6 @@ const mapStateToProps = state => ({
   availableOrganizations: state.organizations.availableOrganizations,
 
   gap: state.groups.group.gapContractCustomer || {},
-  gapAddress: get(state.groups.group, 'gapContractCustomer.address') || {},
-  gapBankAccounts: get(state.groups.group, 'gapContractCustomer.bankAccounts.array') || [],
-  gapContact: get(state.groups.group, 'gapContractCustomer.contact') || {},
-  gapContactAddress: get(state.groups.group, 'gapContractCustomer.contact.address') || {},
-  gapContactBankAccounts: get(state.groups.group, 'gapContractCustomer.contact.bankAccounts.array') || [],
 
   loading: state.groups.loadingGroup,
 
@@ -277,9 +312,11 @@ export default connect(
     setGroup: Groups.actions.setGroup,
     updateGroup: Groups.actions.updateGroup,
     deleteGroup: Groups.actions.deleteGroup,
-    updateOwner: Groups.actions.updateOwner,
+    updateGroupContact: Groups.actions.updateGroupContact,
     setIncompleteScreen: actions.setIncompleteScreen,
     loadAvailableUsers: Users.actions.loadAvailableUsers,
     loadAvailableOrganizations: Organizations.actions.loadAvailableOrganizations,
+    attachBankAccount: Contracts.actions.attachBankAccount,
+    loadContract: Contracts.actions.loadContract,
   },
 )(GroupSettingsIntl);

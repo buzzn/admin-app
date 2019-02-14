@@ -20,8 +20,8 @@ class TwoColField extends Component {
   render() {
     return (
       <Row className="fieldgroup">
-        <Col xs="6" className="fieldname">
-          <FormattedMessage id={`${this.props.prefix}.${this.props.name.split('.').pop()}`} />:
+        <Col xs="6" className="fieldname" style={{ textAlign: this.props.centered ? 'right' : 'left' }}>
+          <FormattedMessage id={`${this.props.prefix}.${this.props.name.split('.').pop()}`} />{this.props.noColon ? '' : ':'}
         </Col>
         <Col xs="6" className={`${this.props.editMode ? 'editValue' : 'fieldvalue grey-underline'}`}>
           <Field {...this.props} field={this.props.field || getValidators(this.props)} validate={this.state.validate} />

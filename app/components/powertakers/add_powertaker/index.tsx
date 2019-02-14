@@ -433,6 +433,16 @@ class AddPowertaker extends React.Component<Props, State> {
             <TwoColField
               {...{
                 prefix,
+                name: 'energyConsumptionBeforeKwhPa',
+                editMode,
+                validationRules,
+                component: EditableInput,
+                normalize: numberNormalizer,
+              }}
+            />
+            <TwoColField
+              {...{
+                prefix,
                 name: 'thirdPartyBillingNumber',
                 editMode,
                 validationRules,
@@ -470,15 +480,6 @@ class AddPowertaker extends React.Component<Props, State> {
               {...{
                 prefix,
                 name: 'energyConsumptionBeforeKwhPa',
-                editMode,
-                validationRules,
-                component: EditableInput,
-              }}
-            />
-            <TwoColField
-              {...{
-                prefix,
-                name: 'downPaymentBeforeCentsPerMonth',
                 editMode,
                 validationRules,
                 component: EditableInput,

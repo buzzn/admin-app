@@ -1,94 +1,108 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Switch, Route, Redirect, NavLink, RouteComponentProps } from 'react-router-dom';
-import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
-import { Nav } from 'reactstrap';
-import get from 'lodash/get';
+import { Switch, Route, Redirect, RouteComponentProps } from 'react-router-dom';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import Groups from 'groups';
-import PageTitle from 'components/page_title';
+import Tariffs from 'tariffs';
 import Loading from 'components/loading';
+import AttachedTariffs from 'components/attached_tariffs';
 import TariffsList from './tariffs_list';
+import AddTariff from './add_tariff';
 
-class Tariffs extends React.Component<StateProps & DispatchProps & ExtProps & InjectedIntlProps> {
+class TariffsComponent extends React.Component<
+  StateProps & DispatchProps & ExtProps & InjectedIntlProps,
+  ComponentState
+  > {
+  state = { isOpen: false };
+
+  switchAddTariff = () => {
+    this.setState({ isOpen: !this.state.isOpen });
+  };
+
+  addTariff = (params) => {
+    const {
+      addTariff,
+      match: { params: { groupId } },
+    } = this.props;
+
+    return new Promise((resolve, reject) => {
+      addTariff({ groupId, params, resolve, reject });
+    }).then((res) => {
+      this.switchAddTariff();
+      return res;
+    });
+  };
+
   componentDidMount() {
-    const { loadGroup, match: { params: { groupId } } } = this.props;
+    const {
+      loadGroup,
+      loadTariffs,
+      match: { params: { groupId } },
+    } = this.props;
     loadGroup(groupId);
+    loadTariffs(groupId);
   }
 
   componentWillUnmount() {
     this.props.setGroup({ _status: null });
+    this.props.setTariffs({ tariffs: { _status: null, array: [] }, gapTariffs: { _status: null, array: [] } });
   }
 
   render() {
-    const { loading, intl, group, setGroup, match: { url, params: { groupId } } } = this.props;
+    const {
+      loading,
+      intl,
+      group,
+      tariffs,
+      gapTariffs,
+      setGapTariffs,
+      setGroup,
+      setTariffs,
+      validationRules,
+      match: {
+        url,
+        params: { groupId },
+      },
+    } = this.props;
+    const { isOpen } = this.state;
 
-    if (group._status === 404 || group._status === 403) {
+    if (group._status === 404 || group._status === 403 || tariffs._status === 404 || tariffs._status === 403 || gapTariffs._status === 404 || gapTariffs._status === 403) {
       setGroup({ _status: null });
+      setTariffs({ tariffs: { _status: null, array: [] }, gapTariffs: { _status: null, array: [] } });
       return <Redirect to="/groups" />;
     }
+
+    if (group._status === null || tariffs._status === null || gapTariffs._status === null || loading) return <Loading minHeight={40} />;
 
     const breadcrumbs = [
       { id: 0, link: '/groups', title: intl.formatMessage({ id: 'admin.breadcrumbs.myGroups' }) },
       { id: group.id || 1, link: url, title: group.name },
     ];
 
-    const prefix = 'admin.tariffs';
-
-    const tariffs = get(group, 'tariffs.array', []);
-
     return (
       <React.Fragment>
-        {/* Breadcrumbs */}
         <Switch>
+          <Route path={url} exact>
+            <Redirect to={`${url}/active`} />
+          </Route>
+
           <Route
-            path={`${url}/:pType(active|past)`}
-            render={() => (
-              <PageTitle
-                {...{
-                  breadcrumbs: breadcrumbs.concat([
-                    { id: '-----', title: intl.formatMessage({ id: 'admin.breadcrumbs.tariffs' }), link: null },
-                  ]),
-                  title: intl.formatMessage({ id: `${prefix}.backTariffs` }),
-                }}
+            path={`${url}/:tType(active|past)`}
+            render={({ match: { params: { tType } } }) => (
+              <TariffsList
+                {...{ tariffs: tariffs.array, groupId, breadcrumbs, tType, url, switchAddTariff: this.switchAddTariff }}
               />
             )}
           />
         </Switch>
-        {/* End of Breadcrumbs */}
 
-        <div className="center-content">
-          <Switch>
-            <Route path={url} exact>
-              <Redirect to={`${url}/active`} />
-            </Route>
-
-            {/* Tariffs List */}
-            <Route path={`${url}/:pType(active|past)`}>
-              {loading ? (
-                <Loading minHeight={40} />
-              ) : (
-                <React.Fragment>
-                  {/* Sub nav */}
-                  <Nav className="sub-nav">
-                    <NavLink to={`${url}/active`} exact className="nav-link">
-                      <FormattedMessage id={`${prefix}.navActiveTariffs`} />
-                    </NavLink>
-                    <NavLink to={`${url}/past`} exact className="nav-link">
-                      <FormattedMessage id={`${prefix}.navPastTariffs`} />
-                    </NavLink>
-                  </Nav>
-                  {/* End of sub nav */}
-
-                  <Switch>
-                    <Route path={`${url}/active`} render={() => <TariffsList active {...{ tariffs, groupId }} />} />
-                    <Route path={`${url}/past`} render={() => <TariffsList {...{ tariffs, groupId }} />} />
-                  </Switch>
-                </React.Fragment>
-              )}
-            </Route>
-            {/* End of tariffs List */}
-          </Switch>
-        </div>
+        <AttachedTariffs {...{
+          title: 'Gap tariffs',
+          tariffs: tariffs.array,
+          attachedTariffs: gapTariffs.array,
+          updateList: ({ resolve, reject, tariffIds }) => setGapTariffs({ resolve, reject, params: { tariffIds, updatedAt: group.updatedAt }, groupId }),
+        }} />
+        <AddTariff {...{ toggle: this.switchAddTariff, isOpen, validationRules, onSubmit: this.addTariff }} />
       </React.Fragment>
     );
   }
@@ -96,6 +110,10 @@ class Tariffs extends React.Component<StateProps & DispatchProps & ExtProps & In
 
 interface TariffsRouterProps {
   groupId: string;
+}
+
+interface ComponentState {
+  isOpen: boolean;
 }
 
 interface ExtProps extends RouteComponentProps<TariffsRouterProps> {}
@@ -106,26 +124,49 @@ interface StatePart {
     loadingGroup: boolean;
     group: { _status: null | number; [key: string]: any };
   };
+  tariffs: {
+    loadingTariffs: boolean;
+    tariffs: { _status: null | number; array: Array<{ [key: string]: any }> };
+    gapTariffs: { _status: null | number; array: Array<{ [key: string]: any }> };
+    validationRules: any;
+  };
 }
 
 interface StateProps {
   loading: boolean;
   group: { _status: null | number; [key: string]: any };
+  tariffs: { _status: null | number; array: Array<{ [key: string]: any }> };
+  gapTariffs: { _status: null | number; array: Array<{ [key: string]: any }> };
+  validationRules: any;
 }
 
 interface DispatchProps {
   loadGroup: Function;
   setGroup: Function;
+  loadTariffs: Function;
+  setTariffs: Function;
+  addTariff: Function;
+  setGapTariffs: Function;
 }
 
 function mapStateToProps(state: StatePart) {
   return {
-    loading: state.groups.loadingGroup,
+    loading: state.groups.loadingGroup || state.tariffs.loadingTariffs,
     group: state.groups.group,
+    tariffs: state.tariffs.tariffs,
+    gapTariffs: state.tariffs.gapTariffs,
+    validationRules: state.tariffs.validationRules,
   };
 }
 
-export default connect<StateProps, DispatchProps, ExtProps>(mapStateToProps, {
-  loadGroup: Groups.actions.loadGroup,
-  setGroup: Groups.actions.setGroup,
-})(injectIntl(Tariffs));
+export default connect<StateProps, DispatchProps, ExtProps>(
+  mapStateToProps,
+  {
+    loadGroup: Groups.actions.loadGroup,
+    setGroup: Groups.actions.setGroup,
+    loadTariffs: Tariffs.actions.loadTariffs,
+    setTariffs: Tariffs.actions.setTariffs,
+    addTariff: Tariffs.actions.addTariff,
+    setGapTariffs: Tariffs.actions.setGapTariffs,
+  },
+)(injectIntl(TariffsComponent));

@@ -9,7 +9,15 @@ const GenerateJsonPlugin = require('generate-json-webpack-plugin');
 const buildDate = new Date().valueOf();
 
 module.exports = {
-  entry: { app: ['@babel/polyfill', 'bootstrap-loader', 'whatwg-fetch', './app/index.production.js'] },
+  entry: {
+    app: [
+      '@babel/polyfill',
+      'core-js/fn/array/flat-map',
+      'bootstrap-loader',
+      'whatwg-fetch',
+      './app/index.production.js',
+    ],
+  },
   output: {
     path: path.resolve(__dirname, 'build/public/assets'),
     publicPath: '/assets/',
@@ -50,7 +58,6 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js', '.json'],
     alias: { moment$: 'moment/moment.js' },
   },
-  // optimization: { splitChunks: { chunks: 'all' } },
   optimization: {
     runtimeChunk: 'single',
     splitChunks: {
@@ -90,6 +97,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: 'app/index.html',
       filename: '../index.html',
+      chunksSortMode: 'none',
     }),
     new StatsPlugin('webpack.stats.json', {
       source: false,

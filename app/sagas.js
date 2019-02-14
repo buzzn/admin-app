@@ -1,9 +1,6 @@
-import { put, take, select, call, takeLatest, fork, race, all } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
+import { put, take, select, call, takeLatest, takeLeading, fork, race, all, delay } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import Auth from '@buzzn/module_auth';
-import Bubbles from '@buzzn/module_bubbles';
-import Charts from '@buzzn/module_charts';
 import { logException, getAllUrlParams } from '_util';
 import { actions, constants } from 'actions';
 import api from 'api';
@@ -18,6 +15,7 @@ import Readings from 'readings';
 import MarketLocations from 'market_locations';
 import BillingCycles from 'billing_cycles';
 import Billings from 'billings';
+import Tariffs from 'tariffs';
 import Devices from 'devices';
 import WebsiteForms from 'website_forms';
 import ValidationRules from 'validation_rules';
@@ -55,8 +53,6 @@ export function* updateUserMe({ apiUrl, apiPath, token }, { params, resolve, rej
 }
 
 export function* setToken(token) {
-  yield put(Bubbles.actions.setToken(token));
-  yield put(Charts.actions.setToken(token));
   yield put(Groups.actions.setToken(token));
   yield put(Meters.actions.setToken(token));
   yield put(Registers.actions.setToken(token));
@@ -67,6 +63,7 @@ export function* setToken(token) {
   yield put(MarketLocations.actions.setToken(token));
   yield put(BillingCycles.actions.setToken(token));
   yield put(Billings.actions.setToken(token));
+  yield put(Tariffs.actions.setToken(token));
   yield put(Devices.actions.setToken(token));
   yield put(WebsiteForms.actions.setToken(token));
   yield put(ValidationRules.actions.setToken(token));
@@ -81,7 +78,7 @@ export function* setHealth({ apiUrl }) {
       logException(error);
       yield put(actions.setHealth({}));
     }
-    yield call(delay, 60 * 1000);
+    yield delay(60 * 1000);
   }
 }
 
@@ -95,7 +92,7 @@ export function* checkVersion({ versionPath, buildDate }) {
     } catch (error) {
       logException(error);
     }
-    yield call(delay, 60 * 1000);
+    yield delay(60 * 1000);
   }
 }
 
@@ -112,6 +109,7 @@ export function* setUI() {
     yield race({
       ui: take(constants.SET_UI),
       sort: take(constants.SET_TABLE_SORT),
+      filter: take(constants.SET_TABLE_FILTER),
     });
     ui = yield select(getUI);
     yield call(api.setUI, ui);
@@ -119,12 +117,16 @@ export function* setUI() {
 }
 
 export function* initialLoadPause() {
-  yield all([
-    take(constants.SET_HEALTH),
-    delay(2000),
-  ]);
+  yield all([take(constants.SET_HEALTH), delay(2000)]);
 
   yield put(actions.setAppLoading(false));
+}
+
+export function* setDevLogin() {
+  if (process.env.DEV_LOGIN && process.env.DEV_PASS) {
+    yield put(Auth.actions.setLogin(process.env.DEV_LOGIN));
+    yield put(Auth.actions.setPassword(process.env.DEV_PASS));
+  }
 }
 
 export default function* () {
@@ -138,8 +140,6 @@ export default function* () {
   yield fork(initialLoadPause);
 
   yield put(Auth.actions.setApiParams({ apiUrl, apiPath: authPath }));
-  yield put(Bubbles.actions.setApiParams({ apiUrl, apiPath: `${apiPath}/localpools` }));
-  yield put(Charts.actions.setApiParams({ apiUrl, apiPath: `${apiPath}/localpools` }));
   yield put(Groups.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Meters.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Registers.actions.setApiParams({ apiUrl, apiPath }));
@@ -150,6 +150,7 @@ export default function* () {
   yield put(MarketLocations.actions.setApiParams({ apiUrl, apiPath }));
   yield put(BillingCycles.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Billings.actions.setApiParams({ apiUrl, apiPath }));
+  yield put(Tariffs.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Devices.actions.setApiParams({ apiUrl, apiPath }));
   yield put(WebsiteForms.actions.setApiParams({ apiUrl, apiPath: websitePath }));
   yield put(ValidationRules.actions.setApiParams({ apiUrl, apiPath }));
@@ -162,6 +163,7 @@ export default function* () {
 
   while (true) {
     if (!token) {
+      yield call(setDevLogin);
       ({ token } = yield take(Auth.constants.SIGN_IN));
     }
 
@@ -172,7 +174,7 @@ export default function* () {
 
     if (yield call(getUserMe, { apiUrl, apiPath, token })) {
       yield takeLatest(constants.LOAD_USER_ME, getUserMe, { apiUrl, apiPath, token });
-      yield takeLatest(constants.UPDATE_USER_ME, updateUserMe, { apiUrl, apiPath, token });
+      yield takeLeading(constants.UPDATE_USER_ME, updateUserMe, { apiUrl, apiPath, token });
       yield take(Auth.constants.SIGN_OUT);
     } else {
       yield put(Auth.actions.signOut());

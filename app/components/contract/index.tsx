@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import get from 'lodash/get';
 import Contracts from 'contracts';
 import Loading from 'components/loading';
 import PowertakerContract from './powertaker';
@@ -22,7 +21,6 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
     const {
       loading,
       contract,
-      contractor,
       url,
       groupId,
       updateContract,
@@ -33,27 +31,19 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
     if (loading || contract._status === null) return <Loading minHeight={40} />;
     if (contract._status && contract._status !== 200) return <Redirect to={url} />;
 
-    const register = contract.registerMeta
-      ? {
-        ...contract.registerMeta.register,
-        name: contract.registerMeta.name,
-        locationId: contract.registerMeta.id,
-      }
-      : {};
     const prefix = 'admin.contracts';
 
     if (contract.type === 'contract_localpool_third_party') {
-      return <ThirdPartyContract {...{ contract, register, prefix, url }} />;
+      return <ThirdPartyContract {...{ groupId, contract, registerMeta: contract.registerMeta, prefix }} />;
     }
     if (contract.type === 'contract_localpool_power_taker') {
       return (
         <PowertakerContract
           {...{
             contract,
-            register,
-            contractor,
+            registerMeta: contract.registerMeta,
+            contractor: contract.contractor,
             prefix,
-            url,
             initialValues: contract,
             groupId,
             updateContract,
@@ -67,7 +57,7 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
         <LPCMPOContract
           {...{
             contract,
-            contractor,
+            contractor: contract.contractor,
             prefix,
             url,
             initialValues: contract,
@@ -100,7 +90,6 @@ interface ExtProps {
 interface StateProps {
   loading: boolean;
   contract: { _status: null | number; [key: string]: any };
-  contractor: { [key: string]: any };
   LPCValidationRules: any;
   LPTUpdateRules: any;
 }
@@ -115,7 +104,6 @@ function mapStateToProps(state: StatePart) {
   return {
     loading: state.contracts.loadingContract || state.groups.loadingGroup,
     contract: state.contracts.contract,
-    contractor: get(state.groups.group, 'owner', {}),
     LPCValidationRules: state.contracts.validationRules.lpc,
     LPTUpdateRules: state.contracts.validationRules.lptUpdate,
   };

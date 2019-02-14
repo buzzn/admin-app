@@ -3,7 +3,7 @@ import * as React from 'react';
 import moment from 'moment';
 import { ReactTableDefaults } from 'react-table';
 import { Link } from 'react-router-dom';
-import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledTooltip } from 'reactstrap';
 
 const FilterComponent = ({ filter, onChange }) => (
   <div className="input-group" style={{ height: '38px' }}>
@@ -14,9 +14,6 @@ const FilterComponent = ({ filter, onChange }) => (
       value={filter ? filter.value : ''}
       onChange={event => onChange(event.target.value)}
     />
-    <span className="input-group-addon">
-      <i className="fa fa-search" />
-    </span>
   </div>
 );
 
@@ -53,8 +50,8 @@ export const tableParts = {
         View
       </Link>
     ),
-    iconCell: ({ icon, action }) => (
-      <span style={{ float: 'right', marginRight: '15px' }}>
+    iconCell: ({ icon, action, tooltip: { id = '', text = '' } = {} }) => (
+      <span style={{ float: 'right', marginRight: '15px' }} id={id}>
         {typeof action === 'string' ? (
           <Link to={action}>
             <i className={`fa fa-${icon}`} />
@@ -62,6 +59,7 @@ export const tableParts = {
         ) : (
           <i onClick={action} className={`fa fa-${icon}`} />
         )}
+        {!!id && !!text && <UncontrolledTooltip target={id}>{text}</UncontrolledTooltip>}
       </span>
     ),
     dropDownCell: ({ row, menuItems }) => (
@@ -186,6 +184,28 @@ export const tableParts = {
         return -1;
       }
       // returning 0, undefined or any falsey value will use subsequent sorts or the index as a tiebreaker
+      return 0;
+    },
+    sortByBillingstatus: (x, y) => {
+      const statusMap = {
+        open: 0,
+        calculated: 1,
+        documented: 2,
+        queued: 3,
+        delivered: 4,
+        settled: 5,
+        void: 6,
+        closed: 7,
+      };
+      const a = statusMap[x];
+      const b = statusMap[y];
+
+      if (a > b) {
+        return 1;
+      }
+      if (a < b) {
+        return -1;
+      }
       return 0;
     },
   },

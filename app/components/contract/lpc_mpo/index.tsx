@@ -70,26 +70,36 @@ const LPCMPOContract = ({
             <Col xs="12">
               <h5 className="grey-underline mt-5 pb-2">
                 <FormattedMessage id={`${prefix}.headerContractsDetails`} />
-                {!editMode
-                  && contract.updatable && (
-                    <i
-                      data-cy="contract edit switch"
-                      className="buzzn-pencil"
-                      style={{ float: 'right' }}
-                      onClick={switchEditMode}
-                    />
+                {!editMode && contract.updatable && (
+                  <i
+                    data-cy="contract edit switch"
+                    className="buzzn-pencil"
+                    style={{ float: 'right' }}
+                    onClick={switchEditMode}
+                  />
                 )}
               </h5>
               {contract.type === 'contract_localpool_processing' && (
-                <TwoColField
-                  {...{
-                    prefix,
-                    name: 'taxNumber',
-                    editMode,
-                    validationRules,
-                    component: EditableInput,
-                  }}
-                />
+                <React.Fragment>
+                  <TwoColField
+                    {...{
+                      prefix,
+                      name: 'taxNumber',
+                      editMode,
+                      validationRules,
+                      component: EditableInput,
+                    }}
+                  />
+                  <TwoColField
+                    {...{
+                      prefix,
+                      name: 'salesTaxNumber',
+                      editMode,
+                      validationRules,
+                      component: EditableInput,
+                    }}
+                  />
+                </React.Fragment>
               )}
               <TwoColView {...{ prefix, field: 'customer' }}>
                 {contract.customer.name || `${contract.customer.firstName} ${contract.customer.lastName}`}

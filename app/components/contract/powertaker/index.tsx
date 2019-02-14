@@ -3,6 +3,10 @@ import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { Row, Col, UncontrolledTooltip } from 'reactstrap';
 import truncate from 'lodash/truncate';
+import get from 'lodash/get';
+import uniqBy from 'lodash/uniqBy';
+import sortBy from 'lodash/sortBy';
+import moment from 'moment';
 import { reduxForm } from 'redux-form';
 import Alert from 'react-s-alert';
 import withEditOverlay from 'components/with_edit_overlay';
@@ -15,7 +19,8 @@ import EditableInput from 'components/editable_input';
 import EditableDate from 'components/editable_date';
 import EditableCheckbox from 'components/editable_checkbox';
 import EditableSelect from 'components/editable_select';
-import { dateNormalizer } from 'validation_normalizers';
+import { PlainList } from 'components/style';
+import { dateNormalizer, numberNormalizer } from 'validation_normalizers';
 
 import {
   ContractHeader,
@@ -31,18 +36,16 @@ import {
 } from '../style';
 
 interface Props {
-  url: string;
   contract: { _status: null | number; [key: string]: any };
   prefix: string;
-  register: any;
+  registerMeta: any;
   contractor: any;
 }
 
 const PowertakerContract = ({
-  url,
   contract,
   prefix,
-  register,
+  registerMeta,
   contractor,
   intl,
   updateContract,
@@ -89,14 +92,17 @@ const PowertakerContract = ({
     switchEditMode();
   });
 
+  const contractorName = contractor.type === 'person' ? `${contractor.firstName} ${contractor.lastName}` : contractor.name;
+  const customerName = contract.customer.type === 'person' ? `${contract.customer.firstName} ${contract.customer.lastName}` : contract.customer.name;
+
   return (
     <div className="contract-data">
       <ContractHeader>
         <BorderCol xs="11">
           <InnerBorderRow>
             <LinkCol xs="6">
-              <BigLink to={`${url}/${contract.id}/powertaker`}>
-                {truncate(contract.customer.name || `${contract.customer.firstName} ${contract.customer.lastName}`, { length: 25 })}{' '}
+              <BigLink to={`/groups/${groupId}/powertakers/${contract.id}/powertaker`}>
+                {truncate(customerName, { length: 25 })}{' '}
                 >
               </BigLink>
               <LinkType>
@@ -105,12 +111,9 @@ const PowertakerContract = ({
             </LinkCol>
             <LinkCol xs="6">
               <BigLink
-                to={`${url
-                  .split('/')
-                  .slice(0, -1)
-                  .join('/')}/market-locations/${register.locationId}`}
+                to={`/groups/${groupId}/market-locations/${registerMeta.id}`}
               >
-                {truncate(register.name, { length: 25 })} >
+                {truncate(registerMeta.name, { length: 25 })} >
               </BigLink>
               <LinkType>
                 <FormattedMessage id={`${prefix}.objectTypeMarketLocation`} />
@@ -120,7 +123,7 @@ const PowertakerContract = ({
           <InnerRow>
             <LinkCol xs="6">
               <BigSpan>
-                {truncate(contractor.name || `${contractor.firstName} ${contractor.lastName}`, { length: 25 })}
+                {truncate(contractorName, { length: 25 })}
               </BigSpan>
               <LinkType>
                 <FormattedMessage id={`${prefix}.objectTypePowerGiver`} />
@@ -160,36 +163,41 @@ const PowertakerContract = ({
             <Col xs="12">
               <h5 className="grey-underline mt-5 pb-2">
                 <FormattedMessage id={`${prefix}.headerContractsDetails`} />
-                {!editMode
-                  && contract.updatable && (
-                    <i
-                      data-cy="contract edit switch"
-                      className="buzzn-pencil"
-                      style={{ float: 'right' }}
-                      onClick={switchEditMode}
-                    />
+                {!editMode && contract.updatable && (
+                  <i
+                    data-cy="contract edit switch"
+                    className="buzzn-pencil"
+                    style={{ float: 'right' }}
+                    onClick={switchEditMode}
+                  />
                 )}
               </h5>
               <TwoColView {...{ prefix, field: 'marketLocation' }}>
                 <Link
-                  to={`${url
-                    .split('/')
-                    .slice(0, -1)
-                    .join('/')}/market-locations/${register.locationId}`}
+                  to={`/groups/${groupId}/market-locations/${registerMeta.id}`}
                 >
-                  {register.name}
+                  {registerMeta.name}
                 </Link>
               </TwoColView>
               <TwoColView {...{ prefix, field: 'meterSerial' }}>
-                {register.meter ? (
-                  <Link
-                    to={`${url
-                      .split('/')
-                      .slice(0, -1)
-                      .join('/')}/market-locations/meters/${register.meterId}`}
-                  >
-                    {register.meter.productSerialnumber}
-                  </Link>
+                {get(registerMeta, 'registers.array', []).length ? (
+                  <PlainList>
+                    {uniqBy(get(registerMeta, 'registers.array', []), 'meterId').map(r => (
+                      <li key={r.meterId}>
+                        <Link
+                          to={`/groups/${groupId}/market-locations/meters/${r.meterId}`}
+                        >
+                          {r.meter.productSerialnumber}
+                          {!!r.readings.array.length && (
+                            <React.Fragment>
+                              , Last reading:{' '}
+                              {sortBy(r.readings.array, reading => moment(reading.date).toDate()).reverse()[0].date}
+                            </React.Fragment>
+                          )}
+                        </Link>
+                      </li>
+                    ))}
+                  </PlainList>
                 ) : (
                   <React.Fragment>
                     <i id="no-meter" className="fa fa-warning" style={{ color: 'red' }} />
@@ -203,7 +211,7 @@ const PowertakerContract = ({
                   : ''}
               </TwoColView>
               <TwoColView {...{ prefix, field: 'customer' }}>
-                <Link to={`${url}/${contract.id}/powertaker`}>
+                <Link to={`/groups/${groupId}/powertakers/${contract.id}/powertaker`}>
                   {contract.customer.name || `${contract.customer.firstName} ${contract.customer.lastName}`}
                 </Link>
               </TwoColView>
@@ -322,6 +330,16 @@ const PowertakerContract = ({
               <TwoColField
                 {...{
                   prefix,
+                  name: 'energyConsumptionBeforeKwhPa',
+                  editMode,
+                  validationRules,
+                  component: EditableInput,
+                  normalize: numberNormalizer,
+                }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
                   name: 'thirdPartyBillingNumber',
                   editMode,
                   validationRules,
@@ -357,7 +375,7 @@ const PowertakerContract = ({
               />
               <TwoColField
                 {...{
-                  prefix,
+                  prefix: 'admin.register_metas',
                   name: 'registerMeta.name',
                   editMode,
                   validationRules,
@@ -366,7 +384,7 @@ const PowertakerContract = ({
               />
               <TwoColField
                 {...{
-                  prefix,
+                  prefix: 'admin.register_metas',
                   name: 'registerMeta.label',
                   editMode,
                   validationRules,

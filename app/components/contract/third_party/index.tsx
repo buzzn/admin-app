@@ -3,19 +3,23 @@ import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { Row, Col } from 'reactstrap';
 import truncate from 'lodash/truncate';
+import get from 'lodash/get';
+import uniqBy from 'lodash/uniqBy';
+import sortBy from 'lodash/sortBy';
 import moment from 'moment';
 import ContractStatus from 'components/contract_status';
 import TwoColView from 'components/two_col_view';
+import { PlainList } from 'components/style';
 import { ContractHeader, BigLink, BigSpan, LinkType, InnerRow, BorderCol, StatusCol, LinkCol } from '../style';
 
 interface Props {
-  url: string;
+  groupId: string;
   contract: { _status: null | number; [key: string]: any };
   prefix: string;
-  register: any;
+  registerMeta: any;
 }
 
-const ThirdPartyContract = ({ url, contract, prefix, register }: Props) => (
+const ThirdPartyContract = ({ contract, prefix, registerMeta, groupId }: Props) => (
   <div className="contract-data">
     <ContractHeader>
       <BorderCol xs="11">
@@ -30,12 +34,9 @@ const ThirdPartyContract = ({ url, contract, prefix, register }: Props) => (
           </LinkCol>
           <LinkCol xs="6">
             <BigLink
-              to={`${url
-                .split('/')
-                .slice(0, -1)
-                .join('/')}/market-locations/${register.locationId}`}
+              to={`/groups/${groupId}/market-locations/${registerMeta.id}`}
             >
-              {truncate(register.name, { length: 25 })} >
+              {truncate(registerMeta.name, { length: 25 })} >
             </BigLink>
             <LinkType>
               <FormattedMessage id={`${prefix}.objectTypeMarketLocation`} />
@@ -58,23 +59,29 @@ const ThirdPartyContract = ({ url, contract, prefix, register }: Props) => (
         </h5>
         <TwoColView {...{ prefix, field: 'marketLocation' }}>
           <Link
-            to={`${url
-              .split('/')
-              .slice(0, -1)
-              .join('/')}/market-locations/${register.locationId}`}
+            to={`/groups/${groupId}/market-locations/${registerMeta.id}`}
           >
-            {register.name}
+            {registerMeta.name}
           </Link>
         </TwoColView>
         <TwoColView {...{ prefix, field: 'meterSerial' }}>
-          <Link
-            to={`${url
-              .split('/')
-              .slice(0, -1)
-              .join('/')}/market-locations/meters/${register.meterId}`}
-          >
-            {register.meter.productSerialnumber}
-          </Link>
+          <PlainList>
+            {uniqBy(get(registerMeta, 'registers.array', []), 'meterId').map(r => (
+              <li key={r.meterId}>
+                <Link
+                  to={`/groups/${groupId}/market-locations/meters/${r.meterId}`}
+                >
+                  {r.meter.productSerialnumber}
+                  {!!r.readings.array.length && (
+                    <React.Fragment>
+                      , Last reading:{' '}
+                      {sortBy(r.readings.array, reading => moment(reading.date).toDate()).reverse()[0].date}
+                    </React.Fragment>
+                  )}
+                </Link>
+              </li>
+            ))}
+          </PlainList>
         </TwoColView>
         <h5 className="grey-underline mt-5 pb-2">
           <FormattedMessage id={`${prefix}.headerDates`} />

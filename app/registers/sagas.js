@@ -1,4 +1,4 @@
-import { put, call, takeLatest, take, cancel, select, fork } from 'redux-saga/effects';
+import { put, call, takeLatest, takeLeading, take, cancel, select, fork } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import { logException } from '_util';
 import MarketLocations from 'market_locations';
@@ -22,7 +22,7 @@ export function* getRegister({ apiUrl, apiPath, token }, { registerId, groupId, 
 export function* getRegisterPower({ apiUrl, apiPath, token }, { registerId, groupId, meterId }) {
   try {
     const power = yield call(api.fetchRegisterPower, { apiUrl, apiPath, token, registerId, groupId, meterId });
-    yield put(actions.setRegisterPower({ power }));
+    yield put(actions.setRegisterPower({ power, registerId }));
   } catch (error) {
     logException(error);
   }
@@ -50,14 +50,12 @@ export function* updateRegister({ apiUrl, apiPath, token }, { registerId, params
 export function* registersSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_REGISTER, getRegister, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_REGISTER_POWER, getRegisterPower, { apiUrl, apiPath, token });
-  yield takeLatest(constants.UPDATE_REGISTER, updateRegister, { apiUrl, apiPath, token });
+  yield takeLeading(constants.UPDATE_REGISTER, updateRegister, { apiUrl, apiPath, token });
   const { groupId } = yield select(selectGroup);
   const { registerId, meterId } = yield select(selectRegister);
-  if (groupId) {
-    if (registerId && meterId) {
-      yield call(getRegister, { apiUrl, apiPath, token }, { registerId, groupId, meterId });
-      yield call(getRegisterPower, { apiUrl, apiPath, token }, { registerId, groupId, meterId });
-    }
+  if (groupId && registerId && meterId) {
+    yield put(actions.loadRegister({ registerId, groupId, meterId }));
+    yield put(actions.loadRegisterPower({ registerId, groupId, meterId }));
   }
 }
 

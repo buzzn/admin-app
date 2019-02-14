@@ -15,6 +15,7 @@ export const constants = {
 
   SET_UI: 'buzzn_admin/SET_UI',
   SET_TABLE_SORT: 'buzzn_admin/SET_TABLE_SORT',
+  SET_TABLE_FILTER: 'buzzn_admin/SET_TABLE_FILTER',
 
   SET_INCOMPLETE_SCREEN: 'buzzn_admin/SET_INCOMPLETE_SCREEN',
 };
@@ -36,6 +37,7 @@ export const actions = {
 
   setUI: ui => ({ type: constants.SET_UI, ui }),
   setTableSort: ({ table, sort }) => ({ type: constants.SET_TABLE_SORT, table, sort }),
+  setTableFilter: ({ table, filter }) => ({ type: constants.SET_TABLE_FILTER, table, filter }),
 
   setIncompleteScreen: incompleteScreen => ({ type: constants.SET_INCOMPLETE_SCREEN, incompleteScreen }),
 };

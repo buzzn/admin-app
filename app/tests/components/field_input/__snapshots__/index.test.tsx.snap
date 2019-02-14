@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`field input tests active 1`] = `
+<div
+  className="form-group false sc-htoDjs joMSuX"
+>
+  <input
+    className="form-control false"
+    type="text"
+    value="value"
+  />
+  <label
+    className="top"
+  >
+    label
+  </label>
+</div>
+`;
+
+exports[`field input tests error 1`] = `
+<div
+  className="form-group has-danger sc-htoDjs joMSuX"
+>
+  <input
+    className="form-control form-control-danger"
+    type="text"
+    value="value"
+  />
+  <label
+    className="top"
+  >
+    label
+  </label>
+  <div
+    className="form-control-feedback"
+  >
+    error
+  </div>
+</div>
+`;
+
+exports[`field input tests inactive 1`] = `
+<div
+  className="form-group false sc-htoDjs joMSuX"
+>
+  <input
+    className="form-control false"
+    type="text"
+    value="value"
+  />
+  <label
+    className="top"
+  >
+    label
+  </label>
+</div>
+`;

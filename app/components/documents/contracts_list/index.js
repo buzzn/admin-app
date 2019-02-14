@@ -1,6 +1,7 @@
 import * as React from 'react';
 import get from 'lodash/get';
 import ReactTable from 'react-table';
+import { Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { UncontrolledTooltip } from 'reactstrap';
 import { tableParts as TableParts } from 'react_table_config';
@@ -62,10 +63,11 @@ class ContractsList extends React.Component {
 
     const contractTypes = [];
     if (
-      get(group.allowedActions, 'createLocalpoolProcessingContract')
-      && !get(group.allowedActions, 'createLocalpoolProcessingContract.localpoolProcessingContract', []).find(
-        e => e === 'cannot be defined',
-      )
+      !get(group.allowedActions, 'createLocalpoolProcessingContract.startDate')
+      && (get(group.allowedActions, 'createLocalpoolProcessingContract')
+        && !get(group.allowedActions, 'createLocalpoolProcessingContract.localpoolProcessingContract', []).find(
+          e => e === 'cannot be defined',
+        ))
     ) {
       contractTypes.push({
         value: 'contract_localpool_processing',
@@ -79,25 +81,27 @@ class ContractsList extends React.Component {
       });
     }
 
-    const data = contracts.filter(c => !!c.id).map(c => ({
-      ...c,
-      typeIntl: intl.formatMessage({ id: `admin.contracts.${c.type}` }),
-      ownerChanged: !['contract_localpool_power_taker', 'contract_localpool_third_party'].includes(c.type)
-        ? get(c.customer, 'id') !== get(group.owner, 'id')
-        : false,
-      since: c.signingDate,
-      number: c.fullContractNumber,
-      link: `${url}/${c.id}`,
-      statusIcon: {
-        value: c.status,
-        Display: (
-          <div>
-            <ContractStatus {...{ size: 'small', status: c.status }} />
-            <span className="ml-2">{intl.formatMessage({ id: `admin.contracts.${c.status}` })}</span>
-          </div>
-        ),
-      },
-    }));
+    const data = contracts
+      .filter(c => !!c.id)
+      .map(c => ({
+        ...c,
+        typeIntl: intl.formatMessage({ id: `admin.contracts.${c.type}` }),
+        ownerChanged: !['contract_localpool_power_taker', 'contract_localpool_third_party'].includes(c.type)
+          ? get(c.customer, 'id') !== get(group.owner, 'id')
+          : false,
+        since: c.signingDate,
+        number: c.fullContractNumber,
+        link: `${url}/${c.id}`,
+        statusIcon: {
+          value: c.status,
+          Display: (
+            <div>
+              <ContractStatus {...{ size: 'small', status: c.status }} />
+              <span className="ml-2">{intl.formatMessage({ id: `admin.contracts.${c.status}` })}</span>
+            </div>
+          ),
+        },
+      }));
 
     const columns = [
       {
@@ -159,10 +163,12 @@ class ContractsList extends React.Component {
     return (
       <div className="p-0">
         {generatingPDF && <Loading absolute={true} />}
-        {!!contractTypes.length && (
+        {contractTypes.length ? (
           <SpanClick onClick={this.switchAddContract} className="float-right" data-cy="add contract CTA">
             <FormattedMessage id="admin.contracts.addNew" /> <i className="fa fa-plus-circle" />
           </SpanClick>
+        ) : (
+          <Link to={`/groups/${groupId}`}>Group settings</Link>
         )}
         <AddContract
           {...{

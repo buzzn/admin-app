@@ -13,7 +13,7 @@ export const constants = {
   UPDATE_GROUP: 'buzzn_groups/UPDATE_GROUP',
   DELETE_GROUP: 'buzzn_groups/DELETE_GROUP',
 
-  UPDATE_OWNER: 'buzzn_groups/UPDATE_OWNER',
+  UPDATE_CONTACT: 'buzzn_groups/UPDATE_CONTACT',
 
   LOAD_GROUPS: 'buzzn_groups/LOAD_GROUPS',
   LOADING_GROUPS: 'buzzn_groups/LOADING_GROUPS',
@@ -56,15 +56,16 @@ export const actions = {
     groupId,
   }),
 
-  updateOwner: ({ groupId, params, resolve, reject, update, ownerId, ownerType }) => ({
-    type: constants.UPDATE_OWNER,
+  updateGroupContact: ({ groupId, params, resolve, reject, update, contactId, contactType, isGap }) => ({
+    type: constants.UPDATE_CONTACT,
     groupId,
     params,
     resolve,
     reject,
     update,
-    ownerId,
-    ownerType,
+    contactId,
+    contactType,
+    isGap,
   }),
 
   loadGroups: () => ({ type: constants.LOAD_GROUPS }),

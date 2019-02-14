@@ -1,4 +1,4 @@
-import { put, call, takeLatest, take, fork, cancel, select } from 'redux-saga/effects';
+import { put, call, takeLatest, takeLeading, take, fork, cancel, select } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import Groups from 'groups';
 import { logException } from '_util';
@@ -57,7 +57,7 @@ export function* addBillingCycle({ apiUrl, apiPath, token }, { params, resolve, 
     } else {
       yield call(resolve, res);
       yield put(Groups.actions.loadGroup(groupId));
-      yield call(getBillingCycles, { apiUrl, apiPath, token }, { groupId });
+      yield put(actions.loadBillingCycles(groupId));
     }
   } catch (error) {
     logException(error);
@@ -65,19 +65,23 @@ export function* addBillingCycle({ apiUrl, apiPath, token }, { params, resolve, 
 }
 
 export function* billingCyclesSagas({ apiUrl, apiPath, token }) {
+  // @ts-ignore
   yield takeLatest(constants.LOAD_BILLING_CYCLES, getBillingCycles, { apiUrl, apiPath, token });
+  // @ts-ignore
   yield takeLatest(constants.LOAD_BILLING_CYCLE, getBillingCycle, { apiUrl, apiPath, token });
-  yield takeLatest(constants.ADD_BILLING_CYCLE, addBillingCycle, { apiUrl, apiPath, token });
+  // @ts-ignore
+  yield takeLeading(constants.ADD_BILLING_CYCLE, addBillingCycle, { apiUrl, apiPath, token });
+  // @ts-ignore
   yield takeLatest(constants.LOAD_BILLING, getBilling, { apiUrl, apiPath, token });
 
   const billingCycleId = yield select(selectBillingCycleId);
   const groupId = yield select(selectGroupId);
   const billingId = yield select(selectBillingId);
-  if (billingCycleId) yield call(getBillingCycle, { apiUrl, apiPath, token }, { billingCycleId, groupId });
-  if (billingId && billingCycleId) {
-    yield call(getBilling, { apiUrl, apiPath, token }, { billingId, groupId, billingCycleId });
+  if (billingCycleId && groupId) yield put(actions.loadBillingCycle({ billingCycleId, groupId }));
+  if (billingId && billingCycleId && groupId) {
+    yield put(actions.loadBilling({ billingId, groupId, billingCycleId }));
   }
-  if (groupId) yield call(getBillingCycles, { apiUrl, apiPath, token }, { groupId });
+  if (groupId) yield put(actions.loadBillingCycles(groupId));
 }
 
 export default function* () {

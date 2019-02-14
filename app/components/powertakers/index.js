@@ -24,7 +24,7 @@ export class Powertakers extends React.Component {
       match: { params: { groupId } },
     } = this.props;
     loadGroup(groupId);
-    loadGroupPowertakers(groupId);
+    loadGroupPowertakers({ groupId });
   }
 
   componentWillUnmount() {
@@ -140,7 +140,17 @@ export class Powertakers extends React.Component {
                   />
                 </Route>
                 <Route path={contractUrl}>
-                  <ContractData {...{ breadcrumbs, title: contract.fullContractNumber, groupId, contractId, url, contractUrl }} />
+                  <ContractData
+                    {...{
+                      breadcrumbs,
+                      title: contract.fullContractNumber,
+                      groupId,
+                      contractId,
+                      url,
+                      contractUrl,
+                      contractType: contract.type,
+                    }}
+                  />
                 </Route>
               </Switch>
             );

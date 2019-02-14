@@ -107,7 +107,7 @@ const formConverter = ({ forms, fields }) => {
     res['Zählernummer'] = get(f, 'oldSupplier.meterNumber', '');
     res['Verbrauch kWh/a HT'] = get(f, 'calculator.annualKwh', '');
     res['Zählverfahren'] = 'SLP';
-    res.Abschlag = formatNumber(get(f, 'price.totalCentsPerMonth', 0) / 100);
+    // res.Abschlag = formatNumber(get(f, 'price.totalCentsPerMonth', 0) / 100);
     res['bisheriger Lieferant'] = get(f, 'oldSupplier.previousProvider', '');
     res['Kundennummer bei Altlieferant'] = get(f, 'oldSupplier.previousCustomerNumber', '');
     res['Handelsvertreter / VM Nr.'] = get(f, 'calculator.group', '');

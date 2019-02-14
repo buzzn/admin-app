@@ -8,6 +8,7 @@ export const initialState = {
   validationRules: {
     billingCreate: { _status: null },
     billingUpdate: { _status: null },
+    readingAttach: { _status: null },
   },
 };
 

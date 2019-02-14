@@ -53,7 +53,11 @@ class UploadModal extends React.Component<Props> {
                 className: 'dropzone',
               }}
             >
-              <div className="dropzone-text"><FormattedMessage id={`${prefix}.dropDocumentsHere`} /></div>
+              {() => (
+                <div className="dropzone-text">
+                  <FormattedMessage id={`${prefix}.dropDocumentsHere`} />
+                </div>
+              )}
             </Dropzone>
           </DropzoneWrapper>
         </ModalBody>
