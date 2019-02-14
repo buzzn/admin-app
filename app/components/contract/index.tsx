@@ -34,7 +34,7 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
     const prefix = 'admin.contracts';
 
     if (contract.type === 'contract_localpool_third_party') {
-      return <ThirdPartyContract {...{ contract, registerMeta: contract.registerMeta, prefix, url }} />;
+      return <ThirdPartyContract {...{ groupId, contract, registerMeta: contract.registerMeta, prefix }} />;
     }
     if (contract.type === 'contract_localpool_power_taker') {
       return (

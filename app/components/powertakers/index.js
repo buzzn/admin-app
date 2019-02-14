@@ -140,7 +140,17 @@ export class Powertakers extends React.Component {
                   />
                 </Route>
                 <Route path={contractUrl}>
-                  <ContractData {...{ breadcrumbs, title: contract.fullContractNumber, groupId, contractId, url, contractUrl }} />
+                  <ContractData
+                    {...{
+                      breadcrumbs,
+                      title: contract.fullContractNumber,
+                      groupId,
+                      contractId,
+                      url,
+                      contractUrl,
+                      contractType: contract.type,
+                    }}
+                  />
                 </Route>
               </Switch>
             );

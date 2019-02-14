@@ -13,13 +13,13 @@ import { PlainList } from 'components/style';
 import { ContractHeader, BigLink, BigSpan, LinkType, InnerRow, BorderCol, StatusCol, LinkCol } from '../style';
 
 interface Props {
-  url: string;
+  groupId: string;
   contract: { _status: null | number; [key: string]: any };
   prefix: string;
   registerMeta: any;
 }
 
-const ThirdPartyContract = ({ url, contract, prefix, registerMeta }: Props) => (
+const ThirdPartyContract = ({ contract, prefix, registerMeta, groupId }: Props) => (
   <div className="contract-data">
     <ContractHeader>
       <BorderCol xs="11">
@@ -34,10 +34,7 @@ const ThirdPartyContract = ({ url, contract, prefix, registerMeta }: Props) => (
           </LinkCol>
           <LinkCol xs="6">
             <BigLink
-              to={`${url
-                .split('/')
-                .slice(0, -3)
-                .join('/')}/market-locations/${registerMeta.id}`}
+              to={`/groups/${groupId}/market-locations/${registerMeta.id}`}
             >
               {truncate(registerMeta.name, { length: 25 })} >
             </BigLink>
@@ -62,10 +59,7 @@ const ThirdPartyContract = ({ url, contract, prefix, registerMeta }: Props) => (
         </h5>
         <TwoColView {...{ prefix, field: 'marketLocation' }}>
           <Link
-            to={`${url
-              .split('/')
-              .slice(0, -3)
-              .join('/')}/market-locations/${registerMeta.id}`}
+            to={`/groups/${groupId}/market-locations/${registerMeta.id}`}
           >
             {registerMeta.name}
           </Link>
@@ -75,10 +69,7 @@ const ThirdPartyContract = ({ url, contract, prefix, registerMeta }: Props) => (
             {uniqBy(get(registerMeta, 'registers.array', []), 'meterId').map(r => (
               <li key={r.meterId}>
                 <Link
-                  to={`${url
-                    .split('/')
-                    .slice(0, -1)
-                    .join('/')}/market-locations/meters/${r.meterId}`}
+                  to={`/groups/${groupId}/market-locations/meters/${r.meterId}`}
                 >
                   {r.meter.productSerialnumber}
                   {!!r.readings.array.length && (
