@@ -28,6 +28,8 @@ import withSuspense from 'components/with_suspense';
 import { EditOverlay, VersionMismatch } from 'style';
 import './react_table_config';
 
+import PureAdmin from 'components/pure_admin';
+
 const WebsiteFormsContainer = React.lazy(() => import('components/website_forms'));
 const PowertakersContainer = React.lazy(() => import('components/powertakers'));
 const BillingsOverviewContainer = React.lazy(() => import('components/billings_overview'));
@@ -188,6 +190,8 @@ class NewRoot extends React.Component {
       versionMismatch,
     } = this.props;
     const { editMode, addGroupOpen } = this.state;
+
+    if (devMode && (Math.random() * 6).toFixed(0) === '5') return <PureAdmin />;
 
     return (
       <React.Fragment>
