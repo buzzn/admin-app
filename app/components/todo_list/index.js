@@ -1,11 +1,20 @@
 import * as React from 'react';
+import hash from 'object-hash';
 import { connect } from 'react-redux';
 import { Nav, NavLink, ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText } from 'reactstrap';
 import { FormattedMessage } from 'react-intl';
+import PureAdmin from 'components/pure_admin';
 
 import './style.scss';
 
-const TodoList = ({ devMode, incompleteScreen }) => (
+function hashCode(s) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (Math.imul(31, h) + s.charCodeAt(i)) | 0;
+
+  return h.toString(16);
+}
+
+const TodoList = ({ devMode, incompleteScreen, state }) => (
   <div className={`todo-list-block ${devMode ? '' : 'under-construction'}`}>
     {!!incompleteScreen.length && (
       <div className="incompleteness">
@@ -19,57 +28,77 @@ const TodoList = ({ devMode, incompleteScreen }) => (
         ))}
       </div>
     )}
-    <Nav className="sub-nav">
-      <NavLink className="active">TODOS</NavLink>
-      <NavLink>Finished</NavLink>
-    </Nav>
-    <div className="todo-list-block">
-      <p className="h5 todo-header">Today</p>
-      <div className="todo-list">
-        <div className="todo-item">
-          <i className="fa fa-check" />Register 1000 meter readings
-        </div>
-        <div className="todo-item">
-          <i className="fa fa-check active" />Sign contracts
-        </div>
-        <div className="todo-item">
-          <i className="fa fa-check active" />Call
-        </div>
+    {devMode ? (
+      <div style={{ height: '800px' }}>
+        <PureAdmin {...{ hash: hashCode(JSON.stringify(state)) }} />
       </div>
-    </div>
-    <div className="todo-list-block">
-      <p className="h5 todo-header">Today</p>
-      <div className="todo-list">
-        <div className="todo-item">
-          <i className="fa fa-check" />Register 1000 meter readings
+    ) : (
+      <React.Fragment>
+        <Nav className="sub-nav">
+          <NavLink className="active">TODOS</NavLink>
+          <NavLink>Finished</NavLink>
+        </Nav>
+        <div className="todo-list-block">
+          <p className="h5 todo-header">Today</p>
+          <div className="todo-list">
+            <div className="todo-item">
+              <i className="fa fa-check" />
+              Register 1000 meter readings
+            </div>
+            <div className="todo-item">
+              <i className="fa fa-check active" />
+              Sign contracts
+            </div>
+            <div className="todo-item">
+              <i className="fa fa-check active" />
+              Call
+            </div>
+          </div>
         </div>
-        <div className="todo-item">
-          <i className="fa fa-check active" />Sign contracts
+        <div className="todo-list-block">
+          <p className="h5 todo-header">Today</p>
+          <div className="todo-list">
+            <div className="todo-item">
+              <i className="fa fa-check" />
+              Register 1000 meter readings
+            </div>
+            <div className="todo-item">
+              <i className="fa fa-check active" />
+              Sign contracts
+            </div>
+            <div className="todo-item">
+              <i className="fa fa-check active" />
+              Call
+            </div>
+          </div>
         </div>
-        <div className="todo-item">
-          <i className="fa fa-check active" />Call
+        <div className="todo-list-block">
+          <p className="h5 todo-header">Today</p>
+          <div className="todo-list">
+            <div className="todo-item">
+              <i className="fa fa-check" />
+              Register 1000 meter readings
+            </div>
+            <div className="todo-item">
+              <i className="fa fa-check active" />
+              Sign contracts
+            </div>
+            <div className="todo-item">
+              <i className="fa fa-check active" />
+              Call
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    <div className="todo-list-block">
-      <p className="h5 todo-header">Today</p>
-      <div className="todo-list">
-        <div className="todo-item">
-          <i className="fa fa-check" />Register 1000 meter readings
-        </div>
-        <div className="todo-item">
-          <i className="fa fa-check active" />Sign contracts
-        </div>
-        <div className="todo-item">
-          <i className="fa fa-check active" />Call
-        </div>
-      </div>
-    </div>
+      </React.Fragment>
+    )}
   </div>
 );
 
 function mapStateToProps(state) {
-  return { incompleteScreen: state.app.incompleteScreen };
+  return { incompleteScreen: state.app.incompleteScreen, state };
 }
 
-export default connect(mapStateToProps, {})(TodoList);
+export default connect(
+  mapStateToProps,
+  {},
+)(TodoList);
