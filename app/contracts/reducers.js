@@ -48,7 +48,16 @@ export default function (state = initialState, action) {
     case constants.LOADED_CONTRACT:
       return { ...state, loadingContract: false };
     case constants.SET_CONTRACT:
-      return { ...state, contract: action.contract, contractor: action.contractor, customer: action.customer };
+      return {
+        ...state,
+        contract: action.contract,
+        contractor: action.contractor,
+        customer: action.customer,
+        groupPowertakers: {
+          ...state.groupPowertakers,
+          array: state.groupPowertakers.array.map(p => (p.id === action.contract.id ? action.contract : p)),
+        },
+      };
 
     case constants.LOAD_CONTRACT_BALANCE_SHEET:
       return { ...state, contractId: action.contractId, groupId: action.groupId };

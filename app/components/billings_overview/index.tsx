@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
+import sortBy from 'lodash/sortBy';
 import moment from 'moment';
 import Contracts from 'contracts';
 import ReactTableSorted from 'components/react_table_sorted';
@@ -37,7 +38,7 @@ const BillingsOverview = ({
   if (powertakers._status === null || loading) return <Loading minHeight={40} />;
 
   const prefix = 'admin.billings';
-  const data = powertakers.array
+  const data = sortBy(powertakers.array, ['id'])
     .filter(p => !!p.billings && p.billings.array.length)
     .flatMap(p => p.billings.array.map(b => ({
       ...b,
