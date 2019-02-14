@@ -136,7 +136,7 @@ const RouterHack = ({
             />
 
             <Col xs="3" className="pl-0 pr-0">
-              <TodoList />
+              <TodoList {...{ devMode }} />
             </Col>
           </Row>
           <Row>
@@ -192,7 +192,7 @@ class NewRoot extends React.Component {
     } = this.props;
     const { editMode, addGroupOpen } = this.state;
 
-    if (devMode && lucky) return <PureAdmin />;
+    if (devMode && lucky) return <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0 }}><PureAdmin /></div>;
 
     return (
       <React.Fragment>
