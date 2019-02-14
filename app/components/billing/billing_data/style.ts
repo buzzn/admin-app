@@ -97,7 +97,7 @@ export const DetailsWrapper = styled(UnmountClosed)`
 interface BarStyleProps {
   width: number;
   transparent?: boolean;
-  status?: 'default' | 'open' | 'closed';
+  status?: 'default' | 'open' | 'calculated' | 'documented' | 'queued' | 'delivered' | 'settled' | 'void' | 'closed';
   contractType?:
     | 'default'
     | 'contract_localpool_power_taker'
@@ -107,31 +107,6 @@ interface BarStyleProps {
 }
 
 const barColors = {
-  default: {
-    open: { bg: 'transparent', border: 'none' },
-    closed: { bg: 'transparent', border: 'none' },
-    default: { bg: 'transparent', border: 'none' },
-  },
-  contract_localpool_power_taker: {
-    open: {
-      bg: 'rgba(0,188,212,0.25)',
-      border: '#00BCD4',
-    },
-    closed: {
-      bg: 'rgba(175,175,175,0.25)',
-      border: '#8C8C8C',
-    },
-  },
-  contract_localpool_gap: {
-    open: {
-      bg: 'rgba(0,188,212,0.5)',
-      border: '#00BCD4',
-    },
-    closed: {
-      bg: 'rgba(158,158,158,0.5)',
-      border: '#8C8C8C',
-    },
-  },
   contract_localpool_third_party: {
     bg: 'rgba(175,175,175,0.5)',
     border: '#9E9E9E',
@@ -139,6 +114,51 @@ const barColors = {
       'repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.08) 16px, rgba(175,175,175,0.75) 4px, rgba(175,175,175,0.75) 18px)',
   },
 };
+
+// TODO: extract to config;
+const billingStatuses = {
+  open: { color: '#00BCD4' },
+  calculated: { color: '#FDD835' },
+  documented: { color: '#F57C00' },
+  queued: { color: '#D4E157' },
+  delivered: { color: '#000000' },
+  settled: { color: '#21D343' },
+  void: { color: '#D84315' },
+  closed: { color: '#8C8C8C' },
+  default: { color: '#8C8C8C' },
+};
+const contractTypes = {
+  contract_localpool_power_taker: { alpha: 0.25 },
+  contract_localpool_gap: { alpha: 0.5 },
+};
+barColors['default'] = Object.keys(billingStatuses).reduce(
+  (res, key) => ({ ...res, [key]: { bg: 'transparent', border: 'none' } }),
+  {},
+);
+const hexToRgbA = (hex, alpha) => {
+  let c;
+  if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+    c = hex.substring(1).split('');
+    if (c.length == 3) {
+      c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+    }
+    c = `0x${c.join('')}`;
+    return `rgba(${[(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',')},${alpha})`;
+  }
+  throw new Error('Bad Hex');
+};
+Object.keys(contractTypes).forEach((contractType) => {
+  barColors[contractType] = Object.keys(billingStatuses).reduce(
+    (res, key) => ({
+      ...res,
+      [key]: {
+        border: billingStatuses[key].color,
+        bg: hexToRgbA(billingStatuses[key].color, contractTypes[contractType].alpha),
+      },
+    }),
+    {},
+  );
+});
 
 export const Bar = styled.div`
   width: ${({ width }: BarStyleProps) => width}%;
