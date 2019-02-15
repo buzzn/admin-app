@@ -21,11 +21,13 @@ const FakeStats = ({ group, updateGroup }) => {
     'utilizationReport',
     'gasReport',
     'sunReport',
+    'electricitySupplier',
+    'tech',
   ]);
 
   const handleSave = () => new Promise((resolve, reject) => {
     if (fields.find(f => !fakeStats[f])) reject('Please fill all values');
-    if (fields.find(f => isNaN(fakeStats[f]))) reject('Only numbers');
+    if (fields.filter(f => !['electricitySupplier', 'tech'].includes(f)).find(f => isNaN(fakeStats[f]))) reject('Only numbers');
     if (ratios.reduce((sum, key) => (sum + parseFloat(fakeStats[key])), 0) !== 100) reject('Sum of ratios should be 100');
     updateGroup({
       groupId: group.id,
