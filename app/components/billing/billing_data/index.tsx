@@ -82,6 +82,7 @@ class BillingData extends React.Component<
       return;
     }
     this.setState({ hackLoading: true });
+    // right now backend can only handle 1 pdf generation at a time :(
     for (let i = 0; i < toUpdate.length; i++) {
       try {
         await new Promise((resolve, reject) => {
