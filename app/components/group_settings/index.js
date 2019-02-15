@@ -19,6 +19,7 @@ import BankAccounts from 'components/bank_accounts';
 import BankAccount from 'components/powertakers/payments/bank_account';
 import Group from './group';
 import Powergiver from './powergiver';
+import FakeStats from './fake_stats';
 
 import './style.scss';
 
@@ -164,6 +165,9 @@ class GroupSettings extends React.Component {
               <NavLink to={`${url}/gapcontact`} exact className="nav-link">
                 <FormattedMessage id="admin.groups.navGapContact" />
               </NavLink>
+              <NavLink to={`${url}/fake-stats`} exact className="nav-link">
+                <FormattedMessage id="admin.groups.navFakeStats" />
+              </NavLink>
             </SubNav>
           </Row>
           <Row>
@@ -273,6 +277,9 @@ class GroupSettings extends React.Component {
                   </GapWrap>
                 )}
               />
+              <Route path={`${url}/fake-stats`}>
+                <FakeStats {...{ group, updateGroup }} />
+              </Route>
               <Route path={url}>
                 <Redirect to={`${url}/group`} />
               </Route>
