@@ -5,19 +5,24 @@ const FakeStats = ({ group, updateGroup }) => {
   const [editMode, setEditMode] = useState(false);
   const [fakeStats, setFakeStats] = useState({});
   if (!Object.keys(fakeStats).length && group.fakeStats && Object.keys(group.fakeStats).length) setFakeStats(group.fakeStats);
-  const fields = [
+  const ratios = [
     'nuclearRatio',
     'coalRatio',
     'gasRatio',
     'otherFossilesRatio',
     'renewablesEegRatio',
     'otherRenewablesRatio',
+  ]
+  const fields = ratios.concat([
     'co2EmissionGrammPerKwh',
     'nuclearWasteMiligrammPerKwh',
     'renterPowerEeg',
-  ];
+  ]);
 
   const handleSave = () => new Promise((resolve, reject) => {
+    if (fields.find(f => !fakeStats[f])) reject('Please fill all values');
+    if (fields.find(f => isNaN(fakeStats[f]))) reject('Only numbers');
+    if (ratios.reduce((sum, key) => (sum + parseFloat(fakeStats[key])), 0) !== 100) reject('Sum of ratios should be 100');
     updateGroup({
       groupId: group.id,
       resolve,
@@ -28,7 +33,7 @@ const FakeStats = ({ group, updateGroup }) => {
     // @ts-ignore
     Alert.success(JSON.stringify(res.fake_stats));
     setEditMode(false);
-  });
+  }).catch(e => Alert.error(e));
 
   return (
     <div>
