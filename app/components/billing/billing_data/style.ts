@@ -233,7 +233,7 @@ export const Bar = styled.div`
 `;
 
 export const Legend = styled.div`
-  width: 50%;
+  width: 100%;
   margin-top: 4rem;
   margin-bottom: 4rem;
   .title {
@@ -248,7 +248,7 @@ export const Legend = styled.div`
     display: flex;
     height: 37px;
     > div {
-      width: 33.333%;
+      width: 12.5%;
     }
     .label {
       text-transform: uppercase;

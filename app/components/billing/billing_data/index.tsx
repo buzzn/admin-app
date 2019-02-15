@@ -273,6 +273,36 @@ class BillingData extends React.Component<
               </div>
               <div className="label">
                 <div>
+                  <FormattedMessage id={`${prefix}.barsLegendVoid`} />
+                </div>
+              </div>
+              <div className="label">
+                <div>
+                  <FormattedMessage id={`${prefix}.barsLegendSettled`} />
+                </div>
+              </div>
+              <div className="label">
+                <div>
+                  <FormattedMessage id={`${prefix}.barsLegendDelivered`} />
+                </div>
+              </div>
+              <div className="label">
+                <div>
+                  <FormattedMessage id={`${prefix}.barsLegendQueued`} />
+                </div>
+              </div>
+              <div className="label">
+                <div>
+                  <FormattedMessage id={`${prefix}.barsLegendDocumented`} />
+                </div>
+              </div>
+              <div className="label">
+                <div>
+                  <FormattedMessage id={`${prefix}.barsLegendCalculated`} />
+                </div>
+              </div>
+              <div className="label">
+                <div>
                   <FormattedMessage id={`${prefix}.barsLegendOpen`} />
                 </div>
               </div>
@@ -285,6 +315,36 @@ class BillingData extends React.Component<
               </div>
               <div>
                 <Bar {...{ width: 80, contractType: 'contract_localpool_power_taker', status: 'closed' }}>
+                  <div className="bar-bg" />
+                </Bar>
+              </div>
+              <div>
+                <Bar {...{ width: 80, contractType: 'contract_localpool_power_taker', status: 'void' }}>
+                  <div className="bar-bg" />
+                </Bar>
+              </div>
+              <div>
+                <Bar {...{ width: 80, contractType: 'contract_localpool_power_taker', status: 'settled' }}>
+                  <div className="bar-bg" />
+                </Bar>
+              </div>
+              <div>
+                <Bar {...{ width: 80, contractType: 'contract_localpool_power_taker', status: 'delivered' }}>
+                  <div className="bar-bg" />
+                </Bar>
+              </div>
+              <div>
+                <Bar {...{ width: 80, contractType: 'contract_localpool_power_taker', status: 'queued' }}>
+                  <div className="bar-bg" />
+                </Bar>
+              </div>
+              <div>
+                <Bar {...{ width: 80, contractType: 'contract_localpool_power_taker', status: 'documented' }}>
+                  <div className="bar-bg" />
+                </Bar>
+              </div>
+              <div>
+                <Bar {...{ width: 80, contractType: 'contract_localpool_power_taker', status: 'calculated' }}>
                   <div className="bar-bg" />
                 </Bar>
               </div>
@@ -306,6 +366,36 @@ class BillingData extends React.Component<
                 </Bar>
               </div>
               <div>
+                <Bar {...{ width: 80, contractType: 'contract_localpool_gap', status: 'void' }}>
+                  <div className="bar-bg" />
+                </Bar>
+              </div>
+              <div>
+                <Bar {...{ width: 80, contractType: 'contract_localpool_gap', status: 'settled' }}>
+                  <div className="bar-bg" />
+                </Bar>
+              </div>
+              <div>
+                <Bar {...{ width: 80, contractType: 'contract_localpool_gap', status: 'delivered' }}>
+                  <div className="bar-bg" />
+                </Bar>
+              </div>
+              <div>
+                <Bar {...{ width: 80, contractType: 'contract_localpool_gap', status: 'queued' }}>
+                  <div className="bar-bg" />
+                </Bar>
+              </div>
+              <div>
+                <Bar {...{ width: 80, contractType: 'contract_localpool_gap', status: 'documented' }}>
+                  <div className="bar-bg" />
+                </Bar>
+              </div>
+              <div>
+                <Bar {...{ width: 80, contractType: 'contract_localpool_gap', status: 'calculated' }}>
+                  <div className="bar-bg" />
+                </Bar>
+              </div>
+              <div>
                 <Bar {...{ width: 80, contractType: 'contract_localpool_gap', status: 'open' }}>
                   <div className="bar-bg" />
                 </Bar>
@@ -322,6 +412,12 @@ class BillingData extends React.Component<
                   <div className="bar-bg" />
                 </Bar>
               </div>
+              <div>-</div>
+              <div>-</div>
+              <div>-</div>
+              <div>-</div>
+              <div>-</div>
+              <div>-</div>
               <div>-</div>
             </div>
           </Legend>
