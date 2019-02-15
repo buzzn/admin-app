@@ -1,5 +1,5 @@
 import saveAs from 'file-saver';
-import { put, call, takeLatest, takeLeading, take, fork, cancel, select } from 'redux-saga/effects';
+import { put, call, takeLatest, takeLeading, takeEvery, take, fork, cancel, select } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import { logException } from '_util';
 import Contracts from 'contracts';
@@ -54,7 +54,7 @@ export function* getBillingPDFData(
 
 export function* changeBilling(
   { apiUrl, apiPath, token, type },
-  { resolve, reject, params, groupId, contractId, ...other },
+  { resolve, reject, params, groupId, contractId, noReload, ...other },
 ) {
   const billingsApi = {
     add: api.addBilling,
@@ -68,6 +68,7 @@ export function* changeBilling(
       yield call(reject, new SubmissionError(res));
     } else {
       yield call(resolve, res);
+      if (noReload) return;
       yield put(actions.loadBillings({ groupId, contractId }));
       // HACK
       yield put(Contracts.actions.loadContract({ groupId, contractId }));
@@ -82,7 +83,7 @@ export function* billingsSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_BILLING, getBilling, { apiUrl, apiPath, token });
   yield takeLatest(constants.GET_BILLING_PDF_DATA, getBillingPDFData, { apiUrl, apiPath, token });
   yield takeLeading(constants.ADD_BILLING, changeBilling, { apiUrl, apiPath, token, type: 'add' });
-  yield takeLeading(constants.UPDATE_BILLING, changeBilling, { apiUrl, apiPath, token, type: 'update' });
+  yield takeEvery(constants.UPDATE_BILLING, changeBilling, { apiUrl, apiPath, token, type: 'update' });
   yield takeLeading(constants.ATTACH_READING, changeBilling, { apiUrl, apiPath, token, type: 'attachReading' });
 
   const billingId = yield select(selectBillingId);

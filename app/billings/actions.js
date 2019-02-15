@@ -57,7 +57,7 @@ export const actions = {
     contractId,
   }),
 
-  updateBilling: ({ params, resolve, reject, groupId, contractId, billingId }) => ({
+  updateBilling: ({ params, resolve, reject, groupId, contractId, billingId, noReload }) => ({
     type: constants.UPDATE_BILLING,
     params,
     resolve,
@@ -65,6 +65,7 @@ export const actions = {
     groupId,
     contractId,
     billingId,
+    noReload,
   }),
 
   attachReading: ({ params, resolve, reject, groupId, contractId, billingId, billingItemId }) => ({
