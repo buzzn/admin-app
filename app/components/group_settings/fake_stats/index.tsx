@@ -17,6 +17,10 @@ const FakeStats = ({ group, updateGroup }) => {
     'co2EmissionGrammPerKwh',
     'nuclearWasteMiligrammPerKwh',
     'renterPowerEeg',
+    'selfSufficiencyReport',
+    'utilizationReport',
+    'gasReport',
+    'sunReport',
   ]);
 
   const handleSave = () => new Promise((resolve, reject) => {
