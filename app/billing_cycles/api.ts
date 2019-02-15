@@ -3,7 +3,7 @@ import { prepareHeaders, parseResponse, camelizeResponseKeys, snakeReq } from '.
 
 export default {
   fetchBillingCycle({ token, apiUrl, apiPath, billingCycleId, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/billing-cycles/${billingCycleId}`, { headers: prepareHeaders(token) })
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/billing-cycles/${billingCycleId}?include=billings`, { headers: prepareHeaders(token) })
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },

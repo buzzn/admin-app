@@ -7,15 +7,17 @@ import Moment from 'moment';
 import orderBy from 'lodash/orderBy';
 import reduce from 'lodash/reduce';
 import { extendMoment } from 'moment-range';
+import Alert from 'react-s-alert';
 import Groups from 'groups';
+import Billings from 'billings';
 import BillingCycles from 'billing_cycles';
 import PageTitle from 'components/page_title';
 import { CenterContent } from 'components/style';
 import Loading from 'components/loading';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
 import { getAllUrlParams } from '_util';
-import { MaLoListHeader, MaLoRow, Bar, Legend, DetailsWrapper } from './style';
 import BillingDetails from 'components/billing_details';
+import { MaLoListHeader, MaLoRow, Bar, Legend, DetailsWrapper } from './style';
 
 const d3 = require('d3');
 
@@ -25,7 +27,7 @@ class BillingData extends React.Component<
   ExtProps & StateProps & DispatchProps & BreadcrumbsProps & InjectedIntlProps,
   BillingDataState
   > {
-  state = { maLoSortAsc: true, maLoSelected: null, barSelected: null, contractSelected: null };
+  state = { maLoSortAsc: true, maLoSelected: null, barSelected: null, contractSelected: null, hackLoading: false };
 
   componentDidMount() {
     const { billingCycleId, groupId, loadBillingCycle, loadGroup } = this.props;
@@ -48,7 +50,10 @@ class BillingData extends React.Component<
     } else {
       this.setState({ maLoSelected: maLoId, barSelected: barId, contractSelected: contractId });
       if (maLoId && barId && contractId) {
-        history.replace({ pathname: history.location.pathname, search: `?malo=${maLoId}&bar=${barId}&contract=${contractId}` });
+        history.replace({
+          pathname: history.location.pathname,
+          search: `?malo=${maLoId}&bar=${barId}&contract=${contractId}`,
+        });
       } else {
         history.replace({ pathname: history.location.pathname });
       }
@@ -63,11 +68,47 @@ class BillingData extends React.Component<
     if (top < 0) window.scrollBy({ top: top - 57, left: 0, behavior: 'smooth' });
   };
 
+  hackStatus = async ({ from, to }) => {
+    if (!confirm('R U Sure?????')) return;
+    const { billingCycle, billingCycleBars, updateBilling, groupId, loadBillingCycle, billingCycleId } = this.props;
+    const toUpdate = billingCycle.billings.array.filter(
+      b => b.status === from && b.allowedActions.update.status[to] === true,
+    );
+    const bars = billingCycleBars.array
+      .flatMap(b => b.bars.array)
+      .reduce((res, b) => ({ ...res, [b.billingId]: b.contractId }), {});
+    if (!toUpdate.length) {
+      Alert.error('Nothing to update');
+      return;
+    }
+    this.setState({ hackLoading: true });
+    for (let i = 0; i < toUpdate.length; i++) {
+      try {
+        await new Promise((resolve, reject) => {
+          updateBilling({
+            params: { status: to, updatedAt: toUpdate[i].updatedAt },
+            resolve,
+            reject,
+            groupId,
+            contractId: bars[toUpdate[i].id],
+            billingId: toUpdate[i].id,
+            noReload: true,
+          });
+        })
+        Alert.success(`Billing ${toUpdate[i].fullInvoiceNumber} updated, ${toUpdate.length - i} to go.`);
+      } catch (e) {
+        Alert.error(JSON.stringify(e))
+      }
+    }
+    loadBillingCycle({ billingCycleId, groupId });
+    this.setState({ hackLoading: false });
+  };
+
   render() {
     const { billingCycle, billingCycleBars, breadcrumbs, url, loading, groupId, groupName, intl, history } = this.props;
-    const { maLoSortAsc, maLoSelected, barSelected, contractSelected } = this.state;
+    const { maLoSortAsc, maLoSelected, barSelected, contractSelected, hackLoading } = this.state;
 
-    if (loading || billingCycle._status === null) return <Loading minHeight={40} />;
+    if (loading || billingCycle._status === null || hackLoading) return <Loading minHeight={40} />;
     if (billingCycle._status && billingCycle._status !== 200) return <Redirect to={url} />;
 
     const prefix = 'admin.billingCycles';
@@ -202,9 +243,7 @@ class BillingData extends React.Component<
                             {b.contractType !== 'contract_localpool_third_party' && (
                               <div className="price">
                                 {!!b.totalAmountBeforeTaxes
-                                  && `${intl.formatNumber((b.totalAmountBeforeTaxes / 100).toFixed(2), { minimumFractionDigits: 2 })}${
-                                    narrow ? '' : '€'
-                                  }`}
+                                  && `${intl.formatNumber((b.totalAmountBeforeTaxes / 100).toFixed(2), { minimumFractionDigits: 2 })}${narrow ? '' : '€'}`}
                               </div>
                             )}
                             <div className="energy">
@@ -213,20 +252,23 @@ class BillingData extends React.Component<
                             </div>
                           </div>
                           <div className="error">
-                            {b.contractType !== 'contract_localpool_third_party' && !!b.errors && !!Object.keys(b.errors).length && (
-                              <React.Fragment>
-                                <i id={`err-tip-${m.id}-${b.billingId}`} className="fa fa-exclamation-triangle" />
-                                <UncontrolledTooltip
-                                  placement="bottom"
-                                  target={`err-tip-${m.id}-${b.billingId}`}
-                                  delay={200}
-                                >
-                                  {reduce(b.errors, (message, errArr) => `${message}${errArr.join(', ')}, `, '').slice(
-                                    0,
-                                    -2,
-                                  )}
-                                </UncontrolledTooltip>
-                              </React.Fragment>
+                            {b.contractType !== 'contract_localpool_third_party'
+                              && !!b.errors
+                              && !!Object.keys(b.errors).length && (
+                                <React.Fragment>
+                                  <i id={`err-tip-${m.id}-${b.billingId}`} className="fa fa-exclamation-triangle" />
+                                  <UncontrolledTooltip
+                                    placement="bottom"
+                                    target={`err-tip-${m.id}-${b.billingId}`}
+                                    delay={200}
+                                  >
+                                    {reduce(
+                                      b.errors,
+                                      (message, errArr) => `${message}${errArr.join(', ')}, `,
+                                      '',
+                                    ).slice(0, -2)}
+                                  </UncontrolledTooltip>
+                                </React.Fragment>
                             )}
                           </div>
                         </div>
@@ -421,6 +463,11 @@ class BillingData extends React.Component<
               <div>-</div>
             </div>
           </Legend>
+          <h5>Status hack:</h5>
+          <button onClick={() => this.hackStatus({ from: 'calculated', to: 'documented' })}>
+            Calculated -> Documented
+          </button>
+          <button onClick={() => this.hackStatus({ from: 'documented', to: 'queued' })}>Documented -> Queued</button>
         </CenterContent>
       </React.Fragment>
     );
@@ -441,6 +488,7 @@ interface BillingDataState {
   maLoSelected: null | string;
   barSelected: null | number;
   contractSelected: null | number;
+  hackLoading: boolean;
 }
 
 interface ExtProps {
@@ -461,6 +509,7 @@ interface DispatchProps {
   loadBillingCycle: Function;
   setBillingCycle: Function;
   loadGroup: Function;
+  updateBilling: Function;
 }
 
 function mapStateToProps(state: StatePart) {
@@ -478,5 +527,6 @@ export default connect<StateProps, DispatchProps, ExtProps>(
     loadBillingCycle: BillingCycles.actions.loadBillingCycle,
     setBillingCycle: BillingCycles.actions.setBillingCycle,
     loadGroup: Groups.actions.loadGroup,
+    updateBilling: Billings.actions.updateBilling,
   },
 )(injectIntl(BillingData));
