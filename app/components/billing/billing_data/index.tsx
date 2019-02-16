@@ -464,11 +464,11 @@ class BillingData extends React.Component<
               <div>-</div>
             </div>
           </Legend>
-          <h5>Status hack:</h5>
-          <button onClick={() => this.hackStatus({ from: 'calculated', to: 'documented' })}>
+          <h5>Change'em all:</h5>
+          <button className="btn btn-secondary" onClick={() => this.hackStatus({ from: 'calculated', to: 'documented' })}>
             Calculated -> Documented
           </button>
-          <button onClick={() => this.hackStatus({ from: 'documented', to: 'queued' })}>Documented -> Queued</button>
+          <button className="btn btn-secondary" onClick={() => this.hackStatus({ from: 'documented', to: 'queued' })}>Documented -> Queued</button>
         </CenterContent>
       </React.Fragment>
     );
