@@ -50,7 +50,7 @@ class Sidebar extends React.Component<Props> {
             <FormattedMessage id={`${prefix}.powertakers`} />
           </SidebarItem>
           <SidebarItem to={`${url}/billings-overview`} icon="fa-binoculars" data-cy="sidebar billings-overview">
-            <FormattedMessage id={`${prefix}.billingsOverview`} />
+            Billings overview
           </SidebarItem>
           <SidebarItem to={`${url}/tariffs`} icon="fa-eur" data-cy="sidebar tariffs">
             <FormattedMessage id={`${prefix}.tariffs`} />
