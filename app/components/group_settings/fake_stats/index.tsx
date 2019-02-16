@@ -34,7 +34,7 @@ const FakeStats = ({ group, updateGroup }) => {
       reject('Only numbers');
       return;
     }
-    if (ratios.reduce((sum, key) => sum + parseFloat(fakeStats[key]), 0) !== 100) {
+    if (parseInt(ratios.reduce((sum, key) => sum + parseFloat(fakeStats[key]), 0).toFixed(0)) !== 100) {
       reject('Sum of ratios should be 100');
       return;
     }
