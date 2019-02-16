@@ -12,7 +12,7 @@ const FakeStats = ({ group, updateGroup }) => {
     'otherFossilesRatio',
     'renewablesEegRatio',
     'otherRenewablesRatio',
-  ]
+  ];
   const fields = ratios.concat([
     'co2EmissionGrammPerKwh',
     'nuclearWasteMiligrammPerKwh',
@@ -26,20 +26,31 @@ const FakeStats = ({ group, updateGroup }) => {
   ]);
 
   const handleSave = () => new Promise((resolve, reject) => {
-    if (fields.find(f => !fakeStats[f])) reject('Please fill all values');
-    if (fields.filter(f => !['electricitySupplier', 'tech'].includes(f)).find(f => isNaN(fakeStats[f]))) reject('Only numbers');
-    if (ratios.reduce((sum, key) => (sum + parseFloat(fakeStats[key])), 0) !== 100) reject('Sum of ratios should be 100');
+    if (fields.find(f => !fakeStats[f])) {
+      reject('Please fill all values');
+      return;
+    }
+    if (fields.filter(f => !['electricitySupplier', 'tech'].includes(f)).find(f => isNaN(fakeStats[f]))) {
+      reject('Only numbers');
+      return;
+    }
+    if (ratios.reduce((sum, key) => sum + parseFloat(fakeStats[key]), 0) !== 100) {
+      reject('Sum of ratios should be 100');
+      return;
+    }
     updateGroup({
       groupId: group.id,
       resolve,
       reject,
       params: { fakeStats: JSON.stringify(fakeStats), updatedAt: group.updatedAt },
     });
-  }).then((res) => {
-    // @ts-ignore
-    Alert.success(JSON.stringify(res.fake_stats));
-    setEditMode(false);
-  }).catch(e => Alert.error(e));
+  })
+    .then((res) => {
+      // @ts-ignore
+      Alert.success(JSON.stringify(res.fake_stats));
+      setEditMode(false);
+    })
+    .catch(e => Alert.error(e));
 
   return (
     <div>
@@ -57,7 +68,14 @@ const FakeStats = ({ group, updateGroup }) => {
       {editMode ? (
         <React.Fragment>
           <button onClick={handleSave}>Save</button>
-          <button onClick={() => setEditMode(false)}>Cancel</button>
+          <button
+            onClick={() => {
+              setEditMode(false);
+              setFakeStats(group.fakeStats || {});
+            }}
+          >
+            Cancel
+          </button>
         </React.Fragment>
       ) : (
         <button onClick={() => setEditMode(true)}>Edit</button>
