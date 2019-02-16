@@ -96,7 +96,7 @@ class BillingData extends React.Component<
             noReload: true,
           });
         })
-        Alert.success(`Billing ${toUpdate[i].fullInvoiceNumber} updated, ${toUpdate.length - i} to go.`);
+        Alert.success(`Billing ${toUpdate[i].fullInvoiceNumber} updated, ${toUpdate.length - i - 1} to go.`);
       } catch (e) {
         Alert.error(JSON.stringify(e))
       }
