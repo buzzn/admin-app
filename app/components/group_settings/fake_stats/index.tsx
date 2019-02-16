@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Alert from 'react-s-alert';
+import { FormGroup, Input, Row, Col } from 'reactstrap';
 
 const FakeStats = ({ group, updateGroup }) => {
   const [editMode, setEditMode] = useState(false);
@@ -54,21 +55,28 @@ const FakeStats = ({ group, updateGroup }) => {
 
   return (
     <div>
-      {fields.map(fieldName => (
-        <div key={fieldName}>
-          <input
-            disabled={!editMode}
-            type="text"
-            value={fakeStats[fieldName] || ''}
-            onChange={({ target: { value } }) => setFakeStats({ ...fakeStats, [fieldName]: value })}
-          />
-          <label>{fieldName}</label>
-        </div>
-      ))}
+      <Row>
+        {fields.map(fieldName => (
+          <Col xs={3}>
+            <FormGroup key={fieldName}>
+              <Input
+                disabled={!editMode}
+                type="text"
+                value={fakeStats[fieldName] || ''}
+                onChange={({ target: { value } }) => setFakeStats({ ...fakeStats, [fieldName]: value })}
+              />
+              <label>{fieldName}</label>
+            </FormGroup>
+          </Col>
+        ))}
+      </Row>
       {editMode ? (
         <React.Fragment>
-          <button onClick={handleSave}>Save</button>
+          <button className="btn btn-primary" onClick={handleSave}>
+            Save
+          </button>
           <button
+            className="btn btn-link"
             onClick={() => {
               setEditMode(false);
               setFakeStats(group.fakeStats || {});
@@ -78,7 +86,9 @@ const FakeStats = ({ group, updateGroup }) => {
           </button>
         </React.Fragment>
       ) : (
-        <button onClick={() => setEditMode(true)}>Edit</button>
+        <button className="btn btn-primary" onClick={() => setEditMode(true)}>
+          Edit
+        </button>
       )}
     </div>
   );
