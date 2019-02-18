@@ -56,7 +56,7 @@ const Form = ({
     delete params.showObject;
     delete params.showProduction;
     delete params.showDisplayApp;
-    params.fakeStats = JSON.stringify(params.fakeStats);
+    params.fakeStats = JSON.stringify(params.fakeStats || {});
     updateGroup({
       groupId: group.id,
       params,
