@@ -44,10 +44,12 @@ export const actions = {
     billingCycleBars,
   }),
 
-  getBillingCycleZip: ({ groupId, billingCycleId }) => ({
+  getBillingCycleZip: ({ groupId, billingCycleId, groupName, year }) => ({
     type: constants.GET_BILLING_CYCLE_ZIP,
     groupId,
     billingCycleId,
+    groupName,
+    year,
   }),
 
   addBillingCycle: ({ params, resolve, reject, groupId }) => ({

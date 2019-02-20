@@ -65,11 +65,11 @@ export function* addBillingCycle({ apiUrl, apiPath, token }, { params, resolve, 
   }
 }
 
-export function* getBillingCycleZip({ apiUrl, apiPath, token }, { groupId, billingCycleId }) {
+export function* getBillingCycleZip({ apiUrl, apiPath, token }, { groupId, billingCycleId, groupName, year }) {
   try {
     const data = yield call(api.fetchbillingCycleZip, { apiUrl, apiPath, token, groupId, billingCycleId });
     // @ts-ignore
-    saveAs(data, `billing_cycle_${groupId}_${billingCycleId}_${(new Date()).getTime()}.zip`);
+    saveAs(data, `Stromrechnung_${year}_${groupName}.zip`);
   } catch (error) {
     logException(error);
   }
