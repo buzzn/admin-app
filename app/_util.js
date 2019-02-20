@@ -50,6 +50,9 @@ export function parseResponse(response) {
     if (type.startsWith('application/pdf')) {
       return response.blob();
     }
+    if (type.startsWith('application/zip')) {
+      return response.blob();
+    }
     return Promise.reject(Error('unknown response content-type'));
   }
   const json = response.json();

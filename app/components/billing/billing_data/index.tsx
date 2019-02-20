@@ -95,10 +95,10 @@ class BillingData extends React.Component<
             billingId: toUpdate[i].id,
             noReload: true,
           });
-        })
+        });
         Alert.success(`Billing ${toUpdate[i].fullInvoiceNumber} updated, ${toUpdate.length - i - 1} to go.`);
       } catch (e) {
-        Alert.error(JSON.stringify(e))
+        Alert.error(JSON.stringify(e));
       }
     }
     loadBillingCycle({ billingCycleId, groupId });
@@ -106,7 +106,19 @@ class BillingData extends React.Component<
   };
 
   render() {
-    const { billingCycle, billingCycleBars, breadcrumbs, url, loading, groupId, groupName, intl, history } = this.props;
+    const {
+      billingCycle,
+      billingCycleBars,
+      breadcrumbs,
+      url,
+      loading,
+      groupId,
+      groupName,
+      intl,
+      history,
+      getBillingCycleZip,
+      billingCycleId,
+    } = this.props;
     const { maLoSortAsc, maLoSelected, barSelected, contractSelected, hackLoading } = this.state;
 
     if (loading || billingCycle._status === null || hackLoading) return <Loading minHeight={40} />;
@@ -465,10 +477,19 @@ class BillingData extends React.Component<
             </div>
           </Legend>
           <h5>Change'em all:</h5>
-          <button className="btn btn-secondary" onClick={() => this.hackStatus({ from: 'calculated', to: 'documented' })}>
+          <button
+            className="btn btn-secondary"
+            onClick={() => this.hackStatus({ from: 'calculated', to: 'documented' })}
+          >
             Calculated -> Documented
           </button>
-          <button className="btn btn-secondary" onClick={() => this.hackStatus({ from: 'documented', to: 'queued' })}>Documented -> Queued</button>
+          <button className="btn btn-secondary" onClick={() => this.hackStatus({ from: 'documented', to: 'queued' })}>
+            Documented -> Queued
+          </button>
+          <h5>Load'em all:</h5>
+          <button className="btn btn-secondary" onClick={() => getBillingCycleZip({ groupId, billingCycleId })}>
+            Load all documents
+          </button>
         </CenterContent>
       </React.Fragment>
     );
@@ -509,6 +530,7 @@ interface StateProps {
 interface DispatchProps {
   loadBillingCycle: Function;
   setBillingCycle: Function;
+  getBillingCycleZip: Function;
   loadGroup: Function;
   updateBilling: Function;
 }
@@ -527,6 +549,7 @@ export default connect<StateProps, DispatchProps, ExtProps>(
   {
     loadBillingCycle: BillingCycles.actions.loadBillingCycle,
     setBillingCycle: BillingCycles.actions.setBillingCycle,
+    getBillingCycleZip: BillingCycles.actions.getBillingCycleZip,
     loadGroup: Groups.actions.loadGroup,
     updateBilling: Billings.actions.updateBilling,
   },

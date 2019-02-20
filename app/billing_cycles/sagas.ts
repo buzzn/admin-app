@@ -1,3 +1,4 @@
+import saveAs from 'file-saver';
 import { put, call, takeLatest, takeLeading, take, fork, cancel, select } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import Groups from 'groups';
@@ -64,11 +65,23 @@ export function* addBillingCycle({ apiUrl, apiPath, token }, { params, resolve, 
   }
 }
 
+export function* getBillingCycleZip({ apiUrl, apiPath, token }, { groupId, billingCycleId }) {
+  try {
+    const data = yield call(api.fetchbillingCycleZip, { apiUrl, apiPath, token, groupId, billingCycleId });
+    // @ts-ignore
+    saveAs(data, `billing_cycle_${groupId}_${billingCycleId}_${(new Date()).getTime()}.zip`);
+  } catch (error) {
+    logException(error);
+  }
+}
+
 export function* billingCyclesSagas({ apiUrl, apiPath, token }) {
   // @ts-ignore
   yield takeLatest(constants.LOAD_BILLING_CYCLES, getBillingCycles, { apiUrl, apiPath, token });
   // @ts-ignore
   yield takeLatest(constants.LOAD_BILLING_CYCLE, getBillingCycle, { apiUrl, apiPath, token });
+  // @ts-ignore
+  yield takeLeading(constants.GET_BILLING_CYCLE_ZIP, getBillingCycleZip, { apiUrl, apiPath, token });
   // @ts-ignore
   yield takeLeading(constants.ADD_BILLING_CYCLE, addBillingCycle, { apiUrl, apiPath, token });
   // @ts-ignore
