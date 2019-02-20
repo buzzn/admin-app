@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import sortBy from 'lodash/sortBy';
+import get from 'lodash/get';
 import moment from 'moment';
 import Contracts from 'contracts';
 import ReactTableSorted from 'components/react_table_sorted';
@@ -58,6 +59,7 @@ const BillingsOverview = ({
                 type: 'avatar',
                 clickable: true,
               },
+      email: get(p.customer, 'contact.email') || p.customer.email,
       beginDate: { display: moment(b.beginDate).format('DD.MM.YYYY'), value: b.beginDate },
       lastDate: { display: moment(b.lastDate).format('DD.MM.YYYY'), value: b.lastDate },
       contract: { ...p, billings: null },
@@ -104,7 +106,12 @@ const BillingsOverview = ({
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableStatus` })} />,
       accessor: 'status',
       sortMethod: TableParts.sort.sortByBillingstatus,
-      Cell: ({ value, original }) => <CellWrap status={original.status}>{value}</CellWrap>,
+      Cell: ({ value, original }) => (
+        <CellWrap status={original.status}>
+          {value}{' '}
+          {!original.email && <i className="fa fa-fax" />}
+        </CellWrap>
+      ),
     },
     {
       expander: true,
