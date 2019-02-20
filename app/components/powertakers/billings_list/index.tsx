@@ -103,6 +103,7 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
               type: 'avatar',
               clickable: true,
             },
+      email: get(contract.customer, 'contact.email') || contract.customer.email,
       contract: { ...contract, billings: null },
       beginDateObj: { display: moment(b.beginDate).format('DD.MM.YYYY'), value: b.beginDate },
       lastDateObj: { display: moment(b.lastDate).format('DD.MM.YYYY'), value: b.lastDate },
@@ -135,9 +136,10 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
         Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableStatus` })} />,
         accessor: 'status',
         sortMethod: TableParts.sort.sortByBillingstatus,
-        Cell: ({ value }) => (
+        Cell: ({ value, original }) => (
           <span>
-            <BillingStatus {...{ status: value, size: 'small' }} /> {value}
+            <BillingStatus {...{ status: value, size: 'small' }} /> {value}{' '}
+            {!original.email && <i className="fa fa-fax" />}
           </span>
         ),
       },
