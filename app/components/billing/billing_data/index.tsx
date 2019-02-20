@@ -483,11 +483,17 @@ class BillingData extends React.Component<
           >
             Calculated -> Documented
           </button>
+          <button
+            className="btn btn-secondary"
+            onClick={() => this.hackStatus({ from: 'documented', to: 'documented' })}
+          >
+            Регенерация
+          </button>
           <button className="btn btn-secondary" onClick={() => this.hackStatus({ from: 'documented', to: 'queued' })}>
             Documented -> Queued
           </button>
           <h5>Load'em all:</h5>
-          <button className="btn btn-secondary" onClick={() => getBillingCycleZip({ groupId, billingCycleId })}>
+          <button className="btn btn-secondary" onClick={() => getBillingCycleZip({ groupId, billingCycleId, groupName, year: moment(billingCycle.lastDate).format('YYYY') })}>
             Load all documents
           </button>
         </CenterContent>
