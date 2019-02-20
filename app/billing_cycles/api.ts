@@ -12,6 +12,9 @@ export default {
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
+  fetchbillingCycleZip({ token, apiUrl, apiPath, billingCycleId, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/billing-cycles/${billingCycleId}/zip`, { headers: prepareHeaders(token) }).then(parseResponse);
+  },
   fetchBillingCycles({ token, apiUrl, apiPath, groupId }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/billing-cycles`, { headers: prepareHeaders(token) })
       .then(parseResponse)
@@ -25,7 +28,10 @@ export default {
     }).then(parseResponse);
   },
   fetchBilling({ token, apiUrl, apiPath, billingId, groupId, billingCycleId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/billing-cycles/${billingCycleId}/billings/${billingId}?include=contract:[customer],items:[meter,tariff]`, { headers: prepareHeaders(token) })
+    return fetch(
+      `${apiUrl}${apiPath}/localpools/${groupId}/billing-cycles/${billingCycleId}/billings/${billingId}?include=contract:[customer],items:[meter,tariff]`,
+      { headers: prepareHeaders(token) },
+    )
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
