@@ -24,7 +24,7 @@ export const isAlphaNumeric = value => (value && /[^a-zA-Z0-9 ]/i.test(value) ? 
 
 export const isPhoneNumber = value => (value && !/^(0|[1-9][0-9]{9})$/i.test(value) ? 'Invalid phone number, must be 10 digits' : undefined);
 
-export const isIncluded = list => value => (value === undefined || value === null || list.includes(value) ? undefined : 'Must be the one of the values');
+export const isIncluded = list => value => (value === undefined || value === '' || value === null || list.includes(value) ? undefined : 'Must be the one of the values');
 
 export const isDate = value => (value === undefined || value === '' || value === null || moment(value).isValid() ? undefined : 'Must be a valid date');
 
