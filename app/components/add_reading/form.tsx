@@ -54,11 +54,11 @@ class AddReadingForm extends React.Component<Props & InjectedIntlProps> {
               <Col xs={8}>
                 <FieldValidationWrapper
                   {...{
-                    name: 'rawValue',
+                    name: 'value',
                     type: 'text',
                     label: (
                       <React.Fragment>
-                        <FormattedMessage id={`${prefix}.rawValue`} /> kWh
+                        <FormattedMessage id={`${prefix}.value`} /> kWh
                       </React.Fragment>
                     ),
                     component: FieldInput,
