@@ -161,9 +161,16 @@ class MeterData extends React.Component<Props> {
                   normalize: dateNormalizer('YYYY-MM-DD'),
                 }}
               />
-              <TwoColView {...{ prefix, field: 'converterConstant' }}>
-                {meter.converterConstant}
-              </TwoColView>
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'converterConstant',
+                  editMode,
+                  validationRules,
+                  component: EditableInput,
+                  normalize: numberNormalizer,
+                }}
+              />
               <TwoColField
                 {...{ prefix, name: 'locationDescription', editMode, validationRules, component: EditableInput }}
               />
