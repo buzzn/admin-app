@@ -1,5 +1,6 @@
 import saveAs from 'file-saver';
-import { put, call, takeLatest, takeLeading, take, fork, cancel, select } from 'redux-saga/effects';
+import { channel } from 'redux-saga';
+import { put, call, takeLatest, takeLeading, take, fork, cancel, select, race, delay } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import Groups from 'groups';
 import { logException } from '_util';
@@ -9,8 +10,11 @@ import api from './api';
 export const selectBillingCycleId = state => state.billingCycles.billingCycleId;
 export const selectGroupId = state => state.billingCycles.groupId;
 export const selectBillingId = state => state.billingCycles.billingId;
+export const selectBillingCycle = state => state.billingCycles.billingCycle;
+export const selectBillingCycleBars = state => state.billingCycles.billingCycleBars;
 
-export function* getBillingCycle({ apiUrl, apiPath, token }, { billingCycleId, groupId }) {
+export function* getBillingCycle({ apiUrl, apiPath, token, resetChan }, { billingCycleId, groupId }) {
+  yield put(resetChan, true);
   yield put(actions.loadingBillingCycle());
   try {
     const billingCycle = yield call(api.fetchBillingCycle, { apiUrl, apiPath, token, billingCycleId, groupId });
@@ -26,6 +30,30 @@ export function* getBillingCycle({ apiUrl, apiPath, token }, { billingCycleId, g
     logException(error);
   }
   yield put(actions.loadedBillingCycle());
+}
+
+export function* reloadBars({ apiUrl, apiPath, token, resetChan }) {
+  while (true) {
+    const { reset } = yield race({
+      reload: delay(5000),
+      reset: take(resetChan),
+    });
+    if (reset) continue;
+    const groupId = yield select(selectGroupId);
+    const billingCycle = yield select(selectBillingCycle);
+    let billingCycleBars = yield select(selectBillingCycleBars);
+    if (!groupId || !billingCycle.id || !billingCycleBars.array.length) continue;
+    // const shouldUpdate = !!billingCycleBars.array.find(meta => !!meta.bars.array.find(bar => bar.status === 'queued'));
+    // if (!shouldUpdate) continue;
+    billingCycleBars = yield call(api.fetchbillingCycleBars, {
+      apiUrl,
+      apiPath,
+      token,
+      billingCycleId: billingCycle.id,
+      groupId,
+    });
+    yield put(actions.setBillingCycle({ billingCycle, billingCycleBars }));
+  }
 }
 
 export function* getBilling({ apiUrl, apiPath, token }, { billingId, groupId, billingCycleId }) {
@@ -76,10 +104,12 @@ export function* getBillingCycleZip({ apiUrl, apiPath, token }, { groupId, billi
 }
 
 export function* billingCyclesSagas({ apiUrl, apiPath, token }) {
+  const resetChan = yield call(channel);
   // @ts-ignore
   yield takeLatest(constants.LOAD_BILLING_CYCLES, getBillingCycles, { apiUrl, apiPath, token });
   // @ts-ignore
-  yield takeLatest(constants.LOAD_BILLING_CYCLE, getBillingCycle, { apiUrl, apiPath, token });
+  yield takeLatest(constants.LOAD_BILLING_CYCLE, getBillingCycle, { apiUrl, apiPath, token, resetChan });
+  yield fork(reloadBars, { apiUrl, apiPath, token, resetChan });
   // @ts-ignore
   yield takeLeading(constants.GET_BILLING_CYCLE_ZIP, getBillingCycleZip, { apiUrl, apiPath, token });
   // @ts-ignore

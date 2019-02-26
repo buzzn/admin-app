@@ -109,8 +109,6 @@ const BillingDetails = ({
 
   const allowedStatus = Object.keys(billing.allowedActions.update.status)
     .filter(k => billing.allowedActions.update.status[k] === true)
-    // HACK: tmp hack for v1.0
-    .filter(k => k !== 'void')
     .map(k => ({ value: k, label: k }));
   const reduceErrs = errObj => Object.keys(errObj).reduce((err, k) => {
     if (typeof errObj[k] === 'string') return `${err}${k}: ${errObj[k]}, `;

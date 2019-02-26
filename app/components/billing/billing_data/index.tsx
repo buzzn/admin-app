@@ -37,6 +37,10 @@ class BillingData extends React.Component<
     if (malo && bar & contract) this.setState({ maLoSelected: malo, barSelected: parseInt(bar), contractSelected: parseInt(contract) });
   }
 
+  componentWillUnmount() {
+    this.props.setBillingCycle({ billingCycle: { _status: null }, billingCycleBars: { _status: null, array: [] } });
+  }
+
   switchMaLoSort = () => {
     this.setState({ maLoSortAsc: !this.state.maLoSortAsc });
   };
