@@ -5,6 +5,7 @@ import { reduxForm } from 'redux-form';
 import { FormattedMessage } from 'react-intl';
 import { Col, FormGroup, CustomInput } from 'reactstrap';
 import Select from 'react-select';
+import Loading from 'components/loading';
 import withEditOverlay from 'components/with_edit_overlay';
 import FormPanel from 'components/form_panel';
 import { mainStyle } from 'components/react_select_styles';
@@ -20,6 +21,7 @@ interface Props {
   editMode: boolean;
   loadAvailableUsers: () => void;
   loadAvailableOrganizations: () => void;
+  loadingOptions: boolean;
   updateGroupContact: (any) => void;
   updatable: boolean;
   availableUsers: { _status: null | number; array: Array<any> };
@@ -209,6 +211,7 @@ class Powergiver extends React.Component<Props, State> {
       editMode,
       availableUsers,
       availableOrganizations,
+      loadingOptions,
       pristine,
       reset,
       submitting,
@@ -247,9 +250,9 @@ class Powergiver extends React.Component<Props, State> {
       <Col xs="12">
         <p className="h5 grey-underline header text-uppercase">
           <FormattedMessage id={`${prefix}.${isGap ? 'headerGCC' : 'headerPowergiver'}`} />
-          {!editMode
-            && owner.id
-            && updatable && <i className="buzzn-pencil" style={{ float: 'right' }} onClick={this.switchEditMode} />}
+          {!editMode && owner.id && updatable && (
+            <i className="buzzn-pencil" style={{ float: 'right' }} onClick={this.switchEditMode} />
+          )}
         </p>
         <form onSubmit={handleSubmit(this.submitForm)} data-cy="group owner form">
           <FormPanel
@@ -265,41 +268,44 @@ class Powergiver extends React.Component<Props, State> {
               saveDisabled: (pristine && !selectedOwner) || submitting,
             }}
           >
-            {updatable
-              && !owner.id && (
-                <OwnerOptions>
-                  <FormGroup check inline data-cy="group owner radio person">
-                    <CustomInput
-                      checked={ownerType === 'person'}
-                      type="radio"
-                      name="ownerType"
-                      onChange={() => this.handleOwnerType('person')}
-                      label="Person"
-                      id="person-radio"
-                    />
-                  </FormGroup>
-                  <FormGroup check inline>
-                    <CustomInput
-                      checked={ownerType === 'organization'}
-                      type="radio"
-                      name="ownerType"
-                      onChange={() => this.handleOwnerType('organization')}
-                      label="Organization"
-                      id="organization-radio"
-                    />
-                  </FormGroup>
-                </OwnerOptions>
+            {updatable && !owner.id && (
+              <OwnerOptions>
+                <FormGroup check inline data-cy="group owner radio person">
+                  <CustomInput
+                    checked={ownerType === 'person'}
+                    type="radio"
+                    name="ownerType"
+                    onChange={() => this.handleOwnerType('person')}
+                    label="Person"
+                    id="person-radio"
+                  />
+                </FormGroup>
+                <FormGroup check inline>
+                  <CustomInput
+                    checked={ownerType === 'organization'}
+                    type="radio"
+                    name="ownerType"
+                    onChange={() => this.handleOwnerType('organization')}
+                    label="Organization"
+                    id="organization-radio"
+                  />
+                </FormGroup>
+              </OwnerOptions>
             )}
             {!owner.id && !ownerType ? null : owner.type === 'person' || ownerType === 'person' ? (
               <React.Fragment>
                 {editMode && (
                   <React.Fragment>
-                    <Select
-                      options={personOptions}
-                      onChange={this.handleExistingSelect}
-                      styles={mainStyle}
-                      value={selectedOwner}
-                    />
+                    {loadingOptions ? (
+                      <Loading {...{ minHeight: 60, unit: 'px' }} />
+                    ) : (
+                      <Select
+                        options={personOptions}
+                        onChange={this.handleExistingSelect}
+                        styles={mainStyle}
+                        value={selectedOwner}
+                      />
+                    )}
                     <br />
                   </React.Fragment>
                 )}
@@ -318,12 +324,16 @@ class Powergiver extends React.Component<Props, State> {
               <React.Fragment>
                 {editMode && (
                   <React.Fragment>
-                    <Select
-                      options={organizationOptions}
-                      onChange={this.handleExistingSelect}
-                      styles={mainStyle}
-                      value={selectedOwner}
-                    />
+                    {loadingOptions ? (
+                      <Loading {...{ minHeight: 60, unit: 'px' }} />
+                    ) : (
+                      <Select
+                        options={organizationOptions}
+                        onChange={this.handleExistingSelect}
+                        styles={mainStyle}
+                        value={selectedOwner}
+                      />
+                    )}
                     <br />
                   </React.Fragment>
                 )}
@@ -340,6 +350,7 @@ class Powergiver extends React.Component<Props, State> {
                     overrideLR: selectedLR
                       ? availableUsers.array.find(o => o.id === (selectedLR || { value: null }).value)
                       : null,
+                    loadingOptions,
                     validationRules: organizationValidationRules,
                     personOptions,
                     handleContactChange: this.handleContactChange,

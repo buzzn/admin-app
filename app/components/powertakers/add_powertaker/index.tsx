@@ -6,6 +6,7 @@ import { FormattedMessage } from 'react-intl';
 import { Col, FormGroup, CustomInput } from 'reactstrap';
 import Select from 'react-select';
 import { Link, Prompt } from 'react-router-dom';
+import Loading from 'components/loading';
 import withEditOverlay from 'components/with_edit_overlay';
 import FormPanel from 'components/form_panel';
 import { mainStyle } from 'components/react_select_styles';
@@ -27,6 +28,7 @@ interface Props {
   editMode: boolean;
   loadAvailableUsers: () => void;
   loadAvailableOrganizations: () => void;
+  loadingOptions: boolean;
   loadMarketLocations: () => void;
   addContract: (any) => void;
   availableUsers: { _status: null | number; array: Array<any> };
@@ -187,6 +189,7 @@ class AddPowertaker extends React.Component<Props, State> {
     const {
       availableUsers,
       availableOrganizations,
+      loadingOptions,
       marketLocations,
       handleSubmit,
       validationRules: allRules,
@@ -258,12 +261,16 @@ class AddPowertaker extends React.Component<Props, State> {
             {!customerType ? null : customerType === 'person' ? (
               <React.Fragment>
                 <React.Fragment>
-                  <Select
-                    options={personOptions}
-                    onChange={this.handleExistingSelect}
-                    styles={mainStyle}
-                    value={selectedCustomer}
-                  />
+                  {loadingOptions ? (
+                    <Loading {...{ minHeight: 60, unit: 'px' }} />
+                  ) : (
+                    <Select
+                      options={personOptions}
+                      onChange={this.handleExistingSelect}
+                      styles={mainStyle}
+                      value={selectedCustomer}
+                    />
+                  )}
                   <br />
                 </React.Fragment>
                 <PersonFields
@@ -280,12 +287,16 @@ class AddPowertaker extends React.Component<Props, State> {
             ) : (
               <React.Fragment>
                 <React.Fragment>
-                  <Select
-                    options={organizationOptions}
-                    onChange={this.handleExistingSelect}
-                    styles={mainStyle}
-                    value={selectedCustomer}
-                  />
+                  {loadingOptions ? (
+                    <Loading {...{ minHeight: 60, unit: 'px' }} />
+                  ) : (
+                    <Select
+                      options={organizationOptions}
+                      onChange={this.handleExistingSelect}
+                      styles={mainStyle}
+                      value={selectedCustomer}
+                    />
+                  )}
                   <br />
                 </React.Fragment>
                 <OrganizationFields
@@ -301,6 +312,7 @@ class AddPowertaker extends React.Component<Props, State> {
                     overrideLR: selectedLR
                       ? availableUsers.array.find(o => o.id === (selectedLR || { value: null }).value)
                       : null,
+                    loadingOptions,
                     validationRules,
                     personOptions,
                     handleContactChange: this.handleContactChange,
@@ -495,12 +507,14 @@ class AddPowertaker extends React.Component<Props, State> {
             />
             {Array.isArray(addPowertakerErrors.registerMeta) && (
               <RegisterMetaErrors>
-                {addPowertakerErrors.registerMeta.filter(e => e !== null && typeof e === 'object').map((e, i) => (
-                  <li key={i}>
-                    <FormattedMessage id={`${prefix}.${e.error}`} />{' '}
-                    <Link to={`${url}/${e.contractId}`}>Contract id: {e.contractId}</Link>
-                  </li>
-                ))}
+                {addPowertakerErrors.registerMeta
+                  .filter(e => e !== null && typeof e === 'object')
+                  .map((e, i) => (
+                    <li key={i}>
+                      <FormattedMessage id={`${prefix}.${e.error}`} />{' '}
+                      <Link to={`${url}/${e.contractId}`}>Contract id: {e.contractId}</Link>
+                    </li>
+                  ))}
               </RegisterMetaErrors>
             )}
             <br />

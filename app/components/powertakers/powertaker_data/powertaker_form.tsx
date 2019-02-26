@@ -20,6 +20,7 @@ interface Props {
   switchEditMode: () => void;
   editMode: boolean;
   loadAvailableUsers: () => void;
+  loadingOptions: boolean;
   updateContract: (any) => void;
   availableUsers: { _status: null | number; array: Array<any> };
   pristine: boolean;
@@ -171,6 +172,7 @@ class PowertakerForm extends React.Component<Props, State> {
     const {
       powertaker,
       availableUsers,
+      loadingOptions,
       editMode,
       handleSubmit,
       pristine,
@@ -230,6 +232,7 @@ class PowertakerForm extends React.Component<Props, State> {
                 overrideLR: selectedLR
                   ? availableUsers.array.find(o => o.id === (selectedLR || { value: null }).value)
                   : null,
+                loadingOptions,
                 validationRules,
                 personOptions,
                 handleContactChange: this.handleContactChange,

@@ -58,6 +58,7 @@ class PowertakerData extends React.Component<
       contractId,
       powertakerId,
       loadAvailableUsers,
+      loadingOptions,
       updatable,
     } = this.props;
 
@@ -147,6 +148,7 @@ class PowertakerData extends React.Component<
                   contractId,
                   powertakerId,
                   loadAvailableUsers,
+                  loadingOptions,
                   updatable,
                 }}
               />
@@ -203,6 +205,7 @@ interface StatePart {
     loadingGroupUser: boolean;
     groupUser: { _status: null | number; [key: string]: any };
     availableUsers: { _status: null | number; array: Array<any> };
+    loadingAvailableUsers: boolean;
   };
   organizations: { loadingGroupOrganization: boolean; groupOrganization: { _status: null | number; [key: string]: any } };
   contracts: {
@@ -226,6 +229,7 @@ interface StateProps {
   powertaker: { _status: null | number; [key: string]: any };
   loading: boolean;
   availableUsers: { _status: null | number; array: Array<any> };
+  loadingOptions: boolean;
   validationRules: {
     lptOrgCustomer: { [key: string]: { any } };
     lptPerCustomer: { [key: string]: { any } };
@@ -243,6 +247,7 @@ function mapStateToProps(state: StatePart, props: ExtProps) {
   return {
     powertaker: props.powertakerType === 'person' ? state.users.groupUser : state.organizations.groupOrganization,
     loading: state.users.loadingGroupUser || state.organizations.loadingGroupOrganization,
+    loadingOptions: state.users.loadingAvailableUsers,
     availableUsers: state.users.availableUsers,
     validationRules: state.contracts.validationRules,
   };

@@ -4,6 +4,7 @@ import { FieldArray } from 'redux-form';
 import Select from 'react-select';
 import { FormattedMessage } from 'react-intl';
 import get from 'lodash/get';
+import Loading from 'components/loading';
 import FieldValidationWrapper from 'components/field_validation_wrapper';
 import EditableInput from 'components/editable_input';
 import EditableInputArray from 'components/editable_input_array';
@@ -17,6 +18,7 @@ interface Props {
   overrideData: null | { [key: string]: any };
   overrideContact: null | { [key: string]: any };
   overrideLR: null | { [key: string]: any };
+  loadingOptions?: boolean;
   validationRules: { [key: string]: any };
   personOptions: Array<{ value: null | string; label: string }>;
   handleContactChange: Function;
@@ -31,6 +33,7 @@ const OrganizationFields = ({
   overrideData,
   overrideContact,
   overrideLR,
+  loadingOptions,
   validationRules,
   personOptions,
   handleContactChange,
@@ -148,29 +151,35 @@ const OrganizationFields = ({
         </Col>
       </Row>
       <br />
-      {editMode && (
-        <Select
-          options={personOptions}
-          onChange={handleContactChange}
-          styles={mainStyle}
-          value={selectedContact}
-          isDisabled={!!overrideData}
-        />
-      )}
+      {editMode
+        && (loadingOptions ? (
+          <Loading {...{ minHeight: 60, unit: 'px' }} />
+        ) : (
+          <Select
+            options={personOptions}
+            onChange={handleContactChange}
+            styles={mainStyle}
+            value={selectedContact}
+            isDisabled={!!overrideData}
+          />
+        ))}
       <br />
       <PersonFields
         {...{ editMode, path: `${path ? `${path}` : ''}contact.`, overrideData: overridePerson, validationRules }}
       />
       <br />
-      {editMode && (
-        <Select
-          options={personOptions}
-          onChange={handleLRChange}
-          styles={mainStyle}
-          value={selectedLR}
-          isDisabled={!!overrideData}
-        />
-      )}
+      {editMode
+        && (loadingOptions ? (
+          <Loading {...{ minHeight: 60, unit: 'px' }} />
+        ) : (
+          <Select
+            options={personOptions}
+            onChange={handleLRChange}
+            styles={mainStyle}
+            value={selectedLR}
+            isDisabled={!!overrideData}
+          />
+        ))}
       <br />
       <PersonFields
         {...{

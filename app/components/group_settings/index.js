@@ -104,6 +104,7 @@ class GroupSettings extends React.Component {
       loadAvailableUsers,
       availableOrganizations,
       loadAvailableOrganizations,
+      loadingOptions,
       updateGroupContact,
 
       gap,
@@ -202,6 +203,7 @@ class GroupSettings extends React.Component {
                         availableUsers,
                         availableOrganizations,
                         loadAvailableOrganizations,
+                        loadingOptions,
                         validationRules,
                         updateGroupContact: params => updateGroupContact({ groupId: group.id, isGap: false, ...params }),
                         // HACK: nested objects can be null on server after beekeeper import in some cases
@@ -237,6 +239,7 @@ class GroupSettings extends React.Component {
                         availableUsers,
                         availableOrganizations,
                         loadAvailableOrganizations,
+                        loadingOptions,
                         validationRules,
                         updateGroupContact: params => updateGroupContact({ groupId: group.id, isGap: true, ...params }),
                         // HACK: nested objects can be null on server after beekeeper import in some cases
@@ -308,6 +311,7 @@ const mapStateToProps = state => ({
   gap: state.groups.group.gapContractCustomer || {},
 
   loading: state.groups.loadingGroup,
+  loadingOptions: state.users.loadingAvailableUsers || state.organizations.loadingAvailableOrganizations,
 
   validationRules: state.groups.validationRules,
 });
