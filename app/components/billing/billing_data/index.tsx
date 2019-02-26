@@ -6,6 +6,7 @@ import { UncontrolledTooltip } from 'reactstrap';
 import Moment from 'moment';
 import orderBy from 'lodash/orderBy';
 import reduce from 'lodash/reduce';
+import isEqual from 'lodash/isEqual';
 import { extendMoment } from 'moment-range';
 import Alert from 'react-s-alert';
 import Groups from 'groups';
@@ -38,6 +39,7 @@ class BillingData extends React.Component<
     killSwitch: false,
     killValidation: '',
     killErr: '',
+    statuses: {},
   };
 
   componentDidMount() {
@@ -46,6 +48,15 @@ class BillingData extends React.Component<
     loadBillingCycle({ billingCycleId, groupId });
     const { malo, bar, contract }: any = getAllUrlParams();
     if (malo && bar & contract) this.setState({ maLoSelected: malo, barSelected: parseInt(bar), contractSelected: parseInt(contract) });
+  }
+
+  componentDidUpdate() {
+    const { billingCycleBars } = this.props;
+    const { statuses } = this.state;
+    const newStatuses = billingCycleBars.array
+      .flatMap(m => m.bars.array.filter(b => b.contractType !== 'contract_localpool_third_party').map(b => b.status))
+      .reduce((res, status) => ({ ...res, [status]: res[status] ? res[status] + 1 : 1 }), {});
+    if (!isEqual(newStatuses, statuses)) this.setState({ statuses: newStatuses });
   }
 
   componentWillUnmount() {
@@ -162,6 +173,7 @@ class BillingData extends React.Component<
       killSwitch,
       killValidation,
       killErr,
+      statuses,
     } = this.state;
 
     if (loading || billingCycle._status === null || hackLoading) return <Loading minHeight={40} />;
@@ -519,30 +531,43 @@ class BillingData extends React.Component<
               <div>-</div>
             </div>
           </Legend>
-          <MassChangeBlock>
-            <h5>Change'em all:</h5>
-            <button
-              className="btn btn-secondary"
-              onClick={() => this.hackStatus({ from: 'open', to: 'calculated' })}
-            >
-              Open ➟ Calculated
-            </button>
-            <button
-              className="btn btn-secondary"
-              onClick={() => this.hackStatus({ from: 'calculated', to: 'documented' })}
-            >
-              Calculated ➟ Documented
-            </button>
-            <button
-              className="btn btn-secondary"
-              onClick={() => this.hackStatus({ from: 'documented', to: 'documented' })}
-            >
-              Documented ➟ Documented
-            </button>
-            <button className="btn btn-secondary" onClick={() => this.hackStatus({ from: 'documented', to: 'queued' })}>
-              Documented ➟ Queued
-            </button>
-          </MassChangeBlock>
+          {!!['open', 'calculated', 'documented'].find(s => !!Object.keys(statuses).find(k => k === s)) && (
+            <MassChangeBlock>
+              <h5>Change'em all:</h5>
+              {!!statuses['open'] && (
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => this.hackStatus({ from: 'open', to: 'calculated' })}
+                >
+                  Open ➟ Calculated
+                </button>
+              )}
+              {!!statuses['calculated'] && (
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => this.hackStatus({ from: 'calculated', to: 'documented' })}
+                >
+                  Calculated ➟ Documented
+                </button>
+              )}
+              {!!statuses['documented'] && (
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => this.hackStatus({ from: 'documented', to: 'documented' })}
+                >
+                  Documented ➟ Documented
+                </button>
+              )}
+              {!!statuses['documented'] && (
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => this.hackStatus({ from: 'documented', to: 'queued' })}
+                >
+                  Documented ➟ Queued
+                </button>
+              )}
+            </MassChangeBlock>
+          )}
           <MassChangeBlock>
             <h5>Load'em all:</h5>
             <button
@@ -558,29 +583,32 @@ class BillingData extends React.Component<
               Load all documents
             </button>
           </MassChangeBlock>
-          <MassChangeBlock>
-            <h5>Kill'em all:</h5>
-            <button className="btn btn-danger" onClick={this.switchKill}>
-              Void all
-            </button>
-            {killSwitch && (
-              <div className="kill-block">
-                <FormGroup className="has-danger">
-                  {!!killErr && <div className="inline-error">{killErr}</div>}
-                  <input
-                    type="text"
-                    className="form-control form-control-danger"
-                    placeholder={killPhrase}
-                    value={killValidation}
-                    onChange={this.setKill}
-                  />
-                </FormGroup>
-                <button className="btn btn-outline-danger" onClick={this.killEmAll}>
-                  VOID
-                </button>
-              </div>
-            )}
-          </MassChangeBlock>
+          {(Object.keys(statuses).length > 1
+            || (Object.keys(statuses).length && Object.keys(statuses)[0] !== 'void')) && (
+            <MassChangeBlock>
+              <h5>Kill'em all:</h5>
+              <button className="btn btn-danger" onClick={this.switchKill}>
+                Void all
+              </button>
+              {killSwitch && (
+                <div className="kill-block">
+                  <FormGroup className="has-danger">
+                    {!!killErr && <div className="inline-error">{killErr}</div>}
+                    <input
+                      type="text"
+                      className="form-control form-control-danger"
+                      placeholder={killPhrase}
+                      value={killValidation}
+                      onChange={this.setKill}
+                    />
+                  </FormGroup>
+                  <button className="btn btn-outline-danger" onClick={this.killEmAll}>
+                    VOID
+                  </button>
+                </div>
+              )}
+            </MassChangeBlock>
+          )}
         </CenterContent>
       </React.Fragment>
     );
@@ -605,6 +633,7 @@ interface BillingDataState {
   killSwitch: boolean;
   killValidation: string;
   killErr: string;
+  statuses: { [key: string]: number };
 }
 
 interface ExtProps {
