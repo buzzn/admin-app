@@ -12,22 +12,33 @@ import Groups from 'groups';
 import Billings from 'billings';
 import BillingCycles from 'billing_cycles';
 import PageTitle from 'components/page_title';
-import { CenterContent } from 'components/style';
+import { CenterContent, FormGroup } from 'components/style';
 import Loading from 'components/loading';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
 import { getAllUrlParams } from '_util';
 import BillingDetails from 'components/billing_details';
-import { MaLoListHeader, MaLoRow, Bar, Legend, DetailsWrapper } from './style';
+import { MaLoListHeader, MaLoRow, Bar, Legend, DetailsWrapper, MassChangeBlock } from './style';
 
 const d3 = require('d3');
 
 const moment = extendMoment(Moment);
 
+const killPhrase = "I know what i'm doing, leave me alone!!!";
+
 class BillingData extends React.Component<
   ExtProps & StateProps & DispatchProps & BreadcrumbsProps & InjectedIntlProps,
   BillingDataState
   > {
-  state = { maLoSortAsc: true, maLoSelected: null, barSelected: null, contractSelected: null, hackLoading: false };
+  state = {
+    maLoSortAsc: true,
+    maLoSelected: null,
+    barSelected: null,
+    contractSelected: null,
+    hackLoading: false,
+    killSwitch: false,
+    killValidation: '',
+    killErr: '',
+  };
 
   componentDidMount() {
     const { billingCycleId, groupId, loadBillingCycle, loadGroup } = this.props;
@@ -40,6 +51,25 @@ class BillingData extends React.Component<
   componentWillUnmount() {
     this.props.setBillingCycle({ billingCycle: { _status: null }, billingCycleBars: { _status: null, array: [] } });
   }
+
+  switchKill = () => {
+    this.setState({ killSwitch: !this.state.killSwitch, killErr: '', killValidation: '' });
+  };
+
+  setKill = ({ target: { value } }) => {
+    this.setState({ killValidation: value });
+  };
+
+  killEmAll = () => {
+    if (this.state.killValidation !== killPhrase) {
+      this.setState({ killErr: "You don't know what you're doing." });
+      return;
+    }
+    if (confirm('R U sure????????') && confirm('100% sure?????') && confirm('Last warning')) {
+      this.setState({ killSwitch: !this.state.killSwitch, killErr: '', killValidation: '' });
+      this.hackStatus({ to: 'void', all: true });
+    }
+  };
 
   switchMaLoSort = () => {
     this.setState({ maLoSortAsc: !this.state.maLoSortAsc });
@@ -72,12 +102,12 @@ class BillingData extends React.Component<
     if (top < 0) window.scrollBy({ top: top - 57, left: 0, behavior: 'smooth' });
   };
 
-  hackStatus = async ({ from, to }) => {
+  hackStatus = async ({ from, to, all }: { from?: string; to: string; all?: boolean }) => {
     if (!confirm('R U Sure?????')) return;
     const { billingCycle, billingCycleBars, updateBilling, groupId, loadBillingCycle, billingCycleId } = this.props;
-    const toUpdate = billingCycle.billings.array.filter(
-      b => b.status === from && b.allowedActions.update.status[to] === true,
-    );
+    const toUpdate = all
+      ? billingCycle.billings.array
+      : billingCycle.billings.array.filter(b => b.status === from && b.allowedActions.update.status[to] === true);
     const bars = billingCycleBars.array
       .flatMap(b => b.bars.array)
       .reduce((res, b) => ({ ...res, [b.billingId]: b.contractId }), {});
@@ -123,7 +153,16 @@ class BillingData extends React.Component<
       getBillingCycleZip,
       billingCycleId,
     } = this.props;
-    const { maLoSortAsc, maLoSelected, barSelected, contractSelected, hackLoading } = this.state;
+    const {
+      maLoSortAsc,
+      maLoSelected,
+      barSelected,
+      contractSelected,
+      hackLoading,
+      killSwitch,
+      killValidation,
+      killErr,
+    } = this.state;
 
     if (loading || billingCycle._status === null || hackLoading) return <Loading minHeight={40} />;
     if (billingCycle._status && billingCycle._status !== 200) return <Redirect to={url} />;
@@ -480,26 +519,68 @@ class BillingData extends React.Component<
               <div>-</div>
             </div>
           </Legend>
-          <h5>Change'em all:</h5>
-          <button
-            className="btn btn-secondary"
-            onClick={() => this.hackStatus({ from: 'calculated', to: 'documented' })}
-          >
-            Calculated -> Documented
-          </button>
-          <button
-            className="btn btn-secondary"
-            onClick={() => this.hackStatus({ from: 'documented', to: 'documented' })}
-          >
-            Регенерация
-          </button>
-          <button className="btn btn-secondary" onClick={() => this.hackStatus({ from: 'documented', to: 'queued' })}>
-            Documented -> Queued
-          </button>
-          <h5>Load'em all:</h5>
-          <button className="btn btn-secondary" onClick={() => getBillingCycleZip({ groupId, billingCycleId, groupName, year: moment(billingCycle.lastDate).format('YYYY') })}>
-            Load all documents
-          </button>
+          <MassChangeBlock>
+            <h5>Change'em all:</h5>
+            <button
+              className="btn btn-secondary"
+              onClick={() => this.hackStatus({ from: 'open', to: 'calculated' })}
+            >
+              Open ➟ Calculated
+            </button>
+            <button
+              className="btn btn-secondary"
+              onClick={() => this.hackStatus({ from: 'calculated', to: 'documented' })}
+            >
+              Calculated ➟ Documented
+            </button>
+            <button
+              className="btn btn-secondary"
+              onClick={() => this.hackStatus({ from: 'documented', to: 'documented' })}
+            >
+              Documented ➟ Documented
+            </button>
+            <button className="btn btn-secondary" onClick={() => this.hackStatus({ from: 'documented', to: 'queued' })}>
+              Documented ➟ Queued
+            </button>
+          </MassChangeBlock>
+          <MassChangeBlock>
+            <h5>Load'em all:</h5>
+            <button
+              className="btn btn-secondary"
+              onClick={() => getBillingCycleZip({
+                groupId,
+                billingCycleId,
+                groupName,
+                year: moment(billingCycle.lastDate).format('YYYY'),
+              })
+              }
+            >
+              Load all documents
+            </button>
+          </MassChangeBlock>
+          <MassChangeBlock>
+            <h5>Kill'em all:</h5>
+            <button className="btn btn-danger" onClick={this.switchKill}>
+              Void all
+            </button>
+            {killSwitch && (
+              <div className="kill-block">
+                <FormGroup className="has-danger">
+                  {!!killErr && <div className="inline-error">{killErr}</div>}
+                  <input
+                    type="text"
+                    className="form-control form-control-danger"
+                    placeholder={killPhrase}
+                    value={killValidation}
+                    onChange={this.setKill}
+                  />
+                </FormGroup>
+                <button className="btn btn-outline-danger" onClick={this.killEmAll}>
+                  VOID
+                </button>
+              </div>
+            )}
+          </MassChangeBlock>
         </CenterContent>
       </React.Fragment>
     );
@@ -521,6 +602,9 @@ interface BillingDataState {
   barSelected: null | number;
   contractSelected: null | number;
   hackLoading: boolean;
+  killSwitch: boolean;
+  killValidation: string;
+  killErr: string;
 }
 
 interface ExtProps {

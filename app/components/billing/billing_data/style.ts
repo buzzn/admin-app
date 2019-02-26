@@ -259,3 +259,10 @@ export const Legend = styled.div`
     }
   }
 `;
+
+export const MassChangeBlock = styled.div`
+  margin-top: 2rem;
+  .kill-block {
+    margin-top: 2rem;
+  }
+`;

@@ -27,6 +27,13 @@ export default {
       body: JSON.stringify(snakeReq(params)),
     }).then(parseResponse);
   },
+  fillGapContracts({ token, apiUrl, apiPath, groupId, params }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/gap-contracts`, {
+      headers: prepareHeaders(token),
+      method: 'POST',
+      body: JSON.stringify(snakeReq(params)),
+    }).then(parseResponse);
+  },
   fetchBilling({ token, apiUrl, apiPath, billingId, groupId, billingCycleId }) {
     return fetch(
       `${apiUrl}${apiPath}/localpools/${groupId}/billing-cycles/${billingCycleId}/billings/${billingId}?include=contract:[customer],items:[meter,tariff]`,

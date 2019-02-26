@@ -45,14 +45,18 @@ export function* reloadBars({ apiUrl, apiPath, token, resetChan }) {
     if (!groupId || !billingCycle.id || !billingCycleBars.array.length) continue;
     // const shouldUpdate = !!billingCycleBars.array.find(meta => !!meta.bars.array.find(bar => bar.status === 'queued'));
     // if (!shouldUpdate) continue;
-    billingCycleBars = yield call(api.fetchbillingCycleBars, {
-      apiUrl,
-      apiPath,
-      token,
-      billingCycleId: billingCycle.id,
-      groupId,
-    });
-    yield put(actions.setBillingCycle({ billingCycle, billingCycleBars }));
+    try {
+      billingCycleBars = yield call(api.fetchbillingCycleBars, {
+        apiUrl,
+        apiPath,
+        token,
+        billingCycleId: billingCycle.id,
+        groupId,
+      });
+      yield put(actions.setBillingCycle({ billingCycle, billingCycleBars }));
+    } catch (error) {
+      logException(error);
+    }
   }
 }
 
@@ -80,9 +84,14 @@ export function* getBillingCycles({ apiUrl, apiPath, token }, { groupId }) {
 
 export function* addBillingCycle({ apiUrl, apiPath, token }, { params, resolve, reject, groupId }) {
   try {
+    const gapRes = yield call(api.fillGapContracts, { apiUrl, apiPath, token, params, groupId });
     const res = yield call(api.addBillingCycle, { apiUrl, apiPath, token, params, groupId });
-    if (res._error) {
-      yield call(reject, new SubmissionError(res));
+    if (gapRes._error || res._error) {
+      if (gapRes._error) {
+        yield call(reject, new SubmissionError(gapRes));
+      } else {
+        yield call(reject, new SubmissionError(res));
+      }
     } else {
       yield call(resolve, res);
       yield put(Groups.actions.loadGroup(groupId));
