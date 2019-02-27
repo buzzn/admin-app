@@ -112,6 +112,16 @@ export function* getBillingCycleZip({ apiUrl, apiPath, token }, { groupId, billi
   }
 }
 
+export function* getBillingCycleReport({ apiUrl, apiPath, token }, { groupId, billingCycleId, groupName, year }) {
+  try {
+    const data = yield call(api.fetchbillingCycleReport, { apiUrl, apiPath, token, groupId, billingCycleId });
+    // @ts-ignore
+    saveAs(data, `Report_${year}_${groupName}.xlsx`);
+  } catch (error) {
+    logException(error);
+  }
+}
+
 export function* billingCyclesSagas({ apiUrl, apiPath, token }) {
   const resetChan = yield call(channel);
   // @ts-ignore
@@ -121,6 +131,8 @@ export function* billingCyclesSagas({ apiUrl, apiPath, token }) {
   yield fork(reloadBars, { apiUrl, apiPath, token, resetChan });
   // @ts-ignore
   yield takeLeading(constants.GET_BILLING_CYCLE_ZIP, getBillingCycleZip, { apiUrl, apiPath, token });
+  // @ts-ignore
+  yield takeLeading(constants.GET_BILLING_CYCLE_REPORT, getBillingCycleReport, { apiUrl, apiPath, token });
   // @ts-ignore
   yield takeLeading(constants.ADD_BILLING_CYCLE, addBillingCycle, { apiUrl, apiPath, token });
   // @ts-ignore

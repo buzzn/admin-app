@@ -162,6 +162,7 @@ class BillingData extends React.Component<
       intl,
       history,
       getBillingCycleZip,
+      getBillingCycleReport,
       billingCycleId,
     } = this.props;
     const {
@@ -582,6 +583,18 @@ class BillingData extends React.Component<
             >
               Load all documents
             </button>
+            <button
+              className="btn btn-secondary"
+              onClick={() => getBillingCycleReport({
+                groupId,
+                billingCycleId,
+                groupName,
+                year: moment(billingCycle.lastDate).format('YYYY'),
+              })
+              }
+            >
+              Load report
+            </button>
           </MassChangeBlock>
           {(Object.keys(statuses).length > 1
             || (Object.keys(statuses).length && Object.keys(statuses)[0] !== 'void')) && (
@@ -660,6 +673,7 @@ interface DispatchProps {
   loadBillingCycle: Function;
   setBillingCycle: Function;
   getBillingCycleZip: Function;
+  getBillingCycleReport: Function;
   loadGroup: Function;
   updateBilling: Function;
 }
@@ -679,6 +693,7 @@ export default connect<StateProps, DispatchProps, ExtProps>(
     loadBillingCycle: BillingCycles.actions.loadBillingCycle,
     setBillingCycle: BillingCycles.actions.setBillingCycle,
     getBillingCycleZip: BillingCycles.actions.getBillingCycleZip,
+    getBillingCycleReport: BillingCycles.actions.getBillingCycleReport,
     loadGroup: Groups.actions.loadGroup,
     updateBilling: Billings.actions.updateBilling,
   },

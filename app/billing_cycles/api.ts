@@ -15,6 +15,9 @@ export default {
   fetchbillingCycleZip({ token, apiUrl, apiPath, billingCycleId, groupId }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/billing-cycles/${billingCycleId}/zip`, { headers: prepareHeaders(token) }).then(parseResponse);
   },
+  fetchbillingCycleReport({ token, apiUrl, apiPath, billingCycleId, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/billing-cycles/${billingCycleId}/report`, { headers: prepareHeaders(token) }).then(parseResponse);
+  },
   fetchBillingCycles({ token, apiUrl, apiPath, groupId }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/billing-cycles`, { headers: prepareHeaders(token) })
       .then(parseResponse)

@@ -47,10 +47,11 @@ export function parseResponse(response) {
       const json = response.json();
       return json.then(res => ({ ...res, _status: 200 }));
     }
-    if (type.startsWith('application/pdf')) {
-      return response.blob();
-    }
-    if (type.startsWith('application/zip')) {
+    if (
+      type.startsWith('application/pdf')
+      || type.startsWith('application/zip')
+      || type.startsWith('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    ) {
       return response.blob();
     }
     return Promise.reject(Error('unknown response content-type'));
@@ -124,16 +125,16 @@ export function snakeReq(data) {
     (res, v, k) => ({
       ...res,
       [snakeCase(k)]:
-          Object.prototype.toString.call(v) === '[object Date]'
-            ? v
-            : Array.isArray(v)
-              ? v.map(a => snakeReq(a))
-              : typeof v === 'object' && v !== null
-                ? snakeReq(v)
-                : // HACK: server validation hack
-                v === ''
-                  ? null
-                  : v,
+        Object.prototype.toString.call(v) === '[object Date]'
+          ? v
+          : Array.isArray(v)
+            ? v.map(a => snakeReq(a))
+            : typeof v === 'object' && v !== null
+              ? snakeReq(v)
+              : // HACK: server validation hack
+              v === ''
+                ? null
+                : v,
     }),
     {},
   );
