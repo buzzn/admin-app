@@ -93,7 +93,7 @@ const BillingDetails = ({
   const submit = params => new Promise((resolve, reject) => {
     if (['closed', 'void'].includes(params.status) && !confirm(`Status ${params.status} is irreversible, continue?`)) {
       reset();
-      // FIXME: bug, form is still in 'submitting' state
+      reject();
       return;
     }
     updateBilling({
