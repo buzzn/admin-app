@@ -32,7 +32,7 @@ export default {
   fetchGroupPowertakers({ token, apiUrl, apiPath, groupId }) {
     return (
       fetch(
-        `${apiUrl}${apiPath}/localpools/${groupId}/contracts?include=register_meta:[registers],customer:[address,contact:address]`,
+        `${apiUrl}${apiPath}/localpools/${groupId}/contracts?include=register_meta:[registers],customer:[address,contact:address],tariffs`,
         { headers: prepareHeaders(token) },
       )
         .then(parseResponse)

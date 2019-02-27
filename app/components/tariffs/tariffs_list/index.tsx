@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import ReactTableSorted from 'components/react_table_sorted';
 import orderBy from 'lodash/orderBy';
 import moment from 'moment';
@@ -8,6 +8,7 @@ import { tableParts as TableParts } from 'react_table_config';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
 import PageTitle from 'components/page_title';
 import { CenterContent, SubNav, SpanClick } from 'components/style';
+import NestedDetails from './nested_details';
 
 interface Props {
   active?: boolean;
@@ -18,6 +19,8 @@ interface Props {
 }
 
 const TariffsList = ({ tariffs, intl, groupId, breadcrumbs, url, tType, switchAddTariff }: Props & BreadcrumbsProps & InjectIntlProps) => {
+  const [expanded, setExpanded] = useState({});
+
   const filteredTariffs = tariffs.filter(t => (tType === 'active' ? !t.lastDate : !!t.lastDate));
 
   const prefix = 'admin.tariffs';
@@ -121,7 +124,20 @@ const TariffsList = ({ tariffs, intl, groupId, breadcrumbs, url, tType, switchAd
           {...{
             data,
             columns,
+            expanded,
             uiSortPath: `groups.${groupId}.tariffs`,
+            getTrProps: (_state, rowInfo) => ({
+              onClick: (_event, handleOriginal) => {
+                setExpanded({ [rowInfo.viewIndex]: !expanded[rowInfo.viewIndex] });
+                handleOriginal && handleOriginal();
+              },
+            }),
+            SubComponent: ({ original }) => (
+              <NestedDetails {...{
+                groupId,
+                tariffId: original.id,
+              }} />
+            ),
           }}
         />
       </div>
