@@ -596,6 +596,12 @@ class BillingData extends React.Component<
                     {!!killErr && <div className="inline-error">{killErr}</div>}
                     <input
                       type="text"
+                      onPaste={e => e.preventDefault()}
+                      onCopy={e => e.preventDefault()}
+                      onCut={e => e.preventDefault()}
+                      onDrag={e => e.preventDefault()}
+                      onDrop={e => e.preventDefault()}
+                      autoComplete="off"
                       className="form-control form-control-danger"
                       placeholder={killPhrase}
                       value={killValidation}
