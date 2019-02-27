@@ -10,6 +10,7 @@ import { tableParts as TableParts } from 'react_table_config';
 import PageTitle from 'components/page_title';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
 import { CenterContent, SpanClick } from 'components/style';
+import { CellWrap } from 'components/billings_overview/style';
 import AddBilling from '../add_billing';
 
 class BillingList extends React.Component<
@@ -71,6 +72,7 @@ class BillingList extends React.Component<
           cursor: 'pointer',
           textDecoration: 'underline',
         },
+        Cell: ({ value, original }) => <CellWrap status={original.status}>{value}</CellWrap>,
       },
       {
         Header: () => (
@@ -79,7 +81,7 @@ class BillingList extends React.Component<
         accessor: 'dates',
         filterMethod: TableParts.filters.filterByValue,
         sortMethod: TableParts.sort.sortByValue,
-        Cell: ({ value: { Display } }) => Display,
+        Cell: ({ original, value: { Display } }) => <CellWrap status={original.status}>{Display}</CellWrap>,
       },
     ];
 
