@@ -75,6 +75,7 @@ const Contracts = ({ locationId, url, history, contracts, intl }: Props & Inject
         cursor: 'pointer',
         textDecoration: 'underline',
       },
+      sortMethod: TableParts.sort.sortByFulContractNumber,
     },
     {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableStatus` })} />,

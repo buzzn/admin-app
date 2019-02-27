@@ -186,6 +186,18 @@ export const tableParts = {
       // returning 0, undefined or any falsey value will use subsequent sorts or the index as a tiebreaker
       return 0;
     },
+    sortByFulContractNumber: (x, y) => {
+      const a = parseInt(x.split('/')[1]);
+      const b = parseInt(y.split('/')[1]);
+
+      if (a > b) {
+        return 1;
+      }
+      if (a < b) {
+        return -1;
+      }
+      return 0;
+    },
     sortByBillingstatus: (x, y) => {
       const statusMap = {
         open: 0,

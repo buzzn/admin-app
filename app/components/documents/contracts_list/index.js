@@ -140,6 +140,7 @@ class ContractsList extends React.Component {
         ),
         className: 'cy-number',
         accessor: 'number',
+        sortMethod: TableParts.sort.sortByFulContractNumber,
         minWidth: 60,
       },
       {

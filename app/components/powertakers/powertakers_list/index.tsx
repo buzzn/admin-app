@@ -112,6 +112,7 @@ const PowertakersList = ({
         cursor: 'pointer',
         textDecoration: 'underline',
       },
+      sortMethod: TableParts.sort.sortByFulContractNumber,
     },
     {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableBeginDate` })} />,

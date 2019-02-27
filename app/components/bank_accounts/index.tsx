@@ -59,13 +59,13 @@ const BankAccounts = ({ bankAccounts, updateBankAccount, validationRules, groupI
       )),
       className: 'cy-edit-bank-account',
     },
-    {
-      accessor: 'deleteBankAccount',
-      className: 'cy-delete-bank-account',
-      style: { color: 'red', cursor: 'pointer' },
-      width: 20,
-      Cell: ({ original }) => (original.deletable ? <i className="fa fa-remove" /> : false),
-    },
+    // {
+    //   accessor: 'deleteBankAccount',
+    //   className: 'cy-delete-bank-account',
+    //   style: { color: 'red', cursor: 'pointer' },
+    //   width: 20,
+    //   Cell: ({ original }) => (original.deletable ? <i className="fa fa-remove" /> : false),
+    // },
   ];
 
   return (

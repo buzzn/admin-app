@@ -94,6 +94,7 @@ class PowertakerData extends React.Component<
           cursor: 'pointer',
           textDecoration: 'underline',
         },
+        sortMethod: TableParts.sort.sortByFulContractNumber,
       },
       {
         Header: () => (
