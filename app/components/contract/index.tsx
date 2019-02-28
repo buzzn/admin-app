@@ -26,6 +26,7 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
       updateContract,
       LPCValidationRules,
       LPTUpdateRules,
+      LPThirdUpdateRules,
     } = this.props;
 
     if (loading || contract._status === null) return <Loading minHeight={40} />;
@@ -34,7 +35,19 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
     const prefix = 'admin.contracts';
 
     if (contract.type === 'contract_localpool_third_party') {
-      return <ThirdPartyContract {...{ groupId, contract, registerMeta: contract.registerMeta, prefix }} />;
+      return (
+        <ThirdPartyContract
+          {...{
+            groupId,
+            contract,
+            registerMeta: contract.registerMeta,
+            prefix,
+            initialValues: contract,
+            updateContract,
+            validationRules: LPThirdUpdateRules,
+          }}
+        />
+      );
     }
     if (contract.type === 'contract_localpool_power_taker') {
       return (
@@ -76,7 +89,7 @@ interface StatePart {
   contracts: {
     loadingContract: boolean;
     contract: { _status: null | number; [key: string]: any };
-    validationRules: { lpc: any; lptUpdate: any };
+    validationRules: { lpc: any; lptUpdate: any; lpthirdUpdate: any };
   };
   groups: { loadingGroup: boolean; group: { _status: null | number; [key: string]: any } };
 }
@@ -92,6 +105,7 @@ interface StateProps {
   contract: { _status: null | number; [key: string]: any };
   LPCValidationRules: any;
   LPTUpdateRules: any;
+  LPThirdUpdateRules: any;
 }
 
 interface DispatchProps {
@@ -106,6 +120,7 @@ function mapStateToProps(state: StatePart) {
     contract: state.contracts.contract,
     LPCValidationRules: state.contracts.validationRules.lpc,
     LPTUpdateRules: state.contracts.validationRules.lptUpdate,
+    LPThirdUpdateRules: state.contracts.validationRules.lpthirdUpdate,
   };
 }
 

@@ -16,6 +16,9 @@ export const FormTitle = styled.h5`
 export const SubNavAddLink = styled.span`
   position: absolute;
   right: 0;
+  a {
+    margin-left: 1rem;
+  }
 `;
 
 export const SubNav = styled(Nav)`

@@ -15,6 +15,7 @@ import PowertakersList from './powertakers_list';
 import PowertakerData from './powertaker_data';
 import ContractData from './contract_data';
 import AddPowertaker from './add_powertaker';
+import AddThirdParty from './add_third_party';
 
 export class Powertakers extends React.Component {
   componentDidMount() {
@@ -45,7 +46,9 @@ export class Powertakers extends React.Component {
       marketLocations,
       validationRules,
       addPowertakerFormName,
+      addThirdPartyFormName,
       addPowertakerErrors,
+      addThirdPartyErrors,
       history,
       match: {
         url,
@@ -103,6 +106,20 @@ export class Powertakers extends React.Component {
               validationRules,
               form: addPowertakerFormName,
               addPowertakerErrors,
+            }}
+          />
+        </Route>
+        <Route path={`${url}/add-third-party`}>
+          <AddThirdParty
+            {...{
+              history,
+              url,
+              loadMarketLocations: () => loadMarketLocations(groupId),
+              marketLocations,
+              addContract: params => addContract({ groupId, ...params }),
+              validationRules,
+              form: addThirdPartyFormName,
+              addThirdPartyErrors,
             }}
           />
         </Route>
@@ -168,6 +185,7 @@ export class Powertakers extends React.Component {
 
 function mapStateToProps(state) {
   const addPowertakerFormName = 'addPowertaker';
+  const addThirdPartyFormName = 'addThirdParty';
   return {
     group: state.groups.group,
     powertakers: state.contracts.groupPowertakers,
@@ -178,7 +196,9 @@ function mapStateToProps(state) {
     validationRules: state.contracts.validationRules,
     marketLocations: state.marketLocations.marketLocations,
     addPowertakerErrors: getFormSubmitErrors(addPowertakerFormName)(state),
+    addThirdPartyErrors: getFormSubmitErrors(addThirdPartyFormName)(state),
     addPowertakerFormName,
+    addThirdPartyFormName,
   };
 }
 

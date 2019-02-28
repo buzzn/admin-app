@@ -52,6 +52,14 @@ export default [
     setAction: rules => Contracts.actions.setValidationRules('lptp', rules),
   },
   {
+    swaggerPath: '/localpools/{localpoolpc_id}/contracts.post.parameters',
+    setAction: rules => Contracts.actions.setValidationRules('lpthird', rules),
+  },
+  {
+    swaggerPath: '/localpools/{localpool_id}/contracts/{localpool_third_party_contract_id}.patch.parameters',
+    setAction: rules => Contracts.actions.setValidationRules('lpthirdUpdate', rules),
+  },
+  {
     swaggerPath: '/localpools/{localpool_id}/contracts/{localpool_power_taker_contract_id}.patch.parameters',
     setAction: rules => Contracts.actions.setValidationRules('lptUpdate', rules),
   },

@@ -36,9 +36,7 @@ const PowertakersList = ({
 }: Props & BreadcrumbsProps & InjectedIntlProps) => {
   if (loading) return <Loading minHeight={40} />;
 
-  const filteredPowertakers = powertakers.filter(
-    o => (pType === 'active' ? o.status !== 'ended' : o.status === 'ended'),
-  );
+  const filteredPowertakers = powertakers.filter(o => (pType === 'active' ? o.status !== 'ended' : o.status === 'ended'));
 
   const prefix = 'admin.contracts';
 
@@ -145,14 +143,19 @@ const PowertakersList = ({
         }}
       />
       <CenterContent>
-        {!!group.allowedActions
-          && group.allowedActions.createLocalpoolPowerTakerContract === true && (
-            <SubNavAddLink>
-              <Link to={`${url}/add-powertaker`} data-cy="add powertaker CTA">
-                <FormattedMessage id="admin.contracts.addNew" /> <i className="fa fa-plus-circle" />
+        <SubNavAddLink>
+          {!!group.allowedActions
+            && group.allowedActions.createLocalpoolThirdPartyContract === true && (
+              <Link to={`${url}/add-third-party`} data-cy="add third party CTA">
+                <FormattedMessage id="admin.contracts.addNew" /> <i className="fa fa-tty" />
               </Link>
-            </SubNavAddLink>
-        )}
+          )}
+          {!!group.allowedActions && group.allowedActions.createLocalpoolPowerTakerContract === true && (
+            <Link to={`${url}/add-powertaker`} data-cy="add powertaker CTA">
+              <FormattedMessage id="admin.contracts.addNew" /> <i className="fa fa-user" />
+            </Link>
+          )}
+        </SubNavAddLink>
         <SubNav>
           <NavLink to={`${url}/active`} exact className="nav-link">
             <FormattedMessage id="admin.contracts.navActivePowertakers" />
