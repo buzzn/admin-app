@@ -279,7 +279,7 @@ class BillingData extends React.Component<
                   {ticks.map(t => (
                     <div key={t} className="grid-line" style={{ left: `${t}%` }} />
                   ))}
-                  {m.bars.array.map((b, i) => {
+                  {orderBy(m.bars.array, [b => new Date(b.beginDate)]).map((b, i) => {
                     const beginDate = new Date(b.beginDate);
                     const endDate = b.endDate ? new Date(b.endDate) : cycleEnd;
                     const fixedBeginDate = beginDate < cycleBegin ? cycleBegin : beginDate > cycleEnd ? cycleEnd : beginDate;
