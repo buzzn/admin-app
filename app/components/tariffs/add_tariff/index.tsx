@@ -5,7 +5,7 @@ import { reduxForm } from 'redux-form';
 import FieldValidationWrapper from 'components/field_validation_wrapper';
 import FieldInput from 'components/field_input';
 import FieldDate from 'components/field_date';
-import { dateNormalizer, numberNormalizer } from 'validation_normalizers';
+import { dateNormalizer } from 'validation_normalizers';
 
 interface Props {}
 
@@ -69,7 +69,6 @@ class AddTariff extends React.Component<Props & InjectedIntlProps> {
                     label: <FormattedMessage id={`${prefix}.energypriceCentsPerKwh`} />,
                     component: FieldInput,
                     validationRules,
-                    normalize: numberNormalizer,
                   }}
                 />
               </Col>
@@ -81,7 +80,6 @@ class AddTariff extends React.Component<Props & InjectedIntlProps> {
                     label: <FormattedMessage id={`${prefix}.basepriceCentsPerMonth`} />,
                     component: FieldInput,
                     validationRules,
-                    normalize: numberNormalizer,
                   }}
                 />
               </Col>
