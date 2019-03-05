@@ -26,7 +26,16 @@ class TariffsComponent extends React.Component<
     } = this.props;
 
     return new Promise((resolve, reject) => {
-      addTariff({ groupId, params, resolve, reject });
+      addTariff({
+        groupId,
+        params: {
+          ...params,
+          energypriceCentsPerKwh: params.energypriceCentsPerKwh * 100,
+          basepriceCentsPerMonth: params.basepriceCentsPerMonth * 100,
+        },
+        resolve,
+        reject,
+      });
     }).then((res) => {
       this.switchAddTariff();
       return res;
@@ -66,7 +75,14 @@ class TariffsComponent extends React.Component<
     } = this.props;
     const { isOpen } = this.state;
 
-    if (group._status === 404 || group._status === 403 || tariffs._status === 404 || tariffs._status === 403 || gapTariffs._status === 404 || gapTariffs._status === 403) {
+    if (
+      group._status === 404
+      || group._status === 403
+      || tariffs._status === 404
+      || tariffs._status === 403
+      || gapTariffs._status === 404
+      || gapTariffs._status === 403
+    ) {
       setGroup({ _status: null });
       setTariffs({ tariffs: { _status: null, array: [] }, gapTariffs: { _status: null, array: [] } });
       return <Redirect to="/groups" />;
@@ -96,12 +112,14 @@ class TariffsComponent extends React.Component<
           />
         </Switch>
 
-        <AttachedTariffs {...{
-          title: 'Gap tariffs',
-          tariffs: tariffs.array,
-          attachedTariffs: gapTariffs.array,
-          updateList: ({ resolve, reject, tariffIds }) => setGapTariffs({ resolve, reject, params: { tariffIds, updatedAt: group.updatedAt }, groupId }),
-        }} />
+        <AttachedTariffs
+          {...{
+            title: 'Gap tariffs',
+            tariffs: tariffs.array,
+            attachedTariffs: gapTariffs.array,
+            updateList: ({ resolve, reject, tariffIds }) => setGapTariffs({ resolve, reject, params: { tariffIds, updatedAt: group.updatedAt }, groupId }),
+          }}
+        />
         <AddTariff {...{ toggle: this.switchAddTariff, isOpen, validationRules, onSubmit: this.addTariff }} />
       </React.Fragment>
     );
