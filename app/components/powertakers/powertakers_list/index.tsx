@@ -147,7 +147,7 @@ const PowertakersList = ({
           {!!group.allowedActions
             && group.allowedActions.createLocalpoolThirdPartyContract === true && (
               <Link to={`${url}/add-third-party`} data-cy="add third party CTA">
-                <FormattedMessage id="admin.contracts.addNew" /> <i className="fa fa-tty" />
+                <FormattedMessage id="admin.contracts.addNewThirdParty" /> <i className="fa fa-tty" />
               </Link>
           )}
           {!!group.allowedActions && group.allowedActions.createLocalpoolPowerTakerContract === true && (
