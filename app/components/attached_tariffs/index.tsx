@@ -62,7 +62,7 @@ class AttachedTariffs extends React.Component<Props, State> {
       basepriceCentsPerMonth: {
         Display: (
           <FormattedNumber
-            value={(t.basepriceCentsPerMonth / 100).toFixed(2)}
+            value={(t.basepriceCentsPerMonth / 100).toFixed(4)}
             style="currency"
             currency="EUR"
             currencyDisplay="symbol"

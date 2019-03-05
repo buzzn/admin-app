@@ -32,7 +32,7 @@ const TariffsList = ({ tariffs, intl, groupId, breadcrumbs, url, tType, switchAd
     basepriceCentsPerMonth: {
       Display: (
         <FormattedNumber
-          value={(t.basepriceCentsPerMonth / 100).toFixed(2)}
+          value={(t.basepriceCentsPerMonth / 100).toFixed(4)}
           style="currency"
           currency="EUR"
           currencyDisplay="symbol"

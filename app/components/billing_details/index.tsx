@@ -185,11 +185,11 @@ const BillingDetails = ({
     },
     price: {
       days: intl.formatNumber(((i.tariff.basepriceCentsPerMonth * 12) / 100).toFixed(0)),
-      kWh: intl.formatNumber(i.tariff.energypriceCentsPerKwh.toFixed(2), { minimumFractionDigits: 2 }),
+      kWh: intl.formatNumber(i.tariff.energypriceCentsPerKwh.toFixed(4), { minimumFractionDigits: 2 }),
     },
     netAmount: {
-      days: intl.formatNumber((i.basePriceCents / 100).toFixed(2), { minimumFractionDigits: 2 }),
-      kWh: intl.formatNumber((i.energyPriceCents / 100).toFixed(2), { minimumFractionDigits: 2 }),
+      days: intl.formatNumber((i.basePriceCents / 100).toFixed(4), { minimumFractionDigits: 2 }),
+      kWh: intl.formatNumber((i.energyPriceCents / 100).toFixed(4), { minimumFractionDigits: 2 }),
     },
   }));
 
