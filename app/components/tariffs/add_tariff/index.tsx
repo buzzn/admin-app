@@ -66,7 +66,11 @@ class AddTariff extends React.Component<Props & InjectedIntlProps> {
                   {...{
                     name: 'energypriceCentsPerKwh',
                     type: 'text',
-                    label: <FormattedMessage id={`${prefix}.energypriceCentsPerKwh`} />,
+                    label: (
+                      <React.Fragment>
+                        <FormattedMessage id={`${prefix}.energypriceCentsPerKwh`} /> €
+                      </React.Fragment>
+                    ),
                     component: FieldInput,
                     validationRules,
                   }}
@@ -77,7 +81,11 @@ class AddTariff extends React.Component<Props & InjectedIntlProps> {
                   {...{
                     name: 'basepriceCentsPerMonth',
                     type: 'text',
-                    label: <FormattedMessage id={`${prefix}.basepriceCentsPerMonth`} />,
+                    label: (
+                      <React.Fragment>
+                        <FormattedMessage id={`${prefix}.basepriceCentsPerMonth`} /> €
+                      </React.Fragment>
+                    ),
                     component: FieldInput,
                     validationRules,
                   }}
