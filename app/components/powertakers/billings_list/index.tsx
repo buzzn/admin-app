@@ -157,7 +157,7 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
         <div style={{ color: contract.allowedActions.createBilling.tariffs ? 'red' : 'black' }}>
           <AttachedTariffs
             {...{
-              title: 'Contract tariffs',
+              title: intl.formatMessage({ id: 'admin.contracts.attachedTariffs' }),
               tariffs: tariffs.array,
               attachedTariffs: contract.tariffs.array,
               updateList: ({ resolve, reject, tariffIds }) => updateContract({
@@ -171,7 +171,7 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
             }}
           />
         </div>
-        <h4>Billings:</h4>
+        <h4><FormattedMessage id={`${prefix}.contractBillings`} />:</h4>
         {contract.allowedActions.createBilling === true ? (
           <SpanClick onClick={this.switchAddBilling} className="float-right" data-cy="add billing CTA">
             <FormattedMessage id="admin.billings.addNew" /> <i className="fa fa-plus-circle" />
