@@ -28,7 +28,7 @@ class ReadingsList extends React.Component<Props & InjectIntlProps, State> {
   }
 
   render() {
-    const { readings, intl, registerId, switchAddReading } = this.props;
+    const { readings, intl, registerId, switchAddReading, deleteReading } = this.props;
     const prefix = 'admin.readings';
 
     const data = orderBy(readings, ['date', 'reason'], ['desc', 'asc']).map(r => ({
@@ -80,6 +80,7 @@ class ReadingsList extends React.Component<Props & InjectIntlProps, State> {
             columns,
             SubComponent: row => (
               <ReadingDetailsWrapper>
+                {row.original.deletable && <i className="fa fa-remove delete-reading" onClick={() => deleteReading(row.original.id)} />}
                 <Col sm="4">
                   <b>
                     <FormattedMessage id={`${prefix}.status`} />:
