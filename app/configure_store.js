@@ -43,12 +43,12 @@ function* rootSaga() {
 
 function configureStore() {
   const sagaMiddleware = createSagaMiddleware();
+  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   const store = createStore(
     RootReducer,
     {},
-    compose(
+    composeEnhancers(
       applyMiddleware(sagaMiddleware, thunk),
-      window.devToolsExtension ? window.devToolsExtension() : f => f,
     ),
   );
 
