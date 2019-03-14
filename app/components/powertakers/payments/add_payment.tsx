@@ -134,7 +134,7 @@ const AddPayment = ({ isOpen, toggle, pristine, reset, intl, tariffs, validation
                     type: 'text',
                     label: (
                       <React.Fragment>
-                        <FormattedMessage id={`${prefix}.paymentsPriceCents`} /> €
+                        <FormattedMessage id={`${prefix}.paymentsPrice`} /> €
                       </React.Fragment>
                     ),
                     component: FieldInput,

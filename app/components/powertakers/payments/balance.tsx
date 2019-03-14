@@ -32,7 +32,7 @@ const Balance = ({ balanceSheet, updateContract, intl, groupId, contractId }) =>
       ),
       accessor: 'amount',
       className: 'cy-account-amount',
-      Cell: ({ value }) => <span>{(value / 1000).toFixed(2)} €</span>,
+      Cell: ({ value }) => <span>{(value / 1000).toFixed(4)} €</span>,
     },
     {
       Header: () => (
@@ -54,7 +54,7 @@ const Balance = ({ balanceSheet, updateContract, intl, groupId, contractId }) =>
   return (
     <BalanceWrapper>
       <h5 className="grey-underline mt-5 pb-2" data-cy="total balance">
-        Total balance: {(balanceSheet.total / 1000).toFixed(2)} €
+        Total balance: {(balanceSheet.total / 1000).toFixed(4)} €
       </h5>
       <Row>
         <Col xs={5}>
