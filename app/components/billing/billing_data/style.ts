@@ -128,32 +128,20 @@ const billingStatuses = {
   default: { color: '#8C8C8C' },
 };
 const contractTypes = {
-  contract_localpool_power_taker: { alpha: 0.25 },
-  contract_localpool_gap: { alpha: 0.5 },
+  contract_localpool_power_taker: { alpha: '40' },
+  contract_localpool_gap: { alpha: '7f' },
 };
 barColors['default'] = Object.keys(billingStatuses).reduce(
   (res, key) => ({ ...res, [key]: { bg: 'transparent', border: 'none' } }),
   {},
 );
-const hexToRgbA = (hex, alpha) => {
-  let c;
-  if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-    c = hex.substring(1).split('');
-    if (c.length == 3) {
-      c = [c[0], c[0], c[1], c[1], c[2], c[2]];
-    }
-    c = `0x${c.join('')}`;
-    return `rgba(${[(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',')},${alpha})`;
-  }
-  throw new Error('Bad Hex');
-};
 Object.keys(contractTypes).forEach((contractType) => {
   barColors[contractType] = Object.keys(billingStatuses).reduce(
     (res, key) => ({
       ...res,
       [key]: {
         border: billingStatuses[key].color,
-        bg: hexToRgbA(billingStatuses[key].color, contractTypes[contractType].alpha),
+        bg: `${billingStatuses[key].color}${contractTypes[contractType].alpha}`,
       },
     }),
     {},
