@@ -56,6 +56,9 @@ export function parseResponse(response) {
     }
     return Promise.reject(Error('unknown response content-type'));
   }
+  if (response.status === 503 && last(response.url.split('/')) === 'ticker') {
+    return Promise.resolve({ _status: 503 });
+  }
   const json = response.json();
   if (response.status === 503 && last(response.url.split('/')) === 'health') {
     return json;

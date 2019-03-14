@@ -13,7 +13,7 @@ class RegisterPower extends React.Component<ExtProps & StateProps & DispatchProp
     const { registerPower, registerId } = this.props;
 
     let value = '';
-    if (!registerPower[registerId] || registerPower[registerId]._status === 404) {
+    if (!registerPower[registerId] || registerPower[registerId]._status === 404 || registerPower[registerId]._status === 503) {
       value = '--.--';
     } else if (registerPower[registerId].value === -1) {
       value = '!!.!!';
