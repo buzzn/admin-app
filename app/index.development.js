@@ -28,7 +28,7 @@ function language() {
 }
 
 ReactDOM.render(
-  <IntlProvider locale={language()} messages={allMessages[language()]}>
+  <IntlProvider locale={language()} messages={allMessages[language()]} onError={() => false}>
     <Provider store={store}>
       <HotRoot />
     </Provider>
