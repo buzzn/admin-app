@@ -63,7 +63,7 @@ export default {
     }).then(parseResponse);
   },
   fetchGroups({ token, apiUrl, apiPath }) {
-    return fetch(`${apiUrl}${apiPath}/localpools`, { headers: prepareHeaders(token) })
+    return fetch(`${apiUrl}${apiPath}/localpools?include=localpool_processing_contracts`, { headers: prepareHeaders(token) })
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
