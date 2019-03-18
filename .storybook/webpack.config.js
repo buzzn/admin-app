@@ -1,7 +1,7 @@
 const path = require('path');
 
-module.exports = (baseConfig, env, defaultConfig) => {
-  defaultConfig.module.rules = defaultConfig.module.rules.concat([
+module.exports = async ({ config, mode }) => {
+  config.module.rules = config.module.rules.concat([
     {
       test: /\.scss$/,
       use: [
@@ -18,12 +18,12 @@ module.exports = (baseConfig, env, defaultConfig) => {
     },
   ]);
 
-  defaultConfig.resolve.modules.push(path.resolve(__dirname, '../app'));
-  defaultConfig.resolve.extensions = defaultConfig.resolve.extensions.concat(['.ts', '.tsx', '.js', '.json']);
-  defaultConfig.resolve.alias.moment$ = 'moment/moment.js';
+  config.resolve.modules.push(path.resolve(__dirname, '../app'));
+  config.resolve.extensions = config.resolve.extensions.concat(['.ts', '.tsx', '.js', '.json']);
+  config.resolve.alias.moment$ = 'moment/moment.js';
 
-  defaultConfig.entry.manager = ['@babel/polyfill', 'bootstrap-loader'].concat(defaultConfig.entry.manager);
-  defaultConfig.entry.preview = ['@babel/polyfill', 'bootstrap-loader'].concat(defaultConfig.entry.preview);
+  config.entry.manager = ['@babel/polyfill', 'bootstrap-loader'].concat(config.entry.manager);
+  config.entry.preview = ['@babel/polyfill', 'bootstrap-loader'].concat(config.entry.preview);
 
-  return defaultConfig;
+  return config;
 };
