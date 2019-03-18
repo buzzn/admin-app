@@ -7,13 +7,14 @@ import filter from 'lodash/filter';
 import sortBy from 'lodash/sortBy';
 import chunk from 'lodash/chunk';
 import sample from 'lodash/sample';
+import get from 'lodash/get';
 import { CardDeck } from 'reactstrap';
 import Groups from 'groups';
 import { actions } from 'actions';
 import { tableParts as TableParts } from 'react_table_config';
 import withHover from 'components/with_hover';
-import LocalpoolCard from './localpool_card';
 import Loading from 'components/loading';
+import LocalpoolCard from './localpool_card';
 
 const HoverCard = withHover(LocalpoolCard);
 
@@ -41,14 +42,28 @@ class LocalpoolsList extends React.Component<
   }
 
   render() {
-    const { groups, loading, intl, history, match: { url } } = this.props;
+    const {
+      groups,
+      loading,
+      intl,
+      history,
+      match: { url },
+    } = this.props;
     const { groupsListTiles } = this.state;
 
     if (loading) return <Loading minHeight={40} />;
 
     const data = groups.map(g => ({
       ...g,
-      nameWithImage: { value: g.name, image: g.image, type: 'group' },
+      nameWithImage: {
+        value: `${g.name} ${
+          (
+            get(g.localpoolProcessingContracts, 'array', []).find(c => c.status !== 'ended') || { fullContractNumber: '' }
+          ).fullContractNumber
+        }`,
+        image: g.image,
+        type: 'group',
+      },
       incomplete: g.incompleteness && Object.keys(g.incompleteness).length,
     }));
 
@@ -111,7 +126,9 @@ class LocalpoolsList extends React.Component<
         {groupsListTiles ? (
           chunk(groups, 2).map(groupPair => (
             <CardDeck key={groupPair[0].id}>
-              {groupPair.map(group => <HoverCard key={group.id} group={group} url={url} />)}
+              {groupPair.map(group => (
+                <HoverCard key={group.id} group={group} url={url} />
+              ))}
             </CardDeck>
           ))
         ) : (
@@ -173,7 +190,10 @@ function mapStateToProps(state: StatePart) {
   };
 }
 
-export default connect<StateProps, DispatchProps, ExtProps>(mapStateToProps, {
-  loadGroups: Groups.actions.loadGroups,
-  setUI: actions.setUI,
-})(LocalpoolsListIntl);
+export default connect<StateProps, DispatchProps, ExtProps>(
+  mapStateToProps,
+  {
+    loadGroups: Groups.actions.loadGroups,
+    setUI: actions.setUI,
+  },
+)(LocalpoolsListIntl);
