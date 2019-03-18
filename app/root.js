@@ -29,7 +29,7 @@ import { EditOverlay, VersionMismatch } from 'style';
 import './react_table_config';
 
 import PureAdmin from 'components/pure_admin';
-const lucky = (Math.random() * 6).toFixed(0) === '5';
+const lucky = (Math.random() * 60).toFixed(0) === '5';
 
 const WebsiteFormsContainer = React.lazy(() => import('components/website_forms'));
 const PowertakersContainer = React.lazy(() => import('components/powertakers'));

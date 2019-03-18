@@ -169,12 +169,13 @@ export const actions = {
     paymentId,
   }),
 
-  generateContractPDF: ({ groupId, contractId, resolve, reject }) => ({
+  generateContractPDF: ({ groupId, contractId, resolve, reject, template }) => ({
     type: constants.GENERATE_CONTRACT_PDF,
     groupId,
     contractId,
     resolve,
     reject,
+    template,
   }),
   attachContractPDF: ({ groupId, contractId, params, resolve, reject }) => ({
     type: constants.ATTACH_CONTRACT_PDF,

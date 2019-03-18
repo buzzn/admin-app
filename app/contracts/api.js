@@ -1,4 +1,5 @@
 import 'whatwg-fetch';
+import snakeCase from 'lodash/snakeCase';
 import { prepareHeaders, parseResponse, camelizeResponseKeys, camelizeResponseArray, snakeReq } from '../_util';
 
 export default {
@@ -169,10 +170,11 @@ export default {
       body: JSON.stringify(snakeReq(params)),
     }).then(parseResponse);
   },
-  generateContractPDF({ token, apiUrl, apiPath, groupId, contractId }) {
+  generateContractPDF({ token, apiUrl, apiPath, groupId, contractId, template }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/documents/generate`, {
       headers: prepareHeaders(token),
       method: 'POST',
+      body: JSON.stringify({ template: snakeCase(template) }),
     }).then(parseResponse);
   },
   attachContractPDF({ token, apiUrl, apiPath, groupId, contractId, params }) {
