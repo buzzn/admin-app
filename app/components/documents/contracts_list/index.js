@@ -191,6 +191,7 @@ class ContractsList extends React.Component {
           }}
         />
         <br />
+        {loading && <Loading minHeight={40} fixed />}
         <ReactTable
           {...{
             data,

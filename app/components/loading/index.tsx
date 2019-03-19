@@ -16,14 +16,15 @@ declare global {
 
 interface LoadingProps {
   absolute?: boolean;
+  fixed?: boolean;
   minHeight?: number;
   unit?: string;
 }
 
-const Loading = ({ minHeight, unit, absolute }: LoadingProps) => {
-  const style: React.CSSProperties = absolute
+const Loading = ({ minHeight, unit, absolute, fixed }: LoadingProps) => {
+  const style: React.CSSProperties = absolute || fixed
     ? {
-      position: 'absolute',
+      position: absolute ? 'absolute' : 'fixed',
       top: 0,
       left: 0,
       right: 0,
