@@ -174,7 +174,7 @@ export default {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/documents/generate`, {
       headers: prepareHeaders(token),
       method: 'POST',
-      body: JSON.stringify({ template: snakeCase(template) }),
+      body: JSON.stringify({ template: snakeCase(template).replace(/_\d+/g, str => str.split('_')[1]) }),
     }).then(parseResponse);
   },
   attachContractPDF({ token, apiUrl, apiPath, groupId, contractId, params }) {
