@@ -130,7 +130,7 @@
     "react-overlays": "^1.2.0",
     "react-popper": "0.10.4",
     "react-redux": "^6.0.1",
-    "react-router-dom": "4.4.0-beta.6",
+    "react-router-dom": "5.0.0",
     "react-s-alert": "^1.4.1",
     "react-select": "2.1.1",
     "react-table": "^6.9.2",
