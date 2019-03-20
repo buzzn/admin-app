@@ -76,15 +76,15 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
                 />
               </Col>
             </Row>
-            {!!addBillingSubmitErrors && !!addBillingSubmitErrors.items && (
+            {!!addBillingSubmitErrors && !!addBillingSubmitErrors.itemsPresent && (
               <Row>
                 <Col xs={12}>
-                  {Array.isArray(addBillingSubmitErrors.items)
-                    ? addBillingSubmitErrors.items.join(', ')
-                    : Object.keys(addBillingSubmitErrors.items).reduce(
+                  {Array.isArray(addBillingSubmitErrors.itemsPresent)
+                    ? addBillingSubmitErrors.itemsPresent.join(', ')
+                    : Object.keys(addBillingSubmitErrors.itemsPresent).reduce(
                       (resErr, errKey) => `${resErr}${
-                        Array.isArray(addBillingSubmitErrors.items[errKey])
-                          ? `${errKey}: ${addBillingSubmitErrors.items[errKey].reduce((r, e) => `${r}${e} `, '')}`
+                        Array.isArray(addBillingSubmitErrors.itemsPresent[errKey])
+                          ? `${errKey}: ${addBillingSubmitErrors.itemsPresent[errKey].reduce((r, e) => `${r}${e} `, '')}`
                           : ' '
                       }`,
                       '',
