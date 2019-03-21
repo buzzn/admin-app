@@ -49,8 +49,9 @@ class RegisterData extends React.Component<Props> {
 
     const submit = values => new Promise((resolve, reject) => {
       const { contracts, ...params } = values;
+      // FIXME: refactor this asap
       updateRegister({
-        registerId: register.id,
+        registerId: register.registerMeta.id,
         meterId: meter.id,
         params,
         resolve,

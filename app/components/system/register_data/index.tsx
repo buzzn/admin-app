@@ -108,6 +108,7 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
               <Route path={registerUrl} exact>
                 <RegisterDataForm
                   {...{
+                    // FIXME: refactor this ASAP
                     register,
                     initialValues: register.registerMeta,
                     meter,
