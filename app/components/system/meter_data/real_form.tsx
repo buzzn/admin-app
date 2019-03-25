@@ -121,9 +121,8 @@ class MeterData extends React.Component<Props> {
             >
               <FormTitle>
                 <FormattedMessage id={`${prefix}.headerMeterDetails`} />
-                {!editMode
-                  && meter.updatable && (
-                    <i className="buzzn-pencil" data-cy="meter edit switch" onClick={switchEditMode} />
+                {!editMode && meter.updatable && (
+                  <i className="buzzn-pencil" data-cy="meter edit switch" onClick={switchEditMode} />
                 )}
               </FormTitle>
               <TwoColField
@@ -161,11 +160,18 @@ class MeterData extends React.Component<Props> {
                   normalize: dateNormalizer('YYYY-MM-DD'),
                 }}
               />
-              <TwoColView {...{ prefix, field: 'converterConstant' }}>
-                {meter.converterConstant}
-              </TwoColView>
+              <TwoColView {...{ prefix, field: 'converterConstant' }}>{meter.converterConstant}</TwoColView>
               <TwoColField
                 {...{ prefix, name: 'locationDescription', editMode, validationRules, component: EditableInput }}
+              />
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'meteringLocationId',
+                  editMode,
+                  validationRules,
+                  component: EditableInput,
+                }}
               />
               <TwoColView {...{ prefix, field: 'dataSource' }}>
                 <FormattedMessage id={`${prefix}.${meter.datasource}`} />

@@ -157,7 +157,6 @@ class RegisterData extends React.Component<Props> {
             <TwoColView {...{ prefix: 'admin.meters', field: 'productSerialnumber' }}>
               {meter.productSerialnumber}
             </TwoColView>
-            <TwoColView {...{ prefix, field: 'meteringPointId' }}>{register.meteringPointId}</TwoColView>
             <TwoColView {...{ prefix, field: 'shareGroup' }}>{register.shareWithGroup ? 'Yes' : 'No'}</TwoColView>
             <TwoColView {...{ prefix, field: 'sharePublicly' }}>{register.sharePublicly ? 'Yes' : 'No'}</TwoColView>
             <p className="h5 grey-underline header" style={{ marginTop: '2rem' }}>
