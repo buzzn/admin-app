@@ -9,6 +9,7 @@ import Alert from 'react-s-alert';
 import LabeledValue from 'components/labeled_value';
 import Loading from 'components/loading';
 import { NestedDetailsWrapper } from 'components/style';
+import { formatErrMessage } from '_util';
 import UploadModal from './upload_modal';
 
 import { DocumentsListHeader, TemplateDropdown } from './style';
@@ -71,13 +72,6 @@ class NestedDetails extends React.Component<Props, State> {
       loadGroupContracts(groupId);
     }
   };
-
-  componentDidUpdate() {
-    const { contract: { allowedActions: { document } } } = this.props;
-    const { selectedTemplate } = this.state;
-    if (!selectedTemplate) return;
-    if ((!document && selectedTemplate) || document[selectedTemplate] !== true) this.setState({ selectedTemplate: '' });
-  }
 
   render() {
     const {
@@ -212,7 +206,7 @@ class NestedDetails extends React.Component<Props, State> {
                 </span>
                 {!!selectedTemplate && availableTemplates[selectedTemplate] !== true && (
                   <UncontrolledTooltip target="generate-pdf">
-                    {JSON.stringify(availableTemplates[selectedTemplate])}
+                    {JSON.stringify(formatErrMessage(availableTemplates[selectedTemplate]))}
                   </UncontrolledTooltip>
                 )}
               </React.Fragment>
