@@ -89,7 +89,7 @@ class NestedDetails extends React.Component<Props, State> {
 
     const prefix = 'admin.contracts';
 
-    const availableTemplates = contract.allowedActions.document || {};
+    const availableTemplates = (contract.allowedActions || {}).document || {};
 
     return (
       <NestedDetailsWrapper>
