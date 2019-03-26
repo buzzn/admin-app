@@ -72,9 +72,12 @@ class AttachedTariffs extends React.Component<Props, State> {
       },
       energypriceCentsPerKwh: {
         Display: (
-          <React.Fragment>
-            <FormattedNumber value={t.energypriceCentsPerKwh} style="decimal" maximumFractionDigits={1} /> ¢
-          </React.Fragment>
+          <FormattedNumber
+            value={(t.energypriceCentsPerKwh / 100).toFixed(4)}
+            style="currency"
+            currency="EUR"
+            currencyDisplay="symbol"
+          />
         ),
         value: t.energypriceCentsPerKwh,
       },
