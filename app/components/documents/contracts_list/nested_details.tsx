@@ -113,7 +113,7 @@ class NestedDetails extends React.Component<Props, State> {
                           .slice(0, -1)
                           .join('/')}/powertakers/${contract.id}/powertaker`}
                       >
-                        {`${contract.customer.firstName} ${contract.customer.lastName}`}
+                        {contract.customer.type === 'person' ? `${contract.customer.firstName} ${contract.customer.lastName}` : contract.customer.name}
                       </Link>
                     ) : (
                       'Third party'
