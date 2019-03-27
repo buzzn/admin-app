@@ -99,6 +99,15 @@ const LPCMPOContract = ({
                       component: EditableInput,
                     }}
                   />
+                  <TwoColField
+                    {...{
+                      prefix,
+                      name: 'creditorIdentification',
+                      editMode,
+                      validationRules,
+                      component: EditableInput,
+                    }}
+                  />
                 </React.Fragment>
               )}
               <TwoColView {...{ prefix, field: 'customer' }}>
