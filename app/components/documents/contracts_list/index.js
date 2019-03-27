@@ -15,7 +15,7 @@ class ContractsList extends React.Component {
   state = { isOpen: false, expanded: {}, generatingPDF: false };
 
   handleRowClick = (rowNum) => {
-    this.setState(state => ({ expanded: { ...state.expanded, [rowNum]: !state.expanded[rowNum] } }));
+    this.setState(state => ({ expanded: { [rowNum]: !state.expanded[rowNum] } }));
   };
 
   switchAddContract = () => {
@@ -191,6 +191,7 @@ class ContractsList extends React.Component {
           }}
         />
         <br />
+        {loading && <Loading minHeight={40} fixed />}
         <ReactTable
           {...{
             data,

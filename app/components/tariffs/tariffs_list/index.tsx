@@ -18,7 +18,15 @@ interface Props {
   switchAddTariff: Function;
 }
 
-const TariffsList = ({ tariffs, intl, groupId, breadcrumbs, url, tType, switchAddTariff }: Props & BreadcrumbsProps & InjectIntlProps) => {
+const TariffsList = ({
+  tariffs,
+  intl,
+  groupId,
+  breadcrumbs,
+  url,
+  tType,
+  switchAddTariff,
+}: Props & BreadcrumbsProps & InjectIntlProps) => {
   const [expanded, setExpanded] = useState({});
 
   const filteredTariffs = tariffs.filter(t => (tType === 'active' ? !t.lastDate : !!t.lastDate));
@@ -42,9 +50,12 @@ const TariffsList = ({ tariffs, intl, groupId, breadcrumbs, url, tType, switchAd
     },
     energypriceCentsPerKwh: {
       Display: (
-        <React.Fragment>
-          <FormattedNumber value={t.energypriceCentsPerKwh} style="decimal" maximumFractionDigits={1} /> ¢
-        </React.Fragment>
+        <FormattedNumber
+          value={(t.energypriceCentsPerKwh / 100).toFixed(4)}
+          style="currency"
+          currency="EUR"
+          currencyDisplay="symbol"
+        />
       ),
       value: t.energypriceCentsPerKwh,
     },
@@ -133,10 +144,12 @@ const TariffsList = ({ tariffs, intl, groupId, breadcrumbs, url, tType, switchAd
               },
             }),
             SubComponent: ({ original }) => (
-              <NestedDetails {...{
-                groupId,
-                tariffId: original.id,
-              }} />
+              <NestedDetails
+                {...{
+                  groupId,
+                  tariffId: original.id,
+                }}
+              />
             ),
           }}
         />

@@ -95,7 +95,8 @@ const AddBankAccount = ({
                 {...{
                   name: 'directDebit',
                   editMode: true,
-                  label: <FormattedMessage id={`${prefix}.directDebit`} />,
+                  prefix,
+                  withLabel: true,
                   component: EditableCheckbox,
                   validationRules,
                 }}

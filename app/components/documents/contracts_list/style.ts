@@ -24,3 +24,8 @@ export const DropzoneWrapper = styled.div`
     }
   }
 `;
+
+export const TemplateDropdown = styled.select`
+  width: 50%;
+  margin-right: 10px;
+`;

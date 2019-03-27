@@ -1,7 +1,6 @@
 import * as React from 'react';
 import moment from 'moment';
 import get from 'lodash/get';
-import isEqual from 'lodash/isEqual';
 import { getFormSubmitErrors } from 'redux-form';
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
@@ -53,11 +52,6 @@ class BillingsList extends React.Component<ExtProps & DispatchProps & StateProps
     loadContract({ groupId, contractId });
     loadTariffs(groupId);
     loadMarketLocations(groupId);
-  }
-
-  componentDidUpdate(prevProps) {
-    if (isEqual(prevProps.billings, this.props.billings)) return;
-    this.setState(() => ({ expanded: {} }));
   }
 
   render() {

@@ -22,7 +22,15 @@ export function prepareHeaders(token, noType, noCache) {
   return headers;
 }
 
-const flattenErrors = ({ errors }) => {
+export const formatErrMessage = (errObj, res = '') => {
+  if (typeof errObj === 'string') return `${res}${errObj}`;
+  if (Array.isArray(errObj)) return `${res}${errObj.join(', ')}`;
+  return `${res}${Object.keys(errObj)
+    .map(k => formatErrMessage(errObj[k], `${k}: `))
+    .join('; ')}`;
+};
+
+export const flattenErrors = ({ errors }) => {
   if (typeof errors === 'string') return { errorMessage: errors };
   return reduce(
     errors,

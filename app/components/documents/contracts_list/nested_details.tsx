@@ -1,6 +1,7 @@
 import * as React from 'react';
 import moment from 'moment';
-import get from 'lodash/get';
+import snakeCase from 'lodash/snakeCase';
+import capitalize from 'lodash/capitalize';
 import { FormattedMessage } from 'react-intl';
 import { Row, Col, UncontrolledTooltip } from 'reactstrap';
 import { Link } from 'react-router-dom';
@@ -8,9 +9,10 @@ import Alert from 'react-s-alert';
 import LabeledValue from 'components/labeled_value';
 import Loading from 'components/loading';
 import { NestedDetailsWrapper } from 'components/style';
+import { formatErrMessage } from '_util';
 import UploadModal from './upload_modal';
 
-import { DocumentsListHeader } from './style';
+import { DocumentsListHeader, TemplateDropdown } from './style';
 
 interface Props {
   contract: { [key: string]: any };
@@ -28,26 +30,35 @@ interface Props {
 interface State {
   isOpen: boolean;
   generatingPDF: boolean;
+  selectedTemplate: string;
 }
 
 class NestedDetails extends React.Component<Props, State> {
-  state = { isOpen: false, generatingPDF: false };
+  state = { isOpen: false, generatingPDF: false, selectedTemplate: '' };
 
   switchUpload = () => {
     this.setState({ isOpen: !this.state.isOpen });
   };
 
-  handleGeneratePDF = async (contractId) => {
+  handleTemplateSelect = ({ target: { value } }) => {
+    this.setState({ selectedTemplate: value });
+  };
+
+  handleGeneratePDF = async ({ contractId, template }) => {
     const { generateContractPDF, groupId, loadGroupContracts } = this.props;
     this.setState({ generatingPDF: true });
-    const res = await new Promise((resolve, reject) => generateContractPDF({ groupId, contractId, resolve, reject }));
-    this.setState({ generatingPDF: false });
-    if (res) {
-      Alert.error(JSON.stringify(res));
-    } else {
-      Alert.success('Document generated');
-      loadGroupContracts(groupId);
+    try {
+      const res = await new Promise((resolve, reject) => generateContractPDF({ groupId, contractId, resolve, reject, template }));
+      if (res) {
+        Alert.error(JSON.stringify(res));
+      } else {
+        Alert.success('Document generated');
+        loadGroupContracts(groupId);
+      }
+    } catch (error) {
+      Alert.error(JSON.stringify(error));
     }
+    this.setState({ generatingPDF: false });
   };
 
   handleDeletePDF = async ({ contractId, documentId }) => {
@@ -74,15 +85,11 @@ class NestedDetails extends React.Component<Props, State> {
       url,
     } = this.props;
 
-    const { generatingPDF } = this.state;
+    const { generatingPDF, selectedTemplate } = this.state;
 
     const prefix = 'admin.contracts';
 
-    let PDFdisabled = true;
-    if (
-      get(contract.allowedActions, 'documentLocalpoolProcessingContract') === true
-      || get(contract.allowedActions, 'documentMeteringPointOperatorContract') === true
-    ) PDFdisabled = false;
+    const availableTemplates = (contract.allowedActions || {}).document || {};
 
     return (
       <NestedDetailsWrapper>
@@ -106,7 +113,7 @@ class NestedDetails extends React.Component<Props, State> {
                           .slice(0, -1)
                           .join('/')}/powertakers/${contract.id}/powertaker`}
                       >
-                        {`${contract.customer.firstName} ${contract.customer.lastName}`}
+                        {contract.customer.type === 'person' ? `${contract.customer.firstName} ${contract.customer.lastName}` : contract.customer.name}
                       </Link>
                     ) : (
                       'Third party'
@@ -171,19 +178,36 @@ class NestedDetails extends React.Component<Props, State> {
         <Row>
           <Col xs={12}>
             <br />
-            {['contract_localpool_processing', 'contract_metering_point_operator'].includes(contract.type) && (
+            {!!Object.keys(availableTemplates).length && (
               <React.Fragment>
                 <span id="generate-pdf">
+                  <TemplateDropdown
+                    className="custom-select form-control"
+                    onChange={this.handleTemplateSelect}
+                    value={selectedTemplate}
+                  >
+                    <option value="">-----</option>
+                    {Object.keys(availableTemplates).map(t => (
+                      <option key={t} value={t}>
+                        {snakeCase(t)
+                          .split('_')
+                          .map(s => capitalize(s))
+                          .join(' ')}
+                      </option>
+                    ))}
+                  </TemplateDropdown>
                   <button
                     className="btn btn-dark btn-sm"
-                    onClick={() => this.handleGeneratePDF(contract.id)}
-                    disabled={PDFdisabled}
+                    onClick={() => this.handleGeneratePDF({ contractId: contract.id, template: selectedTemplate })}
+                    disabled={availableTemplates[selectedTemplate] !== true}
                   >
                     <FormattedMessage id="admin.buttons.generatePDF" />
                   </button>
                 </span>
-                {PDFdisabled && (
-                  <UncontrolledTooltip target="generate-pdf">Please, fill the group owner</UncontrolledTooltip>
+                {!!selectedTemplate && availableTemplates[selectedTemplate] !== true && (
+                  <UncontrolledTooltip target="generate-pdf">
+                    {JSON.stringify(formatErrMessage(availableTemplates[selectedTemplate]))}
+                  </UncontrolledTooltip>
                 )}
               </React.Fragment>
             )}

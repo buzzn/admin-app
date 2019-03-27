@@ -409,6 +409,15 @@ class AddPowertaker extends React.Component<Props, State> {
             <TwoColField
               {...{
                 prefix,
+                name: 'creditorIdentification',
+                editMode,
+                validationRules,
+                component: EditableInput,
+              }}
+            />
+            <TwoColField
+              {...{
+                prefix,
                 name: 'meteringPointOperatorName',
                 editMode,
                 validationRules,
