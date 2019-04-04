@@ -19,6 +19,7 @@ import Tariffs from 'tariffs';
 import Devices from 'devices';
 import WebsiteForms from 'website_forms';
 import ValidationRules from 'validation_rules';
+import { validationRulesSagas } from 'validation_rules/sagas';
 
 import loadingList, { authList } from 'validation_rules_list';
 
@@ -169,8 +170,10 @@ export default function* () {
 
     yield call(setToken, token);
 
-    yield put(ValidationRules.actions.setLoadingList({ loadingList }));
-    yield put(ValidationRules.actions.setLoadingList({ loadingList: authList, pathOverride: authPath }));
+    yield put(actions.setAppLoading(true));
+    yield call(validationRulesSagas, { apiUrl, apiPath, token }, { loadingList });
+    yield call(validationRulesSagas, { apiUrl, apiPath, token }, { loadingList: authList, pathOverride: authPath });
+    yield put(actions.setAppLoading(false));
 
     if (yield call(getUserMe, { apiUrl, apiPath, token })) {
       yield takeLatest(constants.LOAD_USER_ME, getUserMe, { apiUrl, apiPath, token });
