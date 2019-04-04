@@ -164,6 +164,7 @@ export default function* () {
 
   while (true) {
     if (!token) {
+      yield put(actions.setAppLoading(false));
       yield call(setDevLogin);
       ({ token } = yield take(Auth.constants.SIGN_IN));
     }
