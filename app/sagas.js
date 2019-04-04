@@ -138,7 +138,7 @@ export default function* () {
     window.location.href = `https:${window.location.href.substring(window.location.protocol.length)}`;
   }
 
-  yield fork(initialLoadPause);
+  // yield fork(initialLoadPause);
 
   yield put(Auth.actions.setApiParams({ apiUrl, apiPath: authPath }));
   yield put(Groups.actions.setApiParams({ apiUrl, apiPath }));
