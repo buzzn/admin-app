@@ -55,6 +55,7 @@ const BillingDetails = ({
   const [item, setItem] = useState({});
   const [minHeight, setMinHeight] = useState(340);
   useEffect(() => {
+    // @ts-ignore
     const node = ReactDOM.findDOMNode(this) as HTMLElement;
     setMinHeight(node ? node.clientHeight : 290);
   }, [billingId]);
