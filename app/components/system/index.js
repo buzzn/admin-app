@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
+
 import Groups from 'groups';
 import MarketLocations from 'market_locations';
 import Registers from 'registers';
+
 import Loading from 'components/loading';
 import MarketLocationsList from './market_locations_list';
 import RegisterData from './register_data';
@@ -73,7 +75,7 @@ export class System extends React.Component {
     return (
       <Switch>
         <Route
-          path={`${url}/:maloType(consumption|production|system)`}
+          path={`${url}/:maloType(consumption|production|system|all-meters)`}
           render={({ match: { params: { maloType } } }) => (
             <MarketLocationsList
               {...{

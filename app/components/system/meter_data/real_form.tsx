@@ -173,9 +173,15 @@ class MeterData extends React.Component<Props> {
                   component: EditableInput,
                 }}
               />
-              <TwoColView {...{ prefix, field: 'dataSource' }}>
-                <FormattedMessage id={`${prefix}.${meter.datasource}`} />
-              </TwoColView>
+              <TwoColField
+                {...{
+                  prefix,
+                  name: 'datasource',
+                  editMode,
+                  validationRules,
+                  component: EditableSelect,
+                }}
+              />
               <TwoColField
                 {...{ prefix, name: 'directionNumber', editMode, validationRules, component: EditableSelect }}
               />

@@ -2,17 +2,19 @@ import * as React from 'react';
 import ReactTableSorted from 'components/react_table_sorted';
 import { injectIntl, InjectIntlProps, FormattedMessage } from 'react-intl';
 import { NavLink, Link } from 'react-router-dom';
+
 import { tableParts as TableParts } from 'react_table_config';
 import PageTitle from 'components/page_title';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
 import { CenterContent, SubNav, SubNavAddLink } from 'components/style';
+import MetersList from '../meters_list';
 
 interface Props {
   marketLocations: Array<any>;
   url: string;
   history: any;
   groupId: string;
-  maloType: 'consumption' | 'production' | 'system';
+  maloType: 'consumption' | 'production' | 'system' | 'all-meters';
 }
 
 const MarketLocationsList = ({
@@ -28,7 +30,7 @@ const MarketLocationsList = ({
   const prefix = 'admin.marketLocations';
 
   const data = marketLocations
-    .filter(m => maloType === 'system' ? ['system', 'grid_consumption', 'grid_feeding'].includes(m.kind) : m.kind === maloType)
+    .filter(m => (maloType === 'system' ? ['system', 'grid_consumption', 'grid_feeding'].includes(m.kind) : m.kind === maloType))
     .flatMap((m) => {
       if (!m.registers.array || !m.registers.array.length) {
         return {
@@ -122,23 +124,30 @@ const MarketLocationsList = ({
           <NavLink to={`${url}/system`} exact className="nav-link" data-cy="system tab">
             <FormattedMessage id="admin.marketLocations.navSystem" />
           </NavLink>
+          <NavLink to={`${url}/all-meters`} exact className="nav-link" data-cy="all meters tab">
+            <FormattedMessage id="admin.marketLocations.navAllMeters" />
+          </NavLink>
         </SubNav>
         <div className="p-0">
-          <ReactTableSorted
-            {...{
-              data,
-              columns,
-              collapseOnDataChange: false,
-              getTdProps: (_state, rowInfo, column) => ({
-                onClick: (_e, handleOriginal) => {
-                  if (column.id === 'name') history.push(rowInfo.original.linkMarketLocation);
-                  if (column.id === 'meterProductSerialnumber' && rowInfo.original.linkMeter) history.push(rowInfo.original.linkMeter);
-                  if (handleOriginal) handleOriginal();
-                },
-              }),
-              uiSortPath: `groups.${groupId}.marketLocations`,
-            }}
-          />
+          {maloType === 'all-meters' ? (
+            <MetersList {...{ groupId, url }} />
+          ) : (
+            <ReactTableSorted
+              {...{
+                data,
+                columns,
+                collapseOnDataChange: false,
+                getTdProps: (_state, rowInfo, column) => ({
+                  onClick: (_e, handleOriginal) => {
+                    if (column.id === 'name') history.push(rowInfo.original.linkMarketLocation);
+                    if (column.id === 'meterProductSerialnumber' && rowInfo.original.linkMeter) history.push(rowInfo.original.linkMeter);
+                    if (handleOriginal) handleOriginal();
+                  },
+                }),
+                uiSortPath: `groups.${groupId}.marketLocations`,
+              }}
+            />
+          )}
         </div>
       </CenterContent>
     </React.Fragment>
