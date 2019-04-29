@@ -28,7 +28,7 @@ const MarketLocationsList = ({
   const prefix = 'admin.marketLocations';
 
   const data = marketLocations
-    .filter(m => m.kind === maloType)
+    .filter(m => maloType === 'system' ? ['system', 'grid_consumption', 'grid_feeding'].includes(m.kind) : m.kind === maloType)
     .flatMap((m) => {
       if (!m.registers.array || !m.registers.array.length) {
         return {
