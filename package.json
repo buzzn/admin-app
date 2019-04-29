@@ -91,7 +91,7 @@
     "storybook-addon-intl": "^2.4.0",
     "storybook-router": "^0.3.4",
     "style-loader": "^0.23.1",
-    "typescript": "^3.3.3333",
+    "typescript": "^3.4.1",
     "typescript-eslint-parser": "^22.0.0",
     "url-loader": "^1.1.2",
     "webpack": "^4.29.6",
