@@ -51,10 +51,18 @@ const MetersList: React.FC<ExtProps & StateProps & DispatchProps & InjectIntlPro
           <ul>
             {m.registers.array.map(register => (
               <li key={register.id}>
-                {register.registerMeta
-                  ? `${register.registerMeta.name} - ${intl.formatMessage({ id: `admin.registers.${register.registerMeta.label}` })}`
-                  : register.obis}
-                , Last reading: {register.lastReading}
+                {register.registerMeta ? (
+                  <React.Fragment>
+                    <Link to={`${url}/${register.registerMeta.id}`}>
+                      {`${register.registerMeta.name} - ${intl.formatMessage({ id: `admin.registers.${register.registerMeta.label}` })}`}
+                    </Link>
+                    , Last reading: <Link to={`${url}/registers/${register.id}/readings`}>{register.lastReading}</Link>
+                  </React.Fragment>
+                ) : (
+                  <React.Fragment>
+                    {register.obis}, Last reading: {register.lastReading}
+                  </React.Fragment>
+                )}
               </li>
             ))}
           </ul>
