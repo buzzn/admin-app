@@ -31,6 +31,7 @@ app            --> our application
 - Good rule for the module action types is to use prefix, for example: `buzzn_admin/PROFILE_LOADED`, but exported constant should be named without prefix: `PROFILE_LOADED`
 - Each module should know as little as possible about other modules or app structure. There can be an exception ofc. For example we can make a convention about app config reducer path and use it directly to minimize boilerplate code.
 - buzzn-style repo is not used correctly right now. Initial idea was to extract all view-only components there and create storybooks for them. And to simplify code management lerna.js or yarn workspaces can be used.
+- validation is based on swagger.json rules. On app load rules are fetched and based on `validation_rules_list.js` each module receives rules obj as an action. If there is a form field that is connected to validation rules, but there is no such riles in loaded json, then form will crash. It's done intentionally to prevent silent failures and broken validation.
 
 To run local dev server:
 
