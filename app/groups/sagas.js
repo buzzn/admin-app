@@ -43,10 +43,28 @@ export function* addGroup({ apiUrl, apiPath, token }, { params, resolve, reject 
 }
 
 export function* updateGroup({ apiUrl, apiPath, token }, { params, resolve, reject, groupId }) {
+  const orgMarketUpd = {
+    transmissionSystemOperator: api.updateGroupTSO,
+    distributionSystemOperator: api.updateGroupDSO,
+    electricitySupplier: api.updateGroupES,
+  };
   try {
-    const res = yield call(api.updateGroup, { apiUrl, apiPath, token, params, groupId });
-    if (res._error) {
-      yield call(reject, new SubmissionError(res));
+    const errs = {};
+    let updatedAt = params.updatedAt;
+    for (const key of Object.keys((params.orgMarket || {}))) {
+      const res = yield call(orgMarketUpd[key], { apiUrl, apiPath, token, params: {
+        organizationId: params.orgMarket[key],
+        updatedAt,
+      }, groupId });
+      if (res._error) {
+        errs[key] = res;
+      } else {
+        updatedAt = res.updated_at;
+      }
+    }
+    const res = yield call(api.updateGroup, { apiUrl, apiPath, token, params: { ...params, updatedAt }, groupId });
+    if (res._error || Object.keys(errs).length) {
+      yield call(reject, new SubmissionError({ ...res, ...errs }));
     } else {
       yield call(resolve, res);
       yield put(actions.loadGroup(groupId));

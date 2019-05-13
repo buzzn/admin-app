@@ -1,8 +1,11 @@
-import * as React from 'react';
+import React, { useState } from 'react';
+import snakeCase from 'lodash/snakeCase';
 import { reduxForm } from 'redux-form';
+import Select from 'react-select';
 import { FormattedMessage } from 'react-intl';
 import { Col, Row } from 'reactstrap';
 import Alert from 'react-s-alert';
+import Loading from 'components/loading';
 import withEditOverlay from 'components/with_edit_overlay';
 import FormPanel from 'components/form_panel';
 import TwoColField from 'components/two_col_field';
@@ -11,6 +14,15 @@ import EditableDate from 'components/editable_date';
 import EditableCheckbox from 'components/editable_checkbox';
 import { dateNormalizer, numberNormalizer } from 'validation_normalizers';
 import { DeleteButton } from 'components/style';
+import { mainStyle as baseStyle } from 'components/react_select_styles';
+
+const mainStyle = {
+  ...baseStyle,
+  container: base => ({
+    ...base,
+    width: '100%',
+  }),
+};
 
 interface Props {
   editMode: boolean;
@@ -23,9 +35,9 @@ interface Props {
   deleteGroup: Function;
   updateGroup: Function;
   address: { [key: string]: any };
-  transmissionSystemOperator: { [key: string]: any };
-  distributionSystemOperator: { [key: string]: any };
-  electricitySupplier: { [key: string]: any };
+  loadAvailableOrganizationMarkets: () => void;
+  availableOrganizationMarkets: { _status: null | number; array: any[] };
+  loadingOptions: boolean;
   validationRules: any;
 }
 
@@ -38,12 +50,19 @@ const Form = ({
   updateGroup,
   group,
   deleteGroup,
-  transmissionSystemOperator,
-  distributionSystemOperator,
-  electricitySupplier,
+  loadAvailableOrganizationMarkets,
+  availableOrganizationMarkets,
+  loadingOptions,
   editMode,
   switchEditMode,
 }: Props) => {
+  const [groupOrgMarket, setGroupOrgMarket] = useState({});
+  const orgMarketOptions = {
+    transmissionSystemOperator: [],
+    distributionSystemOperator: [],
+    electricitySupplier: [],
+  };
+
   const submitForm = values => new Promise((resolve, reject) => {
     const params = JSON.parse(JSON.stringify(values));
     delete params.allowedActions;
@@ -57,6 +76,10 @@ const Form = ({
     delete params.showProduction;
     delete params.showDisplayApp;
     params.fakeStats = JSON.stringify(params.fakeStats || {});
+    params.orgMarket = {};
+    Object.keys(orgMarketOptions).forEach(om => {
+      if (groupOrgMarket[om] && groupOrgMarket[om].value !== (group[om] || {}).id) params.orgMarket[om] = groupOrgMarket[om].value;
+    });
     updateGroup({
       groupId: group.id,
       params,
@@ -65,11 +88,30 @@ const Form = ({
     });
   }).then(() => {
     Alert.success('Saved!');
-    switchEditMode();
+    switchEditModeWrap();
   });
+
+  const switchEditModeWrap = () => {
+    if (!editMode) {
+      loadAvailableOrganizationMarkets();
+    } else {
+      setGroupOrgMarket({});
+    }
+    switchEditMode();
+  };
 
   const prefix = 'admin.groups';
   const addressPrefix = 'admin.addresses';
+
+  const defaultOption = { value: undefined, label: '-----' };
+
+  Object.keys(orgMarketOptions).forEach((orgMarketType) => {
+    orgMarketOptions[orgMarketType] = [defaultOption].concat(
+      availableOrganizationMarkets.array
+        .filter(o => o.marketFunctions.array.find(mf => mf.function === snakeCase(orgMarketType)))
+        .map(o => ({ value: o.id, label: o.name })),
+    );
+  });
 
   return (
     <Col xs="12">
@@ -81,7 +123,7 @@ const Form = ({
               data-cy="group edit switch"
               className="buzzn-pencil"
               style={{ float: 'right' }}
-              onClick={switchEditMode}
+              onClick={switchEditModeWrap}
             />
           )}
         </p>
@@ -91,11 +133,11 @@ const Form = ({
             dirty: !pristine,
             onCancel: () => {
               reset();
-              switchEditMode();
+              switchEditModeWrap();
             },
             cancelDisabled: submitting,
             onSave: handleSubmit(submitForm),
-            saveDisabled: pristine || submitting,
+            saveDisabled: (pristine && !Object.keys(groupOrgMarket).length) || submitting,
           }}
         >
           <TwoColField
@@ -144,30 +186,94 @@ const Form = ({
               normalize: dateNormalizer('YYYY-MM-DD'),
             }}
           />
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.transmissionSystemOperator`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              {transmissionSystemOperator.name}
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.distributionSystemOperator`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              {distributionSystemOperator.name}
-            </Col>
-          </Row>
-          <Row className="fieldgroup">
-            <Col xs="4" className="fieldname">
-              <FormattedMessage id={`${prefix}.electricitySupplier`} />
-            </Col>
-            <Col xs="8" className="grey-underline fieldvalue">
-              {electricitySupplier.name}
-            </Col>
-          </Row>
+          {editMode ? (
+            loadingOptions ? (
+              <Loading minHeight={10} />
+            ) : (
+              <React.Fragment>
+                <Row className="fieldgroup">
+                  <Col xs="6" className="fieldname">
+                    <FormattedMessage id={`${prefix}.transmissionSystemOperator`} />
+                  </Col>
+                  <Col xs="6" className="grey-underline fieldvalue p-0">
+                    <Select
+                      options={orgMarketOptions.transmissionSystemOperator}
+                      onChange={transmissionSystemOperator => setGroupOrgMarket({ ...groupOrgMarket, transmissionSystemOperator })
+                      }
+                      styles={mainStyle}
+                      defaultValue={
+                        group.transmissionSystemOperator
+                          ? { value: group.transmissionSystemOperator.id, label: group.transmissionSystemOperator.name }
+                          : defaultOption
+                      }
+                    />
+                  </Col>
+                </Row>
+                <Row className="fieldgroup">
+                  <Col xs="6" className="fieldname">
+                    <FormattedMessage id={`${prefix}.distributionSystemOperator`} />
+                  </Col>
+                  <Col xs="6" className="grey-underline fieldvalue p-0">
+                    <Select
+                      options={orgMarketOptions.distributionSystemOperator}
+                      onChange={distributionSystemOperator => setGroupOrgMarket({ ...groupOrgMarket, distributionSystemOperator })
+                      }
+                      styles={mainStyle}
+                      defaultValue={
+                        group.distributionSystemOperator
+                          ? { value: group.distributionSystemOperator.id, label: group.distributionSystemOperator.name }
+                          : defaultOption
+                      }
+                    />
+                  </Col>
+                </Row>
+                <Row className="fieldgroup">
+                  <Col xs="6" className="fieldname">
+                    <FormattedMessage id={`${prefix}.electricitySupplier`} />
+                  </Col>
+                  <Col xs="6" className="grey-underline fieldvalue p-0">
+                    <Select
+                      options={orgMarketOptions.electricitySupplier}
+                      onChange={electricitySupplier => setGroupOrgMarket({ ...groupOrgMarket, electricitySupplier })}
+                      styles={mainStyle}
+                      defaultValue={
+                        group.electricitySupplier
+                          ? { value: group.electricitySupplier.id, label: group.electricitySupplier.name }
+                          : defaultOption
+                      }
+                    />
+                  </Col>
+                </Row>
+              </React.Fragment>
+            )
+          ) : (
+            <React.Fragment>
+              <Row className="fieldgroup">
+                <Col xs="6" className="fieldname">
+                  <FormattedMessage id={`${prefix}.transmissionSystemOperator`} />
+                </Col>
+                <Col xs="6" className="grey-underline fieldvalue">
+                  {(group.transmissionSystemOperator || {}).name}
+                </Col>
+              </Row>
+              <Row className="fieldgroup">
+                <Col xs="6" className="fieldname">
+                  <FormattedMessage id={`${prefix}.distributionSystemOperator`} />
+                </Col>
+                <Col xs="6" className="grey-underline fieldvalue">
+                  {(group.distributionSystemOperator || {}).name}
+                </Col>
+              </Row>
+              <Row className="fieldgroup">
+                <Col xs="6" className="fieldname">
+                  <FormattedMessage id={`${prefix}.electricitySupplier`} />
+                </Col>
+                <Col xs="6" className="grey-underline fieldvalue">
+                  {(group.electricitySupplier || {}).name}
+                </Col>
+              </Row>
+            </React.Fragment>
+          )}
           <TwoColField
             {...{
               prefix,
