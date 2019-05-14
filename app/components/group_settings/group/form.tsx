@@ -39,6 +39,7 @@ interface Props {
   availableOrganizationMarkets: { _status: null | number; array: any[] };
   loadingOptions: boolean;
   validationRules: any;
+  loadGroup: (string) => void;
 }
 
 const Form = ({
@@ -55,6 +56,7 @@ const Form = ({
   loadingOptions,
   editMode,
   switchEditMode,
+  loadGroup,
 }: Props) => {
   const [groupOrgMarket, setGroupOrgMarket] = useState({});
   const orgMarketOptions = {
@@ -96,6 +98,7 @@ const Form = ({
       loadAvailableOrganizationMarkets();
     } else {
       setGroupOrgMarket({});
+      loadGroup(group.id);
     }
     switchEditMode();
   };

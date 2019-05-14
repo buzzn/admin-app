@@ -186,6 +186,7 @@ class GroupSettings extends React.Component {
                       loadAvailableOrganizationMarkets,
                       availableOrganizationMarkets,
                       loadingOptions,
+                      loadGroup,
                     }}
                   />
                 )}

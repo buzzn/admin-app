@@ -50,12 +50,18 @@ export function* updateGroup({ apiUrl, apiPath, token }, { params, resolve, reje
   };
   try {
     const errs = {};
-    let updatedAt = params.updatedAt;
-    for (const key of Object.keys((params.orgMarket || {}))) {
-      const res = yield call(orgMarketUpd[key], { apiUrl, apiPath, token, params: {
-        organizationId: params.orgMarket[key],
-        updatedAt,
-      }, groupId });
+    let { updatedAt } = params;
+    for (const key of Object.keys(params.orgMarket || {})) {
+      const res = yield call(orgMarketUpd[key], {
+        apiUrl,
+        apiPath,
+        token,
+        params: {
+          organizationId: params.orgMarket[key],
+          updatedAt,
+        },
+        groupId,
+      });
       if (res._error) {
         errs[key] = res;
       } else {

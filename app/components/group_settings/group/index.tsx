@@ -15,6 +15,7 @@ interface Props {
   availableOrganizationMarkets: { _status: null | number; array: any[] };
   loadingOptions: boolean;
   validationRules: any;
+  loadGroup: (string) => void;
 }
 
 const Group = ({
@@ -26,6 +27,7 @@ const Group = ({
   loadAvailableOrganizationMarkets,
   availableOrganizationMarkets,
   loadingOptions,
+  loadGroup,
 }: Props) => (
   <React.Fragment>
     <Form
@@ -39,6 +41,7 @@ const Group = ({
         loadAvailableOrganizationMarkets,
         availableOrganizationMarkets,
         loadingOptions,
+        loadGroup,
       }}
     />
     <Switches
