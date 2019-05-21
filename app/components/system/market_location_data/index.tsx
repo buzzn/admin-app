@@ -26,7 +26,7 @@ const MarketLocationData = ({
   marketLocation,
   intl,
   updateMaLoValidationRules,
-  updateRegister,
+  updateRegisterMeta,
 }: Props & BreadcrumbsProps & InjectIntlProps) => (
   <React.Fragment>
     <PageTitle
@@ -100,7 +100,7 @@ const MarketLocationData = ({
           marketLocation,
           initialValues: marketLocation,
           groupId,
-          updateRegister,
+          updateRegisterMeta,
           validationRules: updateMaLoValidationRules,
         }}
       />

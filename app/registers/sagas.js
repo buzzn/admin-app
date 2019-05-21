@@ -28,9 +28,9 @@ export function* getRegisterPower({ apiUrl, apiPath, token }, { registerId, grou
   }
 }
 
-export function* updateRegister({ apiUrl, apiPath, token }, { registerId, params, resolve, reject, groupId }) {
+export function* updateRegisterMeta({ apiUrl, apiPath, token }, { registerId, params, resolve, reject, groupId }) {
   try {
-    const res = yield call(api.updateRegister, { apiUrl, apiPath, token, registerId, params, groupId });
+    const res = yield call(api.updateRegisterMeta, { apiUrl, apiPath, token, registerId, params, groupId });
     if (res._error) {
       if (res.observer) {
         res.observerMinThreshold = res.observer;
@@ -50,7 +50,7 @@ export function* updateRegister({ apiUrl, apiPath, token }, { registerId, params
 export function* registersSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_REGISTER, getRegister, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_REGISTER_POWER, getRegisterPower, { apiUrl, apiPath, token });
-  yield takeLeading(constants.UPDATE_REGISTER, updateRegister, { apiUrl, apiPath, token });
+  yield takeLeading(constants.UPDATE_REGISTER_META, updateRegisterMeta, { apiUrl, apiPath, token });
   const { groupId } = yield select(selectGroup);
   const { registerId, meterId } = yield select(selectRegister);
   if (groupId && registerId && meterId) {

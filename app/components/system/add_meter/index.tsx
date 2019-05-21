@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { getFormValues } from 'redux-form';
+
 import Meters from 'meters';
 import MarketLocations from 'market_locations';
 import AddMeterForm from './form';
@@ -14,29 +16,24 @@ const AddMeter = ({
   loadMarketLocations,
   marketLocations,
   loading,
+  form,
+  formValues,
   createMeterValidationRules,
   initMeter = {},
   cb,
 }: ExtProps & StateProps & DispatchProps) => {
   const [initialMeter, setInitialMeter] = useState({});
-  useEffect(
-    () => {
-      setInitialMeter(initMeter);
-    },
-    [initMeter],
-  );
-  useEffect(
-    () => {
-      if (!marketLocations._status && !marketLocations.array.length) loadMarketLocations(groupId);
-    },
-    [marketLocations, groupId],
-  );
+  useEffect(() => {
+    setInitialMeter(initMeter);
+  }, [initMeter]);
+  useEffect(() => {
+    if (!marketLocations._status && !marketLocations.array.length) loadMarketLocations(groupId);
+  }, [marketLocations, groupId]);
   const submitForm = (values, selectedRegisters) => {
-    const params = { ...values };
-    params.registers = Object.values(params.registers);
-    selectedRegisters.forEach((s, i) => {
-      // @ts-ignore
-      if (s && s.value) params.registers[i] = { id: s.value };
+    const params = JSON.parse(JSON.stringify(values));
+    params.registers.forEach((r, i) => {
+      if (selectedRegisters[i] && selectedRegisters[i].value) params.registers[i] = { id: selectedRegisters[i].value };
+      if (r && r.emptyRegister) params.registers[i] = {};
     });
 
     return new Promise((resolve, reject) => {
@@ -60,6 +57,8 @@ const AddMeter = ({
         onSubmit: submitForm,
         initialValues: initialMeter,
         loading,
+        form,
+        formValues,
         validationRules: createMeterValidationRules,
         marketLocations,
       }}
@@ -87,6 +86,8 @@ interface StatePart {
 }
 
 interface StateProps {
+  form: string;
+  formValues: any;
   marketLocations: { _status: null | number; array: Array<any> };
   loading: boolean;
   createMeterValidationRules: any;
@@ -98,7 +99,10 @@ interface DispatchProps {
 }
 
 function mapStateToProps(state: StatePart) {
+  const form = 'addMeter';
   return {
+    form,
+    formValues: getFormValues(form)(state),
     marketLocations: state.marketLocations.marketLocations,
     loading: state.marketLocations.loadingMarketLocations,
     createMeterValidationRules: state.meters.validationRules.realCreate,

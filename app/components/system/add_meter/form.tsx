@@ -22,6 +22,7 @@ interface Props {
   onSubmit: Function;
   editMode: boolean;
   initialize: Function;
+  formValues: any;
   marketLocations: { _status: null | number; array: Array<{ [key: string]: any }> };
   handleSubmit: Function;
   pristine: boolean;
@@ -94,6 +95,7 @@ class AddMeterForm extends React.Component<Props> {
       history,
       url,
       submitting,
+      formValues,
       validationRules,
       marketLocations,
       initialize,
@@ -143,6 +145,7 @@ class AddMeterForm extends React.Component<Props> {
                     label: <FormattedMessage id={`${prefix}.registers`} />,
                     name: 'registers',
                     component: RegisterFields,
+                    formValues,
                     validationRules,
                     prefix,
                     editMode,
@@ -366,7 +369,6 @@ class AddMeterForm extends React.Component<Props> {
 }
 
 export default reduxForm({
-  form: 'addMeter',
   enableReinitialize: true,
   // HACK: see #3729, #3362 in redux-form
   keepDirtyOnReinitialize: true,

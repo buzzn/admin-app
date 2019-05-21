@@ -26,7 +26,7 @@ const Registers = ({ url, history, locationId, registers, intl, groupId, withAdd
   const prefix = 'admin.registers';
   const data = registers.map(r => ({
     ...r,
-    linkRegister: `${url}/registers/${r.id}`,
+    linkRegister: `${url}/registers/${r.meterId}/${r.id}`,
     linkMeter: `${url}/meters/${r.meter.id}`,
   }));
   const columns = [

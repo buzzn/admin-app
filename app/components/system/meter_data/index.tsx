@@ -53,7 +53,7 @@ class MeterData extends React.Component<ExtProps & DispatchProps & StateProps & 
         <CenterContent>
           {meter.type === 'meter_real' ? (
             <RealMeterDataForm
-              {...{ meter, validationRules: realValidationRules, initialValues: meter, updateMeter, groupId, url, history }}
+              {...{ meter, validationRules: realValidationRules, initialValues: meter, updateMeter, groupId, url }}
             />
           ) : (
             <VirtualMeterDataForm {...{ meter, validationRules: virtualValidationRules, initialValues: meter, url, history }} />

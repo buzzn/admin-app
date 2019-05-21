@@ -1,5 +1,6 @@
 import * as React from 'react';
 import ReactTable from 'react-table';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import get from 'lodash/get';
 import orderBy from 'lodash/orderBy';
@@ -8,7 +9,6 @@ import { Row, Col } from 'reactstrap';
 
 interface Props {
   registers: Array<any>;
-  history: any;
   url: string;
 }
 
@@ -24,7 +24,7 @@ class RegistersList extends React.Component<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { registers, intl, history, url } = this.props;
+    const { registers, intl, url } = this.props;
 
     const data = get(registers, 'array', []).map(r => ({
       ...r,
@@ -37,6 +37,11 @@ class RegistersList extends React.Component<Props & InjectedIntlProps, State> {
         accessor: 'registerMeta.name',
         filterable: false,
         sortable: false,
+        Cell: ({ original, value }) => (value ? (
+            <Link to={`${url}/${original.registerMeta.id}`}>{value}</Link>
+        ) : (
+            <Link to={`${url}/registers/${original.meterId}/${original.id}`}>unknown register</Link>
+        )),
       },
       {
         Header: () => <FormattedMessage id="admin.readings.tableDate" />,
@@ -60,6 +65,7 @@ class RegistersList extends React.Component<Props & InjectedIntlProps, State> {
         Cell: row => <span>{row.value ? <FormattedMessage id={`admin.readings.${row.value}`} /> : ''}</span>,
       },
       {
+        accessor: 'expander',
         expander: true,
         Expander: row => (row.original.lastReading.value ? (
             <div>{row.isExpanded ? <i className="fa fa-chevron-up" /> : <i className="fa fa-chevron-down" />}</div>
@@ -115,16 +121,22 @@ class RegistersList extends React.Component<Props & InjectedIntlProps, State> {
           expanded: this.state.expanded,
           getTdProps: (_state, rowInfo, col) => ({
             onClick: (_event, handleOriginal) => {
-              if (col.id === 'marketLocation.name') history.push(`${url}/${rowInfo.original.marketLocation.id}`);
+              col.id === 'expander' && rowInfo.original.lastReading.value && this.handleRowClick(rowInfo.viewIndex);
               handleOriginal && handleOriginal();
             },
           }),
-          getTrProps: (_state, rowInfo) => ({
-            onClick: (_event, handleOriginal) => {
-              rowInfo.original.lastReading.value && this.handleRowClick(rowInfo.viewIndex);
-              handleOriginal && handleOriginal();
-            },
-          }),
+          // getTdProps: (_state, rowInfo, col) => ({
+          //   onClick: (_event, handleOriginal) => {
+          //     if (col.id === 'marketLocation.name') history.push(`${url}/${rowInfo.original.marketLocation.id}`);
+          //     handleOriginal && handleOriginal();
+          //   },
+          // }),
+          // getTrProps: (_state, rowInfo) => ({
+          //   onClick: (_event, handleOriginal) => {
+          //     rowInfo.original.lastReading.value && this.handleRowClick(rowInfo.viewIndex);
+          //     handleOriginal && handleOriginal();
+          //   },
+          // }),
         }}
       />
     );

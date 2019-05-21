@@ -48,7 +48,7 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
       meterId,
       registerId,
       devMode,
-      updateRegister,
+      updateRegisterMeta,
       validationRules,
     } = this.props;
 
@@ -66,11 +66,11 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
               {
                 id: register.id,
                 type: 'register',
-                title: register.registerMeta.name,
+                title: register.registerMeta ? register.registerMeta.name : 'unknown register',
                 link: undefined,
               },
             ]),
-            title: register.registerMeta.name,
+            title: register.registerMeta ? register.registerMeta.name : 'unknown register',
           }}
         />
         <CenterContent>
@@ -110,11 +110,11 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
                   {...{
                     // FIXME: refactor this ASAP
                     register,
-                    initialValues: register.registerMeta,
+                    initialValues: register.registerMeta || {},
                     meter,
                     url,
                     groupId,
-                    updateRegister,
+                    updateRegisterMeta,
                     validationRules,
                   }}
                 />
@@ -161,7 +161,7 @@ interface StateProps {
 interface DispatchProps {
   loadMeter: Function;
   setMeter: Function;
-  updateRegister: Function;
+  updateRegisterMeta: Function;
   deleteReading: Function;
 }
 
@@ -178,7 +178,7 @@ export default connect<StateProps, DispatchProps, ExtProps>(
   {
     loadMeter: Meters.actions.loadMeter,
     setMeter: Meters.actions.setMeter,
-    updateRegister: Registers.actions.updateRegister,
+    updateRegisterMeta: Registers.actions.updateRegisterMeta,
     deleteReading: Readings.actions.deleteReading,
   },
 )(RegisterData);

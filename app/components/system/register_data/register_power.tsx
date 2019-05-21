@@ -23,6 +23,7 @@ class RegisterPower extends React.Component<ExtProps & StateProps & DispatchProp
 
     return (
       <div style={{ marginBottom: '2rem' }}>
+        Power widget is completely broken.<br />
         <span style={{ fontSize: '2rem' }}>{value.split(' ')[0]}</span> {value.split(' ')[1]}
       </div>
     );

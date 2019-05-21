@@ -19,7 +19,7 @@ interface Props {
   url: string;
   editMode: boolean;
   switchEditMode: () => void;
-  updateRegister: Function;
+  updateRegisterMeta: Function;
   handleSubmit: Function;
   pristine: boolean;
   reset: Function;
@@ -36,7 +36,7 @@ class RegisterData extends React.Component<Props> {
       // url,
       editMode,
       switchEditMode,
-      updateRegister,
+      updateRegisterMeta,
       handleSubmit,
       pristine,
       reset,
@@ -50,7 +50,7 @@ class RegisterData extends React.Component<Props> {
     const submit = values => new Promise((resolve, reject) => {
       const { contracts, ...params } = values;
       // FIXME: refactor this asap
-      updateRegister({
+      updateRegisterMeta({
         registerId: register.registerMeta.id,
         meterId: meter.id,
         params,

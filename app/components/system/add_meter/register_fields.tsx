@@ -18,6 +18,7 @@ interface Props {
   setSelectedRegisters: (any) => void;
   fields: any;
   editMode: boolean;
+  formValues: any;
   validationRules: { [key: string]: any };
   marketLocations: Array<{ [key: string]: any }>;
 }
@@ -76,7 +77,7 @@ class EditableInputArray extends React.Component<Props> {
   };
 
   render() {
-    const { fields, editMode, validationRules, marketLocations, preset } = this.props;
+    const { fields, editMode, validationRules, formValues, marketLocations, preset } = this.props;
     const { selectedRegisters } = this.state;
 
     const prefix = 'admin.registers';
@@ -108,7 +109,7 @@ class EditableInputArray extends React.Component<Props> {
                     this.addField();
                   }}
                 />
-                {i > 0 && (
+                {fields.length > 1 && (
                   <i
                     className="fa fa-remove remove"
                     onClick={() => {
@@ -120,111 +121,129 @@ class EditableInputArray extends React.Component<Props> {
             )}
             <Col xs={12}>
               <Row>
-                <Col xs={4}>
+                <Col xs={3}>
                   <span className="h5">Register №{i + 1}:</span>
                 </Col>
-                <Col xs={8}>
-                  <Select
-                    className={`cy-registers-${i}`}
-                    classNamePrefix="cy"
-                    options={malos}
-                    onChange={value => this.setSelectedRegister(i, value)}
-                    styles={mainStyle}
-                    value={selectedRegisters[i]}
+                <Col xs={2}>
+                  <FieldValidationWrapper
+                    {...{
+                      prefix,
+                      name: `${field}.emptyRegister`,
+                      editMode,
+                      withLabel: true,
+                      validationRules: {},
+                      component: EditableCheckbox,
+                    }}
                   />
                 </Col>
+                {(!formValues.registers[i] || !formValues.registers[i].emptyRegister) && (
+                  <Col xs={7}>
+                    <Select
+                      className={`cy-registers-${i}`}
+                      classNamePrefix="cy"
+                      options={malos}
+                      onChange={value => this.setSelectedRegister(i, value)}
+                      styles={mainStyle}
+                      value={selectedRegisters[i]}
+                    />
+                  </Col>
+                )}
               </Row>
-              {!get(selectedRegisters[i], 'value') && (
-                <RegisterFormWrapper>
-                  <Row>
-                    <Col xs={4} xl={3}>
-                      <FieldValidationWrapper
-                        {...{
-                          prefix,
-                          name: `${field}.name`,
-                          editMode,
-                          withLabel: true,
-                          validationRules,
-                          component: EditableInput,
-                        }}
-                      />
-                    </Col>
-                    <Col xs={4} xl={3}>
-                      <FieldValidationWrapper
-                        {...{
-                          prefix,
-                          name: `${field}.label`,
-                          editMode,
-                          withLabel: true,
-                          validationRules,
-                          component: EditableSelect,
-                        }}
-                      />
-                    </Col>
-                    <Col xs={4} xl={2}>
-                      <FieldValidationWrapper
-                        {...{
-                          prefix,
-                          name: `${field}.marketLocationId`,
-                          editMode,
-                          withLabel: true,
-                          validationRules,
-                          component: EditableInput,
-                        }}
-                      />
-                    </Col>
-                    <Col xs={3} xl={2}>
-                      <FieldValidationWrapper
-                        {...{
-                          prefix,
-                          name: `${field}.observerMinThreshold`,
-                          editMode,
-                          withLabel: true,
-                          validationRules,
-                          component: EditableInput,
-                          normalize: numberNormalizer,
-                        }}
-                      />
-                    </Col>
-                    <Col xs={3} xl={2}>
-                      <FieldValidationWrapper
-                        {...{
-                          prefix,
-                          name: `${field}.observerMaxThreshold`,
-                          editMode,
-                          withLabel: true,
-                          validationRules,
-                          component: EditableInput,
-                          normalize: numberNormalizer,
-                        }}
-                      />
-                    </Col>
-                    <Col xs={3}>
-                      <FieldValidationWrapper
-                        {...{
-                          prefix,
-                          name: `${field}.observerEnabled`,
-                          editMode,
-                          withLabel: true,
-                          validationRules,
-                          component: EditableCheckbox,
-                        }}
-                      />
-                    </Col>
-                    <Col xs={3}>
-                      <FieldValidationWrapper
-                        {...{
-                          prefix,
-                          name: `${field}.observerOfflineMonitoring`,
-                          editMode,
-                          withLabel: true,
-                          validationRules,
-                          component: EditableCheckbox,
-                        }}
-                      />
-                    </Col>
-                  </Row>
-                </RegisterFormWrapper>
+              {(!formValues.registers[i] || !formValues.registers[i].emptyRegister) && (
+                <React.Fragment>
+                  {!get(selectedRegisters[i], 'value') && (
+                    <RegisterFormWrapper>
+                      <Row>
+                        <Col xs={4} xl={3}>
+                          <FieldValidationWrapper
+                            {...{
+                              prefix,
+                              name: `${field}.name`,
+                              editMode,
+                              withLabel: true,
+                              validationRules,
+                              component: EditableInput,
+                            }}
+                          />
+                        </Col>
+                        <Col xs={4} xl={3}>
+                          <FieldValidationWrapper
+                            {...{
+                              prefix,
+                              name: `${field}.label`,
+                              editMode,
+                              withLabel: true,
+                              validationRules,
+                              component: EditableSelect,
+                            }}
+                          />
+                        </Col>
+                        <Col xs={4} xl={2}>
+                          <FieldValidationWrapper
+                            {...{
+                              prefix,
+                              name: `${field}.marketLocationId`,
+                              editMode,
+                              withLabel: true,
+                              validationRules,
+                              component: EditableInput,
+                            }}
+                          />
+                        </Col>
+                        <Col xs={3} xl={2}>
+                          <FieldValidationWrapper
+                            {...{
+                              prefix,
+                              name: `${field}.observerMinThreshold`,
+                              editMode,
+                              withLabel: true,
+                              validationRules,
+                              component: EditableInput,
+                              normalize: numberNormalizer,
+                            }}
+                          />
+                        </Col>
+                        <Col xs={3} xl={2}>
+                          <FieldValidationWrapper
+                            {...{
+                              prefix,
+                              name: `${field}.observerMaxThreshold`,
+                              editMode,
+                              withLabel: true,
+                              validationRules,
+                              component: EditableInput,
+                              normalize: numberNormalizer,
+                            }}
+                          />
+                        </Col>
+                        <Col xs={3}>
+                          <FieldValidationWrapper
+                            {...{
+                              prefix,
+                              name: `${field}.observerEnabled`,
+                              editMode,
+                              withLabel: true,
+                              validationRules,
+                              component: EditableCheckbox,
+                            }}
+                          />
+                        </Col>
+                        <Col xs={3}>
+                          <FieldValidationWrapper
+                            {...{
+                              prefix,
+                              name: `${field}.observerOfflineMonitoring`,
+                              editMode,
+                              withLabel: true,
+                              validationRules,
+                              component: EditableCheckbox,
+                            }}
+                          />
+                        </Col>
+                      </Row>
+                    </RegisterFormWrapper>
+                  )}
+                </React.Fragment>
               )}
             </Col>
           </InputRow>

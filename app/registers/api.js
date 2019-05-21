@@ -16,7 +16,7 @@ export default {
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
-  updateRegister({ token, apiUrl, apiPath, registerId, params, groupId }) {
+  updateRegisterMeta({ token, apiUrl, apiPath, registerId, params, groupId }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/register-metas/${registerId}`, {
       headers: prepareHeaders(token),
       method: 'PATCH',
