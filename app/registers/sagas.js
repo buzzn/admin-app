@@ -2,6 +2,7 @@ import { put, call, takeLatest, takeLeading, take, cancel, select, fork } from '
 import { SubmissionError } from 'redux-form';
 import { logException } from '_util';
 import MarketLocations from 'market_locations';
+import Meters from 'meters';
 import { actions, constants } from './actions';
 import api from './api';
 
@@ -41,6 +42,19 @@ export function* updateRegisterMeta({ apiUrl, apiPath, token }, { registerId, pa
     } else {
       yield call(resolve, res);
       yield put(MarketLocations.actions.loadMarketLocations(groupId));
+    }
+  } catch (error) {
+    logException(error);
+  }
+}
+
+export function* updateRegister({ apiUrl, apiPath, token }, { groupId, meterId, registerId, params, resolve, reject }) {
+  try {
+    const res = yield call(api.updateRegister, { apiUrl, apiPath, token, groupId, meterId, registerId, params });
+    if (res._error) {
+      yield call(reject, new SubmissionError(res));
+    } else {
+      yield call(resolve, res);
     }
   } catch (error) {
     logException(error);

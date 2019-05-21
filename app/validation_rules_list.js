@@ -110,7 +110,7 @@ export default [
     setAction: rules => Registers.actions.setValidationRules('metaUpdate', rules),
   },
   {
-    swaggerPath: '/localpools/{localpool_id}/meters/{meter_id}/registers/{register_id}',
+    swaggerPath: '/localpools/{localpool_id}/meters/{meter_id}/registers/{register_id}.patch.parameters',
     setAction: rules => Registers.actions.setValidationRules('realUpdate', rules),
   },
   // Devices rules

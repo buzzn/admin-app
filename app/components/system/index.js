@@ -165,7 +165,7 @@ function mapStateToProps(state) {
     group: state.groups.group,
     loading: state.marketLocations.loadingMarketLocations || !state.groups.group.id,
     marketLocations,
-    updateMaLoValidationRules: state.registers.validationRules,
+    updateMaLoValidationRules: state.registers.validationRules.metaUpdate,
   };
 }
 

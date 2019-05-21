@@ -169,7 +169,7 @@ function mapStateToProps(state: StatePart) {
   return {
     meter: state.meters.meter,
     loading: state.meters.loadingMeter,
-    validationRules: state.registers.validationRules,
+    validationRules: state.registers.validationRules.metaUpdate,
   };
 }
 

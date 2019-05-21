@@ -13,6 +13,7 @@ export const constants = {
   SET_REGISTER_POWER: 'buzzn_registers/SET_REGISTER_POWER',
 
   UPDATE_REGISTER_META: 'buzzn_registers/UPDATE_REGISTER_META',
+  UPDATE_REGISTER: 'buzzn_registers/UPDATE_REGISTER',
 };
 
 export const actions = {
@@ -45,5 +46,14 @@ export const actions = {
     resolve,
     reject,
     groupId,
+  }),
+  updateRegister: ({ groupId, meterId, registerId, params, resolve, reject }) => ({
+    type: constants.UPDATE_REGISTER,
+    groupId,
+    meterId,
+    registerId,
+    params,
+    resolve,
+    reject,
   }),
 };
