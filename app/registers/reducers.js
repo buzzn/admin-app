@@ -5,7 +5,7 @@ export const initialState = {
   loadingRegister: false,
   register: { _status: null },
   registerPower: {},
-  validationRules: {},
+  validationRules: { metaUpdate: { _status: null }, realUpdate: { _status: null } },
 };
 
 export default function (state = initialState, action) {
@@ -23,7 +23,7 @@ export default function (state = initialState, action) {
       return { ...state, registerPower: { ...state.registerPower, [action.registerId]: action.power } };
 
     case constants.SET_VALIDATION_RULES:
-      return { ...state, validationRules: action.validationRules };
+      return { ...state, validationRules: { ...state.validationRules, [action.ruleType]: action.validationRules } };
 
     default:
       return state;

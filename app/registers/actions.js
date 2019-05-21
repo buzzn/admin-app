@@ -19,7 +19,11 @@ export const actions = {
   setApiParams: ({ apiPath, apiUrl }) => ({ type: constants.SET_API_PARAMS, apiPath, apiUrl }),
   setToken: token => ({ type: constants.SET_TOKEN, token }),
 
-  setValidationRules: validationRules => ({ type: constants.SET_VALIDATION_RULES, validationRules }),
+  setValidationRules: (ruleType, validationRules) => ({
+    type: constants.SET_VALIDATION_RULES,
+    ruleType,
+    validationRules,
+  }),
 
   loadRegister: ({ registerId, groupId, meterId }) => ({ type: constants.LOAD_REGISTER, registerId, groupId, meterId }),
   loadingRegister: () => ({ type: constants.LOADING_REGISTER }),
