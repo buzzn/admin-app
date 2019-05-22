@@ -25,6 +25,7 @@ interface Props {
   editMode: boolean;
   switchEditMode: () => void;
   loadingMarketLocations: boolean;
+  loadMeter: Function;
   loadMarketLocations: Function;
   updateRegister: Function;
   updateRegisterMeta: Function;
@@ -44,6 +45,7 @@ const RegisterData: React.FC<Props> = ({
   // url,
   editMode,
   switchEditMode,
+  loadMeter,
   loadMarketLocations,
   updateRegister,
   updateRegisterMeta,
@@ -59,8 +61,8 @@ const RegisterData: React.FC<Props> = ({
   const [malo, setMalo] = useState({ value: '', label: '' });
 
   useEffect(() => {
-    if (register.marketLocation) {
-      setMalo({ value: register.marketLocation.id, label: register.marketLocation.name });
+    if (register.registerMeta) {
+      setMalo({ value: register.registerMeta.id, label: register.registerMeta.name });
     } else {
       setMalo({ value: 'new', label: 'Create new MaLo' });
     }
@@ -76,7 +78,7 @@ const RegisterData: React.FC<Props> = ({
   const submit = values => new Promise((resolve, reject) => {
     const { contracts, ...params } = JSON.parse(JSON.stringify(values));
     // FIXME: refactor this asap
-    if (register.marketLocation && !['new', 'unassign'].includes(malo.value)) {
+    if (register.registerMeta && !['new', 'unassign'].includes(malo.value)) {
       updateRegisterMeta({
         registerId: register.registerMeta.id,
         meterId: meter.id,
@@ -90,10 +92,13 @@ const RegisterData: React.FC<Props> = ({
         groupId,
         meterId: meter.id,
         registerId: register.id,
-        params: {
-          meta: malo.value === 'unassign' ? {} : malo.value === 'new' ? { ...params } : { id: malo.value },
-          updatedAt: register.updatedAt,
-        },
+        params:
+            malo.value === 'unassign'
+              ? { updatedAt: register.updatedAt }
+              : {
+                meta: malo.value === 'new' ? { ...params } : { id: malo.value },
+                updatedAt: register.updatedAt,
+              },
         resolve,
         reject,
       });
@@ -101,9 +106,10 @@ const RegisterData: React.FC<Props> = ({
   }).then(() => {
     Alert.success('Saved!');
     switchEditModeWrap();
+    loadMeter({ groupId, meterId: meter.id });
   });
 
-  const maloOptions = register.marketLocation
+  const maloOptions = register.registerMeta
     ? [{ value: 'unassign', label: 'Unassign MaLo' }, { value: 'new', label: 'Create new MaLo' }]
     : [{ value: 'new', label: 'Create new MaLo' }];
 
@@ -120,7 +126,8 @@ const RegisterData: React.FC<Props> = ({
             },
             cancelDisabled: submitting,
             onSave: handleSubmit(submit),
-            saveDisabled: pristine || submitting,
+            // FIXME
+            saveDisabled: submitting,
           }}
         >
           <FormTitle>
