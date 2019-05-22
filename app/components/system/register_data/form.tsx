@@ -103,11 +103,15 @@ const RegisterData: React.FC<Props> = ({
         reject,
       });
     }
-  }).then(() => {
-    Alert.success('Saved!');
-    switchEditModeWrap();
-    loadMeter({ groupId, meterId: meter.id });
-  });
+  })
+    .then(() => {
+      Alert.success('Saved!');
+      switchEditModeWrap();
+      loadMeter({ groupId, meterId: meter.id });
+    })
+    .catch((err) => {
+      if (err.errors && err.errors.meta) Alert.error(JSON.stringify(err.errors.meta[0]));
+    });
 
   const maloOptions = register.registerMeta
     ? [{ value: 'unassign', label: 'Unassign MaLo' }, { value: 'new', label: 'Create new MaLo' }]
