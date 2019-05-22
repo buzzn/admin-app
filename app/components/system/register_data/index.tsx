@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Switch, Route, NavLink, Redirect } from 'react-router-dom';
 import get from 'lodash/get';
+import MarketLocations from 'market_locations';
 import Meters from 'meters';
 import Registers from 'registers';
 import Readings from 'readings';
@@ -43,11 +44,15 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
       registerUrl,
       breadcrumbs,
       loading,
+      loadingMarketLocations,
+      marketLocations,
       meter,
       groupId,
       meterId,
       registerId,
       devMode,
+      loadMarketLocations,
+      updateRegister,
       updateRegisterMeta,
       validationRules,
     } = this.props;
@@ -109,11 +114,15 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
                 <RegisterDataForm
                   {...{
                     // FIXME: refactor this ASAP
-                    register,
+                    loadingMarketLocations,
                     initialValues: register.registerMeta || {},
+                    marketLocations,
                     meter,
+                    register,
                     url,
                     groupId,
+                    loadMarketLocations,
+                    updateRegister,
                     updateRegisterMeta,
                     validationRules,
                   }}
@@ -140,6 +149,7 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
 
 interface StatePart {
   meters: { loadingMeter: boolean; meter: { _status: null | number; [key: string]: any } };
+  marketLocations: { loadingMarketLocations: boolean; marketLocations: { _status: null | number; array: any[] } };
   registers: { validationRules: any };
 }
 
@@ -154,15 +164,19 @@ interface ExtProps {
 
 interface StateProps {
   loading: boolean;
+  loadingMarketLocations: boolean;
   meter: { _status: null | number; [key: string]: any };
+  marketLocations: { _status: null | number; array: any[] };
   validationRules: any;
 }
 
 interface DispatchProps {
   loadMeter: Function;
   setMeter: Function;
+  updateRegister: Function;
   updateRegisterMeta: Function;
   deleteReading: Function;
+  loadMarketLocations: Function;
 }
 
 function mapStateToProps(state: StatePart) {
@@ -170,6 +184,9 @@ function mapStateToProps(state: StatePart) {
     meter: state.meters.meter,
     loading: state.meters.loadingMeter,
     validationRules: state.registers.validationRules.metaUpdate,
+
+    marketLocations: state.marketLocations.marketLocations,
+    loadingMarketLocations: state.marketLocations.loadingMarketLocations,
   };
 }
 
@@ -178,7 +195,10 @@ export default connect<StateProps, DispatchProps, ExtProps>(
   {
     loadMeter: Meters.actions.loadMeter,
     setMeter: Meters.actions.setMeter,
+    updateRegister: Registers.actions.updateRegister,
     updateRegisterMeta: Registers.actions.updateRegisterMeta,
     deleteReading: Readings.actions.deleteReading,
+
+    loadMarketLocations: MarketLocations.actions.loadMarketLocations,
   },
 )(RegisterData);
