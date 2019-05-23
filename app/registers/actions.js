@@ -12,6 +12,7 @@ export const constants = {
   LOAD_REGISTER_POWER: 'buzzn_registers/LOAD_REGISTER_POWER',
   SET_REGISTER_POWER: 'buzzn_registers/SET_REGISTER_POWER',
 
+  UPDATE_REGISTER_META: 'buzzn_registers/UPDATE_REGISTER_META',
   UPDATE_REGISTER: 'buzzn_registers/UPDATE_REGISTER',
 };
 
@@ -19,7 +20,11 @@ export const actions = {
   setApiParams: ({ apiPath, apiUrl }) => ({ type: constants.SET_API_PARAMS, apiPath, apiUrl }),
   setToken: token => ({ type: constants.SET_TOKEN, token }),
 
-  setValidationRules: validationRules => ({ type: constants.SET_VALIDATION_RULES, validationRules }),
+  setValidationRules: (ruleType, validationRules) => ({
+    type: constants.SET_VALIDATION_RULES,
+    ruleType,
+    validationRules,
+  }),
 
   loadRegister: ({ registerId, groupId, meterId }) => ({ type: constants.LOAD_REGISTER, registerId, groupId, meterId }),
   loadingRegister: () => ({ type: constants.LOADING_REGISTER }),
@@ -34,12 +39,21 @@ export const actions = {
   }),
   setRegisterPower: ({ registerId, power }) => ({ type: constants.SET_REGISTER_POWER, registerId, power }),
 
-  updateRegister: ({ registerId, params, resolve, reject, groupId }) => ({
-    type: constants.UPDATE_REGISTER,
+  updateRegisterMeta: ({ registerId, params, resolve, reject, groupId }) => ({
+    type: constants.UPDATE_REGISTER_META,
     registerId,
     params,
     resolve,
     reject,
     groupId,
+  }),
+  updateRegister: ({ groupId, meterId, registerId, params, resolve, reject }) => ({
+    type: constants.UPDATE_REGISTER,
+    groupId,
+    meterId,
+    registerId,
+    params,
+    resolve,
+    reject,
   }),
 };

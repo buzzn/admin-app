@@ -16,7 +16,7 @@ interface Props {
   url: string;
   editMode: boolean;
   switchEditMode: () => void;
-  updateRegister: Function;
+  updateRegisterMeta: Function;
   handleSubmit: Function;
   pristine: boolean;
   reset: Function;
@@ -31,7 +31,7 @@ class MarketLocationForm extends React.Component<Props> {
       marketLocation,
       editMode,
       switchEditMode,
-      updateRegister,
+      updateRegisterMeta,
       handleSubmit,
       pristine,
       reset,
@@ -45,7 +45,7 @@ class MarketLocationForm extends React.Component<Props> {
     const submit = values =>
       new Promise((resolve, reject) => {
         const { contracts, ...params } = values;
-        updateRegister({
+        updateRegisterMeta({
           registerId: marketLocation.id,
           params,
           resolve,

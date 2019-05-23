@@ -30,6 +30,27 @@ export default {
       method: 'DELETE',
     });
   },
+  updateGroupTSO({ token, apiUrl, apiPath, params, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/transmission-system-operator`, {
+      headers: prepareHeaders(token),
+      method: 'PATCH',
+      body: JSON.stringify(snakeReq(params)),
+    }).then(parseResponse);
+  },
+  updateGroupDSO({ token, apiUrl, apiPath, params, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/distribution-system-operator`, {
+      headers: prepareHeaders(token),
+      method: 'PATCH',
+      body: JSON.stringify(snakeReq(params)),
+    }).then(parseResponse);
+  },
+  updateGroupES({ token, apiUrl, apiPath, params, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/electricity-supplier`, {
+      headers: prepareHeaders(token),
+      method: 'PATCH',
+      body: JSON.stringify(snakeReq(params)),
+    }).then(parseResponse);
+  },
   updateGroupContact({ token, apiUrl, apiPath, groupId, params, update, contactId, contactType, isGap }) {
     let url = `${apiUrl}${apiPath}/localpools/${groupId}/`;
     let method = 'POST';

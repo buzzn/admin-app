@@ -27,7 +27,6 @@ interface Props {
   validationRules: any;
   groupId: string;
   url: string;
-  history: any;
 }
 
 class MeterData extends React.Component<Props> {
@@ -44,7 +43,6 @@ class MeterData extends React.Component<Props> {
       validationRules,
       groupId,
       url,
-      history,
     } = this.props;
 
     const prefix = 'admin.meters';
@@ -101,7 +99,7 @@ class MeterData extends React.Component<Props> {
             <FormTitle>
               <FormattedMessage id={`${prefix}.headerRegistersReadings`} />
             </FormTitle>
-            <RegistersList {...{ registers: meter.registers, history, url }} />
+            <RegistersList {...{ registers: meter.registers, url }} />
           </Col>
         </Row>
         <React.Fragment>

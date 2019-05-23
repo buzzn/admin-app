@@ -42,7 +42,7 @@ const MetersList: React.FC<ExtProps & StateProps & DispatchProps & InjectIntlPro
         (s, register) => `${s} ${
           register.registerMeta
             ? `${register.registerMeta.name} - ${intl.formatMessage({ id: `admin.registers.${register.registerMeta.label}` })}`
-            : register.obis
+            : register.obis || 'unknown register'
         } ${register.lastReading}`,
         '',
       ),
@@ -56,11 +56,13 @@ const MetersList: React.FC<ExtProps & StateProps & DispatchProps & InjectIntlPro
                     <Link to={`${url}/${register.registerMeta.id}`}>
                       {`${register.registerMeta.name} - ${intl.formatMessage({ id: `admin.registers.${register.registerMeta.label}` })}`}
                     </Link>
-                    , Last reading: <Link to={`${url}/registers/${register.id}/readings`}>{register.lastReading}</Link>
+                    , Last reading: <Link to={`${url}/registers/${register.meterId}/${register.id}/readings`}>{register.lastReading}</Link>
                   </React.Fragment>
                 ) : (
                   <React.Fragment>
-                    {register.obis}, Last reading: {register.lastReading}
+                    <Link to={`${url}/registers/${register.meterId}/${register.id}`}>
+                      {register.obis || 'unknown register'}, Last reading: {register.lastReading}
+                    </Link>
                   </React.Fragment>
                 )}
               </li>

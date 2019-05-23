@@ -176,7 +176,7 @@ const BillingDetails = ({
       value: moment(i.beginDate).toDate(),
     },
     registerObis: i.register ? i.register.obis : '',
-    linkRegister: i.register ? `/groups/${groupId}/market-locations/registers/${i.register.id}` : '',
+    linkRegister: i.register ? `/groups/${groupId}/market-locations/registers/${i.register.meterId}/${i.register.id}` : '',
     beginReadingKwh: i.beginReadingKwh === null ? null : intl.formatNumber(i.beginReadingKwh),
     endReadingKwh: i.endReadingKwh === null ? null : intl.formatNumber(i.endReadingKwh),
     consumedEnergyKwh: intl.formatNumber(i.consumedEnergyKwh),

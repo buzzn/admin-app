@@ -11,10 +11,11 @@ interface Props {
   deleteGroup: Function;
   updateGroup: Function;
   address: { [key: string]: any };
-  transmissionSystemOperator: { [key: string]: any };
-  distributionSystemOperator: { [key: string]: any };
-  electricitySupplier: { [key: string]: any };
+  loadAvailableOrganizationMarkets: () => void;
+  availableOrganizationMarkets: { _status: null | number; array: any[] };
+  loadingOptions: boolean;
   validationRules: any;
+  loadGroup: (string) => void;
 }
 
 const Group = ({
@@ -23,9 +24,10 @@ const Group = ({
   group,
   deleteGroup,
   address,
-  transmissionSystemOperator,
-  distributionSystemOperator,
-  electricitySupplier,
+  loadAvailableOrganizationMarkets,
+  availableOrganizationMarkets,
+  loadingOptions,
+  loadGroup,
 }: Props) => (
   <React.Fragment>
     <Form
@@ -36,9 +38,10 @@ const Group = ({
         group,
         deleteGroup,
         address,
-        transmissionSystemOperator,
-        distributionSystemOperator,
-        electricitySupplier,
+        loadAvailableOrganizationMarkets,
+        availableOrganizationMarkets,
+        loadingOptions,
+        loadGroup,
       }}
     />
     <Switches

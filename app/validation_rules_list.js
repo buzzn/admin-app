@@ -107,7 +107,11 @@ export default [
   // Register rules
   {
     swaggerPath: '/localpools/{localpool_id}/register-metas/{register_meta_id}.patch.parameters',
-    setAction: Registers.actions.setValidationRules,
+    setAction: rules => Registers.actions.setValidationRules('metaUpdate', rules),
+  },
+  {
+    swaggerPath: '/localpools/{localpool_id}/meters/{meter_id}/registers/{register_id}.patch.parameters',
+    setAction: rules => Registers.actions.setValidationRules('realUpdate', rules),
   },
   // Devices rules
   {

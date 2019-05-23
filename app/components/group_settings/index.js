@@ -93,9 +93,6 @@ class GroupSettings extends React.Component {
     const {
       group,
       address,
-      distributionSystemOperator,
-      transmissionSystemOperator,
-      electricitySupplier,
       bankAccount,
       loadGroup,
 
@@ -103,7 +100,9 @@ class GroupSettings extends React.Component {
       availableUsers,
       loadAvailableUsers,
       availableOrganizations,
+      availableOrganizationMarkets,
       loadAvailableOrganizations,
+      loadAvailableOrganizationMarkets,
       loadingOptions,
       updateGroupContact,
 
@@ -182,11 +181,12 @@ class GroupSettings extends React.Component {
                       group,
                       deleteGroup: this.deleteGroup,
                       address,
-                      transmissionSystemOperator,
-                      distributionSystemOperator,
                       validationRules,
                       initialValues: group,
-                      electricitySupplier,
+                      loadAvailableOrganizationMarkets,
+                      availableOrganizationMarkets,
+                      loadingOptions,
+                      loadGroup,
                     }}
                   />
                 )}
@@ -299,19 +299,18 @@ export const GroupSettingsIntl = injectIntl(GroupSettings);
 const mapStateToProps = state => ({
   group: state.groups.group,
   address: state.groups.group.address || {},
-  distributionSystemOperator: state.groups.group.distributionSystemOperator || {},
-  transmissionSystemOperator: state.groups.group.transmissionSystemOperator || {},
-  electricitySupplier: state.groups.group.electricitySupplier || {},
   bankAccount: state.groups.group.bankAccount || {},
 
   owner: state.groups.group.owner || {},
   availableUsers: state.users.availableUsers,
   availableOrganizations: state.organizations.availableOrganizations,
 
+  availableOrganizationMarkets: state.organizations.availableOrganizationMarkets,
+
   gap: state.groups.group.gapContractCustomer || {},
 
   loading: state.groups.loadingGroup,
-  loadingOptions: state.users.loadingAvailableUsers || state.organizations.loadingAvailableOrganizations,
+  loadingOptions: state.users.loadingAvailableUsers || state.organizations.loadingAvailableOrganizations || state.organizations.loadingAvailableOrganizationMarkets,
 
   validationRules: state.groups.validationRules,
 });
@@ -327,6 +326,7 @@ export default connect(
     setIncompleteScreen: actions.setIncompleteScreen,
     loadAvailableUsers: Users.actions.loadAvailableUsers,
     loadAvailableOrganizations: Organizations.actions.loadAvailableOrganizations,
+    loadAvailableOrganizationMarkets: Organizations.actions.loadAvailableOrganizationMarkets,
     attachBankAccount: Contracts.actions.attachBankAccount,
     loadContract: Contracts.actions.loadContract,
   },

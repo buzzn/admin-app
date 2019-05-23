@@ -48,10 +48,8 @@ export class System extends React.Component {
       loading,
       marketLocations,
       setMarketLocations,
-      updateRegister,
+      updateRegisterMeta,
       updateMaLoValidationRules,
-      registers,
-      meters,
       group,
       history,
       match: {
@@ -102,22 +100,16 @@ export class System extends React.Component {
         </Route>
         <Route
           path={`${url}/meters/:meterId`}
-          render={({ match: { params: { meterId } } }) => {
-            const meter = meters.find(m => m.id === meterId);
-            if (!meter) return <Redirect to={url} />;
-            return <MeterData {...{ url, breadcrumbs, meterId, groupId, history }} />;
-          }}
+          render={({ match: { params: { meterId } } }) => <MeterData {...{ url, breadcrumbs, meterId, groupId, history }} />}
         />
         <Route
-          path={`${url}/registers/:registerId`}
+          path={`${url}/registers/:meterId/:registerId`}
           render={({
             match: {
               url: registerUrl,
-              params: { registerId },
+              params: { meterId, registerId },
             },
           }) => {
-            const register = registers.find(r => r.id === registerId);
-            if (!register) return <Redirect to={url} />;
             return (
               <RegisterData
                 {...{
@@ -125,7 +117,7 @@ export class System extends React.Component {
                   registerUrl,
                   breadcrumbs,
                   registerId,
-                  meterId: register.meterId,
+                  meterId,
                   devMode,
                   groupId: group.id,
                 }}
@@ -151,7 +143,7 @@ export class System extends React.Component {
                   groupId,
                   locationUrl,
                   marketLocation,
-                  updateRegister,
+                  updateRegisterMeta,
                   updateMaLoValidationRules,
                 }}
               />
@@ -167,19 +159,13 @@ export class System extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const marketLocations = state.marketLocations.marketLocations;
-  const registers = marketLocations._status === 200
-    ? marketLocations.array.reduce((regs, malo) => [...regs, ...malo.registers.array], [])
-    : [];
-  const meters = registers.length ? registers.map(r => r.meter) : [];
+  const { marketLocations } = state.marketLocations;
   return {
     devMode: state.app.ui.devMode,
     group: state.groups.group,
     loading: state.marketLocations.loadingMarketLocations || !state.groups.group.id,
     marketLocations,
-    registers,
-    meters,
-    updateMaLoValidationRules: state.registers.validationRules,
+    updateMaLoValidationRules: state.registers.validationRules.metaUpdate,
   };
 }
 
@@ -189,6 +175,6 @@ export default connect(
     loadMarketLocations: MarketLocations.actions.loadMarketLocations,
     setMarketLocations: MarketLocations.actions.setMarketLocations,
     loadGroup: Groups.actions.loadGroup,
-    updateRegister: Registers.actions.updateRegister,
+    updateRegisterMeta: Registers.actions.updateRegisterMeta,
   },
 )(System);
