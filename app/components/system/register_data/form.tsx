@@ -78,7 +78,7 @@ const RegisterData: React.FC<Props> = ({
   const submit = values => new Promise((resolve, reject) => {
     const { contracts, ...params } = JSON.parse(JSON.stringify(values));
     // FIXME: refactor this asap
-    if (register.registerMeta && !['new', 'unassign'].includes(malo.value) && malo.value === register.registerMeta) {
+    if (register.registerMeta && !['new', 'unassign'].includes(malo.value) && malo.value === register.registerMeta.id) {
       updateRegisterMeta({
         registerId: register.registerMeta.id,
         meterId: meter.id,
