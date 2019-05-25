@@ -1,0 +1,442 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`editable select tests active field 1`] = `
+<div
+  className="editable-select undefined sc-htoDjs joMSuX"
+>
+  <select
+    className="custom-select form-control undefined undefined"
+    id="select"
+    name="select"
+    value="second"
+  >
+    <option
+      value=""
+    >
+      -----
+    </option>
+    <option
+      value="first"
+    >
+      objPrefix.first
+    </option>
+    <option
+      value="second"
+    >
+      objPrefix.second
+    </option>
+    <option
+      value="third"
+    >
+      objPrefix.third
+    </option>
+  </select>
+</div>
+`;
+
+exports[`editable select tests basic view and edit rendering 1`] = `<span />`;
+
+exports[`editable select tests basic view and edit rendering 2`] = `
+<span>
+  objPrefix.second
+</span>
+`;
+
+exports[`editable select tests basic view and edit rendering 3`] = `
+<div
+  className="editable-select false sc-htoDjs joMSuX"
+>
+  <select
+    className="custom-select form-control false false"
+    id="select"
+    name="select"
+    value="second"
+  >
+    <option
+      value=""
+    >
+      -----
+    </option>
+    <option
+      value="first"
+    >
+      objPrefix.first
+    </option>
+    <option
+      value="second"
+    >
+      objPrefix.second
+    </option>
+    <option
+      value="third"
+    >
+      objPrefix.third
+    </option>
+  </select>
+</div>
+`;
+
+exports[`editable select tests list override 1`] = `
+<div
+  className="editable-select false sc-htoDjs joMSuX"
+>
+  <select
+    className="custom-select form-control false false"
+    id="select"
+    name="select"
+    value="second"
+  >
+    <option
+      value=""
+    >
+      -----
+    </option>
+    <option
+      value="override1"
+    >
+      objPrefix.override1
+    </option>
+    <option
+      value="override2"
+    >
+      objPrefix.override2
+    </option>
+  </select>
+</div>
+`;
+
+exports[`editable select tests no default value 1`] = `
+<div
+  className="editable-select false sc-htoDjs joMSuX"
+>
+  <select
+    className="custom-select form-control false false"
+    id="select"
+    name="select"
+    value="second"
+  >
+    <option
+      value="first"
+    >
+      objPrefix.first
+    </option>
+    <option
+      value="second"
+    >
+      objPrefix.second
+    </option>
+    <option
+      value="third"
+    >
+      objPrefix.third
+    </option>
+  </select>
+</div>
+`;
+
+exports[`editable select tests no value translations 1`] = `
+<div
+  className="editable-select false sc-htoDjs joMSuX"
+>
+  <select
+    className="custom-select form-control false false"
+    id="select"
+    name="select"
+    value="second"
+  >
+    <option
+      value=""
+    >
+      -----
+    </option>
+    <option
+      value="first"
+    >
+      first
+    </option>
+    <option
+      value="second"
+    >
+      second
+    </option>
+    <option
+      value="third"
+    >
+      third
+    </option>
+  </select>
+</div>
+`;
+
+exports[`editable select tests override data 1`] = `
+<div
+  className="editable-select false sc-htoDjs joMSuX"
+>
+  <input
+    className="form-control"
+    disabled={true}
+    type="text"
+    value="Override"
+  />
+</div>
+`;
+
+exports[`editable select tests prefix 1`] = `
+<div
+  className="editable-select false sc-htoDjs joMSuX"
+>
+  <select
+    className="custom-select form-control false false"
+    id="select"
+    name="select"
+    value="second"
+  >
+    <option
+      value=""
+    >
+      -----
+    </option>
+    <option
+      value="first"
+    >
+      customPrefix.first
+    </option>
+    <option
+      value="second"
+    >
+      customPrefix.second
+    </option>
+    <option
+      value="third"
+    >
+      customPrefix.third
+    </option>
+  </select>
+</div>
+`;
+
+exports[`editable select tests raw value output 1`] = `
+<span>
+  second - objPrefix.second
+</span>
+`;
+
+exports[`editable select tests raw value output 2`] = `
+<div
+  className="editable-select false sc-htoDjs joMSuX"
+>
+  <select
+    className="custom-select form-control false false"
+    id="select"
+    name="select"
+    value="second"
+  >
+    <option
+      value=""
+    >
+      -----
+    </option>
+    <option
+      value="first"
+    >
+      first - objPrefix.first
+    </option>
+    <option
+      value="second"
+    >
+      second - objPrefix.second
+    </option>
+    <option
+      value="third"
+    >
+      third - objPrefix.third
+    </option>
+  </select>
+</div>
+`;
+
+exports[`editable select tests values prefix 1`] = `
+<div
+  className="editable-select false sc-htoDjs joMSuX"
+>
+  <select
+    className="custom-select form-control false false"
+    id="select"
+    name="select"
+    value="second"
+  >
+    <option
+      value=""
+    >
+      -----
+    </option>
+    <option
+      value="first"
+    >
+      customPrefix.first
+    </option>
+    <option
+      value="second"
+    >
+      customPrefix.second
+    </option>
+    <option
+      value="third"
+    >
+      customPrefix.third
+    </option>
+  </select>
+</div>
+`;
+
+exports[`editable select tests with default value 1`] = `
+<div
+  className="editable-select false sc-htoDjs joMSuX"
+>
+  <select
+    className="custom-select form-control false false"
+    id="select"
+    name="select"
+    value="second"
+  >
+    <option
+      value="default"
+    >
+      Default
+    </option>
+    <option
+      value="first"
+    >
+      objPrefix.first
+    </option>
+    <option
+      value="second"
+    >
+      objPrefix.second
+    </option>
+    <option
+      value="third"
+    >
+      objPrefix.third
+    </option>
+  </select>
+</div>
+`;
+
+exports[`editable select tests with error 1`] = `
+<div
+  className="editable-select has-danger sc-htoDjs joMSuX"
+>
+  <select
+    className="custom-select form-control form-control-danger dirty"
+    id="select"
+    name="select"
+    value="second"
+  >
+    <option
+      value=""
+    >
+      -----
+    </option>
+    <option
+      value="first"
+    >
+      objPrefix.first
+    </option>
+    <option
+      value="second"
+    >
+      objPrefix.second
+    </option>
+    <option
+      value="third"
+    >
+      objPrefix.third
+    </option>
+  </select>
+  <div
+    className="inline-error"
+  >
+    error
+  </div>
+  <i
+    className="error-icon buzzn-attention"
+  />
+</div>
+`;
+
+exports[`editable select tests with label 1`] = `
+<div
+  className="editable-select false sc-htoDjs joMSuX"
+>
+  <select
+    className="custom-select form-control false false"
+    id="select"
+    name="select"
+    value=""
+  >
+    <option
+      value=""
+    >
+      -----
+    </option>
+    <option
+      value="first"
+    >
+      objPrefix.first
+    </option>
+    <option
+      value="second"
+    >
+      objPrefix.second
+    </option>
+    <option
+      value="third"
+    >
+      objPrefix.third
+    </option>
+  </select>
+  <label
+    className="center"
+    htmlFor="select"
+  />
+</div>
+`;
+
+exports[`editable select tests with label 2`] = `
+<div
+  className="editable-select undefined sc-htoDjs joMSuX"
+>
+  <select
+    className="custom-select form-control undefined undefined"
+    id="select"
+    name="select"
+    value="second"
+  >
+    <option
+      value=""
+    >
+      -----
+    </option>
+    <option
+      value="first"
+    >
+      objPrefix.first
+    </option>
+    <option
+      value="second"
+    >
+      objPrefix.second
+    </option>
+    <option
+      value="third"
+    >
+      objPrefix.third
+    </option>
+  </select>
+  <label
+    className="top"
+    htmlFor="select"
+  />
+</div>
+`;

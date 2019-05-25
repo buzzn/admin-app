@@ -16,6 +16,7 @@ exports[`breadcrumbs tests renders different crumb types 1`] = `
           <span
             className="breadcrumb-type"
           >
+            admin.types.meter
             :
           </span>
            
@@ -44,6 +45,7 @@ exports[`breadcrumbs tests renders different crumb types 1`] = `
             <span
               className="breadcrumb-type"
             >
+              admin.types.meter
               :
             </span>
              
