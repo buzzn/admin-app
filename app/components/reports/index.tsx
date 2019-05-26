@@ -1,6 +1,7 @@
 // @ts-ignore
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 import moment from 'moment';
 import momentLocalizer from 'react-widgets-moment';
@@ -54,15 +55,22 @@ const ReportsUI: React.FC<ExtProps & StateProps & DispatchProps> = ({
         <React.Fragment>
           {/*
           // @ts-ignore */}
-          <Report report={eegReport} />
+          <Report report={eegReport} groupId={groupId} />
         </React.Fragment>
       ) : eegReport._status === 422 ? (
         <div>
-          {Object.keys(eegReport)
-            .filter(k => !['_status', 'error'].includes(k))
-            // @ts-ignore
-            .flatMap(k => eegReport[k].errors.map(e => e.reason))
-            .reduce((res, str) => (res.find(r => r === str) ? res : [...res, str]), [])}
+          <ul>
+            {Object.keys(eegReport)
+              .filter(k => !['_status', 'error'].includes(k))
+              // @ts-ignore
+              .flatMap(k => eegReport[k].errors.map(e => (
+                  <li key={`${e.meterId}-${e.registerId}`}>
+                    <Link to={`/groups/${groupId}/market-locations/registers/${e.meterId}/${e.registerId}/readings`}>
+                      {e.reason}
+                    </Link>
+                  </li>
+              )))}
+          </ul>
         </div>
       ) : (
         <div>Please, select dates and press "Calculate"</div>

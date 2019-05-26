@@ -1,15 +1,27 @@
 import React from 'react';
 import { FormattedMessage, FormattedNumber } from 'react-intl';
+import { Link } from 'react-router-dom';
 
 import { EegReportStruct } from 'reports';
 
 interface Props {
+  groupId: string;
   report: EegReportStruct;
 }
 
-const Report: React.FC<Props> = ({ report: { _status, warnings, ...fields } }) => (
+const Report: React.FC<Props> = ({ groupId, report: { _status, warnings, ...fields } }) => (
   <div>
-    {!!warnings.length && <pre>{JSON.stringify(warnings, null, 2)}</pre>}
+    {!!warnings.length && (
+      <ul>
+        {warnings.map(e => (
+          <li key={`${e.meterId}-${e.registerId}`}>
+            <Link to={`/groups/${groupId}/market-locations/registers/${e.meterId}/${e.registerId}/readings`}>
+              {e.reason}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    )}
     {Object.keys(fields).map(key => (
       <div key={key}>
         <span>
