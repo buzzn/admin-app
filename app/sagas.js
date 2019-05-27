@@ -5,18 +5,19 @@ import { logException, getAllUrlParams } from '_util';
 import { actions, constants } from 'actions';
 import api from 'api';
 
-import Groups from 'groups';
-import Meters from 'meters';
-import Registers from 'registers';
-import Users from 'users';
-import Organizations from 'organizations';
-import Contracts from 'contracts';
-import Readings from 'readings';
-import MarketLocations from 'market_locations';
 import BillingCycles from 'billing_cycles';
 import Billings from 'billings';
-import Tariffs from 'tariffs';
+import Contracts from 'contracts';
 import Devices from 'devices';
+import Groups from 'groups';
+import MarketLocations from 'market_locations';
+import Meters from 'meters';
+import Organizations from 'organizations';
+import Readings from 'readings';
+import Registers from 'registers';
+import Reports from 'reports';
+import Tariffs from 'tariffs';
+import Users from 'users';
 import WebsiteForms from 'website_forms';
 import ValidationRules from 'validation_rules';
 import { validationRulesSagas } from 'validation_rules/sagas';
@@ -54,20 +55,21 @@ export function* updateUserMe({ apiUrl, apiPath, token }, { params, resolve, rej
 }
 
 export function* setToken(token) {
-  yield put(Groups.actions.setToken(token));
-  yield put(Meters.actions.setToken(token));
-  yield put(Registers.actions.setToken(token));
-  yield put(Users.actions.setToken(token));
-  yield put(Organizations.actions.setToken(token));
-  yield put(Contracts.actions.setToken(token));
-  yield put(Readings.actions.setToken(token));
-  yield put(MarketLocations.actions.setToken(token));
   yield put(BillingCycles.actions.setToken(token));
   yield put(Billings.actions.setToken(token));
-  yield put(Tariffs.actions.setToken(token));
+  yield put(Contracts.actions.setToken(token));
   yield put(Devices.actions.setToken(token));
-  yield put(WebsiteForms.actions.setToken(token));
+  yield put(Groups.actions.setToken(token));
+  yield put(MarketLocations.actions.setToken(token));
+  yield put(Meters.actions.setToken(token));
+  yield put(Organizations.actions.setToken(token));
+  yield put(Readings.actions.setToken(token));
+  yield put(Registers.actions.setToken(token));
+  yield put(Reports.actions.setToken(token));
+  yield put(Tariffs.actions.setToken(token));
+  yield put(Users.actions.setToken(token));
   yield put(ValidationRules.actions.setToken(token));
+  yield put(WebsiteForms.actions.setToken(token));
 }
 
 export function* setHealth({ apiUrl }) {
@@ -141,20 +143,21 @@ export default function* () {
   // yield fork(initialLoadPause);
 
   yield put(Auth.actions.setApiParams({ apiUrl, apiPath: authPath }));
-  yield put(Groups.actions.setApiParams({ apiUrl, apiPath }));
-  yield put(Meters.actions.setApiParams({ apiUrl, apiPath }));
-  yield put(Registers.actions.setApiParams({ apiUrl, apiPath }));
-  yield put(Users.actions.setApiParams({ apiUrl, apiPath }));
-  yield put(Organizations.actions.setApiParams({ apiUrl, apiPath }));
-  yield put(Contracts.actions.setApiParams({ apiUrl, apiPath }));
-  yield put(Readings.actions.setApiParams({ apiUrl, apiPath }));
-  yield put(MarketLocations.actions.setApiParams({ apiUrl, apiPath }));
   yield put(BillingCycles.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Billings.actions.setApiParams({ apiUrl, apiPath }));
-  yield put(Tariffs.actions.setApiParams({ apiUrl, apiPath }));
+  yield put(Contracts.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Devices.actions.setApiParams({ apiUrl, apiPath }));
-  yield put(WebsiteForms.actions.setApiParams({ apiUrl, apiPath: websitePath }));
+  yield put(Groups.actions.setApiParams({ apiUrl, apiPath }));
+  yield put(MarketLocations.actions.setApiParams({ apiUrl, apiPath }));
+  yield put(Meters.actions.setApiParams({ apiUrl, apiPath }));
+  yield put(Organizations.actions.setApiParams({ apiUrl, apiPath }));
+  yield put(Readings.actions.setApiParams({ apiUrl, apiPath }));
+  yield put(Registers.actions.setApiParams({ apiUrl, apiPath }));
+  yield put(Reports.actions.setApiParams({ apiUrl, apiPath }));
+  yield put(Tariffs.actions.setApiParams({ apiUrl, apiPath }));
+  yield put(Users.actions.setApiParams({ apiUrl, apiPath }));
   yield put(ValidationRules.actions.setApiParams({ apiUrl, apiPath }));
+  yield put(WebsiteForms.actions.setApiParams({ apiUrl, apiPath: websitePath }));
 
   yield fork(setHealth, { apiUrl });
   yield fork(checkVersion, { versionPath, buildDate });

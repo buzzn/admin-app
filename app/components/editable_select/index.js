@@ -1,29 +1,30 @@
 import * as React from 'react';
 import find from 'lodash/find';
 import { injectIntl, FormattedMessage } from 'react-intl';
+
 import { FormGroup } from 'components/style';
-import HTMLSelect from './html_select';
 import CustomSelect from './custom_select';
+import HTMLSelect from './html_select';
 
 import './style.scss';
 
 const EditableSelect = ({
+  customSelect,
+  defaultValue,
   editMode,
-  input,
   field,
+  input,
+  intl,
+  listOverride,
+  meta: { active, dirty, error, touched },
+  name,
+  noDefault,
+  noValTranslations,
+  overrideData,
   prefix,
   valuesPrefix,
-  intl,
-  defaultValue,
-  listOverride,
-  overrideData,
-  noValTranslations,
-  noDefault,
-  withValue,
-  customSelect,
   withLabel,
-  name,
-  meta: { touched, error, dirty, active },
+  withValue,
 }) => {
   let list = [input.value];
   let options = [];
@@ -70,19 +71,18 @@ const EditableSelect = ({
             <FormattedMessage id={`${prefix}.${name || input.name.split('.').pop()}`} />
           </label>
         )}
-        {touched
-          && !!error && (
-            <React.Fragment>
-              <div className="inline-error">{error}</div>
-              <i className="error-icon buzzn-attention" />
-            </React.Fragment>
+        {touched && !!error && (
+          <React.Fragment>
+            <div className="inline-error">{error}</div>
+            <i className="error-icon buzzn-attention" />
+          </React.Fragment>
         )}
       </FormGroup>
     );
   }
 
   if (!input.value) return <span />;
-  const { label } = (find(options, o => o.value === input.value) || {});
+  const { label } = find(options, o => o.value === input.value) || {};
   return <span>{withValue ? `${input.value} - ${label}` : label}</span>;
 };
 

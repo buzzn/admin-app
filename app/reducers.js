@@ -3,18 +3,19 @@ import { reducer as formReducer } from 'redux-form';
 import Auth from '@buzzn/module_auth';
 import config from 'config';
 import { constants } from 'actions';
-import Groups from 'groups';
-import Meters from 'meters';
-import Registers from 'registers';
-import Users from 'users';
-import Organizations from 'organizations';
-import Contracts from 'contracts';
-import Readings from 'readings';
-import MarketLocations from 'market_locations';
 import BillingCycles from 'billing_cycles';
 import Billings from 'billings';
-import Tariffs from 'tariffs';
+import Contracts from 'contracts';
 import Devices from 'devices';
+import Groups from 'groups';
+import MarketLocations from 'market_locations';
+import Meters from 'meters';
+import Organizations from 'organizations';
+import Readings from 'readings';
+import Registers from 'registers';
+import Reports from 'reports';
+import Tariffs from 'tariffs';
+import Users from 'users';
 import WebsiteForms from 'website_forms';
 
 // in this case initialState includes apiUrl and apiPath, so it will just copy this params into app state.
@@ -103,6 +104,7 @@ export default combineReducers({
   organizations: Organizations.reducers,
   readings: Readings.reducers,
   registers: Registers.reducers,
+  reports: Reports.reducers,
   tariffs: Tariffs.reducers,
   users: Users.reducers,
   websiteForms: WebsiteForms.reducers,
