@@ -22,13 +22,17 @@ const ReportsUI: React.FC<ExtProps & StateProps & DispatchProps> = ({
   loadEeg,
   setEeg,
   setUI,
-  reportDates = { beginDate: new Date(), lastDate: new Date() },
+  reportDates,
   match: { params: { groupId } },
 }) => {
   // @ts-ignore
   useEffect(() => () => setEeg({ _status: null }), []);
 
-  const [dateRange, setDateRange] = useState({ ...reportDates });
+  const [dateRange, setDateRange] = useState(
+    reportDates
+      ? { beginDate: new Date(reportDates.beginDate), lastDate: new Date(reportDates.lastDate) }
+      : { beginDate: new Date(), lastDate: new Date() },
+  );
 
   if (loading) return <Loading minHeight={40} />;
 
@@ -50,7 +54,9 @@ const ReportsUI: React.FC<ExtProps & StateProps & DispatchProps> = ({
         />
         {/*
         // @ts-ignore */}
-        <button className="btn btn-secondary" onClick={() => loadEeg({ groupId, params: dateRange })}>Calculate</button>
+        <button className="btn btn-secondary" onClick={() => loadEeg({ groupId, params: dateRange })}>
+          Calculate
+        </button>
         <DateTimePicker
           {...{
             name: 'lastDate',
