@@ -169,7 +169,9 @@ class ContractsList extends React.Component {
             <FormattedMessage id="admin.contracts.addNew" /> <i className="fa fa-plus-circle" />
           </SpanClick>
         ) : (
-          <Link to={`/groups/${groupId}`}>Group settings</Link>
+          <div className="float-right">
+            Please, fill the start date and/or the group owner: <Link to={`/groups/${groupId}`}>Group settings</Link>
+          </div>
         )}
         <AddContract
           {...{
