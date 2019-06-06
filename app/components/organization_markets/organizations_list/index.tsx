@@ -60,6 +60,7 @@ const OrganizationsList = ({ availableOrganizationMarkets, intl, loading, urlAdd
       <br />
       <ReactTableSorted
         {...{
+          collapseOnDataChange: false,
           columns,
           data,
           SubComponent: ({ original }) => (
