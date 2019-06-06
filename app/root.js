@@ -41,6 +41,7 @@ const DevicesContainer = React.lazy(() => import('components/devices'));
 const DocumentsContainer = React.lazy(() => import('components/documents'));
 const GroupSettingsContainer = React.lazy(() => import('components/group_settings'));
 const LocalpoolsListContainer = React.lazy(() => import('components/localpools_list'));
+const OrganizationMarketsContainer = React.lazy(() => import('components/organization_markets'));
 const PowertakersContainer = React.lazy(() => import('components/powertakers'));
 const ReportsContainer = React.lazy(() => import('components/reports'));
 const SystemContainer = React.lazy(() => import('components/system'));
@@ -125,6 +126,10 @@ const RouterHack = ({
                         <Route
                           path="/groups/:groupId/reports"
                           render={props => withSuspense(ReportsContainer)(props)}
+                        />
+                        <Route
+                          path="/organization-markets"
+                          render={props => withSuspense(OrganizationMarketsContainer)(props)}
                         />
                         <Route
                           path="/groups/:groupId/contracts/:contractId"

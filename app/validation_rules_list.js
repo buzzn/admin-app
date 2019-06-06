@@ -8,6 +8,7 @@ import BillingCycles from 'billing_cycles';
 import Billings from 'billings';
 import Tariffs from 'tariffs';
 import Devices from 'devices';
+import Organizations from 'organizations';
 
 export const authList = [
   {
@@ -151,5 +152,10 @@ export default [
   {
     swaggerPath: '/localpools/{localpool_id}/tariffs.post.parameters',
     setAction: Tariffs.actions.setValidationRules,
+  },
+  // Organizations
+  {
+    swaggerPath: '/organizations-market.post.parameters',
+    setAction: rules => Organizations.actions.setValidationRules('orgMarketCreate', rules),
   },
 ];

@@ -2,6 +2,8 @@ export const constants = {
   SET_API_PARAMS: 'buzzn_organizations/SET_API_PARAMS',
   SET_TOKEN: 'buzzn_organizations/SET_TOKEN',
 
+  SET_VALIDATION_RULES: 'buzzn_organizations/SET_VALIDATION_RULES',
+
   LOAD_ORGANIZATION: 'buzzn_organizations/LOAD_ORGANIZATION',
   LOADING_ORGANIZATION: 'buzzn_organizations/LOADING_ORGANIZATION',
   LOADED_ORGANIZATION: 'buzzn_organizations/LOADED_ORGANIZATION',
@@ -21,18 +23,30 @@ export const constants = {
   LOADING_AVAILABLE_ORGANIZATION_MARKETS: 'buzzn_organizations/LOADING_AVAILABLE_ORGANIZATION_MARKETS',
   LOADED_AVAILABLE_ORGANIZATION_MARKETS: 'buzzn_organizations/LOADED_AVAILABLE_ORGANIZATION_MARKETS',
   SET_AVAILABLE_ORGANIZATION_MARKETS: 'buzzn_organizations/SET_AVAILABLE_ORGANIZATION_MARKETS',
+
+  ADD_ORGANIZATION_MARKET: 'buzzn_organizations/ADD_ORGANIZATION_MARKET',
 };
 
 export const actions = {
   setApiParams: ({ apiPath, apiUrl }) => ({ type: constants.SET_API_PARAMS, apiPath, apiUrl }),
   setToken: token => ({ type: constants.SET_TOKEN, token }),
 
+  setValidationRules: (ruleType, validationRules) => ({
+    type: constants.SET_VALIDATION_RULES,
+    ruleType,
+    validationRules,
+  }),
+
   loadOrganization: ({ organizationId }) => ({ type: constants.LOAD_ORGANIZATION, organizationId }),
   loadingOrganization: () => ({ type: constants.LOADING_ORGANIZATION }),
   loadedOrganization: () => ({ type: constants.LOADED_ORGANIZATION }),
   setOrganization: organization => ({ type: constants.SET_ORGANIZATION, organization }),
 
-  loadGroupOrganization: ({ organizationId, groupId }) => ({ type: constants.LOAD_GROUP_ORGANIZATION, organizationId, groupId }),
+  loadGroupOrganization: ({ organizationId, groupId }) => ({
+    type: constants.LOAD_GROUP_ORGANIZATION,
+    organizationId,
+    groupId,
+  }),
   loadingGroupOrganization: () => ({ type: constants.LOADING_GROUP_ORGANIZATION }),
   loadedGroupOrganization: () => ({ type: constants.LOADED_GROUP_ORGANIZATION }),
   setGroupOrganization: organization => ({ type: constants.SET_GROUP_ORGANIZATION, organization }),
@@ -51,5 +65,12 @@ export const actions = {
   setAvailableOrganizationMarkets: availableOrganizationMarkets => ({
     type: constants.SET_AVAILABLE_ORGANIZATION_MARKETS,
     availableOrganizationMarkets,
+  }),
+
+  addOrganizationMarket: ({ params, resolve, reject }) => ({
+    type: constants.ADD_ORGANIZATION_MARKET,
+    params,
+    resolve,
+    reject,
   }),
 };

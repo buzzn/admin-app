@@ -1,4 +1,5 @@
-import { put, call, takeLatest, take, fork, cancel, select } from 'redux-saga/effects';
+import { put, call, takeLatest, takeLeading, take, fork, cancel, select } from 'redux-saga/effects';
+import { SubmissionError } from 'redux-form';
 import { logException } from '_util';
 import { actions, constants } from './actions';
 import api from './api';
@@ -54,6 +55,20 @@ export function* getOrganizations({ apiUrl, apiPath, token, type }, params) {
   yield put(getOrganizationsFunctions[type].loaded());
 }
 
+export function* addOrganizationMarket({ apiUrl, apiPath, token }, { params, resolve, reject }) {
+  try {
+    const res = yield call(api.addOrganizationMarket, { apiUrl, apiPath, token, params });
+    if (res._error) {
+      yield call(reject, new SubmissionError(res));
+    } else {
+      yield call(resolve, res);
+      yield put(actions.loadAvailableOrganizationMarkets());
+    }
+  } catch (error) {
+    logException(error);
+  }
+}
+
 export function* organizationsSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_ORGANIZATION, getOrganization, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUP_ORGANIZATION, getGroupOrganization, { apiUrl, apiPath, token });
@@ -69,6 +84,7 @@ export function* organizationsSagas({ apiUrl, apiPath, token }) {
     token,
     type: 'availableOrganizationMarkets',
   });
+  yield takeLeading(constants.ADD_ORGANIZATION_MARKET, addOrganizationMarket, { apiUrl, apiPath, token });
 
   const organizationId = yield select(selectOrganizationId);
   const groupId = yield select(selectGroupId);

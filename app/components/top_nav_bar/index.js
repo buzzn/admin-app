@@ -110,6 +110,11 @@ export class TopNavBar extends React.Component {
                   <i className="fa fa-vcard" />
                 </Link>
               </NavItem>
+              <NavItem className="icon-nav-item">
+                <Link to="/organization-markets">
+                  <i className="fa fa-building" />
+                </Link>
+              </NavItem>
               <NavItem className={`icon-nav-item ${devMode ? '' : 'under-construction'}`}>
                 <i className="fa fa-bell" />
               </NavItem>
