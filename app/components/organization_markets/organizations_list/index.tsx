@@ -1,17 +1,25 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import { Row, Col } from 'reactstrap';
 
-import LabeledValue from 'components/labeled_value';
 import Loading from 'components/loading';
 import ReactTableSorted from 'components/react_table_sorted';
 import { tableParts as TableParts } from 'react_table_config';
-import { NestedDetailsWrapper } from 'components/style';
 
-import { MarketFunction } from './style';
+import NestedDetails from './nested_details';
+import { MarketFunctionType } from './style';
 
-const OrganizationsList = ({ availableOrganizationMarkets, intl, loading, urlAdd }) => {
+const OrganizationsList = ({
+  availableOrganizationMarkets,
+  intl,
+  loading,
+  urlAdd,
+  validationRules,
+  updateOrganizationMarket,
+  addFunctionToOrgMarket,
+  updateOrganizationMarketFunction,
+  deleteFunctionFromOrgMarket,
+}) => {
   if (loading || availableOrganizationMarkets._status === null) return <Loading minHeight={40} />;
 
   if (availableOrganizationMarkets._status === 403 || availableOrganizationMarkets._status === 404) return <Redirect to="/" />;
@@ -32,13 +40,13 @@ const OrganizationsList = ({ availableOrganizationMarkets, intl, loading, urlAdd
       Cell: ({ value }) => (
         <React.Fragment>
           {value.map((f, i) => (
-            <MarketFunction key={f.id}>
+            <MarketFunctionType key={f.id}>
               {i !== 0 && '/'}
               {f.function
                 .split('_')
                 .map(s => s[0].toUpperCase())
                 .join('')}
-            </MarketFunction>
+            </MarketFunctionType>
           ))}
         </React.Fragment>
       ),
@@ -63,16 +71,19 @@ const OrganizationsList = ({ availableOrganizationMarkets, intl, loading, urlAdd
           collapseOnDataChange: false,
           columns,
           data,
-          SubComponent: ({ original }) => (
-            <NestedDetailsWrapper>
-              <Row>
-                {['name', 'description', 'phone', 'website', 'email'].map(k => (
-                  <Col key={k} xs={6}>
-                    <LabeledValue {...{ label: <FormattedMessage id={`${prefix}.${k}`} />, value: original[k] }} />
-                  </Col>
-                ))}
-              </Row>
-            </NestedDetailsWrapper>
+          SubComponent: ({ original: organization }) => (
+            <NestedDetails
+              {...{
+                form: `editOrgMarket${organization.id}`,
+                initialValues: organization,
+                organization,
+                validationRules,
+                updateOrganizationMarketFunction,
+                updateOrganizationMarket,
+                addFunctionToOrgMarket,
+                deleteFunctionFromOrgMarket,
+              }}
+            />
           ),
           uiSortPath: 'organizationMarkets',
         }}

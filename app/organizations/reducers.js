@@ -9,7 +9,12 @@ export const initialState = {
   groupOrganization: { _status: null },
   availableOrganizations: { _status: null, array: [] },
   availableOrganizationMarkets: { _status: null, array: [] },
-  validationRules: { orgMarketCreate: { _status: null } },
+  validationRules: {
+    orgMarketCreate: { _status: null },
+    orgMarketUpdate: { _status: null },
+    orgMarketAddFunction: { _status: null },
+    marketFunctionUpdate: { _status: null },
+  },
 };
 
 export default function (state = initialState, action) {

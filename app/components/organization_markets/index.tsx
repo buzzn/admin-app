@@ -9,6 +9,10 @@ import AddOrganization from './add_organization';
 
 const OrganizationMarkets = ({
   addOrganizationMarket,
+  updateOrganizationMarket,
+  addFunctionToOrgMarket,
+  updateOrganizationMarketFunction,
+  deleteFunctionFromOrgMarket,
   availableOrganizationMarkets,
   loadAvailableOrganizationMarkets,
   loading,
@@ -23,10 +27,23 @@ const OrganizationMarkets = ({
   return (
     <Switch>
       <Route path={url} exact>
-        <OrganizationsList {...{ availableOrganizationMarkets, loading, urlAdd: `${url}/add-organization` }} />
+        <OrganizationsList
+          {...{
+            availableOrganizationMarkets,
+            loading,
+            urlAdd: `${url}/add-organization`,
+            validationRules,
+            updateOrganizationMarket,
+            addFunctionToOrgMarket,
+            updateOrganizationMarketFunction,
+            deleteFunctionFromOrgMarket,
+          }}
+        />
       </Route>
       <Route path={`${url}/add-organization`}>
-        <AddOrganization {...{ addOrganizationMarket, history, validationRules: validationRules.orgMarketCreate, url }} />
+        <AddOrganization
+          {...{ addOrganizationMarket, history, validationRules: validationRules.orgMarketCreate, url }}
+        />
       </Route>
     </Switch>
   );
@@ -44,6 +61,10 @@ export default connect(
   mapStateToProps,
   {
     addOrganizationMarket: Organizations.actions.addOrganizationMarket,
+    updateOrganizationMarket: Organizations.actions.updateOrganizationMarket,
+    addFunctionToOrgMarket: Organizations.actions.addFunctionToOrgMarket,
+    updateOrganizationMarketFunction: Organizations.actions.updateOrganizationMarketFunction,
+    deleteFunctionFromOrgMarket: Organizations.actions.deleteFunctionFromOrgMarket,
     loadAvailableOrganizationMarkets: Organizations.actions.loadAvailableOrganizationMarkets,
   },
 )(OrganizationMarkets);

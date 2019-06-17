@@ -55,13 +55,21 @@ export function* getOrganizations({ apiUrl, apiPath, token, type }, params) {
   yield put(getOrganizationsFunctions[type].loaded());
 }
 
-export function* addOrganizationMarket({ apiUrl, apiPath, token }, { params, resolve, reject }) {
+const organizationMarketFunctions = {
+  add: api.addOrganizationMarket,
+  update: api.updateOrganizationMarket,
+  addFunction: api.addFunctionToOrgMarket,
+  updateFunction: api.updateOrganizationMarketFunction,
+  deleteFunction: api.deleteFunctionFromOrgMarket,
+};
+
+export function* changeOrganizationMarket({ apiUrl, apiPath, token, type }, { resolve, reject, ...rest }) {
   try {
-    const res = yield call(api.addOrganizationMarket, { apiUrl, apiPath, token, params });
+    const res = yield call(organizationMarketFunctions[type], { apiUrl, apiPath, token, ...rest });
     if (res._error) {
-      yield call(reject, new SubmissionError(res));
+      if (reject) yield call(reject, new SubmissionError(res));
     } else {
-      yield call(resolve, res);
+      if (resolve) yield call(resolve, res);
       yield put(actions.loadAvailableOrganizationMarkets());
     }
   } catch (error) {
@@ -84,7 +92,36 @@ export function* organizationsSagas({ apiUrl, apiPath, token }) {
     token,
     type: 'availableOrganizationMarkets',
   });
-  yield takeLeading(constants.ADD_ORGANIZATION_MARKET, addOrganizationMarket, { apiUrl, apiPath, token });
+  yield takeLeading(constants.ADD_ORGANIZATION_MARKET, changeOrganizationMarket, {
+    apiUrl,
+    apiPath,
+    token,
+    type: 'add',
+  });
+  yield takeLeading(constants.UPDATE_ORGANIZATION_MARKET, changeOrganizationMarket, {
+    apiUrl,
+    apiPath,
+    token,
+    type: 'update',
+  });
+  yield takeLeading(constants.ADD_FUNCTION_TO_ORGANIZATION_MARKET, changeOrganizationMarket, {
+    apiUrl,
+    apiPath,
+    token,
+    type: 'addFunction',
+  });
+  yield takeLeading(constants.DELETE_FUNCTION_FROM_ORGANIZATION_MARKET, changeOrganizationMarket, {
+    apiUrl,
+    apiPath,
+    token,
+    type: 'deleteFunction',
+  });
+  yield takeLeading(constants.UPDATE_ORGANIZATION_MARKET_FUNCTION, changeOrganizationMarket, {
+    apiUrl,
+    apiPath,
+    token,
+    type: 'updateFunction',
+  });
 
   const organizationId = yield select(selectOrganizationId);
   const groupId = yield select(selectGroupId);

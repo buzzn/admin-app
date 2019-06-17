@@ -158,4 +158,17 @@ export default [
     swaggerPath: '/organizations-market.post.parameters',
     setAction: rules => Organizations.actions.setValidationRules('orgMarketCreate', rules),
   },
+  {
+    swaggerPath: '/organizations-market/{organization_market_id}.patch.parameters',
+    setAction: rules => Organizations.actions.setValidationRules('orgMarketUpdate', rules),
+  },
+  {
+    swaggerPath: '/organizations-market/{organization_market_id}/market-functions.post.parameters',
+    setAction: rules => Organizations.actions.setValidationRules('orgMarketAddFunction', rules),
+  },
+  {
+    swaggerPath:
+      '/organizations-market/{organization_market2_id}/market-functions/{market_function_id}.patch.parameters',
+    setAction: rules => Organizations.actions.setValidationRules('marketFunctionUpdate', rules),
+  },
 ];

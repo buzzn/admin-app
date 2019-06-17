@@ -25,6 +25,10 @@ export const constants = {
   SET_AVAILABLE_ORGANIZATION_MARKETS: 'buzzn_organizations/SET_AVAILABLE_ORGANIZATION_MARKETS',
 
   ADD_ORGANIZATION_MARKET: 'buzzn_organizations/ADD_ORGANIZATION_MARKET',
+  UPDATE_ORGANIZATION_MARKET: 'buzzn_organizations/UPDATE_ORGANIZATION_MARKET',
+  ADD_FUNCTION_TO_ORGANIZATION_MARKET: 'buzzn_organizations/ADD_FUNCTION_TO_ORGANIZATION_MARKET',
+  DELETE_FUNCTION_FROM_ORGANIZATION_MARKET: 'buzzn_organizations/DELETE_FUNCTION_FROM_ORGANIZATION_MARKET',
+  UPDATE_ORGANIZATION_MARKET_FUNCTION: 'buzzn_organizations/UPDATE_ORGANIZATION_MARKET_FUNCTION',
 };
 
 export const actions = {
@@ -72,5 +76,32 @@ export const actions = {
     params,
     resolve,
     reject,
+  }),
+  updateOrganizationMarket: ({ params, resolve, reject, organizationId }) => ({
+    type: constants.UPDATE_ORGANIZATION_MARKET,
+    params,
+    resolve,
+    reject,
+    organizationId,
+  }),
+  addFunctionToOrgMarket: ({ params, resolve, reject, organizationId }) => ({
+    type: constants.ADD_FUNCTION_TO_ORGANIZATION_MARKET,
+    params,
+    resolve,
+    reject,
+    organizationId,
+  }),
+  deleteFunctionFromOrgMarket: ({ organizationId, functionId }) => ({
+    type: constants.DELETE_FUNCTION_FROM_ORGANIZATION_MARKET,
+    organizationId,
+    functionId,
+  }),
+  updateOrganizationMarketFunction: ({ params, resolve, reject, organizationId, functionId }) => ({
+    type: constants.UPDATE_ORGANIZATION_MARKET_FUNCTION,
+    params,
+    resolve,
+    reject,
+    organizationId,
+    functionId,
   }),
 };

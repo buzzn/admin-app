@@ -35,4 +35,31 @@ export default {
       body: JSON.stringify(snakeReq(params)),
     }).then(parseResponse);
   },
+  updateOrganizationMarket({ token, apiUrl, apiPath, organizationId, params }) {
+    return fetch(`${apiUrl}${apiPath}/organizations-market/${organizationId}`, {
+      headers: prepareHeaders(token),
+      method: 'PATCH',
+      body: JSON.stringify(snakeReq(params)),
+    }).then(parseResponse);
+  },
+  addFunctionToOrgMarket({ token, apiUrl, apiPath, organizationId, params }) {
+    return fetch(`${apiUrl}${apiPath}/organizations-market/${organizationId}/market-functions`, {
+      headers: prepareHeaders(token),
+      method: 'POST',
+      body: JSON.stringify(snakeReq(params)),
+    }).then(parseResponse);
+  },
+  deleteFunctionFromOrgMarket({ token, apiUrl, apiPath, organizationId, functionId }) {
+    return fetch(`${apiUrl}${apiPath}/organizations-market/${organizationId}/market-functions/${functionId}`, {
+      headers: prepareHeaders(token),
+      method: 'DELETE',
+    });
+  },
+  updateOrganizationMarketFunction({ token, apiUrl, apiPath, organizationId, functionId, params }) {
+    return fetch(`${apiUrl}${apiPath}/organizations-market/${organizationId}/market-functions/${functionId}`, {
+      headers: prepareHeaders(token),
+      method: 'PATCH',
+      body: JSON.stringify(snakeReq(params)),
+    }).then(parseResponse);
+  },
 };
