@@ -39,6 +39,14 @@ export default [
     swaggerPath: '/localpools/{localpool_id}/person-owner.patch.parameters',
     setAction: rules => Groups.actions.setValidationRules('updatePersonOwner', rules),
   },
+  {
+    swaggerPath: '/localpools/{localpool_id}/comments.post.parameters',
+    setAction: rules => Groups.actions.setValidationRules('createCommment', rules),
+  },
+  {
+    swaggerPath: '/localpools/{localpool_id}/comments/{comment_id}.patch.parameters',
+    setAction: rules => Groups.actions.setValidationRules('updateCommment', rules),
+  },
   // Contract rules
   {
     swaggerPath: '/localpools/{localpool_id}/contracts/{localpool_processing_contract_id}.patch.parameters',

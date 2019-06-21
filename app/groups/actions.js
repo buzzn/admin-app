@@ -19,6 +19,15 @@ export const constants = {
   LOADING_GROUPS: 'buzzn_groups/LOADING_GROUPS',
   LOADED_GROUPS: 'buzzn_groups/LOADED_GROUPS',
   SET_GROUPS: 'buzzn_groups/SET_GROUPS',
+
+  LOAD_GROUP_COMMENTS: 'buzzn_groups/LOAD_GROUP_COMMENTS',
+  LOADING_GROUP_COMMENTS: 'buzzn_groups/LOADING_GROUP_COMMENTS',
+  LOADED_GROUP_COMMENTS: 'buzzn_groups/LOADED_GROUP_COMMENTS',
+  SET_GROUP_COMMENTS: 'buzzn_groups/SET_GROUP_COMMENTS',
+
+  ADD_GROUP_COMMENT: 'buzzn_groups/ADD_GROUP_COMMENT',
+  UPDATE_GROUP_COMMENT: 'buzzn_groups/UPDATE_GROUP_COMMENT',
+  DELETE_GROUP_COMMENT: 'buzzn_groups/DELETE_GROUP_COMMENT',
 };
 
 export const actions = {
@@ -72,4 +81,32 @@ export const actions = {
   loadingGroups: () => ({ type: constants.LOADING_GROUPS }),
   loadedGroups: () => ({ type: constants.LOADED_GROUPS }),
   setGroups: groups => ({ type: constants.SET_GROUPS, groups }),
+
+  loadGroupComments: groupId => ({ type: constants.LOAD_GROUP_COMMENTS, groupId }),
+  loadingGroupComments: () => ({ type: constants.LOADING_GROUP_COMMENTS }),
+  loadedGroupComments: () => ({ type: constants.LOADED_GROUP_COMMENTS }),
+  setGroupComments: comments => ({ type: constants.SET_GROUP_COMMENTS, comments }),
+
+  addGroupComment: ({ params, resolve, reject, groupId }) => ({
+    type: constants.ADD_GROUP_COMMENT,
+    groupId,
+    params,
+    resolve,
+    reject,
+  }),
+
+  updateGroupComment: ({ params, resolve, reject, groupId, commentId }) => ({
+    type: constants.UPDATE_GROUP_COMMENT,
+    commentId,
+    params,
+    resolve,
+    reject,
+    groupId,
+  }),
+
+  deleteGroupComment: ({ groupId, commentId }) => ({
+    type: constants.DELETE_GROUP_COMMENT,
+    commentId,
+    groupId,
+  }),
 };

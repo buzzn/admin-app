@@ -116,6 +116,40 @@ export function* updateContact(
   }
 }
 
+export function* getGroupComments({ apiUrl, apiPath, token }, { groupId }) {
+  yield put(actions.loadingGroupComments());
+  try {
+    const comments = yield call(api.fetchGroupComments, { apiUrl, apiPath, token, groupId });
+    yield put(actions.setGroupComments(comments));
+  } catch (error) {
+    logException(error);
+  }
+  yield put(actions.loadedGroupComments());
+}
+
+export function* addGroupComment({ apiUrl, apiPath, token }, { groupId, params, resolve, reject }) {
+  try {
+    const res = yield call(api.addGroupComment, { apiUrl, apiPath, token, params, groupId });
+    if (res._error) {
+      yield call(reject, new SubmissionError(res));
+    } else {
+      yield call(resolve, res);
+      yield put(actions.loadGroupComments(groupId));
+    }
+  } catch (error) {
+    logException(error);
+  }
+}
+
+export function* deleteGroupComment({ apiUrl, apiPath, token }, { groupId, commentId }) {
+  try {
+    yield call(api.deleteGroupComment, { apiUrl, apiPath, token, groupId, commentId });
+    yield put(actions.loadGroupComments(groupId));
+  } catch (error) {
+    logException(error);
+  }
+}
+
 export function* groupsSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_GROUPS, getGroups, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUP, getGroup, { apiUrl, apiPath, token });
@@ -123,9 +157,16 @@ export function* groupsSagas({ apiUrl, apiPath, token }) {
   yield takeLeading(constants.UPDATE_GROUP, updateGroup, { apiUrl, apiPath, token });
   yield takeLeading(constants.DELETE_GROUP, deleteGroup, { apiUrl, apiPath, token });
   yield takeLeading(constants.UPDATE_CONTACT, updateContact, { apiUrl, apiPath, token });
+  yield takeLatest(constants.LOAD_GROUP_COMMENTS, getGroupComments, { apiUrl, apiPath, token });
+  yield takeLeading(constants.ADD_GROUP_COMMENT, addGroupComment, { apiUrl, apiPath, token });
+  yield takeLeading(constants.DELETE_GROUP_COMMENT, deleteGroupComment, { apiUrl, apiPath, token });
+
   yield put(actions.loadGroups());
   const groupId = yield select(selectGroupId);
-  if (groupId) yield put(actions.loadGroup(groupId));
+  if (groupId) {
+    yield put(actions.loadGroup(groupId));
+    yield put(actions.loadGroupComments(groupId));
+  }
 }
 
 export default function* () {

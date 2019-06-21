@@ -17,6 +17,7 @@ import { SubNav } from 'components/style';
 import PageTitle from 'components/page_title';
 import BankAccounts from 'components/bank_accounts';
 import BankAccount from 'components/powertakers/payments/bank_account';
+import Comments from 'components/comments';
 import Group from './group';
 import Powergiver from './powergiver';
 import FakeStats from './fake_stats';
@@ -45,16 +46,19 @@ class GroupSettings extends React.Component {
   componentDidMount() {
     const {
       loadGroup,
+      loadGroupComments,
       group,
       match: { params: { groupId } },
     } = this.props;
     loadGroup(groupId);
+    loadGroupComments(groupId);
     this.setIncompletness(group);
   }
 
   componentWillUnmount() {
     this.props.setIncompleteScreen([]);
     this.props.setGroup({ _status: null });
+    this.props.setGroupComments({ _status: null, array: [] });
   }
 
   componentDidUpdate(prevProps) {
@@ -92,6 +96,7 @@ class GroupSettings extends React.Component {
   render() {
     const {
       group,
+      groupComments,
       address,
       bankAccount,
       loadGroup,
@@ -114,6 +119,10 @@ class GroupSettings extends React.Component {
       updateGroup,
       intl,
 
+      addGroupComment,
+      updateGroupComment,
+      deleteGroupComment,
+
       validationRules,
 
       match: { url },
@@ -131,6 +140,7 @@ class GroupSettings extends React.Component {
       { id: group.id || 1, title: group.name },
     ];
 
+    // HACK: there was inconsistent data in the past
     const ownerValues = { ...owner };
     if (!ownerValues.address) ownerValues.address = {};
     if (!ownerValues.contact) ownerValues.contact = { address: {} };
@@ -167,6 +177,9 @@ class GroupSettings extends React.Component {
               </NavLink>
               <NavLink to={`${url}/fake-stats`} exact className="nav-link">
                 <FormattedMessage id="admin.groups.navFakeStats" />
+              </NavLink>
+              <NavLink to={`${url}/comments`} exact className="nav-link">
+                <FormattedMessage id="admin.groups.navComments" />
               </NavLink>
             </SubNav>
           </Row>
@@ -262,18 +275,20 @@ class GroupSettings extends React.Component {
                           />
                         </Col>
                         <Col xs={12}>
-                          <BankAccount {...{
-                            title: 'GCC bank account',
-                            bankAccount: group.gapContractCustomerBankAccount || {},
-                            bankAccounts: get(gap, 'bankAccounts.array', []),
-                            attachBankAccount,
-                            groupId: group.id,
-                            reloadCb: () => loadGroup(group.id),
-                            updatedAt: group.updatedAt,
-                            // HACK
-                            contractId: '',
-                            partyType: '',
-                          }} />
+                          <BankAccount
+                            {...{
+                              title: 'GCC bank account',
+                              bankAccount: group.gapContractCustomerBankAccount || {},
+                              bankAccounts: get(gap, 'bankAccounts.array', []),
+                              attachBankAccount,
+                              groupId: group.id,
+                              reloadCb: () => loadGroup(group.id),
+                              updatedAt: group.updatedAt,
+                              // HACK
+                              contractId: '',
+                              partyType: '',
+                            }}
+                          />
                         </Col>
                       </React.Fragment>
                     )}
@@ -282,6 +297,18 @@ class GroupSettings extends React.Component {
               />
               <Route path={`${url}/fake-stats`}>
                 <FakeStats {...{ group, updateGroup }} />
+              </Route>
+              <Route path={`${url}/comments`}>
+                <Comments
+                  {...{
+                    comments: groupComments.array,
+                    addComment: params => addGroupComment({ ...params, groupId: group.id }),
+                    updateComment: params => updateGroupComment({ ...params, groupId: group.id }),
+                    deleteComment: params => deleteGroupComment({ ...params, groupId: group.id }),
+                    createRules: validationRules.createCommment,
+                    updateRules: validationRules.updateCommment,
+                  }}
+                />
               </Route>
               <Route path={url}>
                 <Redirect to={`${url}/group`} />
@@ -298,6 +325,7 @@ export const GroupSettingsIntl = injectIntl(GroupSettings);
 
 const mapStateToProps = state => ({
   group: state.groups.group,
+  groupComments: state.groups.groupComments,
   address: state.groups.group.address || {},
   bankAccount: state.groups.group.bankAccount || {},
 
@@ -309,8 +337,11 @@ const mapStateToProps = state => ({
 
   gap: state.groups.group.gapContractCustomer || {},
 
-  loading: state.groups.loadingGroup,
-  loadingOptions: state.users.loadingAvailableUsers || state.organizations.loadingAvailableOrganizations || state.organizations.loadingAvailableOrganizationMarkets,
+  loading: state.groups.loadingGroup || state.groups.loadingGroupComments,
+  loadingOptions:
+    state.users.loadingAvailableUsers
+    || state.organizations.loadingAvailableOrganizations
+    || state.organizations.loadingAvailableOrganizationMarkets,
 
   validationRules: state.groups.validationRules,
 });
@@ -323,6 +354,11 @@ export default connect(
     updateGroup: Groups.actions.updateGroup,
     deleteGroup: Groups.actions.deleteGroup,
     updateGroupContact: Groups.actions.updateGroupContact,
+    loadGroupComments: Groups.actions.loadGroupComments,
+    setGroupComments: Groups.actions.setGroupComments,
+    addGroupComment: Groups.actions.addGroupComment,
+    updateGroupComment: Groups.actions.updateGroupComment,
+    deleteGroupComment: Groups.actions.deleteGroupComment,
     setIncompleteScreen: actions.setIncompleteScreen,
     loadAvailableUsers: Users.actions.loadAvailableUsers,
     loadAvailableOrganizations: Organizations.actions.loadAvailableOrganizations,
