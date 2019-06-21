@@ -11,7 +11,7 @@ import { SpanClick } from 'components/style';
 import AddComment from './add_coment';
 
 const Comments = ({
-  comments,
+  comments = [],
   addComment,
   intl,
   // updateComment,
