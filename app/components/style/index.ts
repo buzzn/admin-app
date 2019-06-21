@@ -218,3 +218,26 @@ export const InputRow = styled(Row)`
     right: 1.5rem;
   }
 `;
+
+export const ActionItem = styled.span`
+  cursor: pointer;
+  float: right;
+  &.add {
+    color: #d4e157;
+  }
+  &.delete {
+    color: #ff4a00;
+  }
+`;
+
+export const ActionIcon = styled.i`
+  cursor: pointer;
+  float: right;
+  margin-left: 0.5rem;
+  &.add {
+    color: #d4e157;
+  }
+  &.delete {
+    color: #ff4a00;
+  }
+`;

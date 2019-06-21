@@ -5,9 +5,10 @@ import Alert from 'react-s-alert';
 
 import TwoColField from 'components/two_col_field';
 import EditableInput from 'components/editable_input';
-import { NestedDetailsWrapper } from 'components/style';
+import { NestedDetailsWrapper, ActionItem } from 'components/style';
 
 import MarketFunction from './market_function';
+import AddFunction from './add_function';
 
 const NestedDetails = ({
   reset,
@@ -16,12 +17,13 @@ const NestedDetails = ({
   validationRules,
   updateOrganizationMarketFunction,
   updateOrganizationMarket,
-  // addFunctionToOrgMarket,
+  addFunctionToOrgMarket,
   deleteFunctionFromOrgMarket,
 }) => {
   const prefix = 'admin.organizations';
 
   const [editMode, setEditMode] = useState(false);
+  const [addFunction, setAddFunction] = useState(false);
 
   const submit = params => new Promise((resolve, reject) => {
     updateOrganizationMarket({ resolve, reject, params, organizationId: organization.id });
@@ -64,6 +66,24 @@ const NestedDetails = ({
           </React.Fragment>
         )}
       </form>
+      {addFunction ? (
+        <AddFunction
+          {...{
+            addFunctionToOrgMarket,
+            cancel: () => setAddFunction(false),
+            form: `addMarketFunctionTo${organization.id}`,
+            organizationId: organization.id,
+            validationRules: validationRules.orgMarketAddFunction,
+          }}
+        />
+      ) : (
+        <React.Fragment>
+          <ActionItem className="add" onClick={() => setAddFunction(true)}>
+            Add function <i className="fa fa-plus" />
+          </ActionItem>
+          <br />
+        </React.Fragment>
+      )}
       {get(organization, 'marketFunctions.array', []).map(marketFunction => (
         <MarketFunction
           {...{

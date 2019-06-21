@@ -6,6 +6,7 @@ import Alert from 'react-s-alert';
 import TwoColField from 'components/two_col_field';
 import EditableInput from 'components/editable_input';
 import EditableSelect from 'components/editable_select';
+import { ActionIcon } from 'components/style';
 
 import { MarketFunctionWrap } from './style';
 
@@ -34,13 +35,13 @@ const MarketFunction = ({
         <form onSubmit={handleSubmit(submit)}>
           {!editMode && (
             <React.Fragment>
-              <i
-                className="fa fa-remove float-right"
+              <ActionIcon
+                className="fa fa-remove delete"
                 onClick={() => confirm('Are you sure?')
                   && deleteFunctionFromOrgMarket({ organizationId, functionId: marketFunction.id })
                 }
               />
-              <i className="buzzn-pencil float-right" onClick={() => setEditMode(true)} />
+              <ActionIcon className="buzzn-pencil" onClick={() => setEditMode(true)} />
             </React.Fragment>
           )}
           <br />
