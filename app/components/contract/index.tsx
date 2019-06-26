@@ -1,11 +1,16 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+
 import Contracts from 'contracts';
 import Loading from 'components/loading';
+import Comments from 'components/comments';
+
 import PowertakerContract from './powertaker';
 import ThirdPartyContract from './third_party';
 import LPCMPOContract from './lpc_mpo';
+
+import { CommentsHeader } from './style';
 
 class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
   componentDidMount() {
@@ -34,54 +39,64 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
 
     const prefix = 'admin.contracts';
 
-    if (contract.type === 'contract_localpool_third_party') {
-      return (
-        <ThirdPartyContract
-          {...{
-            groupId,
-            contract,
-            registerMeta: contract.registerMeta,
-            prefix,
-            initialValues: contract,
-            updateContract,
-            validationRules: LPThirdUpdateRules,
-          }}
-        />
-      );
-    }
-    if (contract.type === 'contract_localpool_power_taker') {
-      return (
-        <PowertakerContract
-          {...{
-            contract,
-            registerMeta: contract.registerMeta,
-            contractor: contract.contractor,
-            prefix,
-            initialValues: contract,
-            groupId,
-            updateContract,
-            validationRules: LPTUpdateRules,
-          }}
-        />
-      );
-    }
-    if (['contract_localpool_processing', 'contract_metering_point_operator'].includes(contract.type)) {
-      return (
-        <LPCMPOContract
-          {...{
-            contract,
-            contractor: contract.contractor,
-            prefix,
-            url,
-            initialValues: contract,
-            groupId,
-            updateContract,
-            validationRules: LPCValidationRules,
-          }}
-        />
-      );
-    }
-    return 'Unknown contract type';
+    const contractForm = () => {
+      if (contract.type === 'contract_localpool_third_party') {
+        return (
+          <ThirdPartyContract
+            {...{
+              groupId,
+              contract,
+              registerMeta: contract.registerMeta,
+              prefix,
+              initialValues: contract,
+              updateContract,
+              validationRules: LPThirdUpdateRules,
+            }}
+          />
+        );
+      }
+      if (contract.type === 'contract_localpool_power_taker') {
+        return (
+          <PowertakerContract
+            {...{
+              contract,
+              registerMeta: contract.registerMeta,
+              contractor: contract.contractor,
+              prefix,
+              initialValues: contract,
+              groupId,
+              updateContract,
+              validationRules: LPTUpdateRules,
+            }}
+          />
+        );
+      }
+      if (['contract_localpool_processing', 'contract_metering_point_operator'].includes(contract.type)) {
+        return (
+          <LPCMPOContract
+            {...{
+              contract,
+              contractor: contract.contractor,
+              prefix,
+              url,
+              initialValues: contract,
+              groupId,
+              updateContract,
+              validationRules: LPCValidationRules,
+            }}
+          />
+        );
+      }
+      return 'Unknown contract type';
+    };
+
+    return (
+      <React.Fragment>
+        {contractForm()}
+        <CommentsHeader>Comments</CommentsHeader>
+        <Comments {...{ ids: { type: 'contract', groupId, contractId: contract.id } }} />
+      </React.Fragment>
+    );
   }
 }
 
