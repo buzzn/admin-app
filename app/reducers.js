@@ -5,6 +5,7 @@ import config from 'config';
 import { constants } from 'actions';
 import BillingCycles from 'billing_cycles';
 import Billings from 'billings';
+import Comments from 'comments';
 import Contracts from 'contracts';
 import Devices from 'devices';
 import Groups from 'groups';
@@ -93,6 +94,7 @@ export default combineReducers({
   auth: Auth.reducers,
   billingCycles: BillingCycles.reducers,
   billings: Billings.reducers,
+  comments: Comments.reducers,
   // apiUrl and apiPath will be located in 'config' property
   config: configReducer,
   contracts: Contracts.reducers,

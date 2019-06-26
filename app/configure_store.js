@@ -6,6 +6,7 @@ import Auth from '@buzzn/module_auth';
 import appSaga from 'sagas';
 import BillingCycles from 'billing_cycles';
 import Billings from 'billings';
+import Comments from 'comments';
 import Contracts from 'contracts';
 import Devices from 'devices';
 import Groups from 'groups';
@@ -27,6 +28,7 @@ function* rootSaga() {
     call(Auth.sagas),
     call(BillingCycles.sagas),
     call(Billings.sagas),
+    call(Comments.sagas),
     call(Contracts.sagas),
     call(Devices.sagas),
     call(Groups.sagas),

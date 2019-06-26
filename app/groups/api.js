@@ -88,21 +88,4 @@ export default {
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
-  fetchGroupComments: ({ token, apiUrl, apiPath, groupId }) => fetch(`${apiUrl}${apiPath}/localpools/${groupId}/comments`, { headers: prepareHeaders(token) })
-    .then(parseResponse)
-    .then(camelizeResponseKeys),
-  addGroupComment: ({ token, apiUrl, apiPath, groupId, params }) => fetch(`${apiUrl}${apiPath}/localpools/${groupId}/comments`, {
-    headers: prepareHeaders(token),
-    method: 'POST',
-    body: JSON.stringify(snakeReq(params)),
-  }).then(parseResponse),
-  updateGroupComment: ({ token, apiUrl, apiPath, params, groupId, commentId }) => fetch(`${apiUrl}${apiPath}/localpools/${groupId}/comments/${commentId}`, {
-    headers: prepareHeaders(token),
-    method: 'PATCH',
-    body: JSON.stringify(snakeReq(params)),
-  }).then(parseResponse),
-  deleteGroupComment: ({ token, apiUrl, apiPath, groupId, commentId }) => fetch(`${apiUrl}${apiPath}/localpools/${groupId}/comments/${commentId}`, {
-    headers: prepareHeaders(token),
-    method: 'DELETE',
-  }),
 };

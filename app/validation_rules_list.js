@@ -3,6 +3,7 @@ import Meters from 'meters';
 import Registers from 'registers';
 import Readings from 'readings';
 import Groups from 'groups';
+import Comments from 'comments';
 import Contracts from 'contracts';
 import BillingCycles from 'billing_cycles';
 import Billings from 'billings';
@@ -39,13 +40,16 @@ export default [
     swaggerPath: '/localpools/{localpool_id}/person-owner.patch.parameters',
     setAction: rules => Groups.actions.setValidationRules('updatePersonOwner', rules),
   },
+  // Comments rules
   {
     swaggerPath: '/localpools/{localpool_id}/comments.post.parameters',
-    setAction: rules => Groups.actions.setValidationRules('createCommment', rules),
+    // HACK: assumption is that all comments have the same validation rules
+    setAction: rules => Comments.actions.setValidationRules('createComment', rules),
   },
   {
     swaggerPath: '/localpools/{localpool_id}/comments/{comment_id}.patch.parameters',
-    setAction: rules => Groups.actions.setValidationRules('updateCommment', rules),
+    // HACK: assumption is that all comments have the same validation rules
+    setAction: rules => Comments.actions.setValidationRules('updateComment', rules),
   },
   // Contract rules
   {

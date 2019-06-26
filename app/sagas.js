@@ -7,6 +7,7 @@ import api from 'api';
 
 import BillingCycles from 'billing_cycles';
 import Billings from 'billings';
+import Comments from 'comments';
 import Contracts from 'contracts';
 import Devices from 'devices';
 import Groups from 'groups';
@@ -57,6 +58,7 @@ export function* updateUserMe({ apiUrl, apiPath, token }, { params, resolve, rej
 export function* setToken(token) {
   yield put(BillingCycles.actions.setToken(token));
   yield put(Billings.actions.setToken(token));
+  yield put(Comments.actions.setToken(token));
   yield put(Contracts.actions.setToken(token));
   yield put(Devices.actions.setToken(token));
   yield put(Groups.actions.setToken(token));
@@ -145,6 +147,7 @@ export default function* () {
   yield put(Auth.actions.setApiParams({ apiUrl, apiPath: authPath }));
   yield put(BillingCycles.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Billings.actions.setApiParams({ apiUrl, apiPath }));
+  yield put(Comments.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Contracts.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Devices.actions.setApiParams({ apiUrl, apiPath }));
   yield put(Groups.actions.setApiParams({ apiUrl, apiPath }));
