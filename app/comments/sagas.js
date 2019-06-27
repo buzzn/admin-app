@@ -20,6 +20,12 @@ const commentsFunctions = (type) => {
       updateComment: api.updateContractComment,
       deleteComment: api.deleteContractComment,
     },
+    meter: {
+      getComments: api.fetchMeterComments,
+      addComment: api.addMeterComment,
+      updateComment: api.updateMeterComment,
+      deleteComment: api.deleteMeterComment,
+    },
   };
   if (functionsObj[type]) return functionsObj[type];
 

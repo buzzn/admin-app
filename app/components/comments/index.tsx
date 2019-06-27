@@ -14,6 +14,8 @@ import { SpanClick } from 'components/style';
 import AddComment from './add_coment';
 import NestedDetails from './nested_details';
 
+import { CommentsHeader } from './style';
+
 const Comments = ({
   ids,
   intl,
@@ -72,6 +74,7 @@ const Comments = ({
 
   return (
     <Col xs={12}>
+      <CommentsHeader>Comments</CommentsHeader>
       <div className="p-0">
         <SpanClick onClick={() => setIsOpen(true)} className="float-right" data-cy="add comment CTA">
           <FormattedMessage id={`${prefix}.addNew`} /> <i className="fa fa-plus-circle" />

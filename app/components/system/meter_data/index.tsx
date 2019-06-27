@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+
 import Meters from 'meters';
 import Loading from 'components/loading';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
 import { CenterContent } from 'components/style';
 import PageTitle from 'components/page_title';
+import Comments from 'components/comments';
+
 import VirtualMeterDataForm from './virtual_form';
 import RealMeterDataForm from './real_form';
 
@@ -56,8 +59,11 @@ class MeterData extends React.Component<ExtProps & DispatchProps & StateProps & 
               {...{ meter, validationRules: realValidationRules, initialValues: meter, updateMeter, groupId, url }}
             />
           ) : (
-            <VirtualMeterDataForm {...{ meter, validationRules: virtualValidationRules, initialValues: meter, url, history }} />
+            <VirtualMeterDataForm
+              {...{ meter, validationRules: virtualValidationRules, initialValues: meter, url, history }}
+            />
           )}
+          <Comments {...{ ids: { type: 'meter', groupId, meterId: meter.id } }} />
         </CenterContent>
       </React.Fragment>
     );

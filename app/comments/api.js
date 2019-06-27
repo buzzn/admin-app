@@ -35,4 +35,21 @@ export default {
     headers: prepareHeaders(token),
     method: 'DELETE',
   }),
+  fetchMeterComments: ({ token, apiUrl, apiPath, groupId, meterId }) => fetch(`${apiUrl}${apiPath}/localpools/${groupId}/meters/${meterId}/comments`, { headers: prepareHeaders(token) })
+    .then(parseResponse)
+    .then(camelizeResponseKeys),
+  addMeterComment: ({ token, apiUrl, apiPath, groupId, meterId, params }) => fetch(`${apiUrl}${apiPath}/localpools/${groupId}/meters/${meterId}/comments`, {
+    headers: prepareHeaders(token),
+    method: 'POST',
+    body: JSON.stringify(snakeReq(params)),
+  }).then(parseResponse),
+  updateMeterComment: ({ token, apiUrl, apiPath, params, groupId, meterId, commentId }) => fetch(`${apiUrl}${apiPath}/localpools/${groupId}/meters/${meterId}/comments/${commentId}`, {
+    headers: prepareHeaders(token),
+    method: 'PATCH',
+    body: JSON.stringify(snakeReq(params)),
+  }).then(parseResponse),
+  deleteMeterComment: ({ token, apiUrl, apiPath, groupId, meterId, commentId }) => fetch(`${apiUrl}${apiPath}/localpools/${groupId}/meters/${meterId}/comments/${commentId}`, {
+    headers: prepareHeaders(token),
+    method: 'DELETE',
+  }),
 };

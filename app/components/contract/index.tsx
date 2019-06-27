@@ -10,8 +10,6 @@ import PowertakerContract from './powertaker';
 import ThirdPartyContract from './third_party';
 import LPCMPOContract from './lpc_mpo';
 
-import { CommentsHeader } from './style';
-
 class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
   componentDidMount() {
     const { loadContract, groupId, contractId } = this.props;
@@ -93,8 +91,7 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
     return (
       <React.Fragment>
         {contractForm()}
-        <CommentsHeader>Comments</CommentsHeader>
-        <Comments {...{ ids: { type: 'contract', groupId, contractId: contract.id } }} />
+        <Comments {...{ withHeader: true, ids: { type: 'contract', groupId, contractId: contract.id } }} />
       </React.Fragment>
     );
   }
