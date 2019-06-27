@@ -89,7 +89,7 @@ class ContractsList extends React.Component {
         ownerChanged: !['contract_localpool_power_taker', 'contract_localpool_third_party'].includes(c.type)
           ? get(c.customer, 'id') !== get(group.owner, 'id')
           : false,
-        since: c.signingDate,
+        since: c.beginDate,
         number: c.fullContractNumber,
         link: `${url}/${c.id}`,
         statusIcon: {

@@ -3,11 +3,13 @@ import Meters from 'meters';
 import Registers from 'registers';
 import Readings from 'readings';
 import Groups from 'groups';
+import Comments from 'comments';
 import Contracts from 'contracts';
 import BillingCycles from 'billing_cycles';
 import Billings from 'billings';
 import Tariffs from 'tariffs';
 import Devices from 'devices';
+import Organizations from 'organizations';
 
 export const authList = [
   {
@@ -37,6 +39,17 @@ export default [
   {
     swaggerPath: '/localpools/{localpool_id}/person-owner.patch.parameters',
     setAction: rules => Groups.actions.setValidationRules('updatePersonOwner', rules),
+  },
+  // Comments rules
+  {
+    swaggerPath: '/localpools/{localpool_id}/comments.post.parameters',
+    // HACK: assumption is that all comments have the same validation rules
+    setAction: rules => Comments.actions.setValidationRules('createComment', rules),
+  },
+  {
+    swaggerPath: '/localpools/{localpool_id}/comments/{comment_id}.patch.parameters',
+    // HACK: assumption is that all comments have the same validation rules
+    setAction: rules => Comments.actions.setValidationRules('updateComment', rules),
   },
   // Contract rules
   {
@@ -151,5 +164,23 @@ export default [
   {
     swaggerPath: '/localpools/{localpool_id}/tariffs.post.parameters',
     setAction: Tariffs.actions.setValidationRules,
+  },
+  // Organizations
+  {
+    swaggerPath: '/organizations-market.post.parameters',
+    setAction: rules => Organizations.actions.setValidationRules('orgMarketCreate', rules),
+  },
+  {
+    swaggerPath: '/organizations-market/{organization_market_id}.patch.parameters',
+    setAction: rules => Organizations.actions.setValidationRules('orgMarketUpdate', rules),
+  },
+  {
+    swaggerPath: '/organizations-market/{organization_market_id}/market-functions.post.parameters',
+    setAction: rules => Organizations.actions.setValidationRules('orgMarketAddFunction', rules),
+  },
+  {
+    swaggerPath:
+      '/organizations-market/{organization_market2_id}/market-functions/{market_function_id}.patch.parameters',
+    setAction: rules => Organizations.actions.setValidationRules('marketFunctionUpdate', rules),
   },
 ];

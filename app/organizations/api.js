@@ -1,5 +1,5 @@
 import 'whatwg-fetch';
-import { prepareHeaders, parseResponse, camelizeResponseKeys } from '../_util';
+import { prepareHeaders, parseResponse, camelizeResponseKeys, snakeReq } from '../_util';
 
 export default {
   fetchOrganization({ token, apiUrl, apiPath, organizationId }) {
@@ -27,5 +27,39 @@ export default {
     return fetch(`${apiUrl}${apiPath}/organizations-market?include=market_functions`, { headers: prepareHeaders(token) })
       .then(parseResponse)
       .then(camelizeResponseKeys);
+  },
+  addOrganizationMarket({ token, apiUrl, apiPath, params }) {
+    return fetch(`${apiUrl}${apiPath}/organizations-market`, {
+      headers: prepareHeaders(token),
+      method: 'POST',
+      body: JSON.stringify(snakeReq(params)),
+    }).then(parseResponse);
+  },
+  updateOrganizationMarket({ token, apiUrl, apiPath, organizationId, params }) {
+    return fetch(`${apiUrl}${apiPath}/organizations-market/${organizationId}`, {
+      headers: prepareHeaders(token),
+      method: 'PATCH',
+      body: JSON.stringify(snakeReq(params)),
+    }).then(parseResponse);
+  },
+  addFunctionToOrgMarket({ token, apiUrl, apiPath, organizationId, params }) {
+    return fetch(`${apiUrl}${apiPath}/organizations-market/${organizationId}/market-functions`, {
+      headers: prepareHeaders(token),
+      method: 'POST',
+      body: JSON.stringify(snakeReq(params)),
+    }).then(parseResponse);
+  },
+  deleteFunctionFromOrgMarket({ token, apiUrl, apiPath, organizationId, functionId }) {
+    return fetch(`${apiUrl}${apiPath}/organizations-market/${organizationId}/market-functions/${functionId}`, {
+      headers: prepareHeaders(token),
+      method: 'DELETE',
+    });
+  },
+  updateOrganizationMarketFunction({ token, apiUrl, apiPath, organizationId, functionId, params }) {
+    return fetch(`${apiUrl}${apiPath}/organizations-market/${organizationId}/market-functions/${functionId}`, {
+      headers: prepareHeaders(token),
+      method: 'PATCH',
+      body: JSON.stringify(snakeReq(params)),
+    }).then(parseResponse);
   },
 };

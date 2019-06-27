@@ -11,7 +11,8 @@ import EditableSelect from 'components/editable_select';
 import EditableCheckbox from 'components/editable_checkbox';
 import { numberNormalizer } from 'validation_normalizers';
 
-import { InputRow, PadRow, RegisterFormWrapper } from './style';
+import { InputRow } from 'components/style';
+import { PadRow, RegisterFormWrapper } from './style';
 
 interface Props {
   preset: { [key: string]: any };

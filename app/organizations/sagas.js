@@ -1,4 +1,5 @@
-import { put, call, takeLatest, take, fork, cancel, select } from 'redux-saga/effects';
+import { put, call, takeLatest, takeLeading, take, fork, cancel, select } from 'redux-saga/effects';
+import { SubmissionError } from 'redux-form';
 import { logException } from '_util';
 import { actions, constants } from './actions';
 import api from './api';
@@ -54,6 +55,28 @@ export function* getOrganizations({ apiUrl, apiPath, token, type }, params) {
   yield put(getOrganizationsFunctions[type].loaded());
 }
 
+const organizationMarketFunctions = {
+  add: api.addOrganizationMarket,
+  update: api.updateOrganizationMarket,
+  addFunction: api.addFunctionToOrgMarket,
+  updateFunction: api.updateOrganizationMarketFunction,
+  deleteFunction: api.deleteFunctionFromOrgMarket,
+};
+
+export function* changeOrganizationMarket({ apiUrl, apiPath, token, type }, { resolve, reject, ...rest }) {
+  try {
+    const res = yield call(organizationMarketFunctions[type], { apiUrl, apiPath, token, ...rest });
+    if (res._error) {
+      if (reject) yield call(reject, new SubmissionError(res));
+    } else {
+      if (resolve) yield call(resolve, res);
+      yield put(actions.loadAvailableOrganizationMarkets());
+    }
+  } catch (error) {
+    logException(error);
+  }
+}
+
 export function* organizationsSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_ORGANIZATION, getOrganization, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUP_ORGANIZATION, getGroupOrganization, { apiUrl, apiPath, token });
@@ -68,6 +91,36 @@ export function* organizationsSagas({ apiUrl, apiPath, token }) {
     apiPath,
     token,
     type: 'availableOrganizationMarkets',
+  });
+  yield takeLeading(constants.ADD_ORGANIZATION_MARKET, changeOrganizationMarket, {
+    apiUrl,
+    apiPath,
+    token,
+    type: 'add',
+  });
+  yield takeLeading(constants.UPDATE_ORGANIZATION_MARKET, changeOrganizationMarket, {
+    apiUrl,
+    apiPath,
+    token,
+    type: 'update',
+  });
+  yield takeLeading(constants.ADD_FUNCTION_TO_ORGANIZATION_MARKET, changeOrganizationMarket, {
+    apiUrl,
+    apiPath,
+    token,
+    type: 'addFunction',
+  });
+  yield takeLeading(constants.DELETE_FUNCTION_FROM_ORGANIZATION_MARKET, changeOrganizationMarket, {
+    apiUrl,
+    apiPath,
+    token,
+    type: 'deleteFunction',
+  });
+  yield takeLeading(constants.UPDATE_ORGANIZATION_MARKET_FUNCTION, changeOrganizationMarket, {
+    apiUrl,
+    apiPath,
+    token,
+    type: 'updateFunction',
   });
 
   const organizationId = yield select(selectOrganizationId);

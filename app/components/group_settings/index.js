@@ -17,6 +17,7 @@ import { SubNav } from 'components/style';
 import PageTitle from 'components/page_title';
 import BankAccounts from 'components/bank_accounts';
 import BankAccount from 'components/powertakers/payments/bank_account';
+import Comments from 'components/comments';
 import Group from './group';
 import Powergiver from './powergiver';
 import FakeStats from './fake_stats';
@@ -131,6 +132,7 @@ class GroupSettings extends React.Component {
       { id: group.id || 1, title: group.name },
     ];
 
+    // HACK: there was inconsistent data in the past
     const ownerValues = { ...owner };
     if (!ownerValues.address) ownerValues.address = {};
     if (!ownerValues.contact) ownerValues.contact = { address: {} };
@@ -167,6 +169,9 @@ class GroupSettings extends React.Component {
               </NavLink>
               <NavLink to={`${url}/fake-stats`} exact className="nav-link">
                 <FormattedMessage id="admin.groups.navFakeStats" />
+              </NavLink>
+              <NavLink to={`${url}/comments`} exact className="nav-link">
+                <FormattedMessage id="admin.groups.navComments" />
               </NavLink>
             </SubNav>
           </Row>
@@ -262,18 +267,20 @@ class GroupSettings extends React.Component {
                           />
                         </Col>
                         <Col xs={12}>
-                          <BankAccount {...{
-                            title: 'GCC bank account',
-                            bankAccount: group.gapContractCustomerBankAccount || {},
-                            bankAccounts: get(gap, 'bankAccounts.array', []),
-                            attachBankAccount,
-                            groupId: group.id,
-                            reloadCb: () => loadGroup(group.id),
-                            updatedAt: group.updatedAt,
-                            // HACK
-                            contractId: '',
-                            partyType: '',
-                          }} />
+                          <BankAccount
+                            {...{
+                              title: 'GCC bank account',
+                              bankAccount: group.gapContractCustomerBankAccount || {},
+                              bankAccounts: get(gap, 'bankAccounts.array', []),
+                              attachBankAccount,
+                              groupId: group.id,
+                              reloadCb: () => loadGroup(group.id),
+                              updatedAt: group.updatedAt,
+                              // HACK
+                              contractId: '',
+                              partyType: '',
+                            }}
+                          />
                         </Col>
                       </React.Fragment>
                     )}
@@ -282,6 +289,9 @@ class GroupSettings extends React.Component {
               />
               <Route path={`${url}/fake-stats`}>
                 <FakeStats {...{ group, updateGroup }} />
+              </Route>
+              <Route path={`${url}/comments`}>
+                <Comments {...{ ids: { type: 'group', groupId: group.id } }} />
               </Route>
               <Route path={url}>
                 <Redirect to={`${url}/group`} />
@@ -310,7 +320,10 @@ const mapStateToProps = state => ({
   gap: state.groups.group.gapContractCustomer || {},
 
   loading: state.groups.loadingGroup,
-  loadingOptions: state.users.loadingAvailableUsers || state.organizations.loadingAvailableOrganizations || state.organizations.loadingAvailableOrganizationMarkets,
+  loadingOptions:
+    state.users.loadingAvailableUsers
+    || state.organizations.loadingAvailableOrganizations
+    || state.organizations.loadingAvailableOrganizationMarkets,
 
   validationRules: state.groups.validationRules,
 });

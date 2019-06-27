@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Nav } from 'reactstrap';
+import { Nav, Row } from 'reactstrap';
 
 export const CenterContent = styled.div`
   position: relative;
@@ -197,4 +197,47 @@ export const PlainList = styled.ul`
   list-style: none;
   padding-left: 0;
   margin-bottom: 0;
+`;
+
+export const InputRow = styled(Row)`
+  position: relative;
+  border-top: 1px solid grey;
+  padding-top: 2rem;
+  i {
+    position: absolute;
+    top: 0.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  i.add {
+    color: #d4e157;
+    right: 0.3rem;
+  }
+  i.remove {
+    color: #ff4a00;
+    right: 1.5rem;
+  }
+`;
+
+export const ActionItem = styled.span`
+  cursor: pointer;
+  float: right;
+  &.add {
+    color: #d4e157;
+  }
+  &.delete {
+    color: #ff4a00;
+  }
+`;
+
+export const ActionIcon = styled.i`
+  cursor: pointer;
+  float: right;
+  margin-left: 0.5rem;
+  &.add {
+    color: #d4e157;
+  }
+  &.delete {
+    color: #ff4a00;
+  }
 `;

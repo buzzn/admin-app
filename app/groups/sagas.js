@@ -123,9 +123,13 @@ export function* groupsSagas({ apiUrl, apiPath, token }) {
   yield takeLeading(constants.UPDATE_GROUP, updateGroup, { apiUrl, apiPath, token });
   yield takeLeading(constants.DELETE_GROUP, deleteGroup, { apiUrl, apiPath, token });
   yield takeLeading(constants.UPDATE_CONTACT, updateContact, { apiUrl, apiPath, token });
+
   yield put(actions.loadGroups());
   const groupId = yield select(selectGroupId);
-  if (groupId) yield put(actions.loadGroup(groupId));
+  if (groupId) {
+    yield put(actions.loadGroup(groupId));
+    yield put(actions.loadGroupComments(groupId));
+  }
 }
 
 export default function* () {

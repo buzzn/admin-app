@@ -9,6 +9,12 @@ export const initialState = {
   groupOrganization: { _status: null },
   availableOrganizations: { _status: null, array: [] },
   availableOrganizationMarkets: { _status: null, array: [] },
+  validationRules: {
+    orgMarketCreate: { _status: null },
+    orgMarketUpdate: { _status: null },
+    orgMarketAddFunction: { _status: null },
+    marketFunctionUpdate: { _status: null },
+  },
 };
 
 export default function (state = initialState, action) {
@@ -48,6 +54,9 @@ export default function (state = initialState, action) {
       return { ...state, loadingAvailableOrganizationMarkets: false };
     case constants.SET_AVAILABLE_ORGANIZATION_MARKETS:
       return { ...state, availableOrganizationMarkets: action.availableOrganizationMarkets };
+
+    case constants.SET_VALIDATION_RULES:
+      return { ...state, validationRules: { ...state.validationRules, [action.ruleType]: action.validationRules } };
 
     default:
       return state;
