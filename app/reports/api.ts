@@ -8,4 +8,15 @@ export default {
   })
     .then(parseResponse)
     .then(camelizeResponseKeys),
+  fetchAnnualReport({ token, apiUrl, apiPath, groupId, params }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/annual-report/`, {
+      headers: prepareHeaders(token),
+      method: 'POST',
+      body: JSON.stringify(snakeReq(params)),
+    }).then(parseResponse);
+  },
+  fetchGroupMembersExport({ token, apiUrl, apiPath, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/group-members-export`, { headers: prepareHeaders(token) })
+      .then(parseResponse);
+  }
 };

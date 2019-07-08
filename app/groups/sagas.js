@@ -116,29 +116,16 @@ export function* updateContact(
   }
 }
 
-export function* getGroupMembersExport({ apiUrl, apiPath, token }, {groupId, groupName}) {
-  yield put(actions.loadingGroupMembersExport());
-  try {
-    const groupMembersExported = yield call(api.fetchGroupMembersExport, { apiUrl, apiPath, token, groupId });
-    let groupNameSanitized = groupName.replace(/[^a-z0-9]/gi, '_') + "_GroupMembers.csv";
-    saveAs(groupMembersExported, `${groupNameSanitized}`);
-  } catch (error) {
-    logException(error);
-  }
-  yield put(actions.loadedGroupMembersExport());
-}
-
 export function* groupsSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_GROUPS, getGroups, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUP, getGroup, { apiUrl, apiPath, token });
-  yield takeLatest(constants.LOAD_GROUP_MEMBERS_EXPORT, getGroupMembersExport, { apiUrl, apiPath, token });
   yield takeLeading(constants.ADD_GROUP, addGroup, { apiUrl, apiPath, token });
   yield takeLeading(constants.UPDATE_GROUP, updateGroup, { apiUrl, apiPath, token });
   yield takeLeading(constants.DELETE_GROUP, deleteGroup, { apiUrl, apiPath, token });
   yield takeLeading(constants.UPDATE_CONTACT, updateContact, { apiUrl, apiPath, token });
 
   yield put(actions.loadGroups());
-  yield put(actions.loadGroupMembersExport());
+
   const groupId = yield select(selectGroupId);
   if (groupId) {
     yield put(actions.loadGroup(groupId));

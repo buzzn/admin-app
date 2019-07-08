@@ -19,10 +19,6 @@ export const constants = {
   LOADING_GROUPS: 'buzzn_groups/LOADING_GROUPS',
   LOADED_GROUPS: 'buzzn_groups/LOADED_GROUPS',
   SET_GROUPS: 'buzzn_groups/SET_GROUPS',
-
-  LOAD_GROUP_MEMBERS_EXPORT: 'buzzn_groups/LOAD_GROUP_MEMBERS_EXPORT',
-  LOADING_GROUP_MEMBERS_EXPORT: 'buzzn_groups/LOADING_GROUP_MEMBERS_EXPORT',
-  LOADED_GROUP_MEMBERS_EXPORT: 'buzzn_groups/LOADED_GROUP_MEMBERS_EXPORT',
 };
 
 export const actions = {
@@ -76,8 +72,4 @@ export const actions = {
   loadingGroups: () => ({ type: constants.LOADING_GROUPS }),
   loadedGroups: () => ({ type: constants.LOADED_GROUPS }),
   setGroups: groups => ({ type: constants.SET_GROUPS, groups }),
-
-  loadGroupMembersExport: (groupId, groupName) => ({ type: constants.LOAD_GROUP_MEMBERS_EXPORT, groupId, groupName }),
-  loadingGroupMembersExport: () => ({ type: constants.LOADING_GROUP_MEMBERS_EXPORT }),
-  loadedGroupMembersExport: () => ({ type: constants.LOADED_GROUP_MEMBERS_EXPORT }),
 };

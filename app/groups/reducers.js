@@ -4,7 +4,6 @@ export const initialState = {
   loadingGroups: false,
   loadingUserGroups: false,
   loadingGroup: false,
-  loadingGroupMembersExport: false,
   groups: { _status: null, array: [] },
   group: { _status: null },
   validationRules: {
@@ -36,11 +35,6 @@ export default function (state = initialState, action) {
       return { ...state, loadingGroups: false };
     case constants.SET_GROUPS:
       return { ...state, groups: action.groups };
-
-    case constants.LOADING_GROUP_MEMBERS_EXPORT:
-      return { ...state, loadingGroupMembersExport: true };
-    case constants.LOADED_GROUP_MEMBERS_EXPORT:
-      return { ...state, loadingGroupMembersExport: false };
 
     case constants.SET_TOKEN:
     default:

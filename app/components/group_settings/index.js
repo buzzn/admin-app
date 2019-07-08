@@ -18,7 +18,6 @@ import PageTitle from 'components/page_title';
 import BankAccounts from 'components/bank_accounts';
 import BankAccount from 'components/powertakers/payments/bank_account';
 import Comments from 'components/comments';
-import GroupMembersExport from './group_members_export';
 import Group from './group';
 import Powergiver from './powergiver';
 import FakeStats from './fake_stats';
@@ -174,9 +173,6 @@ class GroupSettings extends React.Component {
               <NavLink to={`${url}/comments`} exact className="nav-link">
                 <FormattedMessage id="admin.groups.navComments" />
               </NavLink>
-              <NavLink to={`${url}/group-members-export`} exact className="nav-link">
-                <FormattedMessage id="admin.groups.groupMembersExport" />
-              </NavLink>
             </SubNav>
           </Row>
           <Row>
@@ -296,9 +292,6 @@ class GroupSettings extends React.Component {
               </Route>
               <Route path={`${url}/comments`}>
                 <Comments {...{ ids: { type: 'group', groupId: group.id } }} />
-              </Route>
-              <Route path={`${url}/group-members-export`}>
-                <GroupMembersExport groupId={group.id} groupName={group.name} />
               </Route>
               <Route path={url}>
                 <Redirect to={`${url}/group`} />
