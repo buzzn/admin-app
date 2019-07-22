@@ -31,6 +31,17 @@ export default {
       body: JSON.stringify(snakeReq(params)),
     }).then(parseResponse);
   },
+  updateDiscovergyMeter({ token, apiUrl, apiPath, groupId, params }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/meters/update-discovergy`, {
+      headers: prepareHeaders(token),
+      method: 'POST',
+    }).then((response) => {
+      if (response.status === 404) {
+        return Promise.resolve({ status: 404 });
+      }
+      return parseResponse(response);
+    });
+  },
   fetchGroupMeters({ token, apiUrl, apiPath, groupId }) {
     return fetch(
       `${apiUrl}${apiPath}/localpools/${groupId}/meters?include=registers:[readings,register_meta,contracts:[customer]],formula_parts:[register]`,
