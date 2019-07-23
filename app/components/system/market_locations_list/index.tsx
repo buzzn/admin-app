@@ -26,6 +26,7 @@ const MarketLocationsList = ({
   breadcrumbs,
   maloType,
   duplicateMeter,
+  handleUpdateDiscovergyMeter,
 }: Props & BreadcrumbsProps & InjectIntlProps) => {
   const prefix = 'admin.marketLocations';
 
@@ -149,6 +150,9 @@ const MarketLocationsList = ({
             />
           )}
         </div>
+        <button className="btn btn-secondary" onClick={() => handleUpdateDiscovergyMeter()}>
+          <FormattedMessage id="admin.meters.updateDiscovergyMeter"/> <i className="fa fa-plus-circle" />
+        </button>
       </CenterContent>
     </React.Fragment>
   );

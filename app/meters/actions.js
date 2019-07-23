@@ -12,6 +12,7 @@ export const constants = {
   ADD_REAL_METER: 'buzzn_meters/ADD_REAL_METER',
   UPDATE_METER: 'buzzn_meters/UPDATE_METER',
   UPDATE_FORMULA_PART: 'buzzn_meters/UPDATE_FORMULA_PART',
+  UPDATE_DISCOVERGY_METER: 'buzzn_meters/UPDATE_DISCOVERGY_METER',
 
   LOAD_GROUP_METERS: 'buzzn_meters/LOAD_GROUP_METERS',
   LOADING_GROUP_METERS: 'buzzn_meters/LOADING_GROUP_METERS',
@@ -58,6 +59,13 @@ export const actions = {
     reject,
     groupId,
     formulaPartId,
+  }),
+  updateDiscovergyMeter: ({ params, resolve, reject, groupId }) => ({
+    type: constants.UPDATE_DISCOVERGY_METER,
+    params,
+    resolve,
+    reject,
+    groupId,
   }),
 
   loadGroupMeters: groupId => ({ type: constants.LOAD_GROUP_METERS, groupId }),

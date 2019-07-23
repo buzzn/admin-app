@@ -78,12 +78,27 @@ export function* updateMeter({ apiUrl, apiPath, token }, { meterId, params, reso
   }
 }
 
+export function* updateDiscovergyMeter({ apiUrl, apiPath, token }, { params, resolve, reject, groupId }) {
+  try {
+    const res = yield call(api.updateDiscovergyMeter, { apiUrl, apiPath, token, params, groupId });
+    if (res._error) {
+      yield call(reject, new SubmissionError(res));
+    } else {
+      yield call(resolve, res);
+
+    }
+  } catch (error) {
+    logException(error);
+  }
+}
+
 export function* metersSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_GROUP_METERS, getGroupMeters, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_METER, getMeter, { apiUrl, apiPath, token });
   yield takeLeading(constants.ADD_REAL_METER, addRealMeter, { apiUrl, apiPath, token });
   yield takeLeading(constants.UPDATE_METER, updateMeter, { apiUrl, apiPath, token });
   yield takeLeading(constants.UPDATE_FORMULA_PART, updateFormulaPart, { apiUrl, apiPath, token });
+  yield takeLeading(constants.UPDATE_DISCOVERGY_METER, updateDiscovergyMeter, { apiUrl, apiPath, token });
   const meterId = yield select(selectMeterId);
   const groupId = yield select(selectGroupId);
   if (meterId) yield put(actions.loadMeter({ meterId, groupId }));
