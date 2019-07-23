@@ -2,11 +2,13 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
+import Alert from 'react-s-alert';
 import Groups from 'groups';
 import MarketLocations from 'market_locations';
 import Registers from 'registers';
 
 import Loading from 'components/loading';
+import Meters from 'meters';
 import MarketLocationsList from './market_locations_list';
 import RegisterData from './register_data';
 import MeterData from './meter_data';
@@ -24,6 +26,29 @@ export class System extends React.Component {
     const { meter, ...malo } = original;
     this.setState({ initialMeter: { ...meter, registers: [malo] } });
     history.push(`${url}/add-meter`);
+  };
+
+  handleUpdateDiscovergyMeter = async () => {
+    if (!confirm('Are you sure?')) return;
+    new Promise((resolve, reject) => {
+      const {
+        updateDiscovergyMeter,
+        match: { params: { groupId } },
+      } = this.props;
+      const params = {};
+      updateDiscovergyMeter({
+        params,
+        resolve,
+        reject,
+        groupId,
+      });
+    }).then((res) => {
+      if (res.status != null && res.status === 404) {
+        Alert.error('Discovergy Update failed.');
+      } else {
+        Alert.success('Discovergy Meters now up-to-date.');
+      }
+    });
   };
 
   clearInitMeter = () => this.setState({ initialMeter: {} });
@@ -84,6 +109,7 @@ export class System extends React.Component {
                 breadcrumbs,
                 maloType,
                 duplicateMeter: this.duplicateMeter,
+                handleUpdateDiscovergyMeter: this.handleUpdateDiscovergyMeter,
               }}
             />
           )}
@@ -176,5 +202,6 @@ export default connect(
     setMarketLocations: MarketLocations.actions.setMarketLocations,
     loadGroup: Groups.actions.loadGroup,
     updateRegisterMeta: Registers.actions.updateRegisterMeta,
+    updateDiscovergyMeter: Meters.actions.updateDiscovergyMeter,
   },
 )(System);
