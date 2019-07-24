@@ -88,4 +88,9 @@ export default {
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
+
+  fetchGroupMembersExport({token, apiUrl, apiPath, groupId}) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/group-member-export`, { headers: prepareHeaders(token) })
+      .then(parseResponse);
+  },
 };
