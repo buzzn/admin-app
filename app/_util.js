@@ -59,6 +59,7 @@ export function parseResponse(response) {
       type.startsWith('application/pdf')
       || type.startsWith('application/zip')
       || type.startsWith('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+      || type.startsWith('text/csv')
     ) {
       return response.blob();
     }
