@@ -110,7 +110,9 @@ const formConverter = ({ forms, fields }) => {
     // res.Abschlag = formatNumber(get(f, 'price.totalCentsPerMonth', 0) / 100);
     res['bisheriger Lieferant'] = get(f, 'oldSupplier.previousProvider', '');
     res['Kundennummer bei Altlieferant'] = get(f, 'oldSupplier.previousCustomerNumber', '');
-    res['Handelsvertreter / VM Nr.'] = get(f, 'calculator.group', '');
+
+    // Remove prefix 'Energiegruppe' because it is added in the report afterwards.
+    res['Handelsvertreter / VM Nr.'] = get(f, 'calculator.group', '').replace(new RegExp('^Energiegruppe '), '');
     res['Kategorie bei NN'] = 'Haushalt';
     res.Kundengruppe = 'Ja';
     res['T-ID'] = `H-${res['RA Postleitzahl']}-ET----`;
