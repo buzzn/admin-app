@@ -90,7 +90,7 @@ export default {
   },
 
   fetchGroupMembersExport({token, apiUrl, apiPath, groupId}) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/group-member-export`, { headers: prepareHeaders(token) })
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/group-members-export`, { headers: prepareHeaders(token) })
       .then(parseResponse);
   },
 };
