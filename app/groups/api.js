@@ -87,10 +87,5 @@ export default {
     return fetch(`${apiUrl}${apiPath}/localpools?include=localpool_processing_contracts`, { headers: prepareHeaders(token) })
       .then(parseResponse)
       .then(camelizeResponseKeys);
-  },
-
-  fetchGroupMembersExport({token, apiUrl, apiPath, groupId}) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/group-members-export`, { headers: prepareHeaders(token) })
-      .then(parseResponse);
-  },
+  }
 };

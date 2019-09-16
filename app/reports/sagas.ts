@@ -16,12 +16,42 @@ export function* getEeg({ apiPath, apiUrl, token }, { groupId, params }) {
   yield put(actions.loadedEeg());
 }
 
+export function* getAnnualReport({ apiUrl, apiPath, token }, { groupId, groupName, params}) {
+  yield put(actions.loadingAnnualReport());
+  try {
+    const report = yield call(api.fetchAnnualReport,
+                              { apiUrl, apiPath, token, groupId, params });
+    saveAs(report, 'AnnualReport_' + groupName + '.xlsx');
+  } catch (error) {
+    logException(error);
+  }
+  yield put(actions.loadedAnnualReport());
+}
+
+export function* getGroupMembersExport({ apiUrl, apiPath, token }, {groupId, groupName}) {
+  yield put(actions.loadingGroupMembersExport());
+  try {
+    const groupMembersExported = yield call(api.fetchGroupMembersExport, { apiUrl, apiPath, token, groupId });
+    let groupNameSanitized = groupName.replace(/[^a-z0-9]/gi, '_') + "_GroupMembers.csv";
+    saveAs(groupMembersExported, `${groupNameSanitized}`);
+  } catch (error) {
+    logException(error);
+  }
+  yield put(actions.loadedGroupMembersExport());
+}
+
 export function* reportsSagas({ apiUrl, apiPath, token }) {
   // @ts-ignore
   yield takeLatest(constants.LOAD_EEG, getEeg, { apiUrl, apiPath, token });
+  // @ts-ignore
+  yield takeLatest(constants.LOAD_ANNUAL_REPORT, getAnnualReport, { apiUrl, apiPath, token });
+  // @ts-ignore
+  yield takeLatest(constants.LOAD_GROUP_MEMBERS_EXPORT, getGroupMembersExport, { apiUrl, apiPath, token });
 
   const { groupId, eegParams } = yield select(selectReports);
   if (groupId && eegParams) yield put(actions.loadEeg({ groupId, params: eegParams }));
+  // @ts-ignore
+  if(groupId) yield put(actions.loadGroupMembersExport());
 }
 
 export default function* () {

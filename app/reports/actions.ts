@@ -8,6 +8,14 @@ export const constants = {
   LOADING_EEG: 'buzzn_reports/LOADING_EEG',
   LOADED_EEG: 'buzzn_reports/LOADED_EEG',
   SET_EEG: 'buzzn_reports/SET_EEG',
+
+  LOAD_ANNUAL_REPORT: 'buzzn_reports/LOAD_ANNUAL_REPORT',
+  LOADING_ANNUAL_REPORT: 'buzzn_reports/LOADING_ANNUAL_REPORT',
+  LOADED_ANNUAL_REPORT: 'buzzn_reports/LOADED_ANNUAL_REPORT',
+
+  LOAD_GROUP_MEMBERS_EXPORT: 'buzzn_groups/LOAD_GROUP_MEMBERS_EXPORT',
+  LOADING_GROUP_MEMBERS_EXPORT: 'buzzn_groups/LOADING_GROUP_MEMBERS_EXPORT',
+  LOADED_GROUP_MEMBERS_EXPORT: 'buzzn_groups/LOADED_GROUP_MEMBERS_EXPORT'
 };
 
 // FIXME: extract to common types, fix 'typeof'
@@ -36,12 +44,28 @@ interface SetEegAction {
   eegReport: EegReport;
 }
 
+interface LoadAnnualReportAction {
+  type: typeof constants.LOAD_ANNUAL_REPORT;
+  groupId: string;
+  groupName: string;
+  params: { beginDate: Date; lastDate: Date };
+}
+interface LoadingAnnualReportAction {
+  type: typeof constants.LOADING_ANNUAL_REPORT;
+}
+interface LoadedAnnualReportAction {
+  type: typeof constants.LOADED_ANNUAL_REPORT;
+}
+
 export type ReportsActions = | SetApiParamsAction
   | SetTokenAction
   | LoadEegAction
   | LoadingEegAction
   | LoadedEegAction
-  | SetEegAction;
+  | SetEegAction
+  | LoadAnnualReportAction
+  | LoadingAnnualReportAction
+  | LoadedAnnualReportAction;
 
 export const actions = {
   setApiParams: ({ apiPath, apiUrl }: { apiPath: string; apiUrl: string }): SetApiParamsAction => ({
@@ -58,4 +82,19 @@ export const actions = {
   loadingEeg: (): LoadingEegAction => ({ type: constants.LOADING_EEG }),
   loadedEeg: (): LoadedEegAction => ({ type: constants.LOADED_EEG }),
   setEeg: (eegReport: EegReport): SetEegAction => ({ type: constants.SET_EEG, eegReport }),
+
+  loadAnnualReport: ({ groupId, groupName, params }:
+    { groupId: string; groupName: string; params: { beginDate: Date; lastDate: Date } }):
+    LoadAnnualReportAction => ({
+      type: constants.LOAD_ANNUAL_REPORT,
+      groupId,
+      groupName,
+      params,
+    }),
+  loadingAnnualReport: (): LoadingAnnualReportAction => ({ type: constants.LOADING_ANNUAL_REPORT }),
+  loadedAnnualReport: (): LoadedAnnualReportAction => ({ type: constants.LOADED_ANNUAL_REPORT }),
+  
+  loadGroupMembersExport: (groupId: string, groupName: string) => ({ type: constants.LOAD_GROUP_MEMBERS_EXPORT, groupId, groupName }),
+  loadingGroupMembersExport: () => ({ type: constants.LOADING_GROUP_MEMBERS_EXPORT }),
+  loadedGroupMembersExport: () => ({ type: constants.LOADED_GROUP_MEMBERS_EXPORT }),
 };
