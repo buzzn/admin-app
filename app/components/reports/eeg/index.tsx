@@ -128,7 +128,7 @@ const ReportsUI: React.FC<PropsT & ExtProps & StateProps & DispatchProps> = ({
             </ul>
           </div>
         ) : (
-          <div /> /* Else do nothing */
+          <div>Unhandled status code in response: {eegReport._status}</div>
         )}
       </div>
     </React.Fragment>

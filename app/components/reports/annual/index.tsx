@@ -70,7 +70,7 @@ const AnnualReport = ({ loadAnnualReport, loading, groupId, groupName }) => {
           <button
             className="btn btn-primary"
             // @ts-ignore
-            onClick={() => loadAnnualReport({groupId: groupId, groupName: groupName, params: {begin, end}})}
+            onClick={() => loadAnnualReport({groupId, groupName, params: {begin, end}})}
           >
             <FormattedMessage id={`${prefix}.Submit`} />
           </button>
@@ -81,13 +81,11 @@ const AnnualReport = ({ loadAnnualReport, loading, groupId, groupName }) => {
 };
 
 type StatePart = {
-  loadAnnualReport: Function;
   reports: ReportsState;
 };
 
 const mapStateToProps = (state: StatePart) => {
   return {
-    loadAnnualReport: state.loadAnnualReport,
     loading: state.reports.loadingAnnualReport
   };
 }

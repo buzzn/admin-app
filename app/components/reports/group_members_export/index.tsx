@@ -48,13 +48,11 @@ const GroupMembersExport = ({
 };
 
 type StatePart = {
-  loadGroupMembersExport: Function;
   reports: ReportsState;
 };
 
 const mapStateToProps = (state: StatePart) => {
   return {
-    loadGroupMembersExport: state.loadGroupMembersExport,
     loading: state.reports.loadingGroupMembersExport,
   };
 };
