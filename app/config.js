@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === 'production') {
   };
 } else if (process.env.NODE_ENV === 'staging') {
   config = {
-    apiUrl: 'https://staging-core.buzzn.io/',
+    apiUrl: 'https://staging-core.buzzn.net/',
     apiPath: 'api/admin',
     authPath: 'api/me',
     websitePath: 'api/website',
@@ -24,7 +24,7 @@ if (process.env.NODE_ENV === 'production') {
   };
 } else if (process.env.NODE_ENV === 'develop') {
   config = {
-    apiUrl: 'https://staging-core.buzzn.io/',
+    apiUrl: 'https://staging-core.buzzn.net/',
     apiPath: 'api/admin',
     authPath: 'api/me',
     websitePath: 'api/website',
