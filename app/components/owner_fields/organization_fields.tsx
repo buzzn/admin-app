@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { Row, Col } from 'reactstrap';
-import { FieldArray } from 'redux-form';
 import Select from 'react-select';
 import { FormattedMessage } from 'react-intl';
 import get from 'lodash/get';
 import Loading from 'components/loading';
 import FieldValidationWrapper from 'components/field_validation_wrapper';
 import EditableInput from 'components/editable_input';
-import EditableInputArray from 'components/editable_input_array';
 import { mainStyle } from 'components/react_select_styles';
 import AddressFields from './address_fields';
 import PersonFields from './person_fields';
@@ -190,18 +188,6 @@ const OrganizationFields = ({
           validationRules,
         }}
       />
-      {!overrideData && (
-        <FieldArray
-          {...{
-            label: <FormattedMessage id="admin.organizations.headerAdditionalLegalRepresentation" />,
-            name: 'additionalLegalRepresentation',
-            fieldClassName,
-            component: EditableInputArray,
-            prefix,
-            editMode,
-          }}
-        />
-      )}
     </React.Fragment>
   );
 };
