@@ -42,7 +42,8 @@ const Registers = ({ url, history, locationId, registers, intl, groupId, withAdd
     },
     {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableObis` })} />,
-      accessor: 'obis',
+      id: "obis",
+      accessor: r => r.obis? r.obis: intl.formatMessage({ id: `${prefix}.noObis` }),
       className: 'cy-obis',
       style: {
         cursor: 'pointer',
