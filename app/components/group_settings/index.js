@@ -111,6 +111,8 @@ class GroupSettings extends React.Component {
       attachBankAccount,
       loadContract,
 
+      addReadings,
+
       setGroup,
       updateGroup,
       intl,
@@ -182,6 +184,7 @@ class GroupSettings extends React.Component {
                 render={() => (
                   <Group
                     {...{
+                      addReadings,
                       updateGroup,
                       group,
                       deleteGroup: this.deleteGroup,
@@ -288,7 +291,7 @@ class GroupSettings extends React.Component {
                 )}
               />
               <Route path={`${url}/fake-stats`}>
-                <FakeStats {...{ group, updateGroup }} />
+                <FakeStats {...{ group, updateGroup, addReadings }} />
               </Route>
               <Route path={`${url}/comments`}>
                 <Comments {...{ ids: { type: 'group', groupId: group.id } }} />
@@ -319,7 +322,7 @@ const mapStateToProps = state => ({
 
   gap: state.groups.group.gapContractCustomer || {},
 
-  loading: state.groups.loadingGroup,
+  loading: state.groups.loadingGroup || state.groups.loadingReadingsResult,
   loadingOptions:
     state.users.loadingAvailableUsers
     || state.organizations.loadingAvailableOrganizations
@@ -342,5 +345,6 @@ export default connect(
     loadAvailableOrganizationMarkets: Organizations.actions.loadAvailableOrganizationMarkets,
     attachBankAccount: Contracts.actions.attachBankAccount,
     loadContract: Contracts.actions.loadContract,
+    addReadings: Groups.actions.addReadings
   },
 )(GroupSettingsIntl);

@@ -89,6 +89,17 @@ export function* deleteGroup({ apiUrl, apiPath, token }, { groupId }) {
   }
 }
 
+
+export function* addReadings({ apiUrl, apiPath, token }, { groupId, params, resolve, reject }) {
+  yield put(actions.addingReadings());
+  try {
+    yield call(api.addReadings, { apiUrl, apiPath, token, params, groupId });
+  } catch (error) {
+    logException(error);
+  }
+  yield put(actions.addedReadings());
+}
+
 export function* updateContact(
   { apiUrl, apiPath, token },
   { groupId, params, update, contactId, contactType, isGap, resolve, reject },
@@ -123,6 +134,7 @@ export function* groupsSagas({ apiUrl, apiPath, token }) {
   yield takeLeading(constants.UPDATE_GROUP, updateGroup, { apiUrl, apiPath, token });
   yield takeLeading(constants.DELETE_GROUP, deleteGroup, { apiUrl, apiPath, token });
   yield takeLeading(constants.UPDATE_CONTACT, updateContact, { apiUrl, apiPath, token });
+  yield takeLeading(constants.ADD_READINGS, addReadings, { apiUrl, apiPath, token });
 
   yield put(actions.loadGroups());
 

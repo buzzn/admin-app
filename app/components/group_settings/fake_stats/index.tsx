@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import Alert from 'react-s-alert';
 import { FormGroup, Input, Row, Col } from 'reactstrap';
+import Dropzone from 'react-dropzone';
+import { DropzoneWrapper } from './style';
+import { injectIntl, FormattedMessage } from 'react-intl';
 
-const FakeStats = ({ group, updateGroup }) => {
+const FakeStats = ({ group, updateGroup, addReadings }) => {
   const [editMode, setEditMode] = useState(false);
   const [fakeStats, setFakeStats] = useState({});
   if (!Object.keys(fakeStats).length && group.fakeStats && Object.keys(group.fakeStats).length) setFakeStats(group.fakeStats);
@@ -14,6 +17,7 @@ const FakeStats = ({ group, updateGroup }) => {
     'renewablesEegRatio',
     'otherRenewablesRatio',
   ];
+
   const fields = ratios.concat([
     'co2EmissionGrammPerKwh',
     'nuclearWasteMiligrammPerKwh',
@@ -53,11 +57,29 @@ const FakeStats = ({ group, updateGroup }) => {
     })
     .catch(e => Alert.error(e));
 
+  const handleFileUpload = async(files) => {
+    const params = new FormData();
+    params.append('file', files[0]);
+    const groupId = group.id;
+    const res =  await new Promise((resolve, reject) => addReadings({
+      groupId,
+      params,
+      resolve,
+      reject,
+    }));
+
+    if (res) {
+      Alert.error(JSON.stringify(res));
+    } else {
+      Alert.success('Document attached');
+    }
+  };
+
   return (
     <div>
       <Row>
-        {fields.map(fieldName => (
-          <Col xs={3}>
+        {fields.map((fieldName,i) => (
+          <Col xs={3} key={i}>
             <FormGroup key={fieldName}>
               <Input
                 disabled={!editMode}
@@ -86,10 +108,22 @@ const FakeStats = ({ group, updateGroup }) => {
           </button>
         </React.Fragment>
       ) : (
-        <button className="btn btn-primary" onClick={() => setEditMode(true)}>
-          Edit
+          <button className="btn btn-primary" onClick={() => setEditMode(true)}>
+            Edit
         </button>
-      )}
+        )}
+      <br />
+      <Dropzone
+        {...{
+          multiple: false,
+          accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          name: 'file',
+          onDropRejected: () => {
+            Alert.error('Only spreadsheets');
+          },
+          onDropAccepted: handleFileUpload,
+        }}
+      />
     </div>
   );
 };

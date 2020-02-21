@@ -83,6 +83,14 @@ export default {
       body,
     }).then(parseResponse);
   },
+  addReadings({ token, apiUrl, apiPath, params, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/add-manual-readings`, {
+      headers: prepareHeaders(token, true),
+      method: 'POST',
+      body: params
+    }).then(parseResponse)
+      .then(camelizeResponseKeys);
+  },
   fetchGroups({ token, apiUrl, apiPath }) {
     return fetch(`${apiUrl}${apiPath}/localpools?include=localpool_processing_contracts`, { headers: prepareHeaders(token) })
       .then(parseResponse)

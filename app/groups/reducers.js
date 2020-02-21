@@ -2,6 +2,7 @@ import { constants } from './actions';
 
 export const initialState = {
   loadingGroups: false,
+  addingReadings: false,
   loadingUserGroups: false,
   loadingGroup: false,
   groups: { _status: null, array: [] },
@@ -25,6 +26,13 @@ export default function (state = initialState, action) {
       return { ...state, loadingGroup: false };
     case constants.SET_GROUP:
       return { ...state, group: action.group };
+
+    case constants.ADD_READINGS:
+      return { ...state, groupId: action.groupId};
+    case constants.ADDING_READINGS:
+      return { ...state, addingReadings: true};
+    case constants.ADDED_READINGS:
+      return { ...state, addingReadings: false};
 
     case constants.SET_VALIDATION_RULES:
       return { ...state, validationRules: { ...state.validationRules, [action.ruleType]: action.validationRules } };

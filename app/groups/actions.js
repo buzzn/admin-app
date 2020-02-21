@@ -13,6 +13,10 @@ export const constants = {
   UPDATE_GROUP: 'buzzn_groups/UPDATE_GROUP',
   DELETE_GROUP: 'buzzn_groups/DELETE_GROUP',
 
+  ADD_READINGS: 'buzzn_groups/ADD_READINGS',
+  ADDING_READINGS: 'buzzn_groups/ADDING_READINGS',
+  ADDED_READINGS: 'buzzn_groups/ADDED_READINGS',
+
   UPDATE_CONTACT: 'buzzn_groups/UPDATE_CONTACT',
 
   LOAD_GROUPS: 'buzzn_groups/LOAD_GROUPS',
@@ -50,6 +54,16 @@ export const actions = {
     reject,
     groupId,
   }),
+
+  addReadings: ({ params, resolve, reject, groupId }) => ({
+    type: constants.ADD_READINGS,
+    params,
+    resolve,
+    reject,
+    groupId,
+  }),
+  addingReadings: () => ({ type: constants.ADDING_READINGS }),
+  addedReadings: () => ({ type: constants.ADDED_READINGS }),
 
   deleteGroup: ({ groupId }) => ({
     type: constants.DELETE_GROUP,
