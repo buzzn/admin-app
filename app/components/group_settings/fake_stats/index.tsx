@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import Alert from 'react-s-alert';
 import { FormGroup, Input, Row, Col } from 'reactstrap';
 import Dropzone from 'react-dropzone';
-import { DropzoneWrapper } from './style';
-import { injectIntl, FormattedMessage } from 'react-intl';
 
-const FakeStats = ({ group, updateGroup, addReadings }) => {
+const FakeStats = ({ group, updateGroup, addReadings, readingsResponse }) => {
   const [editMode, setEditMode] = useState(false);
   const [fakeStats, setFakeStats] = useState({});
   if (!Object.keys(fakeStats).length && group.fakeStats && Object.keys(group.fakeStats).length) setFakeStats(group.fakeStats);
@@ -39,8 +37,9 @@ const FakeStats = ({ group, updateGroup, addReadings }) => {
       reject('Only numbers');
       return;
     }
-    if (parseInt(ratios.reduce((sum, key) => sum + parseFloat(fakeStats[key]), 0).toFixed(0)) !== 100) {
-      reject('Sum of ratios should be 100');
+    var sum_ratios = parseInt(ratios.reduce((sum, key) => sum + parseFloat(fakeStats[key]), 0).toFixed(0));
+    if (sum_ratios !== 100) {
+      reject('Sum of ratios should be 100, but was ' + sum_ratios);
       return;
     }
     updateGroup({
@@ -112,6 +111,10 @@ const FakeStats = ({ group, updateGroup, addReadings }) => {
             Edit
         </button>
         )}
+      <br />
+      <ul>
+        {readingsResponse.errors.map((error, i) => <li key={i}>{error}</li>)}
+      </ul>
       <br />
       <Dropzone
         {...{

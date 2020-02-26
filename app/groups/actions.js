@@ -16,6 +16,7 @@ export const constants = {
   ADD_READINGS: 'buzzn_groups/ADD_READINGS',
   ADDING_READINGS: 'buzzn_groups/ADDING_READINGS',
   ADDED_READINGS: 'buzzn_groups/ADDED_READINGS',
+  READINGS_RESPONSE: 'buzzn_groups/READINGS_RESPONSE',
 
   UPDATE_CONTACT: 'buzzn_groups/UPDATE_CONTACT',
 
@@ -64,6 +65,7 @@ export const actions = {
   }),
   addingReadings: () => ({ type: constants.ADDING_READINGS }),
   addedReadings: () => ({ type: constants.ADDED_READINGS }),
+  setReadingsResponse: response => ({ type: constants.READINGS_RESPONSE, readingsResponse: response}),
 
   deleteGroup: ({ groupId }) => ({
     type: constants.DELETE_GROUP,

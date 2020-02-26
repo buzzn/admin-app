@@ -93,7 +93,8 @@ export function* deleteGroup({ apiUrl, apiPath, token }, { groupId }) {
 export function* addReadings({ apiUrl, apiPath, token }, { groupId, params, resolve, reject }) {
   yield put(actions.addingReadings());
   try {
-    yield call(api.addReadings, { apiUrl, apiPath, token, params, groupId });
+    const readingsResponse = yield call(api.addReadings, { apiUrl, apiPath, token, params, groupId });
+    yield put(actions.setReadingsResponse(readingsResponse));
   } catch (error) {
     logException(error);
   }

@@ -47,6 +47,7 @@ class GroupSettings extends React.Component {
     const {
       loadGroup,
       group,
+      readingsResponse,
       match: { params: { groupId } },
     } = this.props;
     loadGroup(groupId);
@@ -112,6 +113,7 @@ class GroupSettings extends React.Component {
       loadContract,
 
       addReadings,
+      readingsResponse,
 
       setGroup,
       updateGroup,
@@ -291,7 +293,7 @@ class GroupSettings extends React.Component {
                 )}
               />
               <Route path={`${url}/fake-stats`}>
-                <FakeStats {...{ group, updateGroup, addReadings }} />
+                <FakeStats {...{ group, updateGroup, addReadings, readingsResponse }} />
               </Route>
               <Route path={`${url}/comments`}>
                 <Comments {...{ ids: { type: 'group', groupId: group.id } }} />
@@ -321,7 +323,7 @@ const mapStateToProps = state => ({
   availableOrganizationMarkets: state.organizations.availableOrganizationMarkets,
 
   gap: state.groups.group.gapContractCustomer || {},
-
+  readingsResponse: state.groups.readingsResponse,
   loading: state.groups.loadingGroup || state.groups.loadingReadingsResult,
   loadingOptions:
     state.users.loadingAvailableUsers

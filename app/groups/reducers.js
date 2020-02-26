@@ -7,6 +7,7 @@ export const initialState = {
   loadingGroup: false,
   groups: { _status: null, array: [] },
   group: { _status: null },
+  readingsResponse: {errors: []},
   validationRules: {
     updateGroup: { _status: null },
     createOrganizationOwner: { _status: null },
@@ -33,6 +34,8 @@ export default function (state = initialState, action) {
       return { ...state, addingReadings: true};
     case constants.ADDED_READINGS:
       return { ...state, addingReadings: false};
+    case constants.READINGS_RESPONSE:
+      return { ...state, readingsResponse: action.readingsResponse};
 
     case constants.SET_VALIDATION_RULES:
       return { ...state, validationRules: { ...state.validationRules, [action.ruleType]: action.validationRules } };
