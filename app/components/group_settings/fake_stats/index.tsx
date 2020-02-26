@@ -122,7 +122,7 @@ const FakeStats = ({ group, updateGroup, addReadings, readingsResponse }) => {
           accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
           name: 'file',
           onDropRejected: () => {
-            Alert.error('Only spreadsheets');
+            Alert.error('Only spreadsheets allowed');
           },
           onDropAccepted: handleFileUpload,
         }}
