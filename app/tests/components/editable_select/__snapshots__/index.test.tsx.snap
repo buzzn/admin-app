@@ -2,7 +2,7 @@
 
 exports[`editable select tests active field 1`] = `
 <div
-  className="editable-select undefined sc-htoDjs joMSuX"
+  className="sc-htoDjs joMSuX editable-select undefined"
 >
   <select
     className="custom-select form-control undefined undefined"
@@ -44,7 +44,7 @@ exports[`editable select tests basic view and edit rendering 2`] = `
 
 exports[`editable select tests basic view and edit rendering 3`] = `
 <div
-  className="editable-select false sc-htoDjs joMSuX"
+  className="sc-htoDjs joMSuX editable-select false"
 >
   <select
     className="custom-select form-control false false"
@@ -78,7 +78,7 @@ exports[`editable select tests basic view and edit rendering 3`] = `
 
 exports[`editable select tests list override 1`] = `
 <div
-  className="editable-select false sc-htoDjs joMSuX"
+  className="sc-htoDjs joMSuX editable-select false"
 >
   <select
     className="custom-select form-control false false"
@@ -107,7 +107,7 @@ exports[`editable select tests list override 1`] = `
 
 exports[`editable select tests no default value 1`] = `
 <div
-  className="editable-select false sc-htoDjs joMSuX"
+  className="sc-htoDjs joMSuX editable-select false"
 >
   <select
     className="custom-select form-control false false"
@@ -136,7 +136,7 @@ exports[`editable select tests no default value 1`] = `
 
 exports[`editable select tests no value translations 1`] = `
 <div
-  className="editable-select false sc-htoDjs joMSuX"
+  className="sc-htoDjs joMSuX editable-select false"
 >
   <select
     className="custom-select form-control false false"
@@ -170,7 +170,7 @@ exports[`editable select tests no value translations 1`] = `
 
 exports[`editable select tests override data 1`] = `
 <div
-  className="editable-select false sc-htoDjs joMSuX"
+  className="sc-htoDjs joMSuX editable-select false"
 >
   <input
     className="form-control"
@@ -183,7 +183,7 @@ exports[`editable select tests override data 1`] = `
 
 exports[`editable select tests prefix 1`] = `
 <div
-  className="editable-select false sc-htoDjs joMSuX"
+  className="sc-htoDjs joMSuX editable-select false"
 >
   <select
     className="custom-select form-control false false"
@@ -223,7 +223,7 @@ exports[`editable select tests raw value output 1`] = `
 
 exports[`editable select tests raw value output 2`] = `
 <div
-  className="editable-select false sc-htoDjs joMSuX"
+  className="sc-htoDjs joMSuX editable-select false"
 >
   <select
     className="custom-select form-control false false"
@@ -257,7 +257,7 @@ exports[`editable select tests raw value output 2`] = `
 
 exports[`editable select tests values prefix 1`] = `
 <div
-  className="editable-select false sc-htoDjs joMSuX"
+  className="sc-htoDjs joMSuX editable-select false"
 >
   <select
     className="custom-select form-control false false"
@@ -291,7 +291,7 @@ exports[`editable select tests values prefix 1`] = `
 
 exports[`editable select tests with default value 1`] = `
 <div
-  className="editable-select false sc-htoDjs joMSuX"
+  className="sc-htoDjs joMSuX editable-select false"
 >
   <select
     className="custom-select form-control false false"
@@ -325,7 +325,7 @@ exports[`editable select tests with default value 1`] = `
 
 exports[`editable select tests with error 1`] = `
 <div
-  className="editable-select has-danger sc-htoDjs joMSuX"
+  className="sc-htoDjs joMSuX editable-select has-danger"
 >
   <select
     className="custom-select form-control form-control-danger dirty"
@@ -367,7 +367,7 @@ exports[`editable select tests with error 1`] = `
 
 exports[`editable select tests with label 1`] = `
 <div
-  className="editable-select false sc-htoDjs joMSuX"
+  className="sc-htoDjs joMSuX editable-select false"
 >
   <select
     className="custom-select form-control false false"
@@ -405,7 +405,7 @@ exports[`editable select tests with label 1`] = `
 
 exports[`editable select tests with label 2`] = `
 <div
-  className="editable-select undefined sc-htoDjs joMSuX"
+  className="sc-htoDjs joMSuX editable-select undefined"
 >
   <select
     className="custom-select form-control undefined undefined"
