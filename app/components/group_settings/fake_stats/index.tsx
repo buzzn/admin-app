@@ -20,7 +20,6 @@ const FakeStats = ({ group, updateGroup, addReadings, readingsResponse }) => {
   const fields = ratios.concat([
     'co2EmissionGrammPerKwh',
     'nuclearWasteMiligrammPerKwh',
-    'renterPowerEeg',
     'selfSufficiencyReport',
     'utilizationReport',
     'gasReport',
