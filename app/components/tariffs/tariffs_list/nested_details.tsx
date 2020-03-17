@@ -10,7 +10,6 @@ import Loading from 'components/loading';
 
 const DefaultPerson = require('images/default_person.jpg');
 const DefaultOrganisation = require('images/default_organisation.jpg');
-const DefaultThirdParty = require('images/default_3rd_party.jpg');
 
 const NestedDetails = ({
   groupId,
@@ -81,12 +80,13 @@ const NestedDetails = ({
 
   if (loading || groupPowertakers._status === null || updating) return <Loading minHeight={4} />;
 
-  const data = groupPowertakers.array.map(p => ({
-    ...p,
-    name:
-      p.type === 'contract_localpool_third_party'
-        ? { value: 'drittbeliefert', image: DefaultThirdParty, type: 'avatar' }
-        : p.customer.type === 'person'
+  const data = groupPowertakers.array
+    .filter(p => p.status !== 'ended')
+    .filter(p => p.type !== 'contract_localpool_third_party')
+    .map(p => ({
+      ...p,
+      name:
+        p.customer.type === 'person'
           ? {
             value: `${p.customer.lastName} ${p.customer.firstName}`,
             image: p.customer.image || DefaultPerson,
@@ -94,7 +94,7 @@ const NestedDetails = ({
             clickable: true,
           }
           : { value: p.customer.name, image: p.customer.image || DefaultOrganisation, type: 'avatar', clickable: true },
-  }));
+    }));
 
   const columns = [
     {
