@@ -72,11 +72,18 @@ class RegisterData extends React.Component<ExtProps & DispatchProps & StateProps
               {
                 id: register.id,
                 type: 'register',
-                title: register.registerMeta ? register.registerMeta.name : 'unknown register',
+                title: register.registerMeta ? (
+                  <React.Fragment>
+                    {register.registerMeta.name}:&nbsp;
+                    <FormattedMessage id={"admin.registers." + register.registerMeta.label} />
+                  </React.Fragment> ): 'unknown register',
                 link: undefined,
               },
             ]),
-            title: register.registerMeta ? register.registerMeta.name : 'unknown register',
+          title: register.registerMeta ? <React.Fragment>
+              {register.registerMeta.name}:&nbsp;
+              <FormattedMessage id={"admin.registers." + register.registerMeta.label} />
+            </React.Fragment> : 'unknown register',
           }}
         />
         <CenterContent>
