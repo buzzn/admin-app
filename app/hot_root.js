@@ -5,7 +5,7 @@ import { IntlProvider, addLocaleData } from 'react-intl';
 import moment from 'moment';
 import en from 'react-intl/locale-data/en';
 import de from 'react-intl/locale-data/de';
-import allMessages from '@buzzn/i18n';
+import allMessages from '@buzzn/i18n/frontend';
 import store from './configure_store';
 import Root from './root';
 
