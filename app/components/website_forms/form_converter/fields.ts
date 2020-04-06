@@ -7,7 +7,6 @@ export default [
   'Typ Vertrag',
   'Kunde zahlt Netznutzung',
   'Bilanzkreis',
-  'Master-ID/Vertragspartner',
   'VIP',
   'Kundenart',
   'Schreiben an Masterkunden adressieren (postalisch)',
