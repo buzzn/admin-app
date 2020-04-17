@@ -1,10 +1,16 @@
 import styled from 'styled-components';
 
 export const StatusIcon = styled.div`
-  width: 10px;
-  height: 10px;
   border-radius: 5px;
-  background-color: ${ props => props.active ? 'rgb(18, 233, 29)' : '#d10019'};
+  line-height: 20px;
+  padding: 0 10px;
+  display: inline-block;
+  color: rgba(0,0,0, 0.3);
+  font-weight: bold;
+  border-radius: 10px;
+  text-transform: uppercase;
+  font-size: 12px;
+  background-color: ${ props => props.active ? 'rgb(18, 233, 29)' : '#ccc'};
   margin: 1em 5px;
 `;
 
@@ -103,10 +109,11 @@ export const CheckButton = styled.div`
 
 export const ToolBar = styled.div`
   ul {
-    margin: 0;
+    margin: 0 0 1em;
     padding: 0;
     list-style: none;
     display: flex;
+    align-items: center;
     li {
 
     }

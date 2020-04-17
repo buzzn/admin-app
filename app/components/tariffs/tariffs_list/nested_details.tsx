@@ -87,7 +87,7 @@ const NestedDetails = ({
 
   if (loading || groupPowertakers._status === null || updating) return <Loading minHeight={4} />;
 
-  let data = groupPowertakers.array.map(p => ({
+  let data = groupPowertakers.array.filter(d => d.status != 'ended').map(p => ({
     ...p,
     name:
       p.type === 'contract_localpool_third_party'
@@ -116,7 +116,7 @@ const NestedDetails = ({
   }
 
   const apply = (original) => {
-    if(!selected[original.id]) {
+    if(selected[original.id]) {
       setAppliedAll(false);
     }
     setSelected({ ...selected, [original.id]: !selected[original.id] });
@@ -147,7 +147,7 @@ const NestedDetails = ({
       className: 'cy-text',
       Cell: ({ original }) => (
         <div>
-          <StatusIcon active={original.status === 'active' && selected[original.id] }></StatusIcon>
+          <StatusIcon active={original.status === 'active' && selected[original.id] }>{ original.status  }</StatusIcon>
         </div>
       ),
     },
@@ -168,16 +168,22 @@ const NestedDetails = ({
           <li>
             <SwitchButton>
               <input type="checkbox" id="filterActive" />
-              <label htmlFor="filterActive" onClick={filterActive}>show active</label>  
+              <label htmlFor="filterActive" onClick={filterActive}>show applied</label>  
             </SwitchButton>
           </li>
           <li>
-            <CheckButton>
+            <SwitchButton>
               <input type="checkbox" id="applyAll" checked={appliedAll} onChange={applyAll}/>
               <label htmlFor="applyAll" >apply all</label>  
-            </CheckButton>
+            </SwitchButton>
+          </li>
+          <li>
+            <button onClick={handleUpdate} className="btn btn-primary">
+              Update
+            </button>
           </li>
         </ul>
+       
       </ToolBar>
       <ReactTableSorted
         {...{
