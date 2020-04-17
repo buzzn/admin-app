@@ -8,6 +8,7 @@ import PageTitle from 'components/page_title';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
 import { CenterContent, SubNav, SubNavAddLink } from 'components/style';
 import MetersList from '../meters_list';
+import config from '../../../config';
 
 interface Props {
   marketLocations: Array<any>;
@@ -96,6 +97,28 @@ const MarketLocationsList = ({
     },
   ];
 
+  const downloadReadingsTable = (url) => {
+    let anchor = document.createElement("a");
+    document.body.appendChild(anchor);
+
+    let headers = new Headers();
+    const auth = JSON.parse((localStorage.getItem('buzznAuthTokens') as any));
+
+    headers.append('Authorization', `Bearer ${auth.token}`);
+
+    fetch(url, { headers })
+      .then(response => response.blob())
+      .then(blobby => {
+          let objectUrl = window.URL.createObjectURL(blobby);
+
+          anchor.href = objectUrl;
+          anchor.download = 'readers-table-' + groupId + '.xls';
+          anchor.click();
+
+          window.URL.revokeObjectURL(objectUrl);
+      });
+  }
+
   return (
     <React.Fragment>
       <PageTitle
@@ -114,6 +137,9 @@ const MarketLocationsList = ({
           <Link to={`${url}/add-meter`} data-cy="add malo CTA">
             <FormattedMessage id="admin.meters.addNew" /> <i className="fa fa-plus-circle" />
           </Link>
+          <a onClick={() =>downloadReadingsTable(`${config.apiUrl}api/admin/localpools/${groupId}/readings-table`)} href={'#'}>
+            Download Readings Table
+          </a>
         </SubNavAddLink>
         <SubNav>
           <NavLink to={`${url}/consumption`} exact className="nav-link" data-cy="consumption tab">
