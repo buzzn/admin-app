@@ -68,7 +68,7 @@ const RouterHack = ({
     <EditOverlayContext.Provider value={{ editMode, switchEditMode, setEditMode }}>
       {token && <TopNavBarContainer {...{ devMode, switchAddGroup }} />}
       {token ? (
-        <Container style={{ maxWidth: '1440px' }}>
+        <Container style={{ maxWidth: '100vw', boxSizing: 'border-box', overflow: 'hidden' }}>
           {versionMismatch && (
             <VersionMismatch>
               You're outdated. Sorry for that.
@@ -86,7 +86,7 @@ const RouterHack = ({
             <Route
               path="/*"
               render={({ match: { url } }) => (
-                <Col xs={url === '/' || url === '/groups' ? '9' : '8'} className="pl-0 pr-0">
+                <Col xs={url === '/' || url === '/groups' ? '12' : '11'} className="pl-0 pr-0">
                   <div className="center-content-wrapper">
                     <PartErrorBoundary part="main-part">
                       <Switch>
@@ -147,10 +147,6 @@ const RouterHack = ({
                 </Col>
               )}
             />
-
-            <Col xs="3" className="pl-0 pr-0">
-              <TodoList {...{ devMode }} />
-            </Col>
           </Row>
           <Row>
             <Col xs={12}>
