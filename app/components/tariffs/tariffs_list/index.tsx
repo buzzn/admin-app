@@ -85,7 +85,7 @@ const TariffsList = ({
       accessor: 'energypriceCentsPerKwh',
       filterMethod: TableParts.filters.filterByValue,
       sortMethod: TableParts.sort.sortByValue,
-      Cell: ({ value: { Display } }) => { console.log(Display); return Display },
+      Cell: ({ value: { Display } }) => Display,
     },
     {
       Header: () => (
