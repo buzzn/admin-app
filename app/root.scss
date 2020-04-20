@@ -24,9 +24,10 @@ body {
       z-index: 3000;
     }
     .under-construction {
-        position: relative;
-        opacity: 0.6;
-        cursor: not-allowed;
+      display: none;
+      position: relative;
+      opacity: 0.6;
+      cursor: not-allowed;
     }
     .under-construction::before {
         position: absolute;
@@ -106,6 +107,7 @@ body {
     
     .ReactTable {
       border: none;
+      margin-bottom: 30px;
       .rt-table {
         overflow: visible;
         .rt-thead {
