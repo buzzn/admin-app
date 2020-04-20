@@ -19,6 +19,8 @@ interface Props {
 }
 
 class AddBilling extends React.Component<Props & InjectedIntlProps> {
+
+
   handleToggle = (event) => {
     const { pristine, reset, toggle, intl } = this.props;
 
@@ -34,7 +36,7 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
   };
 
   render() {
-    const { isOpen, loading, nextBillingCycleBeginDate, handleSubmit, validationRules } = this.props;
+    const { isOpen, loading, nextBillingCycleBeginDate, handleSubmit, validationRules, onSubmit, error } = this.props;
     const prefix = 'admin.billingCycles';
 
     return (
@@ -42,7 +44,7 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
         <ModalHeader toggle={this.handleToggle}>
           <FormattedMessage id={`${prefix}.modalHeaderAdd`} />
         </ModalHeader>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <ModalBody>
             {loading ? (
               <Loading minHeight={10} />
@@ -90,8 +92,10 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
                 </Row>
               </React.Fragment>
             )}
+            <strong className="errorMessages">{error}</strong>
           </ModalBody>
           <ModalFooter>
+            
             <button className="btn btn-link" onClick={this.handleToggle}>
               <FormattedMessage id="admin.buttons.cancel" /> <i className="fa fa-times" />
             </button>
@@ -109,5 +113,5 @@ export default reduxForm({
   form: 'addBillingCycle',
   onSubmitSuccess: (_result, _dispatch, { reset }) => {
     reset();
-  },
+  }
 })(injectIntl(AddBilling));

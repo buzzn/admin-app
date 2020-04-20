@@ -9,6 +9,12 @@ html {
 
 body {
   background-color: white;
+  .errorMessages {
+    color: rgb(255, 47, 47);
+    display: block;
+    padding: 0 10px;
+    border-left: 2px solid rgb(255, 47, 47);
+  }
   .new-ui {
     padding-top: 72px;
     &.no-token {
@@ -97,6 +103,7 @@ body {
         }
       }
     }
+    
     .ReactTable {
       border: none;
       .rt-table {
