@@ -7,7 +7,7 @@ import ReactTableSorted from 'components/react_table_sorted';
 import { tableParts as TableParts } from 'react_table_config';
 import { NestedDetailsWrapper } from 'components/style';
 import Loading from 'components/loading';
-import { StatusIcon, SwitchButton, ToolBar, CheckButton } from './style';
+import { StatusIcon, SwitchButton, ToolBar } from './style';
 
 const DefaultPerson = require('images/default_person.jpg');
 const DefaultOrganisation = require('images/default_organisation.jpg');
