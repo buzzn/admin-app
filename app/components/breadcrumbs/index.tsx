@@ -8,7 +8,7 @@ export interface BreadcrumbsProps {
     id: string | number;
     link?: string;
     type?: string;
-    title: string;
+    title: string | JSX.Element;
   }>;
 }
 
