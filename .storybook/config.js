@@ -4,7 +4,7 @@ import { setIntlConfig, withIntl } from 'storybook-addon-intl';
 import { addLocaleData } from 'react-intl';
 import en from 'react-intl/locale-data/en';
 import de from 'react-intl/locale-data/de';
-import allMessages from '@buzzn/i18n/frontend';
+import allMessages from '@buzzn/i18n';
 import Provider from './provider';
 
 import '../app/react_table_config';
