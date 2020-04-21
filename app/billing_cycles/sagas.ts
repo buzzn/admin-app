@@ -104,6 +104,7 @@ export function* addBillingCycle({ apiUrl, apiPath, token }, { params, resolve, 
   } catch (error) {
     logException(error);
   }
+
 }
 
 export function* getBillingCycleZip({ apiUrl, apiPath, token }, { groupId, billingCycleId, groupName, year }) {
