@@ -50,16 +50,12 @@ const TariffsList = ({
     },
     energypriceCentsPerKwh: {
       Display: (
-        <FormattedNumber
-          value={(t.energypriceCentsPerKwh / 100).toFixed(4)}
-          style="currency"
-          currency="EUR"
-          currencyDisplay="symbol"
-        />
+        Intl.NumberFormat(intl.locale, {minimumFractionDigits: 4}).format(+(t.energypriceCentsPerKwh).toFixed(4)) + ' Cent'
       ),
       value: t.energypriceCentsPerKwh,
     },
   }));
+  console.log(intl);
 
   const columns = [
     {

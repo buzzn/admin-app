@@ -7,6 +7,7 @@ export const SidebarBlock = styled.div`
   overflow-y: scroll;
   top: 0rem;
   bottom: 0rem;
+  background-color: #2f2f2f;
   &::-webkit-scrollbar {
     display: none;
   }

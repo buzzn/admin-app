@@ -7,6 +7,7 @@ import ReactTableSorted from 'components/react_table_sorted';
 import { tableParts as TableParts } from 'react_table_config';
 import { NestedDetailsWrapper } from 'components/style';
 import Loading from 'components/loading';
+import { StatusIcon, SwitchButton, ToolBar } from './style';
 
 const DefaultPerson = require('images/default_person.jpg');
 const DefaultOrganisation = require('images/default_organisation.jpg');
@@ -25,6 +26,7 @@ const NestedDetails = ({
     loadGroupPowertakers({ groupId });
   }, [groupId, tariffId]);
   const [selected, setSelected] = useState({});
+  const [appliedAll, setAppliedAll] = useState(false);
   useEffect(() => {
     setSelected(
       groupPowertakers.array.reduce(
@@ -33,8 +35,10 @@ const NestedDetails = ({
       ),
     );
   }, [tariffId, groupId, groupPowertakers._status, loading]);
+  
   const [updating, setUpdating] = useState(false);
-
+  const [filterShowActive, setFilterShowActive] = useState(false);
+  
   const handleUpdate = async () => {
     setUpdating(true);
     const toUpdate = Object.keys(selected)
@@ -78,6 +82,8 @@ const NestedDetails = ({
     setUpdating(false);
   };
 
+  
+
   if (loading || groupPowertakers._status === null || updating) return <Loading minHeight={4} />;
 
   const data = groupPowertakers.array
@@ -95,6 +101,26 @@ const NestedDetails = ({
           }
           : { value: p.customer.name, image: p.customer.image || DefaultOrganisation, type: 'avatar', clickable: true },
     }));
+
+  const filterActive = () => {
+    setFilterShowActive(!filterShowActive);
+  }
+
+  const applyAll = () => {
+    const tempSelected = {};
+    data.forEach((d) => {
+      tempSelected[d.id] = !appliedAll;
+    });
+    setSelected(tempSelected);
+    setAppliedAll(!appliedAll);
+  }
+
+  const apply = (original) => {
+    if(selected[original.id]) {
+      setAppliedAll(false);
+    }
+    setSelected({ ...selected, [original.id]: !selected[original.id] });
+  }
 
   const columns = [
     {
@@ -114,9 +140,21 @@ const NestedDetails = ({
       sortMethod: TableParts.sort.sortByFulContractNumber,
     },
     {
+      Header: () => (
+        <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableStatus` })} />
+      ),
+      accessor: 'status',
+      className: 'cy-text',
+      Cell: ({ original }) => (
+        <div>
+          <StatusIcon active={original.status === 'active' && selected[original.id] }>{ original.status  }</StatusIcon>
+        </div>
+      ),
+    },
+    {
       accessor: 'tariffs',
       Cell: ({ original }) => (
-        <div onClick={() => setSelected({ ...selected, [original.id]: !selected[original.id] })}>
+        <div onClick={() => apply(original)}>
           {selected[original.id] ? <i className="fa fa-check" /> : <i className="fa fa-remove" />}
         </div>
       ),
@@ -125,13 +163,36 @@ const NestedDetails = ({
 
   return (
     <NestedDetailsWrapper>
+      <ToolBar>
+        <ul>
+          <li>
+            <SwitchButton>
+              <input type="checkbox" id="filterActive" />
+              <label htmlFor="filterActive" onClick={filterActive}>show applied</label>  
+            </SwitchButton>
+          </li>
+          <li>
+            <SwitchButton>
+              <input type="checkbox" id="applyAll" checked={appliedAll} onChange={applyAll}/>
+              <label htmlFor="applyAll" >apply all</label>  
+            </SwitchButton>
+          </li>
+          <li>
+            <button onClick={handleUpdate} className="btn btn-primary">
+              Update
+            </button>
+          </li>
+        </ul>
+       
+      </ToolBar>
       <ReactTableSorted
         {...{
-          data,
+          data: filterShowActive ? data.filter((d) => d.status === 'active' && selected[d.id]) : data,
           columns,
           uiSortPath: `groups.${groupId}.tariffs.${tariffId}.powertakers`,
         }}
       />
+      <br/>
       <button onClick={handleUpdate} className="btn btn-primary">
         Update
       </button>

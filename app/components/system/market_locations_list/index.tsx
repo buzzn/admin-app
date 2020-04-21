@@ -29,7 +29,6 @@ const MarketLocationsList = ({
   handleUpdateDiscovergyMeter,
 }: Props & BreadcrumbsProps & InjectIntlProps) => {
   const prefix = 'admin.marketLocations';
-
   const data = marketLocations
     .filter(m => (maloType === 'system' ? ['system', 'grid_consumption', 'grid_feeding'].includes(m.kind) : m.kind === maloType))
     .flatMap((m) => {
@@ -59,15 +58,34 @@ const MarketLocationsList = ({
       ),
       accessor: 'meterProductSerialnumber',
       className: 'cy-meter-serial',
+      filterable: true,
+      filterMethod: (filter, row) => {
+        const id = filter.pivotId || filter.id;
+        return row[id] !== undefined
+          ? String(row[id])
+            .toLowerCase()
+            .includes(filter.value.toLowerCase())
+          : true;
+      },
       style: {
         cursor: 'pointer',
         textDecoration: 'underline',
       },
+      Cell: ({original}) => original.meterProductSerialnumber,
     },
     {
       Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableName` })} />,
       accessor: 'name',
       className: 'cy-malo-name',
+      filterable: true,
+      filterMethod: (filter, row) => {
+        const id = filter.pivotId || filter.id;
+        return row[id] !== undefined
+          ? String(row[id])
+            .toLowerCase()
+            .includes(filter.value.toLowerCase())
+          : true;
+      },
       style: {
         cursor: 'pointer',
         textDecoration: 'underline',

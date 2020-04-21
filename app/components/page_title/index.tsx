@@ -4,7 +4,7 @@ import Breadcrumbs, { BreadcrumbsProps } from 'components/breadcrumbs';
 import { CenterContentHeader, Title } from './style';
 
 interface Props {
-  title: string;
+  title: string | JSX.Element;
   thin?: string;
 }
 
