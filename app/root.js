@@ -32,21 +32,36 @@ import './react_table_config';
 
 import PureAdmin from 'components/pure_admin';
 
+import BillingContainer from 'components/billing';
+import BillingsOverviewContainer from 'components/billings_overview';
+import Contract from 'components/contract';
+import DevicesContainer from 'components/devices';
+import DocumentsContainer from 'components/documents';
+import GroupSettingsContainer from 'components/group_settings';
+import LocalpoolsListContainer from 'components/localpools_list';
+import OrganizationMarketsContainer from 'components/organization_markets';
+import PowertakersContainer from 'components/powertakers';
+import ReportsContainer from 'components/reports';
+import SystemContainer from 'components/system';
+import TariffsContainer from 'components/tariffs';
+import WebsiteFormsContainer from 'components/website_forms';
+
 const lucky = (Math.random() * 60).toFixed(0) === '5';
 
-const BillingContainer = React.lazy(() => import('./components/billing'));
-const BillingsOverviewContainer = React.lazy(() => import('./components/billings_overview'));
-const Contract = React.lazy(() => import('./components/contract'));
-const DevicesContainer = React.lazy(() => import('./components/devices'));
-const DocumentsContainer = React.lazy(() => import('./components/documents'));
-const GroupSettingsContainer = React.lazy(() => import('./components/group_settings'));
-const LocalpoolsListContainer = React.lazy(() => import('./components/localpools_list'));
-const OrganizationMarketsContainer = React.lazy(() => import('./components/organization_markets'));
-const PowertakersContainer = React.lazy(() => import('./components/powertakers'));
-const ReportsContainer = React.lazy(() => import('./components/reports'));
-const SystemContainer = React.lazy(() => import('./components/system'));
-const TariffsContainer = React.lazy(() => import('./components/tariffs'));
-const WebsiteFormsContainer = React.lazy(() => import('./components/website_forms'));
+// const BillingContainer = React.lazy(() => import('./components/billing'));
+// const BillingsOverviewContainer = React.lazy(() => import('./components/billings_overview'));
+// const Contract = React.lazy(() => import('./components/contract'));
+// const DevicesContainer = React.lazy(() => import('./components/devices'));
+// const DocumentsContainer = React.lazy(() => import('./components/documents'));
+// const GroupSettingsContainer = React.lazy(() => import('./components/group_settings'));
+// const LocalpoolsListContainer = React.lazy(() => import('./components/localpools_list'));
+// const OrganizationMarketsContainer = React.lazy(() => import('./components/organization_markets'));
+// const PowertakersContainer = React.lazy(() => import('./components/powertakers'));
+// const ReportsContainer = React.lazy(() => import('./components/reports'));
+// const SystemContainer = React.lazy(() => import('./components/system'));
+// const TariffsContainer = React.lazy(() => import('./components/tariffs'));
+// const WebsiteFormsContainer = React.lazy(() => import('./components/website_forms'));
+
 
 export const EditOverlayContext = React.createContext();
 export const DevModeContext = React.createContext();
