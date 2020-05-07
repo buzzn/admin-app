@@ -85,21 +85,26 @@ export function* getBillingCycles({ apiUrl, apiPath, token }, { groupId }) {
 export function* addBillingCycle({ apiUrl, apiPath, token }, { params, resolve, reject, groupId }) {
   try {
     const gapRes = yield call(api.fillGapContracts, { apiUrl, apiPath, token, params, groupId });
-    const res = yield call(api.addBillingCycle, { apiUrl, apiPath, token, params, groupId });
-    if (gapRes._error || res._error) {
-      if (gapRes._error) {
-        yield call(reject, new SubmissionError(gapRes));
-      } else {
-        yield call(reject, new SubmissionError(res));
+    if (gapRes._error) {
+      const errorMessage = Object.keys(gapRes.registerMeta).map(key => gapRes.registerMeta[key].errorMessage).join(' | ');
+      yield call(reject, new SubmissionError({ ...gapRes, _error: errorMessage }));
+    }
+    else {
+      const res = yield call(api.addBillingCycle, { apiUrl, apiPath, token, params, groupId });
+      if (res._error) {
+        const errorMessage = res.createBillings.map( r => r.errors && r.errors.registerMeta ? Object.keys(r.errors.registerMeta).map(key => r.errors.registerMeta[key]).join(' | ') + ` (Contract Number: ${r.contractNumber})` : null).filter(e => !!e).join(' | ');
+        yield call(reject, new SubmissionError({ ...res, _error: errorMessage }));
+      } 
+      else {
+        yield call(resolve, res);
+        yield put(Groups.actions.loadGroup(groupId));
+        yield put(actions.loadBillingCycles(groupId));
       }
-    } else {
-      yield call(resolve, res);
-      yield put(Groups.actions.loadGroup(groupId));
-      yield put(actions.loadBillingCycles(groupId));
     }
   } catch (error) {
     logException(error);
   }
+
 }
 
 export function* getBillingCycleZip({ apiUrl, apiPath, token }, { groupId, billingCycleId, groupName, year }) {

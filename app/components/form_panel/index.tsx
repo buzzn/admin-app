@@ -81,7 +81,7 @@ class FormPanel extends React.Component<Props & InjectedIntlProps, State> {
     const { top } = this.state;
 
     return (
-      <Wrapper {...{ editMode }} ref={this.wrapperRef}>
+      <Wrapper {...{ editMode }} ref={this.wrapperRef} style={{ maxWidth: `calc(100% - 275px)` }}>
         {editMode && (
           <div className="side-buttons" ref={this.buttonsRef} style={{ top: `${top}px` }}>
             <button

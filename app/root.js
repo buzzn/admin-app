@@ -27,26 +27,41 @@ import SignInContainer from 'components/sign_in';
 import TodoList from 'components/todo_list';
 import TopNavBarContainer from 'components/top_nav_bar';
 import withSuspense from 'components/with_suspense';
-
 import { EditOverlay, VersionMismatch } from 'style';
 import './react_table_config';
 
 import PureAdmin from 'components/pure_admin';
+
+import BillingContainer from 'components/billing';
+import BillingsOverviewContainer from 'components/billings_overview';
+import Contract from 'components/contract';
+import DevicesContainer from 'components/devices';
+import DocumentsContainer from 'components/documents';
+import GroupSettingsContainer from 'components/group_settings';
+import LocalpoolsListContainer from 'components/localpools_list';
+import OrganizationMarketsContainer from 'components/organization_markets';
+import PowertakersContainer from 'components/powertakers';
+import ReportsContainer from 'components/reports';
+import SystemContainer from 'components/system';
+import TariffsContainer from 'components/tariffs';
+import WebsiteFormsContainer from 'components/website_forms';
+
 const lucky = (Math.random() * 60).toFixed(0) === '5';
 
-const BillingContainer = React.lazy(() => import('components/billing'));
-const BillingsOverviewContainer = React.lazy(() => import('components/billings_overview'));
-const Contract = React.lazy(() => import('components/contract'));
-const DevicesContainer = React.lazy(() => import('components/devices'));
-const DocumentsContainer = React.lazy(() => import('components/documents'));
-const GroupSettingsContainer = React.lazy(() => import('components/group_settings'));
-const LocalpoolsListContainer = React.lazy(() => import('components/localpools_list'));
-const OrganizationMarketsContainer = React.lazy(() => import('components/organization_markets'));
-const PowertakersContainer = React.lazy(() => import('components/powertakers'));
-const ReportsContainer = React.lazy(() => import('components/reports'));
-const SystemContainer = React.lazy(() => import('components/system'));
-const TariffsContainer = React.lazy(() => import('components/tariffs'));
-const WebsiteFormsContainer = React.lazy(() => import('components/website_forms'));
+// const BillingContainer = React.lazy(() => import('./components/billing'));
+// const BillingsOverviewContainer = React.lazy(() => import('./components/billings_overview'));
+// const Contract = React.lazy(() => import('./components/contract'));
+// const DevicesContainer = React.lazy(() => import('./components/devices'));
+// const DocumentsContainer = React.lazy(() => import('./components/documents'));
+// const GroupSettingsContainer = React.lazy(() => import('./components/group_settings'));
+// const LocalpoolsListContainer = React.lazy(() => import('./components/localpools_list'));
+// const OrganizationMarketsContainer = React.lazy(() => import('./components/organization_markets'));
+// const PowertakersContainer = React.lazy(() => import('./components/powertakers'));
+// const ReportsContainer = React.lazy(() => import('./components/reports'));
+// const SystemContainer = React.lazy(() => import('./components/system'));
+// const TariffsContainer = React.lazy(() => import('./components/tariffs'));
+// const WebsiteFormsContainer = React.lazy(() => import('./components/website_forms'));
+
 
 export const EditOverlayContext = React.createContext();
 export const DevModeContext = React.createContext();
@@ -68,7 +83,7 @@ const RouterHack = ({
     <EditOverlayContext.Provider value={{ editMode, switchEditMode, setEditMode }}>
       {token && <TopNavBarContainer {...{ devMode, switchAddGroup }} />}
       {token ? (
-        <Container style={{ maxWidth: '1440px' }}>
+        <Container style={{ maxWidth: '100vw', boxSizing: 'border-box', overflow: 'hidden' }}>
           {versionMismatch && (
             <VersionMismatch>
               You're outdated. Sorry for that.
@@ -86,7 +101,7 @@ const RouterHack = ({
             <Route
               path="/*"
               render={({ match: { url } }) => (
-                <Col xs={url === '/' || url === '/groups' ? '9' : '8'} className="pl-0 pr-0">
+                <Col xs={url === '/' || url === '/groups' ? '12' : '11'} className="pl-0 pr-0">
                   <div className="center-content-wrapper">
                     <PartErrorBoundary part="main-part">
                       <Switch>
@@ -147,10 +162,6 @@ const RouterHack = ({
                 </Col>
               )}
             />
-
-            <Col xs="3" className="pl-0 pr-0">
-              <TodoList {...{ devMode }} />
-            </Col>
           </Row>
           <Row>
             <Col xs={12}>

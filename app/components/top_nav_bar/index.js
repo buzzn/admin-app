@@ -80,7 +80,7 @@ export class TopNavBar extends React.Component {
 
     return (
       <Navbar fixed="top" expand dark className={`new-top-nav-bar ${shrinked && 'shrinked'}`} {...hoverEvents}>
-        <Container style={{ maxWidth: '1440px' }}>
+        <Container style={{ maxWidth: '100vw' }}>
           <Link className="navbar-brand" to="/" data-cy="home link">
             <img src={devMode ? DevLogoImg : LogoImg} />
           </Link>
