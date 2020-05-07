@@ -150,14 +150,15 @@ const MarketLocationsList = ({
     let headers = new Headers();
     const auth = JSON.parse((localStorage.getItem('buzznAuthTokens') as any));
     headers.append('Authorization', `Bearer ${auth.token}`);
-    headers.append('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheets');
+    
+    const file = event.target.files[0];
 
-    fetch(url, { // Your POST endpoint
+    fetch(url, { 
       method: 'POST',
       headers,
-      body: event.target.files[0] // This is your file object
+      body: file
     }).then(
-      response => response.json() // if the response is a JSON object
+      response => response.json()
     ).then(
       success => {
         if(success.errors) {
