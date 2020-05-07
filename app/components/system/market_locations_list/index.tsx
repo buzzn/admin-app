@@ -137,9 +137,13 @@ const MarketLocationsList = ({
       })
       .then(blobby => {
           let objectUrl = window.URL.createObjectURL(blobby);
+          const now = new Date();
+          
+          const title = now.getFullYear() + '-' + ('0' + (now.getMonth() + 1)).slice(-2) + '-' + ('0' + (now.getDate())).slice(-2) +
+            '-' + breadcrumbs[breadcrumbs.length -1].title.toLowerCase().replace(/ /gi, '_');
 
           anchor.href = objectUrl;
-          anchor.download = 'readers-table-' + groupId + '.xls';
+          anchor.download = title + '.xls';
           anchor.click();
 
           window.URL.revokeObjectURL(objectUrl);
