@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Alert from 'react-s-alert';
 import ReactTableSorted from 'components/react_table_sorted';
 import { injectIntl, InjectIntlProps, FormattedMessage } from 'react-intl';
 import { NavLink, Link } from 'react-router-dom';
@@ -125,7 +126,15 @@ const MarketLocationsList = ({
     headers.append('Authorization', `Bearer ${auth.token}`);
 
     fetch(url, { headers })
-      .then(response => response.blob())
+      .then(response => {
+        if(response.status == 200) {
+          return response.blob()
+        }
+        else {
+          Alert.error(`<h4>${response.status}</h4> Error occurred.`);
+          return null;
+        }
+      })
       .then(blobby => {
           let objectUrl = window.URL.createObjectURL(blobby);
 
@@ -135,6 +144,31 @@ const MarketLocationsList = ({
 
           window.URL.revokeObjectURL(objectUrl);
       });
+  }
+
+  const uploadReadingsTable = (event, url) => {
+    let headers = new Headers();
+    const auth = JSON.parse((localStorage.getItem('buzznAuthTokens') as any));
+    headers.append('Authorization', `Bearer ${auth.token}`);
+    headers.append('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheets');
+
+    fetch(url, { // Your POST endpoint
+      method: 'POST',
+      headers,
+      body: event.target.files[0] // This is your file object
+    }).then(
+      response => response.json() // if the response is a JSON object
+    ).then(
+      success => {
+        if(success.errors) {
+          success.errors.forEach(error => Alert.error(error));
+        }
+      }
+    ).catch(
+      error => Alert.error(error) // Handle the error response object
+    ).finally(
+      () => (document.querySelector('[name="uploadReadingsTable"]') as HTMLInputElement).value = ''
+    );
   }
 
   return (
@@ -155,9 +189,17 @@ const MarketLocationsList = ({
           <Link to={`${url}/add-meter`} data-cy="add malo CTA">
             <FormattedMessage id="admin.meters.addNew" /> <i className="fa fa-plus-circle" />
           </Link>
-          <a onClick={() =>downloadReadingsTable(`${config.apiUrl}api/admin/localpools/${groupId}/readings-table`)} href={'#'}>
-            Download Readings Table
+          <a onClick={() => downloadReadingsTable(`${config.apiUrl}api/admin/localpools/${groupId}/readings-table`)} href={'#'}>
+            <span>Download Readings Table&nbsp;</span>
+            <i className="fa fa-download"></i>
           </a>
+          <a onClick={() => (document.querySelector('[name="uploadReadingsTable"]') as HTMLInputElement).click()} href={'#'}>
+            <span>Upload Readings Table&nbsp;</span>
+            <i className="fa fa-upload"></i>
+          </a>
+          <div style={{position: 'absolute', left: '-9999em', opacity: 0}}>
+            <input type="file" name="uploadReadingsTable" onInput={(event) => uploadReadingsTable(event, `${config.apiUrl}api/admin/localpools/${groupId}/readings-table`)} />
+          </div>
         </SubNavAddLink>
         <SubNav>
           <NavLink to={`${url}/consumption`} exact className="nav-link" data-cy="consumption tab">
