@@ -118,7 +118,7 @@ class BillingData extends React.Component<
     const { billingCycle, billingCycleBars, updateBilling, groupId, loadBillingCycle, billingCycleId } = this.props;
     const toUpdate = all
       ? billingCycle.billings.array
-      : billingCycle.billings.array.filter(b => b.status === from && b.allowedActions.update.status[to] === true);
+      : billingCycle.billings.array.filter(b => b.status === from );
     const bars = billingCycleBars.array
       .flatMap(b => b.bars.array)
       .reduce((res, b) => ({ ...res, [b.billingId]: b.contractId }), {});
