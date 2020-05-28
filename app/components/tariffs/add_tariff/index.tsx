@@ -68,7 +68,7 @@ class AddTariff extends React.Component<Props & InjectedIntlProps> {
                     type: 'text',
                     label: (
                       <React.Fragment>
-                        <FormattedMessage id={`${prefix}.energypriceCentsPerKwh`} /> €
+                        <FormattedMessage id={`${prefix}.energypriceCentsPerKwh`} />
                       </React.Fragment>
                     ),
                     component: FieldInput,
