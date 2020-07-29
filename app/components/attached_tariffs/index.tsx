@@ -4,7 +4,7 @@ import compact from 'lodash/compact';
 import moment from 'moment';
 import Alert from 'react-s-alert';
 import { Row, Col } from 'reactstrap';
-import { FormattedMessage, FormattedNumber, InjectedIntlProps, injectIntl } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import ReactTable from 'react-table';
 import { SpanClick, FormGroup } from 'components/style';
 

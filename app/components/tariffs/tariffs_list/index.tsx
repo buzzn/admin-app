@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ReactTableSorted from 'components/react_table_sorted';
 import orderBy from 'lodash/orderBy';
 import moment from 'moment';
-import { FormattedMessage, FormattedNumber, injectIntl, InjectIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl, InjectIntlProps } from 'react-intl';
 import { NavLink } from 'react-router-dom';
 import { tableParts as TableParts } from 'react_table_config';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
