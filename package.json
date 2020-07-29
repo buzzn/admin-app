@@ -3,14 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "npm run dev-server",
+    "start": "webpack-dev-server --mode development --progress --inline --hot --port=2999",
     "test": "jest --coverage --no-cache",
     "test-watch": "jest --coverage --watch --no-cache",
     "dev-server": "webpack-dev-server --mode development --progress --inline --hot --port=2999",
     "storybook": "start-storybook -p 9001 -c .storybook",
     "build": "rimraf build && webpack --mode production --config ./webpack.production.config.js --progress --profile --colors",
-    "typecheck": "tsc",
-    "start": "webpack-dev-server --mode development --progress --inline --hot --port=2999"
+    "typecheck": "tsc"
   },
   "pre-commit": [
     "test",
