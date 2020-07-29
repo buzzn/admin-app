@@ -6,10 +6,17 @@ import FieldValidationWrapper from 'components/field_validation_wrapper';
 import FieldInput from 'components/field_input';
 import FieldDate from 'components/field_date';
 import { dateNormalizer } from 'validation_normalizers';
+import { getNumberDecimalSeperator } from '_util';
 
 interface Props {}
 
 class AddTariff extends React.Component<Props & InjectedIntlProps> {
+
+  constructor(props) {
+    super(props);
+    console.log('add tariff', props.intl);
+  }
+
   handleToggle = (event) => {
     const { pristine, reset, toggle, intl } = this.props;
 
@@ -68,7 +75,8 @@ class AddTariff extends React.Component<Props & InjectedIntlProps> {
                     type: 'text',
                     label: (
                       <React.Fragment>
-                        <FormattedMessage id={`${prefix}.energypriceCentsPerKwh`} /> €
+                        <FormattedMessage id={`${prefix}.energypriceCentsPerKwh`} /> 
+                        <small> (xxxx{getNumberDecimalSeperator(this.props.intl.locale)}xx CENT)</small>
                       </React.Fragment>
                     ),
                     component: FieldInput,
@@ -84,6 +92,7 @@ class AddTariff extends React.Component<Props & InjectedIntlProps> {
                     label: (
                       <React.Fragment>
                         <FormattedMessage id={`${prefix}.basepriceCentsPerMonth`} /> €
+                        <small> (xxxx{getNumberDecimalSeperator(this.props.intl.locale)}xx €)</small>
                       </React.Fragment>
                     ),
                     component: FieldInput,

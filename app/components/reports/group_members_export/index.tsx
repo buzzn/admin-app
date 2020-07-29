@@ -19,8 +19,15 @@ const GroupMembersExport = ({
   groupId,
   groupName,
 }) => {
+  const errorMessage = '';
+
   if (loading) {
     return <Loading minHeight={40} />;
+  }
+
+  const loadExport = (groupId, groupName) => {
+    const loaded = loadGroupMembersExport(groupId, groupName);
+    console.log('loaded', loaded)
   }
 
   const prefix = 'admin.reports.groupsMembersExport';
@@ -36,8 +43,8 @@ const GroupMembersExport = ({
           <Col className="fieldname">
             <button
               className="btn btn-primary"
-              onClick={() => loadGroupMembersExport(groupId, groupName)}
-            >
+              onClick={() => loadExport(groupId, groupName)}
+            > { errorMessage }
               <FormattedMessage id={`${prefix}.Submit`} />
             </button>
           </Col>

@@ -8,6 +8,8 @@ import Loading from 'components/loading';
 import AttachedTariffs from 'components/attached_tariffs';
 import TariffsList from './tariffs_list';
 import AddTariff from './add_tariff';
+import { numberParse } from '_util';
+//import { numberParse } from 'app/_util';
 
 class TariffsComponent extends React.Component<
   StateProps & DispatchProps & ExtProps & InjectedIntlProps,
@@ -30,8 +32,8 @@ class TariffsComponent extends React.Component<
         groupId,
         params: {
           ...params,
-          energypriceCentsPerKwh: params.energypriceCentsPerKwh * 100,
-          basepriceCentsPerMonth: params.basepriceCentsPerMonth * 100,
+          energypriceCentsPerKwh: numberParse(this.props.intl.locale, params.energypriceCentsPerKwh) * 100,
+          basepriceCentsPerMonth:  numberParse(this.props.intl.locale, params.basepriceCentsPerMonth) * 100,
         },
         resolve,
         reject,
