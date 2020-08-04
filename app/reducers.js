@@ -84,6 +84,10 @@ export function appReducer(state = initialState, action) {
     case constants.SET_INCOMPLETE_SCREEN:
       return { ...state, incompleteScreen: action.incompleteScreen };
 
+    case Auth.constants.SIGN_OUT:
+      window.location.href = '/';
+      return initialState;
+
     default:
       return state;
   }
