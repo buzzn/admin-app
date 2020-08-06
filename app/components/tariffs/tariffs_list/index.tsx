@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ReactTableSorted from 'components/react_table_sorted';
 import orderBy from 'lodash/orderBy';
 import moment from 'moment';
-import { FormattedMessage, FormattedNumber, injectIntl, InjectIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl, InjectIntlProps } from 'react-intl';
 import { NavLink } from 'react-router-dom';
 import { tableParts as TableParts } from 'react_table_config';
 import { BreadcrumbsProps } from 'components/breadcrumbs';
@@ -39,12 +39,7 @@ const TariffsList = ({
     lastDate: t.lastDate ? moment(t.lastDate).toDate() : t.lastDate,
     basepriceCentsPerMonth: {
       Display: (
-        <FormattedNumber
-          value={(t.basepriceCentsPerMonth / 100).toFixed(4)}
-          style="currency"
-          currency="EUR"
-          currencyDisplay="symbol"
-        />
+        Intl.NumberFormat(intl.locale, {minimumFractionDigits: 4}).format(+(t.basepriceCentsPerMonth/100).toFixed(4)) + ' €'
       ),
       value: t.basepriceCentsPerMonth,
     },

@@ -4,7 +4,7 @@ import compact from 'lodash/compact';
 import moment from 'moment';
 import Alert from 'react-s-alert';
 import { Row, Col } from 'reactstrap';
-import { FormattedMessage, FormattedNumber } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import ReactTable from 'react-table';
 import { SpanClick, FormGroup } from 'components/style';
 
@@ -22,8 +22,12 @@ interface State {
   selectedTariffId: null | string;
 }
 
-class AttachedTariffs extends React.Component<Props, State> {
+class AttachedTariffs extends React.Component<Props & InjectedIntlProps, State> {
   state = { editMode: false, selectedTariffId: null };
+
+  constructor(props) {
+    super(props);
+  }
 
   switchEditMode = () => {
     this.setState({ editMode: !this.state.editMode });
@@ -61,23 +65,13 @@ class AttachedTariffs extends React.Component<Props, State> {
       lastDate: t.lastDate ? moment(t.lastDate).toDate() : t.lastDate,
       basepriceCentsPerMonth: {
         Display: (
-          <FormattedNumber
-            value={(t.basepriceCentsPerMonth / 100).toFixed(4)}
-            style="currency"
-            currency="EUR"
-            currencyDisplay="symbol"
-          />
+          Intl.NumberFormat(this.props.intl.locale, {minimumFractionDigits: 4}).format(+(t.basepriceCentsPerMonth/100).toFixed(4)) + ' €'
         ),
         value: t.basepriceCentsPerMonth,
       },
       energypriceCentsPerKwh: {
         Display: (
-          <FormattedNumber
-            value={(t.energypriceCentsPerKwh / 100).toFixed(4)}
-            style="currency"
-            currency="EUR"
-            currencyDisplay="symbol"
-          />
+          Intl.NumberFormat(this.props.intl.locale, {minimumFractionDigits: 4}).format(+(t.energypriceCentsPerKwh).toFixed(4)) + ' Cent'
         ),
         value: t.energypriceCentsPerKwh,
       },
@@ -181,4 +175,4 @@ class AttachedTariffs extends React.Component<Props, State> {
   }
 }
 
-export default AttachedTariffs;
+export default injectIntl(AttachedTariffs);
