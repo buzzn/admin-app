@@ -268,3 +268,23 @@ export function formatLabel(value, type, extended, noDecimal) {
 
   return type === 'h' ? `${result}h` : result;
 }
+
+
+export function numberParse(locale, string) {
+  const format = new Intl.NumberFormat(locale);
+  const parts = format.formatToParts(12345.6);
+  const numerals = Array.from({ length: 10 }).map((_, i) => format.format(i));
+  const index = new Map(numerals.map((d, i) => [d, i]));
+  const group = new RegExp(`[${parts.find(d => d.type === 'group').value}]`, 'g');
+  const decimal = new RegExp(`[${parts.find(d => d.type === 'decimal').value}]`);
+  const numeral = new RegExp(`[${numerals.join('')}]`, 'g');
+  const dIndex = d => index.get(d);
+  const str = string.trim().replace(group, '').replace(decimal, '.').replace(numeral, dIndex);
+  return (str) ? +str : NaN;
+}
+
+export function getNumberDecimalSeperator(locale) {
+  const format = new Intl.NumberFormat(locale);
+  const parts = format.formatToParts(12345.6);
+  return parts.find(d => d.type === 'decimal').value;
+}

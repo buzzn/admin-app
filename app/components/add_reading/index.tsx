@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { getFormValues } from 'redux-form';
 import Readings from 'readings';
 import AddReadingForm from './form';
+import { numberParse } from '_util';
 
 interface Props {
   addReading: Function;
@@ -51,7 +52,10 @@ const AddReading = ({
       groupId,
       meterId,
       registerId,
-      params: { ...params, rawValue: params.rawValue * 1000 },
+      params: { 
+        ...params, 
+        rawValue: numberParse(params.rawValue) * 1000 
+      },
       resolve,
       reject,
       billingItem,
