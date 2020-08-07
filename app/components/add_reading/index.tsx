@@ -3,7 +3,7 @@ import Alert from 'react-s-alert';
 import { connect } from 'react-redux';
 import { getFormValues } from 'redux-form';
 import Readings from 'readings';
-import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import AddReadingForm from './form';
 import { numberParse } from '_util';
 
