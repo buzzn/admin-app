@@ -1,7 +1,7 @@
 import saveAs from 'file-saver';
 import { put, call, takeLatest, takeLeading, takeEvery, take, fork, cancel, select } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
-import { logException } from '_util';
+import { logException, convertErrors } from '_util';
 import Contracts from 'contracts';
 import { actions, constants } from './actions';
 import api from './api';
@@ -65,7 +65,7 @@ export function* changeBilling(
   try {
     const res = yield call(billingsApi[type], { apiUrl, apiPath, token, params, groupId, contractId, ...other });
     if (res._error) {
-      yield call(reject, new SubmissionError(res));
+      yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
       if (noReload) return;

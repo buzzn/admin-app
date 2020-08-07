@@ -1,6 +1,6 @@
 import { put, call, takeLatest, takeLeading, take, fork, cancel, select } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
-import { logException } from '_util';
+import { logException, convertErrors } from '_util';
 import { actions, constants } from './actions';
 import api from './api';
 
@@ -32,7 +32,7 @@ export function* addGroup({ apiUrl, apiPath, token }, { params, resolve, reject 
   try {
     const res = yield call(api.addGroup, { apiUrl, apiPath, token, params });
     if (res._error) {
-      yield call(reject, new SubmissionError(res));
+      yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
       yield put(actions.loadGroups());
@@ -70,7 +70,7 @@ export function* updateGroup({ apiUrl, apiPath, token }, { params, resolve, reje
     }
     const res = yield call(api.updateGroup, { apiUrl, apiPath, token, params: { ...params, updatedAt }, groupId });
     if (res._error || Object.keys(errs).length) {
-      yield call(reject, new SubmissionError({ ...res, ...errs }));
+      yield call(reject, new SubmissionError({ ...convertErrors(res.errors), ...errs }));
     } else {
       yield call(resolve, res);
       yield put(actions.loadGroup(groupId));
@@ -118,7 +118,7 @@ export function* updateContact(
       isGap,
     });
     if (res._error) {
-      yield call(reject, new SubmissionError(res));
+      yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
       yield put(actions.loadGroup(groupId));

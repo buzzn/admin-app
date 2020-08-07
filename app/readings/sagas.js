@@ -1,6 +1,6 @@
 import { put, call, takeLatest, takeLeading, take, cancel, fork } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
-import { logException } from '_util';
+import { logException, convertErrors } from '_util';
 import Billings from 'billings';
 import Meters from 'meters';
 import { constants } from './actions';
@@ -12,8 +12,9 @@ export function* addReading(
 ) {
   try {
     const res = yield call(api.addReading, { apiUrl, apiPath, token, meterId, registerId, params, groupId });
+    console.log(res);
     if (res._error) {
-      yield call(reject, new SubmissionError(res));
+      yield call(reject, new SubmissionError(convertErrors(res.errors)));
       // HACK: dirty hack.
     } else if (billingItem) {
       yield put(

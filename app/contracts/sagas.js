@@ -1,7 +1,7 @@
 import saveAs from 'file-saver';
 import { put, call, takeLatest, take, cancel, select, fork, takeLeading } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
-import { logException } from '_util';
+import { logException, convertErrors } from '_util';
 import Groups from 'groups';
 import { constants, actions } from './actions';
 import api from './api';
@@ -56,7 +56,7 @@ export function* attachBankAccount({ apiUrl, apiPath, token }, { params, resolve
       partyType,
     });
     if (res._error) {
-      yield call(reject, new SubmissionError(res));
+      yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
     }
@@ -77,7 +77,7 @@ export function* addBankAccount({ apiUrl, apiPath, token }, { params, resolve, r
       partyType,
     });
     if (res._error) {
-      yield call(reject, new SubmissionError(res));
+      yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
     }
@@ -102,7 +102,7 @@ export function* updateBankAccount(
       partyType,
     });
     if (res._error) {
-      yield call(reject, new SubmissionError(res));
+      yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
     }
@@ -142,7 +142,7 @@ export function* addContract({ apiUrl, apiPath, token }, { params, resolve, reje
   try {
     const res = yield call(api.addContract, { apiUrl, apiPath, token, params, groupId });
     if (res._error) {
-      yield call(reject, new SubmissionError(res));
+      yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
       yield put(Groups.actions.loadGroup(groupId));
@@ -158,7 +158,7 @@ export function* addPayment({ apiUrl, apiPath, token }, { params, resolve, rejec
   try {
     const res = yield call(api.addPayment, { apiUrl, apiPath, token, params, groupId, contractId });
     if (res._error) {
-      yield call(reject, new SubmissionError(res));
+      yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
       yield put(actions.loadContractPayments({ groupId, contractId }));
@@ -175,7 +175,7 @@ export function* updatePayment(
   try {
     const res = yield call(api.updatePayment, { apiUrl, apiPath, token, params, groupId, contractId, paymentId });
     if (res._error) {
-      yield call(reject, new SubmissionError(res));
+      yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
       yield put(actions.loadContractPayments({ groupId, contractId }));
@@ -209,7 +209,7 @@ export function* updateContract(
   try {
     const res = yield call(updateTypes[updateType], { apiUrl, apiPath, token, params, groupId, contractId });
     if (res._error) {
-      yield call(reject, new SubmissionError(res));
+      yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
       yield put(actions.loadContract({ groupId, contractId }));

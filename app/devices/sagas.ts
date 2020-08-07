@@ -1,6 +1,6 @@
 import { put, call, takeLatest, takeLeading, take, fork, cancel, select } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
-import { logException } from '_util';
+import { logException, convertErrors } from '_util';
 import { actions, constants } from './actions';
 import api from './api';
 
@@ -33,7 +33,7 @@ export function* addDevice({ apiUrl, apiPath, token }, { params, resolve, reject
   try {
     const res = yield call(api.addDevice, { apiUrl, apiPath, token, params, groupId });
     if (res._error) {
-      yield call(reject, new SubmissionError(res));
+      yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
       yield put(actions.loadDevices(groupId));
@@ -47,7 +47,7 @@ export function* updateDevice({ apiUrl, apiPath, token }, { params, resolve, rej
   try {
     const res = yield call(api.updateDevice, { apiUrl, apiPath, token, params, groupId, deviceId });
     if (res._error) {
-      yield call(reject, new SubmissionError(res));
+      yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
       yield put(actions.loadDevice({ groupId, deviceId }));

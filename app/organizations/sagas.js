@@ -1,6 +1,6 @@
 import { put, call, takeLatest, takeLeading, take, fork, cancel, select } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
-import { logException } from '_util';
+import { logException, convertErrors } from '_util';
 import { actions, constants } from './actions';
 import api from './api';
 
@@ -67,7 +67,7 @@ export function* changeOrganizationMarket({ apiUrl, apiPath, token, type }, { re
   try {
     const res = yield call(organizationMarketFunctions[type], { apiUrl, apiPath, token, ...rest });
     if (res._error) {
-      if (reject) yield call(reject, new SubmissionError(res));
+      if (reject) yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       if (resolve) yield call(resolve, res);
       yield put(actions.loadAvailableOrganizationMarkets());
