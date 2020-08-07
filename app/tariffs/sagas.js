@@ -21,7 +21,7 @@ export function* getTariffs({ apiUrl, apiPath, token }, { groupId }) {
 export function* addTariff({ apiUrl, apiPath, token }, { params, resolve, reject, groupId }) {
   try {
     const res = yield call(api.addTariff, { apiUrl, apiPath, token, params, groupId });
-    if (res._error) {
+    if (res._error && res.errors) {
       yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
@@ -35,7 +35,7 @@ export function* addTariff({ apiUrl, apiPath, token }, { params, resolve, reject
 export function* setGapTariffs({ apiUrl, apiPath, token }, { params, resolve, reject, groupId }) {
   try {
     const res = yield call(api.setGapTariffs, { apiUrl, apiPath, token, params, groupId });
-    if (res._error) {
+    if (res._error && res.errors) {
       yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);

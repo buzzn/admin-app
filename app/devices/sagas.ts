@@ -32,7 +32,7 @@ export function* getDevices({ apiUrl, apiPath, token }, { groupId }) {
 export function* addDevice({ apiUrl, apiPath, token }, { params, resolve, reject, groupId }) {
   try {
     const res = yield call(api.addDevice, { apiUrl, apiPath, token, params, groupId });
-    if (res._error) {
+    if (res._error && res.errors) {
       yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
@@ -46,7 +46,7 @@ export function* addDevice({ apiUrl, apiPath, token }, { params, resolve, reject
 export function* updateDevice({ apiUrl, apiPath, token }, { params, resolve, reject, groupId, deviceId }) {
   try {
     const res = yield call(api.updateDevice, { apiUrl, apiPath, token, params, groupId, deviceId });
-    if (res._error) {
+    if (res._error && res.errors) {
       yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);

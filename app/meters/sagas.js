@@ -36,7 +36,7 @@ export function* updateFormulaPart(
 ) {
   try {
     const res = yield call(api.updateFormulaPart, { apiUrl, apiPath, token, meterId, params, groupId, formulaPartId });
-    if (res._error) {
+    if (res._error && res.errors) {
       yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
@@ -52,7 +52,7 @@ export function* updateFormulaPart(
 export function* addRealMeter({ apiUrl, apiPath, token }, { params, resolve, reject, groupId }) {
   try {
     const res = yield call(api.addRealMeter, { apiUrl, apiPath, token, params, groupId });
-    if (res._error) {
+    if (res._error && res.errors) {
       yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
@@ -66,7 +66,7 @@ export function* addRealMeter({ apiUrl, apiPath, token }, { params, resolve, rej
 export function* updateMeter({ apiUrl, apiPath, token }, { meterId, params, resolve, reject, groupId }) {
   try {
     const res = yield call(api.updateMeter, { apiUrl, apiPath, token, meterId, params, groupId });
-    if (res._error) {
+    if (res._error && res.errors) {
       yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
@@ -81,7 +81,7 @@ export function* updateMeter({ apiUrl, apiPath, token }, { meterId, params, reso
 export function* updateDiscovergyMeter({ apiUrl, apiPath, token }, { params, resolve, reject, groupId }) {
   try {
     const res = yield call(api.updateDiscovergyMeter, { apiUrl, apiPath, token, params, groupId });
-    if (res._error) {
+    if (res._error && res.errors) {
       yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);

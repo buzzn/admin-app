@@ -55,7 +55,7 @@ export function* attachBankAccount({ apiUrl, apiPath, token }, { params, resolve
       contractId,
       partyType,
     });
-    if (res._error) {
+    if (res._error && res.errors) {
       yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
@@ -76,7 +76,7 @@ export function* addBankAccount({ apiUrl, apiPath, token }, { params, resolve, r
       partyId,
       partyType,
     });
-    if (res._error) {
+    if (res._error && res.errors) {
       yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
@@ -101,7 +101,7 @@ export function* updateBankAccount(
       partyId,
       partyType,
     });
-    if (res._error) {
+    if (res._error && res.errors) {
       yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
@@ -141,7 +141,7 @@ export function* getPowertakers({ apiUrl, apiPath, token }, { groupId, withBilli
 export function* addContract({ apiUrl, apiPath, token }, { params, resolve, reject, groupId }) {
   try {
     const res = yield call(api.addContract, { apiUrl, apiPath, token, params, groupId });
-    if (res._error) {
+    if (res._error && res.errors) {
       yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
@@ -157,7 +157,7 @@ export function* addContract({ apiUrl, apiPath, token }, { params, resolve, reje
 export function* addPayment({ apiUrl, apiPath, token }, { params, resolve, reject, groupId, contractId }) {
   try {
     const res = yield call(api.addPayment, { apiUrl, apiPath, token, params, groupId, contractId });
-    if (res._error) {
+    if (res._error && res.errors) {
       yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
@@ -174,7 +174,7 @@ export function* updatePayment(
 ) {
   try {
     const res = yield call(api.updatePayment, { apiUrl, apiPath, token, params, groupId, contractId, paymentId });
-    if (res._error) {
+    if (res._error && res.errors) {
       yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
@@ -208,7 +208,7 @@ export function* updateContract(
 
   try {
     const res = yield call(updateTypes[updateType], { apiUrl, apiPath, token, params, groupId, contractId });
-    if (res._error) {
+    if (res._error && res.errors) {
       yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);

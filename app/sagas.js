@@ -44,7 +44,7 @@ export function* getUserMe({ apiUrl, apiPath, token }) {
 export function* updateUserMe({ apiUrl, apiPath, token }, { params, resolve, reject }) {
   try {
     const res = yield call(api.updateUserMe, { apiUrl, apiPath, token, params });
-    if (res._error) {
+    if (res._error && res.errors) {
       yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);

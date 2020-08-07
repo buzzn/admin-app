@@ -18,7 +18,7 @@ export function* getWebsiteForms({ apiUrl, apiPath, token }) {
 export function* updateWebsiteForm({ apiUrl, apiPath, token }, { formId, params, resolve, reject }) {
   try {
     const res = yield call(api.updateWebsiteForm, { apiUrl, apiPath, token, formId, params });
-    if (res._error) {
+    if (res._error && res.errors) {
       yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield put(actions.loadWebsiteForms());

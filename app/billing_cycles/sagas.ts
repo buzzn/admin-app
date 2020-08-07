@@ -91,7 +91,7 @@ export function* addBillingCycle({ apiUrl, apiPath, token }, { params, resolve, 
     }
     else {
       const res = yield call(api.addBillingCycle, { apiUrl, apiPath, token, params, groupId });
-      if (res._error) {
+      if (res._error && res.errors) {
         const errorMessage = res.createBillings.map( r => r.errors && r.errors.registerMeta ? Object.keys(r.errors.registerMeta).map(key => r.errors.registerMeta[key]).join(' | ') + ` (Contract Number: ${r.contractNumber})` : null).filter(e => !!e).join(' | ');
         yield call(reject, new SubmissionError({ ...convertErrors(res), _error: errorMessage }));
       } 

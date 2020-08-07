@@ -32,7 +32,7 @@ export function* getRegisterPower({ apiUrl, apiPath, token }, { registerId, grou
 export function* updateRegisterMeta({ apiUrl, apiPath, token }, { registerId, params, resolve, reject, groupId }) {
   try {
     const res = yield call(api.updateRegisterMeta, { apiUrl, apiPath, token, registerId, params, groupId });
-    if (res._error) {
+    if (res._error && res.errors) {
       if (res.observer) {
         res.observerMinThreshold = res.observer;
         res.observerMaxThreshold = res.observer;
@@ -51,7 +51,7 @@ export function* updateRegisterMeta({ apiUrl, apiPath, token }, { registerId, pa
 export function* updateRegister({ apiUrl, apiPath, token }, { groupId, meterId, registerId, params, resolve, reject }) {
   try {
     const res = yield call(api.updateRegister, { apiUrl, apiPath, token, groupId, meterId, registerId, params });
-    if (res._error) {
+    if (res._error && res.errors) {
       yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);

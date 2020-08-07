@@ -64,7 +64,7 @@ export function* changeBilling(
 
   try {
     const res = yield call(billingsApi[type], { apiUrl, apiPath, token, params, groupId, contractId, ...other });
-    if (res._error) {
+    if (res._error && res.errors) {
       yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);

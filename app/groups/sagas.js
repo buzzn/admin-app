@@ -31,7 +31,7 @@ export function* getGroup({ apiUrl, apiPath, token }, { groupId }) {
 export function* addGroup({ apiUrl, apiPath, token }, { params, resolve, reject }) {
   try {
     const res = yield call(api.addGroup, { apiUrl, apiPath, token, params });
-    if (res._error) {
+    if (res._error && res.errors) {
       yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
@@ -62,7 +62,7 @@ export function* updateGroup({ apiUrl, apiPath, token }, { params, resolve, reje
         },
         groupId,
       });
-      if (res._error) {
+      if (res._error && res.errors) {
         errs[key] = res;
       } else {
         updatedAt = res.updated_at;
@@ -117,7 +117,7 @@ export function* updateContact(
       contactType,
       isGap,
     });
-    if (res._error) {
+    if (res._error && res.errors) {
       yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);

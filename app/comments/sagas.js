@@ -65,7 +65,7 @@ export function* getComments({ apiUrl, apiPath, token }, { ids: { type, ...restI
 export function* addComment({ apiUrl, apiPath, token }, { params, resolve, reject, ids, ids: { type, ...restIds } }) {
   try {
     const res = yield call(commentsFunctions(type).addComment, { apiUrl, apiPath, token, params, ...restIds });
-    if (res._error) {
+    if (res._error && res.errors) {
       yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
@@ -82,7 +82,7 @@ export function* updateComment(
 ) {
   try {
     const res = yield call(commentsFunctions(type).updateComment, { apiUrl, apiPath, token, params, ...restIds });
-    if (res._error) {
+    if (res._error && res.errors) {
       yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);

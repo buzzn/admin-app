@@ -66,7 +66,7 @@ const organizationMarketFunctions = {
 export function* changeOrganizationMarket({ apiUrl, apiPath, token, type }, { resolve, reject, ...rest }) {
   try {
     const res = yield call(organizationMarketFunctions[type], { apiUrl, apiPath, token, ...rest });
-    if (res._error) {
+    if (res._error && res.errors) {
       if (reject) yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       if (resolve) yield call(resolve, res);
