@@ -1,6 +1,6 @@
 import { put, call, takeLatest, takeEvery, take, fork, cancel, select } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
-import { logException } from '_util';
+import { logException, convertErrors } from '_util';
 import { actions, constants } from './actions';
 import api from './api';
 
@@ -18,8 +18,8 @@ export function* getWebsiteForms({ apiUrl, apiPath, token }) {
 export function* updateWebsiteForm({ apiUrl, apiPath, token }, { formId, params, resolve, reject }) {
   try {
     const res = yield call(api.updateWebsiteForm, { apiUrl, apiPath, token, formId, params });
-    if (res._error) {
-      yield call(reject, new SubmissionError(res));
+    if (res._error && res.errors) {
+      yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield put(actions.loadWebsiteForms());
       yield call(resolve, res);

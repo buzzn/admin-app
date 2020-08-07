@@ -1,6 +1,6 @@
 import { put, call, takeLatest, takeLeading, take, cancel, select, fork } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
-import { logException } from '_util';
+import { logException, convertErrors } from '_util';
 import { actions, constants } from './actions';
 import api from './api';
 
@@ -21,8 +21,8 @@ export function* getTariffs({ apiUrl, apiPath, token }, { groupId }) {
 export function* addTariff({ apiUrl, apiPath, token }, { params, resolve, reject, groupId }) {
   try {
     const res = yield call(api.addTariff, { apiUrl, apiPath, token, params, groupId });
-    if (res._error) {
-      yield call(reject, new SubmissionError(res));
+    if (res._error && res.errors) {
+      yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
       yield put(actions.loadTariffs(groupId));
@@ -35,8 +35,8 @@ export function* addTariff({ apiUrl, apiPath, token }, { params, resolve, reject
 export function* setGapTariffs({ apiUrl, apiPath, token }, { params, resolve, reject, groupId }) {
   try {
     const res = yield call(api.setGapTariffs, { apiUrl, apiPath, token, params, groupId });
-    if (res._error) {
-      yield call(reject, new SubmissionError(res));
+    if (res._error && res.errors) {
+      yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
       yield put(actions.loadTariffs(groupId));

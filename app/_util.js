@@ -12,6 +12,16 @@ export const cleanArrStr = str => str.replace(/\[\d*\]/, '');
 
 export const getValidators = ({ validationRules, name }) => validationRules[camelCase(cleanArrStr(name))];
 
+export const convertErrors = (e) => {
+  // convert errors
+  const errors = {};
+  Object.keys(e).forEach((errKey) => {
+    errors[errKey] = e[errKey].join();
+  });
+
+  return errors;
+};
+
 export function prepareHeaders(token, noType, noCache) {
   const headers = {
     Accept: 'application/json',
@@ -271,6 +281,7 @@ export function formatLabel(value, type, extended, noDecimal) {
 
 
 export function numberParse(locale, string) {
+  console.log(locale);
   const format = new Intl.NumberFormat(locale);
   const parts = format.formatToParts(12345.6);
   const numerals = Array.from({ length: 10 }).map((_, i) => format.format(i));

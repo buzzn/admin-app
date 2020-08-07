@@ -3,7 +3,7 @@ import { channel } from 'redux-saga';
 import { put, call, takeLatest, takeLeading, take, fork, cancel, select, race, delay } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import Groups from 'groups';
-import { logException } from '_util';
+import { logException, convertErrors } from '_util';
 import { actions, constants } from './actions';
 import api from './api';
 
@@ -87,13 +87,13 @@ export function* addBillingCycle({ apiUrl, apiPath, token }, { params, resolve, 
     const gapRes = yield call(api.fillGapContracts, { apiUrl, apiPath, token, params, groupId });
     if (gapRes._error) {
       const errorMessage = Object.keys(gapRes.registerMeta).map(key => gapRes.registerMeta[key].errorMessage).join(' | ');
-      yield call(reject, new SubmissionError({ ...gapRes, _error: errorMessage }));
+      yield call(reject, new SubmissionError({ ...convertErrors(gapRes.errors), _error: errorMessage }));
     }
     else {
       const res = yield call(api.addBillingCycle, { apiUrl, apiPath, token, params, groupId });
-      if (res._error) {
+      if (res._error && res.errors) {
         const errorMessage = res.createBillings.map( r => r.errors && r.errors.registerMeta ? Object.keys(r.errors.registerMeta).map(key => r.errors.registerMeta[key]).join(' | ') + ` (Contract Number: ${r.contractNumber})` : null).filter(e => !!e).join(' | ');
-        yield call(reject, new SubmissionError({ ...res, _error: errorMessage }));
+        yield call(reject, new SubmissionError({ ...convertErrors(res), _error: errorMessage }));
       } 
       else {
         yield call(resolve, res);
