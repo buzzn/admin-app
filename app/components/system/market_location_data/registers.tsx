@@ -63,7 +63,7 @@ const Registers = ({ url, history, locationId, registers, intl, groupId, withAdd
       ),
     });
   }
-
+  data.map(d => Object.keys(d).map(key => d[key] = d[key] || 'No entry (click to edit)'));
   return (
     <div className="p-0">
       <ReactTableSorted
