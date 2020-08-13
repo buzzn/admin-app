@@ -83,7 +83,7 @@ const RouterHack = ({
     <EditOverlayContext.Provider value={{ editMode, switchEditMode, setEditMode }}>
       {token && <TopNavBarContainer {...{ devMode, switchAddGroup }} />}
       {token ? (
-        <Container style={{ maxWidth: '100vw', boxSizing: 'border-box', overflow: 'hidden' }}>
+        <Container style={{ maxWidth: '100vw', boxSizing: 'border-box' }}>
           {versionMismatch && (
             <VersionMismatch>
               You're outdated. Sorry for that.
