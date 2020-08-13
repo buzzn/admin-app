@@ -28,12 +28,16 @@ export function* getAnnualReport({ apiUrl, apiPath, token }, { groupId, groupNam
   yield put(actions.loadedAnnualReport());
 }
 
-export function* getGroupMembersExport({ apiUrl, apiPath, token }, {groupId, groupName}) {
+export function* getGroupMembersExport({ apiUrl, apiPath, token }, {groupId, groupName, errorFn}) {
   yield put(actions.loadingGroupMembersExport());
   try {
     const groupMembersExported = yield call(api.fetchGroupMembersExport, { apiUrl, apiPath, token, groupId });
-    let groupNameSanitized = groupName.replace(/[^a-z0-9]/gi, '_') + "_GroupMembers.csv";
-    saveAs(groupMembersExported, `${groupNameSanitized}`);
+    if(groupMembersExported.errors) {
+      errorFn(groupMembersExported.errors);
+    } else {
+      let groupNameSanitized = groupName.replace(/[^a-z0-9]/gi, '_') + "_GroupMembers.csv";
+      saveAs(groupMembersExported, `${groupNameSanitized}`);
+    }
   } catch (error) {
     logException(error);
   }
