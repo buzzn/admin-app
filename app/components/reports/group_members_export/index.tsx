@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import Groups from 'reports';
 import { FormattedMessage, injectIntl } from 'react-intl';
@@ -19,14 +19,21 @@ const GroupMembersExport = ({
   groupId,
   groupName,
 }) => {
-  const errorMessage = '';
+  
+  const [errorMessages, setErrorMessages] = useState(['']);
 
   if (loading) {
     return <Loading minHeight={40} />;
   }
 
   const loadExport = (groupId, groupName) => {
-    const loaded = loadGroupMembersExport(groupId, groupName);
+    const loaded = loadGroupMembersExport(groupId, groupName, (errors) => {
+      const err = [''];
+      Object.keys(errors).map(key => {
+        err.push(errors[key].join());
+      });
+      setErrorMessages(err.slice(1));
+    });
     console.log('loaded', loaded)
   }
 
@@ -44,9 +51,15 @@ const GroupMembersExport = ({
             <button
               className="btn btn-primary"
               onClick={() => loadExport(groupId, groupName)}
-            > { errorMessage }
+            >
               <FormattedMessage id={`${prefix}.Submit`} />
             </button>
+            
+          </Col>
+        </Row>
+        <Row className="fieldgroup">
+          <Col>
+            <div style={{'color': 'red' }} >{ errorMessages.join() }</div>
           </Col>
         </Row>
       </div>
