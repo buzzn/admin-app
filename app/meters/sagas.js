@@ -1,7 +1,7 @@
 import { put, call, takeLatest, takeLeading, take, fork, cancel, select } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import MarketLocations from 'market_locations';
-import { logException } from '_util';
+import { logException, convertErrors } from '_util';
 import { actions, constants } from './actions';
 import api from './api';
 
@@ -36,8 +36,8 @@ export function* updateFormulaPart(
 ) {
   try {
     const res = yield call(api.updateFormulaPart, { apiUrl, apiPath, token, meterId, params, groupId, formulaPartId });
-    if (res._error) {
-      yield call(reject, new SubmissionError(res));
+    if (res._error && res.errors) {
+      yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
       yield put(actions.loadGroupMeters(groupId));
@@ -52,8 +52,8 @@ export function* updateFormulaPart(
 export function* addRealMeter({ apiUrl, apiPath, token }, { params, resolve, reject, groupId }) {
   try {
     const res = yield call(api.addRealMeter, { apiUrl, apiPath, token, params, groupId });
-    if (res._error) {
-      yield call(reject, new SubmissionError(res));
+    if (res._error && res.errors) {
+      yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
       yield put(MarketLocations.actions.loadMarketLocations(groupId));
@@ -66,8 +66,8 @@ export function* addRealMeter({ apiUrl, apiPath, token }, { params, resolve, rej
 export function* updateMeter({ apiUrl, apiPath, token }, { meterId, params, resolve, reject, groupId }) {
   try {
     const res = yield call(api.updateMeter, { apiUrl, apiPath, token, meterId, params, groupId });
-    if (res._error) {
-      yield call(reject, new SubmissionError(res));
+    if (res._error && res.errors) {
+      yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
       yield put(actions.loadGroupMeters(groupId));
@@ -81,8 +81,8 @@ export function* updateMeter({ apiUrl, apiPath, token }, { meterId, params, reso
 export function* updateDiscovergyMeter({ apiUrl, apiPath, token }, { params, resolve, reject, groupId }) {
   try {
     const res = yield call(api.updateDiscovergyMeter, { apiUrl, apiPath, token, params, groupId });
-    if (res._error) {
-      yield call(reject, new SubmissionError(res));
+    if (res._error && res.errors) {
+      yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
 

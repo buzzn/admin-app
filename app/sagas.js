@@ -1,7 +1,7 @@
 import { put, take, select, call, takeLatest, takeLeading, fork, race, all, delay } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import Auth from '@buzzn/module_auth';
-import { logException, getAllUrlParams } from '_util';
+import { logException, getAllUrlParams, convertErrors } from '_util';
 import { actions, constants } from 'actions';
 import api from 'api';
 
@@ -44,8 +44,8 @@ export function* getUserMe({ apiUrl, apiPath, token }) {
 export function* updateUserMe({ apiUrl, apiPath, token }, { params, resolve, reject }) {
   try {
     const res = yield call(api.updateUserMe, { apiUrl, apiPath, token, params });
-    if (res._error) {
-      yield call(reject, new SubmissionError(res));
+    if (res._error && res.errors) {
+      yield call(reject, new SubmissionError(convertErrors(res.errors)));
     } else {
       yield call(resolve, res);
       yield call(getUserMe, { apiUrl, apiPath, token });

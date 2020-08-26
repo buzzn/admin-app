@@ -94,7 +94,7 @@ export const actions = {
   loadingAnnualReport: (): LoadingAnnualReportAction => ({ type: constants.LOADING_ANNUAL_REPORT }),
   loadedAnnualReport: (): LoadedAnnualReportAction => ({ type: constants.LOADED_ANNUAL_REPORT }),
   
-  loadGroupMembersExport: (groupId: string, groupName: string) => ({ type: constants.LOAD_GROUP_MEMBERS_EXPORT, groupId, groupName }),
+  loadGroupMembersExport: (groupId: string, groupName: string, errorFn: Function) => ({ type: constants.LOAD_GROUP_MEMBERS_EXPORT, groupId, groupName, errorFn }),
   loadingGroupMembersExport: () => ({ type: constants.LOADING_GROUP_MEMBERS_EXPORT }),
   loadedGroupMembersExport: () => ({ type: constants.LOADED_GROUP_MEMBERS_EXPORT }),
 };
