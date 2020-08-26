@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { getFormValues } from 'redux-form';
 import Readings from 'readings';
 import AddReadingForm from './form';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { numberParse } from '_util';
 
 interface Props {
@@ -44,7 +45,8 @@ const AddReading = ({
   billingItem,
   date,
   cb,
-}: Props) => {
+  intl,
+}: Props & InjectedIntlProps) => {
   const defaultAddReading: any = { status: 'Z86', reason: 'PMR', readBy: 'SG', quality: '220', unit: 'Wh' };
   const [addReadingInit, setAddReadingInit] = useState(defaultAddReading);
   const handleAddReading = params => new Promise((resolve, reject) => {
@@ -52,9 +54,9 @@ const AddReading = ({
       groupId,
       meterId,
       registerId,
-      params: { 
-        ...params, 
-        rawValue: numberParse(params.rawValue) * 1000 
+      params: {
+        ...params,
+        rawValue: numberParse(intl.locale, params.rawValue) * 1000
       },
       resolve,
       reject,
@@ -120,4 +122,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   { addReading: Readings.actions.addReading, getAutoReadingValue: Readings.actions.getAutoReadingValue },
-)(AddReading);
+)(injectIntl(AddReading));
