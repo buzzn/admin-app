@@ -12,7 +12,6 @@ export function* addReading(
 ) {
   try {
     const res = yield call(api.addReading, { apiUrl, apiPath, token, meterId, registerId, params, groupId });
-    console.log(res);
     if (res._error && res.errors) {
       yield call(reject, new SubmissionError(convertErrors(res.errors)));
       // HACK: dirty hack.
