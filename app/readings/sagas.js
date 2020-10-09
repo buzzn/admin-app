@@ -70,10 +70,32 @@ export function* getAutoReadingValue(
   }
 }
 
+export function* calculateReading(
+  { apiUrl, apiPath, token },
+  { groupId, contractId, billingId, billingItemId, params, resolve, reject },
+) {
+  try {
+    const value = yield call(api.calculateReading, {
+      apiUrl,
+      apiPath,
+      token,
+      groupId,
+      contractId,
+      billingId,
+      billingItemId,
+      params,
+    });
+    resolve(value);
+  } catch (error) {
+    logException(error);
+  }
+}
+
 export function* readingsSagas({ apiUrl, apiPath, token }) {
   yield takeLeading(constants.ADD_READING, addReading, { apiUrl, apiPath, token });
   yield takeLeading(constants.DELETE_READING, deleteReading, { apiUrl, apiPath, token });
   yield takeLatest(constants.GET_AUTO_READING_VALUE, getAutoReadingValue, { apiUrl, apiPath, token });
+  yield takeLatest(constants.CALCULATE_READING, calculateReading, { apiUrl, apiPath, token });
 }
 
 export default function* () {

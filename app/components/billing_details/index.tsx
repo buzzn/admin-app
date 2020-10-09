@@ -465,6 +465,7 @@ const BillingDetails = ({
           }}
         />
       </div>
+      
       {isOpen && (
         <AddReading
           {...{
