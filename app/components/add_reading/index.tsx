@@ -120,19 +120,17 @@ const AddReading = ({
       } else if (res._status === 422) {
         Alert.warning(JSON.stringify(res));
       } else {
-        console.log(res);
-        // const { _status, ...addReadingInit } = res;
-        // setAddReadingInit({
-        //   ...addReadingInit,
-        //   unit: 'Wh',
-        //   rawValue: addReadingInit.rawValue / 1000,
-        // });
+        const { _status, ...addReadingInit } = res;
+        setAddReadingInit({
+          ...addReadingInit,
+          unit: 'Wh',
+          rawValue: addReadingInit.rawValue / 1000,
+        });
       }
     });
   };
   const initialValues = addReadingInit;
   if (date) initialValues.date = date;
-  console.log('billing', billingItem);
   return (
     <AddReadingForm
       {...{
