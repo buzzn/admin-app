@@ -21,6 +21,18 @@ export default {
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
+  calculateReading({ token, apiUrl, apiPath, groupId, contractId, billingId, billingItemId, params }) {
+    return fetch(
+      `${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/billings/${billingId}/items/${billingItemId}/calculate`,
+      {
+        headers: prepareHeaders(token),
+        method: 'PATCH',
+        body: JSON.stringify(snakeReq(params)),
+      },
+    )
+      .then(parseResponse)
+      .then(camelizeResponseKeys);
+  },
   deleteReading({ token, apiUrl, apiPath, meterId, registerId, groupId, readingId }) {
     return fetch(
       `${apiUrl}${apiPath}/localpools/${groupId}/meters/${meterId}/registers/${registerId}/readings/${readingId}`,
