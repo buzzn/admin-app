@@ -41,6 +41,8 @@ class AddReadingForm extends React.Component<Props & InjectedIntlProps> {
       getAutoReadingValue,
       addReadingFormValues,
       edifactMeasurementMethod,
+      calculateReading,
+      hasBillingItem,
     } = this.props;
     const prefix = 'admin.readings';
 
@@ -184,6 +186,19 @@ class AddReadingForm extends React.Component<Props & InjectedIntlProps> {
                 )}
               </React.Fragment>
             )}
+
+            { hasBillingItem && (
+              <button 
+                className="btn btn-dark" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  calculateReading();
+                }}
+              >
+               <FormattedMessage id="admin.readings.calculateReading" /> <i className="fa fa-cog" />
+             </button>
+            )}
+            
             <button className="btn btn-link" onClick={this.handleToggle}>
               <FormattedMessage id="admin.buttons.cancel" /> <i className="fa fa-times" />
             </button>
