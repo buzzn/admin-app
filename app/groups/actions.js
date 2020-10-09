@@ -19,6 +19,7 @@ export const constants = {
   READINGS_RESPONSE: 'buzzn_groups/READINGS_RESPONSE',
 
   UPDATE_CONTACT: 'buzzn_groups/UPDATE_CONTACT',
+  DELETE_CONTACT: 'buzzn_groups/DELETE_CONTACT',
 
   LOAD_GROUPS: 'buzzn_groups/LOAD_GROUPS',
   LOADING_GROUPS: 'buzzn_groups/LOADING_GROUPS',
@@ -69,6 +70,11 @@ export const actions = {
 
   deleteGroup: ({ groupId }) => ({
     type: constants.DELETE_GROUP,
+    groupId,
+  }),
+
+  deleteGapContact: ({ groupId }) => ({
+    type: constants.DELETE_CONTACT,
     groupId,
   }),
 
