@@ -8,7 +8,7 @@ import FieldInput from 'components/field_input';
 import FieldDate from 'components/field_date';
 import EditableSelect from 'components/editable_select';
 import { dateNormalizer } from 'validation_normalizers';
-import { getNumberDecimalSeperator } from '_util';
+import { getNumberDecimalSeperator, numberParse } from '_util';
 
 interface Props {}
 
@@ -62,7 +62,7 @@ class AddReadingForm extends React.Component<Props & InjectedIntlProps> {
                     label: (
                       <React.Fragment>
                         <FormattedMessage id={`${prefix}.rawValue`} /> kWh 
-                        <small>(xxxx{getNumberDecimalSeperator()}xx)</small>
+                        <small>(xxxx{getNumberDecimalSeperator(this.props.intl.locale)}xx)</small>
                       </React.Fragment>
                     ),
                     component: FieldInput,
