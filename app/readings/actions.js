@@ -8,6 +8,7 @@ export const constants = {
   DELETE_READING: 'buzzn_readings/DELETE_READING',
 
   GET_AUTO_READING_VALUE: 'buzzn_readings/GET_AUTO_READING_VALUE',
+  CALCULATE_READING: 'buzzn_reading/CALCULATE_READING',
 };
 
 export const actions = {
@@ -39,6 +40,17 @@ export const actions = {
     groupId,
     meterId,
     registerId,
+    resolve,
+    reject,
+    params,
+  }),
+
+  calculateReading: ({ groupId, contractId, billingId, billingItemId, resolve, reject, params }) => ({
+    type: constants.CALCULATE_READING,
+    groupId,
+    contractId,
+    billingId,
+    billingItemId,
     resolve,
     reject,
     params,

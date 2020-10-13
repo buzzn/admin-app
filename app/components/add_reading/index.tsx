@@ -36,6 +36,7 @@ const AddReading = ({
   meterId,
   registerId,
   getAutoReadingValue,
+  calculateReading,
   addReadingFormValues,
   edifactMeasurementMethod,
   addReadingFormName,
@@ -65,6 +66,44 @@ const AddReading = ({
   }).then(() => {
     cb && cb();
   });
+  const handleCalculateReading = () => {
+    new Promise((resolve, reject) => {
+      let params: {
+        updated_at: string,
+        begin_date?: string,
+        end_date?: string,
+      } = { updated_at: billingItem.updatedAt };
+
+      if (billingItem.begin) {
+        params.begin_date = addReadingFormValues.date
+      } else {
+        params.end_date = addReadingFormValues.date
+      }
+      calculateReading({
+        groupId,
+        contractId: billingItem.contractId,
+        billingId: billingItem.billingId,
+        billingItemId: billingItem.billingItemId,
+        resolve,
+        reject,
+        params,
+      });
+    }).then((res: { _status: null | number; [key: string]: any }) => {
+      if (res._status === 404) {
+        Alert.warning('<h4>No reading for this date</h4>');
+      } else if (res._status === 422) {
+        Alert.error(`<h4>${Object.keys(res.errors).map(key => res.errors[key].join('<br>')).join('<br>')}</h4>`);
+      } else {
+        const { _status, ...addReadingInit } = res;
+        setAddReadingInit({
+          ...addReadingInit,
+          unit: 'Wh',
+          rawValue: addReadingInit.rawValue / 1000,
+        });
+      }
+    });
+  };
+
   const handleGetAutoReadingValue = () => {
     new Promise((resolve, reject) => {
       getAutoReadingValue({
@@ -92,7 +131,6 @@ const AddReading = ({
   };
   const initialValues = addReadingInit;
   if (date) initialValues.date = date;
-
   return (
     <AddReadingForm
       {...{
@@ -105,6 +143,8 @@ const AddReading = ({
         edifactMeasurementMethod,
         onSubmit: handleAddReading,
         getAutoReadingValue: handleGetAutoReadingValue,
+        calculateReading: handleCalculateReading,
+        hasBillingItem: !!billingItem
       }}
     />
   );
@@ -121,5 +161,9 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { addReading: Readings.actions.addReading, getAutoReadingValue: Readings.actions.getAutoReadingValue },
+  { 
+    addReading: Readings.actions.addReading, 
+    getAutoReadingValue: Readings.actions.getAutoReadingValue, 
+    calculateReading: Readings.actions.calculateReading 
+  }
 )(injectIntl(AddReading));
