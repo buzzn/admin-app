@@ -8,7 +8,7 @@ import FieldInput from 'components/field_input';
 import FieldDate from 'components/field_date';
 import EditableSelect from 'components/editable_select';
 import { dateNormalizer } from 'validation_normalizers';
-import { getNumberDecimalSeperator, numberParse } from '_util';
+import { getNumberDecimalSeperator } from '_util';
 
 interface Props {}
 
