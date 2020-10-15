@@ -62,7 +62,7 @@ class AddReadingForm extends React.Component<Props & InjectedIntlProps> {
                     label: (
                       <React.Fragment>
                         <FormattedMessage id={`${prefix}.rawValue`} /> kWh 
-                        <small>(xxxx{getNumberDecimalSeperator()}xx)</small>
+                        <small>(xxxx{getNumberDecimalSeperator(this.props.intl.locale)}xx)</small>
                       </React.Fragment>
                     ),
                     component: FieldInput,

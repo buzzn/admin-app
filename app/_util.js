@@ -281,7 +281,6 @@ export function formatLabel(value, type, extended, noDecimal) {
 
 
 export function numberParse(locale, string) {
-  console.log(locale);
   const format = new Intl.NumberFormat(locale);
   const parts = format.formatToParts(12345.6);
   const numerals = Array.from({ length: 10 }).map((_, i) => format.format(i));
