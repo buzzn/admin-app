@@ -27,7 +27,7 @@ const GroupMembersExport = ({
   }
 
   const loadExport = (groupId, groupName) => {
-    const loaded = loadGroupMembersExport(groupId, groupName, (errors) => {
+    loadGroupMembersExport(groupId, groupName, (errors) => {
       const err = [''];
       Object.keys(errors).map(key => {
         err.push(errors[key].join());
