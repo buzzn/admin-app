@@ -72,11 +72,7 @@ class BillingData extends React.Component<
   };
 
   killEmAll = () => {
-    if (this.state.killValidation !== killPhrase) {
-      this.setState({ killErr: "You don't know what you're doing." });
-      return;
-    }
-    if (confirm('R U sure????????') && confirm('100% sure?????') && confirm('Last warning')) {
+    if (confirm('R U sure????????')) {
       this.setState({ killSwitch: !this.state.killSwitch, killErr: '', killValidation: '' });
       this.hackStatus({ to: 'void', all: true });
     }
