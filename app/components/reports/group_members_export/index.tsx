@@ -34,7 +34,6 @@ const GroupMembersExport = ({
       });
       setErrorMessages(err.slice(1));
     });
-    console.log('loaded', loaded)
   }
 
   const prefix = 'admin.reports.groupsMembersExport';

@@ -50,7 +50,6 @@ const TariffsList = ({
       value: t.energypriceCentsPerKwh,
     },
   }));
-  console.log(intl);
 
   const columns = [
     {

@@ -57,7 +57,7 @@ const AddReading = ({
       registerId,
       params: { 
         ...params, 
-        rawValue: numberParse(intl.locale, params.rawValue) * 1000 
+        rawValue: numberParse(intl.locale, params.rawValue.toString()) * 1000 
       },
       resolve,
       reject,
@@ -93,12 +93,19 @@ const AddReading = ({
         Alert.warning('<h4>No reading for this date</h4>');
       } else if (res._status === 422) {
         Alert.error(`<h4>${Object.keys(res.errors).map(key => res.errors[key].join('<br>')).join('<br>')}</h4>`);
+      } else if (res._status === 409) {
+        Alert.error(`<h4>Conflict</h4>`);
       } else {
-        const { _status, ...addReadingInit } = res;
+        let kwh = 0;
+        if (billingItem.begin) {
+          kwh = res.beginReadingKwh
+        } else {
+          kwh = res.endReadingKwh
+        }
         setAddReadingInit({
           ...addReadingInit,
           unit: 'Wh',
-          rawValue: addReadingInit.rawValue / 1000,
+          rawValue: kwh /1000,
         });
       }
     });
