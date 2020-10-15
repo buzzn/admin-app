@@ -14,7 +14,6 @@ class AddTariff extends React.Component<Props & InjectedIntlProps> {
 
   constructor(props) {
     super(props);
-    console.log('add tariff', props.intl);
   }
 
   handleToggle = (event) => {
