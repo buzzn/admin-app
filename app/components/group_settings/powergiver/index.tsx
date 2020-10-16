@@ -31,6 +31,7 @@ interface Props {
   submitting: boolean;
   handleSubmit: Function;
   change: Function;
+  deleteGapContact: () => void;
   validationRules: {
     createPersonOwner: { [key: string]: { any } };
     updatePersonOwner: { [key: string]: { any } };
@@ -215,6 +216,7 @@ class Powergiver extends React.Component<Props, State> {
       pristine,
       reset,
       submitting,
+      deleteGapContact,
       handleSubmit,
       isGap,
       validationRules: { createPersonOwner, updatePersonOwner, createOrganizationOwner, updateOrganizationOwner },
@@ -251,8 +253,15 @@ class Powergiver extends React.Component<Props, State> {
         <p className="h5 grey-underline header text-uppercase">
           <FormattedMessage id={`${prefix}.${isGap ? 'headerGCC' : 'headerPowergiver'}`} />
           {!editMode && owner.id && updatable && (
+            <i className="fa fa-trash" style={{ float: 'right', marginLeft: '10px', cursor: 'pointer' }} onClick={(e) => {
+              e.preventDefault();
+              deleteGapContact();
+            }} />
+          )}
+          {!editMode && owner.id && updatable && (
             <i className="buzzn-pencil" style={{ float: 'right' }} onClick={this.switchEditMode} />
           )}
+          
         </p>
         <form onSubmit={handleSubmit(this.submitForm)} data-cy="group owner form">
           <FormPanel

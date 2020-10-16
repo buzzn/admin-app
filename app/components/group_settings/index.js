@@ -108,6 +108,8 @@ class GroupSettings extends React.Component {
       loadingOptions,
       updateGroupContact,
 
+      deleteGapContact,
+
       gap,
       attachBankAccount,
       loadContract,
@@ -252,6 +254,7 @@ class GroupSettings extends React.Component {
                         loadingOptions,
                         validationRules,
                         updateGroupContact: params => updateGroupContact({ groupId: group.id, isGap: true, ...params }),
+                        deleteGapContact: () => deleteGapContact({ groupId: group.id }),
                         // HACK: nested objects can be null on server after beekeeper import in some cases
                         initialValues: gapValues,
                         isGap: true,
@@ -341,6 +344,7 @@ export default connect(
     updateGroup: Groups.actions.updateGroup,
     deleteGroup: Groups.actions.deleteGroup,
     updateGroupContact: Groups.actions.updateGroupContact,
+    deleteGapContact: Groups.actions.deleteGapContact,
     setIncompleteScreen: actions.setIncompleteScreen,
     loadAvailableUsers: Users.actions.loadAvailableUsers,
     loadAvailableOrganizations: Organizations.actions.loadAvailableOrganizations,

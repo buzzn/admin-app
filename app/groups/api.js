@@ -30,6 +30,12 @@ export default {
       method: 'DELETE',
     });
   },
+  deleteGapContact({ token, apiUrl, apiPath, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/person-gap-contract-customer`, {
+      headers: prepareHeaders(token),
+      method: 'DELETE',
+    });
+  },
   updateGroupTSO({ token, apiUrl, apiPath, params, groupId }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/transmission-system-operator`, {
       headers: prepareHeaders(token),
