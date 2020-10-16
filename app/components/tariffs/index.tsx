@@ -31,7 +31,7 @@ class TariffsComponent extends React.Component<
         groupId,
         params: {
           ...params,
-          energypriceCentsPerKwh: numberParse(this.props.intl.locale, params.energypriceCentsPerKwh) * 100,
+          energypriceCentsPerKwh: numberParse(this.props.intl.locale, params.energypriceCentsPerKwh),
           basepriceCentsPerMonth: numberParse(this.props.intl.locale, params.basepriceCentsPerMonth) * 100,
         },
         resolve,
