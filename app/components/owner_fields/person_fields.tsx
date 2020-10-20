@@ -138,6 +138,78 @@ const PersonFields = ({ path, editMode, overrideData, validationRules, legalRepr
           />
         </Col>
       </Row>
+
+      <Row className="fieldgroup">
+        <Col xs="4" className="fieldname" />
+        <Col xs="6" className={fieldClassName}>
+          <FieldValidationWrapper
+            {...{
+              prefix,
+              withLabel: true,
+              name: `${path}emailBackendHost`,
+              component: EditableInput,
+              editMode,
+              overrideData,
+              validationRules,
+            }}
+          />
+        </Col>
+        <Col xs="1" className={fieldClassName}>
+          <FieldValidationWrapper
+            {...{
+              prefix,
+              withLabel: true,
+              name: `${path}emailBackendEncryption`,
+              component: EditableInput,
+              editMode,
+              overrideData,
+              validationRules,
+            }}
+          />
+        </Col>
+        <Col xs="1" className={fieldClassName}>
+          <FieldValidationWrapper
+            {...{
+              prefix,
+              withLabel: true,
+              name: `${path}emailBackendPort`,
+              component: EditableInput,
+              editMode,
+              overrideData,
+              validationRules,
+            }}
+          />
+        </Col>
+      </Row>
+      <Row className="fieldgroup">
+        <Col xs="4" className="fieldname" />
+        <Col xs="4" className={fieldClassName}>
+          <FieldValidationWrapper
+            {...{
+              prefix,
+              withLabel: true,
+              name: `${path}emailBackendUser`,
+              component: EditableInput,
+              editMode,
+              overrideData,
+              validationRules,
+            }}
+          />
+        </Col>
+        <Col xs="4" className={fieldClassName}>
+          <FieldValidationWrapper
+            {...{
+              prefix,
+              withLabel: true,
+              name: `${path}emailBackendPassword`,
+              component: EditableInput,
+              editMode,
+              overrideData,
+              validationRules,
+            }}
+          />
+        </Col>
+      </Row>
     </React.Fragment>
   );
 };
