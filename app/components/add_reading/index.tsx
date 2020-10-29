@@ -56,7 +56,7 @@ const AddReading = ({
       registerId,
       params: { 
         ...params, 
-        rawValue: numberParse(intl.locale, params.rawValue) * 1000 
+        rawValue: numberParse(intl.locale, params.rawValue.toString()) * 1000 
       },
       resolve,
       reject,

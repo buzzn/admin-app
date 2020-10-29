@@ -76,7 +76,7 @@ class AddTariff extends React.Component<Props & InjectedIntlProps> {
                     label: (
                       <React.Fragment>
                         <FormattedMessage id={`${prefix}.energypriceCentsPerKwh`} /> 
-                        <small> (xxxx{getNumberDecimalSeperator(this.props.intl.locale)}xx CENT)</small>
+                        <small> (xx{getNumberDecimalSeperator(this.props.intl.locale)}xxxx CENT)</small>
                       </React.Fragment>
                     ),
                     component: FieldInput,
