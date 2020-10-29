@@ -21,6 +21,7 @@ const NestedDetails = ({
   updateContract,
   intl,
   getContractPDFData,
+  generateContractPDF,
   loadingGroupPowertakers,
 }) => {
   const prefix = 'admin.contracts';
@@ -29,6 +30,7 @@ const NestedDetails = ({
   }, [groupId, tariffId]);
   const [selected, setSelected] = useState({});
   const [appliedAll, setAppliedAll] = useState(false);
+  const [generationErrors, setGenerationErrors] = useState<any[]>([]);
   useEffect(() => {
     setSelected(
       groupPowertakers.array.reduce(
@@ -84,12 +86,7 @@ const NestedDetails = ({
     setUpdating(false);
   };
 
-  const handleGeneratePDFs = () => {
-    loadingGroupPowertakers();
-    groupPowertakers.array.forEach(powertaker => {
-      console.log(powertaker);
-    })
-  }
+  
 
   
 
@@ -110,6 +107,50 @@ const NestedDetails = ({
           }
           : { value: p.customer.name, image: p.customer.image || DefaultOrganisation, type: 'avatar', clickable: true },
     }));
+
+  const handleGeneratePDFs = (tariffId) => {
+    const errors: any[] = [];
+    setUpdating(true);
+    const activeData = data.filter(d=> d.status === 'active');
+    const contracts = [...activeData];
+
+    const next = () => {
+      console.log('NEXT', contracts);
+      if(contracts.length) {
+        setTimeout(() => goThrough(), 800);
+      } else {
+        setGenerationErrors(errors);
+        setUpdating(false);
+        loadGroupPowertakers({ groupId });
+      }
+    }
+
+    const goThrough = () => {
+      const contract = contracts.pop();
+      console.log('CONTRACT', contract);
+      
+      // call the group powertakers document tarif generation super thing
+      console.log('call again');
+      
+      generateContractPDF({ groupId, contractId: contract.id,
+        template: 'tariff_change_letter',
+        resolve: () => {
+          console.log(contract);
+          Alert.success('<h4>' + (activeData.length - contracts.length) + '/'+ activeData.length + '</h4>' + 'successfully generated for: ' + contract.fullContractNumber)
+          next();
+        },
+        reject: (status, message) => {
+          Alert.error('<h4>' + (activeData.length - contracts.length) + '/'+ activeData.length + '</h4>' + JSON.stringify(message));
+          errors.push({
+            contract, 
+            message
+          })
+          next();
+        } 
+      });
+    };
+    goThrough();
+  }
 
   const filterActive = () => {
     setFilterShowActive(!filterShowActive);
@@ -216,7 +257,7 @@ const NestedDetails = ({
             </button>
           </li>
           <li style={{ marginLeft: '10px' }}>
-            <SpanClick data-cy="add tariff CTA" onClick={handleGeneratePDFs}>
+            <SpanClick data-cy="add tariff CTA" onClick={() => handleGeneratePDFs(tariffId)}>
               <FormattedMessage id="admin.tariffs.generateTariffChangeLetter" /> <i className="fa fa-cog" />
             </SpanClick>
           </li>
@@ -227,9 +268,16 @@ const NestedDetails = ({
           </li>
         </ul>
       </ToolBar>
-      <ResponseOutputBox>
-        hello
-      </ResponseOutputBox>
+      { generationErrors && generationErrors.length ? (
+        <ResponseOutputBox>
+          <ul>
+          { generationErrors.map((error, index) => (
+            <li key={index}>{error.contract.fullContractNumber} - { JSON.stringify(error.message) }</li>
+          )) }
+          </ul>
+        </ResponseOutputBox>
+      ) : null}
+      
       <ReactTableSorted
         {...{
           data: filterShowActive ? data.filter((d) => d.status === 'active' && selected[d.id]) : data,

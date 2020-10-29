@@ -1,6 +1,7 @@
 import 'whatwg-fetch';
 import snakeCase from 'lodash/snakeCase';
 import { prepareHeaders, parseResponse, camelizeResponseKeys, camelizeResponseArray, snakeReq } from '../_util';
+import { parse } from 'postcss';
 
 export default {
   fetchContract({ token, apiUrl, apiPath, contractId, groupId }) {
@@ -182,7 +183,7 @@ export default {
       headers: prepareHeaders(token, true),
       method: 'POST',
       body: params,
-    }).then(parseResponse);
+    }).then(parseResponse).catch(parseResponse);
   },
   deleteContractPDF({ token, apiUrl, apiPath, groupId, contractId, documentId }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/documents/${documentId}`, {
