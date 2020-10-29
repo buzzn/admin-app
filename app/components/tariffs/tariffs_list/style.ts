@@ -119,3 +119,44 @@ export const ToolBar = styled.div`
     }
   }
 `;
+
+
+export const DocumentList = styled.div`
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0 20px 0 0;
+    li {
+      margin: 0 0 0.5em;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      cursor: pointer;
+      width: 100%;
+      display: block;
+      line-height: 1.4;
+    }
+  }
+`
+
+export const ResponseOutputBox = styled.div`
+padding: 20px;
+border: 1px solid #ff000055;
+background: #ff000055;
+color: #ff0000;
+font-weight: bold;
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0 20px 0 0;
+  li {
+    margin: 0 0 0.5em;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    cursor: pointer;
+    width: 100%;
+    display: block;
+    line-height: 1.4;
+  }
+}
+`
+

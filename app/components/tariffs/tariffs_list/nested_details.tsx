@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Alert from 'react-s-alert';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import Contracts from 'contracts';
 import ReactTableSorted from 'components/react_table_sorted';
 import { tableParts as TableParts } from 'react_table_config';
-import { NestedDetailsWrapper } from 'components/style';
+import { NestedDetailsWrapper, SpanClick } from 'components/style';
 import Loading from 'components/loading';
-import { StatusIcon, SwitchButton, ToolBar } from './style';
+import { DocumentList, ResponseOutputBox, StatusIcon, SwitchButton, ToolBar } from './style';
 
 const DefaultPerson = require('images/default_person.jpg');
 const DefaultOrganisation = require('images/default_organisation.jpg');
@@ -20,6 +20,8 @@ const NestedDetails = ({
   loadGroupPowertakers,
   updateContract,
   intl,
+  getContractPDFData,
+  loadingGroupPowertakers,
 }) => {
   const prefix = 'admin.contracts';
   useEffect(() => {
@@ -81,6 +83,13 @@ const NestedDetails = ({
     loadGroupPowertakers({ groupId });
     setUpdating(false);
   };
+
+  const handleGeneratePDFs = () => {
+    loadingGroupPowertakers();
+    groupPowertakers.array.forEach(powertaker => {
+      console.log(powertaker);
+    })
+  }
 
   
 
@@ -152,6 +161,30 @@ const NestedDetails = ({
       ),
     },
     {
+      Header: () => (
+        <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableDocuments` })} />
+      ),
+      accessor: 'documents',
+      className: 'cy-text',
+      Cell: ({ original }) => (
+        <div>
+          <DocumentList>
+            <ul>
+            { 
+              original.documents && original.documents.array ? 
+              original.documents.array.map(({id, filename}, index) => (
+                <li 
+                  key={index} 
+                  onClick={() => getContractPDFData({ groupId, contractId: original.id, documentId: id, fileName: filename })}
+                >{filename}</li>
+              )) : ''  
+            }
+            </ul>
+          </DocumentList>
+        </div>
+      ),
+    },
+    {
       accessor: 'tariffs',
       Cell: ({ original }) => (
         <div onClick={() => apply(original)}>
@@ -182,9 +215,21 @@ const NestedDetails = ({
               Update
             </button>
           </li>
+          <li style={{ marginLeft: '10px' }}>
+            <SpanClick data-cy="add tariff CTA" onClick={handleGeneratePDFs}>
+              <FormattedMessage id="admin.tariffs.generateTariffChangeLetter" /> <i className="fa fa-cog" />
+            </SpanClick>
+          </li>
+          <li style={{ marginLeft: '10px' }}>
+            <SpanClick data-cy="add tariff CTA">
+              <FormattedMessage id="admin.tariffs.sendTariffChangeLetter" /> <i className="fa fa-envelope" />
+            </SpanClick>
+          </li>
         </ul>
-       
       </ToolBar>
+      <ResponseOutputBox>
+        hello
+      </ResponseOutputBox>
       <ReactTableSorted
         {...{
           data: filterShowActive ? data.filter((d) => d.status === 'active' && selected[d.id]) : data,
@@ -210,7 +255,12 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   {
+    loadingGroupPowertakers: Contracts.actions.loadingGroupPowertakers,
+    loadedGroupPowertakers: Contracts.actions.loadedGroupPowertakers,
     loadGroupPowertakers: Contracts.actions.loadGroupPowertakers,
     updateContract: Contracts.actions.updateContract,
+    getContractPDFData: Contracts.actions.getContractPDFData,
+    attachContractPDF: Contracts.actions.attachContractPDF,
+    generateContractPDF: Contracts.actions.generateContractPDF
   },
 )(injectIntl(NestedDetails));

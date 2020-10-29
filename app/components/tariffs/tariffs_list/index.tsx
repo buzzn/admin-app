@@ -68,7 +68,7 @@ const TariffsList = ({
         <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableBasepriceCentsPerMonth` })} />
       ),
       accessor: 'basepriceCentsPerMonth',
-      filterMethod: TableParts.filters.filterByValue,
+      filterMethod: TableParts.filters.filterByValue, 
       sortMethod: TableParts.sort.sortByValue,
       Cell: ({ value: { Display } }) => Display,
     },
