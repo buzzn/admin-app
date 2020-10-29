@@ -16,6 +16,7 @@ import { OwnerOptions } from './style';
 
 interface Props {
   isGap?: boolean;
+  groupId: number;
   owner: any;
   switchEditMode: () => void;
   editMode: boolean;
@@ -207,6 +208,7 @@ class Powergiver extends React.Component<Props, State> {
 
   render() {
     const {
+      groupId,
       updatable,
       owner,
       editMode,
@@ -318,8 +320,10 @@ class Powergiver extends React.Component<Props, State> {
                     <br />
                   </React.Fragment>
                 )}
+                hello
                 <PersonFields
                   {...{
+                    groupId,
                     editMode,
                     path: '',
                     overrideData: selectedOwner
@@ -348,6 +352,7 @@ class Powergiver extends React.Component<Props, State> {
                 )}
                 <OrganizationFields
                   {...{
+                    groupId,
                     editMode,
                     path: '',
                     overrideData: selectedOwner

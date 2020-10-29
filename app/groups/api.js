@@ -101,5 +101,10 @@ export default {
     return fetch(`${apiUrl}${apiPath}/localpools?include=localpool_processing_contracts`, { headers: prepareHeaders(token) })
       .then(parseResponse)
       .then(camelizeResponseKeys);
-  }
+  },
+  sendTestMail({ token, apiUrl, apiPath, groupId }) {
+    console.log('why not here');
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/send-testmail`, 
+      { headers: prepareHeaders(token) }).then(parseResponse);
+  },
 };
