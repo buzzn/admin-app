@@ -515,7 +515,7 @@ describe('contracts module', () => {
       { ...apiParams },
       { groupId: '', contractId: '', resolve: null, reject },
     ).run();
-    expect(reject).toHaveBeenCalledWith(422);
+    expect(reject).toHaveBeenCalledWith(422, undefined);
   });
 
   it('fails to generate PDF', async () => {
