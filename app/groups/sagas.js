@@ -137,7 +137,21 @@ export function* updateContact(
   }
 }
 
+export function* sendTestMail({ apiUrl, apiPath, token }, { groupId, resolve, reject }) {
+  try {
+    const res = yield call(api.sendTestMail, { apiUrl, apiPath, token, groupId });
+    if (res._error && res.errors) {
+      yield call(reject, new SubmissionError(convertErrors(res.errors)));
+    } else {
+      yield call(resolve, res);
+    }
+  } catch (error) {
+    logException(error);
+  }
+}
+
 export function* groupsSagas({ apiUrl, apiPath, token }) {
+  yield takeLatest(constants.SEND_TESTMAIL, sendTestMail, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUPS, getGroups, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUP, getGroup, { apiUrl, apiPath, token });
   yield takeLeading(constants.ADD_GROUP, addGroup, { apiUrl, apiPath, token });

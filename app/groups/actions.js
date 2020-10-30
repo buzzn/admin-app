@@ -25,6 +25,8 @@ export const constants = {
   LOADING_GROUPS: 'buzzn_groups/LOADING_GROUPS',
   LOADED_GROUPS: 'buzzn_groups/LOADED_GROUPS',
   SET_GROUPS: 'buzzn_groups/SET_GROUPS',
+
+  SEND_TESTMAIL: 'buzzn_groups/SEND_TESTMAIL',
 };
 
 export const actions = {
@@ -88,6 +90,13 @@ export const actions = {
     contactId,
     contactType,
     isGap,
+  }),
+
+  sendTestMail: ({ groupId, resolve, reject }) => ({
+    type: constants.SEND_TESTMAIL,
+    groupId,
+    resolve,
+    reject,
   }),
 
   loadGroups: () => ({ type: constants.LOAD_GROUPS }),
