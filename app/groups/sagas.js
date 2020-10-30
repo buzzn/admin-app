@@ -3,6 +3,7 @@ import { SubmissionError } from 'redux-form';
 import { logException, convertErrors } from '_util';
 import { actions, constants } from './actions';
 import api from './api';
+import Alert from 'react-s-alert';
 
 export const selectGroupId = state => state.groups.groupId;
 
@@ -69,7 +70,9 @@ export function* updateGroup({ apiUrl, apiPath, token }, { params, resolve, reje
       }
     }
     const res = yield call(api.updateGroup, { apiUrl, apiPath, token, params: { ...params, updatedAt }, groupId });
+    
     if (res._error || Object.keys(errs).length) {
+      Alert.error(JSON.stringify(convertErrors(res.errors)));
       yield call(reject, new SubmissionError({ ...convertErrors(res.errors), ...errs }));
     } else {
       yield call(resolve, res);
@@ -115,6 +118,7 @@ export function* updateContact(
   { groupId, params, update, contactId, contactType, isGap, resolve, reject },
 ) {
   try {
+    console.log('am i here???')
     const res = yield call(api.updateGroupContact, {
       apiUrl,
       apiPath,
@@ -127,7 +131,8 @@ export function* updateContact(
       isGap,
     });
     if (res._error && res.errors) {
-      yield call(reject, new SubmissionError(convertErrors(res.errors)));
+      Alert.error(JSON.stringify(convertErrors(res.errors)));
+      yield call(reject, new SubmissionError(res.errors));
     } else {
       yield call(resolve, res);
       yield put(actions.loadGroup(groupId));

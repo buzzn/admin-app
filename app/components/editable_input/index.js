@@ -20,6 +20,9 @@ const EditableInput = ({
     if (!isNaN(Number(field.minimum))) fieldProps.min = field.minimum;
     if (!isNaN(Number(field.maximum))) fieldProps.max = field.maximum;
   }
+  if (field.type === 'password') {
+    fieldProps.type = 'password';
+  }
 
   if (editMode) {
     return (

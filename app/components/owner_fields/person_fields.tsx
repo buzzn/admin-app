@@ -9,6 +9,7 @@ import AddressFields from './address_fields';
 import EditableCheckbox from '../editable_checkbox';
 import { connect } from 'react-redux';
 import Groups from '../../groups';
+import Alert from 'react-s-alert';
 
 interface Props {
   groupId?: number;
@@ -28,8 +29,8 @@ const PersonFields = ({ groupId, path, editMode, overrideData, validationRules, 
   const handleTestMail = (event) => {
     event.preventDefault();
     console.log('sendTestMail', sendTestMail)
-    sendTestMail({ groupId, resolve: () => {
-      console.log('resolve');
+    sendTestMail({ groupId, resolve: (res) => {
+      Alert.success('<h4>' + res.message + '</h4> ' + res.receiver);
     }, reject: () => {
       console.log('reject');
     }})
@@ -166,7 +167,7 @@ const PersonFields = ({ groupId, path, editMode, overrideData, validationRules, 
                   {...{
                     prefix,
                     withLabel: true,
-                    name: `${path}emailActive`,
+                    name: `${path}emailBackendActive`,
                     component: EditableCheckbox,
                     editMode,
                     overrideData,
@@ -177,14 +178,15 @@ const PersonFields = ({ groupId, path, editMode, overrideData, validationRules, 
           </Row>
           <Row className="fieldgroup">
             <Col xs="4" className="fieldname">
+              { !editMode ? (
                 <button onClick={handleTestMail} className="btn btn-primary">
                   <FormattedMessage
                     id={`admin.persons.emailSendTestMail`}
                   />
                 </button>
+              ) : null}
             </Col>
             <Col xs="4" className={fieldClassName}>
-              
               <FieldValidationWrapper
                 {...{
                   prefix,
@@ -203,8 +205,13 @@ const PersonFields = ({ groupId, path, editMode, overrideData, validationRules, 
                   prefix,
                   withLabel: true,
                   name: `${path}emailBackendEncryption`,
-                  component: EditableInput,
+                  component: EditableSelect,
                   editMode,
+                  listOverride: [
+                    { value: 'NONE', label: 'none' },
+                    { value: 'SSL/TLS', label: 'ssltls' },
+                    { value: 'STARTTLS', label: 'starttls' }
+                  ],
                   overrideData,
                   validationRules,
                 }}
@@ -245,6 +252,22 @@ const PersonFields = ({ groupId, path, editMode, overrideData, validationRules, 
                   prefix,
                   withLabel: true,
                   name: `${path}emailBackendPassword`,
+                  component: EditableInput,
+                  editMode,
+                  overrideData,
+                  validationRules,
+                }}
+              />
+            </Col>
+          </Row>
+          <Row className="fieldgroup">
+            <Col xs="4" className="fieldname" />
+            <Col xs="8" className={fieldClassName}>
+              <FieldValidationWrapper
+                {...{
+                  prefix,
+                  withLabel: true,
+                  name: `${path}emailBackendSignature`,
                   component: EditableInput,
                   editMode,
                   overrideData,
