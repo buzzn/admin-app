@@ -246,9 +246,23 @@ export function* attachContractPDF({ apiUrl, apiPath, token }, { params, groupId
 export function* generateContractPDF({ apiUrl, apiPath, token }, { groupId, contractId, resolve, reject, template }) {
   try {
     const res = yield call(api.generateContractPDF, { apiUrl, apiPath, token, groupId, contractId, template });
-    console.log('response', res);
     if (res._status === 200) {
       resolve();
+    } else {
+      reject(res._status, res.errors);
+    }
+  } catch (error) {
+    logException(error);
+    reject(error);
+  }
+}
+
+export function* sendTariffChangeLetterPDF({ apiUrl, apiPath, token }, { groupId, contractId, documentId, resolve, reject }) {
+  try {
+    const res = yield call(api.sendTariffChangeLetterPDF, { apiUrl, apiPath, token, groupId, contractId, documentId });
+    console.log('response', res);
+    if (res._status === 200) {
+      resolve(res);
     } else {
       reject(res._status, res.errors);
     }
@@ -285,6 +299,7 @@ export function* contractSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.GET_CONTRACT_PDF_DATA, getContractPDFData, { apiUrl, apiPath, token });
   yield takeLeading(constants.ATTACH_CONTRACT_PDF, attachContractPDF, { apiUrl, apiPath, token });
   yield takeLeading(constants.GENERATE_CONTRACT_PDF, generateContractPDF, { apiUrl, apiPath, token });
+  yield takeLeading(constants.SEND_TARIFF_CHANGE_LETTER_PDF, sendTariffChangeLetterPDF, { apiUrl, apiPath, token });
   yield takeLeading(constants.DELETE_CONTRACT_PDF, deleteContractPDF, { apiUrl, apiPath, token });
   const groupId = yield select(selectGroup);
   const withBillings = yield select(selectWithBillings);

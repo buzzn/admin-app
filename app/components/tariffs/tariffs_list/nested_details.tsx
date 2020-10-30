@@ -22,6 +22,7 @@ const NestedDetails = ({
   intl,
   getContractPDFData,
   generateContractPDF,
+  sendTariffChangeLetterPDF,
 }) => {
   const prefix = 'admin.contracts';
   useEffect(() => {
@@ -150,6 +151,92 @@ const NestedDetails = ({
     goThrough();
   }
 
+  const handleSendTariffChangeLetterPDFs = () => {
+    const errors: any[] = [];
+    setUpdating(true);
+    const activeData = data.filter(d=> d.status === 'active');
+    const contracts = [...activeData];
+
+    const next = () => {
+      console.log('NEXT', contracts);
+      if(contracts.length) {
+        setTimeout(() => goThrough(), 800);
+      } else {
+        setGenerationErrors(errors);
+        setUpdating(false);
+        loadGroupPowertakers({ groupId });
+      }
+    }
+
+    const goThrough = () => {
+      const contract = contracts.pop();
+      console.log('CONTRACT', contract);
+
+      if(!contract.documents || !contract.documents.array.length) {
+        Alert.error('<h4>No Documents</h4> for ' + contract.fullContractNumber);
+        errors.push({
+          contract, 
+          message: 'no documents'
+        });
+        goThrough();
+        return ; 
+      }
+
+      if(!contract.documents.array.find(({ purpose }) => purpose === 'tariff_change_letter')) {
+        Alert.error('<h4>No Tariff change Letter generated</h4> for ' + contract.fullContractNumber);
+        errors.push({
+          contract, 
+          message: 'No Tariff change Letter generated'
+        });
+        goThrough();
+        return;
+      }
+
+      if(!contract.documents.array.find(({ purpose, lastSend }) => purpose === 'tariff_change_letter' && !lastSend)) {
+        Alert.error('<h4>No Tariff change Letter that was not already sent</h4> for ' + contract.fullContractNumber);
+        errors.push({
+          contract, 
+          message: 'No Tariff change Letter that was not already sent'
+        });
+        goThrough();
+        return;
+      }
+
+      const documents = contract.documents.array.filter(({ purpose, lastSend }) => purpose === 'tariff_change_letter' && !lastSend).sort((a, b) => {
+        const da = Date.parse(a);
+        const db = Date.parse(b);
+        if (da > db) {
+          return 1;
+        }
+        if (da < db) {
+          return -1;
+        }
+        return 0;
+      });
+      console.log(documents);
+      // call the group powertakers document tarif generation super thing
+      
+      sendTariffChangeLetterPDF({ 
+        groupId, 
+        contractId: contract.id,
+        documentId: documents[0].id,
+        resolve: () => {
+          Alert.success('<h4>' + (activeData.length - contracts.length) + '/'+ activeData.length + '</h4>' + 'successfully send for: ' + contract.fullContractNumber)
+          next();
+        },
+        reject: (status, message) => {
+          Alert.error('<h4>' + (activeData.length - contracts.length) + '/'+ activeData.length + '</h4>' + status + ' - ' + JSON.stringify(message));
+          errors.push({
+            contract, 
+            message
+          })
+          next();
+        } 
+      });
+    };
+    goThrough();
+  }
+
   const filterActive = () => {
     setFilterShowActive(!filterShowActive);
   }
@@ -211,7 +298,7 @@ const NestedDetails = ({
             <ul>
             { 
               original.documents && original.documents.array ? 
-              original.documents.array.map(({id, filename}, index) => (
+              original.documents.array.filter(({purpose}) => purpose === 'tariff_change_letter').map(({id, filename}, index) => (
                 <li 
                   key={index} 
                   onClick={() => getContractPDFData({ groupId, contractId: original.id, documentId: id, fileName: filename })}
@@ -260,7 +347,7 @@ const NestedDetails = ({
             </SpanClick>
           </li>
           <li style={{ marginLeft: '10px' }}>
-            <SpanClick data-cy="add tariff CTA">
+            <SpanClick data-cy="add tariff CTA" onClick={() => handleSendTariffChangeLetterPDFs()}>
               <FormattedMessage id="admin.tariffs.sendTariffChangeLetter" /> <i className="fa fa-envelope" />
             </SpanClick>
           </li>
@@ -307,6 +394,7 @@ export default connect(
     updateContract: Contracts.actions.updateContract,
     getContractPDFData: Contracts.actions.getContractPDFData,
     attachContractPDF: Contracts.actions.attachContractPDF,
-    generateContractPDF: Contracts.actions.generateContractPDF
+    generateContractPDF: Contracts.actions.generateContractPDF,
+    sendTariffChangeLetterPDF: Contracts.actions.sendTariffChangeLetterPDF,
   },
 )(injectIntl(NestedDetails));

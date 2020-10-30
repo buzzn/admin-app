@@ -41,6 +41,7 @@ export const constants = {
   DELETE_PAYMENT: 'buzzn_contracts/DELETE_PAYMENT',
 
   GENERATE_CONTRACT_PDF: 'buzzn_contracts/GENERATE_CONTRACT_PDF',
+  SEND_TARIFF_CHANGE_LETTER_PDF: 'buzzn_contracts/SEND_TARIFF_CHANGE_LETTER_PDF',
   ATTACH_CONTRACT_PDF: 'buzzn_contracts/ATTACH_CONTRACT_PDF',
   DELETE_CONTRACT_PDF: 'buzzn_contracts/DELETE_CONTRACT_PDF',
   GET_CONTRACT_PDF_META: 'buzzn_contracts/GET_CONTRACT_PDF_META',
@@ -176,6 +177,14 @@ export const actions = {
     resolve,
     reject,
     template,
+  }),
+  sendTariffChangeLetterPDF: ({ groupId, contractId, documentId, resolve, reject }) => ({
+    type: constants.SEND_TARIFF_CHANGE_LETTER_PDF,
+    groupId,
+    contractId,
+    documentId,
+    resolve,
+    reject,
   }),
   attachContractPDF: ({ groupId, contractId, params, resolve, reject }) => ({
     type: constants.ATTACH_CONTRACT_PDF,

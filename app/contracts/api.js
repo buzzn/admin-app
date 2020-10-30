@@ -178,6 +178,12 @@ export default {
       body: JSON.stringify({ template: snakeCase(template).replace(/_\d+/g, str => str.split('_')[1]) }),
     }).then(parseResponse);
   },
+  sendTariffChangeLetterPDF({ token, apiUrl, apiPath, groupId, contractId, documentId }) {
+    // de.buzzn.net/api/admin/localpools/$GROUP_ID/contract/$CONTRACT_ID/send-tariff-change-letter/$DOCUMENT_ID
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/send-tariff-change-letter/${documentId}`, {
+      headers: prepareHeaders(token)
+    }).then(parseResponse);
+  },
   attachContractPDF({ token, apiUrl, apiPath, groupId, contractId, params }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/documents`, {
       headers: prepareHeaders(token, true),
