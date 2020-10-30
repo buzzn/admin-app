@@ -22,7 +22,6 @@ const NestedDetails = ({
   intl,
   getContractPDFData,
   generateContractPDF,
-  loadingGroupPowertakers,
 }) => {
   const prefix = 'admin.contracts';
   useEffect(() => {
@@ -108,7 +107,7 @@ const NestedDetails = ({
           : { value: p.customer.name, image: p.customer.image || DefaultOrganisation, type: 'avatar', clickable: true },
     }));
 
-  const handleGeneratePDFs = (tariffId) => {
+  const handleGeneratePDFs = () => {
     const errors: any[] = [];
     setUpdating(true);
     const activeData = data.filter(d=> d.status === 'active');
@@ -135,12 +134,11 @@ const NestedDetails = ({
       generateContractPDF({ groupId, contractId: contract.id,
         template: 'tariff_change_letter',
         resolve: () => {
-          console.log(contract);
           Alert.success('<h4>' + (activeData.length - contracts.length) + '/'+ activeData.length + '</h4>' + 'successfully generated for: ' + contract.fullContractNumber)
           next();
         },
         reject: (status, message) => {
-          Alert.error('<h4>' + (activeData.length - contracts.length) + '/'+ activeData.length + '</h4>' + JSON.stringify(message));
+          Alert.error('<h4>' + (activeData.length - contracts.length) + '/'+ activeData.length + '</h4>' + status + ' - ' + JSON.stringify(message));
           errors.push({
             contract, 
             message
@@ -257,7 +255,7 @@ const NestedDetails = ({
             </button>
           </li>
           <li style={{ marginLeft: '10px' }}>
-            <SpanClick data-cy="add tariff CTA" onClick={() => handleGeneratePDFs(tariffId)}>
+            <SpanClick data-cy="add tariff CTA" onClick={() => handleGeneratePDFs()}>
               <FormattedMessage id="admin.tariffs.generateTariffChangeLetter" /> <i className="fa fa-cog" />
             </SpanClick>
           </li>

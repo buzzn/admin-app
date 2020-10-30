@@ -7,10 +7,8 @@ import EditableInput from 'components/editable_input';
 import EditableSelect from 'components/editable_select';
 import AddressFields from './address_fields';
 import EditableCheckbox from '../editable_checkbox';
-import TwoColField from '../two_col_field';
 import { connect } from 'react-redux';
 import Groups from '../../groups';
-import { selectGroupId } from 'app/groups/sagas';
 
 interface Props {
   groupId?: number;
