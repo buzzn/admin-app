@@ -221,7 +221,7 @@ const NestedDetails = ({
         contractId: contract.id,
         documentId: documents[0].id,
         resolve: () => {
-          Alert.success('<h4>' + (activeData.length - contracts.length) + '/'+ activeData.length + '</h4>' + 'successfully send for: ' + contract.fullContractNumber)
+          Alert.success('<h4>' + (activeData.length - contracts.length) + '/'+ activeData.length + '</h4>' + 'successfully sent for: ' + contract.fullContractNumber)
           next();
         },
         reject: (status, message) => {
