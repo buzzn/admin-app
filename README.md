@@ -83,7 +83,7 @@ npm rebuild node-sass
 ```shell
 yarn run typecheck
 yarn run test
-if [ "$CI_BRANCH" == "DEV-58-traiff-change" ]; then export NODE_ENV="staging"; elif [ "$CI_BRANCH" == "master" ]; then export NODE_ENV="staging"; npm run build; elif [ "$CI_BRANCH" == "develop" ]; then export NODE_ENV="develop"; npm run build; else export NODE_ENV="production"; npm run build; fi;
+if [ "$CI_BRANCH" == "DEV-58-traiff-change" ]; then export NODE_ENV="staging"; elif [ "$CI_BRANCH" == "master" ]; then export NODE_ENV="staging"; elif [ "$CI_BRANCH" == "master" ]; then export NODE_ENV="staging"; npm run build; elif [ "$CI_BRANCH" == "develop" ]; then export NODE_ENV="develop"; npm run build; else export NODE_ENV="production"; npm run build; fi;
 ```
 
 To use linter:

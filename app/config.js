@@ -22,6 +22,7 @@ if (process.env.NODE_ENV === 'production') {
     callBackURL: '',
     secure: true,
   };
+  
 } else if (process.env.NODE_ENV === 'develop') {
   config = {
     apiUrl: 'https://staging-core.buzzn.net/',
