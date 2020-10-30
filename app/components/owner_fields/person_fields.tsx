@@ -186,7 +186,7 @@ const PersonFields = ({ groupId, path, editMode, overrideData, validationRules, 
                 </button>
             </Col>
             <Col xs="4" className={fieldClassName}>
-              
+              {JSON.stringify(validationRules)}
               <FieldValidationWrapper
                 {...{
                   prefix,
@@ -205,7 +205,7 @@ const PersonFields = ({ groupId, path, editMode, overrideData, validationRules, 
                   prefix,
                   withLabel: true,
                   name: `${path}emailBackendEncryption`,
-                  component: EditableInput,
+                  component: EditableSelect,
                   editMode,
                   overrideData,
                   validationRules,
