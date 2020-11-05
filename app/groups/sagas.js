@@ -146,7 +146,7 @@ export function* sendTestMail({ apiUrl, apiPath, token }, { groupId, resolve, re
   try {
     const res = yield call(api.sendTestMail, { apiUrl, apiPath, token, groupId });
     if (res._error && res.errors) {
-      yield call(reject, new SubmissionError(convertErrors(res.errors)));
+      yield call(reject, res.errors);
     } else {
       yield call(resolve, res);
     }

@@ -28,11 +28,11 @@ const PersonFields = ({ groupId, path, editMode, overrideData, validationRules, 
 
   const handleTestMail = (event) => {
     event.preventDefault();
-    console.log('sendTestMail', sendTestMail)
     sendTestMail({ groupId, resolve: (res) => {
       Alert.success('<h4>' + res.message + '</h4> ' + res.receiver);
-    }, reject: () => {
+    }, reject: (...args) => {
       console.log('reject');
+      Alert.error('<h4>' + 'ERROR' + '</h4> ' + JSON.stringify(args))
     }})
   }
 
@@ -283,7 +283,6 @@ const PersonFields = ({ groupId, path, editMode, overrideData, validationRules, 
   );
 };
 function mapStateToProps(state) {
-  console.log(state);
   return {
   };
 }
