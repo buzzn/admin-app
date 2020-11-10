@@ -282,7 +282,7 @@ const PersonFields = ({ groupId, path, editMode, overrideData, validationRules, 
     </React.Fragment>
   );
 };
-function mapStateToProps(state) {
+function mapStateToProps() {
   return {
   };
 }
