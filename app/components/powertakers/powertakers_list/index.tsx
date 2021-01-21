@@ -36,15 +36,18 @@ const PowertakersList = ({
 }: Props & BreadcrumbsProps & InjectedIntlProps) => {
   if (loading) return <Loading minHeight={40} />;
 
-  const filteredPowertakers = powertakers.filter(o => (pType === 'active' ? o.status !== 'ended' : o.status === 'ended'));
+  const filteredPowertakers = powertakers.filter(o =>
+    pType === 'active' ? o.status !== 'ended' : o.status === 'ended',
+  );
 
   const prefix = 'admin.contracts';
 
   const data = orderBy(
     filteredPowertakers,
-    o => (o.type === 'contract_localpool_third_party'
-      ? null
-      : o.customer.name || `${o.customer.lastName} ${o.customer.firstName}`),
+    o =>
+      o.type === 'contract_localpool_third_party'
+        ? null
+        : o.customer.name || `${o.customer.lastName} ${o.customer.firstName}`,
     'asc',
   ).map(p => ({
     ...p,
@@ -58,8 +61,16 @@ const PowertakersList = ({
             type: 'avatar',
             clickable: true,
           }
-          : { value: p.customer.name, image: p.customer.image || DefaultOrganisation, type: 'avatar', clickable: true },
-          linkPowertaker: p.type === 'contract_localpool_third_party' ? '' : `${url}/${p.id}/powertaker`,
+        : {
+            value: p.customer.name,
+            image: p.customer.image || DefaultOrganisation,
+            type: 'avatar',
+            clickable: true,
+          },
+    linkPowertaker:
+      p.type === 'contract_localpool_third_party'
+        ? ''
+        : `${url}/${p.id}/powertaker`,
     linkContract: `${url}/${p.id}`,
     marketLocationName:
       p && p.registerMeta && p.registerMeta.name
@@ -88,7 +99,11 @@ const PowertakersList = ({
   }));
   const columns = [
     {
-      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableName` })} />,
+      Header: () => (
+        <TableParts.components.headerCell
+          title={intl.formatMessage({ id: `${prefix}.tableName` })}
+        />
+      ),
       accessor: 'name',
       className: 'cy-powertaker',
       filterMethod: TableParts.filters.filterByValue,
@@ -97,7 +112,10 @@ const PowertakersList = ({
     },
     {
       Header: () => (
-        <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableMarketLocation` })} />),
+        <TableParts.components.headerCell
+          title={intl.formatMessage({ id: `${prefix}.tableMarketLocation` })}
+        />
+      ),
       accessor: 'marketLocationName',
       className: 'cy-malo',
       style: {
@@ -120,12 +138,20 @@ const PowertakersList = ({
       sortMethod: TableParts.sort.sortByFulContractNumber,
     },
     {
-      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableBeginDate` })} />,
+      Header: () => (
+        <TableParts.components.headerCell
+          title={intl.formatMessage({ id: `${prefix}.tableBeginDate` })}
+        />
+      ),
       accessor: 'beginDate',
       Cell: ({ value }) => moment(value).format('DD.MM.YYYY'),
     },
     {
-      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableStatus` })} />,
+      Header: () => (
+        <TableParts.components.headerCell
+          title={intl.formatMessage({ id: `${prefix}.tableStatus` })}
+        />
+      ),
       accessor: 'status',
       filterMethod: TableParts.filters.filterByValue,
       sortMethod: TableParts.sort.sortByValue,
@@ -135,7 +161,11 @@ const PowertakersList = ({
 
   if (pType === 'past') {
     columns.splice(4, 0, {
-      Header: () => <TableParts.components.headerCell title={intl.formatMessage({ id: `${prefix}.tableLastDate` })} />,
+      Header: () => (
+        <TableParts.components.headerCell
+          title={intl.formatMessage({ id: `${prefix}.tableLastDate` })}
+        />
+      ),
       accessor: 'lastDate',
       Cell: ({ value }) => (value ? moment(value).format('DD.MM.YYYY') : ''),
     });
@@ -156,14 +186,17 @@ const PowertakersList = ({
           {!!group.allowedActions &&
             group.allowedActions.createLocalpoolThirdPartyContract === true && (
               <Link to={`${url}/add-third-party`} data-cy="add third party CTA">
-                <FormattedMessage id="admin.contracts.addNewThirdParty" /> <i className="fa fa-tty" />
+                <FormattedMessage id="admin.contracts.addNewThirdParty" />{' '}
+                <i className="fa fa-tty" />
               </Link>
             )}
-          {!!group.allowedActions && group.allowedActions.createLocalpoolPowerTakerContract === true && (
-            <Link to={`${url}/add-powertaker`} data-cy="add powertaker CTA">
-              <FormattedMessage id="admin.contracts.addNew" /> <i className="fa fa-user" />
-            </Link>
-          )}
+          {!!group.allowedActions &&
+            group.allowedActions.createLocalpoolPowerTakerContract === true && (
+              <Link to={`${url}/add-powertaker`} data-cy="add powertaker CTA">
+                <FormattedMessage id="admin.contracts.addNew" />{' '}
+                <i className="fa fa-user" />
+              </Link>
+            )}
         </SubNavAddLink>
         <SubNav>
           <NavLink to={`${url}/active`} exact className="nav-link">
