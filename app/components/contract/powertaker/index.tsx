@@ -92,6 +92,7 @@ const PowertakerContract = ({
         params,
         updateType: 'contract',
       });
+      console.log('This is updateContract stuff');
     })
       .then(e => {
         console.log('Alles gut \n', e);
@@ -173,7 +174,7 @@ const PowertakerContract = ({
               switchEditMode();
             },
             cancelDisabled: submitting,
-            onSave: handleSubmit(submit),
+            // onSave: handleSubmit(submit),
             saveDisabled: pristine || submitting,
           }}
         >
