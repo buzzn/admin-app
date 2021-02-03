@@ -93,13 +93,13 @@ const PowertakerContract = ({
         updateType: 'contract',
       });
     })
-      .catch(e => {
-        console.log('onSave realted error', e);
-      })
-      .then(() => {
-        console.log('Alles gut');
+      .then(e => {
+        console.log('Alles gut \n', e);
         Alert.success('Saved!');
         switchEditMode();
+      })
+      .catch(e => {
+        console.log('onSave realted error \n', e);
       });
 
   const contractorName =
