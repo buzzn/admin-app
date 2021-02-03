@@ -92,7 +92,7 @@ const PowertakerContract = ({
         params,
         updateType: 'contract',
       });
-      console.log('This is updateContract stuff');
+      console.log('This code is at the end of Promise');
     })
       .then(e => {
         console.log('Alles gut \n', e);
@@ -100,10 +100,7 @@ const PowertakerContract = ({
         switchEditMode();
       })
       .catch(e => {
-        console.log('onSave related error \n', e);
-      })
-      .finally(() => {
-        console.log('Some random text');
+        console.log('This is catch error \n', e);
       });
 
   const contractorName =
@@ -174,8 +171,7 @@ const PowertakerContract = ({
               switchEditMode();
             },
             cancelDisabled: submitting,
-            // onSave: handleSubmit(submit),
-            onSave: console.log('noice'),
+            onSave: handleSubmit(submit),
             saveDisabled: pristine || submitting,
           }}
         >
