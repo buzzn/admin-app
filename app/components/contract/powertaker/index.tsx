@@ -99,7 +99,10 @@ const PowertakerContract = ({
         switchEditMode();
       })
       .catch(e => {
-        console.log('onSave realted error \n', e);
+        console.log('onSave related error \n', e);
+      })
+      .finally(() => {
+        console.log('Some random text');
       });
 
   const contractorName =
