@@ -58,42 +58,58 @@ const PowertakerContract = ({
   submitting,
   validationRules,
 }: Props & InjectedIntlProps) => {
-  const submit = values => new Promise((resolve, reject) => {
-    // HACK: backend validation hack
-    const {
-      contractor,
-      customer,
-      customerBankAccount,
-      documents,
-      payments,
-      tariffs,
-      registerMeta,
-      ...params
-    } = values;
-    params.registerMeta = { name: registerMeta.name, label: registerMeta.label, updatedAt: registerMeta.updatedAt };
-    if (!params.shareRegisterWithGroup) params.shareRegisterWithGroup = false;
-    if (!params.shareRegisterPublicly) params.shareRegisterPublicly = false;
-    if (!params.confirmPricingModel) params.confirmPricingModel = false;
-    if (!params.powerOfAttorney) params.powerOfAttorney = false;
-    if (!params.otherContract) params.otherContract = false;
-    if (!params.moveIn) params.moveIn = false;
-    if (!params.authorization) params.authorization = false;
+  const submit = values =>
+    new Promise((resolve, reject) => {
+      // HACK: backend validation hack
+      const {
+        contractor,
+        customer,
+        customerBankAccount,
+        documents,
+        payments,
+        tariffs,
+        registerMeta,
+        ...params
+      } = values;
+      params.registerMeta = {
+        name: registerMeta.name,
+        label: registerMeta.label,
+        updatedAt: registerMeta.updatedAt,
+      };
+      if (!params.shareRegisterWithGroup) params.shareRegisterWithGroup = false;
+      if (!params.shareRegisterPublicly) params.shareRegisterPublicly = false;
+      if (!params.confirmPricingModel) params.confirmPricingModel = false;
+      if (!params.powerOfAttorney) params.powerOfAttorney = false;
+      if (!params.otherContract) params.otherContract = false;
+      if (!params.moveIn) params.moveIn = false;
+      if (!params.authorization) params.authorization = false;
 
-    updateContract({
-      groupId,
-      contractId: contract.id,
-      resolve,
-      reject,
-      params,
-      updateType: 'contract',
-    });
-  }).then(() => {
-    Alert.success('Saved!');
-    switchEditMode();
-  });
+      updateContract({
+        groupId,
+        contractId: contract.id,
+        resolve,
+        reject,
+        params,
+        updateType: 'contract',
+      });
+    })
+      .catch(e => {
+        console.log('onSave realted error', e);
+      })
+      .then(() => {
+        console.log('Alles gut');
+        Alert.success('Saved!');
+        switchEditMode();
+      });
 
-  const contractorName = contractor.type === 'person' ? `${contractor.firstName} ${contractor.lastName}` : contractor.name;
-  const customerName = contract.customer.type === 'person' ? `${contract.customer.firstName} ${contract.customer.lastName}` : contract.customer.name;
+  const contractorName =
+    contractor.type === 'person'
+      ? `${contractor.firstName} ${contractor.lastName}`
+      : contractor.name;
+  const customerName =
+    contract.customer.type === 'person'
+      ? `${contract.customer.firstName} ${contract.customer.lastName}`
+      : contract.customer.name;
 
   return (
     <div className="contract-data">
@@ -101,9 +117,10 @@ const PowertakerContract = ({
         <BorderCol xs="11">
           <InnerBorderRow>
             <LinkCol xs="6">
-              <BigLink to={`/groups/${groupId}/powertakers/${contract.id}/powertaker`}>
-                {truncate(customerName, { length: 25 })}{' '}
-                >
+              <BigLink
+                to={`/groups/${groupId}/powertakers/${contract.id}/powertaker`}
+              >
+                {truncate(customerName, { length: 25 })} >
               </BigLink>
               <LinkType>
                 <FormattedMessage id={`${prefix}.objectTypePowerTaker`} />
@@ -122,9 +139,7 @@ const PowertakerContract = ({
           </InnerBorderRow>
           <InnerRow>
             <LinkCol xs="6">
-              <BigSpan>
-                {truncate(contractorName, { length: 25 })}
-              </BigSpan>
+              <BigSpan>{truncate(contractorName, { length: 25 })}</BigSpan>
               <LinkType>
                 <FormattedMessage id={`${prefix}.objectTypePowerGiver`} />
               </LinkType>
@@ -182,16 +197,25 @@ const PowertakerContract = ({
               <TwoColView {...{ prefix, field: 'meterSerial' }}>
                 {get(registerMeta, 'registers.array', []).length ? (
                   <PlainList>
-                    {uniqBy(get(registerMeta, 'registers.array', []), 'meterId').map(r => (
+                    {uniqBy(
+                      get(registerMeta, 'registers.array', []),
+                      'meterId',
+                    ).map(r => (
                       <li key={r.meterId}>
                         <Link
-                          to={`/groups/${groupId}/market-locations/meters/${r.meterId}`}
+                          to={`/groups/${groupId}/market-locations/meters/${
+                            r.meterId
+                          }`}
                         >
                           {r.meter.productSerialnumber}
                           {!!r.readings.array.length && (
                             <React.Fragment>
                               , Last reading:{' '}
-                              {sortBy(r.readings.array, reading => moment(reading.date).toDate()).reverse()[0].date}
+                              {
+                                sortBy(r.readings.array, reading =>
+                                  moment(reading.date).toDate(),
+                                ).reverse()[0].date
+                              }
                             </React.Fragment>
                           )}
                         </Link>
@@ -200,24 +224,42 @@ const PowertakerContract = ({
                   </PlainList>
                 ) : (
                   <React.Fragment>
-                    <i id="no-meter" className="fa fa-warning" style={{ color: 'red' }} />
-                    <UncontrolledTooltip target="no-meter">No meter/register attached</UncontrolledTooltip>
+                    <i
+                      id="no-meter"
+                      className="fa fa-warning"
+                      style={{ color: 'red' }}
+                    />
+                    <UncontrolledTooltip target="no-meter">
+                      No meter/register attached
+                    </UncontrolledTooltip>
                   </React.Fragment>
                 )}
               </TwoColView>
               <TwoColView {...{ prefix, field: 'renewableEnergyLawTaxation' }}>
                 {contract.renewableEnergyLawTaxation
-                  ? intl.formatMessage({ id: `${prefix}.${contract.renewableEnergyLawTaxation}` })
+                  ? intl.formatMessage({
+                      id: `${prefix}.${contract.renewableEnergyLawTaxation}`,
+                    })
                   : ''}
               </TwoColView>
               <TwoColView {...{ prefix, field: 'customer' }}>
-                <Link to={`/groups/${groupId}/powertakers/${contract.id}/powertaker`}>
-                  {contract.customer.name || `${contract.customer.firstName} ${contract.customer.lastName}`}
+                <Link
+                  to={`/groups/${groupId}/powertakers/${
+                    contract.id
+                  }/powertaker`}
+                >
+                  {contract.customer.name ||
+                    `${contract.customer.firstName} ${
+                      contract.customer.lastName
+                    }`}
                 </Link>
               </TwoColView>
-              <TwoColView {...{ prefix, field: 'customerNumber' }}>{contract.customer.customerNumber}</TwoColView>
+              <TwoColView {...{ prefix, field: 'customerNumber' }}>
+                {contract.customer.customerNumber}
+              </TwoColView>
               <TwoColView {...{ prefix, field: 'contractor' }}>
-                {contractor.name || `${contractor.firstName} ${contractor.lastName}`}
+                {contractor.name ||
+                  `${contractor.firstName} ${contractor.lastName}`}
               </TwoColView>
               <TwoColField
                 {...{
@@ -456,5 +498,9 @@ const PowertakerContract = ({
 };
 
 export default injectIntl(
-  withEditOverlay(reduxForm({ form: 'LPTUpdateForm', enableReinitialize: true })(PowertakerContract)),
+  withEditOverlay(
+    reduxForm({ form: 'LPTUpdateForm', enableReinitialize: true })(
+      PowertakerContract,
+    ),
+  ),
 );
