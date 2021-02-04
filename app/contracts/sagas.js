@@ -216,6 +216,7 @@ export function* updateContract(
       if (updateType === 'account') yield put(actions.loadContractBalanceSheet({ groupId, contractId }));
     }
   } catch (error) {
+    console.log('EERR==RR', error);
     logException(error);
   }
 }
