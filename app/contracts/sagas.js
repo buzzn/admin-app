@@ -198,6 +198,8 @@ export function* updateContract(
   { apiUrl, apiPath, token },
   { params, resolve, reject, groupId, contractId, updateType },
 ) {
+  console.log('GOT HERE!!!');
+  debugger;
   try {
     console.log('UPDATE CONTRACT GENERATOR FUNCTION', { apiUrl, apiPath, token },
     { params, resolve, reject, groupId, contractId, updateType });

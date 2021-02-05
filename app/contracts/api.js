@@ -136,6 +136,7 @@ export default {
     });
   },
   updateContract({ token, apiUrl, apiPath, groupId, contractId, params }) {
+    console.log('DOES IT COME TO THIS POINT?');
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}`, {
       headers: prepareHeaders(token),
       method: 'PATCH',
