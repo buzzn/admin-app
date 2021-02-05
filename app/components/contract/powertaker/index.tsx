@@ -499,9 +499,5 @@ const PowertakerContract = ({
 };
 
 export default injectIntl(
-  withEditOverlay(
-    reduxForm({ form: 'LPTUpdateForm', enableReinitialize: true })(
-      PowertakerContract,
-    ),
-  ),
+  withEditOverlay(reduxForm({ form: 'LPTUpdateForm', enableReinitialize: true })(PowertakerContract))
 );
