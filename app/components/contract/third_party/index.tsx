@@ -98,7 +98,7 @@ const ThirdPartyContract = ({
             </LinkCol>
             <LinkCol xs="6">
               <BigLink to={`/groups/${groupId}/market-locations/${registerMeta.id}`}>
-                {truncate(registerMeta.name, { length: 25 })} >
+                {truncate(registerMeta.name, { length: 25 })} &gt;
               </BigLink>
               <LinkType>
                 <FormattedMessage id={`${prefix}.objectTypeMarketLocation`} />

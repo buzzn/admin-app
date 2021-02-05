@@ -9,19 +9,19 @@ const buildDate = new Date().valueOf();
 module.exports = {
   devtool: 'sourcemap',
   devServer: { historyApiFallback: true },
-  entry: [
-    '@babel/polyfill',
-    'core-js/fn/array/flat-map',
-    'bootstrap-loader',
-    'react-hot-loader/patch',
-    'webpack/hot/only-dev-server',
-    'whatwg-fetch',
-    './app/index.development.js',
-  ],
+  entry: {
+    app: [
+      '@babel/polyfill',
+      'core-js/fn/array/flat-map',
+      'bootstrap-loader',
+      'whatwg-fetch',
+      './app/index.production.js',
+    ],
+  },
   output: {
-    path: path.resolve(__dirname, 'build'),
-    publicPath: '/',
-    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'build/public/assets'),
+    publicPath: '/assets/',
+    filename: '.js',
   },
   module: {
     rules: [
@@ -32,20 +32,11 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [
-          { loader: 'style-loader', options: { sourceMap: true } },
-          { loader: 'css-loader', options: { sourceMap: true } },
-          { loader: 'postcss-loader', options: { sourceMap: true } },
-        ],
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
       {
         test: /\.scss$/,
-        use: [
-          { loader: 'style-loader', options: { sourceMap: true } },
-          { loader: 'css-loader', options: { sourceMap: true } },
-          { loader: 'sass-loader', options: { sourceMap: true } },
-          { loader: 'postcss-loader', options: { sourceMap: true } },
-        ],
+        use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
       },
       {
         test: /\.woff?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -66,7 +57,7 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js', '.json'],
     alias: {
       moment$: 'moment/moment.js',
-      'react-dom': '@hot-loader/react-dom',
+      'react-dom': '@hot-loader/react-dom'
     },
   },
   optimization: {
@@ -93,15 +84,13 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: 'app/index.html',
-      filename: 'index.html',
+      filename: '../index.html',
       chunksSortMode: 'none',
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       'process.env.buildDate': buildDate,
-      'process.env.DEV_LOGIN': JSON.stringify(process.env.DEV_LOGIN),
-      'process.env.DEV_PASS': JSON.stringify(process.env.DEV_PASS),
-    }),
+    }), 
     new FaviconsWebpackPlugin('./favicon.png'),
     new GenerateJsonPlugin('version.json', { buildDate }),
   ],

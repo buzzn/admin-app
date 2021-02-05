@@ -92,7 +92,6 @@ const PowertakerContract = ({
         params,
         updateType: 'contract',
       });
-      console.log('This code is at the end of Promise', updateContract);
     })
       .then(e => {
         console.log('Alles gut \n', e);
@@ -121,7 +120,7 @@ const PowertakerContract = ({
               <BigLink
                 to={`/groups/${groupId}/powertakers/${contract.id}/powertaker`}
               >
-                {truncate(customerName, { length: 25 })} >
+                {truncate(customerName, { length: 25 })} &gt;
               </BigLink>
               <LinkType>
                 <FormattedMessage id={`${prefix}.objectTypePowerTaker`} />
@@ -131,7 +130,7 @@ const PowertakerContract = ({
               <BigLink
                 to={`/groups/${groupId}/market-locations/${registerMeta.id}`}
               >
-                {truncate(registerMeta.name, { length: 25 })} >
+                {truncate(registerMeta.name, { length: 25 })} &gt;
               </BigLink>
               <LinkType>
                 <FormattedMessage id={`${prefix}.objectTypeMarketLocation`} />
