@@ -93,7 +93,7 @@ const PowertakerContract = ({
         updateType: 'contract',
       });
     })
-      .then(e => {
+      .then(() => {
         Alert.success('Saved!');
         switchEditMode();
       })

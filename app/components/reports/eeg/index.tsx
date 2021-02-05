@@ -79,8 +79,10 @@ const ReportsUI: React.FC<PropsT & ExtProps & StateProps & DispatchProps> = ({
                 time: false,
                 format: 'DD.MM.YYYY',
                 onChange: value => {
-                  setDateRange({ ...dateRange, beginDate: value });
-                  setUI({ reportDates: { ...dateRange, beginDate: value } });
+                  if (dateRange && setUI) {
+                    setDateRange({ ...dateRange, beginDate: value });
+                    setUI({ reportDates: { ...dateRange, beginDate: value } });
+                  }
                 },
               }}
             />
@@ -100,8 +102,10 @@ const ReportsUI: React.FC<PropsT & ExtProps & StateProps & DispatchProps> = ({
                 time: false,
                 format: 'DD.MM.YYYY',
                 onChange: value => {
-                  setDateRange({ ...dateRange, lastDate: value });
-                  setUI({ reportDates: { ...dateRange, lastDate: value } });
+                  if (dateRange && setUI) {
+                    setDateRange({ ...dateRange, lastDate: value });
+                    setUI({ reportDates: { ...dateRange, lastDate: value } });
+                  }
                 },
               }}
             />
@@ -121,13 +125,13 @@ const ReportsUI: React.FC<PropsT & ExtProps & StateProps & DispatchProps> = ({
         </Row>
         <br />
 
-        {eegReport._status === 200 ? (
+        {eegReport && eegReport._status === 200 ? (
           <React.Fragment>
             {/*
      // @ts-ignore */}
             <Report report={eegReport} groupId={groupId} />
           </React.Fragment>
-        ) : eegReport._status === 422 ? (
+        ) : eegReport && eegReport._status === 422 ? (
           <div>
             <ul>
               {Object.keys(eegReport)
@@ -156,11 +160,11 @@ const ReportsUI: React.FC<PropsT & ExtProps & StateProps & DispatchProps> = ({
   );
 };
 
-function mapStateToprops(state: StatePart) {
+function mapStateToprops(state: StatePart): any {
   return {
-    eegReport: state.reports.eegReport,
-    loading: state.reports.loadingEeg,
-    reportDates: state.app.ui.reportDates,
+    eegReport: state.reports ? state.reports.eegReport : null,
+    loading: state.reports ? state.reports.loadingEeg : null,
+    reportDates: state.app ? state.app.ui.reportDates : null,
   };
 }
 
