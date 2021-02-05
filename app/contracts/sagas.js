@@ -274,6 +274,7 @@ export function* deleteContractPDF({ apiUrl, apiPath, token }, { documentId, gro
 }
 
 export function* contractSagas({ apiUrl, apiPath, token }) {
+  console.log('contractSagas', constants.UPDATE_CONTRACT, updateContract, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUP_CONTRACTS, getGroupContracts, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_CONTRACT, getContract, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_CONTRACT_BALANCE_SHEET, getContractBalanceSheet, { apiUrl, apiPath, token });
