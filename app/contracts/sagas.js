@@ -198,10 +198,7 @@ export function* updateContract(
   { apiUrl, apiPath, token },
   { params, resolve, reject, groupId, contractId, updateType },
 ) {
-  console.log('GOT HERE!!!');
   try {
-    console.log('UPDATE CONTRACT GENERATOR FUNCTION', { apiUrl, apiPath, token },
-    { params, resolve, reject, groupId, contractId, updateType });
     const updateTypes = {
       contract: api.updateContract,
       organizationCustomer: api.updateOrganizationCustomer,
@@ -220,7 +217,6 @@ export function* updateContract(
       if (updateType === 'account') yield put(actions.loadContractBalanceSheet({ groupId, contractId }));
     }
   } catch (error) {
-    console.log('EERR==RR', error);
     logException(error);
   }
 }
@@ -273,7 +269,6 @@ export function* deleteContractPDF({ apiUrl, apiPath, token }, { documentId, gro
 }
 
 export function* contractSagas({ apiUrl, apiPath, token }) {
-  console.log('contractSagas', constants.UPDATE_CONTRACT, updateContract, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUP_CONTRACTS, getGroupContracts, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_CONTRACT, getContract, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_CONTRACT_BALANCE_SHEET, getContractBalanceSheet, { apiUrl, apiPath, token });

@@ -136,7 +136,6 @@ export const actions = {
     params,
   }),
   updateContract: ({ groupId, contractId, resolve, reject, params, updateType }) => {
-    console.log({ groupId, contractId, resolve, reject, params, updateType });
     return {
       type: constants.UPDATE_CONTRACT,
       groupId,

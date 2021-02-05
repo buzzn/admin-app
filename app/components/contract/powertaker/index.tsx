@@ -94,7 +94,6 @@ const PowertakerContract = ({
       });
     })
       .then(e => {
-        console.log('Alles gut \n', e);
         Alert.success('Saved!');
         switchEditMode();
       })
