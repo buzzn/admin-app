@@ -92,7 +92,6 @@ const PowertakerContract = ({
         params,
         updateType: 'contract',
       });
-      debugger;
       console.log('This code is at the end of Promise', updateContract);
     })
       .then(e => {

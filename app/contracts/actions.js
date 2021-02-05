@@ -135,15 +135,18 @@ export const actions = {
     reject,
     params,
   }),
-  updateContract: ({ groupId, contractId, resolve, reject, params, updateType }) => ({
-    type: constants.UPDATE_CONTRACT,
-    groupId,
-    contractId,
-    resolve,
-    reject,
-    params,
-    updateType,
-  }),
+  updateContract: ({ groupId, contractId, resolve, reject, params, updateType }) => {
+    console.log({ groupId, contractId, resolve, reject, params, updateType });
+    return {
+      type: constants.UPDATE_CONTRACT,
+      groupId,
+      contractId,
+      resolve,
+      reject,
+      params,
+      updateType,
+    }
+  },
 
   addPayment: ({ groupId, contractId, resolve, reject, params }) => ({
     type: constants.ADD_PAYMENT,
