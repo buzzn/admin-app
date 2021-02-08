@@ -35,7 +35,7 @@ if (process.env.NODE_ENV === 'production') {
   };
 } else {
   config = {
-    apiUrl: 'https://staging-core.buzzn.net/',
+    apiUrl: 'http://localhost:3000/',
     apiPath: 'api/admin',
     authPath: 'api/me',
     websitePath: 'api/website',
@@ -44,16 +44,6 @@ if (process.env.NODE_ENV === 'production') {
     callBackURL: '',
     secure: false,
   };
-  // config = {
-  //   apiUrl: 'http://localhost:3000/',
-  //   apiPath: 'api/admin',
-  //   authPath: 'api/me',
-  //   websitePath: 'api/website',
-  //   versionPath: 'version.json',
-  //   clientId: '',
-  //   callBackURL: '',
-  //   secure: false,
-  // };
 }
 
 export default config;
