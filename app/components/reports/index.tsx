@@ -58,7 +58,8 @@ const Reports = ({
         <Switch>
           <Route
             path={`${url}/eeg`}
-            render={() => <ReportsUI {...{ groupId }} />}
+            // @ts-ignore
+            render={() => <ReportsUI {...{ groupId: groupId }} />}
           />
           <Route
             path={`${url}/annual`}
