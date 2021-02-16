@@ -27,12 +27,16 @@ const PersonFields = ({ groupId, path, editMode, overrideData, validationRules, 
 
   const handleTestMail = (event) => {
     event.preventDefault();
-    console.log('sendTestMail', sendTestMail)
-    sendTestMail({ groupId, resolve: () => {
-      console.log('resolve');
-    }, reject: () => {
-      console.log('reject');
-    }})
+    console.log('sendTestMail', sendTestMail);
+    sendTestMail({ 
+      groupId,
+      resolve: () => {
+        console.log('resolve');
+      },
+      reject: () => {
+        console.log('reject');
+      },
+    });
   }
 
   return (
@@ -253,13 +257,11 @@ const PersonFields = ({ groupId, path, editMode, overrideData, validationRules, 
             </Col>
           </Row>
         </div>
-      ) : null }
-      
+      ) : null }     
     </React.Fragment>
   );
 };
 function mapStateToProps(state) {
-  console.log(state);
   return {
   };
 }
