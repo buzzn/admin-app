@@ -97,6 +97,7 @@ const PowertakersList = ({
       ),
     },
   }));
+  console.log(data);
   const columns = [
     {
       Header: () => (
