@@ -11,6 +11,7 @@ import AddressFields from './address_fields';
 import PersonFields from './person_fields';
 
 interface Props {
+  groupId?: number,
   path: string;
   editMode: boolean;
   overrideData: null | { [key: string]: any };
@@ -27,6 +28,7 @@ interface Props {
 
 const OrganizationFields = ({
   path,
+  groupId,
   editMode,
   overrideData,
   overrideContact,
@@ -163,7 +165,7 @@ const OrganizationFields = ({
         ))}
       <br />
       <PersonFields
-        {...{ editMode, path: `${path ? `${path}` : ''}contact.`, overrideData: overridePerson, validationRules }}
+        {...{ groupId, editMode, path: `${path ? `${path}` : ''}contact.`, overrideData: overridePerson, validationRules }}
       />
       <br />
       {editMode

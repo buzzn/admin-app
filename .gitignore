@@ -11,6 +11,7 @@ node_modules/*
 
 build/*
 coverage/
+startup.sh
 
 *.iml
 .idea/

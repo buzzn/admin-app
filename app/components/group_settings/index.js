@@ -209,6 +209,7 @@ class GroupSettings extends React.Component {
                   <React.Fragment>
                     <Powergiver
                       {...{
+                        groupId: group.id,
                         updatable: group.updatable,
                         owner,
                         loadAvailableUsers,
