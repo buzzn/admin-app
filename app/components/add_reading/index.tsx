@@ -48,7 +48,7 @@ const AddReading = ({
   cb,
   intl
 }: Props & InjectedIntlProps) => {
-  const defaultAddReading: any = { status: 'Z86', reason: 'PMR', readBy: 'SG', quality: '220', unit: 'Wh' };
+  const defaultAddReading: any = { status: 'Z86', reason: 'PMR', readBy: 'SG', quality: '220', unit: 'Wh', source: 'MAN' };
   const [addReadingInit, setAddReadingInit] = useState(defaultAddReading);
   const handleAddReading = params => new Promise((resolve, reject) => {
     addReading({
@@ -107,6 +107,10 @@ const AddReading = ({
           unit: 'Wh',
           rawValue: kwh /1000,
         });
+        
+        cb && cb();
+
+        location.reload();
       }
     });
   };

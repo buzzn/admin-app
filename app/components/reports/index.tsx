@@ -63,7 +63,7 @@ const Reports = ({
           />
           <Route
             path={`${url}/annual`}
-            render={() => <AnnualReport {...{ groupId: groupId, groupName: group.name }} />}
+            render={() => <AnnualReport {...{ groupId, groupName: group.name }} />}
           />
           <Route path={`${url}/group-members-export`}
             render={() => <GroupMembersExport {...{ groupId: group.id, groupName: group.name }} />}

@@ -234,5 +234,7 @@ const ThirdPartyContract = ({
   );
 };
 
-export default withEditOverlay(reduxForm({ form: 'LPThirdUpdateForm', enableReinitialize: true })(ThirdPartyContract));
-
+export default withEditOverlay(reduxForm({ 
+  form: 'LPThirdUpdateForm', 
+  enableReinitialize: true 
+})(ThirdPartyContract));

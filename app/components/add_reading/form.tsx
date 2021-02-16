@@ -129,6 +129,8 @@ class AddReadingForm extends React.Component<Props & InjectedIntlProps> {
                     validationRules,
                     prefix,
                     withLabel: true,
+                    defaultValue: 'MAN',
+                    value: 'MAN'
                   }}
                 />
               </Col>

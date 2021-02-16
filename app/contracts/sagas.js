@@ -198,15 +198,16 @@ export function* updateContract(
   { apiUrl, apiPath, token },
   { params, resolve, reject, groupId, contractId, updateType },
 ) {
-  const updateTypes = {
-    contract: api.updateContract,
-    organizationCustomer: api.updateOrganizationCustomer,
-    personCustomer: api.updatePersonCustomer,
-    tariffs: api.updateContractTariffs,
-    account: api.updateContractAccount,
-  };
-
   try {
+    const updateTypes = {
+      contract: api.updateContract,
+      organizationCustomer: api.updateOrganizationCustomer,
+      personCustomer: api.updatePersonCustomer,
+      tariffs: api.updateContractTariffs,
+      account: api.updateContractAccount,
+    };
+
+  
     const res = yield call(updateTypes[updateType], { apiUrl, apiPath, token, params, groupId, contractId });
     if (res._error && res.errors) {
       yield call(reject, new SubmissionError(convertErrors(res.errors)));
