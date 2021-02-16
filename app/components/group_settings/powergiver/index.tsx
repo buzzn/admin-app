@@ -320,7 +320,6 @@ class Powergiver extends React.Component<Props, State> {
                     <br />
                   </React.Fragment>
                 )}
-                hello
                 <PersonFields
                   {...{
                     groupId,

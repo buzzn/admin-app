@@ -103,7 +103,7 @@ const PowertakerContract = ({
             <LinkCol xs="6">
               <BigLink to={`/groups/${groupId}/powertakers/${contract.id}/powertaker`}>
                 {truncate(customerName, { length: 25 })}{' '}
-                >
+                &gt;
               </BigLink>
               <LinkType>
                 <FormattedMessage id={`${prefix}.objectTypePowerTaker`} />
@@ -113,7 +113,7 @@ const PowertakerContract = ({
               <BigLink
                 to={`/groups/${groupId}/market-locations/${registerMeta.id}`}
               >
-                {truncate(registerMeta.name, { length: 25 })} >
+                {truncate(registerMeta.name, { length: 25 })} &gt;
               </BigLink>
               <LinkType>
                 <FormattedMessage id={`${prefix}.objectTypeMarketLocation`} />

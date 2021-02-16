@@ -12,6 +12,27 @@ import Loading from 'components/loading';
 
 import Report from './report';
 
+interface ExtProps {
+  match: { params: { groupId: string } };
+}
+
+interface StatePart {
+  reports: ReportsState;
+  app: { ui: { reportDates: { beginDate: Date; lastDate: Date } } };
+}
+
+interface StateProps {
+  eegReport: EegReport;
+  loading: boolean;
+  reportDates: { beginDate: Date; lastDate: Date };
+}
+
+interface DispatchProps {
+  loadEeg: ReportsActions;
+  setEeg: ReportsActions;
+  setUI: Function;
+}
+
 momentLocalizer(moment);
 
 type PropsT = {
@@ -143,26 +164,7 @@ function mapStateToprops(state: StatePart) {
   };
 }
 
-interface ExtProps {
-  match: { params: { groupId: string } };
-}
 
-interface StatePart {
-  reports: ReportsState;
-  app: { ui: { reportDates: { beginDate: Date; lastDate: Date } } };
-}
-
-interface StateProps {
-  eegReport: EegReport;
-  loading: boolean;
-  reportDates: { beginDate: Date; lastDate: Date };
-}
-
-interface DispatchProps {
-  loadEeg: ReportsActions;
-  setEeg: ReportsActions;
-  setUI: Function;
-}
 
 export default connect<StateProps, DispatchProps, ExtProps>(
   mapStateToprops,
