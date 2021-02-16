@@ -56,7 +56,10 @@ module.exports = {
   resolve: {
     modules: [path.resolve(__dirname, 'node_modules'), path.resolve(__dirname, 'app'), 'node_modules'],
     extensions: ['.ts', '.tsx', '.js', '.json'],
-    alias: { moment$: 'moment/moment.js' },
+    alias: { 
+      moment$: 'moment/moment.js',
+      'react-dom': '@hot-loader/react-dom'
+    },
   },
   optimization: {
     runtimeChunk: 'single',

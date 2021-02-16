@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
-
+const StatsPlugin = require('stats-webpack-plugin');
 const buildDate = new Date().valueOf();
 
 module.exports = {
@@ -82,15 +82,27 @@ module.exports = {
     },
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      'process.env.buildDate': buildDate,
+    }),
+    new webpack.LoaderOptionsPlugin({
+      minimize: true,
+      debug: false,
+      options: {
+        context: __dirname,
+        output: { path: path.resolve(__dirname, 'build/public/assets') },
+      },
+    }),
     new HtmlWebpackPlugin({
       template: 'app/index.html',
       filename: '../index.html',
       chunksSortMode: 'none',
     }),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-      'process.env.buildDate': buildDate,
-    }), 
+    new StatsPlugin('webpack.stats.json', {
+      source: false,
+      modules: true,
+    }),
     new FaviconsWebpackPlugin('./favicon.png'),
     new GenerateJsonPlugin('version.json', { buildDate }),
   ],
