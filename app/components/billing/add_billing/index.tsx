@@ -72,11 +72,6 @@ class AddBilling extends React.Component<Props & InjectedIntlProps> {
                         validationRules,
                       }}
                     />
-                    <Field
-                      name="lastDate"
-                      type="text"
-                      component={({ meta: { error } }) => <div>{!!error && error}</div>}
-                    />
                   </Col>
                   <Col xs={12}>
                     <FieldValidationWrapper
