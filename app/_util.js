@@ -16,7 +16,7 @@ export const convertErrors = (e) => {
   // convert errors
   const errors = {};
   Object.keys(e).forEach((errKey) => {
-    errors[errKey] = e[errKey].join();
+    errors[errKey] = e[errKey] instanceof Array ? e[errKey].join() : e[errKey];
   });
 
   return errors;
