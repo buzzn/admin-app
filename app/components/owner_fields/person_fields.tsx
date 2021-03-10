@@ -170,7 +170,7 @@ const PersonFields = ({ groupId, path, editMode, overrideData, validationRules, 
                   {...{
                     prefix,
                     withLabel: true,
-                    name: `${path}emailActive`,
+                    name: `${path}emailBackendActive`,
                     component: EditableCheckbox,
                     editMode,
                     overrideData,
