@@ -92,10 +92,10 @@ const formConverter = ({ forms, fields }) => {
       }
     }
 
-    res['Straße'] = res['RA Straße'];
-    res.Hausnummer = res['RA Hausnummer'];
-    res.PLZ = res['RA Postleitzahl'];
-    res.Ort = res['RA Ort'];
+    res['LE Straße'] = res['RA Straße'];
+    res['LE Hausnummer'] = res['RA Hausnummer'];
+    res['LE PLZ'] = res['RA Postleitzahl'];
+    res['LE Ort'] = res['RA Ort'];
 
     res['RA Kontoinhaber'] = get(f, 'bank.accountName', '');
     res['RA IBAN'] = get(f, 'bank.iban', '');
