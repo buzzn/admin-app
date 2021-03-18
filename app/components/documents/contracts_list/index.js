@@ -63,7 +63,7 @@ class ContractsList extends React.Component {
 
     const contractTypes = [];
     if (
-      !get(group.allowedActions, 'createLocalpoolProcessingContract.startDate')
+      get(group.allowedActions, 'createLocalpoolProcessingContract.startDate')
       && (get(group.allowedActions, 'createLocalpoolProcessingContract')
         && !get(group.allowedActions, 'createLocalpoolProcessingContract.localpoolProcessingContract', []).find(
           e => e === 'cannot be defined',
