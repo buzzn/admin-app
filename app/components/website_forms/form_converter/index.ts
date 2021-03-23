@@ -115,7 +115,7 @@ const formConverter = ({ forms, fields }) => {
     res['Handelsvertreter / VM Nr.'] = get(f, 'calculator.group', '').replace(new RegExp('^Energiegruppe '), '');
     res['Kategorie bei NN'] = 'Haushalt';
     res.Kundengruppe = 'Ja';
-    res['T-ID'] = `H-${res['RA Postleitzahl']}-ET----`;
+    res['T-ID'] = `H-${res['LS PLZ']}-ET----`;
     res['gültig_ab'] = get(f, 'createdAt', '')
       ? moment(get(f, 'createdAt', ''))
         .subtract(6, 'weeks')
