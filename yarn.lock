@@ -1016,8 +1016,8 @@
     to-fast-properties "^2.0.0"
 
 "@buzzn/i18n@git+https://github.com/buzzn/i18n.git#master":
-  version "1.0.0"
-  resolved "git+https://github.com/buzzn/i18n.git#8785d0be1919313f2216228d278eb4ad72704d03"
+  version "1.0.1"
+  resolved "git+https://github.com/buzzn/i18n.git#04041a8b044d09410cd9beae6e5eaabc4d0c7f06"
   dependencies:
     "@babel/cli" "^7.0.0-rc.2"
     "@babel/core" "^7.0.0-rc.2"
