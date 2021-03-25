@@ -534,10 +534,10 @@ class BillingData extends React.Component<
           </Legend>
           {!!['open', 'calculated', 'documented'].find(s => !!Object.keys(statuses).find(k => k === s)) && (
             <MassChangeBlock>
-              <h5>Change'em all:</h5>
+              <h5>Change Status:</h5>
               {!!statuses['open'] && (
                 <button
-                  className="btn btn-secondary"
+                  className="btn btn-light"
                   onClick={() => this.hackStatus({ from: 'open', to: 'calculated' })}
                 >
                   Open ➟ Calculated
@@ -545,7 +545,7 @@ class BillingData extends React.Component<
               )}
               {!!statuses['calculated'] && (
                 <button
-                  className="btn btn-secondary"
+                  className="btn btn-light"
                   onClick={() => this.hackStatus({ from: 'calculated', to: 'documented' })}
                 >
                   Calculated ➟ Documented
@@ -553,7 +553,7 @@ class BillingData extends React.Component<
               )}
               {!!statuses['documented'] && (
                 <button
-                  className="btn btn-secondary"
+                  className="btn btn-light"
                   onClick={() => this.hackStatus({ from: 'documented', to: 'documented' })}
                 >
                   Documented ➟ Documented
@@ -561,7 +561,7 @@ class BillingData extends React.Component<
               )}
               {!!statuses['documented'] && (
                 <button
-                  className="btn btn-secondary"
+                  className="btn btn-light"
                   onClick={() => this.hackStatus({ from: 'documented', to: 'queued' })}
                 >
                   Documented ➟ Queued
@@ -570,9 +570,9 @@ class BillingData extends React.Component<
             </MassChangeBlock>
           )}
           <MassChangeBlock>
-            <h5>Load'em all:</h5>
+            <h5>Download:</h5>
             <button
-              className="btn btn-secondary"
+              className="btn btn-light"
               onClick={() => getBillingCycleZip({
                 groupId,
                 billingCycleId,
@@ -584,7 +584,7 @@ class BillingData extends React.Component<
               Load all documents
             </button>
             <button
-              className="btn btn-secondary"
+              className="btn btn-light"
               onClick={() => getBillingCycleReport({
                 groupId,
                 billingCycleId,
@@ -599,7 +599,7 @@ class BillingData extends React.Component<
           {(Object.keys(statuses).length > 1
             || (Object.keys(statuses).length && Object.keys(statuses)[0] !== 'void')) && (
             <MassChangeBlock>
-              <h5>Kill'em all:</h5>
+              <h5>Kill Operation:</h5>
               <button className="btn btn-danger" onClick={this.switchKill}>
                 Void all
               </button>

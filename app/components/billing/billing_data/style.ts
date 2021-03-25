@@ -253,4 +253,7 @@ export const MassChangeBlock = styled.div`
   .kill-block {
     margin-top: 2rem;
   }
+  button:focus{
+    color:#fff;
+  }
 `;
