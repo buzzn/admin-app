@@ -14,7 +14,7 @@ const FakeStats = ({ group, updateGroup, addReadings, readingsResponse }) => {
     'otherFossilesRatio',
     'renewablesEegRatio',
     'otherRenewablesRatio',
-    'renterPowerEeg'
+    'renterPowerEeg',
   ];
 
   const fields = ratios.concat([
@@ -24,6 +24,8 @@ const FakeStats = ({ group, updateGroup, addReadings, readingsResponse }) => {
     'utilizationReport',
     'gasReport',
     'sunReport',
+    'waterReport',
+    'windReport',
     'electricitySupplier',
     'tech',
   ]);
