@@ -92,10 +92,10 @@ const formConverter = ({ forms, fields }) => {
       }
     }
 
-    res['Straße'] = res['RA Straße'];
-    res.Hausnummer = res['RA Hausnummer'];
-    res.PLZ = res['RA Postleitzahl'];
-    res.Ort = res['RA Ort'];
+    res['LE Straße'] = res['RA Straße'];
+    res['LE Hausnummer'] = res['RA Hausnummer'];
+    res['LE PLZ'] = res['RA Postleitzahl'];
+    res['LE Ort'] = res['RA Ort'];
 
     res['RA Kontoinhaber'] = get(f, 'bank.accountName', '');
     res['RA IBAN'] = get(f, 'bank.iban', '');
@@ -115,7 +115,7 @@ const formConverter = ({ forms, fields }) => {
     res['Handelsvertreter / VM Nr.'] = get(f, 'calculator.group', '').replace(new RegExp('^Energiegruppe '), '');
     res['Kategorie bei NN'] = 'Haushalt';
     res.Kundengruppe = 'Ja';
-    res['T-ID'] = `H-${res['RA Postleitzahl']}-ET----`;
+    res['T-ID'] = `H-${res['LS PLZ']}-ET----`;
     res['gültig_ab'] = get(f, 'createdAt', '')
       ? moment(get(f, 'createdAt', ''))
         .subtract(6, 'weeks')
