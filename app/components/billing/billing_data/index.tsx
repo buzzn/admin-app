@@ -162,6 +162,7 @@ class BillingData extends React.Component<
       intl,
       history,
       getBillingCycleZip,
+      getBillingCycleReportId,
       getBillingCycleReport,
       billingCycleId,
     } = this.props;
@@ -213,6 +214,51 @@ class BillingData extends React.Component<
         .ticks(d3.timeMonth)
         .map(t => barScale(t)),
     );
+
+    const handleReport = async () => {
+      new Promise((resolve, reject) => {
+        getBillingCycleReportId({
+          groupId,
+          billingCycleId,
+          resolve,
+          reject,
+        });
+      }).then((id) => {
+        this.setState({ hackLoading: true });
+
+        const now = Date.now();
+        const timeout = 1000 * 60; // a minute
+        const checkEvery = 5000;
+  
+        const loopReportRequest = async () => {
+          if (timeout + now < Date.now()) {
+            this.setState({ hackLoading: false });
+            Alert.error('Could not be generated during Timeout of a minute.');
+            return;
+          }
+          
+          try {
+            getBillingCycleReport({
+              groupId,
+              billingCycleId,
+              groupName,
+              year: moment(billingCycle.lastDate).format('YYYY'),
+              reportId: id,
+            }).then(() => {
+              this.setState({ hackLoading: false });
+              Alert.success('Report was successfully generated.');
+            }).catch(() => {
+              throw Error();
+            });
+          } catch (e) {
+            setTimeout(() => loopReportRequest(), checkEvery);
+          }
+        };
+        loopReportRequest();
+      });
+
+      
+    };
 
     return (
       <React.Fragment>
@@ -584,14 +630,8 @@ class BillingData extends React.Component<
               Load all documents
             </button>
             <button
-              className="btn btn-light"
-              onClick={() => getBillingCycleReport({
-                groupId,
-                billingCycleId,
-                groupName,
-                year: moment(billingCycle.lastDate).format('YYYY'),
-              })
-              }
+              className="btn btn-secondary"
+              onClick={() => handleReport() }
             >
               Load report
             </button>
@@ -673,6 +713,7 @@ interface DispatchProps {
   loadBillingCycle: Function;
   setBillingCycle: Function;
   getBillingCycleZip: Function;
+  getBillingCycleReportId: Function;
   getBillingCycleReport: Function;
   loadGroup: Function;
   updateBilling: Function;
@@ -693,6 +734,7 @@ export default connect<StateProps, DispatchProps, ExtProps>(
     loadBillingCycle: BillingCycles.actions.loadBillingCycle,
     setBillingCycle: BillingCycles.actions.setBillingCycle,
     getBillingCycleZip: BillingCycles.actions.getBillingCycleZip,
+    getBillingCycleReportId: BillingCycles.actions.getBillingCycleReportId,
     getBillingCycleReport: BillingCycles.actions.getBillingCycleReport,
     loadGroup: Groups.actions.loadGroup,
     updateBilling: Billings.actions.updateBilling,

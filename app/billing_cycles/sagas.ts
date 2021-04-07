@@ -120,9 +120,21 @@ export function* getBillingCycleZip({ apiUrl, apiPath, token }, { groupId, billi
   }
 }
 
-export function* getBillingCycleReport({ apiUrl, apiPath, token }, { groupId, billingCycleId, groupName, year }) {
+export function* getBillingCycleReportId({ apiUrl, apiPath, token }, { groupId, billingCycleId, resolve, reject }) {
   try {
-    const data = yield call(api.fetchbillingCycleReport, { apiUrl, apiPath, token, groupId, billingCycleId });
+    const res = yield call(api.fetchbillingCycleReportId, { apiUrl, apiPath, token, groupId, billingCycleId });
+    const parsedId = Object.keys(res).filter(key => !isNaN(key)).map(key => res[key]).join('');
+    yield call(resolve, parsedId);
+    // @ts-ignore
+  } catch (error) {
+    yield call(reject, error);
+    logException(error);
+  }
+}
+
+export function* getBillingCycleReport({ apiUrl, apiPath, token }, { groupId, billingCycleId, groupName, year, reportId }) {
+  try {
+    const data = yield call(api.fetchbillingCycleReport, { apiUrl, apiPath, token, groupId, billingCycleId, reportId });
     // @ts-ignore
     saveAs(data, `Report_${year}_${groupName}.xlsx`);
   } catch (error) {
@@ -139,6 +151,8 @@ export function* billingCyclesSagas({ apiUrl, apiPath, token }) {
   yield fork(reloadBars, { apiUrl, apiPath, token, resetChan });
   // @ts-ignore
   yield takeLeading(constants.GET_BILLING_CYCLE_ZIP, getBillingCycleZip, { apiUrl, apiPath, token });
+  // @ts-ignore
+  yield takeLeading(constants.GET_BILLING_CYCLE_REPORT_ID, getBillingCycleReportId, { apiUrl, apiPath, token });
   // @ts-ignore
   yield takeLeading(constants.GET_BILLING_CYCLE_REPORT, getBillingCycleReport, { apiUrl, apiPath, token });
   // @ts-ignore
