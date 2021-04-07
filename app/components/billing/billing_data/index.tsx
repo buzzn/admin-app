@@ -216,43 +216,48 @@ class BillingData extends React.Component<
     );
 
     const handleReport = async () => {
-      const id : string = await getBillingCycleReportId({
-        groupId,
-        billingCycleId,
+      new Promise((resolve, reject) => {
+        getBillingCycleReportId({
+          groupId,
+          billingCycleId,
+          resolve,
+          reject,
+        });
+      }).then((id) => {
+        this.setState({ hackLoading: true });
+
+        const now = Date.now();
+        const timeout = 1000 * 60; // a minute
+        const checkEvery = 5000;
+  
+        const loopReportRequest = async () => {
+          if (timeout + now < Date.now()) {
+            this.setState({ hackLoading: false });
+            Alert.error('Could not be generated during Timeout of a minute.');
+            return;
+          }
+          
+          try {
+            getBillingCycleReport({
+              groupId,
+              billingCycleId,
+              groupName,
+              year: moment(billingCycle.lastDate).format('YYYY'),
+              reportId: id,
+            }).then(() => {
+              this.setState({ hackLoading: false });
+              Alert.success('Report was successfully generated.');
+            }).catch(() => {
+              throw Error();
+            });
+          } catch (e) {
+            setTimeout(() => loopReportRequest(), checkEvery);
+          }
+        };
+        loopReportRequest();
       });
 
-      this.setState({ hackLoading: true });
-
-      const now = Date.now();
-      const timeout = 1000 * 60; // a minute
-      const checkEvery = 5000;
-
-      const loopReportRequest = async () => {
-        if (timeout + now < Date.now()) {
-          this.setState({ hackLoading: false });
-          Alert.error('Could not be generated during Timeout of a minute.');
-          return;
-        }
-        
-        try {
-          getBillingCycleReport({
-            groupId,
-            billingCycleId,
-            groupName,
-            year: moment(billingCycle.lastDate).format('YYYY'),
-            reportId: id,
-          }).then(() => {
-            this.setState({ hackLoading: false });
-            Alert.success('Report was successfully generated.');
-            return;
-          }).catch(() => {
-            throw Error();
-          });
-        } catch (e) {
-          setTimeout(() => loopReportRequest(), checkEvery);
-        }
-      };
-      loopReportRequest();
+      
     };
 
     return (

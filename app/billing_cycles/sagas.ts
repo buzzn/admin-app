@@ -120,11 +120,14 @@ export function* getBillingCycleZip({ apiUrl, apiPath, token }, { groupId, billi
   }
 }
 
-export function* getBillingCycleReportId({ apiUrl, apiPath, token }, { groupId, billingCycleId }) {
+export function* getBillingCycleReportId({ apiUrl, apiPath, token }, { groupId, billingCycleId, resolve, reject }) {
   try {
-    yield call(api.fetchbillingCycleReportId, { apiUrl, apiPath, token, groupId, billingCycleId });
+    const res = yield call(api.fetchbillingCycleReportId, { apiUrl, apiPath, token, groupId, billingCycleId });
+    const parsedId = Object.keys(res).filter(key => !isNaN(key)).map(key => res[key]).join('');
+    yield call(resolve, parsedId);
     // @ts-ignore
   } catch (error) {
+    yield call(reject, error);
     logException(error);
   }
 }

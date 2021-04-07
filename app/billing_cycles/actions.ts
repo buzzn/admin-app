@@ -53,10 +53,12 @@ export const actions = {
     groupName,
     year,
   }),
-  getBillingCycleReportId: ({ groupId, billingCycleId }) => ({
+  getBillingCycleReportId: ({ groupId, billingCycleId, resolve, reject }) => ({
     type: constants.GET_BILLING_CYCLE_REPORT_ID,
     groupId,
     billingCycleId,
+    resolve,
+    reject,
   }),
   getBillingCycleReport: ({ groupId, billingCycleId, groupName, year, reportId }) => ({
     type: constants.GET_BILLING_CYCLE_REPORT,
