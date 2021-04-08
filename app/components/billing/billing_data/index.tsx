@@ -238,19 +238,25 @@ class BillingData extends React.Component<
           }
           
           try {
-            getBillingCycleReport({
-              groupId,
-              billingCycleId,
-              groupName,
-              year: moment(billingCycle.lastDate).format('YYYY'),
-              reportId: id,
-            }).then(() => {
+            (new Promise((resolve, reject) => {
+              getBillingCycleReport({
+                groupId,
+                billingCycleId,
+                groupName,
+                year: moment(billingCycle.lastDate).format('YYYY'),
+                reportId: id,
+                resolve,
+                reject,
+              });
+            })).then(() => {
               this.setState({ hackLoading: false });
               Alert.success('Report was successfully generated.');
-            }).catch(() => {
-              throw Error();
+            }).catch((e) => {
+              throw new Error(e);
             });
+            
           } catch (e) {
+            console.log(e);
             setTimeout(() => loopReportRequest(), checkEvery);
           }
         };
