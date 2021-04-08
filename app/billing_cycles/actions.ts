@@ -60,13 +60,15 @@ export const actions = {
     resolve,
     reject,
   }),
-  getBillingCycleReport: ({ groupId, billingCycleId, groupName, year, reportId }) => ({
+  getBillingCycleReport: ({ groupId, billingCycleId, groupName, year, reportId, resolve, reject }) => ({
     type: constants.GET_BILLING_CYCLE_REPORT,
     groupId,
     billingCycleId,
     groupName,
     year,
     reportId,
+    resolve,
+    reject,
   }),
 
   addBillingCycle: ({ params, resolve, reject, groupId }) => ({

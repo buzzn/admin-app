@@ -132,12 +132,14 @@ export function* getBillingCycleReportId({ apiUrl, apiPath, token }, { groupId, 
   }
 }
 
-export function* getBillingCycleReport({ apiUrl, apiPath, token }, { groupId, billingCycleId, groupName, year, reportId }) {
+export function* getBillingCycleReport({ apiUrl, apiPath, token }, { groupId, billingCycleId, groupName, year, reportId, resolve, reject }) {
   try {
     const data = yield call(api.fetchbillingCycleReport, { apiUrl, apiPath, token, groupId, billingCycleId, reportId });
     // @ts-ignore
     saveAs(data, `Report_${year}_${groupName}.xlsx`);
+    yield call(resolve);
   } catch (error) {
+    yield call(reject, error);
     logException(error);
   }
 }
