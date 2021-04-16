@@ -252,11 +252,10 @@ class BillingData extends React.Component<
               this.setState({ hackLoading: false });
               Alert.success('Report was successfully generated.');
             }).catch((e) => {
-              throw new Error(e);
+              setTimeout(() => loopReportRequest(), checkEvery);
             });
             
           } catch (e) {
-            console.log(e);
             setTimeout(() => loopReportRequest(), checkEvery);
           }
         };
