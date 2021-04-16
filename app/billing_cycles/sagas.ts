@@ -134,7 +134,10 @@ export function* getBillingCycleReportId({ apiUrl, apiPath, token }, { groupId, 
 
 export function* getBillingCycleReport({ apiUrl, apiPath, token }, { groupId, billingCycleId, groupName, year, reportId, resolve, reject }) {
   try {
-    const data = yield call(api.fetchbillingCycleReport, { apiUrl, apiPath, token, groupId, billingCycleId, reportId });
+    const data: any = yield call(api.fetchbillingCycleReport, { apiUrl, apiPath, token, groupId, billingCycleId, reportId });
+    if (data._status && data._status === 422) {
+      throw new Error(data.errors);
+    }
     // @ts-ignore
     saveAs(data, `Report_${year}_${groupName}.xlsx`);
     yield call(resolve);
