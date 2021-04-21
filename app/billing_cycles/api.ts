@@ -15,8 +15,11 @@ export default {
   fetchbillingCycleZip({ token, apiUrl, apiPath, billingCycleId, groupId }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/billing-cycles/${billingCycleId}/zip`, { headers: prepareHeaders(token) }).then(parseResponse);
   },
-  fetchbillingCycleReport({ token, apiUrl, apiPath, billingCycleId, groupId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/billing-cycles/${billingCycleId}/report`, { headers: prepareHeaders(token) }).then(parseResponse);
+  fetchbillingCycleReportId({ token, apiUrl, apiPath, billingCycleId, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/billing-cycles/${billingCycleId}/report_id`, { headers: prepareHeaders(token) }).then(parseResponse);
+  },
+  fetchbillingCycleReport({ token, apiUrl, apiPath, billingCycleId, groupId, reportId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/billing-cycles/${billingCycleId}/report`, { headers: prepareHeaders(token), method: 'POST', body: JSON.stringify({ id: reportId }) }).then(parseResponse);
   },
   fetchBillingCycles({ token, apiUrl, apiPath, groupId }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/billing-cycles`, { headers: prepareHeaders(token) })
