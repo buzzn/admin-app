@@ -139,7 +139,7 @@ export function* getBillingCycleReport({ apiUrl, apiPath, token }, { groupId, bi
       throw new Error(data.errors);
     }
     // @ts-ignore
-    saveAs(data, `Report_${year}_${groupName}.xlsx`);
+    saveAs(data, `Report_${year}_${groupName}.csv`);
     yield call(resolve);
   } catch (error) {
     yield call(reject, error);
