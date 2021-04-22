@@ -227,13 +227,13 @@ class BillingData extends React.Component<
         this.setState({ hackLoading: true });
 
         const now = Date.now();
-        const timeout = 1000 * 60; // a minute
+        const timeout = 1000 * 180; // 3 minutes
         const checkEvery = 5000;
   
         const loopReportRequest = async () => {
           if (timeout + now < Date.now()) {
             this.setState({ hackLoading: false });
-            Alert.error('Could not be generated during Timeout of a minute.');
+            Alert.error('Could not be generated during Timeout of 3 minutes.');
             return;
           }
           
