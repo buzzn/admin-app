@@ -116,6 +116,7 @@ class GroupSettings extends React.Component {
 
       addReadings,
       readingsResponse,
+      getAnnualReadingsTable,
 
       setGroup,
       updateGroup,
@@ -297,7 +298,7 @@ class GroupSettings extends React.Component {
                 )}
               />
               <Route path={`${url}/fake-stats`}>
-                <FakeStats {...{ group, updateGroup, addReadings, readingsResponse }} />
+                <FakeStats {...{ group, updateGroup, addReadings, readingsResponse, getAnnualReadingsTable }} />
               </Route>
               <Route path={`${url}/comments`}>
                 <Comments {...{ ids: { type: 'group', groupId: group.id } }} />
@@ -352,6 +353,7 @@ export default connect(
     loadAvailableOrganizationMarkets: Organizations.actions.loadAvailableOrganizationMarkets,
     attachBankAccount: Contracts.actions.attachBankAccount,
     loadContract: Contracts.actions.loadContract,
-    addReadings: Groups.actions.addReadings
+    addReadings: Groups.actions.addReadings,
+    getAnnualReadingsTable: Groups.actions.getAnnualReadingsTable,
   },
 )(GroupSettingsIntl);
