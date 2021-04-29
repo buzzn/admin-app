@@ -3,7 +3,7 @@ import Alert from 'react-s-alert';
 import { FormGroup, Input, Row, Col } from 'reactstrap';
 import Dropzone from 'react-dropzone';
 
-const FakeStats = ({ group, updateGroup, addReadings, readingsResponse }) => {
+const FakeStats = ({ group, updateGroup, addReadings, readingsResponse, getAnnualReadingsTable }) => {
   const [editMode, setEditMode] = useState(false);
   const [fakeStats, setFakeStats] = useState({});
   if (!Object.keys(fakeStats).length && group.fakeStats && Object.keys(group.fakeStats).length) setFakeStats(group.fakeStats);
@@ -76,6 +76,21 @@ const FakeStats = ({ group, updateGroup, addReadings, readingsResponse }) => {
     }
   };
 
+  const handleDownload = async () => {
+    const groupId = group.id;
+    const res = await new Promise((resolve, reject) => getAnnualReadingsTable({
+      groupId,
+      resolve,
+      reject,
+    }));
+
+    if (res) {
+      Alert.error(JSON.stringify(res));
+    } else {
+      Alert.success('Document successfully generated');
+    }
+  }
+
   return (
     <div>
       <Row>
@@ -109,10 +124,13 @@ const FakeStats = ({ group, updateGroup, addReadings, readingsResponse }) => {
           </button>
         </React.Fragment>
       ) : (
-          <button className="btn btn-primary" onClick={() => setEditMode(true)}>
+        <button className="btn btn-primary" onClick={() => setEditMode(true)}>
             Edit
         </button>
         )}
+      <button className="btn btn-primary" onClick={() => handleDownload()} style={{marginLeft: 15 + 'px'}}>
+          Download
+      </button>
       <br />
       <ul>
         {readingsResponse.errors.map((error, i) => <li key={i}>{error}</li>)}

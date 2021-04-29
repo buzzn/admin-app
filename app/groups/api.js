@@ -107,4 +107,7 @@ export default {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/send-testmail`, 
       { headers: prepareHeaders(token) }).then(parseResponse);
   },
+  fetchAnnualReadingsTable({ token, apiUrl, apiPath, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/annual-reading/table`, { headers: prepareHeaders(token) , method: 'GET' }).then(parseResponse);
+  },
 };
