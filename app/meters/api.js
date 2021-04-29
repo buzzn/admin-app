@@ -50,4 +50,10 @@ export default {
       .then(parseResponse)
       .then(camelizeResponseKeys);
   },
+  fetchMeterReportId({ token, apiUrl, apiPath }) {
+    return fetch(`${apiUrl}${apiPath}/global_report/meter_report_id`, { headers: prepareHeaders(token) }).then(parseResponse);
+  },
+  fetchMeterReport({ token, apiUrl, apiPath, reportId }) {
+    return fetch(`${apiUrl}${apiPath}/global_report/report`, { headers: prepareHeaders(token), method: 'POST', body: JSON.stringify({ id: reportId }) }).then(parseResponse);
+  },
 };

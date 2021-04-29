@@ -1,3 +1,4 @@
+import saveAs from 'file-saver';
 import { put, call, takeLatest, takeLeading, take, fork, cancel, select } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import MarketLocations from 'market_locations';
@@ -92,6 +93,33 @@ export function* updateDiscovergyMeter({ apiUrl, apiPath, token }, { params, res
   }
 }
 
+export function* getMeterReportId({ apiUrl, apiPath, token }, { resolve, reject }) {
+  try {
+    const res = yield call(api.fetchMeterReportId, { apiUrl, apiPath, token });
+    const parsedId = Object.keys(res).filter(key => !isNaN(key)).map(key => res[key]).join('');
+    yield call(resolve, parsedId);
+    // @ts-ignore
+  } catch (error) {
+    yield call(reject, error);
+    logException(error);
+  }
+}
+
+export function* getMeterReport({ apiUrl, apiPath, token }, { reportId, resolve, reject }) {
+  try {
+    const data = yield call(api.fetchMeterReport, { apiUrl, apiPath, token, reportId });
+    if (data._status && data._status === 422) {
+      throw new Error(data.errors);
+    }
+    // @ts-ignore
+    saveAs(data, `Global_Meter_Report_${Date.now()}.csv`);
+    yield call(resolve);
+  } catch (error) {
+    yield call(reject, error);
+    logException(error);
+  }
+}
+
 export function* metersSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_GROUP_METERS, getGroupMeters, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_METER, getMeter, { apiUrl, apiPath, token });
@@ -99,6 +127,8 @@ export function* metersSagas({ apiUrl, apiPath, token }) {
   yield takeLeading(constants.UPDATE_METER, updateMeter, { apiUrl, apiPath, token });
   yield takeLeading(constants.UPDATE_FORMULA_PART, updateFormulaPart, { apiUrl, apiPath, token });
   yield takeLeading(constants.UPDATE_DISCOVERGY_METER, updateDiscovergyMeter, { apiUrl, apiPath, token });
+  yield takeLeading(constants.GET_METER_REPORT_ID, getMeterReportId, { apiUrl, apiPath, token });
+  yield takeLeading(constants.GET_METER_REPORT, getMeterReport, { apiUrl, apiPath, token });
   const meterId = yield select(selectMeterId);
   const groupId = yield select(selectGroupId);
   if (meterId) yield put(actions.loadMeter({ meterId, groupId }));
