@@ -18,6 +18,9 @@ export const constants = {
   LOADING_GROUP_METERS: 'buzzn_meters/LOADING_GROUP_METERS',
   LOADED_GROUP_METERS: 'buzzn_meters/LOADED_GROUP_METERS',
   SET_GROUP_METERS: 'buzzn_meters/SET_GROUP_METERS',
+
+  GET_METER_REPORT_ID: 'buzzn_meters/GET_METER_REPORT_ID',
+  GET_METER_REPORT: 'buzzn_meters/GET_METER_REPORT',
 };
 
 export const actions = {
@@ -72,4 +75,16 @@ export const actions = {
   loadingGroupMeters: () => ({ type: constants.LOADING_GROUP_METERS }),
   loadedGroupMeters: () => ({ type: constants.LOADED_GROUP_METERS }),
   setGroupMeters: groupMeters => ({ type: constants.SET_GROUP_METERS, groupMeters }),
+
+  getMeterReportId: ({ resolve, reject }) => ({
+    type: constants.GET_METER_REPORT_ID,
+    resolve,
+    reject,
+  }),
+  getMeterReport: ({ reportId, resolve, reject }) => ({
+    type: constants.GET_METER_REPORT,
+    reportId,
+    resolve,
+    reject,
+  }),
 };

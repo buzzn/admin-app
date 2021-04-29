@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
+import Alert from 'react-s-alert';
 import {
   Container,
   Collapse,
@@ -19,6 +20,7 @@ import {
   Input,
 } from 'reactstrap';
 import Auth from '@buzzn/module_auth';
+import Meters from 'meters';
 import withHover from 'components/with_hover';
 
 import './style.scss';
@@ -37,6 +39,7 @@ export class TopNavBar extends React.Component {
   state = {
     isOpen: false,
     actionOpen: false,
+    downloadOpen: false,
     profileOpen: false,
     scrolled: false,
   };
@@ -47,6 +50,10 @@ export class TopNavBar extends React.Component {
 
   toggleAction = () => {
     this.setState({ actionOpen: !this.state.actionOpen });
+  };
+
+  toggleDownload = () => {
+    this.setState({ downloadOpen: !this.state.downloadOpen });
   };
 
   toggleProfile = () => {
@@ -65,6 +72,51 @@ export class TopNavBar extends React.Component {
     window.onscroll = () => this.handleScroll();
   }
 
+
+  async handleDownloadMeterReport() {
+    const { getMeterReport, getMeterReportId } = this.props;
+    new Promise((resolve, reject) => {
+      getMeterReportId({
+        resolve,
+        reject,
+      });
+    }).then((id) => {
+
+      const now = Date.now();
+      const timeout = 1000 * 180; // 3 minutes
+      const checkEvery = 5000;
+      let t = null;
+
+      const loopReportRequest = async () => {
+        if (timeout + now < Date.now()) {
+          this.setState({ hackLoading: false });
+          Alert.error('Could not be generated during Timeout of 3 minutes.');
+          return;
+        }
+        
+        try {
+          (new Promise((resolve, reject) => {
+            getMeterReport({
+              reportId: id,
+              resolve,
+              reject,
+            });
+          })).then(() => {
+            if (t) { clearTimeout(t); }
+            Alert.success('Report was successfully generated.');
+          }).catch((e) => {
+            if (t) { clearTimeout(t); }
+            t = setTimeout(() => loopReportRequest(), checkEvery);
+          });    
+        } catch (e) {
+          if (t) { clearTimeout(t); }
+          t = setTimeout(() => loopReportRequest(), checkEvery);
+        }
+      };
+      loopReportRequest();
+    });
+  }
+
   render() {
     const {
       signOut,
@@ -74,7 +126,7 @@ export class TopNavBar extends React.Component {
       hover,
       switchAddGroup,
     } = this.props;
-    const { isOpen, actionOpen, profileOpen, scrolled } = this.state;
+    const { isOpen, actionOpen, downloadOpen, profileOpen, scrolled } = this.state;
     const myName = firstName ? `${firstName} ${lastName}` : 'My profile';
     const shrinked = !hover && scrolled;
 
@@ -93,6 +145,18 @@ export class TopNavBar extends React.Component {
               </InputGroupAddon>
             </InputGroup>
             <Nav className="ml-auto" navbar>
+              <Dropdown nav isOpen={downloadOpen} toggle={this.toggleDownload} className="icon-drop">
+                <DropdownToggle nav>
+                  <span className="icon-nav-item" data-cy="global CTA">
+                    <i className="fa fa-download" />
+                  </span>
+                </DropdownToggle>
+                <DropdownMenu className="icon-dropdown" modifiers={{ offset: { enabled: true, offset: '0px, 0px' } }}>
+                  <DropdownItem data-cy="create group link" onClick={() => this.handleDownloadMeterReport()}>
+                    <FormattedMessage id="admin.groups.menuDownloadMeterReport" />
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
               <Dropdown nav isOpen={actionOpen} toggle={this.toggleAction} className="icon-drop">
                 <DropdownToggle nav>
                   <span className="icon-nav-item" data-cy="global CTA">
@@ -148,5 +212,9 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { signOut: Auth.actions.signOut },
+  { 
+    signOut: Auth.actions.signOut,
+    getMeterReportId: Meters.actions.getMeterReportId,
+    getMeterReport: Meters.actions.getMeterReport,
+  },
 )(withHover(TopNavBar));
