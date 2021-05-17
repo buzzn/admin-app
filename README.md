@@ -46,7 +46,7 @@ To run local dev server:
 
 To run tests:
 
-- run `yarn run test`
+- run `yarn run test`.
 
 To run typecheck:
 
