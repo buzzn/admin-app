@@ -27,6 +27,8 @@ export const constants = {
   SET_GROUPS: 'buzzn_groups/SET_GROUPS',
 
   SEND_TESTMAIL: 'buzzn_groups/SEND_TESTMAIL',
+
+  GET_ANNUAL_READINGS_TABLE: 'buzzn_groups/GET_ANNUAL_READINGS_TABLE',
 };
 
 export const actions = {
@@ -94,6 +96,13 @@ export const actions = {
 
   sendTestMail: ({ groupId, resolve, reject }) => ({
     type: constants.SEND_TESTMAIL,
+    groupId,
+    resolve,
+    reject,
+  }),
+
+  getAnnualReadingsTable: ({ groupId, resolve, reject }) => ({
+    type: constants.GET_ANNUAL_READINGS_TABLE,
     groupId,
     resolve,
     reject,

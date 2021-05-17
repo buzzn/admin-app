@@ -1,3 +1,4 @@
+import saveAs from 'file-saver';
 import { put, call, takeLatest, takeLeading, take, fork, cancel, select } from 'redux-saga/effects';
 import { SubmissionError } from 'redux-form';
 import { logException, convertErrors } from '_util';
@@ -150,6 +151,21 @@ export function* sendTestMail({ apiUrl, apiPath, token }, { groupId, resolve, re
   }
 }
 
+export function* getAnnualReadingsTable({ apiUrl, apiPath, token }, { groupId, resolve, reject }) {
+  try {
+    const data = yield call(api.fetchAnnualReadingsTable, { apiUrl, apiPath, token, groupId });
+    if (data._status && data._status === 422) {
+      throw new Error(data.errors);
+    }
+    // @ts-ignore
+    saveAs(data, `Annual_Reading_${groupId}_${Date.now()}.xlsx`);
+    yield call(resolve);
+  } catch (error) {
+    yield call(reject, error);
+    logException(error);
+  }
+}
+
 export function* groupsSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.SEND_TESTMAIL, sendTestMail, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_GROUPS, getGroups, { apiUrl, apiPath, token });
@@ -160,6 +176,7 @@ export function* groupsSagas({ apiUrl, apiPath, token }) {
   yield takeLeading(constants.UPDATE_CONTACT, updateContact, { apiUrl, apiPath, token });
   yield takeLeading(constants.DELETE_CONTACT, deleteGapContact, { apiUrl, apiPath, token });
   yield takeLeading(constants.ADD_READINGS, addReadings, { apiUrl, apiPath, token });
+  yield takeLeading(constants.GET_ANNUAL_READINGS_TABLE, getAnnualReadingsTable, { apiUrl, apiPath, token });
 
   yield put(actions.loadGroups());
 
