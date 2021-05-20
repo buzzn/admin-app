@@ -115,7 +115,7 @@
     "moment": "^2.24.0",
     "moment-range": "^4.0.2",
     "popper.js": "^1.15.0",
-    "postcss": "^7.0.16",
+    "postcss": "^8.2.10",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-collapse": "^4.0.3",
