@@ -145,18 +145,24 @@ export class TopNavBar extends React.Component {
               </InputGroupAddon>
             </InputGroup>
             <Nav className="ml-auto" navbar>
-              <Dropdown nav isOpen={downloadOpen} toggle={this.toggleDownload} className="icon-drop">
-                <DropdownToggle nav>
-                  <span className="icon-nav-item" data-cy="global CTA">
-                    <i className="fa fa-download" />
-                  </span>
-                </DropdownToggle>
-                <DropdownMenu className="icon-dropdown" modifiers={{ offset: { enabled: true, offset: '0px, 0px' } }}>
-                  <DropdownItem data-cy="create group link" onClick={() => this.handleDownloadMeterReport()}>
-                    <FormattedMessage id="admin.groups.menuDownloadMeterReport" />
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
+              {
+                myName !== 'Isar Watt' ? (
+                /* Download meter report (start) */
+                <Dropdown nav isOpen={downloadOpen} toggle={this.toggleDownload} className={`icon-drop ${myName === 'Isar Watt' ? 'is-hidden' : ''}`}>
+                  <DropdownToggle nav>
+                    <span className="icon-nav-item" data-cy="global CTA">
+                      <i className="fa fa-download" />
+                    </span>
+                  </DropdownToggle>
+                  <DropdownMenu className="icon-dropdown" modifiers={{ offset: { enabled: true, offset: '0px, 0px' } }}>
+                    <DropdownItem data-cy="create group link" onClick={() => this.handleDownloadMeterReport()}>
+                      <FormattedMessage id="admin.groups.menuDownloadMeterReport" />
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+                /* Download meter report (end) */
+                ) : ''
+              }
               <Dropdown nav isOpen={actionOpen} toggle={this.toggleAction} className="icon-drop">
                 <DropdownToggle nav>
                   <span className="icon-nav-item" data-cy="global CTA">
