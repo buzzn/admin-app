@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-
+import { Button } from 'reactstrap';
 import Contracts from 'contracts';
 import Loading from 'components/loading';
 import Comments from 'components/comments';
@@ -55,6 +55,7 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
       }
       if (contract.type === 'contract_localpool_power_taker') {
         return (
+          <div>
           <PowertakerContract
             {...{
               contract,
@@ -67,6 +68,11 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
               validationRules: LPTUpdateRules,
             }}
           />
+          <Button color="primary" className="mt-5">
+              Reset End Date
+          </Button>
+          <div className="mt-5"><img src="https://buzzn-core-production.s3-eu-west-1.amazonaws.com/uploads/person/image/000195e5-ceb5-4a95-974d-9ce4646aefe1/22413e7ffa0b3ef9c0467ba0250ff7fe.jpg" alt="test image" /></div>
+          </div>
         );
       }
       if (['contract_localpool_processing', 'contract_metering_point_operator'].includes(contract.type)) {
