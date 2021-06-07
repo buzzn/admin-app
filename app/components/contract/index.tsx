@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-
 import Contracts from 'contracts';
 import Loading from 'components/loading';
 import Comments from 'components/comments';
-
 import PowertakerContract from './powertaker';
 import ThirdPartyContract from './third_party';
 import LPCMPOContract from './lpc_mpo';
+import Alert from 'react-s-alert';
 
 class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
   componentDidMount() {
