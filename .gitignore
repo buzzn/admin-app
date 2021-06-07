@@ -17,6 +17,7 @@ startup.sh
 .idea/
 *.ipr
 *.iws
+*.http
 
 .vscode
 

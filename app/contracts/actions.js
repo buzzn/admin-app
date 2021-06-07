@@ -45,8 +45,6 @@ export const constants = {
   DELETE_CONTRACT_PDF: 'buzzn_contracts/DELETE_CONTRACT_PDF',
   GET_CONTRACT_PDF_META: 'buzzn_contracts/GET_CONTRACT_PDF_META',
   GET_CONTRACT_PDF_DATA: 'buzzn_contracts/GET_CONTRACT_PDF_DATA',
-
-  DELETE_END_DATE: 'buzzn_contracts/DELETE_END_DATE',
 };
 
 export const actions = {
@@ -209,12 +207,5 @@ export const actions = {
     contractId,
     documentId,
     fileName,
-  }),
-  deleteEndDate: ({ groupId, contractId, resolve, reject }) => ({
-    type: constants.DELETE_END_DATE,
-    groupId,
-    contractId,
-    resolve,
-    reject,
   }),
 };

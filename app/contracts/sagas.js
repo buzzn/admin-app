@@ -268,16 +268,6 @@ export function* deleteContractPDF({ apiUrl, apiPath, token }, { documentId, gro
   }
 }
 
-export function* deleteEndDate({ apiUrl, apiPath, token }, { groupId, contractId, resolve, reject }) {
-  try {
-    yield call(api.deleteEndDate, { apiUrl, apiPath, token, groupId, contractId });
-    resolve();
-  } catch (error) {
-    logException(error);
-    reject(error);
-  }
-}
-
 export function* contractSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_GROUP_CONTRACTS, getGroupContracts, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_CONTRACT, getContract, { apiUrl, apiPath, token });
@@ -296,7 +286,6 @@ export function* contractSagas({ apiUrl, apiPath, token }) {
   yield takeLeading(constants.ATTACH_CONTRACT_PDF, attachContractPDF, { apiUrl, apiPath, token });
   yield takeLeading(constants.GENERATE_CONTRACT_PDF, generateContractPDF, { apiUrl, apiPath, token });
   yield takeLeading(constants.DELETE_CONTRACT_PDF, deleteContractPDF, { apiUrl, apiPath, token });
-  yield takeLeading(constants.DELETE_END_DATE, deleteEndDate, { apiUrl, apiPath, token });
   const groupId = yield select(selectGroup);
   const withBillings = yield select(selectWithBillings);
   const contractId = yield select(selectContractId);

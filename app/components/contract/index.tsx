@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { Button } from 'reactstrap';
 import Contracts from 'contracts';
 import Loading from 'components/loading';
 import Comments from 'components/comments';
@@ -18,18 +17,6 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
 
   componentWillUnmount() {
     this.props.setContract({ contract: { _status: null }, contractor: { _status: null }, customer: { _status: null } });
-  }
-
-  handleDeleteEndDate() {
-    const { deleteEndDate, groupId, contractId } = this.props;
-    return new Promise((resolve, reject) => {
-      deleteEndDate({ groupId, contractId, resolve, reject });
-    }).then(() => {
-      Alert.success('End Date Deleted');
-    }).catch((e) => {
-      console.log('This is catch error \n', e);
-      Alert.error('Unable To Delete End Date');
-    });
   }
 
   render() {
@@ -67,7 +54,6 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
       }
       if (contract.type === 'contract_localpool_power_taker') {
         return (
-          <div>
           <PowertakerContract
             {...{
               contract,
@@ -80,10 +66,6 @@ class Contract extends React.Component<ExtProps & DispatchProps & StateProps> {
               validationRules: LPTUpdateRules,
             }}
           />
-          <Button onClick = {() => this.handleDeleteEndDate()} color="primary" className="mt-5">
-              Reset End Date
-          </Button>
-          </div>
         );
       }
       if (['contract_localpool_processing', 'contract_metering_point_operator'].includes(contract.type)) {
@@ -141,7 +123,6 @@ interface DispatchProps {
   loadContract: Function;
   setContract: Function;
   updateContract: Function;
-  deleteEndDate: Function;
 }
 
 function mapStateToProps(state: StatePart) {
@@ -160,6 +141,5 @@ export default connect<StateProps, DispatchProps, ExtProps>(
     loadContract: Contracts.actions.loadContract,
     setContract: Contracts.actions.setContract,
     updateContract: Contracts.actions.updateContract,
-    deleteEndDate: Contracts.actions.deleteEndDate,
   },
 )(Contract);
