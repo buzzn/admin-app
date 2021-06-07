@@ -196,10 +196,4 @@ export default {
   fetchContractPDFData({ token, apiUrl, apiPath, groupId, contractId, documentId }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/documents/${documentId}/fetch`, { headers: prepareHeaders(token) }).then(parseResponse);
   },
-  deleteEndDate({ token, apiUrl, apiPath, groupId, contractId }) {
-    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/end-date`, {
-      headers: prepareHeaders(token),
-      method: 'DELETE',
-    });
-  },
 };
