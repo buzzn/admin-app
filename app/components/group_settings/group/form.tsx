@@ -323,6 +323,15 @@ const Form = ({
               component: EditableCheckbox,
             }}
           />
+          <TwoColField
+            {...{
+              prefix,
+              name: 'billingDetail.legSingle',
+              editMode,
+              validationRules: validationRules.updateGroup,
+              component: EditableCheckbox,
+            }}
+          />
           {editMode && group.deletable && (
             <Row>
               <Col xs="12">
