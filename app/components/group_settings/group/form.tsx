@@ -189,6 +189,15 @@ const Form = ({
               normalize: dateNormalizer('YYYY-MM-DD'),
             }}
           />
+          <TwoColField
+            {...{
+              prefix,
+              name: 'billingDetail.mieterstromzuschlag', 
+              editMode,
+              validationRules: validationRules.updateGroup,
+              component: EditableCheckbox,
+            }}
+          />
           {editMode ? (
             loadingOptions ? (
               <Loading minHeight={10} />
@@ -327,6 +336,15 @@ const Form = ({
             {...{
               prefix,
               name: 'billingDetail.legSingle',
+              editMode,
+              validationRules: validationRules.updateGroup,
+              component: EditableCheckbox,
+            }}
+          />
+           <TwoColField
+            {...{
+              prefix,
+              name: 'group.mieterstromzuschlag', 
               editMode,
               validationRules: validationRules.updateGroup,
               component: EditableCheckbox,
