@@ -268,6 +268,33 @@ export function* deleteContractPDF({ apiUrl, apiPath, token }, { documentId, gro
   }
 }
 
+export function* getPowertakerReportId({ apiUrl, apiPath, token }, { resolve, reject }) {
+  try {
+    const res = yield call(api.fetchPowertakerReportId, { apiUrl, apiPath, token });
+    const parsedId = Object.keys(res).filter(key => !isNaN(key)).map(key => res[key]).join('');
+    yield call(resolve, parsedId);
+    // @ts-ignore
+  } catch (error) {
+    yield call(reject, error);
+    logException(error);
+  }
+}
+
+export function* getPowertakerReport({ apiUrl, apiPath, token }, { reportId, resolve, reject }) {
+  try {
+    const data = yield call(api.fetchPowertakerReport, { apiUrl, apiPath, token, reportId });
+    if (data._status && data._status == 422) {
+      throw new Error(data.errors);
+    }
+    // @ts-ignore
+    saveAs(data, `Global_Powertaker_Report_${Date.now()}.csv`);
+    yield call(resolve);
+  } catch (error) {
+    yield call(reject, error);
+    logException(error);
+  }
+}
+
 export function* contractSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_GROUP_CONTRACTS, getGroupContracts, { apiUrl, apiPath, token });
   yield takeLatest(constants.LOAD_CONTRACT, getContract, { apiUrl, apiPath, token });
@@ -286,6 +313,8 @@ export function* contractSagas({ apiUrl, apiPath, token }) {
   yield takeLeading(constants.ATTACH_CONTRACT_PDF, attachContractPDF, { apiUrl, apiPath, token });
   yield takeLeading(constants.GENERATE_CONTRACT_PDF, generateContractPDF, { apiUrl, apiPath, token });
   yield takeLeading(constants.DELETE_CONTRACT_PDF, deleteContractPDF, { apiUrl, apiPath, token });
+  yield takeLeading(constants.GET_POWERTAKER_REPORT_ID, getPowertakerReportId, { apiUrl, apiPath, token });
+  yield takeLeading(constants.GET_POWERTAKER_REPORT, getPowertakerReport, { apiUrl, apiPath, token });
   const groupId = yield select(selectGroup);
   const withBillings = yield select(selectWithBillings);
   const contractId = yield select(selectContractId);
