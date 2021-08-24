@@ -22,5 +22,9 @@ export default {
   fetchTariffChangeLettersZip({ token, apiUrl, apiPath, groupId }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/tariff-change-letters`, { headers: prepareHeaders(token) })
       .then(parseResponse);
+  },
+  fetchSendTariffChangeLetters({ token, apiUrl, apiPath, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/send-tariff-change-letters`, { headers: prepareHeaders(token) })
+      .then(parseResponse);
   }
 };
