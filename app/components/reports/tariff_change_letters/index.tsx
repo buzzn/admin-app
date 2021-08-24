@@ -8,41 +8,27 @@ import { Row, Col } from 'reactstrap';
 
 /**
  * A widget to request all the group's members in a csv dtfv-format.
- * @param loadGroupMembersExport A method which triggers the export of the group's members.
+ * @param getTariffChangeLetters A method which triggers the export of the group's members.
  * @param loading Indicating whether data is being loaded.
  * @param groupId The group which members are to be exported.
  * @param groupName The group's name. This is used to generate the default file name of the generated file.
  */
-const GroupMembersExport = ({
-  loadGroupMembersExport,
-  loading,
+const TariffChangeLetters = ({
+  getTariffChangeLetters,
   groupId,
   groupName,
 }) => {
-  
-  const [errorMessages, setErrorMessages] = useState(['']);
-
-  if (loading) {
-    return <Loading minHeight={40} />;
-  }
 
   const loadExport = (groupId, groupName) => {
-    loadGroupMembersExport(groupId, groupName, (errors) => {
-      const err = [''];
-      Object.keys(errors).map(key => {
-        err.push(errors[key].join());
-      });
-      setErrorMessages(err.slice(1));
-    });
+    getTariffChangeLetters(groupId, groupName);
   }
 
-  const prefix = 'admin.reports.groupsMembersExport';
   return (
     <React.Fragment>
       <div className="controls">
         <Row className="fieldgroup">
           <Col xs={12} className="fieldname">
-            <FormattedMessage id={`${prefix}.Text`} />
+            <FormattedMessage id={`Lade die Preisanpassungsschreiben herunter bevor du sie versendest.`} />
           </Col>
         </Row>
         <Row className="fieldgroup">
@@ -51,14 +37,8 @@ const GroupMembersExport = ({
               className="btn btn-primary"
               onClick={() => loadExport(groupId, groupName)}
             >
-              <FormattedMessage id={`${prefix}.Submit`} />
+              <FormattedMessage id={`Load Zip`} />
             </button>
-            
-          </Col>
-        </Row>
-        <Row className="fieldgroup">
-          <Col>
-            <div style={{'color': 'red' }} >{ errorMessages.join() }</div>
           </Col>
         </Row>
       </div>
@@ -67,18 +47,17 @@ const GroupMembersExport = ({
 };
 
 type StatePart = {
-  loadGroupMembersExport: Function;
+  getTariffChangeLetters: Function;
   reports: ReportsState;
 };
 
 const mapStateToProps = (state: StatePart) => {
   return {
-    loadGroupMembersExport: state.loadGroupMembersExport,
-    loading: state.reports.loadingGroupMembersExport,
+    getTariffChangeLetters: state.getTariffChangeLetters,
   };
 };
 
 export default connect(
   mapStateToProps,
-  { loadGroupMembersExport: Groups.actions.loadGroupMembersExport },
-)(injectIntl(GroupMembersExport));
+  { getTariffChangeLetters: Groups.actions.getTariffChangeLetters },
+)(injectIntl(TariffChangeLetters));

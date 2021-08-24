@@ -15,7 +15,9 @@ export const constants = {
 
   LOAD_GROUP_MEMBERS_EXPORT: 'buzzn_groups/LOAD_GROUP_MEMBERS_EXPORT',
   LOADING_GROUP_MEMBERS_EXPORT: 'buzzn_groups/LOADING_GROUP_MEMBERS_EXPORT',
-  LOADED_GROUP_MEMBERS_EXPORT: 'buzzn_groups/LOADED_GROUP_MEMBERS_EXPORT'
+  LOADED_GROUP_MEMBERS_EXPORT: 'buzzn_groups/LOADED_GROUP_MEMBERS_EXPORT',
+
+  GET_TARIFF_CHANGE_LETTERS: 'buzzn_groups/GET_TARIFF_CHANGE_LETTERS'
 };
 
 // FIXME: extract to common types, fix 'typeof'
@@ -97,4 +99,6 @@ export const actions = {
   loadGroupMembersExport: (groupId: string, groupName: string, errorFn: Function) => ({ type: constants.LOAD_GROUP_MEMBERS_EXPORT, groupId, groupName, errorFn }),
   loadingGroupMembersExport: () => ({ type: constants.LOADING_GROUP_MEMBERS_EXPORT }),
   loadedGroupMembersExport: () => ({ type: constants.LOADED_GROUP_MEMBERS_EXPORT }),
+
+  getTariffChangeLetters: (groupId: string, groupName: string) => ({ type: constants.GET_TARIFF_CHANGE_LETTERS, groupId, groupName}),
 };

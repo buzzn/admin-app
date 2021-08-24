@@ -18,5 +18,9 @@ export default {
   fetchGroupMembersExport({ token, apiUrl, apiPath, groupId }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/group-members-export`, { headers: prepareHeaders(token) })
       .then(parseResponse);
+  },
+  fetchTariffChangeLettersZip({ token, apiUrl, apiPath, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/tariff-change-letters`, { headers: prepareHeaders(token) })
+      .then(parseResponse);
   }
 };
