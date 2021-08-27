@@ -45,6 +45,9 @@ export const constants = {
   DELETE_CONTRACT_PDF: 'buzzn_contracts/DELETE_CONTRACT_PDF',
   GET_CONTRACT_PDF_META: 'buzzn_contracts/GET_CONTRACT_PDF_META',
   GET_CONTRACT_PDF_DATA: 'buzzn_contracts/GET_CONTRACT_PDF_DATA',
+
+  GET_POWERTAKER_REPORT_ID: 'buzzn_contracts/GET_POWERTAKER_REPORT_ID',
+  GET_POWERTAKER_REPORT: 'buzzn_contracts/GET_POWERTAKER_REPORT',
 };
 
 export const actions = {
@@ -207,5 +210,16 @@ export const actions = {
     contractId,
     documentId,
     fileName,
+  }),
+  getPowertakerReportId: ({ resolve, reject }) => ({
+    type: constants.GET_POWERTAKER_REPORT_ID,
+    resolve,
+    reject,
+  }),
+  getPowertakerReport: ({ reportId, resolve, reject }) => ({
+    type: constants.GET_POWERTAKER_REPORT,
+    reportId,
+    resolve,
+    reject,
   }),
 };

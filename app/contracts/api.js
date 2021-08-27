@@ -196,4 +196,10 @@ export default {
   fetchContractPDFData({ token, apiUrl, apiPath, groupId, contractId, documentId }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/contracts/${contractId}/documents/${documentId}/fetch`, { headers: prepareHeaders(token) }).then(parseResponse);
   },
+  fetchPowertakerReportId({ token, apiUrl, apiPath }) {
+    return fetch(`${apiUrl}${apiPath}/global_report/powertaker_report_id`, { headers: prepareHeaders(token) }).then(parseResponse);
+  },
+  fetchPowertakerReport({ token, apiUrl, apiPath, reportId }) {
+    return fetch(`${apiUrl}${apiPath}/global_report/report`, { headers: prepareHeaders(token), method: 'POST', body: JSON.stringify({ id: reportId }) }).then(parseResponse);
+  },
 };
