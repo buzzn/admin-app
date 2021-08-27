@@ -44,6 +44,24 @@ export function* getGroupMembersExport({ apiUrl, apiPath, token }, {groupId, gro
   yield put(actions.loadedGroupMembersExport());
 }
 
+export function* getTariffChangeLettersZip({ apiUrl, apiPath, token }, { groupId, groupName }) {
+  try {
+    const data = yield call(api.fetchTariffChangeLettersZip, { apiUrl, apiPath, token, groupId });
+    // @ts-ignore
+    saveAs(data, `Preisanpassung_${groupName}.zip`);
+  } catch (error) {
+    logException(error);
+  }
+}
+
+export function* sendTariffChangeLetters({ apiUrl, apiPath, token }, { groupId }) {
+  try {
+    yield call(api.fetchSendTariffChangeLetters, { apiUrl, apiPath, token, groupId });
+  } catch (error) {
+    logException(error);
+  }
+}
+
 export function* reportsSagas({ apiUrl, apiPath, token }) {
   // @ts-ignore
   yield takeLatest(constants.LOAD_EEG, getEeg, { apiUrl, apiPath, token });
@@ -51,6 +69,10 @@ export function* reportsSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.LOAD_ANNUAL_REPORT, getAnnualReport, { apiUrl, apiPath, token });
   // @ts-ignore
   yield takeLatest(constants.LOAD_GROUP_MEMBERS_EXPORT, getGroupMembersExport, { apiUrl, apiPath, token });
+  // @ts-ignore
+  yield takeLatest(constants.GET_TARIFF_CHANGE_LETTERS, getTariffChangeLettersZip, { apiUrl, apiPath, token });
+  // @ts-ignore
+  yield takeLatest(constants.SEND_TARIFF_CHANGE_LETTERS, sendTariffChangeLetters, { apiUrl, apiPath, token });
 
   const { groupId, eegParams } = yield select(selectReports);
   if (groupId && eegParams) yield put(actions.loadEeg({ groupId, params: eegParams }));

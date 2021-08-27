@@ -9,6 +9,7 @@ import Groups from 'groups';
 import ReportsUI from './eeg';
 import AnnualReport from './annual';
 import GroupMembersExport from '../reports/group_members_export';
+import TariffChangeLetters from '../reports/tariff_change_letters';
 
 /**
  * Provides ui to generate various reports about the group and an export of its members.
@@ -52,6 +53,9 @@ const Reports = ({
           <NavLink to={`${url}/group-members-export`} exact className="nav-link">
             <FormattedMessage id={`${prefix}.tabs.groupsMembersExport`} />
           </NavLink>
+          <NavLink to={`${url}/tariff-change-letters`} exact className="nav-link">
+            <FormattedMessage id={`Tariff change letters`} />
+          </NavLink>
         </SubNav>
       </Row>
       <Row>
@@ -67,6 +71,9 @@ const Reports = ({
           />
           <Route path={`${url}/group-members-export`}
             render={() => <GroupMembersExport {...{ groupId: group.id, groupName: group.name }} />}
+          />
+          <Route path={`${url}/tariff-change-letters`}
+            render={() => <TariffChangeLetters {...{ groupId: group.id, groupName: group.name }} />}
           />
           <Redirect to={`${url}/eeg`} />
         </Switch>
