@@ -21,6 +21,7 @@ import {
 } from 'reactstrap';
 import Auth from '@buzzn/module_auth';
 import Meters from 'meters';
+import Contracts from 'contracts';
 import withHover from 'components/with_hover';
 
 import './style.scss';
@@ -72,7 +73,6 @@ export class TopNavBar extends React.Component {
     window.onscroll = () => this.handleScroll();
   }
 
-
   async handleDownloadMeterReport() {
     const { getMeterReport, getMeterReportId } = this.props;
     new Promise((resolve, reject) => {
@@ -97,6 +97,50 @@ export class TopNavBar extends React.Component {
         try {
           (new Promise((resolve, reject) => {
             getMeterReport({
+              reportId: id,
+              resolve,
+              reject,
+            });
+          })).then(() => {
+            if (t) { clearTimeout(t); }
+            Alert.success('Report was successfully generated.');
+          }).catch((e) => {
+            if (t) { clearTimeout(t); }
+            t = setTimeout(() => loopReportRequest(), checkEvery);
+          });    
+        } catch (e) {
+          if (t) { clearTimeout(t); }
+          t = setTimeout(() => loopReportRequest(), checkEvery);
+        }
+      };
+      loopReportRequest();
+    });
+  }
+
+  async handleDownloadPowertakerReport() {
+    const { getPowertakerReport, getPowertakerReportId } = this.props;
+    new Promise((resolve, reject) => {
+      getPowertakerReportId({
+        resolve,
+        reject,
+      });
+    }).then((id) => {
+
+      const now = Date.now();
+      const timeout = 1000 * 180; // 3 minutes
+      const checkEvery = 5000;
+      let t = null;
+
+      const loopReportRequest = async () => {
+        if (timeout + now < Date.now()) {
+          this.setState({ hackLoading: false });
+          Alert.error('Could not be generated during Timeout of 3 minutes.');
+          return;
+        }
+        
+        try {
+          (new Promise((resolve, reject) => {
+            getPowertakerReport({
               reportId: id,
               resolve,
               reject,
@@ -157,6 +201,9 @@ export class TopNavBar extends React.Component {
                   <DropdownMenu className="icon-dropdown" modifiers={{ offset: { enabled: true, offset: '0px, 0px' } }}>
                     <DropdownItem data-cy="create group link" onClick={() => this.handleDownloadMeterReport()}>
                       <FormattedMessage id="admin.groups.menuDownloadMeterReport" />
+                    </DropdownItem>
+                    <DropdownItem data-cy="create group link" onClick={() => this.handleDownloadPowertakerReport()}>
+                      <FormattedMessage id="admin.groups.menuDownloadPowertakerReport" />
                     </DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
@@ -222,5 +269,7 @@ export default connect(
     signOut: Auth.actions.signOut,
     getMeterReportId: Meters.actions.getMeterReportId,
     getMeterReport: Meters.actions.getMeterReport,
+    getPowertakerReportId: Contracts.actions.getPowertakerReportId,
+    getPowertakerReport: Contracts.actions.getPowertakerReport,
   },
 )(withHover(TopNavBar));
