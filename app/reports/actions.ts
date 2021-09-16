@@ -18,7 +18,10 @@ export const constants = {
   LOADED_GROUP_MEMBERS_EXPORT: 'buzzn_groups/LOADED_GROUP_MEMBERS_EXPORT',
 
   GET_TARIFF_CHANGE_LETTERS: 'buzzn_groups/GET_TARIFF_CHANGE_LETTERS',
-  SEND_TARIFF_CHANGE_LETTERS: 'buzzn_groups/SEND_TARIFF_CHANGE_LETTERS'
+  SEND_TARIFF_CHANGE_LETTERS: 'buzzn_groups/SEND_TARIFF_CHANGE_LETTERS',
+
+  GET_HISTORICAL_READINGS_EXPORT_ID: 'buzzn_groups/GET_HISTORICAL_READINGS_EXPORT_ID',
+  GET_HISTORICAL_READINGS_EXPORT: 'buzzn_groups/GET_HISTORICAL_READINGS_EXPORT'
 };
 
 // FIXME: extract to common types, fix 'typeof'
@@ -103,4 +106,8 @@ export const actions = {
 
   getTariffChangeLetters: (groupId: string, groupName: string) => ({ type: constants.GET_TARIFF_CHANGE_LETTERS, groupId, groupName}),
   sendTariffChangeLettersEmails: (groupId: string) => ({ type: constants.SEND_TARIFF_CHANGE_LETTERS, groupId}),
+
+  getHistoricalReadingsExportId: (groupId: string, groupName: string) => ({ type: constants.GET_HISTORICAL_READINGS_EXPORT_ID, groupId, groupName}),
+  getHistoricalReadingsExport: (groupId: string, groupName: string, reportId: string) => ({ type: constants.GET_HISTORICAL_READINGS_EXPORT, groupId, groupName, reportId}),
+  
 };
