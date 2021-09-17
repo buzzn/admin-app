@@ -20,12 +20,11 @@ const HistoricalReadingsExport = ({
   groupId,
   groupName,
 }) => {
-
   const loadExport = async () => {
     new Promise((resolve, reject) => {
       getHistoricalReadingsExportId({
-        groupId,
-        groupName,
+        groupId: groupId,
+        groupName: groupName,
         resolve,
         reject,
       });
@@ -34,7 +33,6 @@ const HistoricalReadingsExport = ({
       const now = Date.now();
       const timeout = 1000 * 180; // 3 minutes
       const checkEvery = 5000;
-
       const loopReportRequest = async () => {
         if (timeout + now < Date.now()) {
           //this.setState({ hackLoading: false });
@@ -45,8 +43,8 @@ const HistoricalReadingsExport = ({
         try {
           (new Promise((resolve, reject) => {
             getHistoricalReadingsExport({
-              groupId,
-              groupName,
+              groupId: groupId,
+              groupName: groupName,
               reportId: id,
               resolve,
               reject,

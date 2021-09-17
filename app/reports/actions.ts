@@ -107,7 +107,21 @@ export const actions = {
   getTariffChangeLetters: (groupId: string, groupName: string) => ({ type: constants.GET_TARIFF_CHANGE_LETTERS, groupId, groupName}),
   sendTariffChangeLettersEmails: (groupId: string) => ({ type: constants.SEND_TARIFF_CHANGE_LETTERS, groupId}),
 
-  getHistoricalReadingsExportId: (groupId: string, groupName: string) => ({ type: constants.GET_HISTORICAL_READINGS_EXPORT_ID, groupId, groupName}),
-  getHistoricalReadingsExport: (groupId: string, groupName: string, reportId: string) => ({ type: constants.GET_HISTORICAL_READINGS_EXPORT, groupId, groupName, reportId}),
-  
+
+  getHistoricalReadingsExportId: ({ groupId, groupName, resolve, reject }) => ({
+    type: constants.GET_HISTORICAL_READINGS_EXPORT_ID,
+    groupId,
+    groupName,
+    resolve,
+    reject,
+  }),
+
+  getHistoricalReadingsExport: ({ groupId, groupName, reportId, resolve, reject }) => ({
+    type: constants.GET_HISTORICAL_READINGS_EXPORT,
+    groupId,
+    groupName,
+    reportId,
+    resolve,
+    reject,
+  }),
 };

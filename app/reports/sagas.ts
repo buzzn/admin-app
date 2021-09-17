@@ -64,7 +64,7 @@ export function* sendTariffChangeLetters({ apiUrl, apiPath, token }, { groupId }
 
 export function* getHistoricalReadingsExportFileId({ apiUrl, apiPath, token }, { groupId, resolve, reject }) {
   try {
-    const res = yield call(api.fetchHistoricalReadingsExportId, { apiUrl, apiPath, token, groupId });
+    const res = yield call(api.fetchHistoricalReadingsExportId, { apiUrl, apiPath, token, groupId});
     const parsedId = Object.keys(res).filter(key => !isNaN(key)).map(key => res[key]).join('');
     yield call(resolve, parsedId);
     // @ts-ignore
