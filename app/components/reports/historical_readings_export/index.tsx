@@ -32,7 +32,7 @@ const HistoricalReadingsExport = ({
       // this.setState({ hackLoading: true });
       const now = Date.now();
       const timeout = 1000 * 180; // 3 minutes
-      const checkEvery = 5000;
+      const checkEvery = 3000;
       const loopReportRequest = async () => {
         if (timeout + now < Date.now()) {
           //this.setState({ hackLoading: false });
