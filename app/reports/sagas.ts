@@ -1,4 +1,4 @@
-import { put, call, takeLatest, take, fork, cancel, select } from 'redux-saga/effects';
+import { put, call, takeLatest, take, fork, cancel, select, takeLeading } from 'redux-saga/effects';
 import { logException } from '_util';
 import { actions, constants } from './actions';
 import api from './api';
@@ -62,6 +62,33 @@ export function* sendTariffChangeLetters({ apiUrl, apiPath, token }, { groupId }
   }
 }
 
+export function* getHistoricalReadingsExportFileId({ apiUrl, apiPath, token }, { groupId, resolve, reject }) {
+  try {
+    const res = yield call(api.fetchHistoricalReadingsExportId, { apiUrl, apiPath, token, groupId});
+    const parsedId = Object.keys(res).filter(key => !isNaN(key)).map(key => res[key]).join('');
+    yield call(resolve, parsedId);
+    // @ts-ignore
+  } catch (error) {
+    yield call(reject, error);
+    logException(error);
+  }
+}
+  
+export function* getHistoricalReadingsExportFile({ apiUrl, apiPath, token }, { groupId, groupName, reportId, resolve, reject }) {
+  try {
+    const data = yield call(api.fetchHistoricalReadingsExport, { apiUrl, apiPath, token, groupId, reportId });
+    if (data._status && data._status == 422) {
+      throw new Error(data.errors);
+    }
+    // @ts-ignore
+    saveAs(data, `Zaehlerliste_${groupName}_${Date.now()}.csv`);
+    yield call(resolve);
+  } catch (error) {
+    yield call(reject, error);
+    logException(error);
+  }
+}
+
 export function* reportsSagas({ apiUrl, apiPath, token }) {
   // @ts-ignore
   yield takeLatest(constants.LOAD_EEG, getEeg, { apiUrl, apiPath, token });
@@ -73,6 +100,10 @@ export function* reportsSagas({ apiUrl, apiPath, token }) {
   yield takeLatest(constants.GET_TARIFF_CHANGE_LETTERS, getTariffChangeLettersZip, { apiUrl, apiPath, token });
   // @ts-ignore
   yield takeLatest(constants.SEND_TARIFF_CHANGE_LETTERS, sendTariffChangeLetters, { apiUrl, apiPath, token });
+  // @ts-ignore
+  yield takeLeading(constants.GET_HISTORICAL_READINGS_EXPORT_ID, getHistoricalReadingsExportFileId, { apiUrl, apiPath, token });
+  // @ts-ignore
+  yield takeLeading(constants.GET_HISTORICAL_READINGS_EXPORT, getHistoricalReadingsExportFile, { apiUrl, apiPath, token });
 
   const { groupId, eegParams } = yield select(selectReports);
   if (groupId && eegParams) yield put(actions.loadEeg({ groupId, params: eegParams }));

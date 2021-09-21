@@ -9,6 +9,7 @@ import Groups from 'groups';
 import ReportsUI from './eeg';
 import AnnualReport from './annual';
 import GroupMembersExport from '../reports/group_members_export';
+import HistoricalReadingsExport from '../reports/historical_readings_export';
 import TariffChangeLetters from '../reports/tariff_change_letters';
 
 /**
@@ -53,6 +54,9 @@ const Reports = ({
           <NavLink to={`${url}/group-members-export`} exact className="nav-link">
             <FormattedMessage id={`${prefix}.tabs.groupsMembersExport`} />
           </NavLink>
+          <NavLink to={`${url}/historical-readings-export`} exact className="nav-link">
+            <FormattedMessage id={`Meter Report`} />
+          </NavLink>
           <NavLink to={`${url}/tariff-change-letters`} exact className="nav-link">
             <FormattedMessage id={`Tariff change letters`} />
           </NavLink>
@@ -71,6 +75,9 @@ const Reports = ({
           />
           <Route path={`${url}/group-members-export`}
             render={() => <GroupMembersExport {...{ groupId: group.id, groupName: group.name }} />}
+          />
+          <Route path={`${url}/historical-readings-export`}
+            render={() => <HistoricalReadingsExport {...{ groupId: group.id, groupName: group.name }} />}
           />
           <Route path={`${url}/tariff-change-letters`}
             render={() => <TariffChangeLetters {...{ groupId: group.id, groupName: group.name }} />}
