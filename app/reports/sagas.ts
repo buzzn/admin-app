@@ -89,6 +89,33 @@ export function* getHistoricalReadingsExportFile({ apiUrl, apiPath, token }, { g
   }
 }
 
+export function* getThirdPartyExportFileId({ apiUrl, apiPath, token }, { groupId, resolve, reject }) {
+  try {
+    const res = yield call(api.fetchThirdPartyExportId, { apiUrl, apiPath, token, groupId});
+    const parsedId = Object.keys(res).filter(key => !isNaN(key)).map(key => res[key]).join('');
+    yield call(resolve, parsedId);
+    // @ts-ignore
+  } catch (error) {
+    yield call(reject, error);
+    logException(error);
+  }
+}
+  
+export function* getThirdPartyExportFile({ apiUrl, apiPath, token }, { groupId, groupName, reportId, resolve, reject }) {
+  try {
+    const data = yield call(api.fetchThirdPartyExport, { apiUrl, apiPath, token, groupId, reportId });
+    if (data._status && data._status == 422) {
+      throw new Error(data.errors);
+    }
+    // @ts-ignore
+    saveAs(data, `Drittbelieferte_${groupName}_${Date.now()}.csv`);
+    yield call(resolve);
+  } catch (error) {
+    yield call(reject, error);
+    logException(error);
+  }
+}
+
 export function* reportsSagas({ apiUrl, apiPath, token }) {
   // @ts-ignore
   yield takeLatest(constants.LOAD_EEG, getEeg, { apiUrl, apiPath, token });
@@ -104,6 +131,10 @@ export function* reportsSagas({ apiUrl, apiPath, token }) {
   yield takeLeading(constants.GET_HISTORICAL_READINGS_EXPORT_ID, getHistoricalReadingsExportFileId, { apiUrl, apiPath, token });
   // @ts-ignore
   yield takeLeading(constants.GET_HISTORICAL_READINGS_EXPORT, getHistoricalReadingsExportFile, { apiUrl, apiPath, token });
+  // @ts-ignore
+  yield takeLeading(constants.GET_THIRD_PARTY_EXPORT_ID, getThirdPartyExportFileId, { apiUrl, apiPath, token });
+  // @ts-ignore
+  yield takeLeading(constants.GET_THIRD_PARTY_EXPORT, getThirdPartyExportFile, { apiUrl, apiPath, token });
 
   const { groupId, eegParams } = yield select(selectReports);
   if (groupId && eegParams) yield put(actions.loadEeg({ groupId, params: eegParams }));

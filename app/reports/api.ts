@@ -33,4 +33,10 @@ export default {
   fetchHistoricalReadingsExport({ token, apiUrl, apiPath, groupId, reportId }) {
     return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/historical_readings_export`, { headers: prepareHeaders(token), method: 'POST', body: JSON.stringify({ id: reportId }) }).then(parseResponse);
   },
+  fetchThirdPartyExportId({ token, apiUrl, apiPath, groupId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/third_party_export_id`, { headers: prepareHeaders(token) }).then(parseResponse);
+  },
+  fetchThirdPartyExport({ token, apiUrl, apiPath, groupId, reportId }) {
+    return fetch(`${apiUrl}${apiPath}/localpools/${groupId}/third_party_export`, { headers: prepareHeaders(token), method: 'POST', body: JSON.stringify({ id: reportId }) }).then(parseResponse);
+  },
 };
